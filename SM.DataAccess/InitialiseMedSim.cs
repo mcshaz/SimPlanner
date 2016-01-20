@@ -26,6 +26,8 @@ namespace SM.DataAccess
             //todo add Mike,Denish,Becks & check trish phone no and 2nd email 
             var trish = new Participant { Email = "trishw@adhb.govt.nz", Name = "Trish Wood", PhoneNumber = "999 9999 99", ProfessionalRole = nursingRole };
             context.Participants.Add(trish);
+            var course1 = new InstructorCourse { Description = "Dummy Course", StartDate = DateTime.Now, MaximumParticipants = 20 };
+            context.InstructorCourses.Add(course1);
 
             //to add manequins
         }

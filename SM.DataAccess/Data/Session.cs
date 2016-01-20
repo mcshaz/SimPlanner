@@ -34,16 +34,36 @@ namespace SM.DataAccess
 
         public virtual SessionType SessionType { get; set; }
 
+        private ICollection<SessionParticipant> _sessionParticipants;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SessionParticipant> SessionParticipants { get; set; }
+        public virtual ICollection<SessionParticipant> SessionParticipants
+        {
+            get { return _sessionParticipants ?? (_sessionParticipants = new List<SessionParticipant>()); }
+            set { _sessionParticipants = value; }
+        }
 
+        private ICollection<Scenario> _scenario;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Scenario> Scenarios { get; set; }
+        public virtual ICollection<Scenario> Scenarios
+        {
+            get { return _scenario ?? (_scenario = new List<Scenario>()); }
+            set { _scenario = value; }
+        }
 
+        private ICollection<SessionRoleType> _roles;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SessionRoleType> Roles { get; set; }
+        public virtual ICollection<SessionRoleType> Roles
+        {
+            get { return _roles ?? (_roles = new List<SessionRoleType>()); }
+            set { _roles = value; }
+        }
 
+        private ICollection<SessionResource> _resources;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SessionResource> Resources { get; set; }
+        public virtual ICollection<SessionResource> Resources
+        {
+            get { return _resources ?? (_resources = new List <SessionResource> ()); }
+            set { _resources = value; }
+        }
     }
 }

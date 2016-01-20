@@ -22,13 +22,28 @@ namespace SM.DataAccess
         [StringLength(10)]
         public string Abbrev { get; set; }
 
+        private ICollection<Scenario> _scenarios;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Scenario> Scenarios { get; set; }
+        public virtual ICollection<Scenario> Scenarios
+        {
+            get { return _scenarios ?? (_scenarios = new List<Scenario>()); }
+            set { _scenarios = value; }
+        }
 
+        private ICollection<Session> _sessions;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Session> Sessions { get; set; }
+        public virtual ICollection<Session> Sessions
+        {
+            get { return _sessions ?? (_sessions = new List<Session>()); }
+            set { _sessions = value; }
+        }
 
+        private ICollection<SessionRoleType> _rolesRequired;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SessionRoleType> RolesRequired { get; set; }
+        public virtual ICollection<SessionRoleType> RolesRequired
+        {
+            get { return _rolesRequired ?? (_rolesRequired = new List<SessionRoleType>()); }
+            set { _rolesRequired = value; }
+        }
     }
 }

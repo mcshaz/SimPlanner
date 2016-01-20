@@ -21,7 +21,12 @@ namespace SM.DataAccess
 
         public virtual Country Country { get; set; }
 
+        private ICollection<Department> _departments;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Department> Departments { get; set; }
+        public virtual ICollection<Department> Departments
+        {
+            get { return _departments ?? (_departments = new List<Department>()); }
+            set { _departments = value; }
+        }
     }
 }

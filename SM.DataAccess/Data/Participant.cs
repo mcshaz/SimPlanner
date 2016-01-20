@@ -37,10 +37,19 @@ namespace SM.DataAccess
 
         public virtual ProfessionalRole ProfessionalRole { get; set; }
 
+        private ICollection<InstructorCourseParticipant> _instructorCourseParticipant;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InstructorCourseParticipant> InstructorCourses { get; set; }
-
+        public virtual ICollection<InstructorCourseParticipant> InstructorCourses
+        {
+            get { return _instructorCourseParticipant ?? (_instructorCourseParticipant = new List<InstructorCourseParticipant>()); }
+            set { _instructorCourseParticipant = value; }
+        }
+        private ICollection<SessionParticipant> _sessionParticipants;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SessionParticipant> SessionParticipants { get; set; }
+        public virtual ICollection<SessionParticipant> SessionParticipants
+        {
+            get { return _sessionParticipants ?? (_sessionParticipants = new List<SessionParticipant>()); }
+            set { _sessionParticipants = value; }
+        }
     }
 }

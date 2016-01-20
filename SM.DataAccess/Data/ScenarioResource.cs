@@ -20,7 +20,12 @@ namespace SM.DataAccess
         [StringLength(50)]
         public string Name { get; set; }
 
+        private ICollection<Scenario> _scenarios;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Scenario> Scenarios { get; set; }
+        public virtual ICollection<Scenario> Scenarios
+        {
+            get { return _scenarios ?? (_scenarios = new List<Scenario>()): }
+            set { _scenarios = value; }
+        }
     }
 }

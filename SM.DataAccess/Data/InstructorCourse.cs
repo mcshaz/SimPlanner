@@ -21,7 +21,12 @@ namespace SM.DataAccess
 
         public int? MaximumParticipants { get; set; }
 
+        private ICollection<InstructorCourseParticipant> _instructorCourseParticipants;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InstructorCourseParticipant> InstructorCourseParticipants { get; set; }
+        public virtual ICollection<InstructorCourseParticipant> InstructorCourseParticipants
+        {
+            get { return _instructorCourseParticipants ?? (_instructorCourseParticipants = new List<InstructorCourseParticipant>()); }
+            set { _instructorCourseParticipants = value; }
+        }
     }
 }

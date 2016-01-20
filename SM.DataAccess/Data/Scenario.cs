@@ -34,13 +34,28 @@ namespace SM.DataAccess
 
         public virtual SessionType SessionType { get; set; }
 
+        private ICollection<Session> _sessions;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Session> Sessions { get; set; }
+        public virtual ICollection<Session> Sessions
+        {
+            get { return _sessions ?? (_sessions = new List<Session>()); }
+            set { _sessions = value; }
+        }
 
+        private ICollection<ScenarioResource> _resources;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ScenarioResource> Resources { get; set; }
+        public virtual ICollection<ScenarioResource> Resources
+        {
+            get { return _resources ?? (_resources = new List<ScenarioResource>()); }
+            set { _resources = value; }
+        }
 
+        private ICollection<ScenarioRoleType> _roles;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ScenarioRoleType> Roles { get; set; }
+        public virtual ICollection<ScenarioRoleType> Roles
+        {
+            get { return _roles ?? (_roles = new List<ScenarioRoleType>()); }
+            set { _roles = value; }
+        }
     }
 }

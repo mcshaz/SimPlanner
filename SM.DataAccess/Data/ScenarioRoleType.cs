@@ -12,7 +12,12 @@ namespace SM.DataAccess
         [StringLength(50)]
         public string Description { get; set; }
 
+        private ICollection<SessionType> _sessionTypes;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SessionType> SessionTypes { get; set; }
+        public virtual ICollection<SessionType> SessionTypes
+        {
+            get { return _sessionTypes ?? (_sessionTypes = new List<SessionType>());  }
+            set { _sessionTypes = value;}
+        }
     }
 }

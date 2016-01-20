@@ -22,15 +22,37 @@ namespace SM.DataAccess
         [StringLength(256)]
         public string CertificateFilename { get; set; }
 
+        private ICollection<Participant> _participants;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Participant> Participants { get; set; }
+        public virtual ICollection<Participant> Participants
+        {
+            get { return _participants ?? (_participants = new List<Participant>()); }
+            set { _participants = value; }
+        }
 
-        public virtual Hospital Hospital { get; set; }
-
+        private ICollection<Hospital> _hospitals;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Manequin> Manequins { get; set; }
+        public virtual ICollection<Hospital> Hospitals
+        {
+            get { return _hospitals ?? (_hospitals = new List<Hospital>()); }
+            set { _hospitals = value; }
+        }
 
+        private ICollection<Manequin> _manequins;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Session> Sessions { get; set; }
+        public virtual ICollection<Manequin> Manequins
+        {
+            get { return _manequins ?? (_manequins = new List<Manequin>()); }
+            set { _manequins = value; }
+        }
+
+        private ICollection<Session> _sessions;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Session> Sessions
+        {
+            get { return _sessions ?? (_sessions = new List<Session>()); }
+            set { _sessions = value; }
+        }
     }
 }
+
