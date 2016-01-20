@@ -11,14 +11,13 @@ namespace SM.DataAccess
         [Key]
         public int Id { get; set; }
 
-        [Column(TypeName = "date")]
-        public DateTime Date { get; set; }
+        public DateTime StartTime { get; set; }
 
         public int DepartmentId { get; set; }
 
         public int? OutreachingDepartmentId { get; set; }
 
-        public byte FacultyRequired { get; set; }
+        public byte FacultyNoRequired { get; set; }
 
         [StringLength(256)]
         public string ParticipantVideoFilename { get; set; }

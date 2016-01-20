@@ -1,14 +1,19 @@
 namespace SM.DataAccess
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
 
     public partial class MedSimDbContext : DbContext
     {
+        private string[] 
+
         public MedSimDbContext()
             : base("name=MedSimData")
+        {
+        }
+
+        static MedSimDbContext()
         {
             Database.SetInitializer<MedSimDbContext>(new InitialiseMedSim());
         }
@@ -30,8 +35,17 @@ namespace SM.DataAccess
         public virtual DbSet<SessionResource> SessionResourses { get; set; }
         public virtual DbSet<SessionType> SessionTypes { get; set; }
 
+        private SanitizeStringProperties _sanitizeHtml { get; set; }
+        private SanitizeStringProperties SanitizeHtml
+        {
+            get { return _sanitizeHtml ?? (_sanitizeHtml = new SanitizeStringProperties()); }
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
+
             modelBuilder.Entity<Participant>()
                 .HasMany(e => e.InstructorCourses)
                 .WithRequired(e => e.Participant)
@@ -100,6 +114,12 @@ namespace SM.DataAccess
                 .HasMany(e => e.Sessions)
                 .WithRequired(e => e.SessionType)
                 .WillCascadeOnDelete(false);
+        }
+
+        public override int SaveChanges()
+        {
+            SanitizeHtml.ForEntities(ChangeTracker);
+            return base.SaveChanges();
         }
     }
 }

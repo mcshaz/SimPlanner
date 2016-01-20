@@ -79,6 +79,7 @@
     <Compile Include="InitialiseMedSim.cs" />
     <Compile Include="MedSimDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SanitizeStringProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SM.DataAccess
 {
-    class InitialiseMedSim : DropCreateDatabaseAlways<MedSimDbContext>
+    class InitialiseMedSim : DropCreateDatabaseIfModelChanges<MedSimDbContext>
     {
         protected override void Seed(MedSimDbContext context)
         {

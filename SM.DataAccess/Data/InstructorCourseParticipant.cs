@@ -21,6 +21,8 @@ namespace SM.DataAccess
 
         public bool WaitListed { get; set; }
 
+        public bool Confirmed { get; set; }
+
         public virtual Participant Participant { get; set; }
 
         public virtual InstructorCourse InstructorCourse { get; set; }
