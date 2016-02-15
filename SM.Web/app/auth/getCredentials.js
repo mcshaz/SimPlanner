@@ -2,9 +2,9 @@
     'use strict';
     var controllerId = 'getCredentials';
     angular.module('app')
-            .controller(controllerId, ['$scope', 'tokenFactory', 'common', 'ngAuthSettings', '$location', '$window', getCredentials]);
+            .controller(controllerId, ['$scope', 'loginFactory', 'common', 'ngAuthSettings', '$location', '$window', getCredentials]);
 
-    function getCredentials($scope, tokenFactory, common, ngAuthSettings, $location, $window) {
+    function getCredentials($scope, loginFactory, common, ngAuthSettings, $location, $window) {
         var vm = this;
         var getLogFn = common.logger.getLogFn;
         var log = getLogFn(controllerId);
@@ -18,11 +18,11 @@
 
         vm.login = function (credentials) {
             vm.errors = '';
-            tokenFactory.login(credentials).then(function (user) {
+            loginFactory.login(credentials).then(function (user) {
                 log("logged in as " + user.fullName,user,true)
             }, function (response) {
                 if (!response.data || !response.data.error_description) {
-                    getLogFn(controllerId,'error')("unhandled data returned after attempted login", angular.toJson(response), true);
+                    getLogFn(controllerId,'error')("unhandled data returned after attempted login", response, true);
                 }
                 vm.errors = response.data.error_description;
             });
@@ -40,7 +40,7 @@
 
         $scope.authCompletedCB = function (fragment) {
             $scope.$apply(function () {
-                tokenFactory.registerExternal(fragment);
+                loginFactory.registerExternal(fragment);
                 log("logged in as " + fragment.fullName, fragment, true)
                 if (fragment.fullName) {
                     $location.path('/dashBoard');

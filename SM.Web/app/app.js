@@ -29,7 +29,7 @@
             forbidden: 'event:auth-forbidden',
             loginRequired: 'event:auth-loginRequired',
             loginConfirmed: 'event:auth-loginConfirmed',
-            loginCanceled: 'event:auth-loginCancelled' 
+            loginCancelled: 'event:auth-loginCancelled'
         })
         .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
             localStorageServiceProvider

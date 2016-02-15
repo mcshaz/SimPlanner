@@ -52,6 +52,9 @@
         function logIt(message, data, source, showToast, toastType) {
             var write = (toastType === 'error') ? $log.error : $log.log;
             source = source ? '[' + source + '] ' : '';
+            if (typeof data !== 'string') {
+                data = angular.toJson(data);
+            }
             write(source, message, data);
             if (showToast) {
                 if (toastType === 'error') {

@@ -222,11 +222,11 @@
     <Content Include="app\admin\admin.html" />
     <Content Include="app\admin\admin.js" />
     <Content Include="app\app.js" />
-    <Content Include="app\auth\setupAuth.js" />
+    <Content Include="app\auth\tokenStorageService.js" />
     <Content Include="app\auth\getCredentials.html" />
     <Content Include="app\auth\getCredentials.js" />
     <Content Include="app\auth\loginWidget.js" />
-    <Content Include="app\auth\tokenFactory.js" />
+    <Content Include="app\auth\loginFactory.js" />
     <Content Include="app\common\bootstrap\bootstrap.dialog.js" />
     <Content Include="app\common\common.js" />
     <Content Include="app\common\logger.js" />
