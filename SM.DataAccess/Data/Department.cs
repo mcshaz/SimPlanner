@@ -22,15 +22,48 @@ namespace SM.DataAccess
         [StringLength(256)]
         public string CertificateFilename { get; set; }
 
+		ICollection<CourseType> _courseTypes; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Participant> Participants { get; set; }
+        public virtual ICollection<CourseType> CourseTypes
+		{
+			get
+			{
+				return _courseTypes ?? (_courseTypes = new List<CourseType>());
+			}
+			set
+			{
+				_courseTypes = value;
+			}
+		}
 
-        public virtual Hospital Hospital { get; set; }
+        public virtual Institution Hospital { get; set; }
 
+		ICollection<Manequin> _manequins; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Manequin> Manequins { get; set; }
+        public virtual ICollection<Manequin> Manequins
+		{
+			get
+			{
+				return _manequins ?? (_manequins = new List<Manequin>());
+			}
+			set
+			{
+				_manequins = value;
+			}
+		}
 
+		ICollection<Course> _courses; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Session> Sessions { get; set; }
+        public virtual ICollection<Course> Courses
+		{
+			get
+			{
+				return _courses ?? (_courses = new List<Course>());
+			}
+			set
+			{
+				_courses = value;
+			}
+		}
     }
 }

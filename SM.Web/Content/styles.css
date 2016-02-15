@@ -393,6 +393,19 @@ a {
 }
 
 /*#endregion*/
+/*#region mystyles*/
+.btn-google-plus,.btn-facebook,.btn-linkedin,.btn-twitter {
+    margin-bottom:4px;
+}
+.login-widget, .login-widget .btn-link {
+    font-size:18px;
+    color:#ffffff;
+    margin-top:5px;
+}
+.error {
+    color:#FF0000;
+}
+/*#endregion*/
 
 /*#region Angular ng-show dissolve animation */
 .dissolve-animation.ng-hide-remove {

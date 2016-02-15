@@ -16,10 +16,32 @@ namespace SM.DataAccess
 
         public ProfessionalCategory Category { get; set; }
 
+		ICollection<Participant> _participants; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Participant> Participants { get; set; }
+        public virtual ICollection<Participant> Participants
+		{
+			get
+			{
+				return _participants ?? (_participants = new List<Participant>());
+			}
+			set
+			{
+				_participants = value;
+			}
+		}
 
+		ICollection<Country> _countries; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Country> Countries { get; set; }
+        public virtual ICollection<Country> Countries
+		{
+			get
+			{
+				return _countries ?? (_countries = new List<Country>());
+			}
+			set
+			{
+				_countries = value;
+			}
+		}
     }
 }

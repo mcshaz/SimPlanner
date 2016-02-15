@@ -40,7 +40,7 @@
             createSearchThrottle: createSearchThrottle,
             debouncedThrottle: debouncedThrottle,
             isNumber: isNumber,
-            logger: logger, // for aSMessibility
+            logger: logger, // for accessibility
             textContains: textContains
         };
 

@@ -6,7 +6,7 @@
     var app = angular.module('app');
 
     // Configure by setting an optional string value for appErrorPrefix.
-    // ASMessible via config.appErrorPrefix (via config value).
+    // Accessible via config.appErrorPrefix (via config value).
 
     app.config(['$provide', function ($provide) {
         $provide.decorator('$exceptionHandler',

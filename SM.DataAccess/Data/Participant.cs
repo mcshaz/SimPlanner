@@ -1,46 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace SM.DataAccess
 {
-    //todo map 
-    //ApplicationUser : IdentityUser<int>
-    // Add profile data for application users by adding properties to the ApplicationUser class
-    [Table("AspNetUsers")]
-    public class Participant 
+    public class Participant : IdentityUser<Guid,AspNetUserLogin,AspNetUserRole,AspNetUserClaim>
     {
-        [Key]
-        public int Id { get; set; }
 
-        [Required]
-        [StringLength(256)]
-        public string Name { get; set; }
+        public override string Email
+        {
+            get
+            {
+                return base.Email;
+            }
 
-        [Required, EmailAddress]
-        [StringLength(256)]
-        public string Email { get; set; }
-
+            set
+            {
+                base.Email = value;
+                if (string.IsNullOrEmpty(base.UserName))
+                {
+                    base.UserName = value;
+                }
+            }
+        }
         [EmailAddress]
         [StringLength(256)]
-        public string SecondaryEmail { get; set; }
+        public string AlternateEmail { get; set; }
 
+        public string FullName { get; set; }
 
-        [DataType(DataType.PhoneNumber)]
-        public string PhoneNumber { get; set; }
+        public int? DefaultDepartmentId { get; set; }
 
-        public int DefaultDepartmentId { get; set; }
-
-        public int DefaultProfessionalRoleId { get; set; }
+        public int? DefaultProfessionalRoleId { get; set; }
 
         public virtual Department Department { get; set; }
 
         public virtual ProfessionalRole ProfessionalRole { get; set; }
 
+		ICollection<CourseParticipant> _sessionParticipants; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InstructorCourseParticipant> InstructorCourses { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SessionParticipant> SessionParticipants { get; set; }
+        public virtual ICollection<CourseParticipant> SessionParticipants
+		{
+			get
+			{
+				return _sessionParticipants ?? (_sessionParticipants = new List<CourseParticipant>());
+			}
+			set
+			{
+				_sessionParticipants = value;
+			}
+		}
     }
 }

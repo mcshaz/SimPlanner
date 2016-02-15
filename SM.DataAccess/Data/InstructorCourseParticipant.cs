@@ -12,7 +12,7 @@ namespace SM.DataAccess
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ParticipantId { get; set; }
+        public Guid ParticipantId { get; set; }
 
         [Key]
         [Column(Order = 1)]

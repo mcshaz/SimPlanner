@@ -17,7 +17,7 @@
         function getLogFn(moduleId, fnName) {
             fnName = fnName || 'log';
             switch (fnName.toLowerCase()) { // convert aliases
-                case 'Success':
+                case 'success':
                     fnName = 'logSuccess'; break;
                 case 'error':
                     fnName = 'logError'; break;
@@ -42,7 +42,7 @@
         }
 
         function logSuccess(message, data, source, showToast) {
-            logIt(message, data, source, showToast, 'Success');
+            logIt(message, data, source, showToast, 'success');
         }
 
         function logError(message, data, source, showToast) {
@@ -58,8 +58,8 @@
                     toastr.error(message);
                 } else if (toastType === 'warning') {
                     toastr.warning(message);
-                } else if (toastType === 'Success') {
-                    toastr.Success(message);
+                } else if (toastType === 'success') {
+                    toastr.success(message);
                 } else {
                     toastr.info(message);
                 }

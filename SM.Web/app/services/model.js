@@ -11,7 +11,7 @@
         var nullosExist = false;
 
         var entityNames = {
-            participant: 'AspNetUser',
+            participant: 'Participant',
             country: 'Country',
             department: 'Department',
             sessionRoleType: 'SessionRoleType',

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using Ganss.XSS;
 namespace SM.DataAccess
@@ -26,7 +21,11 @@ namespace SM.DataAccess
                     {
                         if (p.PropertyType == typeof(string))
                         {
-                            p.SetValue(e,Sanitizer.Sanitize((string)p.GetValue(e)));
+                            string val = (string)p.GetValue(e.Entity);
+                            if (!string.IsNullOrWhiteSpace(val))
+                            {
+                                p.SetValue(e.Entity, Sanitizer.Sanitize(val));
+                            }
                         }
                     }
                 }

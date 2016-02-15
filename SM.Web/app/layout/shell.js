@@ -7,7 +7,7 @@
 
     function shell($rootScope, common, config) {
         var vm = this;
-        var logSuccess = common.logger.getLogFn(controllerId, 'Success');
+        var logSuccess = common.logger.getLogFn(controllerId, 'success');
         var events = config.events;
         vm.busyMessage = 'Please wait ...';
         vm.isBusy = true;
@@ -25,7 +25,7 @@
         activate();
 
         function activate() {
-            logSuccess('SimManager loaded!', null, true);
+            logSuccess('Hot Towel Angular loaded!', null, true);
             common.activateController([], controllerId);
         }
 

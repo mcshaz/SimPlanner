@@ -1,8 +1,8 @@
 using System.Web.Http;
 
-[assembly: WebActivator.PreApplicationStartMethod(
-    typeof(SimManager.App_Start.BreezeWebApiConfig), "RegisterBreezePreStart")]
-namespace SimManager.App_Start {
+[assembly: WebActivatorEx.PreApplicationStartMethod(
+    typeof(SM.Web.App_Start.BreezeWebApiConfig), "RegisterBreezePreStart")]
+namespace SM.Web.App_Start {
   ///<summary>
   /// Inserts the Breeze Web API controller route at the front of all Web API routes
   ///</summary>

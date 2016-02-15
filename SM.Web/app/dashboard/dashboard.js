@@ -9,8 +9,8 @@
 
         var vm = this;
         vm.news = {
-            title: 'Simulation Manager',
-            description: 'Plan and manage all the simulation based courses for your institution.'
+            title: 'Hot Towel Angular',
+            description: 'Hot Towel Angular is a SPA template for Angular developers.'
         };
         vm.messageCount = 0;
         vm.people = [];

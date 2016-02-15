@@ -5,7 +5,7 @@
 
     app.directive('ccImgPerson', ['config', function (config) {
         //Usage:
-        //<img data-sm-img-person="{{s.speaker.imageSource}}"/>
+        //<img data-cc-img-person="{{s.speaker.imageSource}}"/>
         var basePath = config.imageSettings.imageBasePath;
         var unknownImage = config.imageSettings.unknownPersonImageSource;
         var directive = {
@@ -23,12 +23,12 @@
     }]);
 
 
-    app.directive('smSidebar', function () {
+    app.directive('ccSidebar', function () {
         // Opens and clsoes the sidebar menu.
         // Usage:
-        //  <div data-sm-sidebar>
+        //  <div data-cc-sidebar>
         // Creates:
-        //  <div data-sm-sidebar class="sidebar">
+        //  <div data-cc-sidebar class="sidebar">
         var directive = {
             link: link,
             restrict: 'A'
@@ -62,11 +62,11 @@
     });
 
 
-    app.directive('smWidgetClose', function () {
+    app.directive('ccWidgetClose', function () {
         // Usage:
-        // <a data-sm-widget-close></a>
+        // <a data-cc-widget-close></a>
         // Creates:
-        // <a data-sm-widget-close="" href="#" class="wclose">
+        // <a data-cc-widget-close="" href="#" class="wclose">
         //     <i class="fa fa-remove"></i>
         // </a>
         var directive = {
@@ -88,11 +88,11 @@
         }
     });
 
-    app.directive('smWidgetMinimize', function () {
+    app.directive('ccWidgetMinimize', function () {
         // Usage:
-        // <a data-sm-widget-minimize></a>
+        // <a data-cc-widget-minimize></a>
         // Creates:
-        // <a data-sm-widget-minimize="" href="#"><i class="fa fa-chevron-up"></i></a>
+        // <a data-cc-widget-minimize="" href="#"><i class="fa fa-chevron-up"></i></a>
         var directive = {
             link: link,
             template: '<i class="fa fa-chevron-up"></i>',
@@ -122,11 +122,11 @@
         }
     });
 
-    app.directive('smScrollToTop', ['$window',
+    app.directive('ccScrollToTop', ['$window',
         // Usage:
-        // <span data-sm-scroll-to-top></span>
+        // <span data-cc-scroll-to-top></span>
         // Creates:
-        // <span data-sm-scroll-to-top="" class="totop">
+        // <span data-cc-scroll-to-top="" class="totop">
         //      <a href="#"><i class="fa fa-chevron-up"></i></a>
         // </span>
         function ($window) {
@@ -156,11 +156,11 @@
         }
     ]);
 
-    app.directive('smSpinner', ['$window', function ($window) {
+    app.directive('ccSpinner', ['$window', function ($window) {
         // Description:
         //  Creates a new Spinner and sets its options
         // Usage:
-        //  <div data-sm-spinner="vm.spinnerOptions"></div>
+        //  <div data-cc-spinner="vm.spinnerOptions"></div>
         var directive = {
             link: link,
             restrict: 'A'
@@ -169,7 +169,7 @@
 
         function link(scope, element, attrs) {
             scope.spinner = null;
-            scope.$watch(attrs.SMSpinner, function (options) {
+            scope.$watch(attrs.ccSpinner, function (options) {
                 if (scope.spinner) {
                     scope.spinner.stop();
                 }
@@ -179,9 +179,9 @@
         }
     }]);
 
-    app.directive('smWidgetHeader', function() {
+    app.directive('ccWidgetHeader', function() {
         //Usage:
-        //<div data-sm-widget-header title="vm.map.title"></div>
+        //<div data-cc-widget-header title="vm.map.title"></div>
         var directive = {
             link: link,
             scope: {

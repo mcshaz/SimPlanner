@@ -21,28 +21,22 @@ namespace SM.Web.Controllers
             return _repository.Metadata();
         }
 
-        [HttpPost, CheckCsrfHeader]
+        [HttpPost]
         public SaveResult SaveChanges(JObject saveBundle)
         {
             return _repository.SaveChanges(saveBundle);
         }
 
         [HttpGet]
-		public IQueryable<Participant> Participants(){ return _repository.Context.Participants; } 
+		public IQueryable<Participant> Participants(){ return _repository.Context.Users; } 
         [HttpGet]
 		public IQueryable<Country> Countries(){ return _repository.Context.Countries; } 
         [HttpGet]
 		public IQueryable<Department> Departments(){ return _repository.Context.Departments; } 
         [HttpGet]
-		public IQueryable<SessionRoleType> SessionRoles(){ return _repository.Context.SessionRoles; } 
+		public IQueryable<ScenarioRoleDescription> SenarioRoles(){ return _repository.Context.SenarioRoles; } 
         [HttpGet]
-		public IQueryable<ScenarioRoleType> SenarioRoles(){ return _repository.Context.SenarioRoles; } 
-        [HttpGet]
-		public IQueryable<Hospital> Hospitals(){ return _repository.Context.Hospitals; } 
-        [HttpGet]
-		public IQueryable<InstructorCourse> InstructorCourses(){ return _repository.Context.InstructorCourses; } 
-        [HttpGet]
-		public IQueryable<InstructorCourseParticipant> InstructorCourseParticipants(){ return _repository.Context.InstructorCourseParticipants; } 
+		public IQueryable<Institution> Hospitals(){ return _repository.Context.Hospitals; } 
         [HttpGet]
 		public IQueryable<Manequin> Manequins(){ return _repository.Context.Manequins; } 
         [HttpGet]
@@ -52,13 +46,9 @@ namespace SM.Web.Controllers
         [HttpGet]
 		public IQueryable<ScenarioResource> ScenarioResources(){ return _repository.Context.ScenarioResources; } 
         [HttpGet]
-		public IQueryable<Session> Sessions(){ return _repository.Context.Sessions; } 
+		public IQueryable<Course> Sessions(){ return _repository.Context.Courses; } 
         [HttpGet]
-		public IQueryable<SessionParticipant> SessionParticipants(){ return _repository.Context.SessionParticipants; } 
-        [HttpGet]
-		public IQueryable<SessionResource> SessionResourses(){ return _repository.Context.SessionResourses; } 
-        [HttpGet]
-		public IQueryable<SessionType> SessionTypes(){ return _repository.Context.SessionTypes; } 
+		public IQueryable<CourseType> SessionTypes(){ return _repository.Context.CourseTypes; } 
 
         // Diagnostic
         [HttpGet]
