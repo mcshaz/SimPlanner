@@ -2,33 +2,66 @@
     <section class="matter">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <ul class="today-datas">
-                        <li class="blightblue">
-                            <div class="pull-left"><i class="fa fa-plane"></i></div>
-                            <div class="datas-text pull-right">
-                                <span class="bold">May 18 - 19, 2015</span> Castle Resort, Neverland
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <h4>
+                                    Your Next Upcoming Course:
+                                </h4>
+                                <ul class="list-unstyled">
+                                    <li><span class="fa fa-calendar-check-o">{{vm.nextCourse.Date}}</span></li>
+                                    <li><span class="fa fa-university">{{vm.nextCourse.Institution}} {{vm.nextCourse.Department}}</span></li>
+                                </ul>
                             </div>
-                            <div class="clearfix"></div>
-                        </li>
-
-                        <li class="borange">
-                            <div class="pull-left"><i class="fa fa-envelope"></i></div>
-                            <div class="datas-text pull-right">
-                                <span class="bold">{{vm.messageCount}}</span> Messages
-                            </div>
-                            <div class="clearfix"></div>
-                        </li>
-
-                    </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="panel panel-success">
+                        <div class="panel-heading clickable collapsed" data-toggle="collapse" data-target="#about">
+                            <h4 class="panel-title">
+                                About Simulation Manager<span class="chevron"></span>
+                            </h4>
+                        </div>
+                        <div id="about" class="panel-body panel-collapse collapse">
+                            Simulation Manager is a tool originally designed by and for the Starship Hospital Simulation Program to simplify
+                            organising medical simulation courses and keeping track of institution wide data, including:
+                            <ul>
+                                <li>Faculty and participants attending a course <br/><small class="small">(including auto-notification and tracking <span class="fa fa-mail-reply"> reply confirmation</span> by <span class="fa fa-envelope-o"> email</span> ± <span class="fa fa-mobile"> text message</span>)</small></li>
+                                <li>Developing course timetables</li>
+                                <li>Which scenarios are to be run during a course <br/>
+                                    <small class="small">
+                                        And checking which scenarios participants have previously completed, to avoid repeating scenarios
+                                    </small>
+                                </li>
+                                <li>Faculty member roles - including lectures, activities and scenario roles (e.g. debriefing, sim director)</li>
+                                <li>Producing annual reports of simulation activity, as a whole institution and by department</li>
+                                <li>Track total hours simulation time (and thereby lifespan) for each manequin</li>
+                            </ul>
+                            It is free to use for institutions such as hospitals and universities
+                            <small class="small">(a small fee may be charged per text messaging reminder if you choose to use the text messaging service)</small>.
+                        </div>
+                        <div class="panel-footer">
+                            <ul>
+                                <li>
+                                    Any ideas or comments? Please <a href="#" class="fa fa-link"> let us know</a> so we can make SimManager better
+                                </li>
+                                <li>
+                                    <a class="fa fa-graduation-cap" href="#">Click here</a> to learn how to use SimManager
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="widget wviolet">
-                        <div data-cc-widget-header title="People"
-                             allow-collapse="true"></div>
-                        <div class="widget-content text-center text-info">
+                    <div class="panel panel-info">
+                        <div class="panel-heading clickable"  data-toggle="collapse" data-target="#priorCourses">
+                            <h4 class="panel-title">Your Prior Courses<span class="chevron"></span></h4>
+                        </div>
+                        <div id="priorCourses" class="panel-body panel-collapse collapse in">
                             <table class="table table-condensed table-striped">
                                 <thead>
                                     <tr>
@@ -48,24 +81,26 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="widget-foot">
+                        <div class="panel-footer">
                             <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="widget wgreen">
-                        <div data-cc-widget-header title="{{vm.news.title}}"
-                             allow-collapse="true"></div>
-                        <div class="widget-content text-center text-info">
-                            <small>{{vm.news.description}}</small>
+                    <div class="panel panel-warning">
+                        <div class="panel-heading clickable" data-toggle="collapse" data-target="#upcomingCourses">
+                            <h4 class="panel-title">
+                                Upcoming Courses @ Your Institution<span class="chevron"></span>
+                            </h4>
                         </div>
-                        <div class="widget-foot">
+                        <div id="upcomingCourses" class="panel-body panel-collapse collapse in">
+                        </div>
+                        <div class="panel-footer">
                             <div class="clearfix"></div>
+                        </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     </section>
 </section>

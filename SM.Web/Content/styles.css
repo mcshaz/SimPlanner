@@ -405,6 +405,24 @@ a {
 .error {
     color:#FF0000;
 }
+.panel-heading .btn-link, .panel-heading h4 {
+    color:inherit;
+}
+
+.panel-heading .chevron:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e113";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color:inherit;
+}
+.panel-heading.collapsed .chevron:after {
+    /* symbol for "collapsed" panels */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+}
+.clickable:hover {
+    cursor: pointer;
+}
 /*#endregion*/
 
 /*#region Angular ng-show dissolve animation */

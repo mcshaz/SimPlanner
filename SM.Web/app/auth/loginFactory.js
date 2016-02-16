@@ -51,17 +51,6 @@
             }
         };
 
-	
-	    //check if the user is authorized to access the next route
-	    //this function can be also used on element level
-	    //e.g. <p ng-if="isAuthorized(authorizedRoles)">show this only to admins</p>
-	    function isAuthorized(authorizedRoles) {
-	        if (!angular.isArray(authorizedRoles)) {
-	            authorizedRoles = [authorizedRoles];
-	        }
-	        /* return (isAuthenticated() && authorizedRoles.some(function(el) { **roles.indexOf(el) !== -1 })); */
-	    };
-
 	    function registerExternal(registerExternalData) {
 	        authService.loginConfirmed(registerExternalData);
 	    };

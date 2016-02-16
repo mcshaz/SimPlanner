@@ -252,6 +252,8 @@
     <Content Include="app\auth\authComplete.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.cosmo.css" />
+    <Content Include="Content\bootstrap.cosmo.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\breeze.directives.css" />
@@ -262,6 +264,7 @@
     <Content Include="Content\images\AngularJS-small.png" />
     <Content Include="Content\images\breezelogo.png" />
     <Content Include="Content\images\icon.png" />
+    <Content Include="Content\images\logo-starship.png" />
     <Content Include="Content\social-buttons.css" />
     <Content Include="Content\styles.css" />
     <Content Include="Content\toastr.css" />
