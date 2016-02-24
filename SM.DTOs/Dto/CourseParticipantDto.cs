@@ -1,8 +1,6 @@
-using SM.DataAccess;
 using SM.DataAccess.Metadata;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 namespace SM.Dto
 {
     [MetadataType(typeof(CourseParticipantMetadata))]
@@ -17,28 +15,5 @@ namespace SM.Dto
         public ParticipantDto Participant { get; set; }
         public CourseDto Course { get; set; }
 
-        internal static Func<CourseParticipantDto, CourseParticipant> mapToRepo = m => new CourseParticipant
-        {
-            ParticipantId = m.ParticipantId,
-            CourseId = m.CourseId,
-            IsConfirmed = m.IsConfirmed,
-            IsFaculty = m.IsFaculty,
-            DepartmentId = m.DepartmentId,
-            ProfessionalRoleId = m.ProfessionalRoleId
-            //Participant = m.Participant,
-            //Course = m.Course
-        };
-
-        internal static Expression<Func<CourseParticipant, CourseParticipantDto>> mapFromRepo= m => new CourseParticipantDto
-        {
-            ParticipantId = m.ParticipantId,
-            CourseId = m.CourseId,
-            IsConfirmed = m.IsConfirmed,
-            IsFaculty = m.IsFaculty,
-            DepartmentId = m.DepartmentId,
-            ProfessionalRoleId = m.ProfessionalRoleId
-            //Participant = m.Participant,
-            //Course = m.Course
-        };
     }
 }

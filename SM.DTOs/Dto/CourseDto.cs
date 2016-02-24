@@ -1,9 +1,7 @@
-using SM.DataAccess;
 using SM.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 
 namespace SM.Dto
 {
@@ -25,40 +23,5 @@ namespace SM.Dto
         public ICollection<ScenarioDto> Scenarios { get; set; }
         public ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
 
-        internal static Func<CourseDto, Course> mapToRepo = m => new Course
-        {
-            Id = m.Id,
-            StartTime = m.StartTime,
-            DepartmentId = m.DepartmentId,
-            OutreachingDepartmentId = m.OutreachingDepartmentId,
-            FacultyNoRequired = m.FacultyNoRequired,
-            ParticipantVideoFilename = m.ParticipantVideoFilename,
-            FeedbackSummaryFilename = m.FeedbackSummaryFilename,
-            CourseTypeId = m.CourseTypeId,
-        };
-
-        internal static Expression<Func<Course, CourseDto>> mapFromRepo= m => new CourseDto
-        {
-            Id = m.Id,
-            StartTime = m.StartTime,
-            DepartmentId = m.DepartmentId,
-            OutreachingDepartmentId = m.OutreachingDepartmentId,
-            FacultyNoRequired = m.FacultyNoRequired,
-            ParticipantVideoFilename = m.ParticipantVideoFilename,
-            FeedbackSummaryFilename = m.FeedbackSummaryFilename,
-            CourseTypeId = m.CourseTypeId,
-
-            //Department = m.Department,
-
-            //OutreachingDepartment = m.OutreachingDepartment,
-
-            //CourseType = m.CourseType,
-
-            //CourseParticipants = m.CourseParticipants,
-
-            //Scenarios = m.Scenarios,
-
-            //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-        };
     }
 }

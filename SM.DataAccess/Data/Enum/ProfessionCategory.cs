@@ -1,6 +1,4 @@
-﻿
-
-namespace SM.DataAccess
+﻿namespace SM.DataAccess.Enums
 {
     public enum ProfessionalCategory
     {

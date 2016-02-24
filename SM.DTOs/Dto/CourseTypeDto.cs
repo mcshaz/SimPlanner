@@ -1,9 +1,8 @@
-using SM.DataAccess;
+using SM.DataAccess.Enums;
 using SM.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 namespace SM.Dto
 {
     [MetadataType(typeof(CourseTypeMetadata))]
@@ -20,40 +19,6 @@ namespace SM.Dto
         public ICollection<CourseDto> Courses { get; set; }
         public ICollection<CourseSlotDto> CourseEvents { get; set; }
         public ICollection<ScenarioSlotDto> ScenarioEvents { get; set; }
-        public ICollection<ScenarioRoleDescription> ScenarioRoles { get; set; }
-
-
-        internal static Func<CourseTypeDto, CourseType> mapToRepo = m => new CourseType
-        {
-            Id = m.Id,
-            Description = m.Description,
-            IsInstructorCourse = m.IsInstructorCourse,
-            DaysDuration = m.DaysDuration,
-            EmersionCategory = m.EmersionCategory,
-            Abbrev = m.Abbrev
-        };
-
-
-        internal static Expression<Func<CourseType, CourseTypeDto>> mapFromRepo= m => new CourseTypeDto
-        {
-            Id = m.Id,
-            Description = m.Description,
-            IsInstructorCourse = m.IsInstructorCourse,
-            DaysDuration = m.DaysDuration,
-            EmersionCategory = m.EmersionCategory,
-            Abbrev = m.Abbrev
-
-            //Departments = m.Departments,
-
-            //Scenarios = m.Scenarios,
-
-            //Courses = m.Courses,
-
-            //CourseEvents = m.CourseEvents,
-
-            //ScenarioEvents = m.ScenarioEvents,
-
-            //ScenarioRoles = m.ScenarioRoles
-        };
+        public ICollection<ScenarioRoleDescriptionDto> ScenarioRoles { get; set; }
     }
 }

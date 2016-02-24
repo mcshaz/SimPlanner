@@ -35,6 +35,21 @@ namespace SM.DataAccess
         public virtual DbSet<CourseSlotPresenter> CourseSlotPresenters { get; set; }
         public virtual DbSet<ScenarioFacultyRole> ScenarioFacultyRoles { get; set; }
 
+        #region overrides //overriding to allow access without referencing aspnet.identity.entityframework assembly
+        public override IDbSet<Participant> Users
+        {
+            get
+            {
+                return base.Users;
+            }
+
+            set
+            {
+                base.Users = value;
+            }
+        }
+        #endregion //ovrerides
+
 
         public static MedSimDbContext Create()
         {

@@ -1,5 +1,6 @@
 namespace SM.DataAccess
 {
+    using Enums;
     using SM.Metadata;
     using System;
     using System.Collections.Generic;

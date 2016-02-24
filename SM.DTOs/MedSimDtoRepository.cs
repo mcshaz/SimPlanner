@@ -2,6 +2,7 @@
 using Breeze.ContextProvider.EF6;
 using Newtonsoft.Json.Linq;
 using SM.DataAccess;
+using SM.DTOs.Maps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,41 +62,41 @@ namespace SM.Dto
             {
                 if (UserRoles.Contains(RoleConstants.AccessAllData))
                 {
-                    return Context.Institutions.Select(InstitutionDto.mapFromRepo);
+                    return Context.Institutions.Select(InstitutionMaps.mapFromRepo);
                 }
                 //currently allowing users to view all departmetns within their institution - but only edit thseir department
                 return Context.Institutions
                     .Where(i => i.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)))
-                    .Select(InstitutionDto.mapFromRepo);
+                    .Select(InstitutionMaps.mapFromRepo);
 
             }
         }
 
-        public IQueryable<ParticipantDto> Participants { get { return Context.Users.Select(ParticipantDto.mapFromRepo); } }
+        public IQueryable<ParticipantDto> Participants { get { return Context.Users.Select(ParticipantMaps.mapFromRepo); } }
 
-        public IQueryable<CountryDto> Countries { get { return Context.Countries.Select(CountryDto.mapFromRepo); } }
+        public IQueryable<CountryDto> Countries { get { return Context.Countries.Select(CountryMaps.mapFromRepo); } }
 
-        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.Select(DepartmentDto.mapFromRepo); } }
+        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.Select(DepartmentMaps.mapFromRepo); } }
 
-        public IQueryable<ScenarioRoleDescriptionDto> SenarioRoles { get { return Context.SenarioRoles.Select(ScenarioRoleDescriptionDto.mapFromRepo); } }
+        public IQueryable<ScenarioRoleDescriptionDto> SenarioRoles { get { return Context.SenarioRoles.Select(ScenarioRoleDescriptionMaps.mapFromRepo); } }
 
-        public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.Select(InstitutionDto.mapFromRepo); } }
+        public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.Select(InstitutionMaps.mapFromRepo); } }
 
-        public IQueryable<ManequinDto> Manequins { get { return Context.Manequins.Select(ManequinDto.mapFromRepo); } }
+        public IQueryable<ManequinDto> Manequins { get { return Context.Manequins.Select(ManequinMaps.mapFromRepo); } }
 
-        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.Select(ProfessionalRoleDto.mapFromRepo); } }
+        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.Select(ProfessionalRoleMaps.mapFromRepo); } }
 
-        public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.Select(ScenarioDto.mapFromRepo); } }
+        public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.Select(ScenarioMaps.mapFromRepo); } }
 
-        public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.Select(ScenarioResourceDto.mapFromRepo); } }
+        public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.Select(ScenarioResourceMaps.mapFromRepo); } }
 
-        public IQueryable<CourseDto> Courses { get { return Context.Courses.Select(CourseDto.mapFromRepo); } }
+        public IQueryable<CourseDto> Courses { get { return Context.Courses.Select(CourseMaps.mapFromRepo); } }
 
         public IQueryable<CourseTypeDto> CourseTypes
         {
             get
             {
-                return Context.CourseTypes.Select(CourseTypeDto.mapFromRepo);
+                return Context.CourseTypes.Select(CourseTypeMaps.mapFromRepo);
             }
         }
 

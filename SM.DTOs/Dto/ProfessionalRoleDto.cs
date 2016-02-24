@@ -1,9 +1,8 @@
-using SM.DataAccess;
+using SM.DataAccess.Enums;
 using SM.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 namespace SM.Dto
 {
     [MetadataType(typeof(ProfessionalRoleMetadata))]
@@ -15,21 +14,5 @@ namespace SM.Dto
         public ICollection<ParticipantDto> Participants { get; set; }
         public ICollection<CountryDto> Countries { get; set; }
 
-        internal static Func<ProfessionalRoleDto, ProfessionalRole>  mapToRepo = m => new ProfessionalRole {
-            Id = m.Id,
-            Description = m.Description,
-            Category = m.Category,
-            //Participants = m.Participants,
-            //Countries = m.Countries
-        };
-
-        internal static Expression<Func<ProfessionalRole, ProfessionalRoleDto>> mapFromRepo= m => new ProfessionalRoleDto
-        {
-            Id = m.Id,
-            Description = m.Description,
-            Category = m.Category,
-            //Participants = m.Participants,
-            //Countries = m.Countries
-        };
     }
 }

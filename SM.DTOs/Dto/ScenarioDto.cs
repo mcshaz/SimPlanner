@@ -1,9 +1,8 @@
-using SM.DataAccess;
+using SM.DataAccess.Enums;
 using SM.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 namespace SM.Dto
 {
     [MetadataType(typeof(ScenarioMetadata))]
@@ -24,39 +23,5 @@ namespace SM.Dto
         public ICollection<ScenarioResourceDto> Resources { get; set; }
         public ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
 
-        internal static Func<ScenarioDto, Scenario>  mapToRepo = m => new Scenario {
-            Id = m.Id,
-            Description = m.Description,
-            DepartmentId = m.DepartmentId,
-            Complexity = m.Complexity,
-            EmersionCategory = m.EmersionCategory,
-            TemplateFilename = m.TemplateFilename,
-            ManequinId = m.ManequinId,
-            CourseTypeId = m.CourseTypeId,
-            //Manequin = m.Manequin,
-            //CourseType = m.CourseType,
-            //Department = m.Department,
-            //Courses = m.Courses,
-            //Resources = m.Resources,
-            //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-        };
-
-        internal static Expression<Func<Scenario, ScenarioDto>> mapFromRepo= m => new ScenarioDto
-        {
-            Id = m.Id,
-            Description = m.Description,
-            DepartmentId = m.DepartmentId,
-            Complexity = m.Complexity,
-            EmersionCategory = m.EmersionCategory,
-            TemplateFilename = m.TemplateFilename,
-            ManequinId = m.ManequinId,
-            CourseTypeId = m.CourseTypeId,
-            //Manequin = m.Manequin,
-            //CourseType = m.CourseType,
-            //Department = m.Department,
-            //Courses = m.Courses,
-            //Resources = m.Resources,
-            //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-        };
     }
 }
