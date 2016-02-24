@@ -1,24 +1,27 @@
 using System.Linq;
 using System.Web.Http;
-using Breeze.ContextProvider;
 using Breeze.WebApi2;
-using SM.DataAccess;
 using Newtonsoft.Json.Linq;
-using Breeze.ContextProvider.EF6;
+using Microsoft.AspNet.Identity;
+using System.Security.Claims;
+using System;
+using SM.Dto;
+using Breeze.ContextProvider;
 
 namespace SM.Web.Controllers
 {
     [BreezeController]
+    [Authorize]
     public class MedSimApiController : ApiController
     {
         // Todo: inject via an interface rather than "new" the concrete class
-        readonly EFContextProvider<MedSimDbContext> _repository = new EFContextProvider<MedSimDbContext>();
+        readonly MedSimDtoRepository _repository;
 
-        [HttpGet]
-        public string Metadata()
+        MedSimApiController() 
         {
-            //todo when database finalised - refactor to static file
-            return _repository.Metadata();
+            _repository = new MedSimDtoRepository(Guid.Parse(User.Identity.GetUserId()), () => ((ClaimsIdentity)User.Identity).Claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value));
         }
 
         [HttpPost]
@@ -28,32 +31,38 @@ namespace SM.Web.Controllers
         }
 
         [HttpGet]
-		public IQueryable<Participant> Participants(){ return _repository.Context.Users; } 
+		public IQueryable<ParticipantDto> Participants(){ return _repository.Participants; } 
         [HttpGet]
-		public IQueryable<Country> Countries(){ return _repository.Context.Countries; } 
+		public IQueryable<CountryDto> Countries(){ return _repository.Countries; } 
         [HttpGet]
-		public IQueryable<Department> Departments(){ return _repository.Context.Departments; } 
+		public IQueryable<DepartmentDto> Departments(){ return _repository.Departments; } 
         [HttpGet]
-		public IQueryable<ScenarioRoleDescription> SenarioRoles(){ return _repository.Context.SenarioRoles; } 
+		public IQueryable<ScenarioRoleDescriptionDto> SenarioRoles(){ return _repository.SenarioRoles; } 
         [HttpGet]
-		public IQueryable<Institution> Hospitals(){ return _repository.Context.Institutions; } 
+		public IQueryable<InstitutionDto> Hospitals(){ return _repository.Institutions; } 
         [HttpGet]
-		public IQueryable<Manequin> Manequins(){ return _repository.Context.Manequins; } 
+		public IQueryable<ManequinDto> Manequins(){ return _repository.Manequins; } 
         [HttpGet]
-		public IQueryable<ProfessionalRole> ProfessionalRoles(){ return _repository.Context.ProfessionalRoles; } 
+		public IQueryable<ProfessionalRoleDto> ProfessionalRoles(){ return _repository.ProfessionalRoles; } 
         [HttpGet]
-		public IQueryable<Scenario> Scenarios(){ return _repository.Context.Scenarios; } 
-        [HttpGet]
-		public IQueryable<ScenarioResource> ScenarioResources(){ return _repository.Context.ScenarioResources; } 
-        [HttpGet]
-		public IQueryable<Course> Courses()
+		public IQueryable<ScenarioDto> Scenarios()
         {
-            return _repository.Context.Courses;
+            return _repository.Scenarios;
         } 
         [HttpGet]
-		public IQueryable<CourseType> CourseTypes()
+		public IQueryable<ScenarioResourceDto> ScenarioResources()
         {
-            return _repository.Context.CourseTypes;
+            return _repository.ScenarioResources;
+        } 
+        [HttpGet]
+		public IQueryable<CourseDto> Courses()
+        {
+            return _repository.Courses;
+        } 
+        [HttpGet]
+		public IQueryable<CourseTypeDto> CourseTypes()
+        {
+            return _repository.CourseTypes;
         }
 
         [HttpGet]
@@ -61,10 +70,10 @@ namespace SM.Web.Controllers
         {
             return new LookupBundle
             {
-                CourseTypes = _repository.Context.CourseTypes.ToList(),
+                CourseTypes = _repository.CourseTypes.ToList(),
                 //TODO - get user institution (add DTO)
-                UserInstitution = _repository.Context.Institutions.Include("Departments").First(),
-                ProfessionalRoles = _repository.Context.ProfessionalRoles.ToList()
+                Institutions = _repository.Institutions.ToList(),
+                ProfessionalRoles = _repository.ProfessionalRoles.ToList()
             };
         }
         

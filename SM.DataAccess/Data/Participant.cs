@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity.EntityFramework;
+using SM.Metadata;
 
 namespace SM.DataAccess
 {
+    [MetadataType(typeof(ParticipantMetadata))]
     public class Participant : IdentityUser<Guid,AspNetUserLogin,AspNetUserRole,AspNetUserClaim>
     {
 
@@ -24,15 +26,13 @@ namespace SM.DataAccess
                 }
             }
         }
-        [EmailAddress]
-        [StringLength(256)]
         public string AlternateEmail { get; set; }
 
         public string FullName { get; set; }
 
-        public Guid? DefaultDepartmentId { get; set; }
+        public Guid DefaultDepartmentId { get; set; }
 
-        public Guid? DefaultProfessionalRoleId { get; set; }
+        public Guid DefaultProfessionalRoleId { get; set; }
 
         public virtual Department Department { get; set; }
 

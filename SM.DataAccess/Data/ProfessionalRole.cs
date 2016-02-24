@@ -1,19 +1,18 @@
 namespace SM.DataAccess
 {
+    using SM.Metadata;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("ProfessionalRole")]
-    public partial class ProfessionalRole
+    [MetadataType(typeof(ProfessionalRoleMetadata))]
+    public class ProfessionalRole
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
-        [Required]
-        [StringLength(50)]
         public string Description { get; set; }
 
         public ProfessionalCategory Category { get; set; }

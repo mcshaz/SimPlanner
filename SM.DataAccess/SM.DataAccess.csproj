@@ -99,7 +99,7 @@
     <Compile Include="Data\Enum\ProfessionCategory.cs" />
     <Compile Include="Data\Institution.cs" />
     <Compile Include="Data\Manequin.cs" />
-    <Compile Include="Data\ManequinManufacturers.cs" />
+    <Compile Include="Data\ManequinManufacturer.cs" />
     <Compile Include="Data\ProfessionalRole.cs" />
     <Compile Include="Data\Scenario.cs" />
     <Compile Include="Data\ScenarioRoleDescription.cs" />
@@ -112,6 +112,23 @@
     <Compile Include="Data\Slot.cs" />
     <Compile Include="InitialiseMedSim.cs" />
     <Compile Include="MedSimDbContext.cs" />
+    <Compile Include="Metadata\CountryMetadata.cs" />
+    <Compile Include="Metadata\CourseMetadata.cs" />
+    <Compile Include="Metadata\CourseParticipantMetadata.cs" />
+    <Compile Include="Metadata\CourseSlotMetadata.cs" />
+    <Compile Include="Metadata\CourseSlotPresenterMetadata.cs" />
+    <Compile Include="Metadata\CourseTypeMetadata.cs" />
+    <Compile Include="Metadata\DepartmentMetadata.cs" />
+    <Compile Include="Metadata\InstitutionMetadata.cs" />
+    <Compile Include="Metadata\ManequinManufacturerMetadata.cs" />
+    <Compile Include="Metadata\ManequinMetadata.cs" />
+    <Compile Include="Metadata\ParticipantMetadata.cs" />
+    <Compile Include="Metadata\ProfessionalRoleMetadata.cs" />
+    <Compile Include="Metadata\ResourceMetadata.cs" />
+    <Compile Include="Metadata\ScenarioFacultyRoleMetadata.cs" />
+    <Compile Include="Metadata\ScenarioMetadata.cs" />
+    <Compile Include="Metadata\ScenarioRoleDescriptionMetadata.cs" />
+    <Compile Include="Metadata\SlotMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SanitizeStringProperties.cs" />
   </ItemGroup>

@@ -1,27 +1,21 @@
 namespace SM.DataAccess
 {
+    using SM.Metadata;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Department")]
-    public partial class Department
+    [MetadataType(typeof(DepartmentMetadata))]
+    public class Department
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
-        [Required]
-        [StringLength(50)]
         public string Name { get; set; }
 
         public Guid InstitutionId { get; set; }
 
-        [StringLength(256)]
         public string InvitationLetterFilename { get; set; }
 
-        [StringLength(256)]
         public string CertificateFilename { get; set; }
 
 		ICollection<CourseType> _courseTypes; 
@@ -79,6 +73,20 @@ namespace SM.DataAccess
             set
             {
                 _scenrios = value;
+            }
+        }
+
+        ICollection<Participant> _participants;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Participant> Participants
+        {
+            get
+            {
+                return _participants ?? (_participants = new List<Participant>());
+            }
+            set
+            {
+                _participants = value;
             }
         }
     }

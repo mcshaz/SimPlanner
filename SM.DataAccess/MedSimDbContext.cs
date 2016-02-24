@@ -100,6 +100,11 @@ namespace SM.DataAccess
                 .WithMany(e=>e.Departments);
 
             modelBuilder.Entity<Department>()
+                .HasMany(e => e.Participants)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e=>e.DefaultDepartmentId);
+
+            modelBuilder.Entity<Department>()
                 .HasMany(e => e.Courses)
                 .WithOptional(e => e.OutreachingDepartment)
                 .HasForeignKey(e => e.OutreachingDepartmentId)

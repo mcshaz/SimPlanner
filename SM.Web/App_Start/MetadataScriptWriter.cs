@@ -1,5 +1,4 @@
-﻿using Breeze.ContextProvider.EF6;
-using SM.DataAccess;
+﻿using SM.Dto;
 using System.IO;
 using System.Web.Hosting;
 
@@ -12,7 +11,7 @@ namespace SM.Web.App_Start
         {
             //const string category = "MetadataScriptWriter";
             // get the metadata the same way we get it for the controller
-            string metadata = (new EFContextProvider<MedSimDbContext>()).Metadata();
+            string metadata = MedSimDtoRepository.GetMetadata();
             const string metadataPath = "~/app/metadata.js";
 
             // construct the filename and runtime file location

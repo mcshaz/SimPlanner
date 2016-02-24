@@ -1,20 +1,18 @@
 namespace SM.DataAccess
 {
+    using SM.Metadata;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
-    [Table("Scenario")]
-    public partial class Scenario
+    [MetadataType(typeof(ScenarioMetadata))]
+    public class Scenario
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
-        [Required]
-        [StringLength(128)]
         public string Description { get; set; }
 
         public Guid DepartmentId { get; set; }
@@ -23,7 +21,6 @@ namespace SM.DataAccess
 
         public Emersion? EmersionCategory { get; set; }
 
-        [StringLength(256)]
         public string TemplateFilename { get; set; }
 
         public Guid? ManequinId { get; set; }

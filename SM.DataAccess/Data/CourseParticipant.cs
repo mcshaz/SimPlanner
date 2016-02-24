@@ -1,22 +1,14 @@
 namespace SM.DataAccess
 {
+    using Metadata;
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
-    [Table("SessionParticipant")]
-    public partial class CourseParticipant
+    [MetadataType(typeof(CourseParticipantMetadata))]
+    public class CourseParticipant
     {
-        [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid ParticipantId { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid CourseId { get; set; }
 
         public bool IsConfirmed { get; set; }

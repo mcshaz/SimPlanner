@@ -1,20 +1,16 @@
 namespace SM.DataAccess
 {
+    using SM.Metadata;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
-    [Table("Manequin")]
+    [MetadataType(typeof(ManequinMetadata))]
     public partial class Manequin
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
-        [Required]
-        [StringLength(50)]
         public string Description { get; set; }
 
         public int? DepartmentId { get; set; }

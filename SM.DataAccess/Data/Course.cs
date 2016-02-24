@@ -1,14 +1,13 @@
 namespace SM.DataAccess
 {
+    using SM.Metadata;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
+    [MetadataType(typeof(CourseMetadata))]
     public class Course
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
         public DateTime StartTime { get; set; }
@@ -19,10 +18,8 @@ namespace SM.DataAccess
 
         public byte FacultyNoRequired { get; set; }
 
-        [StringLength(256)]
         public string ParticipantVideoFilename { get; set; }
 
-        [StringLength(256)]
         public string FeedbackSummaryFilename { get; set; }
 
         public Guid CourseTypeId { get; set; }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SM.Web.Models
+namespace SM.DataAccess
 {
-    internal class RoleConstants
+    public enum EducationCategory
     {
-        public const string Admin = "Admin";
+        Video, Lecture, Game, Icebreaker, Scenario, Break
     }
 }

@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using SM.DataAccess;
+using SM.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SM.Web.Models
 {
@@ -24,7 +23,19 @@ namespace SM.Web.Models
                 var role = new AspNetRole
                 {
                     Id = Guid.NewGuid(),
-                    Name = RoleConstants.Admin
+                    Name = RoleConstants.AccessAllData
+                };
+                roleManager.Create(role);
+                role = new AspNetRole
+                {
+                    Id = Guid.NewGuid(),
+                    Name = RoleConstants.AccessInstitution
+                };
+                roleManager.Create(role);
+                role = new AspNetRole
+                {
+                    Id = Guid.NewGuid(),
+                    Name = RoleConstants.SiteAdmin
                 };
                 roleManager.Create(role);
 
@@ -35,7 +46,7 @@ namespace SM.Web.Models
                 var result = userManager.AddPassword(userId: user.Id, password: "Admin_1");
                 if (result.Succeeded)
                 {
-                    userManager.AddToRole(user.Id, RoleConstants.Admin);
+                    userManager.AddToRole(user.Id, RoleConstants.AccessAllData);
                 }
                 else
                 {

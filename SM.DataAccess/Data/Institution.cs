@@ -1,23 +1,19 @@
 namespace SM.DataAccess
 {
+    using SM.Metadata;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    public partial class Institution
+    [MetadataType(typeof(InstitutionMetadata))]
+    public class Institution
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
-        [Required]
-        [StringLength(50)]
         public string Name { get; set; }
 
-        //[AllowHtml]
         public string About { get; set; }
 
-        [StringLength(2)]
         public string CountryCode { get; set; }
 
         public virtual Country Country { get; set; }

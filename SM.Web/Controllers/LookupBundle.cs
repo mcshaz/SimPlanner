@@ -1,4 +1,5 @@
 ﻿using SM.DataAccess;
+using SM.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace SM.Web.Controllers
     {
         //commented out because departments are now sent as collection with associated institution
         //public IEnumerable<Department> Departments { get; set; }
-        public IEnumerable<CourseType> CourseTypes { get; set; }
-        public Institution UserInstitution { get; set; }
-        public IEnumerable<ProfessionalRole> ProfessionalRoles { get; set; }
+        public IEnumerable<CourseTypeDto> CourseTypes { get; set; }
+        public IEnumerable<InstitutionDto> Institutions { get; set; }
+        public IEnumerable<ProfessionalRoleDto> ProfessionalRoles { get; set; }
     }
 }
