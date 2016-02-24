@@ -33,6 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -234,6 +235,9 @@
     <Content Include="app\config.exceptionHandler.js" />
     <Content Include="app\config.js" />
     <Content Include="app\config.route.js" />
+    <Content Include="app\courseAllocations\courseAllocations.html" />
+    <Content Include="app\course\course.html" />
+    <Content Include="app\course\course.js" />
     <Content Include="app\dashboard\dashboard.html" />
     <Content Include="app\dashboard\dashboard.js" />
     <Content Include="app\layout\shell.html" />
@@ -241,15 +245,16 @@
     <Content Include="app\layout\sidebar.html" />
     <Content Include="app\layout\sidebar.js" />
     <Content Include="app\layout\topnav.html" />
-    <Content Include="app\layout\widgetheader.html" />
-    <Content Include="app\services\datacontext.js" />
+    <Content Include="app\metadata.js" />
+    <Content Include="app\services\repository\modelBuilder.js" />
     <Content Include="app\services\directives.js" />
     <Content Include="app\services\entityManagerFactory.js" />
-    <Content Include="app\services\model.js" />
-    <Content Include="app\services\model.metadata.js" />
-    <Content Include="app\services\model.validation.js" />
+    <Content Include="app\services\errorhandler.js" />
+    <Content Include="app\services\repository.js" />
     <Content Include="app\services\routemediator.js" />
     <Content Include="app\auth\authComplete.html" />
+    <Content Include="app\services\unitofwork.js" />
+    <Content Include="app\services\utilities.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.cosmo.css" />
@@ -341,11 +346,14 @@
     <Compile Include="App_Start\CreateAdmin.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\MetadataScriptWriter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BreezeController.cs" />
+    <Compile Include="Controllers\LookupBundle.cs" />
+    <Compile Include="Controllers\MedSimApiController.cs" />
+    <Compile Include="Controllers\SummaryDataController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -358,7 +366,6 @@
     <Compile Include="Results\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="UserExposedContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

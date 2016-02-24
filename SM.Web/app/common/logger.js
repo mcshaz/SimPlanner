@@ -4,68 +4,72 @@
     angular.module('common').factory('logger', ['$log', logger]);
 
     function logger($log) {
-        var service = {
-            getLogFn: getLogFn,
-            log: log,
-            logError: logError,
-            logSuccess: logSuccess,
-            logWarning: logWarning
-        };
+        var service = getLogFunction('');
+        service.autoToast = ['log', 'warning', 'success', 'error', 'info'];
+        service.getLogFn = getLogFunction;
 
         return service;
 
-        function getLogFn(moduleId, fnName) {
-            fnName = fnName || 'log';
-            switch (fnName.toLowerCase()) { // convert aliases
-                case 'success':
-                    fnName = 'logSuccess'; break;
-                case 'error':
-                    fnName = 'logError'; break;
-                case 'warn':
-                    fnName = 'logWarning'; break;
-                case 'warning':
-                    fnName = 'logWarning'; break;
-            }
-
-            var logFn = service[fnName] || service.log;
-            return function (msg, data, showToast) {
-                logFn(msg, data, moduleId, (showToast === undefined) ? true : showToast);
+        function getLogFunction(source) {
+            var returnVar = function (argOpts) {
+                var logType = (typeof arguments[1] === 'string') ? arguments[1] : 'log';
+                log(argOpts,logType);
             };
-        }
+            returnVar.warn = returnVar.warning = function (argOpts) {
+                log(argOpts,'warning');
+            };
+            returnVar.success = function (argOpts) {
+                log(argOpts, 'success');
+            };
+            returnVar.error = returnVar.err = function (argOpts) {
+                log(argOpts, 'error');
+            };
+            returnVar.debug = function (argOpts) {
+                log(argOpts, 'debug');
+            };
+            returnVar.info = function (argOpts) {
+                log(argOpts, 'info');
+            };
 
-        function log(message, data, source, showToast) {
-            logIt(message, data, source, showToast, 'info');
-        }
+            return returnVar;
 
-        function logWarning(message, data, source, showToast) {
-            logIt(message, data, source, showToast, 'warning');
-        }
-
-        function logSuccess(message, data, source, showToast) {
-            logIt(message, data, source, showToast, 'success');
-        }
-
-        function logError(message, data, source, showToast) {
-            logIt(message, data, source, showToast, 'error');
-        }
-
-        function logIt(message, data, source, showToast, toastType) {
-            var write = (toastType === 'error') ? $log.error : $log.log;
-            source = source ? '[' + source + '] ' : '';
-            if (typeof data !== 'string') {
-                data = angular.toJson(data);
-            }
-            write(source, message, data);
-            if (showToast) {
-                if (toastType === 'error') {
-                    toastr.error(message);
-                } else if (toastType === 'warning') {
-                    toastr.warning(message);
-                } else if (toastType === 'success') {
-                    toastr.success(message);
-                } else {
-                    toastr.info(message);
+            function log(argOpts, logType) {
+                if (typeof argOpts === 'string') {
+                    argOpts = {
+                        msg: argOpts
+                    };
                 }
+                if (!(argOpts.source || argOpts.src)) {
+                    argOpts.source = source;
+                }
+                logIt(argOpts, logType);
+            }
+        }
+
+        function logIt(argOpts, logType) {
+            var showToast = argOpts.showToast === true || (typeof argOpts.showToast === 'undefined' && service.autoToast.indexOf(logType) > -1);
+            var toastType = logType;
+            var msg = argOpts.message || argOpts.msg;
+            var src = argOpts.source || argOpts.src;
+            var data = typeof argOpts.data == 'undefined' ? '' : angular.toJson(argOpts.data);
+
+            switch(logType){
+                case 'success':
+                    logType='log';
+                    break;
+                case 'warning':
+                    logType='warn';
+                    break;
+                case 'debug':
+                case 'log':
+                    toastType='info';
+                    break;
+            }
+
+            $log[logType](src, msg, data);
+
+            if (showToast) {
+                toastr[toastType](msg);
             }
         }
     }

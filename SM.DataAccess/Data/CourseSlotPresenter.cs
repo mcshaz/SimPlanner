@@ -9,12 +9,12 @@ namespace SM.DataAccess
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int CourseId { get; set; }
+        public Guid CourseId { get; set; }
 
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int CourseSlotId { get; set; }
+        public Guid CourseSlotId { get; set; }
 
         [Key]
         [Column(Order = 2)]

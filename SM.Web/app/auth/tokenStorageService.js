@@ -2,27 +2,33 @@
     'use strict';
     var serviceId = 'tokenStorageService';
     angular.module('app')
-        .service(serviceId, ['$rootScope', 'AUTH_EVENTS', '$http', 'localStorageService', tokenStorageService]);
-    function tokenStorageService($rootScope, AUTH_EVENTS, $http, localStorage) {
+        .service(serviceId, ['authService', 'AUTH_EVENTS', '$http', 'localStorageService', tokenStorageService]);
+    function tokenStorageService(authService, AUTH_EVENTS, $http, localStorage) {
         var currentUser = localStorage.get('currentUser');
         var token = localStorage.get('token');
         var unAuthUser = {
             name: '',
-            roles: []
+            roles: [],
+            id:null
         };
+        var self = this;
 
-        this.getUserName = getUserName;
-        this.getUserRoles = getUserRoles;
-        this.isLoggedIn = isLoggedIn;
-        this.isAuthorized = isAuthorized;
+        self.getUserName = getUserName;
+        self.getUserRoles = getUserRoles;
+        self.getUserId = getUserId;
+        self.isLoggedIn = isLoggedIn;
+        self.isAuthorized = isAuthorized;
+        self.notifyLogin = notifyLogin;
+        self.notifyLogout = notifyLogout;
 
-        if (!currentUser) {
+        setTokenHeader();
+
+        if (isLoggedIn()) {
+            authService.loginConfirmed(this);
+        }else{
             currentUser = unAuthUser;
         }
 
-        setTokenHeader();
-        $rootScope.$on(AUTH_EVENTS.loginCancelled, onLogout);
-        $rootScope.$on(AUTH_EVENTS.loginConfirmed, onLogin);
         
         function isLoggedIn() {
             return(!!token);
@@ -30,6 +36,10 @@
 
         function getUserName() {
             return currentUser.name;
+        }
+
+        function getUserId() {
+            return currentUser.id;
         }
 
         function getUserRoles(){
@@ -52,23 +62,28 @@
             });
         };
 
-        function onLogin(e, data) {
+        function notifyLogin(data) {
             token = data.user_token || data.access_token;
             currentUser = {
                 name: data.fullName,
-                roles: data.userRoles.split(',')
+                roles: data.userRoles.split(','),
+                id: data.userId
             }
             localStorage.set('token',token);
             localStorage.set('currentUser', currentUser);
             setTokenHeader();
+            //now broadcast
+            authService.loginConfirmed(self);
         }
 
-        function onLogout() {
+        function notifyLogout() {
             token = null;
             currentUser = unAuthUser;
             localStorage.remove('token');
             localStorage.remove('currentUser');
             setTokenHeader();
+            //now broadcast
+            authService.loginCancelled(self);
         }
 
         function setTokenHeader() {

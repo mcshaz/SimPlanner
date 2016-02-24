@@ -42,7 +42,7 @@ input, textarea {
 }
 
 select {
-    font-size: 13px !important;
+    /* font-size: 13px !important; */
     font-family: "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
@@ -56,7 +56,7 @@ input[type="radio"], input[type="checkbox"] {
 .btn {
     background-image: none !important;
     font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-    font-size: 13px !important;
+    /* font-size: 13px !important; */
 }
 
     .btn.btn-mini {
@@ -354,10 +354,11 @@ a.btn {
 form {
     margin: 10px;
 }
-
+/*
     form input, form button, form textarea, form select {
         font-size: 13px !important;
     }
+    */
 
     form label {
         font-size: 13px;
@@ -368,9 +369,9 @@ form {
     margin-left: 15px;
 }
 
-.form-horizontal .control-label {
+/*.form-horizontal .control-label {
     width: 90px;
-}
+*/
 
 .form-horizontal .controls {
     margin-left: 110px;
@@ -1273,3 +1274,13 @@ form {
 
 
 /*#endregion */
+
+/*region datetime*/
+div.input-group.date{
+    width:60%;
+}
+div.input-group.date button{
+    margin-left:0;
+    margin-right:0
+} 
+/*endregion*/

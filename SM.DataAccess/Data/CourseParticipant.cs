@@ -17,15 +17,15 @@ namespace SM.DataAccess
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int CourseId { get; set; }
+        public Guid CourseId { get; set; }
 
-        public bool Confirmed { get; set; }
+        public bool IsConfirmed { get; set; }
 
-        public bool Faculty { get; set; }
+        public bool IsFaculty { get; set; }
 
-        public int? DepartmentId { get; set; }
+        public Guid? DepartmentId { get; set; }
 
-        public int? ProfessionalRoleId { get; set; }
+        public Guid? ProfessionalRoleId { get; set; }
 
         public virtual Participant Participant { get; set; }
 

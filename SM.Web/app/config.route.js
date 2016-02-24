@@ -39,6 +39,16 @@
                         content: '<i class="fa fa-lock"></i> Admin'
                     }
                 }
+            }, {
+                url: '/course/:id',
+                config: {
+                    title: 'course',
+                    templateUrl: 'app/course/course.html',
+                    settings: {
+                        nav: 3,
+                        content: 'New Course' //<i class="fa fa-"></i> 
+                    }
+                }
             }
         ];
     }

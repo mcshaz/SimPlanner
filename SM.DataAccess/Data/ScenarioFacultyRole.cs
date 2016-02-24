@@ -9,12 +9,12 @@ namespace SM.DataAccess
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int CourseId { get; set; }
+        public Guid CourseId { get; set; }
 
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ScenarioId { get; set; }
+        public Guid ScenarioId { get; set; }
 
         [Key]
         [Column(Order = 2)]
@@ -24,7 +24,7 @@ namespace SM.DataAccess
         [Key]
         [Column(Order = 3)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int RoleId { get; set; }
+        public Guid RoleId { get; set; }
 
         public virtual Course Course { get; set; }
         public virtual Scenario Scenario{ get; set; }

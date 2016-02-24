@@ -2,11 +2,10 @@
     'use strict';
     var serviceId = 'loginFactory';
     angular.module('app')
-        .factory(serviceId, ['$http', '$httpParamSerializerJQLike', 'authService', 'tokenStorageService', 'common',loginFactory]);
+        .factory(serviceId, ['$http', '$httpParamSerializerJQLike', 'tokenStorageService', 'common',loginFactory]);
 
-    function loginFactory($http, $httpParamSerializerJQLike, authService, tokenStorageService, common) {
-        var getLogFn = common.logger.getLogFn;
-        var log = getLogFn(serviceId);
+    function loginFactory($http, $httpParamSerializerJQLike, tokenStorageService, common) {
+        var log = common.logger.getLogFn(serviceId);
         var service = {
             login : login, 
             logout: logout,
@@ -29,7 +28,7 @@
                                 'Content-Type': 'application/x-www-form-urlencoded' // Note the appropriate header
                             }
             }).then(function (response) {
-                authService.loginConfirmed(response.data);
+                tokenStorageService.notifyLogin(response.data);
                 return response.data;
             });
         }
@@ -40,14 +39,14 @@
                     method: 'POST',
                     url: 'api/Account/Logout',
                     ignoreAuthModule: true // if we had already timed out, a 401 will be returned
-                }).then(function (data) {
-                    authService.loginCancelled();
+                }).then(function (response) {
+                    tokenStorageService.notifyLogout(response);
+                    log.success({ msg: 'logged out' });
                 }, function (response) {
-                    getLogFn(serviceId, 'warn')('Logout failed', response, true);
+                    log.warn({ msg: 'Logout failed', data: response });
                 });
-                log('logged out','',true)
             } else {
-                log('logout called - Not logged in', '', false);
+                log.debug({ msg: 'logout called - Not logged in' });
             }
         };
 

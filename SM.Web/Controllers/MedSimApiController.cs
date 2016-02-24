@@ -9,7 +9,7 @@ using Breeze.ContextProvider.EF6;
 namespace SM.Web.Controllers
 {
     [BreezeController]
-    public class BreezeController : ApiController
+    public class MedSimApiController : ApiController
     {
         // Todo: inject via an interface rather than "new" the concrete class
         readonly EFContextProvider<MedSimDbContext> _repository = new EFContextProvider<MedSimDbContext>();
@@ -36,7 +36,7 @@ namespace SM.Web.Controllers
         [HttpGet]
 		public IQueryable<ScenarioRoleDescription> SenarioRoles(){ return _repository.Context.SenarioRoles; } 
         [HttpGet]
-		public IQueryable<Institution> Hospitals(){ return _repository.Context.Hospitals; } 
+		public IQueryable<Institution> Hospitals(){ return _repository.Context.Institutions; } 
         [HttpGet]
 		public IQueryable<Manequin> Manequins(){ return _repository.Context.Manequins; } 
         [HttpGet]
@@ -46,10 +46,28 @@ namespace SM.Web.Controllers
         [HttpGet]
 		public IQueryable<ScenarioResource> ScenarioResources(){ return _repository.Context.ScenarioResources; } 
         [HttpGet]
-		public IQueryable<Course> Sessions(){ return _repository.Context.Courses; } 
+		public IQueryable<Course> Courses()
+        {
+            return _repository.Context.Courses;
+        } 
         [HttpGet]
-		public IQueryable<CourseType> SessionTypes(){ return _repository.Context.CourseTypes; } 
+		public IQueryable<CourseType> CourseTypes()
+        {
+            return _repository.Context.CourseTypes;
+        }
 
+        [HttpGet]
+        public LookupBundle Lookups()
+        {
+            return new LookupBundle
+            {
+                CourseTypes = _repository.Context.CourseTypes.ToList(),
+                //TODO - get user institution (add DTO)
+                UserInstitution = _repository.Context.Institutions.Include("Departments").First(),
+                ProfessionalRoles = _repository.Context.ProfessionalRoles.ToList()
+            };
+        }
+        
         // Diagnostic
         [HttpGet]
         public string Ping()

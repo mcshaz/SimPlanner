@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
@@ -17,7 +16,6 @@ using SM.Web.Providers;
 using SM.Web.Results;
 using Facebook;
 using SM.DataAccess;
-using System.Linq;
 
 namespace SM.Web.Controllers
 {

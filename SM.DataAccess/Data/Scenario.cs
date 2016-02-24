@@ -10,13 +10,14 @@ namespace SM.DataAccess
     public partial class Scenario
     {
         [Key]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(128)]
         public string Description { get; set; }
 
-        public int DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
         public Difficulty Complexity { get; set; }
 
@@ -25,9 +26,9 @@ namespace SM.DataAccess
         [StringLength(256)]
         public string TemplateFilename { get; set; }
 
-        public int? ManequinId { get; set; }
+        public Guid? ManequinId { get; set; }
 
-        public int CourseTypeId { get; set; }
+        public Guid CourseTypeId { get; set; }
 
         public virtual Manequin Manequin { get; set; }
 

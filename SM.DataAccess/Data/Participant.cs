@@ -30,9 +30,9 @@ namespace SM.DataAccess
 
         public string FullName { get; set; }
 
-        public int? DefaultDepartmentId { get; set; }
+        public Guid? DefaultDepartmentId { get; set; }
 
-        public int? DefaultProfessionalRoleId { get; set; }
+        public Guid? DefaultProfessionalRoleId { get; set; }
 
         public virtual Department Department { get; set; }
 
@@ -40,7 +40,7 @@ namespace SM.DataAccess
 
 		ICollection<CourseParticipant> _sessionParticipants; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseParticipant> SessionParticipants
+        public virtual ICollection<CourseParticipant> CourseParticipants
 		{
 			get
 			{
@@ -51,5 +51,19 @@ namespace SM.DataAccess
 				_sessionParticipants = value;
 			}
 		}
+
+        ICollection<ScenarioFacultyRole> _scenarioFacultyRoles;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ScenarioFacultyRole> ScenarioFacultyRoles
+        {
+            get
+            {
+                return _scenarioFacultyRoles ?? (_scenarioFacultyRoles = new List<ScenarioFacultyRole>());
+            }
+            set
+            {
+                _scenarioFacultyRoles = value;
+            }
+        }
     }
 }

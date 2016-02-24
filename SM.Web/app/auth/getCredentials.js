@@ -6,8 +6,7 @@
 
     function getCredentials($scope, loginFactory, common, ngAuthSettings, $location, $window) {
         var vm = this;
-        var getLogFn = common.logger.getLogFn;
-        var log = getLogFn(controllerId);
+        var log = common.logger.getLogFn(controllerId);
 
         vm.credentials = {
             username: '',
@@ -19,10 +18,10 @@
         vm.login = function (credentials) {
             vm.errors = '';
             loginFactory.login(credentials).then(function (user) {
-                log("logged in as " + user.fullName,user,true)
+                log.success({ msg: "logged in as " + user.fullName, data: user });
             }, function (response) {
                 if (!response.data || !response.data.error_description) {
-                    getLogFn(controllerId,'error')("unhandled data returned after attempted login", response, true);
+                    log.error({ msg: "unhandled data returned after attempted login", data: response });
                 }
                 vm.errors = response.data.error_description;
             });
@@ -41,7 +40,7 @@
         $scope.authCompletedCB = function (fragment) {
             $scope.$apply(function () {
                 loginFactory.registerExternal(fragment);
-                log("logged in as " + fragment.fullName, fragment, true)
+                log.success({ msg: "logged in as " + fragment.fullName, data: fragment });
                 if (fragment.fullName) {
                     $location.path('/dashBoard');
                 }

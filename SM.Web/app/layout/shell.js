@@ -3,11 +3,11 @@
     
     var controllerId = 'shell';
     angular.module('app').controller(controllerId,
-        ['$rootScope', 'common', 'config', shell]);
+        ['$rootScope', 'common', 'config', 'entityManagerFactory', 'modelBuilder', shell]);
 
-    function shell($rootScope, common, config) {
+    function shell($rootScope, common, config, entityManagerFactory, modelBuilder) {
         var vm = this;
-        var logSuccess = common.logger.getLogFn(controllerId, 'success');
+        var log = common.logger.getLogFn(controllerId);
         var events = config.events;
         vm.busyMessage = 'Please wait ...';
         vm.isBusy = true;
@@ -25,7 +25,8 @@
         activate();
 
         function activate() {
-            logSuccess('Simulation Manager loaded!', null, true);
+            entityManagerFactory.modelBuilder = modelBuilder.extendMetadata
+            log.success('Simulation Manager loaded!');
             common.activateController([], controllerId);
         }
 

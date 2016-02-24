@@ -1,5 +1,6 @@
 namespace SM.DataAccess
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,8 @@ namespace SM.DataAccess
     public partial class ProfessionalRole
     {
         [Key]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(50)]

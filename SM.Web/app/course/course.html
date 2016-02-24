@@ -1,0 +1,94 @@
+﻿<section id="dashboard-view" class="mainbar" data-ng-controller="course as vm">
+    <section class="matter">
+        <div class="container col-md-12">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="institution" class="col-md-2 control-label">Institution</label>
+                    <div class="col-md-10">
+                        <select class="form-control" id="institution" data-ng-options="i as i.name for i in vm.institutions track by i.id"  data-ng-model="vm.institution" data-ng-disabled="{{vm.institutions<=1}}" >
+                        </select>
+                        <span class="text-danger" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="department" class="col-md-2 control-label">Department</label>
+                    <div class="col-md-10">
+                        <select class="form-control" id="department" data-ng-options="d as d.name for d in vm.institution.departments track by d.id" data-ng-model="vm.course.department">
+                            <option value="" disabled="disabled">
+                                Select Department...
+                            </option>
+                        </select>
+                        <span class="text-danger" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="date" class="col-md-2 control-label">Course Date</label>
+                    <div class="col-md-10">
+                        <div class="input-group date">
+                            <input type="text" class="form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="vm.course.startTime" is-open="vm.dpPopup.isOpen" min-date="vm.minDate" max-date="vm.maxDate" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="vm.openDp()"><span class="glyphicon glyphicon-calendar"></span></button>
+                            </span>
+                            <input type="text" class="form-control" ng-model="vm.timeString" ng-required="true" ng-change="vm.timeChange"/>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ><span class="glyphicon glyphicon-time"></span></button>
+                            </span>
+                        </div>
+                        <span class="text-danger" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="courseType" class="col-md-2 control-label">Course Type</label>
+                    <div class="col-md-10">
+                        <select id="courseType" class="form-control" data-ng-options="ct as ct.description for ct in vm.courseTypes track by ct.id" data-ng-model="vm.course.courseType">
+                            <option value="" disabled="disabled">
+                                Select Course Type...
+                            </option>
+                        </select>
+                        <span class="text-danger" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-md-push-2">
+                        <button type="submit" data-ng-click="vm.save()" data-ng-disabled="vm.canSave" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <button class="btn btn-link">Add Faculty Member</button>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Role
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat="f in vm.faculty">
+                                <td>
+                                    {{f.name}}
+                                </td>
+                                <td>
+                                    {{f.role}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-link">Remove</button> |
+                                    <button class="btn btn-link">Edit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </section>
+</section>

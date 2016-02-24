@@ -52,7 +52,7 @@
                 function querySucceeded(data) {
                     var participants = base.setIsPartialTrue(data.results);
                     base.zStorage.areItemsLoaded('participants', true);
-                    base.log('Retrieved [Participants] from remote data source', attendees.length, true);
+                    base.log({ msg: 'Retrieved [Participants] from remote data source', data: attendees.length });
                     base.zStorage.save();
                     return getByPage();
                 }

@@ -47,6 +47,7 @@ namespace SM.Web.Models
         }
 
     }
+    [Serializable]
     public class DbSeedException : Exception
     {
         public DbSeedException(IEnumerable<string> errors) :

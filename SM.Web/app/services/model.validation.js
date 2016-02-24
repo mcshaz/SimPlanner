@@ -23,7 +23,7 @@
             applyTwitterValidators(metadataStore);
             applyEmailValidators(metadataStore);
             applyUrlValidators(metadataStore);
-            log('Validators applied', null, false);
+            log({ msg: 'Validators applied', showToast:false });
         }
 
         function createAndRegister(eNames) {
@@ -35,7 +35,7 @@
             Validator.register(requireReferenceValidator);
             Validator.register(twitterValidator);
             // Step 3) Later we will apply them to the properties/entities via applyValidators
-            log('Validators created and registered', null, false);
+            log({msg:'Validators created and registered', showToast:false});
         }
 
         function applyEmailValidators(metadataStore) {

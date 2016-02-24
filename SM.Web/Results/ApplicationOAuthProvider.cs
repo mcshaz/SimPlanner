@@ -101,7 +101,7 @@ namespace SM.Web.Providers
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "userName", user.UserName },
+                { "userId", user.Id.ToString() },
                 { "fullName", user.FullName },
                 { "userRoles", string.Join(",",roles) }
             };

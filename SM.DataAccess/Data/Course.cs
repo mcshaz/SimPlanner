@@ -8,13 +8,14 @@ namespace SM.DataAccess
     public class Course
     {
         [Key]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Guid Id { get; set; }
 
         public DateTime StartTime { get; set; }
 
-        public int DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
-        public int? OutreachingDepartmentId { get; set; }
+        public Guid? OutreachingDepartmentId { get; set; }
 
         public byte FacultyNoRequired { get; set; }
 
@@ -24,7 +25,7 @@ namespace SM.DataAccess
         [StringLength(256)]
         public string FeedbackSummaryFilename { get; set; }
 
-        public int CourseTypeId { get; set; }
+        public Guid CourseTypeId { get; set; }
 
         public virtual Department Department { get; set; }
 
@@ -34,7 +35,7 @@ namespace SM.DataAccess
 
 		ICollection<CourseParticipant> _participants; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseParticipant> Participants
+        public virtual ICollection<CourseParticipant> CourseParticipants
 		{
 			get
 			{
@@ -59,6 +60,20 @@ namespace SM.DataAccess
 				_scenarios = value;
 			}
 		}
+
+        ICollection<ScenarioFacultyRole> _scenarioFacultyRoles;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ScenarioFacultyRole> ScenarioFacultyRoles
+        {
+            get
+            {
+                return _scenarioFacultyRoles ?? (_scenarioFacultyRoles = new List<ScenarioFacultyRole>());
+            }
+            set
+            {
+                _scenarioFacultyRoles = value;
+            }
+        }
 
     }
 }

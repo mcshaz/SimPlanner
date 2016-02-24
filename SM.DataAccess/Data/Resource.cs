@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SM.DataAccess
 {
     public abstract class Resource
     {
         [Key]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -22,13 +20,13 @@ namespace SM.DataAccess
     }
     public class CourseTeachingResource : Resource
     {
-        public int CourseSlotId { get; set; }
+        public Guid CourseSlotId { get; set; }
         public virtual CourseSlot CourseSlot { get; set; }
     }
 
     public class ScenarioResource : Resource
     {
-        public int ScenarioId { get; set; }
+        public Guid ScenarioId { get; set; }
         public virtual Scenario Scenario { get; set; }
     }
 }

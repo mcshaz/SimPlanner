@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
-using Newtonsoft.Json.Serialization;
+using SM.Web.App_Start;
 
 namespace SM.Web
 {
@@ -16,6 +12,7 @@ namespace SM.Web
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            MetadataScriptWriter.Write();
 
             // Web API routes
             config.MapHttpAttributeRoutes();
@@ -26,5 +23,6 @@ namespace SM.Web
                 defaults: new { id = RouteParameter.Optional }
             );
         }
+
     }
 }
