@@ -153,9 +153,15 @@ namespace SM.DataAccess
                 .HasForeignKey(e => e.FacultyMemberId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Participant>()
+                .HasMany(e => e.CourseSlotPresentations)
+                .WithRequired(e => e.Presenter)
+                .HasForeignKey(e => e.PresenterId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ProfessionalRole>()
                 .HasMany(e => e.Participants)
-                .WithOptional(e => e.ProfessionalRole)
+                .WithRequired(e => e.ProfessionalRole)
                 .HasForeignKey(e => e.DefaultProfessionalRoleId)
                 .WillCascadeOnDelete(false);
 

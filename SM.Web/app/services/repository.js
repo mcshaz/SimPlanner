@@ -18,13 +18,8 @@
                 }
 
                 this.fetchByKey = function (key) {
-                    if (!entityTypeName)
-                        throw new Error("Repository must be created with an entity type specified");
-
                     return manager().fetchEntityByKey(entityTypeName, key, true) //true refers to check local cache 1st
                         .then(function (data) {
-                            if (!data.entity)
-                                throw new Error("Entity not found!");
                             return data.entity;
                         });
                 };
@@ -76,7 +71,7 @@
                 }
 
                 function executeQuery(query) {
-                    return entityManagerFactory.manager()
+                    return manager()
                         .executeQuery(query.using(fetchStrategy || breeze.FetchStrategy.FromServer))
                         .then(function (data) {
                             return data.results;
@@ -84,7 +79,7 @@
                 }
 
                 function executeCacheQuery(query) {
-                    return entityManagerFactory.manager().executeQueryLocally(query);
+                    return manager().executeQueryLocally(query);
                 }
 
                 function getMetastore() {
@@ -92,7 +87,7 @@
                 }
 
                 function manager() {
-                    return entityManagerFactory.manager();
+                    return entityManagerFactory;
                 }
             };
 

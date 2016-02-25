@@ -38,24 +38,28 @@
                     throw new Error('Object is not associated with current course');
                 }
             };
+
+            courseCtor.prototype.includesUser = function (userId) {
+                return this.courseParticipants.some(function (cp) {
+                    return cp.participantId == userId;
+                });
+            }
+
             /*
-            var staffingResourceInitializer = function (staffingResource) {
-                Object.defineProperty(staffingResourceCtor.prototype, 'fullName', {
+            var courseInitializer = function (course) {
+                Object.defineProperty(courseCtor.prototype, 'includesUser', {
                     enumerable: true,
                     configurable: true,
-                    get: function() {
-                        if (this.middleName) {
-                            return this.firstName + ' ' + this.middleName + ' ' + this.lastName;
-                        }
-                        return this.firstName + ' ' + this.lastName;
+                    get: function(userId) {
+                        return this.courseParticipants.some(function (p) {
+                            return p.id == userId;
+                        });
                     }
                 });
             };
             */
-            metadataStore.setEntityTypeForResourceName('Instructor', 'CourseParticipant');
-            metadataStore.setEntityTypeForResourceName('Student', 'CourseParticipant');
 
-            metadataStore.registerEntityTypeCtor('Course', courseCtor);
+            metadataStore.registerEntityTypeCtor('CourseDto', courseCtor /*, courseInitializer */);
 
         }
 

@@ -92,6 +92,8 @@ namespace SM.Dto
 
         public IQueryable<CourseDto> Courses { get { return Context.Courses.Select(CourseMaps.mapFromRepo); } }
 
+        public IQueryable<CourseDto> BriefCourses { get { return Context.Courses.Select(CourseMaps.mapBriefFromRepo); } }
+
         public IQueryable<CourseTypeDto> CourseTypes
         {
             get

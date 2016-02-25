@@ -107,5 +107,19 @@ namespace SM.DataAccess
                 _scenarioFacultyRoles = value;
             }
         }
+
+        ICollection<CourseSlotPresenter> _courseSlotPresentations;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CourseSlotPresenter> CourseSlotPresentations
+        {
+            get
+            {
+                return _courseSlotPresentations ?? (_courseSlotPresentations = new List<CourseSlotPresenter>());
+            }
+            set
+            {
+                _courseSlotPresentations = value;
+            }
+        }
     }
 }

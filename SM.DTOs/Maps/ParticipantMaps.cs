@@ -34,8 +34,9 @@ namespace SM.DTOs.Maps
             AlternateEmail = m.AlternateEmail,
             FullName = m.FullName,
             DefaultDepartmentId = m.DefaultDepartmentId,
-            DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
+            DefaultProfessionalRoleId = m.DefaultProfessionalRoleId
 
+            //CourseSlotPresentations = m.CourseSlotPresentations
             //Department = m.Department,
 
             //ProfessionalRole = m.ProfessionalRole,

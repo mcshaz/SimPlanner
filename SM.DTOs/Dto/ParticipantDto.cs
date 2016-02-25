@@ -18,5 +18,6 @@ namespace SM.Dto
         public ProfessionalRoleDto ProfessionalRole { get; set; }
         public ICollection<CourseParticipantDto> CourseParticipants { get; set; }
         public ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
+        public ICollection<CourseSlotPresenterDto> CourseSlotPresentations { get; set; }
     }
 }

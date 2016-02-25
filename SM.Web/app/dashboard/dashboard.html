@@ -10,9 +10,45 @@
                                     Your Next Upcoming Course:
                                 </h4>
                                 <ul class="list-unstyled">
-                                    <li><span class="fa fa-calendar-check-o"> {{vm.nextUserCourse.longDate}}</span> 
-                                    <li><span class="fa fa-clock-o"> <small>{{vm.nextUserCourse.interval}}</small></span></li>
-                                    <li><span class="fa fa-university"> {{vm.nextUserCourse.institutionName}} {{vm.nextUserCourse.departmentName}}</span></li>
+                                    <li>
+                                        <span class="fa fa-calendar-check-o" data-ng-switch="vm.loginState"> 
+                                            <span data-ng-switch-when="active">
+                                                {{vm.dateLongFormatter(vm.nextUserCourse.startTime)}}
+                                            </span>
+                                            <span data-ng-switch-when="inactive">
+                                                no upcoming courses
+                                            </span>
+                                            <span data-ng-switch-when="notLoggedIn">
+                                                sign in to find out when...
+                                            </span>
+                                        </span> 
+                                    </li>
+                                    <li>
+                                        <span class="fa fa-clock-o"> 
+                                            <small data-ng-switch="vm.loginState">
+                                                <span data-ng-switch-when="active">
+                                                    {{vm.dateIntervalFormatter(vm.nextUserCourse.startTime)}}
+                                                </span>
+                                                <span data-ng-switch-when="inactive">
+                                                    create a new course?
+                                                </span>
+                                                <span data-ng-switch-when="notLoggedIn">
+                                                    (hopefully very soon)
+                                                </span>
+                                            </small>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="fa fa-university" data-ng-switch="vm.loginState"> 
+                                            <span data-ng-switch-when="notLoggedIn">
+                                                [your institution &amp; department]
+                                            </span>
+                                            <span data-ng-switch-default>
+                                                {{vm.nextUserCourse.department.institution.name}} {{vm.nextUserCourse.department.name}}
+                                            </span>
+
+                                        </span>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -90,10 +126,10 @@
                                 </thead>
                                 <tbody>
                                     <tr data-ng-repeat="c in vm.upcomingCourses track by c.id">
-                                        <td>{{c.date}}</td>
-                                        <td>{{c.departmentName}}</td>
+                                        <td>{{vm.dateShortFormatter(c.startTime)}}</td>
+                                        <td>{{c.department.name}}</td>
                                         <td>{{c.location}}</td>
-                                        <td><input type="checkbox" disabled="disabled" data-ng-checked="c.isUserInvolved" /></td>
+                                        <td><input type="checkbox" disabled="disabled" data-ng-checked="c.includesUser(vm.currentUserId)" /></td>
                                         <td><button class="btn btn-link" data-ng-click="vm.gotoCourse(c)">Edit</button></td>
                                     </tr>
                                 </tbody>

@@ -51,7 +51,7 @@
             var toastType = logType;
             var msg = argOpts.message || argOpts.msg;
             var src = argOpts.source || argOpts.src;
-            var data = typeof argOpts.data == 'undefined' ? '' : angular.toJson(argOpts.data);
+            var data = typeof argOpts.data == 'undefined' ? '' : angular.toJson(JSON.decycle(argOpts.data));
 
             switch(logType){
                 case 'success':

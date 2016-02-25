@@ -25,9 +25,9 @@
     });
 
     commonModule.factory('common',
-        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', common]);
+        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', 'dateUtilities',common]);
 
-    function common($q, $rootScope, $timeout, commonConfig, logger) {
+    function common($q, $rootScope, $timeout, commonConfig, logger, dateUtilities) {
         var throttles = {};
 
         var service = {
@@ -41,6 +41,7 @@
             debouncedThrottle: debouncedThrottle,
             isNumber: isNumber,
             logger: logger, // for accessibility
+            dateUtilities: dateUtilities,  // for accessibility
             textContains: textContains
         };
 

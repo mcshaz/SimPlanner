@@ -61,7 +61,7 @@
         }
     });
 
-
+    /*
     app.directive('ccWidgetClose', function () {
         // Usage:
         // <a data-cc-widget-close></a>
@@ -155,6 +155,8 @@
             }
         }
     ]);
+
+    */
 
     app.directive('ccSpinner', ['$window', function ($window) {
         // Description:

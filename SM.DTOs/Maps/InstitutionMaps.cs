@@ -36,7 +36,7 @@ namespace SM.DTOs.Maps
                 InstitutionId = d.InstitutionId,
                 InvitationLetterFilename = d.InvitationLetterFilename,
                 CertificateFilename = d.CertificateFilename
-            })
+            }).ToList()
         };
     }
 }

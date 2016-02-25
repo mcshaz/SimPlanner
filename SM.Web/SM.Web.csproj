@@ -230,6 +230,7 @@
     <Content Include="app\auth\loginFactory.js" />
     <Content Include="app\common\bootstrap\bootstrap.dialog.js" />
     <Content Include="app\common\common.js" />
+    <Content Include="app\common\dateUtilities.js" />
     <Content Include="app\common\logger.js" />
     <Content Include="app\common\spinner.js" />
     <Content Include="app\config.exceptionHandler.js" />
@@ -253,7 +254,8 @@
     <Content Include="app\services\repository.js" />
     <Content Include="app\services\routemediator.js" />
     <Content Include="app\auth\authComplete.html" />
-    <Content Include="app\services\unitofwork.js" />
+    <Content Include="app\services\datacontext.js" />
+    <Content Include="app\services\timeDirective.js" />
     <Content Include="app\services\utilities.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -322,6 +324,7 @@
     <Content Include="Scripts\http-auth-interceptor.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />
     <Content Include="Scripts\jquery-2.2.0.min.js" />
+    <Content Include="Scripts\JSON.decycle.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />

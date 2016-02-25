@@ -5,14 +5,13 @@
         .module('app')
         .controller(controllerId, course);
 
-    course.$inject = ['$routeParams','common','unitofwork']; 
+    course.$inject = ['$routeParams','common','datacontext']; 
 
-    function course($routeParams,common, unitofwork) {
+    function course($routeParams,common, datacontext) {
         /* jshint validthis:true */
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
-        var ref = unitofwork.get('courses');
-        var uow = ref.value();
+
         var id = $routeParams.id;
 
         vm.course = {};
@@ -21,9 +20,8 @@
         vm.maxDate = new Date();
         vm.maxDate.setFullYear(vm.maxDate.getFullYear() + 1);
         vm.minDate = new Date(2007,1);
-        vm.timeString = '08:00';
 
-        vm.timeChange = timeChange;
+
         vm.dpPopup = { isOpen: false };
         vm.openDp = openDp;
 
@@ -42,32 +40,29 @@
         activate();
 
         function activate() {
-            uow.ready().then(function () {
+            datacontext.ready().then(function () {
                 var promises = [
-                    uow.courseTypes.all().then(function (data) {
+                    datacontext.courseTypes.all().then(function (data) {
                         vm.courseTypes = data;
                         if (data.length === 1 && !id) {
                             vm.course.courseType = data[0];
                         }
                     }),
-                    uow.institutions.all().then(function (data) {
+                    datacontext.institutions.all().then(function (data) {
                         vm.institutions = data;
                         if (data.length === 1 && !id) {
                             vm.institution = data[0];
                         }
                     })];
                 if (id) {
-                    promises.push(uow.courses.find({
-                        where: breeze.Predicate.create('id', '==', id),
-                        expand: 'courseParticipants'
-                    }).then(function (data) {
-                        if (data.length !== 1) {
-                            log.warning('Could not find session id = ' + val);
+                    promises.push(datacontext.courses.fetchByKey(id).then(function (data) {
+                        if (!data) {
+                            log.warning('Could not find session id = ' + id);
+                            return;
                             //gotoCourses();
                         }
-                        vm.course = data[0];
+                        vm.course = data;
                         vm.institution = vm.course.department.institution;
-                        setTime();
                     }));
                 }
                 common.activateController(promises, controllerId)
@@ -82,21 +77,7 @@
         }
 
         function save() {
-            log.success('New Course Saved');
-        }
-
-        var timeFormats = ['H:m', 'h:m a'];
-
-        function timeChange(value) {
-            var m = moment(value, timeFormats);
-            if (m.isValid()) {
-                vm.course.startTime.setHours(m.hour(), m.minute(), 0, 0);
-            }
-        }
-
-        function setTime() {
-            var m = moment(vm.course.startTime);
-            vm.timeString = m.format('HH:m');
+            log.success({ msg: 'New Course Saved', data: vm.course.startTime });
         }
 
     }

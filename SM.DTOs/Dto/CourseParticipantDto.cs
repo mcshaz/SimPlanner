@@ -10,8 +10,8 @@ namespace SM.Dto
         public Guid CourseId { get; set; }
         public bool IsConfirmed { get; set; }
         public bool IsFaculty { get; set; }
-        public Guid? DepartmentId { get; set; }
-        public Guid? ProfessionalRoleId { get; set; }
+        public Guid DepartmentId { get; set; }
+        public Guid ProfessionalRoleId { get; set; }
         public ParticipantDto Participant { get; set; }
         public CourseDto Course { get; set; }
 

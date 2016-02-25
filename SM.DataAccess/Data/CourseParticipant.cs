@@ -15,9 +15,9 @@ namespace SM.DataAccess
 
         public bool IsFaculty { get; set; }
 
-        public Guid? DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
-        public Guid? ProfessionalRoleId { get; set; }
+        public Guid ProfessionalRoleId { get; set; }
 
         public virtual Participant Participant { get; set; }
 

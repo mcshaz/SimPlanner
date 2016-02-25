@@ -12,7 +12,7 @@ namespace SM.Dto
         public string About { get; set; }
         public string CountryCode { get; set; }
         public CountryDto Country { get; set; }
-        public IEnumerable<DepartmentDto> Departments { get; set; }
+        public ICollection<DepartmentDto> Departments { get; set; }
 
     }
 }
