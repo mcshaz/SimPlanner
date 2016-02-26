@@ -91,7 +91,7 @@
     }
 
     function setMins(obj, mins) {
-        if (this.minutes > this.maxMins) {
+        if (mins > this.maxMins) {
             setInvalid(this, "maxMinutes");
             return false;
         }

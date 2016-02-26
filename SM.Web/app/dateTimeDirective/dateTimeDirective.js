@@ -22,37 +22,43 @@
         }
     }
 
-    dateTimeDirectiveController.$inject = ['$scope'];
+    dateTimeDirectiveController.$inject = ['$scope','tokenStorageService']; //? a hack - wait till it has broadcast user locale
 
     function dateTimeDirectiveController($scope) {
         var vm = this;
+        var timespan = timespanMinutes();
         vm.dpPopup = { isOpen: false };
         vm.maxDate;
         vm.minDate;
         vm.date;
-        vm.timespan;
+        vm.time;
         vm.datetime;
         vm.openDp = openDp;
-        vm.datetimeChange = datetimeChange;
-        vm.dateFormat = moment().localeData().longDateFormat('L').replace(/D/g,"d").replace(/Y/g,"y");
-        var unregister = $scope.$watch(function () { return vm.datetime; },
-            activate);
+        vm.dateChange = dateChange;
+        vm.timeChange = timeChange;
+        vm.dateFormat = moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
+        var deregister = $scope.$watch(function () { return vm.datetime }, datetimeChange);
 
-        function activate() {
+        function datetimeChange() {
             if (vm.datetime) {
+                timespan.setMinutes(vm.datetime);
+                vm.time = timespan.toString();
                 vm.date = vm.datetime;
-                vm.timespan = timespanMinutes(vm.datetime);
-                unregister();
+                deregister();
             }
         }
 
         function openDp() {
             vm.dpPopup.isOpen = true;
         }
+        function timeChange() {
+            timespan.parse(vm.time);
+            dateChange();
+        }
 
-        function datetimeChange() {
-            if (vm.timespan.isValid && vm.date instanceof Date) {
-                vm.datetime = vm.timespan.setTime(vm.date)
+        function dateChange() {
+            if (timespan.isValid && vm.date instanceof Date) {
+                vm.datetime = timespan.setTime(vm.date)
             } else {
                 vm.datetime = null;
             }

@@ -31,7 +31,7 @@
         vm.participants = [];
 
         vm.save = function () {
-            log(vm.course.startTime);
+            log({ msg:'saved date: ' + vm.course.startTime });
         }//datacontext.save;
         vm.canSave = true;
         $rootScope.$on('hasChanges', function () {
