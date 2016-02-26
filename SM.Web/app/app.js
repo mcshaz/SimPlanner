@@ -48,11 +48,15 @@
     }]);
 
     //set locale once logged in 
-    app.run(['$rootScope', 'AUTH_EVENTS', function ($rootScope, AUTH_EVENTS) {
-        $rootScope.$on(AUTH_EVENTS.loginConfirmed, function (evt, storage) {
-            moment.locale(storage.getUserLocales());
-        });
-    }]);
+    app.run(['tokenStorageService', 'entityManagerFactory', 'modelBuilder', '$rootScope', 'AUTH_EVENTS',
+        function (tokenStorageService, entityManagerFactory, modelBuilder, $rootScope, AUTH_EVENTS) {
+            entityManagerFactory.modelBuilder = modelBuilder.extendMetadata;
+                //set locale once logged in 
+            $rootScope.$on(AUTH_EVENTS.loginConfirmed, function (evt) {
+                moment.locale(tokenStorageService.getUserLocales());
+            });
+            tokenStorageService.notifyModulesLoaded();
+        }]);
 })();
 //polyfill https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
 if (!Array.prototype.find) {

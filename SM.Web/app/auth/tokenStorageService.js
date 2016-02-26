@@ -21,15 +21,19 @@
         self.isAuthorized = isAuthorized;
         self.notifyLogin = notifyLogin;
         self.notifyLogout = notifyLogout;
+        self.notifyModulesLoaded = notifyModulesLoaded;
 
-        setTokenHeader();
-
-        if (isLoggedIn()) {
-            authService.loginConfirmed(this);
-        }else{
+        if (!isLoggedIn()) {
             currentUser = unAuthUser;
         }
 
+        setTokenHeader();
+
+        function notifyModulesLoaded() {
+            if (isLoggedIn()) {
+                authService.loginConfirmed();
+            }
+        }
         
         function isLoggedIn() {
             return(!!token);
@@ -79,7 +83,7 @@
             localStorage.set('currentUser', currentUser);
             setTokenHeader();
             //now broadcast
-            authService.loginConfirmed(this);
+            authService.loginConfirmed();
         }
 
         function notifyLogout() {
@@ -89,7 +93,7 @@
             localStorage.remove('currentUser');
             setTokenHeader();
             //now broadcast
-            authService.loginCancelled(self);
+            authService.loginCancelled();
         }
 
         function setTokenHeader() {

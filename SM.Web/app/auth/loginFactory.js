@@ -9,7 +9,7 @@
         var service = {
             login : login, 
             logout: logout,
-            registerExternal: registerExternal
+            registerExternal: tokenStorageService.notifyLogin
         }
 	
         return service;
@@ -49,10 +49,6 @@
                 log.debug({ msg: 'logout called - Not logged in' });
             }
         };
-
-	    function registerExternal(registerExternalData) {
-	        authService.loginConfirmed(registerExternalData);
-	    };
 
     };
 })();

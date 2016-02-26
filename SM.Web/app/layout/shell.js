@@ -3,9 +3,9 @@
     
     var controllerId = 'shell';
     angular.module('app').controller(controllerId,
-        ['$rootScope', 'common', 'config', 'entityManagerFactory', 'modelBuilder', shell]);
+        ['$rootScope', 'common', 'config', 'tokenStorageService', 'AUTH_EVENTS',shell]);
 
-    function shell($rootScope, common, config, entityManagerFactory, modelBuilder) {
+    function shell($rootScope, common, config, tokenStorageService, AUTH_EVENTS) {
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
         var events = config.events;
@@ -25,7 +25,6 @@
         activate();
 
         function activate() {
-            entityManagerFactory.modelBuilder = modelBuilder.extendMetadata
             log.success('Simulation Manager loaded!');
             common.activateController([], controllerId);
         }
@@ -43,5 +42,6 @@
         $rootScope.$on(events.spinnerToggle,
             function (data) { toggleSpinner(data.show); }
         );
+
     };
 })();

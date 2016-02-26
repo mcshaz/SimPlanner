@@ -2,9 +2,9 @@
     'use strict';
     var serviceId = 'entityManagerFactory';
     angular.module('app')
-        .factory(serviceId, ['breeze', 'common', 'AUTH_EVENTS', '$rootScope', '$q',factory]);
+        .factory(serviceId, ['breeze', 'common', 'AUTH_EVENTS', '$rootScope', '$q', 'tokenStorageService',factory]);
 
-    function factory(breeze, common, AUTH_EVENTS, $rootScope, $q) {
+    function factory(breeze, common, AUTH_EVENTS, $rootScope, $q, tokenStorageService) {
         breeze.NamingConvention.camelCase.setAsDefault();
         //can set identity as default here
         var serviceName = 'breeze/MedSimApi';
@@ -35,8 +35,10 @@
         };
 
         var defer = $q.defer();
+        var resolved = false;
         
         $rootScope.$on(AUTH_EVENTS.loginConfirmed, importEntities);
+        //to do empty values on logout;
 
         return self;
 
@@ -45,18 +47,21 @@
         }
 
         function importEntities() {
-            
-            if (self.modelBuilder) {
-                self.modelBuilder(masterManager.metadataStore);
+            if (!resolved)
+            {
+                if (self.modelBuilder) {
+                    self.modelBuilder(masterManager.metadataStore);
+                }
+
+                var query = breeze.EntityQuery.from('Lookups');
+                return masterManager.executeQuery(query).then(function () {
+
+                    defer.resolve();
+                }, function () {
+                    defer.reject.apply(this, arguments);
+                });
+                resolved = true;
             }
-
-            var query = breeze.EntityQuery.from('Lookups');
-            return masterManager.executeQuery(query).then(function () {
-
-                defer.resolve(); 
-            }, function () {
-                defer.reject.apply(this, arguments); 
-            });
         };
 
     }

@@ -22,7 +22,7 @@
         }
     }
 
-    dateTimeDirectiveController.$inject = ['$scope','tokenStorageService']; //? a hack - wait till it has broadcast user locale
+    dateTimeDirectiveController.$inject = ['$scope'];
 
     function dateTimeDirectiveController($scope) {
         var vm = this;
