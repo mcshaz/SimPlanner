@@ -15,8 +15,8 @@ namespace SM.Dto
         public DepartmentDto OutreachingDepartment { get; set; }
         public CourseTypeDto CourseType { get; set; }
 
-        public ICollection<ScenarioDto> Scenarios { get; set; }
-        public ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
+        public virtual ICollection<ScenarioDto> Scenarios { get; set; }
+        public virtual ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
     }
 
     public class BriefCourseDto
@@ -28,6 +28,6 @@ namespace SM.Dto
         public byte FacultyNoRequired { get; set; }
         public Guid CourseTypeId { get; set; }
 
-        public ICollection<CourseParticipantDto> CourseParticipants { get; set; }
+        public virtual ICollection<CourseParticipantDto> CourseParticipants { get; set; }
     }
 }

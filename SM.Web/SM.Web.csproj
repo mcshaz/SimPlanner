@@ -230,7 +230,6 @@
     <Content Include="app\auth\loginFactory.js" />
     <Content Include="app\common\bootstrap\bootstrap.dialog.js" />
     <Content Include="app\common\common.js" />
-    <Content Include="app\common\dateUtilities.js" />
     <Content Include="app\common\logger.js" />
     <Content Include="app\common\spinner.js" />
     <Content Include="app\config.exceptionHandler.js" />
@@ -241,6 +240,8 @@
     <Content Include="app\course\course.js" />
     <Content Include="app\dashboard\dashboard.html" />
     <Content Include="app\dashboard\dashboard.js" />
+    <Content Include="app\dateTimeDirective\dateTimeCtrl.html" />
+    <Content Include="app\dateTimeDirective\timespanMinutes.js" />
     <Content Include="app\layout\shell.html" />
     <Content Include="app\layout\shell.js" />
     <Content Include="app\layout\sidebar.html" />
@@ -255,7 +256,7 @@
     <Content Include="app\services\routemediator.js" />
     <Content Include="app\auth\authComplete.html" />
     <Content Include="app\services\datacontext.js" />
-    <Content Include="app\services\timeDirective.js" />
+    <Content Include="app\dateTimeDirective\dateTimeDirective.js" />
     <Content Include="app\services\utilities.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -296,6 +297,8 @@
     <Content Include="Scripts\angular-local-storage.min.js" />
     <Content Include="app\auth\authComplete.js" />
     <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-moment.js" />
+    <Content Include="Scripts\angular-moment.min.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular-sanitize.js" />
@@ -320,6 +323,7 @@
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <Content Include="Scripts\angular-moment.min.js.map" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\http-auth-interceptor.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />

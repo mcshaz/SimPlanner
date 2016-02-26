@@ -29,5 +29,19 @@ namespace SM.DataAccess
 				_professionalRoles = value;
 			}
 		}
+
+        ICollection<CountryLocaleCode> _countryLocales;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CountryLocaleCode> CountryLocales
+        {
+            get
+            {
+                return _countryLocales ?? (_countryLocales = new List<CountryLocaleCode>());
+            }
+            set
+            {
+                _countryLocales = value;
+            }
+        }
     }
 }

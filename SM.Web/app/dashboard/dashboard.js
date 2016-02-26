@@ -16,10 +16,6 @@
         vm.title = 'Dashboard';
         vm.loginState = '';
 
-        vm.dateIntervalFormatter = common.dateUtilities.dateIntervalFormatter;
-        vm.dateLongFormatter = common.dateUtilities.dateTimeLongFormatter;
-        vm.dateShortFormatter = common.dateUtilities.dateTimeShortFormatter;
-
         activate();
 
         function activate() {

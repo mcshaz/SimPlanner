@@ -9,7 +9,7 @@ namespace SM.Dto
         public string Name { get; set; }
         public byte MinimumFaculty { get; set; }
         public byte MaximumFaculty { get; set; }
-        public ICollection<CourseTeachingResourceDto> DefaultResources { get; set; }
+        public virtual ICollection<CourseTeachingResourceDto> DefaultResources { get; set; }
 
     }
 }

@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\CountryLocaleCode.cs" />
     <Compile Include="Data\Authentication\AspNetRole.cs" />
     <Compile Include="Data\Authentication\AspNetUserClaim.cs" />
     <Compile Include="Data\Authentication\AspNetUserLogin.cs" />
@@ -112,6 +113,8 @@
     <Compile Include="Data\Slot.cs" />
     <Compile Include="InitialiseMedSim.cs" />
     <Compile Include="MedSimDbContext.cs" />
+    <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
+    <Compile Include="Metadata\CountryLocaleCodeMetadata.cs" />
     <Compile Include="Metadata\CountryMetadata.cs" />
     <Compile Include="Metadata\CourseMetadata.cs" />
     <Compile Include="Metadata\CourseParticipantMetadata.cs" />

@@ -1,6 +1,7 @@
 namespace SM.DataAccess
 {
     using Microsoft.AspNet.Identity.EntityFramework;
+    using SM.Metadata;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
@@ -18,6 +19,7 @@ namespace SM.DataAccess
         }
 
         public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<CountryLocaleCode> CountryLocaleCodes { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<ScenarioRoleDescription> SenarioRoles { get; set; }
         public virtual DbSet<Institution> Institutions { get; set; }
@@ -58,19 +60,21 @@ namespace SM.DataAccess
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
+            //Configuration.LazyLoadingEnabled = false;
+            //Configuration.ProxyCreationEnabled = false;
 
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
-
-            modelBuilder.Entity<Country>()
-                .Property(e => e.Code)
-                .IsFixedLength();
+            modelBuilder.Conventions.Add(new FixedLengthAttributeConvention());
 
             modelBuilder.Entity<Country>()
                 .HasMany(e => e.ProfessionalRoles)
                 .WithMany(e => e.Countries)
                 .Map(m => m.ToTable("CountryProfessionalRole").MapLeftKey("CountryCode").MapRightKey("ProfessionalRoleId"));
+
+            modelBuilder.Entity<Country>()
+                .HasMany(e => e.CountryLocales)
+                .WithRequired(e => e.Country)
+                .HasForeignKey(e=>e.CountryCode);
 
             modelBuilder.Entity<Course>()
                 .HasMany(e => e.CourseParticipants)

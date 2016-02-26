@@ -17,6 +17,10 @@
                     getMetastore().setEntityTypeForResourceName(resourceName, entityTypeName);
                 }
 
+                this.hasChanges = function () {
+                    return manager().hasChanges(entityTypeName);
+                }
+
                 this.fetchByKey = function (key) {
                     return manager().fetchEntityByKey(entityTypeName, key, true) //true refers to check local cache 1st
                         .then(function (data) {

@@ -12,12 +12,12 @@ namespace SM.Dto
         public Guid InstitutionId { get; set; }
         public string InvitationLetterFilename { get; set; }
         public string CertificateFilename { get; set; }
-        public ICollection<CourseTypeDto> CourseTypes { get; set; }
+        public virtual ICollection<CourseTypeDto> CourseTypes { get; set; }
         public InstitutionDto Institution { get; set; }
-        public ICollection<ManequinDto> Manequins { get; set; }
-        public ICollection<CourseDto> Courses { get; set; }
-        public ICollection<ScenarioDto> Scenarios { get; set; }
-        public ICollection<ParticipantDto> Participants { get; set; }
+        public virtual ICollection<ManequinDto> Manequins { get; set; }
+        public virtual ICollection<CourseDto> Courses { get; set; }
+        public virtual ICollection<ScenarioDto> Scenarios { get; set; }
+        public virtual ICollection<ParticipantDto> Participants { get; set; }
 
 
     }

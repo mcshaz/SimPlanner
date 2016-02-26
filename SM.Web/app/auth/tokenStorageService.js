@@ -16,6 +16,7 @@
         self.getUserName = getUserName;
         self.getUserRoles = getUserRoles;
         self.getUserId = getUserId;
+        self.getUserLocales = getUserLocales;
         self.isLoggedIn = isLoggedIn;
         self.isAuthorized = isAuthorized;
         self.notifyLogin = notifyLogin;
@@ -43,7 +44,11 @@
         }
 
         function getUserRoles(){
-            return currentUser.roles.slice();
+            return currentUser.roles.slice(0);
+        }
+
+        function getUserLocales() {
+            return currentUser.locales;
         }
 
         //check if the user is authorized to access the next route
@@ -67,13 +72,14 @@
             currentUser = {
                 name: data.fullName,
                 roles: data.userRoles.split(','),
-                id: data.userId
+                id: data.userId,
+                locales: data.userLocales.split(',')
             }
             localStorage.set('token',token);
             localStorage.set('currentUser', currentUser);
             setTokenHeader();
             //now broadcast
-            authService.loginConfirmed(self);
+            authService.loginConfirmed(this);
         }
 
         function notifyLogout() {

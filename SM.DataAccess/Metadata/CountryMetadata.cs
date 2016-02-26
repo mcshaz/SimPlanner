@@ -1,12 +1,15 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SM.Metadata
-{    
-    public class CountryMetadata 
-	{
+{
+    public class CountryMetadata
+    {
         [Key]
-        [StringLength(2)]
+        [FixedLength(Length = 2)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Code { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Name { get; set; }

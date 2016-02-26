@@ -9,8 +9,8 @@ namespace SM.Dto
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public ICollection<CourseTypeDto> CourseTypes { get; set; }
-        public ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
+        public virtual ICollection<CourseTypeDto> CourseTypes { get; set; }
+        public virtual ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
 
     }
 }

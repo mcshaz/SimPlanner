@@ -18,13 +18,16 @@
         var metadataStore = new breeze.MetadataStore(); /*{namingConvention: camelCaseConvention // if you use this convention)*/
 
         // initialize it from the application's metadata variable
-        metadataStore.importMetadata(window.app.metadata);
+        metadataStore.importMetadata(window.medsimMetadata);
 
         var masterManager = new breeze.EntityManager({
             dataService: dataService,
             metadataStore: metadataStore
         });
         //var log = common.logger.getLogFn(serviceId);
+        masterManager.hasChangesChanged.subscribe(function () {
+            $rootScope.$broadcast('hasChanges', arguments[0]);
+        });
 
         var self = {
             manager: masterManager,

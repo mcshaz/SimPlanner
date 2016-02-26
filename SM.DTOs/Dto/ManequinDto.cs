@@ -12,7 +12,7 @@ namespace SM.Dto
         public int? DepartmentId { get; set; }
         public int ManufacturerId { get; set; }
         public DepartmentDto Department { get; set; }
-        public ICollection<ScenarioDto> Scenarios { get; set; }
+        public virtual ICollection<ScenarioDto> Scenarios { get; set; }
         public ManequinManufacturerDto Manufacturer { get; set; }
 
     }

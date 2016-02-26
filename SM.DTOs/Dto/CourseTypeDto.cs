@@ -14,11 +14,11 @@ namespace SM.Dto
         public byte DaysDuration { get; set; }
         public Emersion? EmersionCategory { get; set; }
         public string Abbrev { get; set; }
-        public ICollection<DepartmentDto> Departments { get; set; }
-        public ICollection<ScenarioDto> Scenarios { get; set; }
-        public ICollection<CourseDto> Courses { get; set; }
-        public ICollection<CourseSlotDto> CourseEvents { get; set; }
-        public ICollection<ScenarioSlotDto> ScenarioEvents { get; set; }
-        public ICollection<ScenarioRoleDescriptionDto> ScenarioRoles { get; set; }
+        public virtual ICollection<DepartmentDto> Departments { get; set; }
+        public virtual ICollection<ScenarioDto> Scenarios { get; set; }
+        public virtual ICollection<CourseDto> Courses { get; set; }
+        public virtual ICollection<CourseSlotDto> CourseEvents { get; set; }
+        public virtual ICollection<ScenarioSlotDto> ScenarioEvents { get; set; }
+        public virtual ICollection<ScenarioRoleDescriptionDto> ScenarioRoles { get; set; }
     }
 }

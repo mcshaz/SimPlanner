@@ -1,0 +1,14 @@
+﻿<div class="input-group date">
+    <input type="text" class="form-control" uib-datepicker-popup="{{dtvm.dateFormat}}" ng-model="dtvm.date" 
+           is-open="dtvm.dpPopup.isOpen" min-date="dtvm.minDate" max-date="dtvm.maxDate" 
+           ng-required="true" close-text="Close" placeholder="date" ng-change="dtvm.datetimeChange()"/>
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="dtvm.openDp()"><span class="glyphicon glyphicon-calendar"></span></button>
+    </span>
+
+    <input type="text" class="form-control" ng-model="dtvm.timespan" sm-timespan ng-required="true" placeholder="time" 
+           ng-change="dtvm.datetimeChange()"/>
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-time"></span></button>
+    </span>
+</div>

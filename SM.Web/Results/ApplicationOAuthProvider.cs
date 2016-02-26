@@ -8,6 +8,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using SM.Web.Models;
 using SM.DataAccess;
+using System.Linq;
 
 namespace SM.Web.Providers
 {
@@ -103,9 +104,17 @@ namespace SM.Web.Providers
             {
                 { "userId", user.Id.ToString() },
                 { "fullName", user.FullName },
-                { "userRoles", string.Join(",",roles) }
+                { "userRoles", string.Join(",",roles) },
+                { "userLocales", string.Join(",",GetLocaleCodes(user)) }
             };
             return new AuthenticationProperties(data);
+        }
+
+        private static IEnumerable<string> GetLocaleCodes(Participant p)
+        {
+            return (from cl in p.Department.Institution.Country.CountryLocales
+                    orderby cl.Preference
+                    select cl.LocaleCode).ToList();
         }
     }
 }

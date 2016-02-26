@@ -15,7 +15,8 @@
 
         // 3rd Party Modules
         'ui.bootstrap',      // ui-bootstrap (ex: carousel, pagination, dialog)
-        'breeze.angular'
+        'breeze.angular',
+        'angularMoment'
     ]);
 
     /*Constants regarding user login defined here*/
@@ -44,6 +45,13 @@
     // Handle routing errors and success events
     app.run(['$route', function ($route) {
         // Include $route to kick start the router.
+    }]);
+
+    //set locale once logged in 
+    app.run(['$rootScope', 'AUTH_EVENTS', function ($rootScope, AUTH_EVENTS) {
+        $rootScope.$on(AUTH_EVENTS.loginConfirmed, function (evt, storage) {
+            moment.locale(storage.getUserLocales());
+        });
     }]);
 })();
 //polyfill https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find

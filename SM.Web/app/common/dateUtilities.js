@@ -4,8 +4,6 @@
     angular.module('common').factory('dateUtilities', [factory]);
     
     function factory() {
-        var universalDateInputs = ["D MMM YYYY", "Do MMM YYYY", "Do MMMM YYYY", "D MMMM YYYY", "YYYY-MM-DD"];
-        var dateFirstInputs = ['D-M-YYYY', 'D/M/YYYY', 'D.M.YYYY'];
         var service = {
             dateFirstCulture: true, //set to true or false
             dateIntervalFormatter: dateIntervalFormatter,
@@ -73,6 +71,11 @@
                 return m.fromNow();
             }
             return null;
+        }
+
+        function getDateShortFormat() {
+            //put in to allow 
+            return service.dateShortFormat;
         }
 
 

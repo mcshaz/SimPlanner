@@ -10,6 +10,11 @@ namespace SM.DataAccess
         {
             var nz = new Country { Code = "NZ", Name = "New Zealand" };
             context.Countries.Add(nz);
+            string[] locales = new string[] { "en-NZ", "en-AU", "en-GB" };
+            for (byte i = 0; i < locales.Length; i++)
+            {
+                context.CountryLocaleCodes.Add(new CountryLocaleCode { Country = nz, LocaleCode = locales[i], Preference = i });
+            }
             var starship = new Institution { Id = Guid.NewGuid(), Country = nz, Name="Starship" };
             context.Institutions.Add(starship);
             var ced = new Department { Id = Guid.NewGuid(), Institution = starship, Name = "CED" };

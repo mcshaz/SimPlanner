@@ -19,9 +19,10 @@ namespace SM.Web.App_Start
                 ?? @"C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web" + metadataPath.Substring(1).Replace('/', '\\');
 
             // the same pre- and post-fix strings we used earlier
-            const string prefix = "window.app = window.app || {}; window.app.metadata = JSON.stringify(";
+            const string prefix = "; Object.defineProperty(window, 'medsimMetadata', {enumerable: false, configurable: false, writable: false,"
+                + "value: JSON.stringify(";
 
-            const string postfix = ");";
+            const string postfix = ")});";
 
             // write to file
             using (var writer = new StreamWriter(fileName))

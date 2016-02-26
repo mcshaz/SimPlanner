@@ -26,16 +26,7 @@
                 <div class="form-group">
                     <label for="date" class="col-md-2 control-label">Course Date</label>
                     <div class="col-md-10">
-                        <div class="input-group date">
-                            <input type="text" class="form-control" uib-datepicker-popup="dd MMM yyyy" ng-model="vm.course.startTime" is-open="vm.dpPopup.isOpen" min-date="vm.minDate" max-date="vm.maxDate" ng-required="true" close-text="Close" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="vm.openDp()"><span class="glyphicon glyphicon-calendar"></span></button>
-                            </span>
-                            <input type="text" class="form-control" ng-model="vm.course.startTime" data-timeinput ng-required="true" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ><span class="glyphicon glyphicon-time"></span></button>
-                            </span>
-                        </div>
+                        <sm-datetime ng-model="vm.course.startTime" min-date="vm.minDate" max-date="vm.maxDate" ng-required />
                         <span class="text-danger" />
                     </div>
                 </div>
@@ -54,7 +45,7 @@
 
                 <div class="row">
                     <div class="col-md-10 col-md-push-2">
-                        <button type="submit" data-ng-click="vm.save()" data-ng-disabled="vm.canSave" class="btn btn-primary">Save</button>
+                        <button type="submit" data-ng-click="vm.save()" data-ng-disabled="!vm.canSave" class="btn btn-primary">Save</button>
                     </div>
                 </div>
                 <div class="row">

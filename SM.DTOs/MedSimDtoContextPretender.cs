@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using SM.Metadata;
+using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace SM.Dto
@@ -14,6 +15,7 @@ namespace SM.Dto
 
         //  Dto versions of these Northwind Model classes
         public virtual DbSet<CountryDto> Countries { get; set; }
+        public virtual DbSet<CountryLocaleCodeDto> CountryLocales { get; set; }
         public virtual DbSet<DepartmentDto> Departments { get; set; }
         public virtual DbSet<ScenarioRoleDescriptionDto> SenarioRoles { get; set; }
         public virtual DbSet<InstitutionDto> Institutions { get; set; }
@@ -34,10 +36,9 @@ namespace SM.Dto
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
 
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Add(new FixedLengthAttributeConvention());
 
             modelBuilder.Entity<CountryDto>()
                 .Property(e => e.Code)
@@ -47,6 +48,11 @@ namespace SM.Dto
                 .HasMany(e => e.ProfessionalRoles)
                 .WithMany(e => e.Countries)
                 .Map(m => m.ToTable("CountryProfessionalRole").MapLeftKey("CountryCode").MapRightKey("ProfessionalRoleId"));
+
+            modelBuilder.Entity<CountryDto>()
+                .HasMany(e => e.CountryLocales)
+                .WithRequired(e => e.Country)
+                .HasForeignKey(e => e.CountryCode);
 
             modelBuilder.Entity<CourseDto>()
                 .HasMany(e => e.CourseParticipants)

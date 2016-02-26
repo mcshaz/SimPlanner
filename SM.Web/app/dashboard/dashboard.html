@@ -13,7 +13,7 @@
                                     <li>
                                         <span class="fa fa-calendar-check-o" data-ng-switch="vm.loginState"> 
                                             <span data-ng-switch-when="active">
-                                                {{vm.dateLongFormatter(vm.nextUserCourse.startTime)}}
+                                                {{vm.nextUserCourse.startTime | amDateFormat:'LLLL'}}
                                             </span>
                                             <span data-ng-switch-when="inactive">
                                                 no upcoming courses
@@ -26,8 +26,8 @@
                                     <li>
                                         <span class="fa fa-clock-o"> 
                                             <small data-ng-switch="vm.loginState">
-                                                <span data-ng-switch-when="active">
-                                                    {{vm.dateIntervalFormatter(vm.nextUserCourse.startTime)}}
+                                                <span data-ng-switch-when="active" am-time-ago="vm.nextUserCourse.startTime">
+                                                    
                                                 </span>
                                                 <span data-ng-switch-when="inactive">
                                                     create a new course?
@@ -126,7 +126,7 @@
                                 </thead>
                                 <tbody>
                                     <tr data-ng-repeat="c in vm.upcomingCourses track by c.id">
-                                        <td>{{vm.dateShortFormatter(c.startTime)}}</td>
+                                        <td>{{c.startTime | amDateFormat:'L'}}</td>
                                         <td>{{c.department.name}}</td>
                                         <td>{{c.location}}</td>
                                         <td><input type="checkbox" disabled="disabled" data-ng-checked="c.includesUser(vm.currentUserId)" /></td>

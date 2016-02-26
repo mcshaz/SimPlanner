@@ -11,8 +11,8 @@ namespace SM.Dto
         public Guid Id { get; set; }
         public string Description { get; set; }
         public ProfessionalCategory Category { get; set; }
-        public ICollection<ParticipantDto> Participants { get; set; }
-        public ICollection<CountryDto> Countries { get; set; }
+        public virtual ICollection<ParticipantDto> Participants { get; set; }
+        public virtual ICollection<CountryDto> Countries { get; set; }
 
     }
 }

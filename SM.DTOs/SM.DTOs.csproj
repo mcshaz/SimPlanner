@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\CountryDto.cs" />
+    <Compile Include="Dto\CountryLocaleDto.cs" />
     <Compile Include="Dto\CourseDto.cs" />
     <Compile Include="Dto\CourseParticipantDto.cs" />
     <Compile Include="Dto\CourseSlotDto.cs" />

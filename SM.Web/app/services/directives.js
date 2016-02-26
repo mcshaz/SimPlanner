@@ -122,6 +122,28 @@
         }
     });
 
+    app.directive('ccWidgetHeader', function() {
+        //Usage:
+        //<div data-cc-widget-header title="vm.map.title"></div>
+        var directive = {
+            link: link,
+            scope: {
+                'title': '@',
+                'subtitle': '@',
+                'rightText': '@',
+                'allowCollapse': '@'
+            },
+            templateUrl: '/app/layout/widgetheader.html',
+            restrict: 'A',
+        };
+        return directive;
+
+        function link(scope, element, attrs) {
+            attrs.$set('class', 'widget-head');
+        }
+    });
+    */
+
     app.directive('ccScrollToTop', ['$window',
         // Usage:
         // <span data-cc-scroll-to-top></span>
@@ -156,8 +178,6 @@
         }
     ]);
 
-    */
-
     app.directive('ccSpinner', ['$window', function ($window) {
         // Description:
         //  Creates a new Spinner and sets its options
@@ -180,25 +200,4 @@
             }, true);
         }
     }]);
-
-    app.directive('ccWidgetHeader', function() {
-        //Usage:
-        //<div data-cc-widget-header title="vm.map.title"></div>
-        var directive = {
-            link: link,
-            scope: {
-                'title': '@',
-                'subtitle': '@',
-                'rightText': '@',
-                'allowCollapse': '@'
-            },
-            templateUrl: '/app/layout/widgetheader.html',
-            restrict: 'A',
-        };
-        return directive;
-
-        function link(scope, element, attrs) {
-            attrs.$set('class', 'widget-head');
-        }
-    });
 })();

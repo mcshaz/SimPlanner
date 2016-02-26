@@ -8,6 +8,6 @@ namespace SM.Dto
         public int MinutesDuration { get; set; }
         public byte Day { get; set; }
         public int Order { get; set; }
-        public ICollection<CourseTypeDto> CourseTypes { get; set; }
+        public virtual ICollection<CourseTypeDto> CourseTypes { get; set; }
     }
 }
