@@ -4,7 +4,7 @@ using System.Data.Entity;
 
 namespace SM.DataAccess
 {
-    class InitialiseMedSim : DropCreateDatabaseAlways<MedSimDbContext>// DropCreateDatabaseIfModelChanges<MedSimDbContext>
+    class InitialiseMedSim : DropCreateDatabaseIfModelChanges<MedSimDbContext>// DropCreateDatabaseIfModelChanges<MedSimDbContext>
     {
         protected override void Seed(MedSimDbContext context)
         {

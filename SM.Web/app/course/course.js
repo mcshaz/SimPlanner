@@ -33,7 +33,7 @@
         vm.save = function () {
             log({ msg:'saved date: ' + vm.course.startTime });
         }//datacontext.save;
-        vm.canSave = true;
+        vm.canSave = false;
         $rootScope.$on('hasChanges', function () {
             vm.canSave = datacontext.courses.hasChanges() || datacontext.courseParticipants.hasChanges();
         });

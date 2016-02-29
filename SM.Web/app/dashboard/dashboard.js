@@ -41,11 +41,11 @@
 
         function getCourses() {
             var now = new Date();
-            return datacontext.briefCourses.find({
+            return datacontext.courses.find({
                 where: Predicate.create('startTime', '>', now),
                 orderBy: 'startTime',
-                take: 5
-                //expand: 'courseParticipants'
+                take: 5,
+                expand: 'courseParticipants'
             }).then(function (data) {
                 if (data.length) {
                     datacontext.ready().then(function () {

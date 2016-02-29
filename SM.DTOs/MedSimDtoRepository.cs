@@ -1,11 +1,15 @@
-﻿using Breeze.ContextProvider;
+﻿using AutoMapper.QueryableExtensions;
+using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
 using Newtonsoft.Json.Linq;
 using SM.DataAccess;
 using SM.DTOs.Maps;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Web.Http.OData.Query;
 
 namespace SM.Dto
 {
@@ -56,49 +60,70 @@ namespace SM.Dto
             return _contextProvider.SaveChanges(saveBundle);
         }
 
+        //https://github.com/AutoMapper/AutoMapper/wiki/Queryable-Extensions
         public IQueryable<InstitutionDto> Institutions
         {
             get
             {
-                if (UserRoles.Contains(RoleConstants.AccessAllData))
+                IQueryable<Institution> returnVar = Context.Institutions;
+                if (!UserRoles.Contains(RoleConstants.AccessAllData))
                 {
-                    return Context.Institutions.Select(InstitutionMaps.mapFromRepo);
+                    returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)));
                 }
                 //currently allowing users to view all departmetns within their institution - but only edit thseir department
-                return Context.Institutions
-                    .Where(i => i.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)))
-                    .Select(InstitutionMaps.mapFromRepo);
+                return returnVar.ProjectTo<InstitutionDto>(AutomapperConfig.GetConfig());
 
             }
         }
 
-        public IQueryable<ParticipantDto> Participants { get { return Context.Users.Select(ParticipantMaps.mapFromRepo); } }
+        public IQueryable<ParticipantDto> Participants { get { return Context.Users.ProjectTo<ParticipantDto>(AutomapperConfig.GetConfig()); } }
 
-        public IQueryable<CountryDto> Countries { get { return Context.Countries.Select(CountryMaps.mapFromRepo); } }
+        public IQueryable<CountryDto> Countries { get { return Context.Countries.ProjectTo<CountryDto>(AutomapperConfig.GetConfig()); } }
 
-        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.Select(DepartmentMaps.mapFromRepo); } }
+        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.ProjectTo<DepartmentDto>(AutomapperConfig.GetConfig()); } }
 
-        public IQueryable<ScenarioRoleDescriptionDto> SenarioRoles { get { return Context.SenarioRoles.Select(ScenarioRoleDescriptionMaps.mapFromRepo); } }
+        public IQueryable<ScenarioRoleDescriptionDto> SenarioRoles { get { return Context.SenarioRoles.ProjectTo<ScenarioRoleDescriptionDto>(AutomapperConfig.GetConfig()); } }
 
-        public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.Select(InstitutionMaps.mapFromRepo); } }
+        public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.ProjectTo<InstitutionDto>(AutomapperConfig.GetConfig()); } }
 
-        public IQueryable<ManequinDto> Manequins { get { return Context.Manequins.Select(ManequinMaps.mapFromRepo); } }
+        public IQueryable<ManequinDto> Manequins { get { return Context.Manequins.ProjectTo<ManequinDto>(AutomapperConfig.GetConfig()); } }
 
-        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.Select(ProfessionalRoleMaps.mapFromRepo); } }
+        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.ProjectTo<ProfessionalRoleDto>(AutomapperConfig.GetConfig()); } }
 
-        public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.Select(ScenarioMaps.mapFromRepo); } }
+        public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.ProjectTo<ScenarioDto>(AutomapperConfig.GetConfig()); } }
 
-        public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.Select(ScenarioResourceMaps.mapFromRepo); } }
+        public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.ProjectTo<ScenarioResourceDto>(AutomapperConfig.GetConfig()); } }
 
-        public IQueryable<CourseDto> Courses { get { return Context.Courses.Select(CourseMaps.mapFromRepo); } }
 
-        public IQueryable<CourseDto> BriefCourses { get { return Context.Courses.Select(CourseMaps.mapBriefFromRepo); } }
+        //might eventually run the visitor like so: http://stackoverflow.com/questions/18879779/select-and-expand-break-odataqueryoptions-how-to-fix
+        public IQueryable<CourseDto> GetCourses(string[] include)
+        {
+            ValidateIncludes(include);
+            return Context.Courses.Select(CourseMaps.mapFromRepo);
+            /*
+            if (include.Length > 0)
+            {
+                return Context.Courses.ProjectTo<CourseDto>(parameters: null, membersToExpand: include);
+            }
+            */
+            //return Context.Courses.Include("")
+            //filteredQuery.Select(CourseMaps.mapFromRepo).ToList().AsQueryable();
+        } 
 
         public IQueryable<CourseTypeDto> CourseTypes
         {
             get
             {
-                return Context.CourseTypes.Select(CourseTypeMaps.mapFromRepo);
+                var mapper = AutomapperConfig.GetConfig().CreateMapper();
+                return mapper.Map<IEnumerable<CourseTypeDto>>(Context.CourseTypes).AsQueryable();
+            }
+        }
+
+        private static void ValidateIncludes(string[] includes)
+        {
+            if (includes.Any(i => i.Contains('.')))
+            {
+                throw new NotSupportedException("nested include properties are not supported");
             }
         }
 

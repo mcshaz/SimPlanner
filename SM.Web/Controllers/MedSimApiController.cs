@@ -7,6 +7,11 @@ using System.Security.Claims;
 using System;
 using SM.Dto;
 using Breeze.ContextProvider;
+using System.Web.Http.OData.Query;
+using System.Web.Http.OData;
+using System.Net.Http;
+using System.Web.Http.OData.Extensions;
+using Microsoft.Data.OData.Query.SemanticAst;
 
 namespace SM.Web.Controllers
 {
@@ -36,7 +41,10 @@ namespace SM.Web.Controllers
         }
 
         [HttpGet]
-		public IQueryable<ParticipantDto> Participants(){ return Repo.Participants; } 
+		public IQueryable<ParticipantDto> Participants()
+        {
+            return Repo.Participants;
+        } 
         [HttpGet]
 		public IQueryable<CountryDto> Countries(){ return Repo.Countries; } 
         [HttpGet]
@@ -60,17 +68,26 @@ namespace SM.Web.Controllers
             return Repo.ScenarioResources;
         } 
         [HttpGet]
-		public IQueryable<CourseDto> Courses()
+		public IQueryable<CourseDto> Courses(ODataQueryOptions options)
         {
-            return Repo.Courses;
+            return Repo.GetCourses(GetAndStripIncludes(options));
         }
-
-        [HttpGet]
-        public IQueryable<CourseDto> BriefCourses()
+        private string[] GetAndStripIncludes(ODataQueryOptions options)
         {
-            return Repo.BriefCourses;
-        }
+            //a hack to use breeze instead of learning .net odata implementation
+            //http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/odata-v4/create-an-odata-v4-endpoint
+            if (options.SelectExpand != null)
+            {
+                var se = options.SelectExpand;
+                string[] returnVar = se.RawExpand.Split(',');
 
+                //we'll deal with the expand, breeze deals with the 
+                Request.ODataProperties().SelectExpandClause = new SelectExpandQueryOption(
+                    se.RawSelect,null,se.Context).SelectExpandClause;
+
+            }
+            return null;
+        }
         [HttpGet]
 		public IQueryable<CourseTypeDto> CourseTypes()
         {
@@ -83,9 +100,8 @@ namespace SM.Web.Controllers
             return new LookupBundle
             {
                 CourseTypes = Repo.CourseTypes.ToList(),
-                //TODO - get user institution (add DTO)
-                Institutions = Repo.Institutions.ToList(),
-                ProfessionalRoles = Repo.ProfessionalRoles.ToList()
+                //Institutions = Repo.Institutions.ToList(),
+                //ProfessionalRoles = Repo.ProfessionalRoles.ToList()
             };
         }
         

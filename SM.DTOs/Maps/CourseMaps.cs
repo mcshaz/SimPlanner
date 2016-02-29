@@ -18,7 +18,12 @@ namespace SM.DTOs.Maps
             FeedbackSummaryFilename = m.FeedbackSummaryFilename,
             CourseTypeId = m.CourseTypeId,
         };
+        /*
+        internal static Expression<Func<Course, CourseDto>> mapFromRepo(string[] includes) {
+            if (["Scenarios", "CourseType", "CourseParticipants", "ScenarioFacultyRoles"])
+            {
 
+            } */
         internal static Expression<Func<Course, CourseDto>> mapFromRepo = m => new CourseDto
         {
             Id = m.Id,
@@ -28,21 +33,8 @@ namespace SM.DTOs.Maps
             FacultyNoRequired = m.FacultyNoRequired,
             ParticipantVideoFilename = m.ParticipantVideoFilename,
             FeedbackSummaryFilename = m.FeedbackSummaryFilename,
-            CourseTypeId = m.CourseTypeId,
-
-
-
-            Scenarios = m.Scenarios.Select(s => new ScenarioDto
-            {
-                Id = s.Id,
-                Description = s.Description,
-                DepartmentId = s.DepartmentId,
-                Complexity = s.Complexity,
-                EmersionCategory = s.EmersionCategory,
-                TemplateFilename = s.TemplateFilename,
-                ManequinId = s.ManequinId,
-                CourseTypeId = s.CourseTypeId,
-            }).ToList()
+            CourseTypeId = m.CourseTypeId
+        };
             //Department = m.Department,
 
             //OutreachingDepartment = m.OutreachingDepartment,
@@ -52,9 +44,17 @@ namespace SM.DTOs.Maps
             //CourseParticipants = m.CourseParticipants,
 
             //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-        };
 
-
+        static void IsAllowed(string[] includes,params string[] allowed)
+        {
+            var disallowed = includes.Except(includes);
+            if (disallowed.Any())
+            {
+                throw new ArgumentException(
+                    string.Format("the include parameter(s){0} are not allowed: allowed parameters include ({1})",
+                    string.Join(",", disallowed), string.Join(",", allowed)));
+            }
+        }
         internal static Expression<Func<Course, CourseDto>> mapBriefFromRepo = m => new CourseDto
         {
             Id = m.Id,
