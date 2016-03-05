@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 
 namespace SM.DTOs.Maps
 {
-    internal static class ParticipantMaps
+    public static class ParticipantMaps
     {
-        internal static Func<ParticipantDto, Participant> mapToRepo = m => new Participant
+        public static Func<ParticipantDto, Participant> mapToRepo = m => new Participant
         {
             Id = m.Id,
             PhoneNumber = m.PhoneNumber,
@@ -26,7 +26,7 @@ namespace SM.DTOs.Maps
             //ScenarioFacultyRoles = m.ScenarioFacultyRoles
         };
 
-        internal static Expression<Func<Participant, ParticipantDto>> mapFromRepo = m => new ParticipantDto
+        public static Expression<Func<Participant, ParticipantDto>> mapFromRepo = m => new ParticipantDto
         {
             Id = m.Id,
             PhoneNumber = m.PhoneNumber,
@@ -34,16 +34,16 @@ namespace SM.DTOs.Maps
             AlternateEmail = m.AlternateEmail,
             FullName = m.FullName,
             DefaultDepartmentId = m.DefaultDepartmentId,
-            DefaultProfessionalRoleId = m.DefaultProfessionalRoleId
+            DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
 
-            //CourseSlotPresentations = m.CourseSlotPresentations
-            //Department = m.Department,
+            //CourseSlotPresentations = null,
+            Department = null,
 
-            //ProfessionalRole = m.ProfessionalRole,
+            //ProfessionalRole = null,
 
-            //CourseParticipants = m.CourseParticipants,
+            //CourseParticipants = null,
 
-            //ScenarioFacultyRoles = m.ScenarioFacultyRoles
+            //ScenarioFacultyRoles = null
         };
     }
 }

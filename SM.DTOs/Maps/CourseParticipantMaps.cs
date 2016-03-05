@@ -4,8 +4,9 @@ using System;
 using System.Linq.Expressions;
 namespace SM.DTOs.Maps
 {
-    internal static class CourseParticipantMaps
-    {        internal static Func<CourseParticipantDto, CourseParticipant> mapToRepo = m => new CourseParticipant
+    public static class CourseParticipantMaps
+    {
+        public static Func<CourseParticipantDto, CourseParticipant> mapToRepo = m => new CourseParticipant
         {
             ParticipantId = m.ParticipantId,
             CourseId = m.CourseId,
@@ -17,7 +18,7 @@ namespace SM.DTOs.Maps
             //Course = m.Course
         };
 
-        internal static Expression<Func<CourseParticipant, CourseParticipantDto>> mapFromRepo= m => new CourseParticipantDto
+        public static Expression<Func<CourseParticipant, CourseParticipantDto>> mapFromRepo= m => new CourseParticipantDto
         {
             ParticipantId = m.ParticipantId,
             CourseId = m.CourseId,

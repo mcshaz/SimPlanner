@@ -114,6 +114,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoggingVisitor.cs" />
+    <Compile Include="MergingVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SvickMapNavProperty.cs" />
     <Compile Include="StoevMapNavProperty.cs" />
@@ -129,6 +131,10 @@
     <ProjectReference Include="..\SM.DataAccess\SM.DataAccess.csproj">
       <Project>{e33a8c3f-d0c4-4cce-9366-e0111916abe0}</Project>
       <Name>SM.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SM.DTOs\SM.DTOs.csproj">
+      <Project>{fb758bf9-3495-4a2f-9004-cf01389b34f6}</Project>
+      <Name>SM.DTOs</Name>
     </ProjectReference>
     <ProjectReference Include="..\SM.Web\SM.Web.csproj">
       <Project>{c49a11cc-f9da-4ac2-ac1e-18afe759c6e3}</Project>
