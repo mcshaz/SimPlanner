@@ -45,7 +45,8 @@
                 where: Predicate.create('startTime', '>', now),
                 orderBy: 'startTime',
                 take: 5,
-                expand: 'courseParticipants'
+                //expand: 'courseParticipants',
+                select: 'id,startTime,location'
             }).then(function (data) {
                 if (data.length) {
                     datacontext.ready().then(function () {

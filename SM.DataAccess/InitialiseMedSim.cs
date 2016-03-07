@@ -4,7 +4,7 @@ using System.Data.Entity;
 
 namespace SM.DataAccess
 {
-    class InitialiseMedSim : DropCreateDatabaseIfModelChanges<MedSimDbContext>// DropCreateDatabaseIfModelChanges<MedSimDbContext>
+    class InitialiseMedSim : DropCreateDatabaseAlways<MedSimDbContext>// DropCreateDatabaseIfModelChanges<MedSimDbContext>
     {
         protected override void Seed(MedSimDbContext context)
         {
@@ -17,13 +17,18 @@ namespace SM.DataAccess
             }
             var starship = new Institution { Id = Guid.NewGuid(), Country = nz, Name="Starship" };
             context.Institutions.Add(starship);
+
             var ced = new Department { Id = Guid.NewGuid(), Institution = starship, Name = "CED" };
             context.Departments.Add(ced);
             var simProgram = new Department { Id = Guid.NewGuid(), Institution = starship, Name = "Simulation Programme" };
             context.Departments.Add(simProgram);
-
             var picu = new Department {Id = Guid.NewGuid(), Institution = starship, Name = "PICU" };
             context.Departments.Add(ced);
+
+            var picuConf = new Room { Id = Guid.NewGuid(), Department = picu, Description = "PICU Conference Room (Meeting Room 252)", Directions = "Ask the Administrative assitants to let you in to the back offices. 2nd room on the left" };
+            context.Rooms.Add(picuConf);
+            var cedConf = new Room { Id = Guid.NewGuid(), Department = ced, Description = "CED Conference Room", Directions = "Back Coridors - enter code 9999 on keypad to enter" };
+            context.Rooms.Add(cedConf);
 
             var consultantRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Medical, Description = "Consulant" };
             context.ProfessionalRoles.Add(consultantRole);
@@ -83,9 +88,9 @@ namespace SM.DataAccess
             coffee.CourseTypes.Add(crm);
             context.CourseEvents.Add(coffee);
 
-            var c = new Course { Id = Guid.NewGuid(), CourseType = crm, Department = ced, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(14) };
-            var c2 = new Course { Id = Guid.NewGuid(), CourseType = crm, Department = picu, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(28) };
-            var c0 = new Course { Id = Guid.NewGuid(), CourseType = crm, Department = ced, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(-30) };
+            var c = new Course { Id = Guid.NewGuid(), CourseType = crm, Department = ced, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(14), Room=cedConf };
+            var c2 = new Course { Id = Guid.NewGuid(), CourseType = crm, Department = picu, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(28), Room=picuConf };
+            var c0 = new Course { Id = Guid.NewGuid(), CourseType = crm, Department = ced, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(-30), Room = cedConf };
             context.Courses.AddRange(new Course[] { c, c0, c2 });
 
             foreach (var t in new Course[] { c, c2, c0 })

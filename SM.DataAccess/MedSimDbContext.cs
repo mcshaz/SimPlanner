@@ -36,6 +36,7 @@ namespace SM.DataAccess
         public virtual DbSet<CourseTeachingResource> CourseTeachingResources { get; set; }
         public virtual DbSet<CourseSlotPresenter> CourseSlotPresenters { get; set; }
         public virtual DbSet<ScenarioFacultyRole> ScenarioFacultyRoles { get; set; }
+        public virtual DbSet<Room> Rooms { get; set; }
 
         #region overrides //overriding to allow access without referencing aspnet.identity.entityframework assembly
         public override IDbSet<Participant> Users
@@ -135,6 +136,12 @@ namespace SM.DataAccess
                 .HasForeignKey(e => e.DepartmentId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Department>()
+                .HasMany(e => e.Rooms)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e => e.DepartmentId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Institution>()
                 .Property(e => e.CountryCode)
                 .IsFixedLength();
@@ -167,6 +174,12 @@ namespace SM.DataAccess
                 .HasMany(e => e.Participants)
                 .WithRequired(e => e.ProfessionalRole)
                 .HasForeignKey(e => e.DefaultProfessionalRoleId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Room>()
+                .HasMany(e => e.Courses)
+                .WithRequired(e => e.Room)
+                .HasForeignKey(e => e.RoomId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Scenario>()

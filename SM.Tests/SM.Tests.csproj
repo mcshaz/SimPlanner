@@ -117,8 +117,6 @@
     <Compile Include="LoggingVisitor.cs" />
     <Compile Include="MergingVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SvickMapNavProperty.cs" />
-    <Compile Include="StoevMapNavProperty.cs" />
     <Compile Include="TestEntitities.cs" />
     <Compile Include="TestExpandNavigate.cs" />
     <Compile Include="TestWebConfig.cs" />

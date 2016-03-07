@@ -80,17 +80,17 @@ namespace SM.DataAccess
 
         public virtual ProfessionalRole ProfessionalRole { get; set; }
 
-		ICollection<CourseParticipant> _sessionParticipants; 
+		ICollection<CourseParticipant> _courseParticipants; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseParticipant> CourseParticipants
 		{
 			get
 			{
-				return _sessionParticipants ?? (_sessionParticipants = new List<CourseParticipant>());
+				return _courseParticipants ?? (_courseParticipants = new List<CourseParticipant>());
 			}
 			set
 			{
-				_sessionParticipants = value;
+				_courseParticipants = value;
 			}
 		}
 

@@ -6,30 +6,36 @@ namespace SM.DTOs.Maps
 {
     public static class DepartmentMaps
     {
-        public static Func<DepartmentDto, Department> mapToRepo = m => new Department
+        public static Func<DepartmentDto, Department> mapToRepo()
         {
-            Id = m.Id,
-            Name = m.Name,
-            InstitutionId = m.InstitutionId,
-            InvitationLetterFilename = m.InvitationLetterFilename,
-            CertificateFilename = m.CertificateFilename
-        };
+            return m => new Department
+            {
+                Id = m.Id,
+                Name = m.Name,
+                InstitutionId = m.InstitutionId,
+                InvitationLetterFilename = m.InvitationLetterFilename,
+                CertificateFilename = m.CertificateFilename
+            };
+        }
 
 
-        public static Expression<Func<Department, DepartmentDto>> mapFromRepo = m => new DepartmentDto
+        public static Expression<Func<Department, DepartmentDto>> mapFromRepo()
         {
-            Id = m.Id,
-            Name = m.Name,
-            InstitutionId = m.InstitutionId,
-            InvitationLetterFilename = m.InvitationLetterFilename,
-            CertificateFilename = m.CertificateFilename,
+            return m => new DepartmentDto
+            {
+                Id = m.Id,
+                Name = m.Name,
+                InstitutionId = m.InstitutionId,
+                InvitationLetterFilename = m.InvitationLetterFilename,
+                CertificateFilename = m.CertificateFilename,
 
-            //CourseTypes = null,
-            //Institution = m.Institution,
-            //Manequins = m.Manequins,
-            //Courses = m.Courses,
-            //Scenarios = m.Scenarios,
-            //Departments = null
-        };
+                //CourseTypes = null,
+                //Institution = m.Institution,
+                //Manequins = m.Manequins,
+                //Courses = m.Courses,
+                //Scenarios = m.Scenarios,
+                //Departments = null
+            };
+        }
     }
 }

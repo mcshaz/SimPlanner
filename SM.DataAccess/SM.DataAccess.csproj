@@ -91,6 +91,7 @@
     <Compile Include="Data\Authentication\AspNetUserLogin.cs" />
     <Compile Include="Data\Authentication\AspNetUserRole.cs" />
     <Compile Include="Data\Country.cs" />
+    <Compile Include="Data\Room.cs" />
     <Compile Include="Data\ScenarioFacultyRole.cs" />
     <Compile Include="Data\CourseSlotPresenter.cs" />
     <Compile Include="Data\Resource.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Metadata\ParticipantMetadata.cs" />
     <Compile Include="Metadata\ProfessionalRoleMetadata.cs" />
     <Compile Include="Metadata\ResourceMetadata.cs" />
+    <Compile Include="Metadata\RoomMetadata.cs" />
     <Compile Include="Metadata\ScenarioFacultyRoleMetadata.cs" />
     <Compile Include="Metadata\ScenarioMetadata.cs" />
     <Compile Include="Metadata\ScenarioRoleDescriptionMetadata.cs" />

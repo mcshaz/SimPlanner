@@ -7,22 +7,28 @@ namespace SM.DTOs.Maps
 {
     internal static class ScenarioResourceMaps
     {
-        internal static Func<ScenarioResourceDto, ScenarioResource> mapToRepo = m => new ScenarioResource
+        internal static Func<ScenarioResourceDto, ScenarioResource> mapToRepo()
         {
-            Id = m.Id,
-            Name = m.Name,
-            ResourceFilename = m.ResourceFilename,
-            ScenarioId = m.ScenarioId,
-            //Scenario = m.Scenario
-        };
+            return m => new ScenarioResource
+            {
+                Id = m.Id,
+                Name = m.Name,
+                ResourceFilename = m.ResourceFilename,
+                ScenarioId = m.ScenarioId,
+                //Scenario = m.Scenario
+            };
+        }
 
-        internal static Expression<Func<ScenarioResource, ScenarioResourceDto>> mapFromRepo = m => new ScenarioResourceDto
+        internal static Expression<Func<ScenarioResource, ScenarioResourceDto>> mapFromRepo()
         {
-            Id = m.Id,
-            Name = m.Name,
-            ResourceFilename = m.ResourceFilename,
-            ScenarioId = m.ScenarioId,
-            //Scenario = m.Scenario
-        };
+            return m => new ScenarioResourceDto
+            {
+                Id = m.Id,
+                Name = m.Name,
+                ResourceFilename = m.ResourceFilename,
+                ScenarioId = m.ScenarioId,
+                //Scenario = m.Scenario
+            };
+        }
     }
 }

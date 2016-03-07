@@ -7,43 +7,49 @@ namespace SM.DTOs.Maps
 {
     public static class ParticipantMaps
     {
-        public static Func<ParticipantDto, Participant> mapToRepo = m => new Participant
+        public static Func<ParticipantDto, Participant> mapToRepo()
         {
-            Id = m.Id,
-            PhoneNumber = m.PhoneNumber,
-            Email = m.Email,
-            AlternateEmail = m.AlternateEmail,
-            FullName = m.FullName,
-            DefaultDepartmentId = m.DefaultDepartmentId,
-            DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
+            return m => new Participant
+            {
+                Id = m.Id,
+                PhoneNumber = m.PhoneNumber,
+                Email = m.Email,
+                AlternateEmail = m.AlternateEmail,
+                FullName = m.FullName,
+                DefaultDepartmentId = m.DefaultDepartmentId,
+                DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
 
-            //Department = m.Department,
+                //Department = m.Department,
 
-            //ProfessionalRole = m.ProfessionalRole,
+                //ProfessionalRole = m.ProfessionalRole,
 
-            //CourseParticipants = m.CourseParticipants,
+                //CourseParticipants = m.CourseParticipants,
 
-            //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-        };
+                //ScenarioFacultyRoles = m.ScenarioFacultyRoles
+            };
+        }
 
-        public static Expression<Func<Participant, ParticipantDto>> mapFromRepo = m => new ParticipantDto
+        public static Expression<Func<Participant, ParticipantDto>> mapFromRepo()
         {
-            Id = m.Id,
-            PhoneNumber = m.PhoneNumber,
-            Email = m.Email,
-            AlternateEmail = m.AlternateEmail,
-            FullName = m.FullName,
-            DefaultDepartmentId = m.DefaultDepartmentId,
-            DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
+            return m => new ParticipantDto
+            {
+                Id = m.Id,
+                PhoneNumber = m.PhoneNumber,
+                Email = m.Email,
+                AlternateEmail = m.AlternateEmail,
+                FullName = m.FullName,
+                DefaultDepartmentId = m.DefaultDepartmentId,
+                DefaultProfessionalRoleId = m.DefaultProfessionalRoleId
 
-            //CourseSlotPresentations = null,
-            Department = null,
+                //CourseSlotPresentations = null,
+                //Department = null,
 
-            //ProfessionalRole = null,
+                //ProfessionalRole = null,
 
-            //CourseParticipants = null,
+                //CourseParticipants = null,
 
-            //ScenarioFacultyRoles = null
-        };
+                //ScenarioFacultyRoles = null
+            };
+        }
     }
 }

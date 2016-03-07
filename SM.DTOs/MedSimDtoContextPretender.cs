@@ -113,6 +113,12 @@ namespace SM.Dto
                 .HasForeignKey(e => e.DepartmentId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<DepartmentDto>()
+                .HasMany(e => e.Rooms)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e => e.DepartmentId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<InstitutionDto>()
                 .Property(e => e.CountryCode)
                 .IsFixedLength();
@@ -145,6 +151,12 @@ namespace SM.Dto
                 .HasMany(e => e.Participants)
                 .WithRequired(e => e.ProfessionalRole)
                 .HasForeignKey(e => e.DefaultProfessionalRoleId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<RoomDto>()
+                .HasMany(e => e.Courses)
+                .WithRequired(e => e.Room)
+                .HasForeignKey(e => e.RoomId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ScenarioDto>()

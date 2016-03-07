@@ -18,7 +18,7 @@ namespace SM.Dto
         public virtual ICollection<CourseDto> Courses { get; set; }
         public virtual ICollection<ScenarioDto> Scenarios { get; set; }
         public virtual ICollection<ParticipantDto> Participants { get; set; }
-
+        public virtual ICollection<RoomDto> Rooms { get; set; }
 
     }
 }

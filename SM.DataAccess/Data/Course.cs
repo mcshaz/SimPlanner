@@ -16,6 +16,8 @@ namespace SM.DataAccess
 
         public Guid? OutreachingDepartmentId { get; set; }
 
+        public Guid RoomId { get; set; }
+
         public byte FacultyNoRequired { get; set; }
 
         public string ParticipantVideoFilename { get; set; }
@@ -29,6 +31,8 @@ namespace SM.DataAccess
         public virtual Department OutreachingDepartment { get; set; }
 
         public virtual CourseType CourseType { get; set; }
+
+        public virtual Room Room { get; set; }
 
 		ICollection<CourseParticipant> _participants; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

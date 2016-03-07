@@ -6,21 +6,27 @@ namespace SM.DTOs.Maps
 {
     internal static class CourseTeachingResourceMaps
     {
-        internal static Func<CourseTeachingResourceDto, CourseTeachingResource>  mapToRepo = m => new CourseTeachingResource {
-            Id = m.Id,
-            Name = m.Name,
-            ResourceFilename = m.ResourceFilename,
-            CourseSlotId = m.CourseSlotId,
-            //CourseSlot = m.CourseSlot
-        };
+        internal static Func<CourseTeachingResourceDto, CourseTeachingResource> mapToRepo()
+        { 
+            return m => new CourseTeachingResource {
+                Id = m.Id,
+                Name = m.Name,
+                ResourceFilename = m.ResourceFilename,
+                CourseSlotId = m.CourseSlotId,
+                //CourseSlot = m.CourseSlot
+            };
+        }
 
-        internal static Expression<Func<CourseTeachingResource, CourseTeachingResourceDto>> mapFromRepo= m => new CourseTeachingResourceDto
+        internal static Expression<Func<CourseTeachingResource, CourseTeachingResourceDto>> mapFromRepo()
         {
-            Id = m.Id,
-            Name = m.Name,
-            ResourceFilename = m.ResourceFilename,
-            CourseSlotId = m.CourseSlotId,
-            //CourseSlot = m.CourseSlot
-        };
+            return m => new CourseTeachingResourceDto
+            {
+                Id = m.Id,
+                Name = m.Name,
+                ResourceFilename = m.ResourceFilename,
+                CourseSlotId = m.CourseSlotId,
+                //CourseSlot = m.CourseSlot
+            };
+        }
     }
 }

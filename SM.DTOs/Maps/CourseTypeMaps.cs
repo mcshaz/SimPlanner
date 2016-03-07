@@ -5,37 +5,44 @@ using System.Linq.Expressions;
 namespace SM.DTOs.Maps
 {
     internal static class CourseTypeMaps
-    {        internal static Func<CourseTypeDto, CourseType> mapToRepo = m => new CourseType
+    {
+        internal static Func<CourseTypeDto, CourseType> mapToRepo()
         {
-            Id = m.Id,
-            Description = m.Description,
-            IsInstructorCourse = m.IsInstructorCourse,
-            DaysDuration = m.DaysDuration,
-            EmersionCategory = m.EmersionCategory,
-            Abbrev = m.Abbrev
-        };
+            return m => new CourseType
+            {
+                Id = m.Id,
+                Description = m.Description,
+                IsInstructorCourse = m.IsInstructorCourse,
+                DaysDuration = m.DaysDuration,
+                EmersionCategory = m.EmersionCategory,
+                Abbrev = m.Abbrev
+            };
+        }
 
 
-        internal static Expression<Func<CourseType, CourseTypeDto>> mapFromRepo= m => new CourseTypeDto
+        internal static Expression<Func<CourseType, CourseTypeDto>> mapFromRepo()
         {
-            Id = m.Id,
-            Description = m.Description,
-            IsInstructorCourse = m.IsInstructorCourse,
-            DaysDuration = m.DaysDuration,
-            EmersionCategory = m.EmersionCategory,
-            Abbrev = m.Abbrev
+            return m => new CourseTypeDto
+            {
+                Id = m.Id,
+                Description = m.Description,
+                IsInstructorCourse = m.IsInstructorCourse,
+                DaysDuration = m.DaysDuration,
+                EmersionCategory = m.EmersionCategory,
+                Abbrev = m.Abbrev
 
-            //Departments = m.Departments,
+                //Departments = m.Departments,
 
-            //Scenarios = m.Scenarios,
+                //Scenarios = m.Scenarios,
 
-            //Courses = m.Courses,
+                //Courses = m.Courses,
 
-            //CourseEvents = m.CourseEvents,
+                //CourseEvents = m.CourseEvents,
 
-            //ScenarioEvents = m.ScenarioEvents,
+                //ScenarioEvents = m.ScenarioEvents,
 
-            //ScenarioRoles = m.ScenarioRoles
-        };
+                //ScenarioRoles = m.ScenarioRoles
+            };
+        }
     }
 }

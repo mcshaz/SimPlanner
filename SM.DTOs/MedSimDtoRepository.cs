@@ -1,15 +1,11 @@
-﻿using AutoMapper.QueryableExtensions;
-using Breeze.ContextProvider;
+﻿using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
 using Newtonsoft.Json.Linq;
 using SM.DataAccess;
 using SM.DTOs.Maps;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Web.Http.OData.Query;
 
 namespace SM.Dto
 {
@@ -71,59 +67,56 @@ namespace SM.Dto
                     returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)));
                 }
                 //currently allowing users to view all departmetns within their institution - but only edit thseir department
-                return returnVar.ProjectTo<InstitutionDto>(AutomapperConfig.GetConfig());
+                return returnVar.Project<Institution,InstitutionDto>("Departments.Rooms");
 
             }
         }
 
-        public IQueryable<ParticipantDto> Participants { get { return Context.Users.ProjectTo<ParticipantDto>(AutomapperConfig.GetConfig()); } }
+        public IQueryable<ParticipantDto> Participants { get { return Context.Users.Project<Participant,ParticipantDto>(); } }
 
-        public IQueryable<CountryDto> Countries { get { return Context.Countries.ProjectTo<CountryDto>(AutomapperConfig.GetConfig()); } }
+        public IQueryable<CountryDto> Countries { get { return Context.Countries.Project<Country,CountryDto>(); } }
 
-        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.ProjectTo<DepartmentDto>(AutomapperConfig.GetConfig()); } }
+        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.Project<Department,DepartmentDto>(); } }
 
-        public IQueryable<ScenarioRoleDescriptionDto> SenarioRoles { get { return Context.SenarioRoles.ProjectTo<ScenarioRoleDescriptionDto>(AutomapperConfig.GetConfig()); } }
+        public IQueryable<ScenarioRoleDescriptionDto> SenarioRoles { get { return Context.SenarioRoles.Project<ScenarioRoleDescription,ScenarioRoleDescriptionDto>(); } }
 
-        public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.ProjectTo<InstitutionDto>(AutomapperConfig.GetConfig()); } }
+        public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.Project<Institution,InstitutionDto>(); } }
 
-        public IQueryable<ManequinDto> Manequins { get { return Context.Manequins.ProjectTo<ManequinDto>(AutomapperConfig.GetConfig()); } }
+        public IQueryable<ManequinDto> Manequins { get { return Context.Manequins.Project<Manequin,ManequinDto>(); } }
 
-        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.ProjectTo<ProfessionalRoleDto>(AutomapperConfig.GetConfig()); } }
+        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.Project<ProfessionalRole,ProfessionalRoleDto>(); } }
 
-        public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.ProjectTo<ScenarioDto>(AutomapperConfig.GetConfig()); } }
+        public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.Project<Scenario,ScenarioDto>(); } }
 
-        public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.ProjectTo<ScenarioResourceDto>(AutomapperConfig.GetConfig()); } }
+        public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.Project<ScenarioResource,ScenarioResourceDto>(); } }
 
 
         //might eventually run the visitor like so: http://stackoverflow.com/questions/18879779/select-and-expand-break-odataqueryoptions-how-to-fix
-        public IQueryable<CourseDto> GetCourses(string[] include)
+        public IQueryable<CourseDto> GetCourses(params string[] includes)
         {
-            ValidateIncludes(include);
-            return Context.Courses.Select(CourseMaps.mapFromRepo);
+            ValidateIncludes(includes);
+            return Context.Courses.Project<Course,CourseDto>(includes);
             /*
             if (include.Length > 0)
             {
-                return Context.Courses.ProjectTo<CourseDto>(parameters: null, membersToExpand: include);
+                return Context.Courses.Project<Course,CourseDto>(parameters: null, membersToExpand: include);
             }
             */
             //return Context.Courses.Include("")
             //filteredQuery.Select(CourseMaps.mapFromRepo).ToList().AsQueryable();
-        } 
+        }
 
-        public IQueryable<CourseTypeDto> CourseTypes
+        public IQueryable<CourseTypeDto> GetCourseTypes(params string[] includes)
         {
-            get
-            {
-                var mapper = AutomapperConfig.GetConfig().CreateMapper();
-                return mapper.Map<IEnumerable<CourseTypeDto>>(Context.CourseTypes).AsQueryable();
-            }
+            ValidateIncludes(includes);
+            return Context.CourseTypes.Project<CourseType, CourseTypeDto>(includes);
         }
 
         private static void ValidateIncludes(string[] includes)
         {
-            if (includes.Any(i => i.Contains('.')))
+            if (includes.Any(i => i.Contains('/')))
             {
-                throw new NotSupportedException("nested include properties are not supported");
+                throw new NotSupportedException("expanding below 1 level is currently not supported");
             }
         }
 

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 //http://stackoverflow.com/questions/35681045/expressiontree-method-to-assign-memberinitexpression-to-property
-namespace SimManager.Tests.Svick
+namespace SM.DTOs.Maps
 {
     public static class ExpressionTreeExtensions
     {
@@ -17,7 +17,7 @@ namespace SimManager.Tests.Svick
         {
             return (Expression<Func<T, TMap>>)MapNavProperty((LambdaExpression)parent, navs);
         }
-        public static Expression MapNavProperty(this LambdaExpression parent, IEnumerable<KeyValuePair<string, LambdaExpression>> navs)
+        public static LambdaExpression MapNavProperty(this LambdaExpression parent, IEnumerable<KeyValuePair<string, LambdaExpression>> navs)
         {
             var parentParam = parent.Parameters[0];
             var bindings = new List<MemberBinding>();
@@ -44,7 +44,7 @@ namespace SimManager.Tests.Svick
             }
 
             var visitor = new AddMemberInitBindingsVisitor(bindings);
-            return visitor.Visit(parent);
+            return (LambdaExpression)visitor.Visit(parent);
         }
     }
 

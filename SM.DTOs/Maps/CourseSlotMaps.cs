@@ -5,29 +5,35 @@ using System.Linq.Expressions;
 namespace SM.DTOs.Maps
 {
     internal static class CourseSlotMaps
-    {        internal static Func<CourseSlotDto, CourseSlot> mapToRepo = m => new CourseSlot
+    {        internal static Func<CourseSlotDto, CourseSlot> mapToRepo()
         {
-            Id = m.Id,
-            MinutesDuration = m.MinutesDuration,
-            Day = m.Day,
-            Order = m.Order,
+            return m => new CourseSlot
+            {
+                Id = m.Id,
+                MinutesDuration = m.MinutesDuration,
+                Day = m.Day,
+                Order = m.Order,
 
-            Name = m.Name,
-            MinimumFaculty = m.MinimumFaculty,
-            MaximumFaculty = m.MaximumFaculty
-        };
+                Name = m.Name,
+                MinimumFaculty = m.MinimumFaculty,
+                MaximumFaculty = m.MaximumFaculty
+            };
+        }
 
-        internal static Expression<Func<CourseSlot, CourseSlotDto>> mapFromRepo = m => new CourseSlotDto
+        internal static Expression<Func<CourseSlot, CourseSlotDto>> mapFromRepo()
         {
-            Id = m.Id,
-            MinutesDuration = m.MinutesDuration,
-            Day = m.Day,
-            Order = m.Order,
+            return m => new CourseSlotDto
+            {
+                Id = m.Id,
+                MinutesDuration = m.MinutesDuration,
+                Day = m.Day,
+                Order = m.Order,
 
-            Name = m.Name,
-            MinimumFaculty = m.MinimumFaculty,
-            MaximumFaculty = m.MaximumFaculty,
-            //DefaultResources = m.DefaultResources
-        };
+                Name = m.Name,
+                MinimumFaculty = m.MinimumFaculty,
+                MaximumFaculty = m.MaximumFaculty,
+                //DefaultResources = m.DefaultResources
+            };
+        }
     }
 }

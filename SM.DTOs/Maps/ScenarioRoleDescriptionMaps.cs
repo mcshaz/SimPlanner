@@ -5,19 +5,27 @@ using System.Linq.Expressions;
 namespace SM.DTOs.Maps
 {
     internal static class ScenarioRoleDescriptionMaps
-    {        internal static Func<ScenarioRoleDescriptionDto, ScenarioRoleDescription>  mapToRepo = m => new ScenarioRoleDescription {
-            Id = m.Id,
-            Description = m.Description,
-            //CourseTypes = m.CourseTypes,
-            //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-        };
-
-        internal static Expression<Func<ScenarioRoleDescription, ScenarioRoleDescriptionDto>> mapFromRepo= m => new ScenarioRoleDescriptionDto
+    {
+        internal static Func<ScenarioRoleDescriptionDto, ScenarioRoleDescription> mapToRepo()
         {
-            Id = m.Id,
-            Description = m.Description,
-            //CourseTypes = m.CourseTypes,
-            //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-        };
+            return m => new ScenarioRoleDescription
+            {
+                Id = m.Id,
+                Description = m.Description,
+                //CourseTypes = m.CourseTypes,
+                //ScenarioFacultyRoles = m.ScenarioFacultyRoles
+            };
+        }
+
+        internal static Expression<Func<ScenarioRoleDescription, ScenarioRoleDescriptionDto>> mapFromRepo()
+        {
+            return m => new ScenarioRoleDescriptionDto
+            {
+                Id = m.Id,
+                Description = m.Description,
+                //CourseTypes = m.CourseTypes,
+                //ScenarioFacultyRoles = m.ScenarioFacultyRoles
+            };
+        }
     }
 }

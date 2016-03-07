@@ -9,7 +9,7 @@ namespace SimManager.Tests.IvanStoev
     public static class ExpressionTreeExtensions
     {
         //change name to insertNavProperty
-        public static Expression<Func<T, TMap>> MapNavProperty<T, TMap, U, UMap>(this Expression<Func<T, TMap>> parent, Expression<Func<U, UMap>> nav, string propName)
+        public static Expression<Func<T, TMap>> MapNavProperty<T, TMap, U, UMap>(this Expression<Func<T, TMap>> parent, string propName, Expression<Func<U, UMap>> nav)
         {
             var parameter = parent.Parameters[0];
             var body = parent.Body.ReplaceMemberAssignment(

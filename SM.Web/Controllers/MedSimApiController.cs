@@ -76,22 +76,31 @@ namespace SM.Web.Controllers
         {
             //a hack to use breeze instead of learning .net odata implementation
             //http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/odata-v4/create-an-odata-v4-endpoint
-            if (options.SelectExpand != null)
+            //SelectExpand.RawExpand = "CourseParticipants" RawSelect= null;
+            //SelectExpand = null
+            var se = options.SelectExpand;
+            if (se != null)
             {
-                var se = options.SelectExpand;
-                string[] returnVar = se.RawExpand.Split(',');
+                if (se.RawExpand != null)
+                {
+                    string[] returnVar = options.SelectExpand.RawExpand.Split(',');
 
-                //we'll deal with the expand, breeze deals with the 
-                Request.ODataProperties().SelectExpandClause = new SelectExpandQueryOption(
-                    se.RawSelect,null,se.Context).SelectExpandClause;
+                    //'select' and 'expand' cannot be both null or empty.
+                    /*
+                    Request.ODataProperties().SelectExpandClause = (se.RawSelect==null)
+                        ?null
+                        :  new SelectExpandQueryOption(select:se.RawSelect, expand:null, context:se.Context).SelectExpandClause;
+                    */
+                    return returnVar;
+                }
 
             }
-            return null;
+            return new string[0];
         }
         [HttpGet]
 		public IQueryable<CourseTypeDto> CourseTypes()
         {
-            return Repo.CourseTypes;
+            return Repo.GetCourseTypes();
         }
 
         [HttpGet]
@@ -99,9 +108,9 @@ namespace SM.Web.Controllers
         {
             return new LookupBundle
             {
-                CourseTypes = Repo.CourseTypes.ToList(),
-                //Institutions = Repo.Institutions.ToList(),
-                //ProfessionalRoles = Repo.ProfessionalRoles.ToList()
+                CourseTypes = Repo.GetCourseTypes().ToList(),
+                Institutions = Repo.Institutions.ToList(),
+                ProfessionalRoles = Repo.ProfessionalRoles.ToList()
             };
         }
         

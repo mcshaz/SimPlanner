@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Breeze.ContextProvider, Version=1.5.5.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
       <HintPath>..\packages\Breeze.Server.ContextProvider.1.5.5\lib\Breeze.ContextProvider.dll</HintPath>
       <Private>True</Private>
@@ -102,7 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\CountryDto.cs" />
-    <Compile Include="Dto\CountryLocaleDto.cs" />
+    <Compile Include="Dto\CountryLocaleCodeDto.cs" />
     <Compile Include="Dto\CourseDto.cs" />
     <Compile Include="Dto\CourseParticipantDto.cs" />
     <Compile Include="Dto\CourseSlotDto.cs" />
@@ -115,13 +111,17 @@
     <Compile Include="Dto\ParticipantDto.cs" />
     <Compile Include="Dto\ProfessionalRoleDto.cs" />
     <Compile Include="Dto\ResourceDto.cs" />
+    <Compile Include="Dto\RoomDto.cs" />
     <Compile Include="Dto\ScenarioDto.cs" />
     <Compile Include="Dto\ScenarioFacultyRoleDto.cs" />
     <Compile Include="Dto\ScenarioRoleDescriptionDto.cs" />
     <Compile Include="Dto\ScenarioSlotDto.cs" />
     <Compile Include="Dto\SlotDto.cs" />
-    <Compile Include="Maps\AutomapperConfig.cs" />
+    <Compile Include="MapDictionary\MapDictionary.cs" />
+    <Compile Include="MapDictionary\MapNavProperty.cs" />
+    <Compile Include="Maps\CountryLocaleCodeMaps.cs" />
     <Compile Include="Maps\CountryMaps.cs" />
+    <Compile Include="Maps\RoomMaps.cs" />
     <Compile Include="Maps\CourseMaps.cs" />
     <Compile Include="Maps\CourseParticipantMaps.cs" />
     <Compile Include="Maps\CourseSlotMaps.cs" />
@@ -129,7 +129,6 @@
     <Compile Include="Maps\CourseTeachingResourceMaps.cs" />
     <Compile Include="Maps\CourseTypeMaps.cs" />
     <Compile Include="Maps\DepartmentMaps.cs" />
-    <Compile Include="Maps\DtoMap.cs" />
     <Compile Include="Maps\InstitutionMaps.cs" />
     <Compile Include="Maps\ManequinManufacturerMaps.cs" />
     <Compile Include="Maps\ManequinMaps.cs" />
@@ -145,6 +144,7 @@
     <Compile Include="obj\Metadata\ParticipantDtoMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleConstants.cs" />
+    <Compile Include="Utilities\LinqExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SM.DataAccess\SM.DataAccess.csproj">

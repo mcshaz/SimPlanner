@@ -7,34 +7,41 @@ namespace SM.DTOs.Maps
 {
     internal static class CourseMaps
     {
-        internal static Func<CourseDto, Course> mapToRepo = m => new Course
+        internal static Func<CourseDto, Course> mapToRepo()
         {
-            Id = m.Id,
-            StartTime = m.StartTime,
-            DepartmentId = m.DepartmentId,
-            OutreachingDepartmentId = m.OutreachingDepartmentId,
-            FacultyNoRequired = m.FacultyNoRequired,
-            ParticipantVideoFilename = m.ParticipantVideoFilename,
-            FeedbackSummaryFilename = m.FeedbackSummaryFilename,
-            CourseTypeId = m.CourseTypeId,
-        };
+            return m => new Course
+            {
+                Id = m.Id,
+                StartTime = m.StartTime,
+                DepartmentId = m.DepartmentId,
+                OutreachingDepartmentId = m.OutreachingDepartmentId,
+                FacultyNoRequired = m.FacultyNoRequired,
+                ParticipantVideoFilename = m.ParticipantVideoFilename,
+                FeedbackSummaryFilename = m.FeedbackSummaryFilename,
+                CourseTypeId = m.CourseTypeId,
+                RoomId = m.RoomId
+            };
+        }
         /*
         internal static Expression<Func<Course, CourseDto>> mapFromRepo(string[] includes) {
             if (["Scenarios", "CourseType", "CourseParticipants", "ScenarioFacultyRoles"])
             {
 
             } */
-        internal static Expression<Func<Course, CourseDto>> mapFromRepo = m => new CourseDto
+        internal static Expression<Func<Course, CourseDto>> mapFromRepo()
         {
-            Id = m.Id,
-            StartTime = m.StartTime,
-            DepartmentId = m.DepartmentId,
-            OutreachingDepartmentId = m.OutreachingDepartmentId,
-            FacultyNoRequired = m.FacultyNoRequired,
-            ParticipantVideoFilename = m.ParticipantVideoFilename,
-            FeedbackSummaryFilename = m.FeedbackSummaryFilename,
-            CourseTypeId = m.CourseTypeId
-        };
+            return m => new CourseDto
+            {
+                Id = m.Id,
+                StartTime = m.StartTime,
+                DepartmentId = m.DepartmentId,
+                OutreachingDepartmentId = m.OutreachingDepartmentId,
+                FacultyNoRequired = m.FacultyNoRequired,
+                ParticipantVideoFilename = m.ParticipantVideoFilename,
+                FeedbackSummaryFilename = m.FeedbackSummaryFilename,
+                CourseTypeId = m.CourseTypeId,
+                RoomId = m.RoomId
+            };
             //Department = m.Department,
 
             //OutreachingDepartment = m.OutreachingDepartment,
@@ -44,6 +51,7 @@ namespace SM.DTOs.Maps
             //CourseParticipants = m.CourseParticipants,
 
             //ScenarioFacultyRoles = m.ScenarioFacultyRoles
+        }
 
         static void IsAllowed(string[] includes,params string[] allowed)
         {
@@ -55,6 +63,8 @@ namespace SM.DTOs.Maps
                     string.Join(",", disallowed), string.Join(",", allowed)));
             }
         }
+
+        /*
         internal static Expression<Func<Course, CourseDto>> mapBriefFromRepo = m => new CourseDto
         {
             Id = m.Id,
@@ -83,6 +93,7 @@ namespace SM.DTOs.Maps
 
             //ScenarioFacultyRoles = m.ScenarioFacultyRoles
         };
+        */
 
     }
 }

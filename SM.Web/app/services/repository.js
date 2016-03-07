@@ -65,7 +65,7 @@
                     if (argObj instanceof breeze.Predicate) {
                         return query.where(argObj);
                     }
-                    ['where', 'predicate', 'orderBy', 'skip', 'take', 'expand'].forEach(function (el) {
+                    ['where', 'predicate', 'select', 'orderBy', 'skip', 'take', 'expand'].forEach(function (el) {
                         //TODO - check this!
                         if (argObj[el]) {
                             query = query[el](argObj[el]);
@@ -79,7 +79,7 @@
                         .executeQuery(query.using(fetchStrategy || breeze.FetchStrategy.FromServer))
                         .then(function (data) {
                             return data.results;
-                        });
+                        }, log.error );
                 }
 
                 function executeCacheQuery(query) {

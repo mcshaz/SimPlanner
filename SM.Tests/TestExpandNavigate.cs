@@ -25,7 +25,7 @@ namespace SimManager.Tests
         {
             public int FooInt { get; set; }
             public BarDto B { get; set; }
-            public IEnumerable<BarDto> Bars { get; set; }
+            public ICollection<BarDto> Bars { get; set; }
         }
 
         class Bar
@@ -47,7 +47,7 @@ namespace SimManager.Tests
         {
             FooInt = f.FooInt,
             B = new BarDto { BarInt = f.B.BarInt, BarString = f.B.BarString },
-            Bars = f.Bars.Select(b => new BarDto { BarInt = b.BarInt, BarString = b.BarString }) //.ToList()
+            Bars = f.Bars.Select(b => new BarDto { BarInt = b.BarInt, BarString = b.BarString }).ToList()
         };
         
         [TestMethod]
@@ -58,13 +58,17 @@ namespace SimManager.Tests
             var bar = new Bar { BarInt = 12, BarString = "a" };
             var foo = new Foo { FooInt = -1, B = bar, Bars =  new[] { bar, new Bar { BarInt = 3, BarString = "b" } } };
 
-            var mapNavEx = Svick.ExpressionTreeExtensions.MapNavProperty(MapFoo, MapBar, "Bars");
+            var mapNavEx = MapFoo.MapNavProperty(new Dictionary<string,LambdaExpression> {
+                { "Bars",MapBar},
+                { "B", MapBar}
+            });
 
             Console.WriteLine(mapNavEx.ToString());
             Func<Foo, FooDto> mapNav = mapNavEx.Compile();
 
             var testMapped = mapNav(foo);
 
+            Console.WriteLine("Testing single property");
             Assert.AreNotEqual(foo, testMapped);
             Assert.AreEqual(foo.FooInt, testMapped.FooInt);
             Assert.IsNotNull(foo.B);
@@ -72,12 +76,7 @@ namespace SimManager.Tests
             Assert.AreEqual(foo.B.BarInt, testMapped.B.BarInt);
             Assert.AreEqual(foo.B.BarString, testMapped.B.BarString);
 
-            mapNavEx = Svick.ExpressionTreeExtensions.MapNavProperty(MapFoo, MapBar, "Bars");
-
-            Console.WriteLine(mapNavEx.ToString());
-            mapNav = mapNavEx.Compile();
-
-            testMapped = mapNav(foo);
+            Console.WriteLine("Testing collection"); 
 
             Assert.AreEqual(foo.Bars.Count, testMapped.Bars.Count()); //todo change to count property
             var fooBarsLast = foo.Bars.Last();
@@ -89,22 +88,29 @@ namespace SimManager.Tests
         }
         [TestMethod]
         public void TestExpandNavigatePerformance()
-        { 
+        {
             //performance tests
+
+            var mapProperties = new Dictionary<string, LambdaExpression> {
+                { "Bars",MapBar},
+                { "B", MapBar}
+            };
             int count = 1000000;
             var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < count; i++)
             {
-                IvanStoev.ExpressionTreeExtensions.MapNavProperty(MapFoo, MapBar, "B");
+                MapFoo.MapNavProperty(mapProperties);
             }
-            Console.WriteLine("IvanStoev method elapsed: " + sw.Elapsed);
+            Console.WriteLine("Svick method elapsed: " + sw.Elapsed);
+            /*
             sw.Restart();
             for (int i = 0; i < count; i++)
             {
-                Svick.ExpressionTreeExtensions.MapNavProperty(MapFoo, MapBar, "B");
+                Svick.ExpressionTreeExtensions.MapNavProperty2(MapFoo, mapProperties);
             }
             Console.WriteLine("Svick method elapsed: " + sw.Elapsed);
+            */
         }
         const string testUserName = "brentm@adhb.govt.nz";
         [TestMethod]
@@ -113,19 +119,17 @@ namespace SimManager.Tests
             const string propName = "Department";
             using (MedSimDbContext db = new MedSimDbContext())
             {
-                foreach (var mapNavEx in new Expression<Func<Participant, ParticipantDto>>[] { IvanStoev.ExpressionTreeExtensions.MapNavProperty(ParticipantMaps.mapFromRepo, DepartmentMaps.mapFromRepo, propName),
-                    Svick.ExpressionTreeExtensions.MapNavProperty(ParticipantMaps.mapFromRepo, DepartmentMaps.mapFromRepo, propName)})
-                {
-                    Console.WriteLine(mapNavEx.ToString());
-                    var part = db.Users.Include(propName).AsNoTracking().First(p => p.UserName == testUserName);
 
-                    var partVm = db.Users.Select(mapNavEx).First(p => p.Email == part.Email);
+                var mapNavEx = ParticipantMaps.mapFromRepo().MapNavProperty(propName, DepartmentMaps.mapFromRepo());
+                Console.WriteLine(mapNavEx.ToString());
+                var part = db.Users.Include(propName).AsNoTracking().First(p => p.UserName == testUserName);
 
-                    Assert.AreEqual(part.FullName, partVm.FullName);
+                var partVm = db.Users.Select(mapNavEx).First(p => p.Email == part.Email);
 
-                    Assert.AreEqual(part.Department.Id, partVm.Department.Id);
-                    Assert.AreEqual(part.Department.InstitutionId, partVm.Department.InstitutionId);
-                }
+                Assert.AreEqual(part.FullName, partVm.FullName);
+
+                Assert.AreEqual(part.Department.Id, partVm.Department.Id);
+                Assert.AreEqual(part.Department.InstitutionId, partVm.Department.InstitutionId);
             }
 
         }
@@ -135,21 +139,19 @@ namespace SimManager.Tests
             const string collectionPropName = "CourseParticipants";
             using (MedSimDbContext db = new MedSimDbContext())
             {
-                foreach (var mapNavEx in new Expression<Func<Participant, ParticipantDto>>[] { IvanStoev.ExpressionTreeExtensions.MapNavProperty(ParticipantMaps.mapFromRepo, CourseParticipantMaps.mapFromRepo, collectionPropName),
-                    Svick.ExpressionTreeExtensions.MapNavProperty(ParticipantMaps.mapFromRepo, CourseParticipantMaps.mapFromRepo, collectionPropName)})
-                { 
 
-                    var part = db.Users.Include(collectionPropName).AsNoTracking().First(p => p.UserName == testUserName);
+                var mapNavEx = ParticipantMaps.mapFromRepo().MapNavProperty(collectionPropName, CourseParticipantMaps.mapFromRepo());
+                Console.WriteLine(mapNavEx.ToString());
+                var part = db.Users.Include(collectionPropName).AsNoTracking().First(p => p.UserName == testUserName);
 
-                    var partVm = db.Users.Select(mapNavEx).First(p => p.Email == part.Email);
+                var partVm = db.Users.Select(mapNavEx).First(p => p.Email == part.Email);
 
-                    Assert.AreEqual(part.FullName, partVm.FullName);
+                Assert.AreEqual(part.FullName, partVm.FullName);
 
-                    var cp = part.CourseParticipants.First();
-                    var cpvm = partVm.CourseParticipants.First();
-                    Assert.AreEqual(cp.ParticipantId, cpvm.ParticipantId);
-                    Assert.AreEqual(cp.CourseId, cpvm.CourseId);
-                }
+                var cp = part.CourseParticipants.First();
+                var cpvm = partVm.CourseParticipants.First();
+                Assert.AreEqual(cp.ParticipantId, cpvm.ParticipantId);
+                Assert.AreEqual(cp.CourseId, cpvm.CourseId);
             }
 
         }
