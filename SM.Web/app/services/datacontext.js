@@ -23,7 +23,6 @@
 
 
         this.courses = repository.create(provider, 'CourseDto', 'Courses'/* 'Courses' */);
-        this.briefCourses = repository.create(provider, 'CourseDto', 'BriefCourses'/* 'Courses' */);
         this.departments = repository.create(provider, 'DepartmentDto', 'Departments', breeze.FetchStrategy.FromLocalCache);
         this.institutions = repository.create(provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);
         this.courseTypes = repository.create(provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);

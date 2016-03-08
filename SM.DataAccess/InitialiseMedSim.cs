@@ -25,9 +25,9 @@ namespace SM.DataAccess
             var picu = new Department {Id = Guid.NewGuid(), Institution = starship, Name = "PICU" };
             context.Departments.Add(ced);
 
-            var picuConf = new Room { Id = Guid.NewGuid(), Department = picu, Description = "PICU Conference Room (Meeting Room 252)", Directions = "Ask the Administrative assitants to let you in to the back offices. 2nd room on the left" };
+            var picuConf = new Room { Id = Guid.NewGuid(), Department = picu, ShortDescription="PICU Conf. Room",FullDescription = "PICU Conference Room (Meeting Room 252)", Directions = "Ask the Administrative assitants to let you in to the back offices. 2nd room on the left" };
             context.Rooms.Add(picuConf);
-            var cedConf = new Room { Id = Guid.NewGuid(), Department = ced, Description = "CED Conference Room", Directions = "Back Coridors - enter code 9999 on keypad to enter" };
+            var cedConf = new Room { Id = Guid.NewGuid(), Department = ced, ShortDescription = "CED Conf. Room", FullDescription = "CED Conference Room", Directions = "Back Coridors - enter code 9999 on keypad to enter" };
             context.Rooms.Add(cedConf);
 
             var consultantRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Medical, Description = "Consulant" };

@@ -8,7 +8,8 @@ namespace SM.Dto
     public class RoomDto
     {
         public Guid Id { get; set; }
-        public string Description { get; set; }
+        public string ShortDescription { get; set; }
+        public string FullDescription { get; set; }
         public string Directions { get; set; }
         public Guid DepartmentId { get; set; }
         public DepartmentDto Department { get; set; }

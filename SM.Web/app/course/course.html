@@ -2,82 +2,159 @@
     <section class="matter">
         <div class="container col-md-12">
             <form class="form-horizontal">
-                <div class="form-group">
-                    <label for="institution" class="col-md-2 control-label">Institution</label>
-                    <div class="col-md-10">
-                        <select class="form-control" id="institution" data-ng-options="i as i.name for i in vm.institutions track by i.id"  data-ng-model="vm.institution" data-ng-disabled="{{vm.institutions<=1}}" >
-                        </select>
-                        <span class="text-danger" />
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="institution" class="col-md-2 control-label">Institution</label>
+                        <div class="col-md-10">
+                            <select class="form-control" id="institution" data-ng-options="i as i.name for i in vm.institutions track by i.id" data-ng-model="vm.institution" data-ng-disabled="{{vm.institutions<=1}}"></select>
+                            <span class="text-danger" />
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="department" class="col-md-2 control-label">Department</label>
-                    <div class="col-md-10">
-                        <select class="form-control" id="department" data-ng-options="d as d.name for d in vm.institution.departments track by d.id" data-ng-model="vm.course.department">
-                            <option value="" disabled="disabled">
-                                Select Department...
-                            </option>
-                        </select>
-                        <span class="text-danger" />
+                    <div class="form-group">
+                        <label for="department" class="col-md-2 control-label">Department</label>
+                        <div class="col-md-10">
+                            <select class="form-control" id="department" data-ng-options="d as d.name for d in vm.institution.departments track by d.id" data-ng-model="vm.course.department">
+                                <option value="" disabled="disabled">
+                                    Select Department...
+                                </option>
+                            </select>
+                            <span class="text-danger" />
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="date" class="col-md-2 control-label">Course Date</label>
-                    <div class="col-md-10">
-                        <sm-datetime ng-model="vm.course.startTime" min-date="vm.minDate" max-date="vm.maxDate" ng-required />
-                        <span class="text-danger" />
+                    <div class="form-group">
+                        <label for="courseType" class="col-md-2 control-label">Course Type</label>
+                        <div class="col-md-10">
+                            <select id="courseType" class="form-control" data-ng-options="ct as ct.description for ct in vm.courseTypes track by ct.id" data-ng-model="vm.course.courseType">
+                                <option value="" disabled="disabled">
+                                    Select Course Type...
+                                </option>
+                            </select>
+                            <span class="text-danger" />
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="courseType" class="col-md-2 control-label">Course Type</label>
-                    <div class="col-md-10">
-                        <select id="courseType" class="form-control" data-ng-options="ct as ct.description for ct in vm.courseTypes track by ct.id" data-ng-model="vm.course.courseType">
-                            <option value="" disabled="disabled">
-                                Select Course Type...
-                            </option>
-                        </select>
-                        <span class="text-danger" />
+                    <div class="form-group">
+                        <label for="date" class="col-md-2 control-label time-accompany">Start Time</label>
+                        <div class="col-md-10">
+                            <div class="col-md-5 time-accompany row">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="{{vm.dateFormat}}" ng-model="vm.course.startTime"
+                                           is-open="vm.dpPopup.isOpen" min-date="vm.minDate" max-date="vm.maxDate"
+                                           ng-required="true" close-text="Close" placeholder="Date" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="vm.openDp()"><span class="glyphicon glyphicon-calendar"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-md-push-1">
+                                <uib-timepicker ng-model="vm.course.startTime" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-10 col-md-push-2">
-                        <button type="submit" data-ng-click="vm.save()" data-ng-disabled="!vm.canSave" class="btn btn-primary">Save</button>
+
+                    <div class="form-group">
+                        <label for="courseType" class="col-md-2 control-label">Location</label>
+                        <div class="col-md-10">
+                            <select id="courseType" class="form-control" data-ng-model="vm.course.roomId">
+                                <option value="" disabled="disabled">
+                                    Select Room...
+                                </option>
+                                <optgroup label="{{d.name}}" data-ng-repeat="d in vm.institution.departments track by d.id">
+                                    <option value="{{r.id}}" data-ng-repeat="r in d.rooms track by r.id">
+                                        {{r.shortDescription}}
+                                    </option>
+                                </optgroup>
+                            </select>
+                            <span class="text-danger" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-10 col-md-1">
+                            <button type="submit" data-ng-click="vm.save()" data-ng-disabled="!vm.canSave" class="btn btn-primary">Save</button>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <button class="btn btn-link">Add Faculty Member</button>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Role
-                                </th>
-                                <th>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr data-ng-repeat="f in vm.faculty">
-                                <td>
-                                    {{f.name}}
-                                </td>
-                                <td>
-                                    {{f.role}}
-                                </td>
-                                <td>
-                                    <button class="btn btn-link">Remove</button> |
-                                    <button class="btn btn-link">Edit</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="col-md-6 col-md-push-1">
+                    <div>
+                        <fieldset>
+                            <legend>Faculty</legend>
+                            <div>
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Role
+                                            </th>
+                                            <th>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="f in vm.faculty">
+                                            <td>
+                                                {{f.name}}
+                                            </td>
+                                            <td>
+                                                {{f.role}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-link">Remove</button> |
+                                                <button class="btn btn-link">Edit</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button class="btn btn-link">Add Faculty Member</button>
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        &nbsp;
+                        <hr/>
+                        &nbsp;
+                    </div>
+                    <div>
+                        <fieldset>
+                            <legend>Participants</legend>
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Role
+                                            </th>
+                                            <th>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="f in vm.faculty">
+                                            <td>
+                                                {{f.name}}
+                                            </td>
+                                            <td>
+                                                {{f.role}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-link">Remove</button> |
+                                                <button class="btn btn-link">Edit</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button class="btn btn-link">Add Participant</button>
+                        </fieldset>
+                    </div>
                 </div>
             </form>
         </div>

@@ -8,10 +8,7 @@ using System;
 using SM.Dto;
 using Breeze.ContextProvider;
 using System.Web.Http.OData.Query;
-using System.Web.Http.OData;
-using System.Net.Http;
-using System.Web.Http.OData.Extensions;
-using Microsoft.Data.OData.Query.SemanticAst;
+using SM.DTOs.Maps;
 
 namespace SM.Web.Controllers
 {
@@ -67,12 +64,12 @@ namespace SM.Web.Controllers
         {
             return Repo.ScenarioResources;
         } 
-        [HttpGet]
+        [HttpGet, EnableBreezeQuery]
 		public IQueryable<CourseDto> Courses(ODataQueryOptions options)
         {
-            return Repo.GetCourses(GetAndStripIncludes(options));
+           return Repo.GetCourses(GetIncludes(options));
         }
-        private string[] GetAndStripIncludes(ODataQueryOptions options)
+        private MapperConfig.IncludeSelectOptions GetIncludes(ODataQueryOptions options)
         {
             //a hack to use breeze instead of learning .net odata implementation
             //http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/odata-v4/create-an-odata-v4-endpoint
@@ -81,21 +78,9 @@ namespace SM.Web.Controllers
             var se = options.SelectExpand;
             if (se != null)
             {
-                if (se.RawExpand != null)
-                {
-                    string[] returnVar = options.SelectExpand.RawExpand.Split(',');
-
-                    //'select' and 'expand' cannot be both null or empty.
-                    /*
-                    Request.ODataProperties().SelectExpandClause = (se.RawSelect==null)
-                        ?null
-                        :  new SelectExpandQueryOption(select:se.RawSelect, expand:null, context:se.Context).SelectExpandClause;
-                    */
-                    return returnVar;
-                }
-
+                return new MapperConfig.IncludeSelectOptions((se.RawExpand==null)? null :se.RawExpand.Split(','), (se.RawSelect == null) ? null : se.RawSelect.Split(','), '/');
             }
-            return new string[0];
+            return null;
         }
         [HttpGet]
 		public IQueryable<CourseTypeDto> CourseTypes()
@@ -119,6 +104,18 @@ namespace SM.Web.Controllers
         public string Ping()
         {
             return "pong";
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_repository != null)
+                {
+                    _repository.Dispose();
+                }
+            }
+            base.Dispose(disposing);
         }
     }
 }

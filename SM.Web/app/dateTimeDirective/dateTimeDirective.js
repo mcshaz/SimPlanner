@@ -3,7 +3,6 @@
     var app = angular.module('app');
     var controllerId = 'smDatetime';
     app.directive(controllerId, [dateTimeDirective]);
-    app.directive('smTimespan', [timeDirective]);
 
     function dateTimeDirective() {
         return {
@@ -26,61 +25,20 @@
 
     function dateTimeDirectiveController($scope) {
         var vm = this;
-        var timespan = timespanMinutes();
-        vm.dpPopup = { isOpen: false };
+
         vm.maxDate;
         vm.minDate;
-        vm.date;
-        vm.time;
         vm.datetime;
         vm.openDp = openDp;
-        vm.dateChange = dateChange;
-        vm.timeChange = timeChange;
+        vm.dpPopup = { isOpen: false };
         vm.dateFormat = moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
-        var deregister = $scope.$watch(function () { return vm.datetime }, datetimeChange);
 
-        function datetimeChange() {
-            if (vm.datetime) {
-                timespan.setMinutes(vm.datetime);
-                vm.time = timespan.toString();
-                vm.date = vm.datetime;
-                deregister();
-            }
-        }
 
         function openDp() {
             vm.dpPopup.isOpen = true;
         }
-        function timeChange() {
-            timespan.parse(vm.time);
-            dateChange();
-        }
 
-        function dateChange() {
-            if (timespan.isValid && vm.date instanceof Date) {
-                vm.datetime = timespan.setTime(vm.date)
-            } else {
-                vm.datetime = null;
-            }
-        }
 
-    }
-
-    function timeDirective() {
-        return {
-            restrict: 'A', //matches only attribute name
-            require: 'ngModel',
-            link: function (scope, element, attr, ngModelCtrl) {
-                ngModelCtrl.$parsers.push(function (timeStr) {
-                    return timespanMinutes(timeStr);
-                });
-                ngModelCtrl.$formatters.push(function (timespan) {
-                    if (timespan && timespan.isValid) {
-                        return timespan.parsed || timespan.toString();
-                    }
-                });
-            }
-        };
     }
 
     var dateParseFormats;

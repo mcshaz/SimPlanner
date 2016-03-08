@@ -128,7 +128,11 @@
                                     <tr data-ng-repeat="c in vm.upcomingCourses track by c.id">
                                         <td>{{c.startTime | amDateFormat:'L'}}</td>
                                         <td>{{c.department.name}}</td>
-                                        <td>{{c.location}}</td>
+                                        <td>
+                                            <a href="#" uib-popover="{{c.room.directions}}" popover-title="{{c.room.fullDescription}}" popover-trigger="mouseenter" >
+                                                {{c.room.shortDescription}}
+                                            </a>
+                                        </td>
                                         <td><input type="checkbox" disabled="disabled" data-ng-checked="c.includesUser(vm.currentUserId)" /></td>
                                         <td><button class="btn btn-link" data-ng-click="vm.gotoCourse(c)">Edit</button></td>
                                     </tr>

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace SM.Dto
 {
-    public class MedSimDtoRepository
+    public class MedSimDtoRepository : IDisposable
     {
         private readonly EFContextProvider<MedSimDbContext> _contextProvider;
         private readonly Guid _userId;
@@ -67,7 +67,7 @@ namespace SM.Dto
                     returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)));
                 }
                 //currently allowing users to view all departmetns within their institution - but only edit thseir department
-                return returnVar.Project<Institution,InstitutionDto>("Departments.Rooms");
+                return returnVar.Project<Institution,InstitutionDto>(new MapperConfig.IncludeSelectOptions(new[] { "Departments.Rooms" }));
 
             }
         }
@@ -92,10 +92,9 @@ namespace SM.Dto
 
 
         //might eventually run the visitor like so: http://stackoverflow.com/questions/18879779/select-and-expand-break-odataqueryoptions-how-to-fix
-        public IQueryable<CourseDto> GetCourses(params string[] includes)
+        public IQueryable<CourseDto> GetCourses(MapperConfig.IncludeSelectOptions options = null)
         {
-            ValidateIncludes(includes);
-            return Context.Courses.Project<Course,CourseDto>(includes);
+            return Context.Courses.Project<Course,CourseDto>(options);
             /*
             if (include.Length > 0)
             {
@@ -106,19 +105,44 @@ namespace SM.Dto
             //filteredQuery.Select(CourseMaps.mapFromRepo).ToList().AsQueryable();
         }
 
-        public IQueryable<CourseTypeDto> GetCourseTypes(params string[] includes)
+        public IQueryable<CourseTypeDto> GetCourseTypes()
         {
-            ValidateIncludes(includes);
-            return Context.CourseTypes.Project<CourseType, CourseTypeDto>(includes);
+            return Context.CourseTypes.Project<CourseType, CourseTypeDto>();
         }
 
-        private static void ValidateIncludes(string[] includes)
+
+        #region IDisposable
+
+        bool _disposed;
+
+        public void Dispose()
         {
-            if (includes.Any(i => i.Contains('/')))
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~MedSimDtoRepository()
+        {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
             {
-                throw new NotSupportedException("expanding below 1 level is currently not supported");
+                // free other managed objects that implement
+                // IDisposable only
+                _contextProvider.Context.Dispose();
             }
-        }
 
+            // release any unmanaged objects
+            // set the object references to null
+
+            _disposed = true;
+        }
+        #endregion //IDisposable
     }
 }

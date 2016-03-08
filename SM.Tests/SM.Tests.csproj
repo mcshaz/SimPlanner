@@ -117,8 +117,10 @@
     <Compile Include="LoggingVisitor.cs" />
     <Compile Include="MergingVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDtoRepo.cs" />
     <Compile Include="TestEntitities.cs" />
     <Compile Include="TestExpandNavigate.cs" />
+    <Compile Include="TestLinqExtensions.cs" />
     <Compile Include="TestWebConfig.cs" />
   </ItemGroup>
   <ItemGroup>

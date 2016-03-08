@@ -40,5 +40,70 @@ namespace SM.DTOs.Utilities
             }
             return true;
         }
+        /// <summary>
+        /// no different to .GroupBy(x=>x).Select(x=>x.Key)
+        /// </summary>
+
+        public static IEnumerable<T> Distinct<T>(this IEnumerable<T> source)
+        {
+            HashSet<T> hash = new HashSet<T>();
+            foreach (T s in source)
+            {
+                if (hash.Add(s))
+                {
+                    yield return s;
+                }
+            }
+        }
+
+        // no different to .GroupBy(x=>x).Select(x=>x.Key)
+        public static IEnumerable<T> Repeats<T>(this IEnumerable<T> source)
+        {
+            HashSet<T> hash = new HashSet<T>();
+            foreach (T s in source)
+            {
+                if (!hash.Add(s))
+                {
+                    yield return s;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Note for arrays - better to use Array.Copy
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> AllButLast<T>(this IEnumerable<T> source) 
+        {
+            using (var e = source.GetEnumerator())
+            {
+                if (e.MoveNext())
+                {
+                    T returnVar = e.Current;
+                    while (e.MoveNext())
+                    {
+                        yield return returnVar;
+                        returnVar = e.Current;
+                    }
+                }
+            }
+        }
+
+        //if performance critical and > ~3 elements, use unsafe method - starting point around here: http://www.techmikael.com/2009/01/fast-byte-array-comparison-in-c.html
+
+        public static bool StartsWith<T>(this IList<T> source, IList<T> startList)
+        {
+            if (startList.Count > source.Count) { return false; }
+            for (int i=0; i < startList.Count; i++)
+            {
+                if (!source[i].Equals(startList[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

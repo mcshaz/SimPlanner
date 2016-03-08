@@ -20,8 +20,10 @@
         vm.maxDate = new Date();
         vm.maxDate.setFullYear(vm.maxDate.getFullYear() + 1);
         vm.minDate = new Date(2007, 1);
-
         vm.title = 'course';
+        vm.dpPopup = { isOpen: false };
+        vm.openDp = openDp;
+        vm.dateFormat = moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
 
         vm.institutions = [];
         vm.courseTypes = [];
@@ -39,10 +41,9 @@
         });
         activate();
 
-            function activate() {
+        function activate() {
             datacontext.ready().then(function () {
-                var promises =[
-                    datacontext.courseTypes.all().then(function (data) {
+                var promises =[ datacontext.courseTypes.all().then(function (data) {
                         vm.courseTypes = data;
                         if (data.length === 1 && !id) {
                             vm.course.courseType = data[0];
@@ -52,8 +53,8 @@
                         vm.institutions = data;
                         if (data.length === 1 && !id) {
                             vm.institution = data[0];
-                    }
-            })];
+                        }
+                })];
                 if (id) {
                     promises.push(datacontext.courses.fetchByKey(id).then(function (data) {
                         if (!data) {
@@ -61,16 +62,19 @@
                             return;
                             //gotoCourses();
                     }
-                        vm.course = data;
-                        vm.institution = vm.course.department.institution;
-                }));
-            }
+                    vm.course = data;
+                    vm.institution = vm.course.department.institution;
+                    }));
+                }
                 common.activateController(promises, controllerId)
                     .then(function () {
                         log('Activated Course View');
-            });
-            });
-        }
+                    });
+                });
+            }
+            function openDp() {
+                vm.dpPopup.isOpen = true;
+            }
 
     }
 })();

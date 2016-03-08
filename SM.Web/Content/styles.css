@@ -69,15 +69,15 @@ body {
 select > option {
     color: black;
 }
-
+/*
 input.form-control,
 select.form-control,
 textarea.form-control {
-    /*width: 205px;*/
     width: 60%;
     display: inline;
     display: block;
 }
+    */
 
 .widget .padd {
     /*margin-bottom: 0;*/
@@ -422,6 +422,10 @@ a {
 }
 .clickable:hover {
     cursor: pointer;
+}
+
+.time-accompany {
+    margin-top:41px;
 }
 /*#endregion*/
 

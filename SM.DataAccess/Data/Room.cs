@@ -9,7 +9,8 @@ namespace SM.DataAccess
     public class Room
     {
         public Guid Id { get; set; }
-        public string Description { get; set; }
+        public string ShortDescription { get; set; }
+        public string FullDescription { get; set; }
         public string Directions { get; set; }
         public Guid DepartmentId { get; set; }
         public Department Department { get; set; }

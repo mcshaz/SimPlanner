@@ -13,7 +13,8 @@ namespace SM.DTOs.Maps
             {
                 Id = m.Id,
                 DepartmentId = m.DepartmentId,
-                Description = m.Description,
+                ShortDescription = m.ShortDescription,
+                FullDescription = m.FullDescription,
                 Directions = m.Directions
             };
         }
@@ -29,7 +30,8 @@ namespace SM.DTOs.Maps
             {
                 Id = m.Id,
                 DepartmentId = m.DepartmentId,
-                Description = m.Description,
+                ShortDescription = m.ShortDescription,
+                FullDescription = m.FullDescription,
                 Directions = m.Directions
             };
             //Courses
