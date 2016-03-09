@@ -3,41 +3,33 @@
     var controllerId = 'course';
     angular
         .module('app')
-        .controller(controllerId, course);
+        .controller(controllerId, controller);
 
-    course.$inject = ['$routeParams','common','datacontext', '$rootScope']; 
+    controller.$inject = ['$routeParams','common','datacontext', '$rootScope']; 
 
-    function course($routeParams, common, datacontext, $rootScope) {
+    function controller($routeParams, common, datacontext, $rootScope) {
         /* jshint validthis:true */
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
 
         var id = $routeParams.id;
 
+        vm.canSave = false;
         vm.course = {};
-        //TODO - move nullOs out of controller
-
+        vm.courseTypes = [];
+        vm.dateFormat = '';
+        vm.dpPopup = { isOpen: false };
+        vm.institutions = [];
+        vm.institution = {};
         vm.maxDate = new Date();
         vm.maxDate.setFullYear(vm.maxDate.getFullYear() + 1);
         vm.minDate = new Date(2007, 1);
-        vm.title = 'course';
-        vm.dpPopup = { isOpen: false };
         vm.openDp = openDp;
-        vm.dateFormat = moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
+        vm.save = save;
+        vm.title = 'course';
 
-        vm.institutions = [];
-        vm.courseTypes = [];
-        vm.institution = {};
-
-        vm.faculty = [];
-        vm.participants = [];
-
-        vm.save = function () {
-            log({ msg:'saved date: ' + vm.course.startTime });
-        }//datacontext.save;
-        vm.canSave = false;
         $rootScope.$on('hasChanges', function () {
-            vm.canSave = datacontext.courses.hasChanges() || datacontext.courseParticipants.hasChanges();
+            vm.canSave = datacontext.courses.hasChanges();
         });
         activate();
 
@@ -55,26 +47,30 @@
                             vm.institution = data[0];
                         }
                 })];
-                if (id) {
-                    promises.push(datacontext.courses.fetchByKey(id).then(function (data) {
+                if (id && id!='new') {
+                    promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant'}).then(function (data) {
                         if (!data) {
-                            log.warning('Could not find session id = ' +id);
+                            log.warning('Could not find course id = ' +id);
                             return;
                             //gotoCourses();
-                    }
-                    vm.course = data;
-                    vm.institution = vm.course.department.institution;
+                        }
+                        vm.course = data;
+                        vm.institution = vm.course.department.institution;
                     }));
                 }
+                vm.dateFormat = moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
                 common.activateController(promises, controllerId)
                     .then(function () {
                         log('Activated Course View');
                     });
-                });
-            }
-            function openDp() {
-                vm.dpPopup.isOpen = true;
-            }
+            });
+        }
+        function openDp() {
+            this.dpPopup.isOpen = true;
+        }
 
+        function save() {
+            log({ msg: 'saved date: ' + vm.course.startTime });
+        }//datacontext.save;
     }
 })();

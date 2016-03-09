@@ -1,9 +1,9 @@
 ﻿(function(angular) {
     'use strict';
     var serviceId = 'repository';
-    angular.module('app').factory(serviceId, ['breeze', 'common', factory]);
+    angular.module('app').factory(serviceId, ['breeze', 'common', '$q', factory]);
 
-    function factory(breeze, common) {
+    function factory(breeze, common, $q) {
         var Repository = (function () {
 
             var repository = function (entityManagerFactory, entityTypeName, resourceName, fetchStrategy) {
@@ -21,11 +21,31 @@
                     return manager().hasChanges(entityTypeName);
                 }
 
-                this.fetchByKey = function (key) {
-                    return manager().fetchEntityByKey(entityTypeName, key, true) //true refers to check local cache 1st
-                        .then(function (data) {
-                            return data.entity;
+                this.fetchByKey = function (key, args) {
+                    if (args && args.expand) {
+                        var entityKey = new breeze.EntityKey(entityType, key);
+                        var query = breeze.EntityQuery.fromEntityKey(entityKey).expand(args.expand);
+                        var defer = $q.defer();
+                        manager().executeQuery(query.using(breeze.FetchStrategy.FromLocalCache)).then(function (data) {
+                            if (data.results.length) {
+                                defer.resolve(data.results[0]);
+                            } else {
+                                manager().executeQuery(query).then(
+                                    function (data) {
+                                        defer.resolve(data.results[0]);
+                                    }, function (data) {
+                                        log.error(data);
+                                        defer.reject(data);
+                                    });
+                            }
                         });
+                        return defer.promise;
+                    } else {
+                        return manager().fetchEntityByKey(entityTypeName, key, true) //true refers to check local cache 1st
+                            .then(function(data) {
+                                return data.entity;
+                            });
+                    }
                 };
 
                 this.getByKey = function (key) {

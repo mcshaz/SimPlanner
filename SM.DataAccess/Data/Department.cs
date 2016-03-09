@@ -103,5 +103,19 @@ namespace SM.DataAccess
                 _rooms = value;
             }
         }
+
+        ICollection<CourseParticipant> _courseParticipants;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CourseParticipant> CourseParticipants
+        {
+            get
+            {
+                return _courseParticipants ?? (_courseParticipants = new List<CourseParticipant>());
+            }
+            set
+            {
+                _courseParticipants = value;
+            }
+        }
     }
 }

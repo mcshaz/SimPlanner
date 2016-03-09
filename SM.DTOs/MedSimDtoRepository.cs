@@ -67,7 +67,7 @@ namespace SM.Dto
                     returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)));
                 }
                 //currently allowing users to view all departmetns within their institution - but only edit thseir department
-                return returnVar.Project<Institution,InstitutionDto>(new MapperConfig.IncludeSelectOptions(new[] { "Departments.Rooms" }));
+                return returnVar.Project<Institution,InstitutionDto>(new MapperConfig.IncludeSelectOptions(new[] { "Departments.Rooms","ProfessionalRoles" }));
 
             }
         }

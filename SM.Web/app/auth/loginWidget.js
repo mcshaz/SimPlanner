@@ -14,7 +14,8 @@ var controllerId = 'loginWidget';
 
         $rootScope.$on(AUTH_EVENTS.loginRequired, getCredentials);
         $rootScope.$on(AUTH_EVENTS.loginConfirmed, loggedIn);
-
+        //now we have a method to display login if the token has expired, we can notify
+        $rootScope.$broadcast(AUTH_EVENTS.loginWidgetReady);
         function getCredentials() {
             modalInstance =  $uibModal.open({
                 templateUrl: 'app/auth/getCredentials.html',

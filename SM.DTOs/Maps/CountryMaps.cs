@@ -12,7 +12,7 @@ namespace SM.DTOs.Maps
             {
                 Code = m.Code,
                 Name = m.Name,
-                IsMonthFirst = m.IsMonthFirst
+                DialCode = m.DialCode
                 //Hospitals = m.Hospitals,
                 //ProfessionalRoles = m.ProfessionalRoles
             };
@@ -23,7 +23,7 @@ namespace SM.DTOs.Maps
             return m => new CountryDto {
             Code = m.Code,
             Name = m.Name,
-            IsMonthFirst = m.IsMonthFirst
+            DialCode = m.DialCode
             //Hospitals = m.Hospitals,
             //ProfessionalRoles = m.ProfessionalRoles
         };

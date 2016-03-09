@@ -8,7 +8,7 @@ namespace SM.DataAccess
     {
         protected override void Seed(MedSimDbContext context)
         {
-            var nz = new Country { Code = "NZ", Name = "New Zealand" };
+            var nz = new Country { Code = "NZ", Name = "New Zealand", DialCode="64" };
             context.Countries.Add(nz);
             string[] locales = new string[] { "en-NZ", "en-AU", "en-GB" };
             for (byte i = 0; i < locales.Length; i++)
@@ -32,14 +32,14 @@ namespace SM.DataAccess
 
             var consultantRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Medical, Description = "Consulant" };
             context.ProfessionalRoles.Add(consultantRole);
-            var nursingRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Medical, Description = "Clinical Charge Nurse" };
+            var nursingRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Nursing, Description = "Clinical Charge Nurse" };
             context.ProfessionalRoles.Add(nursingRole);
-            var techRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Medical, Description = "Simulation Technician" };
+            var techRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.SimTech, Description = "Simulation Technician" };
             context.ProfessionalRoles.Add(techRole);
 
-            nz.ProfessionalRoles.Add(consultantRole);
-            nz.ProfessionalRoles.Add(nursingRole);
-            nz.ProfessionalRoles.Add(techRole);
+            starship.ProfessionalRoles.Add(consultantRole);
+            starship.ProfessionalRoles.Add(nursingRole);
+            starship.ProfessionalRoles.Add(techRole);
 
 
             //todo add Mike,Denish,Becks & check trish phone no and 2nd email 
@@ -97,7 +97,7 @@ namespace SM.DataAccess
             {
                 var cp = new CourseParticipant { Participant = trish, IsConfirmed = true, IsFaculty = true, Course = t, DepartmentId = trish.DefaultDepartmentId, ProfessionalRoleId = trish.DefaultProfessionalRoleId };
                 context.CourseParticipants.Add(cp);
-                var cp2 = new CourseParticipant { Participant = brent, IsConfirmed = true, IsFaculty = true, Course = t, DepartmentId = brent.DefaultDepartmentId, ProfessionalRoleId = brent.DefaultProfessionalRoleId };
+                var cp2 = new CourseParticipant { Participant = brent, IsConfirmed = true, IsFaculty = false, Course = t, DepartmentId = brent.DefaultDepartmentId, ProfessionalRoleId = brent.DefaultProfessionalRoleId };
                 context.CourseParticipants.Add(cp2);
             }
 

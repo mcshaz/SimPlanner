@@ -68,11 +68,6 @@ namespace SM.DataAccess
             modelBuilder.Conventions.Add(new FixedLengthAttributeConvention());
 
             modelBuilder.Entity<Country>()
-                .HasMany(e => e.ProfessionalRoles)
-                .WithMany(e => e.Countries)
-                .Map(m => m.ToTable("CountryProfessionalRole").MapLeftKey("CountryCode").MapRightKey("ProfessionalRoleId"));
-
-            modelBuilder.Entity<Country>()
                 .HasMany(e => e.CountryLocales)
                 .WithRequired(e => e.Country)
                 .HasForeignKey(e=>e.CountryCode);
@@ -142,6 +137,12 @@ namespace SM.DataAccess
                 .HasForeignKey(e => e.DepartmentId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Department>()
+                .HasMany(e => e.CourseParticipants)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e => e.DepartmentId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Institution>()
                 .Property(e => e.CountryCode)
                 .IsFixedLength();
@@ -151,6 +152,11 @@ namespace SM.DataAccess
                 .WithRequired(e => e.Institution)
                 .HasForeignKey(e=>e.InstitutionId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Institution>()
+                .HasMany(e => e.ProfessionalRoles)
+                .WithMany(e => e.Institutions);
+                //.Map(m => m.ToTable("CountryProfessionalRole").MapLeftKey("CountryCode").MapRightKey("ProfessionalRoleId"));
 
             modelBuilder.Entity<Participant>()
                 .HasMany(e => e.CourseParticipants)
@@ -174,6 +180,12 @@ namespace SM.DataAccess
                 .HasMany(e => e.Participants)
                 .WithRequired(e => e.ProfessionalRole)
                 .HasForeignKey(e => e.DefaultProfessionalRoleId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ProfessionalRole>()
+                .HasMany(e => e.CourseParticipants)
+                .WithRequired(e => e.ProfessionalRole)
+                .HasForeignKey(e => e.ProfessionalRoleId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Room>()

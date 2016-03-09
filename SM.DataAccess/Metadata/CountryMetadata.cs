@@ -13,5 +13,10 @@ namespace SM.Metadata
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+
+        [Required]
+        [StringLength(3,MinimumLength = 2)]
+        [RegularExpression(@"\d+", ErrorMessage = "country dial code can only contain nubers")]
+        public string DialCode { get; set; }
     }
 }

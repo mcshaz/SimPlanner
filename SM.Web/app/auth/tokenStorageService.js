@@ -2,8 +2,8 @@
     'use strict';
     var serviceId = 'tokenStorageService';
     angular.module('app')
-        .service(serviceId, ['authService', 'AUTH_EVENTS', '$http', 'localStorageService', tokenStorageService]);
-    function tokenStorageService(authService, AUTH_EVENTS, $http, localStorage) {
+        .service(serviceId, ['authService', 'AUTH_EVENTS', '$http', 'localStorageService' , '$rootScope', tokenStorageService]);
+    function tokenStorageService(authService, AUTH_EVENTS, $http, localStorage ,$rootScope ) {
         var currentUser = localStorage.get('currentUser');
         var token = localStorage.get('token');
         var unAuthUser = {
@@ -21,7 +21,6 @@
         self.isAuthorized = isAuthorized;
         self.notifyLogin = notifyLogin;
         self.notifyLogout = notifyLogout;
-        self.notifyModulesLoaded = notifyModulesLoaded;
 
         if (!isLoggedIn()) {
             currentUser = unAuthUser;
@@ -29,11 +28,15 @@
 
         setTokenHeader();
 
-        function notifyModulesLoaded() {
+        //$rootScope.$on(AUTH_EVENTS.loginRequired, nullifyToken);
+
+        var unwatchWidget = $rootScope.$on(AUTH_EVENTS.loginWidgetReady, function () {
             if (isLoggedIn()) {
                 authService.loginConfirmed();
             }
-        }
+            unwatchWidget();
+            unwatchWidget = null;
+        });
         
         function isLoggedIn() {
             return(!!token);
@@ -72,28 +75,46 @@
         };
 
         function notifyLogin(data) {
-            token = data.user_token || data.access_token;
-            currentUser = {
-                name: data.fullName,
-                roles: data.userRoles.split(','),
-                id: data.userId,
-                locales: data.userLocales.split(',')
+            //2 scenarios - logged in or recredentialled
+            var recredentialled; 
+            if (currentUser.name) {
+                if (currentUser.name != data.fullName) {
+                    recredentialled = false;
+                    notifyLogout();
+                } else {
+                    recredentialled = true;
+                }
+            } else {
+                recredentialled = false;
             }
-            localStorage.set('token',token);
-            localStorage.set('currentUser', currentUser);
+            token = data.user_token || data.access_token;
+            localStorage.set('token', token);
             setTokenHeader();
-            //now broadcast
-            authService.loginConfirmed();
+            if (!recredentialled){
+                currentUser = {
+                    name: data.fullName,
+                    roles: data.userRoles.split(','),
+                    id: data.userId,
+                    locales: data.userLocales.split(',')
+                }
+                localStorage.set('currentUser', currentUser);
+                //now broadcast
+            }
+            authService.loginConfirmed({ recredentialled: recredentialled }, replaceToken);
         }
 
         function notifyLogout() {
-            token = null;
             currentUser = unAuthUser;
-            localStorage.remove('token');
             localStorage.remove('currentUser');
-            setTokenHeader();
+            nullifyToken();
             //now broadcast
             authService.loginCancelled();
+        }
+
+        function nullifyToken() {
+            localStorage.remove('token');
+            token = null;
+            setTokenHeader();
         }
 
         function setTokenHeader() {
@@ -104,6 +125,11 @@
             }
 
         };
+
+        function replaceToken(request) { //to be used on a 401 if the token has expired
+            request.headers.authorization = 'Bearer ' + token;
+            return request;
+        }
     }
 
 })();

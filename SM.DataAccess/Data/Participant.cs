@@ -9,45 +9,7 @@ namespace SM.DataAccess
     [MetadataType(typeof(ParticipantMetadata))]
     public class Participant : IdentityUser<Guid,AspNetUserLogin,AspNetUserRole,AspNetUserClaim>
     {
-        #region overrides //note overiding a few properties so that referencing assemblies do not need to reference aspnet.identity.entityframework
-        public override Guid Id
-        {
-            get
-            {
-                return base.Id;
-            }
-
-            set
-            {
-                base.Id = value;
-            }
-        }
-
-        public override string UserName
-        {
-            get
-            {
-                return base.UserName;
-            }
-
-            set
-            {
-                base.UserName = value;
-            }
-        }
-
-        public override string PhoneNumber
-        {
-            get
-            {
-                return base.PhoneNumber;
-            }
-
-            set
-            {
-                base.PhoneNumber = value;
-            }
-        }
+        #region overrides 
 
         public override string Email
         {

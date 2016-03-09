@@ -427,6 +427,10 @@ a {
 .time-accompany {
     margin-top:41px;
 }
+
+div.time-accompany{
+    margin-left:-15px;
+}
 /*#endregion*/
 
 /*#region Angular ng-show dissolve animation */

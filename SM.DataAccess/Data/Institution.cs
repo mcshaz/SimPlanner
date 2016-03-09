@@ -31,5 +31,19 @@ namespace SM.DataAccess
 				_departments = value;
 			}
 		}
+
+        ICollection<ProfessionalRole> _professionalRoles;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProfessionalRole> ProfessionalRoles
+        {
+            get
+            {
+                return _professionalRoles ?? (_professionalRoles = new List<ProfessionalRole>());
+            }
+            set
+            {
+                _professionalRoles = value;
+            }
+        }
     }
 }

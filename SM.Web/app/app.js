@@ -26,12 +26,13 @@
             institutionAdmin: 'institutionAdmin',
             faculty: 'faculty',
             participant: 'participant'
-    })
+        })
         .constant('AUTH_EVENTS', {
             forbidden: 'event:auth-forbidden',
             loginRequired: 'event:auth-loginRequired',
             loginConfirmed: 'event:auth-loginConfirmed',
-            loginCancelled: 'event:auth-loginCancelled'
+            loginCancelled: 'event:auth-loginCancelled',
+            loginWidgetReady: 'event:auth-loginWidgetReady'
         })
         .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
             localStorageServiceProvider
@@ -42,20 +43,28 @@
             apiServiceBaseUri: serviceBase,
             clientId: 'simmanager'
         });
-    // Handle routing errors and success events
-    app.run(['$route', function ($route) {
-        // Include $route to kick start the router.
-    }]);
 
-    //set locale once logged in 
-    app.run(['tokenStorageService', 'entityManagerFactory', 'modelBuilder', '$rootScope', 'AUTH_EVENTS',
-        function (tokenStorageService, entityManagerFactory, modelBuilder, $rootScope, AUTH_EVENTS) {
+    // Include $route to kick start the router.
+    app.run(['tokenStorageService', 'entityManagerFactory', 'modelBuilder', '$rootScope', 'AUTH_EVENTS', '$route',
+        function (tokenStorageService, entityManagerFactory, modelBuilder, $rootScope, AUTH_EVENTS, $route) {
             entityManagerFactory.modelBuilder = modelBuilder.extendMetadata;
-                //set locale once logged in 
+            //set locale once logged in 
             $rootScope.$on(AUTH_EVENTS.loginConfirmed, function (evt) {
                 moment.locale(tokenStorageService.getUserLocales());
             });
-            tokenStorageService.notifyModulesLoaded();
+
+            $rootScope.$on('$routeChangeStart', function(event, next, current){
+                if (next.access && next.access.requiresLogin && !tokenStorageService.isLoggedIn()) {
+                    if (!current) {//page loading
+                        var unwatchWidget = $rootScope.$on(AUTH_EVENTS.loginWidgetReady, function () {
+                            $rootScope.$broadcast(AUTH_EVENTS.loginRequired);
+                            unwatchWidget();
+                            unwatchWidget = null;
+                        });
+                    }
+                    $rootScope.$broadcast(AUTH_EVENTS.loginRequired);
+                }
+            });
         }]);
 })();
 //polyfill https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
@@ -81,10 +90,11 @@ if (!Array.prototype.find) {
         return undefined;
     };
 }
+/*
 // Production steps of ECMA-262, Edition 5, 15.4.4.21
 // Reference: http://es5.github.io/#x15.4.4.21
 if (!Array.prototype.reduce) {
-    Array.prototype.reduce = function (callback /*, initialValue*/) {
+    Array.prototype.reduce = function (callback /*, initialValue*//*) {
         'use strict';
         if (this == null) {
             throw new TypeError('Array.prototype.reduce called on null or undefined');
@@ -113,3 +123,4 @@ if (!Array.prototype.reduce) {
     };
 }
 
+*/

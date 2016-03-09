@@ -32,18 +32,32 @@ namespace SM.DataAccess
 			}
 		}
 
-		ICollection<Country> _countries; 
+		ICollection<Institution> _institutions; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Country> Countries
+        public virtual ICollection<Institution> Institutions
 		{
 			get
 			{
-				return _countries ?? (_countries = new List<Country>());
+				return _institutions ?? (_institutions = new List<Institution>());
 			}
 			set
 			{
-				_countries = value;
+				_institutions = value;
 			}
 		}
+
+        ICollection<CourseParticipant> _courseParticipants;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CourseParticipant> CourseParticipants
+        {
+            get
+            {
+                return _courseParticipants ?? (_courseParticipants = new List<CourseParticipant>());
+            }
+            set
+            {
+                _courseParticipants = value;
+            }
+        }
     }
 }

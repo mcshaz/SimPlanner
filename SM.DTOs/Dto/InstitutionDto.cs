@@ -13,6 +13,7 @@ namespace SM.Dto
         public string CountryCode { get; set; }
         public CountryDto Country { get; set; }
         public virtual ICollection<DepartmentDto> Departments { get; set; }
+        public virtual ICollection<ProfessionalRoleDto> ProfessionalRoles { get; set; }
 
     }
 }

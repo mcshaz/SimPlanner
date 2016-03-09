@@ -45,11 +45,6 @@ namespace SM.Dto
                 .IsFixedLength();
 
             modelBuilder.Entity<CountryDto>()
-                .HasMany(e => e.ProfessionalRoles)
-                .WithMany(e => e.Countries)
-                .Map(m => m.ToTable("CountryProfessionalRole").MapLeftKey("CountryCode").MapRightKey("ProfessionalRoleId"));
-
-            modelBuilder.Entity<CountryDto>()
                 .HasMany(e => e.CountryLocales)
                 .WithRequired(e => e.Country)
                 .HasForeignKey(e => e.CountryCode);
@@ -119,6 +114,12 @@ namespace SM.Dto
                 .HasForeignKey(e => e.DepartmentId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<DepartmentDto>()
+                .HasMany(e => e.CourseParticipants)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e => e.DepartmentId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<InstitutionDto>()
                 .Property(e => e.CountryCode)
                 .IsFixedLength();
@@ -128,6 +129,11 @@ namespace SM.Dto
                 .WithRequired(e => e.Institution)
                 .HasForeignKey(e => e.InstitutionId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<InstitutionDto>()
+                .HasMany(e => e.ProfessionalRoles)
+                .WithMany(e => e.Institutions);
+                    //.Map(m => m.ToTable("CountryProfessionalRole").MapLeftKey("CountryCode").MapRightKey("ProfessionalRoleId"));
 
             modelBuilder.Entity<ParticipantDto>()
                 .HasMany(e => e.CourseParticipants)
@@ -151,6 +157,12 @@ namespace SM.Dto
                 .HasMany(e => e.Participants)
                 .WithRequired(e => e.ProfessionalRole)
                 .HasForeignKey(e => e.DefaultProfessionalRoleId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ProfessionalRoleDto>()
+                .HasMany(e => e.CourseParticipants)
+                .WithRequired(e => e.ProfessionalRole)
+                .HasForeignKey(e => e.ProfessionalRoleId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<RoomDto>()

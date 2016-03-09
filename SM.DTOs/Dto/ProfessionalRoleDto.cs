@@ -12,7 +12,7 @@ namespace SM.Dto
         public string Description { get; set; }
         public ProfessionalCategory Category { get; set; }
         public virtual ICollection<ParticipantDto> Participants { get; set; }
-        public virtual ICollection<CountryDto> Countries { get; set; }
-
+        public virtual ICollection<InstitutionDto> Institutions { get; set; }
+        public virtual ICollection<CourseParticipantDto> CourseParticipants { get; set; }
     }
 }

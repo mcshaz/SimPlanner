@@ -27,6 +27,9 @@
                     settings: {
                         nav: 1,
                         content: '<i class="fa fa-dashboard"></i> Dashboard'
+                    },
+                    access: {
+                        requiresLogin: false
                     }
                 }
             }, {
@@ -37,6 +40,9 @@
                     settings: {
                         nav: 2,
                         content: '<i class="fa fa-lock"></i> Admin'
+                    },
+                    access: {
+                        requiresLogin: true
                     }
                 }
             }, {
@@ -47,6 +53,9 @@
                     settings: {
                         nav: 3,
                         content: 'New Course' //<i class="fa fa-"></i> 
+                    },
+                    access: {
+                        requiresLogin: true
                     }
                 }
             }

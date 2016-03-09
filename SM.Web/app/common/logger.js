@@ -22,7 +22,12 @@
                 log(argOpts, 'success');
             };
             returnVar.error = returnVar.err = function (argOpts) {
-                log(argOpts, 'error');
+                if (argOpts instanceof Error) {
+                    log({ message: argOpts.message, data: argOpts }, 'error');
+                } else {
+                    log(argOpts, 'error');
+                }
+
             };
             returnVar.debug = function (argOpts) {
                 log(argOpts, 'debug');
@@ -51,7 +56,7 @@
             var toastType = logType;
             var msg = argOpts.message || argOpts.msg;
             var src = argOpts.source || argOpts.src;
-            var data = typeof argOpts.data == 'undefined' ? '' : angular.toJson(JSON.decycle(argOpts.data));
+            var data = typeof argOpts.data == 'undefined' ? '' : angular.toJson(JSON.decycle(argOpts.data), true);//pretty
 
             switch(logType){
                 case 'success':

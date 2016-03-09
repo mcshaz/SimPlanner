@@ -2,11 +2,12 @@
     'use strict';
     var serviceId = 'entityManagerFactory';
     angular.module('app')
-        .factory(serviceId, ['breeze', 'common', 'AUTH_EVENTS', '$rootScope', '$q', 'tokenStorageService',factory]);
+        .factory(serviceId, ['breeze', 'common', 'AUTH_EVENTS', '$rootScope', '$q', 'tokenStorageService', factory]);
 
     function factory(breeze, common, AUTH_EVENTS, $rootScope, $q, tokenStorageService) {
         breeze.NamingConvention.camelCase.setAsDefault();
         //can set identity as default here
+        var log = common.logger.getLogFn(serviceId);
         var serviceName = 'breeze/MedSimApi';
 
         // define the Breeze `DataService` for this app
@@ -35,9 +36,8 @@
         };
 
         var defer = $q.defer();
-        var resolved = false;
         
-        $rootScope.$on(AUTH_EVENTS.loginConfirmed, importEntities);
+        var unwatchImport = $rootScope.$on(AUTH_EVENTS.loginConfirmed, importEntities);
         //to do empty values on logout;
 
         return self;
@@ -46,22 +46,24 @@
             return defer.promise;
         }
 
-        function importEntities() {
-            if (!resolved)
-            {
-                if (self.modelBuilder) {
-                    self.modelBuilder(masterManager.metadataStore);
-                }
-
-                var query = breeze.EntityQuery.from('Lookups');
-                return masterManager.executeQuery(query).then(function () {
-
-                    defer.resolve();
-                }, function () {
-                    defer.reject.apply(this, arguments);
-                });
-                resolved = true;
+        function importEntities(args) {
+            if (args.recredentialled) {
+                return;
             }
+            if (self.modelBuilder) {
+                self.modelBuilder(masterManager.metadataStore);
+            }
+
+            var query = breeze.EntityQuery.from('Lookups');
+            return masterManager.executeQuery(query).then(function () {
+                defer.resolve();
+            }, function (arg) {
+                log.error(arg);
+                defer.reject(arg);
+            });
+            resolved = true;
+            unwatchImport(); //only run once - will be called on every recredential
+            unwatchImport = null;
         };
 
     }
