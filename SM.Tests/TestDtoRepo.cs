@@ -78,7 +78,7 @@ namespace SimManager.Tests
         [TestMethod]
         public void TestCourses()
         {
-            var courses = (from c in _repo.GetCourses(new SM.DTOs.Maps.MapperConfig.IncludeSelectOptions(new[] { "CourseParticipants" }))
+            var courses = (from c in _repo.GetCourses(new[] { "CourseParticipants" })
                            where c.StartTime > DateTime.Now
                            orderby c.StartTime
                            select new { c.StartTime, c.CourseParticipants }).ToList();

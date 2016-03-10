@@ -48,25 +48,21 @@ namespace SM.DTOs.Maps
                 yield return new KeyValuePair<string, LambdaExpression>(m.PleuralName, m.Map);
             }
         }
-        public static IQueryable<TMap> Project<T, TMap>(this IQueryable<T> queryable, IncludeSelectOptions includeSelects = null)
+        public static IQueryable<TMap> Project<T, TMap>(this IQueryable<T> queryable, string[] includes = null, string[] selects=null, char sepChar='.')
         {
-            return queryable.Select(GetLambda<T, TMap>(includeSelects));
+            return queryable.Select(GetLambda<T, TMap>(includes, selects, sepChar));
         }
 
-        public static Expression<Func<T,TMap>> GetLambda<T,TMap>(IncludeSelectOptions includeSelects = null)
+        public static Expression<Func<T,TMap>> GetLambda<T,TMap>(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
-            return (Expression<Func<T, TMap>>)GetLambda(typeof(T).Name, includeSelects);
+            return (Expression<Func<T, TMap>>)GetLambda(typeof(T).Name, includes, selects, sepChar);
         }
 
-        public static LambdaExpression GetLambda(string typeName, IncludeSelectOptions includeSelects = null)
+        private static LambdaExpression GetLambda(string typeName, string[] includes, string[] selects, char sepChar)
         {
-            var returnVar = _maps[typeName];
-            if (includeSelects != null && includeSelects.RequiredMappings.Any())
-            {
-                var navs = includeSelects.RequiredMappings.Select(i=>MapChildren(i));
-                return returnVar.MapNavProperty(navs);
-            }
-            return returnVar;
+            var includeSelects = new IncludeSelectOptions(typeName, includes, selects, sepChar);
+            VisitNodes(includeSelects.RequiredMappings);
+            return includeSelects.RequiredMappings.Lambda;
         }
 
         private class DtoMap
@@ -82,26 +78,30 @@ namespace SM.DTOs.Maps
             public readonly LambdaExpression Map;
         }
 
-        public static KeyValuePair<string, LambdaExpression> MapChildren(IList<string> includes)
+        private static void VisitNodes(IncludeSelectOptions.Node includeTree)
         {
-            if (includes.Count == 0) { throw new ArgumentException("must contain at least 1 element", "includes"); }
-            int lastIndex = includes.Count - 1;
-            LambdaExpression returnLambda = _maps[includes[lastIndex]];
-
-            for (int i = --lastIndex; i >= 0; i--)
+            if (includeTree == null) { throw new ArgumentNullException("includes"); }
+            
+            if (includeTree.Children.Any())
             {
-                returnLambda = _maps[includes[i]].MapNavProperty(new[] { new KeyValuePair<string, LambdaExpression>(includes[i + 1], returnLambda) });
+                foreach(var n in includeTree.Children)
+                {
+                    VisitNodes(n);
+                }
+                includeTree.Lambda = _maps[includeTree.Name].MapNavProperty(includeTree.Children.Select(c => new KeyValuePair<string, LambdaExpression>(c.Name, c.Lambda)));  
             }
-
-            return new KeyValuePair<string, LambdaExpression>(includes[0], returnLambda);
+            else
+            {
+                includeTree.Lambda = _maps[includeTree.Name];
+            }
         }
 
-        public class IncludeSelectOptions
+        private class IncludeSelectOptions
         {
             readonly char _sepChar;
-            public readonly ReadOnlyCollection<string[]> RequiredMappings;
+            internal readonly Node RequiredMappings;
 
-            public IncludeSelectOptions(IList<string> includes = null, IList<string> selects = null, char sepChar = '.')
+            public IncludeSelectOptions(string typeName, IList<string> includes = null, IList<string> selects = null, char sepChar = '.')
             {
                 ValidateNoRepeats(includes, "includes");
                 ValidateNoRepeats(selects, "selects");
@@ -113,7 +113,7 @@ namespace SM.DTOs.Maps
                     mappings.AddRange(SelectNavProperties(selects.Select(s => s.Split(sepChar))));
                 }
 
-                RequiredMappings = GetRequiredIncludes(mappings).AsReadOnly();
+                RequiredMappings = GetRequiredIncludes(typeName, mappings);
             }
 
             static IEnumerable<string[]> SelectNavProperties(IEnumerable<string[]> selects)
@@ -124,7 +124,7 @@ namespace SM.DTOs.Maps
                     {
                         yield return s;
                     }
-                    if (s.Length > 1)
+                    else
                     {
                         var returnVar = new string[s.Length - 1];
                         Array.Copy(s, returnVar, returnVar.Length);
@@ -144,31 +144,62 @@ namespace SM.DTOs.Maps
                 }
             }
 
-            static List<string[]> GetRequiredIncludes(IList<string[]> includeList)
+            static Node GetRequiredIncludes(string typeName, IList<string[]> includeList)
             {
-                var returnVar = new string[includeList.Count][];
-
-                includeList.CopyTo(returnVar, 0);
-                int last = returnVar.Length - 1;
-                for (int i = 0; i < last; i++)
+                //build tree
+                Node returnVar = new Node(typeName);
+                for(int i=0;i< includeList.Count;i++)
                 {
-                    for (int j = i+1; j < returnVar.Length; j++)
+                    Node match = returnVar;
+                    int j;
+                    for (j=0; j < includeList[i].Length; j++)
                     {
-                        if (returnVar[j].StartsWith(returnVar[i]))
+                        var matchingChild = match.Children.FirstOrDefault(n => n.Name == includeList[i][j]);
+                        if (matchingChild == null)
                         {
-                            returnVar[i] = null;
+                            break;
                         }
-                        else if (returnVar[i].StartsWith(returnVar[j]))
-                        {
-                            returnVar[j] = returnVar[i];
-                            returnVar[i] = null;
-                        }
+                        match = matchingChild;
+                    }
+                    for (; j < includeList[i].Length; j++)
+                    {
+                        match.Children.Add(new Node(includeList[i][j]));
+                        match = match.Children[0];
                     }
                 }
-
-                return returnVar.Where(r => r != null).ToList();
+                return returnVar;
             }
 
+            internal class Node
+            {
+                public readonly List<Node> Children;
+                public readonly string Name;
+                public LambdaExpression Lambda { get; set; }
+                public Node(string name)
+                {
+                    Name = name;
+                    Children = new List<Node>();
+                }
+                /*
+                                public void PrintPretty(string indent, bool last)
+                                {
+                                    Console.Write(indent);
+                                    if (last)
+                                    {
+                                        Console.Write("\\-");
+                                        indent += "  ";
+                                    }
+                                    else
+                                    {
+                                        Console.Write("|-");
+                                        indent += "| ";
+                                    }
+                                    Console.WriteLine(Name);
+
+                                    for (int i = 0; i < Children.Count; i++)
+                                        Children[i].PrintPretty(indent, i == Children.Count - 1);
+               */
+            }
         }
     }
 

@@ -9,11 +9,11 @@ namespace SM.DataAccess.Metadata
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid ParticipantId { get; set; }
+        public Guid CourseId { get; set; }
 
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid CourseId { get; set; }
+        public Guid ParticipantId { get; set; }
     }
 }

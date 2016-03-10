@@ -105,5 +105,15 @@ namespace SM.DTOs.Utilities
             }
             return true;
         }
+
+        public static int CorrespondingStartElements<T>(this IList<T> source, IList<T> comparisonList)
+        {
+            int i = 0;
+            while (i<source.Count && i<comparisonList.Count && source[i].Equals(comparisonList[i]))
+            {
+                i++;
+            }
+            return i;
+        }
     }
 }

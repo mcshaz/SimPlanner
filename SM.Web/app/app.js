@@ -90,6 +90,12 @@ if (!Array.prototype.find) {
         return undefined;
     };
 }
+
+if (!Array.isArray) {
+    Array.isArray = function (arg) {
+        return Object.prototype.toString.call(arg) === '[object Array]';
+    };
+}
 /*
 // Production steps of ECMA-262, Edition 5, 15.4.4.21
 // Reference: http://es5.github.io/#x15.4.4.21
@@ -110,7 +116,7 @@ if (!Array.prototype.reduce) {
                 k++;
             }
             if (k >= len) {
-                throw new TypeError('Reduce of empty array with no initial value');
+                throw new TypeError('Reduce of empty Array with no initial value');
             }
             value = t[k++];
         }

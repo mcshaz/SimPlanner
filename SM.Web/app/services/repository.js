@@ -9,6 +9,7 @@
             var repository = function (entityManagerFactory, entityTypeName, resourceName, fetchStrategy) {
                 var log = common.logger.getLogFn(serviceId);
                 // Ensure resourceName is registered
+                var self = this;
                 var entityType;
                 if (entityTypeName) {
                     entityType = getMetastore().getEntityType(entityTypeName);
@@ -17,56 +18,33 @@
                     getMetastore().setEntityTypeForResourceName(resourceName, entityTypeName);
                 }
 
-                this.hasChanges = function () {
+                self.hasChanges = function () {
                     return manager().hasChanges(entityTypeName);
                 }
 
-                this.fetchByKey = function (key, args) {
-                    if (args && args.expand) {
-                        var entityKey = new breeze.EntityKey(entityType, key);
-                        var query = breeze.EntityQuery.fromEntityKey(entityKey).expand(args.expand);
-                        var defer = $q.defer();
-                        manager().executeQuery(query.using(breeze.FetchStrategy.FromLocalCache)).then(function (data) {
-                            if (data.results.length) {
-                                defer.resolve(data.results[0]);
-                            } else {
-                                manager().executeQuery(query).then(
-                                    function (data) {
-                                        defer.resolve(data.results[0]);
-                                    }, function (data) {
-                                        log.error(data);
-                                        defer.reject(data);
-                                    });
-                            }
-                        });
-                        return defer.promise;
-                    } else {
-                        return manager().fetchEntityByKey(entityTypeName, key, true) //true refers to check local cache 1st
-                            .then(function(data) {
-                                return data.entity;
-                            });
-                    }
+                self.fetchByKey = function (key, argObj) {
+                    return executeKeyQuery(key, argObj);
                 };
 
-                this.getByKey = function (key) {
+                self.getByKey = function (key) {
                     if (!entityTypeName)
                         throw new Error("Repository must be created with an entity type specified");
                     return manager().getEntityByKey(entityTypeName, key);
                 }
 
-                this.find = function () {
+                self.find = function () {
                     var query = createQuery.apply(null, arguments);
 
                     return executeQuery(query);
                 };
 
-                this.findInCache = function () {
+                self.findInCache = function () {
                     var query = createQuery.apply(null,arguments);
 
                     return executeCacheQuery(query);
                 };
 
-                this.all = function () {
+                self.all = function () {
                     var query = breeze.EntityQuery
                         .from(resourceName);
 
@@ -86,6 +64,60 @@
                         return query.where(argObj);
                     }
                     ['where', 'predicate', 'select', 'orderBy', 'skip', 'take', 'expand'].forEach(function (el) {
+                        if (argObj[el]) {
+                            query = query[el](argObj[el]);
+                        }
+                    });
+                    return query;
+                }
+
+                function executeKeyQuery(key, argObj) {
+                    var query = getKeyQuery(key, argObj);
+                    var ent = executeCacheQuery(query)[0];
+                    if (ent && !missingExpands(ent,argObj.expand)) {
+                        return $q.when(ent);
+                    }
+                    return executeQuery(getKeyQuery(key, argObj)).then(function (data) {
+                        return data[0];
+                    });
+                }
+
+                function missingExpands(entity, expand) {
+                    if (!expand) { return false; }
+                    var i = 0;
+                    if (!Array.isArray(expand)) {
+                        expand = [expand];
+                    }
+                    for(;i<expand.length;i++) {
+                        var props = expand[i].split('.');
+                        var currentProp = entity;
+                        var i = 0;
+                        for (; i < props.length; i++) {
+                            //to do deal with collections - null vs empty
+                            if (Array.isArray(currentProp)) {
+                                if (!currentProp.length) {
+                                    break;
+                                }
+                                currentProp = currentProp[0][props[i]];
+                            } else {
+                                currentProp = currentProp[props[i]];
+                            }
+                            if (!currentProp) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                };
+
+                function executeKeyQueryLocally(key, argObj) {
+                    return executeCacheQuery(getKeyQuery(key, argObj))[0];
+                }
+
+                function getKeyQuery(key, argObj) {
+                    var entityKey = new breeze.EntityKey(entityType, key);
+                    var query = breeze.EntityQuery.fromEntityKey(entityKey);
+                    ['select', 'expand'].forEach(function (el) {
                         //TODO - check this!
                         if (argObj[el]) {
                             query = query[el](argObj[el]);

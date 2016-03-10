@@ -5,16 +5,18 @@
         .module('app')
         .controller(controllerId, course);
 
-    courseParticipantCtrl.$inject = ['$uibModalInstance', 'common', 'courseParticipant', dataContext];
+    courseParticipantCtrl.$inject = ['$uibModalInstance', 'common', 'courseParticipant', 'dataContext', 'courseParticipantIds'];
 
-    function courseParticipantCtrl($uibModalInstance, common, courseParticipant, datacontext) {
+    function courseParticipantCtrl($uibModalInstance, common, courseParticipant, datacontext, courseParticipantIds) {
         /* jshint validthis:true */
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
 
-        vm.save = function () {
-            log({ msg:'saved date: ' + vm.course.startTime });
-        }//datacontext.save;
+        vm.departments = [];
+        vm.professionalRoles = [];
+        vm.save = save;
+        vm.close = close;
+
         vm.canSave = false;
         $rootScope.$on('hasChanges', function () {
             vm.canSave = datacontext.courseParticipants.hasChanges();
@@ -23,27 +25,20 @@
 
         function activate() {
             datacontext.ready().then(function () {
-                var promises =[ datacontext.courseTypes.all().then(function (data) {
-                        vm.courseTypes = data;
-                        if (data.length === 1 && !id) {
-                            vm.course.courseType = data[0];
-                    }
+                var promises = [datacontext.departments.all().then(function (data) {
+                    vm.courseTypes = data;
                 }),
-                    datacontext.institutions.all().then(function (data) {
-                        vm.institutions = data;
-                        if (data.length === 1 && !id) {
-                            vm.institution = data[0];
-                        }
+                datacontext.professionalRoles.all().then(function (data) {
+                    vm.professionalRoles = data;
                 })];
-                if (id) {
-                    promises.push(datacontext.courses.fetchByKey(id).then(function (data) {
+                if (courseParticipantId && courseParticipantId!=null) {
+                    promises.push(datacontext.courseParticipants.fetchByKey(courseParticipantId, "courseParticipant.Participant").then(function (data) {
                         if (!data) {
-                            log.warning('Could not find session id = ' +id);
+                            log.warning('Could not find session id = ' +courseParticipantId);
                             return;
                             //gotoCourses();
                     }
-                    vm.course = data;
-                    vm.institution = vm.course.department.institution;
+                    vm.courseParticipant = data;
                     }));
                 }
                 common.activateController(promises, controllerId)
@@ -51,17 +46,24 @@
                         log('Activated Course View');
                     });
                 });
-            }
-            function getPeople(val) {
-                return datacontext.participants.find({
-                    where: Predicate.create('fullName', 'startsWith', val),
-                    orderBy: 'fullName',
-                    take: 10,
-                    select:'id,fullName'
-                }).then(function (results) {
-                    return results;
-                });
-            }
+        }
+        function close() {
+            $uibModalInstance.close();
+        }
+        function save() {
+            log({ msg: 'saved date: ' + vm.course.startTime });
+        }//datacontext.save;
+
+        function getPeople(val) {
+            return datacontext.participants.find({
+                where: Predicate.create('fullName', 'startsWith', val),
+                orderBy: 'fullName',
+                take: 10,
+                select:'id,fullName'
+            }).then(function (results) {
+                return results;
+            });
+        }
 
     }
 })();

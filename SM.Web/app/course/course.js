@@ -5,13 +5,12 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['$routeParams','common','datacontext', '$rootScope']; 
+    controller.$inject = ['$routeParams','common','datacontext', '$rootScope', '$uibModal']; 
 
-    function controller($routeParams, common, datacontext, $rootScope) {
+    function controller($routeParams, common, datacontext, $rootScope, $uibModal) {
         /* jshint validthis:true */
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
-
         var id = $routeParams.id;
 
         vm.canSave = false;
@@ -25,6 +24,7 @@
         vm.maxDate.setFullYear(vm.maxDate.getFullYear() + 1);
         vm.minDate = new Date(2007, 1);
         vm.openDp = openDp;
+        vm.openCourseParticipant = openCourseParticipant;
         vm.save = save;
         vm.title = 'course';
 
@@ -72,5 +72,18 @@
         function save() {
             log({ msg: 'saved date: ' + vm.course.startTime });
         }//datacontext.save;
+
+        function openCourseParticipant(participantId) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/auth/getCredentials.html',
+                controller: 'getCredentials',
+                size: 'lg',
+                resolve: {
+                    courseParticipantIds: function () {
+                        return participantId?[id, participantId]:'new';
+                    }
+                }
+            });
+        }
     }
 })();

@@ -67,7 +67,7 @@ namespace SM.Dto
                     returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)));
                 }
                 //currently allowing users to view all departmetns within their institution - but only edit thseir department
-                return returnVar.Project<Institution,InstitutionDto>(new MapperConfig.IncludeSelectOptions(new[] { "Departments.Rooms","ProfessionalRoles" }));
+                return returnVar.Project<Institution,InstitutionDto>(includes: new[] { "Departments.Rooms","ProfessionalRoles" });
 
             }
         }
@@ -92,9 +92,9 @@ namespace SM.Dto
 
 
         //might eventually run the visitor like so: http://stackoverflow.com/questions/18879779/select-and-expand-break-odataqueryoptions-how-to-fix
-        public IQueryable<CourseDto> GetCourses(MapperConfig.IncludeSelectOptions options = null)
+        public IQueryable<CourseDto> GetCourses(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
-            return Context.Courses.Project<Course,CourseDto>(options);
+            return Context.Courses.Project<Course,CourseDto>(includes, selects, sepChar);
             /*
             if (include.Length > 0)
             {

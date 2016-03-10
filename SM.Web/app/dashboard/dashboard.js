@@ -20,9 +20,11 @@
 
         function activate() {
             $rootScope.$on(AUTH_EVENTS.loginCancelled, updateDash);
-            $rootScope.$on(AUTH_EVENTS.loginConfirmed, updateDash);
+            if (!tokenStorageService.isLoggedIn()) {
+                $rootScope.$on(AUTH_EVENTS.loginConfirmed, updateDash);
+            }
 
-            common.activateController(getPromises(), controllerId)
+            common.activateController( getPromises(), controllerId) //notification of login after dashboard activated
                 .then(function () {
                     log('Activated Dashboard View');
                 });

@@ -153,7 +153,13 @@ namespace SimManager.Tests
                 Assert.AreEqual(cp.ParticipantId, cpvm.ParticipantId);
                 Assert.AreEqual(cp.CourseId, cpvm.CourseId);
             }
+        }
 
+        [TestMethod]
+        public void TestComplexDtoTreeMapping()
+        {
+            var test = MapperConfig.GetLambda<Participant, ParticipantDto>(new[] { "Department", "Department.Institution", "Department.Manequins", "Department.Manequins.Scenarios", "ProfessionalRole.CourseParticipants" });
+            Console.WriteLine(test);
         }
     }
 

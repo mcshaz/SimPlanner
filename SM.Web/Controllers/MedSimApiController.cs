@@ -67,20 +67,30 @@ namespace SM.Web.Controllers
         [HttpGet, EnableBreezeQuery]
 		public IQueryable<CourseDto> Courses(ODataQueryOptions options)
         {
-           return Repo.GetCourses(GetIncludes(options));
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetCourses(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
-        private MapperConfig.IncludeSelectOptions GetIncludes(ODataQueryOptions options)
+
+        private class IncludeSelectOptions
         {
-            //a hack to use breeze instead of learning .net odata implementation
-            //http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api/odata-v4/create-an-odata-v4-endpoint
-            //SelectExpand.RawExpand = "CourseParticipants" RawSelect= null;
-            //SelectExpand = null
-            var se = options.SelectExpand;
-            if (se != null)
+            public IncludeSelectOptions(ODataQueryOptions options)
             {
-                return new MapperConfig.IncludeSelectOptions((se.RawExpand==null)? null :se.RawExpand.Split(','), (se.RawSelect == null) ? null : se.RawSelect.Split(','), '/');
+                var se = options.SelectExpand;
+                if (se != null)
+                {
+                    if (se.RawExpand != null)
+                    {
+                        Includes =  se.RawExpand.Split(',');
+                    }
+                     if (se.RawSelect != null)
+                    {
+                        Selects = se.RawSelect.Split(',');
+                    }
+                }
             }
-            return null;
+            public readonly string[] Includes;
+            public readonly string[] Selects;
+            public const char Seperator = '/';
         }
         [HttpGet]
 		public IQueryable<CourseTypeDto> CourseTypes()
