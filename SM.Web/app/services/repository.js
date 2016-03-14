@@ -63,7 +63,7 @@
                     if (argObj instanceof breeze.Predicate) {
                         return query.where(argObj);
                     }
-                    ['where', 'predicate', 'select', 'orderBy', 'skip', 'take', 'expand'].forEach(function (el) {
+                    ['where', 'select', 'orderBy', 'skip', 'take', 'expand'].forEach(function (el) {
                         if (argObj[el]) {
                             query = query[el](argObj[el]);
                         }
@@ -74,40 +74,51 @@
                 function executeKeyQuery(key, argObj) {
                     var query = getKeyQuery(key, argObj);
                     var ent = executeCacheQuery(query)[0];
-                    if (ent && !missingExpands(ent,argObj.expand)) {
-                        return $q.when(ent);
+                    
+                    if (ent) {
+                        var missingExpands = findMissingExpands(ent, (argObj || {}).expand);
+                        if (!missingExpands.length) {
+                            return $q.when(ent);
+                        }
+                        query = getKeyQuery(key,{
+                            expand: missingExpands.map(function (el) { return el.props.join('.'); }),
+                            select: argObj.select
+                        });
                     }
-                    return executeQuery(getKeyQuery(key, argObj)).then(function (data) {
-                        return data[0];
+                    return executeQuery(query).then(function (data) {
+                        return data?data[0]:undefined;
                     });
                 }
 
-                function missingExpands(entity, expand) {
-                    if (!expand) { return false; }
+                function findMissingExpands(entity, expand) {
+                    var returnVar = [];
+                    if (!expand) { return returnVar; }
                     var i = 0;
                     if (!Array.isArray(expand)) {
                         expand = [expand];
                     }
-                    for(;i<expand.length;i++) {
-                        var props = expand[i].split('.');
+                    expand.forEach(function (el) {
+                        var hasArray = false;
+                        var props = el.split('.');
                         var currentProp = entity;
                         var i = 0;
                         for (; i < props.length; i++) {
                             //to do deal with collections - null vs empty
                             if (Array.isArray(currentProp)) {
                                 if (!currentProp.length) {
-                                    break;
+                                    return; 
                                 }
                                 currentProp = currentProp[0][props[i]];
+                                hasArray = true;
                             } else {
                                 currentProp = currentProp[props[i]];
                             }
                             if (!currentProp) {
-                                return true;
+                                returnVar.push({props:props, missingIndex:i, hasArray:hasArray});
                             }
                         }
-                    }
-                    return false;
+                    });
+                    return returnVar;
                 };
 
                 function executeKeyQueryLocally(key, argObj) {
@@ -117,12 +128,14 @@
                 function getKeyQuery(key, argObj) {
                     var entityKey = new breeze.EntityKey(entityType, key);
                     var query = breeze.EntityQuery.fromEntityKey(entityKey);
-                    ['select', 'expand'].forEach(function (el) {
-                        //TODO - check this!
-                        if (argObj[el]) {
-                            query = query[el](argObj[el]);
-                        }
-                    });
+                    if (argObj) {
+                        ['select', 'expand'].forEach(function (el) {
+                            //TODO - check this!
+                            if (argObj[el]) {
+                                query = query[el](argObj[el]);
+                            }
+                        });
+                    }
                     return query;
                 }
 

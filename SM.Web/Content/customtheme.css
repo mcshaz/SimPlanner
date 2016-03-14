@@ -503,7 +503,7 @@ form {
         }
 
             .dropdown-menu li > a:hover {
-                background: #f9f9f9 !important;
+                background: #295C74 !important; 
                 filter: none;
                 color: #888;
             }

@@ -12,6 +12,8 @@ namespace SM.DataAccess
 
         public string Name { get; set; }
 
+        public string Abbreviation { get; set; }
+
         public Guid InstitutionId { get; set; }
 
         public string InvitationLetterFilename { get; set; }

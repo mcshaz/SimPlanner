@@ -17,12 +17,11 @@ namespace SM.DataAccess
             }
             var starship = new Institution { Id = Guid.NewGuid(), Country = nz, Name="Starship" };
             context.Institutions.Add(starship);
-
-            var ced = new Department { Id = Guid.NewGuid(), Institution = starship, Name = "CED" };
+            var ced = new Department { Id = Guid.NewGuid(), Institution = starship, Abbreviation = "CED", Name="Children's Emergency Department"};
             context.Departments.Add(ced);
-            var simProgram = new Department { Id = Guid.NewGuid(), Institution = starship, Name = "Simulation Programme" };
+            var simProgram = new Department { Id = Guid.NewGuid(), Institution = starship, Name = "Simulation Programme", Abbreviation = "Sim Team" };
             context.Departments.Add(simProgram);
-            var picu = new Department {Id = Guid.NewGuid(), Institution = starship, Name = "PICU" };
+            var picu = new Department {Id = Guid.NewGuid(), Institution = starship, Abbreviation = "PICU" , Name="Paediatric Intensive Care Unit"};
             context.Departments.Add(ced);
 
             var picuConf = new Room { Id = Guid.NewGuid(), Department = picu, ShortDescription="PICU Conf. Room",FullDescription = "PICU Conference Room (Meeting Room 252)", Directions = "Ask the Administrative assitants to let you in to the back offices. 2nd room on the left" };
@@ -30,7 +29,7 @@ namespace SM.DataAccess
             var cedConf = new Room { Id = Guid.NewGuid(), Department = ced, ShortDescription = "CED Conf. Room", FullDescription = "CED Conference Room", Directions = "Back Coridors - enter code 9999 on keypad to enter" };
             context.Rooms.Add(cedConf);
 
-            var consultantRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Medical, Description = "Consulant" };
+            var consultantRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Medical, Description = "Consultant" };
             context.ProfessionalRoles.Add(consultantRole);
             var nursingRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Nursing, Description = "Clinical Charge Nurse" };
             context.ProfessionalRoles.Add(nursingRole);
@@ -49,6 +48,9 @@ namespace SM.DataAccess
 
             var brent = new Participant { Id = Guid.NewGuid(), Email = "brentm@adhb.govt.nz", AlternateEmail = "mcshagery@yahoo.com.au",FullName = "Brent McSharry", PhoneNumber = "999 9999 99", ProfessionalRole = consultantRole, Department=picu };
             context.Users.Add(brent);
+
+            var denish = new Participant { Id = Guid.NewGuid(), Email = "denishk@adhb.govt.nz", FullName = "Denish Kumar", PhoneNumber = "999 999 999", ProfessionalRole = techRole, Department = simProgram };
+            context.Users.Add(denish);
 
             context.SaveChanges();
             var laerdal = new ManequinManufacturer { Id = Guid.NewGuid(), Name = "Laerdal" };
@@ -97,7 +99,7 @@ namespace SM.DataAccess
             {
                 var cp = new CourseParticipant { Participant = trish, IsConfirmed = true, IsFaculty = true, Course = t, DepartmentId = trish.DefaultDepartmentId, ProfessionalRoleId = trish.DefaultProfessionalRoleId };
                 context.CourseParticipants.Add(cp);
-                var cp2 = new CourseParticipant { Participant = brent, IsConfirmed = true, IsFaculty = false, Course = t, DepartmentId = brent.DefaultDepartmentId, ProfessionalRoleId = brent.DefaultProfessionalRoleId };
+                var cp2 = new CourseParticipant { Participant = brent, IsConfirmed = false, IsFaculty = false, Course = t, DepartmentId = brent.DefaultDepartmentId, ProfessionalRoleId = brent.DefaultProfessionalRoleId };
                 context.CourseParticipants.Add(cp2);
             }
 

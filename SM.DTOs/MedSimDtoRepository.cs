@@ -67,12 +67,23 @@ namespace SM.Dto
                     returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)));
                 }
                 //currently allowing users to view all departmetns within their institution - but only edit thseir department
-                return returnVar.Project<Institution,InstitutionDto>(includes: new[] { "Departments.Rooms","ProfessionalRoles" });
+                return returnVar.Project<Institution,InstitutionDto>(includes: new[] { "Departments.Rooms","ProfessionalRoles","Country" });
 
             }
         }
 
-        public IQueryable<ParticipantDto> Participants { get { return Context.Users.Project<Participant,ParticipantDto>(); } }
+        public IQueryable<ParticipantDto> GetParticipants(string[] includes = null, string[] selects = null, char sepChar = '.')
+        {
+            return Context.Users.Project<Participant, ParticipantDto>(includes, selects, sepChar);
+            /*
+            if (include.Length > 0)
+            {
+                return Context.Courses.Project<Course,CourseDto>(parameters: null, membersToExpand: include);
+            }
+            */
+            //return Context.Courses.Include("")
+            //filteredQuery.Select(CourseMaps.mapFromRepo).ToList().AsQueryable();
+        }
 
         public IQueryable<CountryDto> Countries { get { return Context.Countries.Project<Country,CountryDto>(); } }
 

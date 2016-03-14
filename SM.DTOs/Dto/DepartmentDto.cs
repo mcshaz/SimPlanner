@@ -9,6 +9,7 @@ namespace SM.Dto
 	{
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string Abbreviation { get; set; }
         public Guid InstitutionId { get; set; }
         public string InvitationLetterFilename { get; set; }
         public string CertificateFilename { get; set; }

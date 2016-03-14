@@ -10,8 +10,10 @@ namespace SM.Metadata
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
         [Required]
-        [StringLength(50)]
+        [StringLength(64)]
         public string Name { get; set; }
+        [StringLength(16)]
+        public string Abbreviation { get; set; }
         [StringLength(256)]
         public string InvitationLetterFilename { get; set; }
         [StringLength(256)]

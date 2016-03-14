@@ -9,6 +9,7 @@ using SM.Dto;
 using Breeze.ContextProvider;
 using System.Web.Http.OData.Query;
 using SM.DTOs.Maps;
+using SM.Web.Controllers.Helpers;
 
 namespace SM.Web.Controllers
 {
@@ -37,11 +38,12 @@ namespace SM.Web.Controllers
             return Repo.SaveChanges(saveBundle);
         }
 
-        [HttpGet]
-		public IQueryable<ParticipantDto> Participants()
+        [HttpGet, EnableBreezeQuery]
+		public IQueryable<ParticipantDto> Participants(ODataQueryOptions options)
         {
-            return Repo.Participants;
-        } 
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetParticipants(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
         [HttpGet]
 		public IQueryable<CountryDto> Countries(){ return Repo.Countries; } 
         [HttpGet]
@@ -85,6 +87,14 @@ namespace SM.Web.Controllers
                      if (se.RawSelect != null)
                     {
                         Selects = se.RawSelect.Split(',');
+                    }
+                }
+                if (options.Filter != null)
+                {
+                    var anyAlls = FindAnyAllFilterOptions.GetPaths(options.Filter);
+                    if (anyAlls.Any())
+                    {
+                        Includes = (Includes ?? new string[0]).Concat(anyAlls).ToArray();
                     }
                 }
             }

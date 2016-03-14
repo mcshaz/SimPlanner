@@ -14,7 +14,8 @@ namespace SM.DTOs.Maps
                 Name = m.Name,
                 InstitutionId = m.InstitutionId,
                 InvitationLetterFilename = m.InvitationLetterFilename,
-                CertificateFilename = m.CertificateFilename
+                CertificateFilename = m.CertificateFilename,
+                Abbreviation = m.Abbreviation
             };
         }
 
@@ -28,7 +29,7 @@ namespace SM.DTOs.Maps
                 InstitutionId = m.InstitutionId,
                 InvitationLetterFilename = m.InvitationLetterFilename,
                 CertificateFilename = m.CertificateFilename,
-
+                Abbreviation = m.Abbreviation
                 //CourseTypes = null,
                 //Institution = m.Institution,
                 //Manequins = m.Manequins,

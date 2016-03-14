@@ -14,40 +14,15 @@ namespace SimManager.Tests
     [TestClass]
     public class TestExpandNavigate
     {
-        class Foo
-        {
-            public int FooInt { get; set; }
-            public Bar B { get; set; }
-            public ICollection<Bar> Bars { get; set; }
-        }
 
-        class FooDto
-        {
-            public int FooInt { get; set; }
-            public BarDto B { get; set; }
-            public ICollection<BarDto> Bars { get; set; }
-        }
-
-        class Bar
-        {
-            public int BarInt { get; set; }
-            public string BarString { get; set; }
-        }
-
-        class BarDto
-        {
-            public int BarInt { get; set; }
-            public string BarString { get; set; }
-        }
-
-        Expression<Func<Bar, BarDto>> MapBar = b => new BarDto { BarInt = b.BarInt, BarString = b.BarString };
-        Expression<Func<Foo, FooDto>> MapFoo = f => new FooDto { FooInt = f.FooInt };
+        Expression<Func<Bar, BarDto>> MapBar = b => new BarDto { BarId = b.BarId, BarString = b.BarString };
+        Expression<Func<Foo, FooDto>> MapFoo = f => new FooDto { FooId = f.FooId };
         
         Expression<Func<Foo, FooDto>> target = f => new FooDto
         {
-            FooInt = f.FooInt,
-            B = new BarDto { BarInt = f.B.BarInt, BarString = f.B.BarString },
-            Bars = f.Bars.Select(b => new BarDto { BarInt = b.BarInt, BarString = b.BarString }).ToList()
+            FooId = f.FooId,
+            B = new BarDto { BarId = f.B.BarId, BarString = f.B.BarString },
+            Bars = f.Bars.Select(b => new BarDto { BarId = b.BarId, BarString = b.BarString }).ToList()
         };
         
         [TestMethod]
@@ -55,8 +30,8 @@ namespace SimManager.Tests
         {
             //var l = new LoggingVisitor();
             //l.Visit(target);
-            var bar = new Bar { BarInt = 12, BarString = "a" };
-            var foo = new Foo { FooInt = -1, B = bar, Bars =  new[] { bar, new Bar { BarInt = 3, BarString = "b" } } };
+            var bar = new Bar { BarId = 12, BarString = "a" };
+            var foo = new Foo { FooId = -1, B = bar, Bars =  new[] { bar, new Bar { BarId = 3, BarString = "b" } } };
 
             var mapNavEx = MapFoo.MapNavProperty(new Dictionary<string,LambdaExpression> {
                 { "Bars",MapBar},
@@ -70,10 +45,10 @@ namespace SimManager.Tests
 
             Console.WriteLine("Testing single property");
             Assert.AreNotEqual(foo, testMapped);
-            Assert.AreEqual(foo.FooInt, testMapped.FooInt);
+            Assert.AreEqual(foo.FooId, testMapped.FooId);
             Assert.IsNotNull(foo.B);
             Assert.AreNotEqual(foo.B, testMapped.B);
-            Assert.AreEqual(foo.B.BarInt, testMapped.B.BarInt);
+            Assert.AreEqual(foo.B.BarId, testMapped.B.BarId);
             Assert.AreEqual(foo.B.BarString, testMapped.B.BarString);
 
             Console.WriteLine("Testing collection"); 
@@ -82,7 +57,7 @@ namespace SimManager.Tests
             var fooBarsLast = foo.Bars.Last();
             var testBarsLast = testMapped.Bars.Last();
 
-            Assert.AreEqual(fooBarsLast.BarInt, fooBarsLast.BarInt);
+            Assert.AreEqual(fooBarsLast.BarId, fooBarsLast.BarId);
 
 
         }

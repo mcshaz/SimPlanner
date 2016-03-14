@@ -42,7 +42,8 @@
             isNumber: isNumber,
             logger: logger, // for accessibility
             //dateUtilities: dateUtilities,  // for accessibility
-            textContains: textContains
+            textContains: textContains,
+            toSeperateWords: toSeperateWords
         };
 
         return service;
@@ -127,6 +128,10 @@
 
         function textContains(text, searchText) {
             return text && -1 !== text.toLowerCase().indexOf(searchText.toLowerCase());
+        }
+
+        function toSeperateWords(text) {
+            return text.replace(/([A-Z])/g,"  $1").trimLeft();
         }
     }
 })();

@@ -17,6 +17,7 @@
         vm.course = {};
         vm.courseTypes = [];
         vm.dateFormat = '';
+        vm.deleteCourseParticipant = deleteCourseParticipant;
         vm.dpPopup = { isOpen: false };
         vm.institutions = [];
         vm.institution = {};
@@ -75,15 +76,25 @@
 
         function openCourseParticipant(participantId) {
             var modalInstance = $uibModal.open({
-                templateUrl: 'app/auth/getCredentials.html',
-                controller: 'getCredentials',
-                size: 'lg',
+                templateUrl: 'app/courseParticipant/courseParticipant.html',
+                controller: 'courseParticipant',
+                controllerAs: 'cp',
+                //size: 'lg',
                 resolve: {
                     courseParticipantIds: function () {
-                        return participantId?[id, participantId]:'new';
+                        return [id, participantId];
                     }
                 }
             });
+        }
+
+        function deleteCourseParticipant(participantId) {
+            var cp = vm.course.courseParticipants.find(function (el) {
+                return el.participantId == participantId;
+            });
+            if (!cp) { log.warning({ msg: 'could not delete course participant', data: 'failed delete participant:' + participantId }); }
+            cp.entityAspect.setDeleted();
+
         }
     }
 })();

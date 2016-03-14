@@ -235,8 +235,8 @@
     <Content Include="app\config.exceptionHandler.js" />
     <Content Include="app\config.js" />
     <Content Include="app\config.route.js" />
-    <Content Include="app\courseParticipant.html\courseParticipant.html" />
-    <Content Include="app\courseParticipant.html\courseParticipant.js" />
+    <Content Include="app\courseParticipant\courseParticipant.html" />
+    <Content Include="app\courseParticipant\courseParticipant.js" />
     <Content Include="app\course\course.html" />
     <Content Include="app\course\course.js" />
     <Content Include="app\dashboard\dashboard.html" />
@@ -357,6 +357,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Helpers\FindAnyAllFilterOptions.cs" />
     <Compile Include="Controllers\LookupBundle.cs" />
     <Compile Include="Controllers\MedSimApiController.cs" />
     <Compile Include="Controllers\SummaryDataController.cs" />

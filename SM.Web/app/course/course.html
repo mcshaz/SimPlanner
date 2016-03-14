@@ -48,7 +48,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 form-group">
                                 <uib-timepicker ng-model="vm.course.startTime" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
                             </div>
                         </div>
@@ -93,6 +93,9 @@
                                                 Role
                                             </th>
                                             <th>
+                                                Confirmed
+                                            </th>
+                                            <th>
                                             </th>
                                         </tr>
                                     </thead>
@@ -105,14 +108,17 @@
                                                 {{cp.participant.professionalRole.category}}
                                             </td>
                                             <td>
-                                                <button class="btn-link">Remove</button> |
-                                                <button class="btn-link">Edit</button>
+                                                <input type="checkbox" ng-checked="cp.isConfirmed" />
+                                            </td>
+                                            <td>
+                                                <button class="btn-link" ng-click="vm.deleteCourseParticipant(cp.participantId)">Remove</button> |
+                                                <button class="btn-link" ng-click="vm.openCourseParticipant(cp.participantId)">Edit</button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <button class="btn btn-link">Add Faculty Member</button>
+                            <button class="btn-link" ng-click="vm.openCourseParticipant('newFaculty')">Add Faculty Member</button>
                         </fieldset>
                     </div>
                     <div class="form-group">
@@ -134,6 +140,9 @@
                                                 Role
                                             </th>
                                             <th>
+                                                Confirmed
+                                            </th>
+                                            <th>
                                             </th>
                                         </tr>
                                     </thead>
@@ -146,14 +155,17 @@
                                                 {{cp.participant.professionalRole.description}}
                                             </td>
                                             <td>
-                                                <button class="btn-link">Remove</button> |
-                                                <button class="btn-link">Edit</button>
+                                                <input type="checkbox" ng-checked="cp.isConfirmed" />
+                                            </td>
+                                            <td>
+                                                <button class="btn-link" ng-click="vm.deleteCourseParticipant(cp.participantId)">Remove</button> |
+                                                <button class="btn-link" ng-click="vm.openCourseParticipant(cp.participantId)">Edit</button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <button class="btn btn-link">Add Participant</button>
+                            <button class="btn-link" ng-click="vm.openCourseParticipant('newParticipant')">Add Participant</button>
                         </fieldset>
                     </div>
                 </div>

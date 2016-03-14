@@ -430,6 +430,7 @@ a {
 
 div.time-accompany{
     margin-left:-15px;
+    min-width:175px;
 }
 /*#endregion*/
 
