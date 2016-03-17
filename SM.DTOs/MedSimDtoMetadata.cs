@@ -20,7 +20,8 @@ namespace SM.Dto
             var engine = new Engine().Execute("var setInterval;var setTimeout = setInterval = function(){}"); //if using an engine like V8.NET, would not be required - not part of DOM spec
 
             engine.Execute(File.ReadAllText(breezeJsPath));
-            engine.Execute("var edmxMetadataStore = new breeze.MetadataStore();" +
+            engine.Execute("breeze.NamingConvention.camelCase.setAsDefault();" + //mirror here what you are doing in the client side code
+                           "var edmxMetadataStore = new breeze.MetadataStore();" +
                            "edmxMetadataStore.importMetadata(" + MedSimDtoRepository.GetEdmxMetadata() + ");" +
                            "edmxMetadataStore.exportMetadata();");
             var exportedMeta = JObject.Parse(engine.GetCompletionValue().AsString());
@@ -35,6 +36,7 @@ namespace SM.Dto
             Assembly thisAssembly = typeof(ParticipantDto).Assembly; //any type in the assembly containing the Breeze entities.
             var attrValDict = GetValDictionary();
             var unaccountedVals = new HashSet<string>();
+            var intTypes = new[] { typeof(byte), typeof(Int16), typeof(Int32), typeof(Int64) };
             foreach (var breezeEntityType in metadata["structuralTypes"])
             {
                 string shortEntityName = breezeEntityType["shortName"].ToString();
@@ -45,6 +47,7 @@ namespace SM.Dto
                 foreach (var breezePropertyInfo in breezeEntityType["dataProperties"])
                 {
                     string propName = breezePropertyInfo["name"].ToString();
+                    propName = char.ToUpper(propName[0]) + propName.Substring(1); //IF client using breeze.NamingConvention.camelCase & server using PascalCase
                     var propInfo = metaTypeFromAttr.GetProperty(propName);
 
                     if (propInfo == null)
@@ -73,10 +76,6 @@ namespace SM.Dto
                             if (validatorsFromAttr != null)
                             {
                                 string jsValidatorName = (string)validatorsFromAttr["name"];
-                                if (jsValidatorName == "stringLength")
-                                {
-                                    validators.Remove("maxLength");
-                                }
                                 Dictionary<string, object> existingVals;
                                 if (validators.TryGetValue(jsValidatorName, out existingVals))
                                 {
@@ -94,7 +93,21 @@ namespace SM.Dto
                         }
 
                     }
-
+                    if (validators.ContainsKey("stringLength") )
+                    {
+                        validators.Remove("maxLength");
+                    }
+                    Dictionary<string, object> rangeVal;
+                    if (intTypes.Contains(propInfo.PropertyType) && validators.TryGetValue("numericRange", out rangeVal))
+                    {
+                        if (((IComparable)propInfo.PropertyType.GetField("MinValue").GetValue(null)).CompareTo(rangeVal["min"]) > 0 ||
+                            ((IComparable)propInfo.PropertyType.GetField("MaxValue").GetValue(null)).CompareTo(rangeVal["max"]) < 0)
+                        {
+                            throw new ArgumentOutOfRangeException(string.Format("the underlying type {0} requires values {1} - {2} but the RangeAttribute declares a range of {3} - {4}",
+                                propInfo.PropertyType, propInfo.GetValue("minValue"), propInfo.GetValue("maxValue"), rangeVal["min"], rangeVal["max"]));
+                        }
+                        validators.Remove(char.ToLower(propInfo.PropertyType.Name[0]) + propInfo.PropertyType.Name.Substring(1));
+                    }
                     breezePropertyInfo["validators"] = JToken.FromObject(validators.Values);
                 }
             }
@@ -109,10 +122,17 @@ namespace SM.Dto
             var ignore = new Func<Attribute, Dictionary<string, object>>(x => null);
             return new Dictionary<Type, Func<Attribute, Dictionary<string, object>>>
             {
-                [typeof(RequiredAttribute)] = x => new Dictionary<string, object>
-                {
-                    ["name"] = "required",
-                    ["allowEmptyStrings"] = ((RequiredAttribute)x).AllowEmptyStrings
+                [typeof(RequiredAttribute)] = x => {
+                    var returnVar = new Dictionary<string, object>
+                    {
+                        ["name"] = "required"
+                        //["message"] = ((RequiredAttribute)x).ErrorMessage
+                    };
+                    if (((RequiredAttribute)x).AllowEmptyStrings)
+                    {
+                        returnVar.Add("allowEmptyStrings", true);
+                    }
+                    return returnVar;
                 },
                 [typeof(EmailAddressAttribute)] = x => new Dictionary<string, object>
                 {
@@ -149,10 +169,10 @@ namespace SM.Dto
                     var ra = (RangeAttribute)x;
                     return new Dictionary<string, object>
                     {
-                        ["name"] = "range",
+                        ["name"] = "numericRange",
                         ["min"] = ra.Minimum,
                         ["max"] = ra.Maximum
-                    };
+                    }; 
                 },
                 [typeof(KeyAttribute)] = ignore
             };

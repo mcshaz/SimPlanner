@@ -1,6 +1,6 @@
 ; Object.defineProperty(window, 'medsimMetadata', {enumerable: false, configurable: false, writable: false,value: JSON.stringify({
   "metadataVersion": "1.0.5",
-  "namingConvention": "noChange",
+  "namingConvention": "camelCase",
   "localQueryComparisonOptions": "caseInsensitiveSQL",
   "dataServices": [],
   "structuralTypes": [
@@ -11,7 +11,7 @@
       "defaultResourceName": "Countries",
       "dataProperties": [
         {
-          "name": "Code",
+          "name": "code",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
@@ -29,15 +29,14 @@
           ]
         },
         {
-          "name": "Name",
+          "name": "name",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 50,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 50,
@@ -46,15 +45,14 @@
           ]
         },
         {
-          "name": "DialCode",
+          "name": "dialCode",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 3,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "name": "stringLength",
@@ -70,21 +68,21 @@
       ],
       "navigationProperties": [
         {
-          "name": "CountryLocales",
+          "name": "countryLocales",
           "entityTypeName": "CountryLocaleCodeDto:#SM.Dto",
           "isScalar": false,
           "associationName": "CountryDto_CountryLocales",
           "invForeignKeyNames": [
-            "CountryCode"
+            "countryCode"
           ]
         },
         {
-          "name": "Hospitals",
+          "name": "hospitals",
           "entityTypeName": "InstitutionDto:#SM.Dto",
           "isScalar": false,
           "associationName": "InstitutionDto_Country",
           "invForeignKeyNames": [
-            "CountryCode"
+            "countryCode"
           ]
         }
       ]
@@ -96,7 +94,7 @@
       "defaultResourceName": "CountryLocales",
       "dataProperties": [
         {
-          "name": "CountryCode",
+          "name": "countryCode",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
@@ -113,7 +111,7 @@
           ]
         },
         {
-          "name": "LocaleCode",
+          "name": "localeCode",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
@@ -135,7 +133,7 @@
           ]
         },
         {
-          "name": "Preference",
+          "name": "preference",
           "dataType": "Byte",
           "isNullable": false,
           "defaultValue": 0,
@@ -154,12 +152,12 @@
       ],
       "navigationProperties": [
         {
-          "name": "Country",
+          "name": "country",
           "entityTypeName": "CountryDto:#SM.Dto",
           "isScalar": true,
           "associationName": "CountryDto_CountryLocales",
           "foreignKeyNames": [
-            "CountryCode"
+            "countryCode"
           ]
         }
       ]
@@ -171,7 +169,7 @@
       "defaultResourceName": "Institutions",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -186,15 +184,14 @@
           ]
         },
         {
-          "name": "Name",
+          "name": "name",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 50,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 50,
@@ -203,7 +200,7 @@
           ]
         },
         {
-          "name": "About",
+          "name": "about",
           "dataType": "String",
           "validators": [
             {
@@ -212,7 +209,7 @@
           ]
         },
         {
-          "name": "CountryCode",
+          "name": "countryCode",
           "dataType": "String",
           "maxLength": 2,
           "validators": [
@@ -226,21 +223,21 @@
       ],
       "navigationProperties": [
         {
-          "name": "Country",
+          "name": "country",
           "entityTypeName": "CountryDto:#SM.Dto",
           "isScalar": true,
           "associationName": "InstitutionDto_Country",
           "foreignKeyNames": [
-            "CountryCode"
+            "countryCode"
           ]
         },
         {
-          "name": "Departments",
+          "name": "departments",
           "entityTypeName": "DepartmentDto:#SM.Dto",
           "isScalar": false,
           "associationName": "InstitutionDto_Departments",
           "invForeignKeyNames": [
-            "InstitutionId"
+            "institutionId"
           ]
         }
       ]
@@ -252,7 +249,7 @@
       "defaultResourceName": "Departments",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -267,15 +264,14 @@
           ]
         },
         {
-          "name": "Name",
+          "name": "name",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 64,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 64,
@@ -284,7 +280,7 @@
           ]
         },
         {
-          "name": "Abbreviation",
+          "name": "abbreviation",
           "dataType": "String",
           "maxLength": 16,
           "validators": [
@@ -295,7 +291,7 @@
           ]
         },
         {
-          "name": "InstitutionId",
+          "name": "institutionId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -309,7 +305,7 @@
           ]
         },
         {
-          "name": "InvitationLetterFilename",
+          "name": "invitationLetterFilename",
           "dataType": "String",
           "maxLength": 256,
           "validators": [
@@ -320,7 +316,7 @@
           ]
         },
         {
-          "name": "CertificateFilename",
+          "name": "certificateFilename",
           "dataType": "String",
           "maxLength": 256,
           "validators": [
@@ -333,63 +329,63 @@
       ],
       "navigationProperties": [
         {
-          "name": "CourseParticipants",
+          "name": "courseParticipants",
           "entityTypeName": "CourseParticipantDto:#SM.Dto",
           "isScalar": false,
           "associationName": "DepartmentDto_CourseParticipants",
           "invForeignKeyNames": [
-            "DepartmentId"
+            "departmentId"
           ]
         },
         {
-          "name": "Courses",
+          "name": "courses",
           "entityTypeName": "CourseDto:#SM.Dto",
           "isScalar": false,
           "associationName": "DepartmentDto_Courses",
           "invForeignKeyNames": [
-            "OutreachingDepartmentId"
+            "outreachingDepartmentId"
           ]
         },
         {
-          "name": "Institution",
+          "name": "institution",
           "entityTypeName": "InstitutionDto:#SM.Dto",
           "isScalar": true,
           "associationName": "InstitutionDto_Departments",
           "foreignKeyNames": [
-            "InstitutionId"
+            "institutionId"
           ]
         },
         {
-          "name": "Manequins",
+          "name": "manequins",
           "entityTypeName": "ManequinDto:#SM.Dto",
           "isScalar": false,
           "associationName": "ManequinDto_Department"
         },
         {
-          "name": "Participants",
+          "name": "participants",
           "entityTypeName": "ParticipantDto:#SM.Dto",
           "isScalar": false,
           "associationName": "DepartmentDto_Participants",
           "invForeignKeyNames": [
-            "DefaultDepartmentId"
+            "defaultDepartmentId"
           ]
         },
         {
-          "name": "Rooms",
+          "name": "rooms",
           "entityTypeName": "RoomDto:#SM.Dto",
           "isScalar": false,
           "associationName": "DepartmentDto_Rooms",
           "invForeignKeyNames": [
-            "DepartmentId"
+            "departmentId"
           ]
         },
         {
-          "name": "Scenarios",
+          "name": "scenarios",
           "entityTypeName": "ScenarioDto:#SM.Dto",
           "isScalar": false,
           "associationName": "DepartmentDto_Scenarios",
           "invForeignKeyNames": [
-            "DepartmentId"
+            "departmentId"
           ]
         }
       ]
@@ -401,7 +397,7 @@
       "defaultResourceName": "CourseParticipants",
       "dataProperties": [
         {
-          "name": "CourseId",
+          "name": "courseId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -416,7 +412,7 @@
           ]
         },
         {
-          "name": "ParticipantId",
+          "name": "participantId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -431,7 +427,7 @@
           ]
         },
         {
-          "name": "IsConfirmed",
+          "name": "isConfirmed",
           "dataType": "Boolean",
           "isNullable": false,
           "defaultValue": false,
@@ -445,7 +441,7 @@
           ]
         },
         {
-          "name": "IsFaculty",
+          "name": "isFaculty",
           "dataType": "Boolean",
           "isNullable": false,
           "defaultValue": false,
@@ -459,7 +455,7 @@
           ]
         },
         {
-          "name": "IsOrganiser",
+          "name": "isOrganiser",
           "dataType": "Boolean",
           "isNullable": false,
           "defaultValue": false,
@@ -473,7 +469,7 @@
           ]
         },
         {
-          "name": "DepartmentId",
+          "name": "departmentId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -487,7 +483,7 @@
           ]
         },
         {
-          "name": "ProfessionalRoleId",
+          "name": "professionalRoleId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -503,39 +499,39 @@
       ],
       "navigationProperties": [
         {
-          "name": "Course",
+          "name": "course",
           "entityTypeName": "CourseDto:#SM.Dto",
           "isScalar": true,
           "associationName": "CourseDto_CourseParticipants",
           "foreignKeyNames": [
-            "CourseId"
+            "courseId"
           ]
         },
         {
-          "name": "Department",
+          "name": "department",
           "entityTypeName": "DepartmentDto:#SM.Dto",
           "isScalar": true,
           "associationName": "DepartmentDto_CourseParticipants",
           "foreignKeyNames": [
-            "DepartmentId"
+            "departmentId"
           ]
         },
         {
-          "name": "Participant",
+          "name": "participant",
           "entityTypeName": "ParticipantDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ParticipantDto_CourseParticipants",
           "foreignKeyNames": [
-            "ParticipantId"
+            "participantId"
           ]
         },
         {
-          "name": "ProfessionalRole",
+          "name": "professionalRole",
           "entityTypeName": "ProfessionalRoleDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ProfessionalRoleDto_CourseParticipants",
           "foreignKeyNames": [
-            "ProfessionalRoleId"
+            "professionalRoleId"
           ]
         }
       ]
@@ -547,7 +543,7 @@
       "defaultResourceName": "Courses",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -562,10 +558,10 @@
           ]
         },
         {
-          "name": "StartTime",
+          "name": "startTime",
           "dataType": "DateTime",
           "isNullable": false,
-          "defaultValue": "1899-12-31T-13:00:00.000Z",
+          "defaultValue": "1899-12-31T11:00:00Z",
           "validators": [
             {
               "name": "required"
@@ -576,7 +572,7 @@
           ]
         },
         {
-          "name": "DepartmentId",
+          "name": "departmentId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -590,7 +586,7 @@
           ]
         },
         {
-          "name": "OutreachingDepartmentId",
+          "name": "outreachingDepartmentId",
           "dataType": "Guid",
           "validators": [
             {
@@ -599,7 +595,7 @@
           ]
         },
         {
-          "name": "RoomId",
+          "name": "roomId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -613,7 +609,7 @@
           ]
         },
         {
-          "name": "FacultyNoRequired",
+          "name": "facultyNoRequired",
           "dataType": "Byte",
           "isNullable": false,
           "defaultValue": 0,
@@ -629,7 +625,7 @@
           ]
         },
         {
-          "name": "CourseTypeId",
+          "name": "courseTypeId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -643,7 +639,7 @@
           ]
         },
         {
-          "name": "ParticipantVideoFilename",
+          "name": "participantVideoFilename",
           "dataType": "String",
           "maxLength": 256,
           "validators": [
@@ -654,7 +650,7 @@
           ]
         },
         {
-          "name": "FeedbackSummaryFilename",
+          "name": "feedbackSummaryFilename",
           "dataType": "String",
           "maxLength": 256,
           "validators": [
@@ -667,57 +663,57 @@
       ],
       "navigationProperties": [
         {
-          "name": "CourseParticipants",
+          "name": "courseParticipants",
           "entityTypeName": "CourseParticipantDto:#SM.Dto",
           "isScalar": false,
           "associationName": "CourseDto_CourseParticipants",
           "invForeignKeyNames": [
-            "CourseId"
+            "courseId"
           ]
         },
         {
-          "name": "CourseType",
+          "name": "courseType",
           "entityTypeName": "CourseTypeDto:#SM.Dto",
           "isScalar": true,
           "associationName": "CourseTypeDto_Courses",
           "foreignKeyNames": [
-            "CourseTypeId"
+            "courseTypeId"
           ]
         },
         {
-          "name": "Department",
+          "name": "department",
           "entityTypeName": "DepartmentDto:#SM.Dto",
           "isScalar": true,
           "associationName": "CourseDto_Department",
           "foreignKeyNames": [
-            "DepartmentId"
+            "departmentId"
           ]
         },
         {
-          "name": "OutreachingDepartment",
+          "name": "outreachingDepartment",
           "entityTypeName": "DepartmentDto:#SM.Dto",
           "isScalar": true,
           "associationName": "DepartmentDto_Courses",
           "foreignKeyNames": [
-            "OutreachingDepartmentId"
+            "outreachingDepartmentId"
           ]
         },
         {
-          "name": "Room",
+          "name": "room",
           "entityTypeName": "RoomDto:#SM.Dto",
           "isScalar": true,
           "associationName": "RoomDto_Courses",
           "foreignKeyNames": [
-            "RoomId"
+            "roomId"
           ]
         },
         {
-          "name": "ScenarioFacultyRoles",
+          "name": "scenarioFacultyRoles",
           "entityTypeName": "ScenarioFacultyRoleDto:#SM.Dto",
           "isScalar": false,
           "associationName": "CourseDto_ScenarioFacultyRoles",
           "invForeignKeyNames": [
-            "CourseId"
+            "courseId"
           ]
         }
       ]
@@ -729,7 +725,7 @@
       "defaultResourceName": "CourseTypes",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -744,15 +740,14 @@
           ]
         },
         {
-          "name": "Description",
+          "name": "description",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 50,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 50,
@@ -761,7 +756,7 @@
           ]
         },
         {
-          "name": "IsInstructorCourse",
+          "name": "isInstructorCourse",
           "dataType": "Boolean",
           "isNullable": false,
           "defaultValue": false,
@@ -775,7 +770,7 @@
           ]
         },
         {
-          "name": "DaysDuration",
+          "name": "daysDuration",
           "dataType": "Byte",
           "isNullable": false,
           "defaultValue": 0,
@@ -791,7 +786,7 @@
           ]
         },
         {
-          "name": "EmersionCategory",
+          "name": "emersionCategory",
           "dataType": "String",
           "validators": [
             {
@@ -801,15 +796,14 @@
           "enumType": "Edm.Self.Emersion"
         },
         {
-          "name": "Abbrev",
+          "name": "abbrev",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 32,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 32,
@@ -820,21 +814,21 @@
       ],
       "navigationProperties": [
         {
-          "name": "Courses",
+          "name": "courses",
           "entityTypeName": "CourseDto:#SM.Dto",
           "isScalar": false,
           "associationName": "CourseTypeDto_Courses",
           "invForeignKeyNames": [
-            "CourseTypeId"
+            "courseTypeId"
           ]
         },
         {
-          "name": "Scenarios",
+          "name": "scenarios",
           "entityTypeName": "ScenarioDto:#SM.Dto",
           "isScalar": false,
           "associationName": "CourseTypeDto_Scenarios",
           "invForeignKeyNames": [
-            "CourseTypeId"
+            "courseTypeId"
           ]
         }
       ]
@@ -846,7 +840,7 @@
       "defaultResourceName": "CourseEvents",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -861,15 +855,14 @@
           ]
         },
         {
-          "name": "Name",
+          "name": "name",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 50,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 50,
@@ -878,7 +871,7 @@
           ]
         },
         {
-          "name": "MinimumFaculty",
+          "name": "minimumFaculty",
           "dataType": "Byte",
           "isNullable": false,
           "defaultValue": 0,
@@ -894,7 +887,7 @@
           ]
         },
         {
-          "name": "MaximumFaculty",
+          "name": "maximumFaculty",
           "dataType": "Byte",
           "isNullable": false,
           "defaultValue": 0,
@@ -910,7 +903,7 @@
           ]
         },
         {
-          "name": "MinutesDuration",
+          "name": "minutesDuration",
           "dataType": "Int32",
           "isNullable": false,
           "defaultValue": 0,
@@ -919,19 +912,14 @@
               "name": "required"
             },
             {
-              "min": -2147483648,
-              "max": 2147483647,
-              "name": "int32"
-            },
-            {
-              "name": "range",
+              "name": "numericRange",
               "min": 1,
               "max": 240
             }
           ]
         },
         {
-          "name": "Day",
+          "name": "day",
           "dataType": "Byte",
           "isNullable": false,
           "defaultValue": 0,
@@ -947,7 +935,7 @@
           ]
         },
         {
-          "name": "Order",
+          "name": "order",
           "dataType": "Int32",
           "isNullable": false,
           "defaultValue": 0,
@@ -965,12 +953,12 @@
       ],
       "navigationProperties": [
         {
-          "name": "DefaultResources",
+          "name": "defaultResources",
           "entityTypeName": "CourseTeachingResourceDto:#SM.Dto",
           "isScalar": false,
           "associationName": "CourseSlotDto_DefaultResources",
           "invForeignKeyNames": [
-            "CourseSlotId"
+            "courseSlotId"
           ]
         }
       ]
@@ -982,7 +970,7 @@
       "defaultResourceName": "CourseTeachingResources",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -997,7 +985,7 @@
           ]
         },
         {
-          "name": "CourseSlotId",
+          "name": "courseSlotId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1011,15 +999,14 @@
           ]
         },
         {
-          "name": "Name",
+          "name": "name",
           "dataType": "String",
           "validators": [
             {
               "name": "string"
             },
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "name": "maxLength",
@@ -1028,15 +1015,14 @@
           ]
         },
         {
-          "name": "ResourceFilename",
+          "name": "resourceFilename",
           "dataType": "String",
           "validators": [
             {
               "name": "string"
             },
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "name": "maxLength",
@@ -1047,12 +1033,12 @@
       ],
       "navigationProperties": [
         {
-          "name": "CourseSlot",
+          "name": "courseSlot",
           "entityTypeName": "CourseSlotDto:#SM.Dto",
           "isScalar": true,
           "associationName": "CourseSlotDto_DefaultResources",
           "foreignKeyNames": [
-            "CourseSlotId"
+            "courseSlotId"
           ]
         }
       ]
@@ -1064,7 +1050,7 @@
       "defaultResourceName": "CourseScenarios",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1079,7 +1065,7 @@
           ]
         },
         {
-          "name": "MinutesDuration",
+          "name": "minutesDuration",
           "dataType": "Int32",
           "isNullable": false,
           "defaultValue": 0,
@@ -1088,19 +1074,14 @@
               "name": "required"
             },
             {
-              "min": -2147483648,
-              "max": 2147483647,
-              "name": "int32"
-            },
-            {
-              "name": "range",
+              "name": "numericRange",
               "min": 1,
               "max": 240
             }
           ]
         },
         {
-          "name": "Day",
+          "name": "day",
           "dataType": "Byte",
           "isNullable": false,
           "defaultValue": 0,
@@ -1116,7 +1097,7 @@
           ]
         },
         {
-          "name": "Order",
+          "name": "order",
           "dataType": "Int32",
           "isNullable": false,
           "defaultValue": 0,
@@ -1140,7 +1121,7 @@
       "defaultResourceName": "SenarioRoles",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1155,15 +1136,14 @@
           ]
         },
         {
-          "name": "Description",
+          "name": "description",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 50,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 50,
@@ -1174,12 +1154,12 @@
       ],
       "navigationProperties": [
         {
-          "name": "ScenarioFacultyRoles",
+          "name": "scenarioFacultyRoles",
           "entityTypeName": "ScenarioFacultyRoleDto:#SM.Dto",
           "isScalar": false,
           "associationName": "ScenarioRoleDescriptionDto_ScenarioFacultyRoles",
           "invForeignKeyNames": [
-            "RoleId"
+            "roleId"
           ]
         }
       ]
@@ -1191,7 +1171,7 @@
       "defaultResourceName": "ScenarioFacultyRoles",
       "dataProperties": [
         {
-          "name": "CourseId",
+          "name": "courseId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1206,7 +1186,7 @@
           ]
         },
         {
-          "name": "ScenarioId",
+          "name": "scenarioId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1221,7 +1201,7 @@
           ]
         },
         {
-          "name": "FacultyMemberId",
+          "name": "facultyMemberId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1236,7 +1216,7 @@
           ]
         },
         {
-          "name": "RoleId",
+          "name": "roleId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1253,39 +1233,39 @@
       ],
       "navigationProperties": [
         {
-          "name": "Course",
+          "name": "course",
           "entityTypeName": "CourseDto:#SM.Dto",
           "isScalar": true,
           "associationName": "CourseDto_ScenarioFacultyRoles",
           "foreignKeyNames": [
-            "CourseId"
+            "courseId"
           ]
         },
         {
-          "name": "FacultyMember",
+          "name": "facultyMember",
           "entityTypeName": "ParticipantDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ParticipantDto_ScenarioFacultyRoles",
           "foreignKeyNames": [
-            "FacultyMemberId"
+            "facultyMemberId"
           ]
         },
         {
-          "name": "Role",
+          "name": "role",
           "entityTypeName": "ScenarioRoleDescriptionDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ScenarioRoleDescriptionDto_ScenarioFacultyRoles",
           "foreignKeyNames": [
-            "RoleId"
+            "roleId"
           ]
         },
         {
-          "name": "Scenario",
+          "name": "scenario",
           "entityTypeName": "ScenarioDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ScenarioDto_ScenarioFacultyRoles",
           "foreignKeyNames": [
-            "ScenarioId"
+            "scenarioId"
           ]
         }
       ]
@@ -1297,7 +1277,7 @@
       "defaultResourceName": "Participants",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1312,15 +1292,14 @@
           ]
         },
         {
-          "name": "Email",
+          "name": "email",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 256,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 256,
@@ -1332,7 +1311,7 @@
           ]
         },
         {
-          "name": "PhoneNumber",
+          "name": "phoneNumber",
           "dataType": "String",
           "maxLength": 32,
           "validators": [
@@ -1346,7 +1325,7 @@
           ]
         },
         {
-          "name": "AlternateEmail",
+          "name": "alternateEmail",
           "dataType": "String",
           "maxLength": 256,
           "validators": [
@@ -1360,15 +1339,14 @@
           ]
         },
         {
-          "name": "FullName",
+          "name": "fullName",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 256,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 256,
@@ -1377,7 +1355,7 @@
           ]
         },
         {
-          "name": "DefaultDepartmentId",
+          "name": "defaultDepartmentId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1391,7 +1369,7 @@
           ]
         },
         {
-          "name": "DefaultProfessionalRoleId",
+          "name": "defaultProfessionalRoleId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1407,48 +1385,48 @@
       ],
       "navigationProperties": [
         {
-          "name": "CourseParticipants",
+          "name": "courseParticipants",
           "entityTypeName": "CourseParticipantDto:#SM.Dto",
           "isScalar": false,
           "associationName": "ParticipantDto_CourseParticipants",
           "invForeignKeyNames": [
-            "ParticipantId"
+            "participantId"
           ]
         },
         {
-          "name": "CourseSlotPresentations",
+          "name": "courseSlotPresentations",
           "entityTypeName": "CourseSlotPresenterDto:#SM.Dto",
           "isScalar": false,
           "associationName": "ParticipantDto_CourseSlotPresentations",
           "invForeignKeyNames": [
-            "PresenterId"
+            "presenterId"
           ]
         },
         {
-          "name": "Department",
+          "name": "department",
           "entityTypeName": "DepartmentDto:#SM.Dto",
           "isScalar": true,
           "associationName": "DepartmentDto_Participants",
           "foreignKeyNames": [
-            "DefaultDepartmentId"
+            "defaultDepartmentId"
           ]
         },
         {
-          "name": "ProfessionalRole",
+          "name": "professionalRole",
           "entityTypeName": "ProfessionalRoleDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ProfessionalRoleDto_Participants",
           "foreignKeyNames": [
-            "DefaultProfessionalRoleId"
+            "defaultProfessionalRoleId"
           ]
         },
         {
-          "name": "ScenarioFacultyRoles",
+          "name": "scenarioFacultyRoles",
           "entityTypeName": "ScenarioFacultyRoleDto:#SM.Dto",
           "isScalar": false,
           "associationName": "ParticipantDto_ScenarioFacultyRoles",
           "invForeignKeyNames": [
-            "FacultyMemberId"
+            "facultyMemberId"
           ]
         }
       ]
@@ -1460,7 +1438,7 @@
       "defaultResourceName": "CourseSlotPresenters",
       "dataProperties": [
         {
-          "name": "CourseId",
+          "name": "courseId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1475,7 +1453,7 @@
           ]
         },
         {
-          "name": "CourseSlotId",
+          "name": "courseSlotId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1490,7 +1468,7 @@
           ]
         },
         {
-          "name": "PresenterId",
+          "name": "presenterId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1507,30 +1485,30 @@
       ],
       "navigationProperties": [
         {
-          "name": "Course",
+          "name": "course",
           "entityTypeName": "CourseDto:#SM.Dto",
           "isScalar": true,
           "associationName": "CourseSlotPresenterDto_Course",
           "foreignKeyNames": [
-            "CourseId"
+            "courseId"
           ]
         },
         {
-          "name": "CourseSlot",
+          "name": "courseSlot",
           "entityTypeName": "CourseSlotDto:#SM.Dto",
           "isScalar": true,
           "associationName": "CourseSlotPresenterDto_CourseSlot",
           "foreignKeyNames": [
-            "CourseSlotId"
+            "courseSlotId"
           ]
         },
         {
-          "name": "Presenter",
+          "name": "presenter",
           "entityTypeName": "ParticipantDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ParticipantDto_CourseSlotPresentations",
           "foreignKeyNames": [
-            "PresenterId"
+            "presenterId"
           ]
         }
       ]
@@ -1542,7 +1520,7 @@
       "defaultResourceName": "ProfessionalRoles",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1557,15 +1535,14 @@
           ]
         },
         {
-          "name": "Description",
+          "name": "description",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 50,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 50,
@@ -1574,7 +1551,7 @@
           ]
         },
         {
-          "name": "Category",
+          "name": "category",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
@@ -1591,21 +1568,21 @@
       ],
       "navigationProperties": [
         {
-          "name": "CourseParticipants",
+          "name": "courseParticipants",
           "entityTypeName": "CourseParticipantDto:#SM.Dto",
           "isScalar": false,
           "associationName": "ProfessionalRoleDto_CourseParticipants",
           "invForeignKeyNames": [
-            "ProfessionalRoleId"
+            "professionalRoleId"
           ]
         },
         {
-          "name": "Participants",
+          "name": "participants",
           "entityTypeName": "ParticipantDto:#SM.Dto",
           "isScalar": false,
           "associationName": "ProfessionalRoleDto_Participants",
           "invForeignKeyNames": [
-            "DefaultProfessionalRoleId"
+            "defaultProfessionalRoleId"
           ]
         }
       ]
@@ -1617,7 +1594,7 @@
       "defaultResourceName": "Scenarios",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1632,15 +1609,14 @@
           ]
         },
         {
-          "name": "Description",
+          "name": "description",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 128,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 128,
@@ -1649,7 +1625,7 @@
           ]
         },
         {
-          "name": "DepartmentId",
+          "name": "departmentId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1663,7 +1639,7 @@
           ]
         },
         {
-          "name": "Complexity",
+          "name": "complexity",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
@@ -1678,7 +1654,7 @@
           "enumType": "Edm.Self.Difficulty"
         },
         {
-          "name": "EmersionCategory",
+          "name": "emersionCategory",
           "dataType": "String",
           "validators": [
             {
@@ -1688,7 +1664,7 @@
           "enumType": "Edm.Self.Emersion"
         },
         {
-          "name": "TemplateFilename",
+          "name": "templateFilename",
           "dataType": "String",
           "maxLength": 256,
           "validators": [
@@ -1699,7 +1675,7 @@
           ]
         },
         {
-          "name": "ManequinId",
+          "name": "manequinId",
           "dataType": "Guid",
           "validators": [
             {
@@ -1708,7 +1684,7 @@
           ]
         },
         {
-          "name": "CourseTypeId",
+          "name": "courseTypeId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1724,48 +1700,48 @@
       ],
       "navigationProperties": [
         {
-          "name": "CourseType",
+          "name": "courseType",
           "entityTypeName": "CourseTypeDto:#SM.Dto",
           "isScalar": true,
           "associationName": "CourseTypeDto_Scenarios",
           "foreignKeyNames": [
-            "CourseTypeId"
+            "courseTypeId"
           ]
         },
         {
-          "name": "Department",
+          "name": "department",
           "entityTypeName": "DepartmentDto:#SM.Dto",
           "isScalar": true,
           "associationName": "DepartmentDto_Scenarios",
           "foreignKeyNames": [
-            "DepartmentId"
+            "departmentId"
           ]
         },
         {
-          "name": "Manequin",
+          "name": "manequin",
           "entityTypeName": "ManequinDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ManequinDto_Scenarios",
           "foreignKeyNames": [
-            "ManequinId"
+            "manequinId"
           ]
         },
         {
-          "name": "Resources",
+          "name": "resources",
           "entityTypeName": "ScenarioResourceDto:#SM.Dto",
           "isScalar": false,
           "associationName": "ScenarioResourceDto_Scenario",
           "invForeignKeyNames": [
-            "ScenarioId"
+            "scenarioId"
           ]
         },
         {
-          "name": "ScenarioFacultyRoles",
+          "name": "scenarioFacultyRoles",
           "entityTypeName": "ScenarioFacultyRoleDto:#SM.Dto",
           "isScalar": false,
           "associationName": "ScenarioDto_ScenarioFacultyRoles",
           "invForeignKeyNames": [
-            "ScenarioId"
+            "scenarioId"
           ]
         }
       ]
@@ -1777,7 +1753,7 @@
       "defaultResourceName": "Manequins",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1792,15 +1768,14 @@
           ]
         },
         {
-          "name": "Description",
+          "name": "description",
           "dataType": "String",
           "isNullable": false,
           "defaultValue": "",
           "maxLength": 50,
           "validators": [
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "maxLength": 50,
@@ -1809,7 +1784,7 @@
           ]
         },
         {
-          "name": "DepartmentId",
+          "name": "departmentId",
           "dataType": "Int32",
           "validators": [
             {
@@ -1820,7 +1795,7 @@
           ]
         },
         {
-          "name": "ManufacturerId",
+          "name": "manufacturerId",
           "dataType": "Int32",
           "isNullable": false,
           "defaultValue": 0,
@@ -1838,24 +1813,24 @@
       ],
       "navigationProperties": [
         {
-          "name": "Department",
+          "name": "department",
           "entityTypeName": "DepartmentDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ManequinDto_Department"
         },
         {
-          "name": "Manufacturer",
+          "name": "manufacturer",
           "entityTypeName": "ManequinManufacturerDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ManequinDto_Manufacturer"
         },
         {
-          "name": "Scenarios",
+          "name": "scenarios",
           "entityTypeName": "ScenarioDto:#SM.Dto",
           "isScalar": false,
           "associationName": "ManequinDto_Scenarios",
           "invForeignKeyNames": [
-            "ManequinId"
+            "manequinId"
           ]
         }
       ]
@@ -1867,7 +1842,7 @@
       "defaultResourceName": "ManequinManufacturers",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1882,7 +1857,7 @@
           ]
         },
         {
-          "name": "Name",
+          "name": "name",
           "dataType": "String",
           "maxLength": 256,
           "validators": [
@@ -1901,7 +1876,7 @@
       "defaultResourceName": "ScenarioResources",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1916,7 +1891,7 @@
           ]
         },
         {
-          "name": "ScenarioId",
+          "name": "scenarioId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1930,15 +1905,14 @@
           ]
         },
         {
-          "name": "Name",
+          "name": "name",
           "dataType": "String",
           "validators": [
             {
               "name": "string"
             },
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "name": "maxLength",
@@ -1947,15 +1921,14 @@
           ]
         },
         {
-          "name": "ResourceFilename",
+          "name": "resourceFilename",
           "dataType": "String",
           "validators": [
             {
               "name": "string"
             },
             {
-              "name": "required",
-              "allowEmptyStrings": false
+              "name": "required"
             },
             {
               "name": "maxLength",
@@ -1966,12 +1939,12 @@
       ],
       "navigationProperties": [
         {
-          "name": "Scenario",
+          "name": "scenario",
           "entityTypeName": "ScenarioDto:#SM.Dto",
           "isScalar": true,
           "associationName": "ScenarioResourceDto_Scenario",
           "foreignKeyNames": [
-            "ScenarioId"
+            "scenarioId"
           ]
         }
       ]
@@ -1983,7 +1956,7 @@
       "defaultResourceName": "RoomDtoes",
       "dataProperties": [
         {
-          "name": "Id",
+          "name": "id",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -1998,7 +1971,7 @@
           ]
         },
         {
-          "name": "ShortDescription",
+          "name": "shortDescription",
           "dataType": "String",
           "maxLength": 32,
           "validators": [
@@ -2009,7 +1982,7 @@
           ]
         },
         {
-          "name": "FullDescription",
+          "name": "fullDescription",
           "dataType": "String",
           "maxLength": 64,
           "validators": [
@@ -2020,7 +1993,7 @@
           ]
         },
         {
-          "name": "Directions",
+          "name": "directions",
           "dataType": "String",
           "maxLength": 256,
           "validators": [
@@ -2031,7 +2004,7 @@
           ]
         },
         {
-          "name": "DepartmentId",
+          "name": "departmentId",
           "dataType": "Guid",
           "isNullable": false,
           "defaultValue": "00000000-0000-0000-0000-000000000000",
@@ -2047,21 +2020,21 @@
       ],
       "navigationProperties": [
         {
-          "name": "Courses",
+          "name": "courses",
           "entityTypeName": "CourseDto:#SM.Dto",
           "isScalar": false,
           "associationName": "RoomDto_Courses",
           "invForeignKeyNames": [
-            "RoomId"
+            "roomId"
           ]
         },
         {
-          "name": "Department",
+          "name": "department",
           "entityTypeName": "DepartmentDto:#SM.Dto",
           "isScalar": true,
           "associationName": "DepartmentDto_Rooms",
           "foreignKeyNames": [
-            "DepartmentId"
+            "departmentId"
           ]
         }
       ]

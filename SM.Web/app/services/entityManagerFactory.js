@@ -20,7 +20,6 @@
 
         // initialize it from the application's metadata variable
         metadataStore.importMetadata(window.medsimMetadata);
-        console.log(metadataStore.exportMetadata());
 
         var masterManager = new breeze.EntityManager({
             dataService: dataService,
