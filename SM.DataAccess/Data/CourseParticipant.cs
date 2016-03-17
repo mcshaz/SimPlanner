@@ -14,6 +14,7 @@ namespace SM.DataAccess
 
         public bool IsConfirmed { get; set; }
         public bool IsFaculty { get; set; }
+        public bool IsOrganiser { get; set; }
 
         public virtual Participant Participant { get; set; }
         public virtual Course Course { get; set; }

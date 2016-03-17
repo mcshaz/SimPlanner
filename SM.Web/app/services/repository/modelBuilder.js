@@ -16,30 +16,30 @@
         }
 
         function extendCourse(metadataStore) {
-            var courseCtor = function () {
-                this.id = breeze.core.getUuid();
+            var CourseCtor = function () {
+                //
             };
 
-            courseCtor.prototype.addParticipant = function (participantId) {
+            CourseCtor.prototype.addParticipant = function (participantId) {
                 return this.entityAspect.entityManager.createEntity('CourseParticipantDto', {
                     participantId: participantId || breeze.core.getUuid(),
                     courseId: this.id
                 });
             };
 
-            courseCtor.prototype.removeParticipant = function (courseParticipant) {
+            CourseCtor.prototype.removeParticipant = function (courseParticipant) {
                 ensureEntityType(courseParticipant, 'CourseParticipant')
                 this.throwIfNotOwnerOf(courseParticipant);
                 return this.entityAspect.setDeleted(courseParticipant);
             };
 
-            courseCtor.prototype.throwIfNotOwnerOf = function (obj) {
+            CourseCtor.prototype.throwIfNotOwnerOf = function (obj) {
                 if (!obj.courseId || obj.courseId !== this.id) {
                     throw new Error('Object is not associated with current course');
                 }
             };
 
-            courseCtor.prototype.includesUser = function (userId) {
+            CourseCtor.prototype.includesUser = function (userId) {
                 return this.courseParticipants.some(function (cp) {
                     return cp.participantId == userId;
                 });
@@ -59,7 +59,7 @@
             };
             */
 
-            metadataStore.registerEntityTypeCtor('CourseDto', courseCtor /*, courseInitializer */);
+            metadataStore.registerEntityTypeCtor('CourseDto', CourseCtor /*, courseInitializer */);
 
         }
 

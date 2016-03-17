@@ -23,13 +23,11 @@
                 }
 
                 self.fetchByKey = function (key, argObj) {
-                    return executeKeyQuery(key, argObj);
+                    return executeKeyQuery(keyPropsToArray(key), argObj);
                 };
 
                 self.getByKey = function (key) {
-                    if (!entityTypeName)
-                        throw new Error("Repository must be created with an entity type specified");
-                    return manager().getEntityByKey(entityTypeName, key);
+                    return manager().getEntityByKey(entityTypeName, keyPropsToArray(key));
                 }
 
                 self.find = function () {
@@ -50,6 +48,67 @@
 
                     return executeQuery(query);
                 };
+
+                self.create = function (/*ids and/or entityState*/) {
+                    var newIds = {};
+                    var ids;
+                    var entityState;
+                    switch (arguments.length) {
+                        case 0:
+                            break;
+                        case 1:
+                            if (arguments[0] && arguments[0].parentEnum && arguments[0].parentEnum.name=="EntityState") {
+                                entityState = arguments[0];
+                            } else {
+                                ids = arguments[0];
+                            }
+                            break;
+                        case 2:
+                            ids = arguments[0];
+                            entityState = arguments[1];
+                            break;
+                        default:
+                            throw new SyntaxError('create requires 0-2 arguments');
+                    }
+                    var keyProps = entityType.keyProperties;
+                    if (!ids) {
+                        if (keyProps.length !== 1) {
+                            throw new Error(entityTypeName + ' has a complex key - ids must be specified when creating');
+                        }
+                        newIds.id = breeze.core.getUuid();
+                    } else if (Array.isArray(ids)){
+                        if (ids && ids.length !== keyProps.length) {
+                            throw new Error(entityTypeName + ' requires exactly ' + keyProps.length + ' keys to be specified, but ' + ids.length + ' were instead specified');
+                        }
+                        for (var i=0;i<keyProps.length;i++){
+                            newIds[keyProps[i].name] = ids[i];
+                        }
+                    } else {
+                        angular.extend(newIds,ids);
+                    }
+
+                    return manager().createEntity(entityType, newIds, entityState || breeze.EntityState.Added);
+                }
+
+                function keyPropsToArray(key) {
+                    if (Array.isArray(key)) { return key; }
+                    switch (typeof (key)) {
+                        case 'string':
+                        case 'number':
+                            return [key];
+                        case 'object':
+                            return entityType.keyProperties.map(function (el) {
+                                var returnVar = key[el.name];
+                                if (typeof (returnVar) === 'undefined') {
+                                    throw new TypeError('entity key object is missing required key ' + el.name);
+                                }
+                                return returnVar;
+                            });
+                        default:
+                            throw new TypeError('entity key of type' + typeof(key));
+                    }
+
+                }
 
                 function createQuery(argObj) {
                     var query = breeze.EntityQuery.from(resourceName);

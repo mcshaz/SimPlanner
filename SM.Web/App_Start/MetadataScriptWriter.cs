@@ -11,7 +11,7 @@ namespace SM.Web.App_Start
         {
             //const string category = "MetadataScriptWriter";
             // get the metadata the same way we get it for the controller
-            string metadata = MedSimDtoRepository.GetMetadata();
+            string metadata = MedSimDtoMetadata.GetBreezeMetadata(pretty:true);
             const string metadataPath = "~/app/metadata.js";
 
             // construct the filename and runtime file location

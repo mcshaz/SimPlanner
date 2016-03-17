@@ -14,6 +14,7 @@ namespace SM.DTOs.Maps
                 CourseId = m.CourseId,
                 IsConfirmed = m.IsConfirmed,
                 IsFaculty = m.IsFaculty,
+                IsOrganiser = m.IsOrganiser,
                 DepartmentId = m.DepartmentId,
                 ProfessionalRoleId = m.ProfessionalRoleId
                 //Participant = m.Participant,
@@ -29,6 +30,7 @@ namespace SM.DTOs.Maps
                 CourseId = m.CourseId,
                 IsConfirmed = m.IsConfirmed,
                 IsFaculty = m.IsFaculty,
+                IsOrganiser = m.IsOrganiser,
                 DepartmentId = m.DepartmentId,
                 ProfessionalRoleId = m.ProfessionalRoleId
                 //Participant = m.Participant,

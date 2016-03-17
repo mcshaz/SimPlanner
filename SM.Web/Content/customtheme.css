@@ -490,7 +490,7 @@ form {
     border: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
 }
-
+/*TODO fiddle for typeahead*/
 .dropdown-menu li {
         color: #777;
         font-size: 13px;

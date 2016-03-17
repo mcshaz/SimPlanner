@@ -15,11 +15,13 @@
         function activate() { getNavRoutes(); }
         
         function getNavRoutes() {
+            var rx = /:id$/;
             vm.navRoutes = routes.filter(function(r) {
                 return r.config.settings && r.config.settings.nav;
             }).sort(function(r1, r2) {
                 return r1.config.settings.nav - r2.config.settings.nav;
             });
+            vm.navRoutes.forEach(function (el) { el.url = el.url.replace(rx, 'new')});
         }
         
         function isCurrent(route) {

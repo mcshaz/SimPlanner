@@ -6,7 +6,7 @@
                     <div class="form-group">
                         <label for="institution" class="col-md-2 control-label">Institution</label>
                         <div class="col-md-10">
-                            <select class="form-control" id="institution" data-ng-options="i as i.name for i in vm.institutions track by i.id" data-ng-model="vm.institution" data-ng-disabled="{{vm.institutions<=1}}"></select>
+                            <select class="form-control" id="institution" data-z-validate data-ng-options="i as i.name for i in vm.institutions track by i.id" data-ng-model="vm.institution" data-ng-disabled="{{vm.institutions<=1}}"></select>
                             <span class="text-danger" />
                         </div>
                     </div>
@@ -14,7 +14,7 @@
                     <div class="form-group">
                         <label for="department" class="col-md-2 control-label">Department</label>
                         <div class="col-md-10">
-                            <select class="form-control" id="department" data-ng-options="d as d.name for d in vm.institution.departments track by d.id" data-ng-model="vm.course.department">
+                            <select class="form-control" id="department" data-z-validate data-ng-options="d as d.name for d in vm.institution.departments track by d.id" data-ng-model="vm.course.department">
                                 <option value="" disabled="disabled">
                                     Select Department...
                                 </option>
@@ -26,7 +26,7 @@
                     <div class="form-group">
                         <label for="courseType" class="col-md-2 control-label">Course Type</label>
                         <div class="col-md-10">
-                            <select id="courseType" class="form-control" data-ng-options="ct as ct.description for ct in vm.courseTypes track by ct.id" data-ng-model="vm.course.courseType">
+                            <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypes track by ct.id" data-ng-model="vm.course.courseType">
                                 <option value="" disabled="disabled">
                                     Select Course Type...
                                 </option>
@@ -58,7 +58,7 @@
                     <div class="form-group">
                         <label for="courseType" class="col-md-2 control-label">Location</label>
                         <div class="col-md-10">
-                            <select id="courseType" class="form-control" data-ng-model="vm.course.roomId">
+                            <select id="courseType" class="form-control" data-z-validate data-ng-model="vm.course.roomId">
                                 <option value="" disabled="disabled">
                                     Select Room...
                                 </option>
@@ -93,6 +93,9 @@
                                                 Role
                                             </th>
                                             <th>
+                                                Organiser
+                                            </th>
+                                            <th>
                                                 Confirmed
                                             </th>
                                             <th>
@@ -106,6 +109,9 @@
                                             </td>
                                             <td>
                                                 {{cp.participant.professionalRole.category}}
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" ng-checked="cp.isOrganiser" />
                                             </td>
                                             <td>
                                                 <input type="checkbox" ng-checked="cp.isConfirmed" />

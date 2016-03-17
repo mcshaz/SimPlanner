@@ -7,9 +7,12 @@
                 <label for="fullName" class="col-md-2 control-label">Full Name</label>
                 <div class="col-md-10">
                     <input class="form-control" id="fullName" type="text" ng-model="cp.courseParticipant.participant.fullName" placeholder="e.g. John Smith" 
-                           uib-typeahead="p.fullName as p.description for p in cp.getPeople($viewValue)"
-                           typeahead-editable="false" typeahead-focus-first="false" typeahead-on-select="cp.participantSelected($item)"
-                           typeahead-loading="loadingPeople" typeahead-no-results="noResults" typeahead-wait-ms="50">
+                           ng-model-options="{ debounce: 200 }" autocomplete="off"
+                           uib-typeahead="p.fullName as p.description for p in cp.getPeople($viewValue)" 
+                           typeahead-focus-first="false" typeahead-on-select="cp.participantSelected($item)" 
+                           typeahead-loading="loadingPeople" typeahead-no-results="cp.noResults" 
+                           typeahead-select-on-blur="true" typeahead-show-hint="true" data-z-validate 
+                           /> 
                     <i ng-show="loadingPeople" class="glyphicon glyphicon-refresh"></i>
                     <div ng-show="noResults">
                         <i class="glyphicon glyphicon-remove"></i> No Existing Participants
@@ -18,12 +21,18 @@
                 </div>
             </div>
             <div class="row">
+                <div class="pull-right">
+                    <button class="btn btn-info" ng-disabled="!(cp.isNullCourseParticipant && cp.courseParticipant.participant.fullName.length)">Add New Person</button>
+                    <button class="btn btn-success" ng-disabled="true">Add To Sim</button>
+                    <button class="btn btn-default" ng-click="cp.close()">Close</button>
+                </div>
+                <div class="clearfix"/>
                 <hr />
             </div>
             <div class="form-group">
                 <label for="email" class="col-md-2 control-label">Work Email</label>
                 <div class="col-md-10">
-                    <input class="form-control" type="email" id="email" ng-model="cp.courseParticipant.participant.email" />
+                    <input class="form-control" type="email" id="email" data-z-validate ng-model="cp.courseParticipant.participant.email" ng-disabled="cp.isNullCourseParticipant"/>
                     <span class="text-danger" />
                 </div>
             </div>
@@ -31,7 +40,7 @@
             <div class="form-group">
                 <label for="alternateEmail" class="col-md-2 control-label">Personal Email</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="alternateEmail" type="email" ng-model="cp.courseParticipant.participant.alternateEmail" />
+                    <input class="form-control" id="alternateEmail" type="email" data-z-validate ng-model="cp.courseParticipant.participant.alternateEmail" ng-disabled="cp.isNullCourseParticipant"/>
                     <span class="text-danger" />
                 </div>
             </div>
@@ -41,7 +50,7 @@
                 <div class="col-md-10">
                     <div class="input-group">
                         <span class="input-group-addon">(+{{cp.dialCode}})</span>
-                        <input class="form-control" type="tel" id="phoneNumber" ng-model="cp.courseParticipant.participant.phoneNumber" />
+                        <input class="form-control" type="tel" id="phoneNumber" data-z-validate ng-model="cp.courseParticipant.participant.phoneNumber" ng-disabled="cp.isNullCourseParticipant"/>
 
                     </div>
                     <span class="text-danger" />
@@ -51,8 +60,8 @@
             <div class="form-group">
                 <label for="professionalRole" class="col-md-2 control-label">Professional Role</label>
                 <div class="col-md-10">
-                    <select id="professionalRole" class="form-control" data-ng-options="pr as pr.description group by pr.category for pr in cp.professionalRoles"
-                            data-ng-model="cp.courseParticipant.participant.professionalRole">
+                    <select id="professionalRole" class="form-control" data-z-validate data-ng-options="pr as pr.description group by pr.category for pr in cp.professionalRoles"
+                            data-ng-model="cp.courseParticipant.participant.professionalRole" ng-disabled="cp.isNullCourseParticipant">
                         <option value="" disabled="disabled">
                             Select Professional Role...
                         </option>
@@ -64,8 +73,8 @@
             <div class="form-group">
                 <label for="cpDepartment" class="col-md-2 control-label">Department</label>
                 <div class="col-md-10">
-                    <select id="cpDepartment" class="form-control" data-ng-options="d as d.name for d in cp.departments"
-                            data-ng-model="cp.courseParticipant.participant.department">
+                    <select id="cpDepartment" class="form-control" data-z-validate data-ng-options="d as d.name for d in cp.departments"
+                            data-ng-model="cp.courseParticipant.participant.department" ng-disabled="cp.isNullCourseParticipant">
                         <option value="" disabled="disabled">
                             Select Department...
                         </option>

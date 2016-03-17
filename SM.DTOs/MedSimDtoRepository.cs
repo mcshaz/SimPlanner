@@ -41,7 +41,7 @@ namespace SM.Dto
             //_contextProvider.BeforeSaveEntityDelegate += _entitySaveGuard.BeforeSaveEntity;
         }
 
-        public static string GetMetadata()
+        public static string GetEdmxMetadata()
         {
             return new EFContextProvider<MedSimDtoContextPretender>().Metadata();
         }

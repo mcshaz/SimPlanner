@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['$routeParams','common','datacontext', '$rootScope', '$uibModal']; 
+    controller.$inject = ['$routeParams','common','datacontext', '$rootScope', '$uibModal', 'breeze']; 
 
-    function controller($routeParams, common, datacontext, $rootScope, $uibModal) {
+    function controller($routeParams, common, datacontext, $rootScope, $uibModal, breeze) {
         /* jshint validthis:true */
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
@@ -48,7 +48,10 @@
                             vm.institution = data[0];
                         }
                 })];
-                if (id && id!='new') {
+                if (id == 'new') {
+                    vm.course = datacontext.courses.create(breeze.EntityState.Detached);
+                    id = vm.course.id;
+                }else{
                     promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant'}).then(function (data) {
                         if (!data) {
                             log.warning('Could not find course id = ' +id);
@@ -82,7 +85,7 @@
                 //size: 'lg',
                 resolve: {
                     courseParticipantIds: function () {
-                        return [id, participantId];
+                        return { courseId: id, participantId:participantId };
                     }
                 }
             });

@@ -1,1 +1,2092 @@
-; Object.defineProperty(window, 'medsimMetadata', {enumerable: false, configurable: false, writable: false,value: JSON.stringify({"schema":{"namespace":"SM.Dto","alias":"Self","annotation:UseStrongSpatialTypes":"false","xmlns:annotation":"http://schemas.microsoft.com/ado/2009/02/edm/annotation","xmlns:customannotation":"http://schemas.microsoft.com/ado/2013/11/edm/customannotation","xmlns":"http://schemas.microsoft.com/ado/2009/11/edm","cSpaceOSpaceMapping":"[[\"SM.Dto.CountryDto\",\"SM.Dto.CountryDto\"],[\"SM.Dto.CountryLocaleCodeDto\",\"SM.Dto.CountryLocaleCodeDto\"],[\"SM.Dto.InstitutionDto\",\"SM.Dto.InstitutionDto\"],[\"SM.Dto.DepartmentDto\",\"SM.Dto.DepartmentDto\"],[\"SM.Dto.CourseParticipantDto\",\"SM.Dto.CourseParticipantDto\"],[\"SM.Dto.CourseDto\",\"SM.Dto.CourseDto\"],[\"SM.Dto.CourseTypeDto\",\"SM.Dto.CourseTypeDto\"],[\"SM.Dto.CourseSlotDto\",\"SM.Dto.CourseSlotDto\"],[\"SM.Dto.CourseTeachingResourceDto\",\"SM.Dto.CourseTeachingResourceDto\"],[\"SM.Dto.ScenarioSlotDto\",\"SM.Dto.ScenarioSlotDto\"],[\"SM.Dto.ScenarioRoleDescriptionDto\",\"SM.Dto.ScenarioRoleDescriptionDto\"],[\"SM.Dto.ScenarioFacultyRoleDto\",\"SM.Dto.ScenarioFacultyRoleDto\"],[\"SM.Dto.ParticipantDto\",\"SM.Dto.ParticipantDto\"],[\"SM.Dto.CourseSlotPresenterDto\",\"SM.Dto.CourseSlotPresenterDto\"],[\"SM.Dto.ProfessionalRoleDto\",\"SM.Dto.ProfessionalRoleDto\"],[\"SM.Dto.ScenarioDto\",\"SM.Dto.ScenarioDto\"],[\"SM.Dto.ManequinDto\",\"SM.Dto.ManequinDto\"],[\"SM.Dto.ManequinManufacturerDto\",\"SM.Dto.ManequinManufacturerDto\"],[\"SM.Dto.ScenarioResourceDto\",\"SM.Dto.ScenarioResourceDto\"],[\"SM.Dto.RoomDto\",\"SM.Dto.RoomDto\"]]","entityType":[{"name":"CountryDto","customannotation:ClrType":"SM.Dto.CountryDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Code"}},"property":[{"name":"Code","type":"Edm.String","maxLength":"2","fixedLength":"true","unicode":"true","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"Name","type":"Edm.String","maxLength":"50","fixedLength":"false","unicode":"true","nullable":"false"},{"name":"DialCode","type":"Edm.String","maxLength":"3","fixedLength":"false","unicode":"true","nullable":"false"}],"navigationProperty":[{"name":"CountryLocales","relationship":"Self.CountryDto_CountryLocales","fromRole":"CountryDto_CountryLocales_Source","toRole":"CountryDto_CountryLocales_Target"},{"name":"Hospitals","relationship":"Self.InstitutionDto_Country","fromRole":"InstitutionDto_Country_Target","toRole":"InstitutionDto_Country_Source"}]},{"name":"CountryLocaleCodeDto","customannotation:ClrType":"SM.Dto.CountryLocaleCodeDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Preference"}},"property":[{"name":"Preference","type":"Edm.Byte","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"LocaleCode","type":"Edm.String","maxLength":"Max","fixedLength":"false","unicode":"true"},{"name":"CountryCode","type":"Edm.String","maxLength":"2","fixedLength":"true","unicode":"true","nullable":"false"}],"navigationProperty":{"name":"Country","relationship":"Self.CountryDto_CountryLocales","fromRole":"CountryDto_CountryLocales_Target","toRole":"CountryDto_CountryLocales_Source"}},{"name":"InstitutionDto","customannotation:ClrType":"SM.Dto.InstitutionDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"Name","type":"Edm.String","maxLength":"50","fixedLength":"false","unicode":"true","nullable":"false"},{"name":"About","type":"Edm.String","maxLength":"Max","fixedLength":"false","unicode":"true"},{"name":"CountryCode","type":"Edm.String","maxLength":"2","fixedLength":"true","unicode":"true"}],"navigationProperty":[{"name":"Country","relationship":"Self.InstitutionDto_Country","fromRole":"InstitutionDto_Country_Source","toRole":"InstitutionDto_Country_Target"},{"name":"Departments","relationship":"Self.InstitutionDto_Departments","fromRole":"InstitutionDto_Departments_Source","toRole":"InstitutionDto_Departments_Target"},{"name":"ProfessionalRoles","relationship":"Self.InstitutionDto_ProfessionalRoles","fromRole":"InstitutionDto_ProfessionalRoles_Source","toRole":"InstitutionDto_ProfessionalRoles_Target"}]},{"name":"DepartmentDto","customannotation:ClrType":"SM.Dto.DepartmentDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"Name","type":"Edm.String","maxLength":"64","fixedLength":"false","unicode":"true","nullable":"false"},{"name":"Abbreviation","type":"Edm.String","maxLength":"16","fixedLength":"false","unicode":"true"},{"name":"InstitutionId","type":"Edm.Guid","nullable":"false"},{"name":"InvitationLetterFilename","type":"Edm.String","maxLength":"256","fixedLength":"false","unicode":"true"},{"name":"CertificateFilename","type":"Edm.String","maxLength":"256","fixedLength":"false","unicode":"true"}],"navigationProperty":[{"name":"CourseParticipants","relationship":"Self.DepartmentDto_CourseParticipants","fromRole":"DepartmentDto_CourseParticipants_Source","toRole":"DepartmentDto_CourseParticipants_Target"},{"name":"Courses","relationship":"Self.DepartmentDto_Courses","fromRole":"DepartmentDto_Courses_Source","toRole":"DepartmentDto_Courses_Target"},{"name":"CourseTypes","relationship":"Self.DepartmentDto_CourseTypes","fromRole":"DepartmentDto_CourseTypes_Source","toRole":"DepartmentDto_CourseTypes_Target"},{"name":"Institution","relationship":"Self.InstitutionDto_Departments","fromRole":"InstitutionDto_Departments_Target","toRole":"InstitutionDto_Departments_Source"},{"name":"Manequins","relationship":"Self.ManequinDto_Department","fromRole":"ManequinDto_Department_Target","toRole":"ManequinDto_Department_Source"},{"name":"Participants","relationship":"Self.DepartmentDto_Participants","fromRole":"DepartmentDto_Participants_Source","toRole":"DepartmentDto_Participants_Target"},{"name":"Rooms","relationship":"Self.DepartmentDto_Rooms","fromRole":"DepartmentDto_Rooms_Source","toRole":"DepartmentDto_Rooms_Target"},{"name":"Scenarios","relationship":"Self.DepartmentDto_Scenarios","fromRole":"DepartmentDto_Scenarios_Source","toRole":"DepartmentDto_Scenarios_Target"}]},{"name":"CourseParticipantDto","customannotation:ClrType":"SM.Dto.CourseParticipantDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":[{"name":"CourseId"},{"name":"ParticipantId"}]},"property":[{"name":"CourseId","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"ParticipantId","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"IsConfirmed","type":"Edm.Boolean","nullable":"false"},{"name":"IsFaculty","type":"Edm.Boolean","nullable":"false"},{"name":"DepartmentId","type":"Edm.Guid","nullable":"false"},{"name":"ProfessionalRoleId","type":"Edm.Guid","nullable":"false"}],"navigationProperty":[{"name":"Course","relationship":"Self.CourseDto_CourseParticipants","fromRole":"CourseDto_CourseParticipants_Target","toRole":"CourseDto_CourseParticipants_Source"},{"name":"Department","relationship":"Self.DepartmentDto_CourseParticipants","fromRole":"DepartmentDto_CourseParticipants_Target","toRole":"DepartmentDto_CourseParticipants_Source"},{"name":"Participant","relationship":"Self.ParticipantDto_CourseParticipants","fromRole":"ParticipantDto_CourseParticipants_Target","toRole":"ParticipantDto_CourseParticipants_Source"},{"name":"ProfessionalRole","relationship":"Self.ProfessionalRoleDto_CourseParticipants","fromRole":"ProfessionalRoleDto_CourseParticipants_Target","toRole":"ProfessionalRoleDto_CourseParticipants_Source"}]},{"name":"CourseDto","customannotation:ClrType":"SM.Dto.CourseDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"StartTime","type":"Edm.DateTime","nullable":"false"},{"name":"DepartmentId","type":"Edm.Guid","nullable":"false"},{"name":"OutreachingDepartmentId","type":"Edm.Guid"},{"name":"RoomId","type":"Edm.Guid","nullable":"false"},{"name":"FacultyNoRequired","type":"Edm.Byte","nullable":"false"},{"name":"CourseTypeId","type":"Edm.Guid","nullable":"false"},{"name":"ParticipantVideoFilename","type":"Edm.String","maxLength":"256","fixedLength":"false","unicode":"true"},{"name":"FeedbackSummaryFilename","type":"Edm.String","maxLength":"256","fixedLength":"false","unicode":"true"}],"navigationProperty":[{"name":"CourseParticipants","relationship":"Self.CourseDto_CourseParticipants","fromRole":"CourseDto_CourseParticipants_Source","toRole":"CourseDto_CourseParticipants_Target"},{"name":"CourseType","relationship":"Self.CourseTypeDto_Courses","fromRole":"CourseTypeDto_Courses_Target","toRole":"CourseTypeDto_Courses_Source"},{"name":"Department","relationship":"Self.CourseDto_Department","fromRole":"CourseDto_Department_Source","toRole":"CourseDto_Department_Target"},{"name":"OutreachingDepartment","relationship":"Self.DepartmentDto_Courses","fromRole":"DepartmentDto_Courses_Target","toRole":"DepartmentDto_Courses_Source"},{"name":"Room","relationship":"Self.RoomDto_Courses","fromRole":"RoomDto_Courses_Target","toRole":"RoomDto_Courses_Source"},{"name":"ScenarioFacultyRoles","relationship":"Self.CourseDto_ScenarioFacultyRoles","fromRole":"CourseDto_ScenarioFacultyRoles_Source","toRole":"CourseDto_ScenarioFacultyRoles_Target"},{"name":"Scenarios","relationship":"Self.ScenarioDto_Courses","fromRole":"ScenarioDto_Courses_Target","toRole":"ScenarioDto_Courses_Source"}]},{"name":"CourseTypeDto","customannotation:ClrType":"SM.Dto.CourseTypeDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"Description","type":"Edm.String","maxLength":"50","fixedLength":"false","unicode":"true","nullable":"false"},{"name":"IsInstructorCourse","type":"Edm.Boolean","nullable":"false"},{"name":"DaysDuration","type":"Edm.Byte","nullable":"false"},{"name":"EmersionCategory","type":"Edm.Self.Emersion"},{"name":"Abbrev","type":"Edm.String","maxLength":"32","fixedLength":"false","unicode":"true","nullable":"false"}],"navigationProperty":[{"name":"CourseEvents","relationship":"Self.CourseSlotDto_CourseTypes","fromRole":"CourseSlotDto_CourseTypes_Target","toRole":"CourseSlotDto_CourseTypes_Source"},{"name":"Courses","relationship":"Self.CourseTypeDto_Courses","fromRole":"CourseTypeDto_Courses_Source","toRole":"CourseTypeDto_Courses_Target"},{"name":"Departments","relationship":"Self.DepartmentDto_CourseTypes","fromRole":"DepartmentDto_CourseTypes_Target","toRole":"DepartmentDto_CourseTypes_Source"},{"name":"ScenarioEvents","relationship":"Self.ScenarioSlotDto_CourseTypes","fromRole":"ScenarioSlotDto_CourseTypes_Target","toRole":"ScenarioSlotDto_CourseTypes_Source"},{"name":"ScenarioRoles","relationship":"Self.ScenarioRoleDescriptionDto_CourseTypes","fromRole":"ScenarioRoleDescriptionDto_CourseTypes_Target","toRole":"ScenarioRoleDescriptionDto_CourseTypes_Source"},{"name":"Scenarios","relationship":"Self.CourseTypeDto_Scenarios","fromRole":"CourseTypeDto_Scenarios_Source","toRole":"CourseTypeDto_Scenarios_Target"}]},{"name":"CourseSlotDto","customannotation:ClrType":"SM.Dto.CourseSlotDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false"},{"name":"Name","type":"Edm.String","maxLength":"50","fixedLength":"false","unicode":"true","nullable":"false"},{"name":"MinimumFaculty","type":"Edm.Byte","nullable":"false"},{"name":"MaximumFaculty","type":"Edm.Byte","nullable":"false"},{"name":"MinutesDuration","type":"Edm.Int32","nullable":"false"},{"name":"Day","type":"Edm.Byte","nullable":"false"},{"name":"Order","type":"Edm.Int32","nullable":"false"}],"navigationProperty":[{"name":"CourseTypes","relationship":"Self.CourseSlotDto_CourseTypes","fromRole":"CourseSlotDto_CourseTypes_Source","toRole":"CourseSlotDto_CourseTypes_Target"},{"name":"DefaultResources","relationship":"Self.CourseSlotDto_DefaultResources","fromRole":"CourseSlotDto_DefaultResources_Source","toRole":"CourseSlotDto_DefaultResources_Target"}]},{"name":"CourseTeachingResourceDto","customannotation:ClrType":"SM.Dto.CourseTeachingResourceDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false"},{"name":"CourseSlotId","type":"Edm.Guid","nullable":"false"},{"name":"Name","type":"Edm.String","maxLength":"Max","fixedLength":"false","unicode":"true"},{"name":"ResourceFilename","type":"Edm.String","maxLength":"Max","fixedLength":"false","unicode":"true"}],"navigationProperty":{"name":"CourseSlot","relationship":"Self.CourseSlotDto_DefaultResources","fromRole":"CourseSlotDto_DefaultResources_Target","toRole":"CourseSlotDto_DefaultResources_Source"}},{"name":"ScenarioSlotDto","customannotation:ClrType":"SM.Dto.ScenarioSlotDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false"},{"name":"MinutesDuration","type":"Edm.Int32","nullable":"false"},{"name":"Day","type":"Edm.Byte","nullable":"false"},{"name":"Order","type":"Edm.Int32","nullable":"false"}],"navigationProperty":{"name":"CourseTypes","relationship":"Self.ScenarioSlotDto_CourseTypes","fromRole":"ScenarioSlotDto_CourseTypes_Source","toRole":"ScenarioSlotDto_CourseTypes_Target"}},{"name":"ScenarioRoleDescriptionDto","customannotation:ClrType":"SM.Dto.ScenarioRoleDescriptionDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"Description","type":"Edm.String","maxLength":"50","fixedLength":"false","unicode":"true","nullable":"false"}],"navigationProperty":[{"name":"CourseTypes","relationship":"Self.ScenarioRoleDescriptionDto_CourseTypes","fromRole":"ScenarioRoleDescriptionDto_CourseTypes_Source","toRole":"ScenarioRoleDescriptionDto_CourseTypes_Target"},{"name":"ScenarioFacultyRoles","relationship":"Self.ScenarioRoleDescriptionDto_ScenarioFacultyRoles","fromRole":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles_Source","toRole":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles_Target"}]},{"name":"ScenarioFacultyRoleDto","customannotation:ClrType":"SM.Dto.ScenarioFacultyRoleDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":[{"name":"CourseId"},{"name":"ScenarioId"},{"name":"FacultyMemberId"},{"name":"RoleId"}]},"property":[{"name":"CourseId","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"ScenarioId","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"FacultyMemberId","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"RoleId","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"}],"navigationProperty":[{"name":"Course","relationship":"Self.CourseDto_ScenarioFacultyRoles","fromRole":"CourseDto_ScenarioFacultyRoles_Target","toRole":"CourseDto_ScenarioFacultyRoles_Source"},{"name":"FacultyMember","relationship":"Self.ParticipantDto_ScenarioFacultyRoles","fromRole":"ParticipantDto_ScenarioFacultyRoles_Target","toRole":"ParticipantDto_ScenarioFacultyRoles_Source"},{"name":"Role","relationship":"Self.ScenarioRoleDescriptionDto_ScenarioFacultyRoles","fromRole":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles_Target","toRole":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles_Source"},{"name":"Scenario","relationship":"Self.ScenarioDto_ScenarioFacultyRoles","fromRole":"ScenarioDto_ScenarioFacultyRoles_Target","toRole":"ScenarioDto_ScenarioFacultyRoles_Source"}]},{"name":"ParticipantDto","customannotation:ClrType":"SM.Dto.ParticipantDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false"},{"name":"Email","type":"Edm.String","maxLength":"256","fixedLength":"false","unicode":"true","nullable":"false"},{"name":"PhoneNumber","type":"Edm.String","maxLength":"32","fixedLength":"false","unicode":"true"},{"name":"AlternateEmail","type":"Edm.String","maxLength":"256","fixedLength":"false","unicode":"true"},{"name":"FullName","type":"Edm.String","maxLength":"256","fixedLength":"false","unicode":"true","nullable":"false"},{"name":"DefaultDepartmentId","type":"Edm.Guid","nullable":"false"},{"name":"DefaultProfessionalRoleId","type":"Edm.Guid","nullable":"false"}],"navigationProperty":[{"name":"CourseParticipants","relationship":"Self.ParticipantDto_CourseParticipants","fromRole":"ParticipantDto_CourseParticipants_Source","toRole":"ParticipantDto_CourseParticipants_Target"},{"name":"CourseSlotPresentations","relationship":"Self.ParticipantDto_CourseSlotPresentations","fromRole":"ParticipantDto_CourseSlotPresentations_Source","toRole":"ParticipantDto_CourseSlotPresentations_Target"},{"name":"Department","relationship":"Self.DepartmentDto_Participants","fromRole":"DepartmentDto_Participants_Target","toRole":"DepartmentDto_Participants_Source"},{"name":"ProfessionalRole","relationship":"Self.ProfessionalRoleDto_Participants","fromRole":"ProfessionalRoleDto_Participants_Target","toRole":"ProfessionalRoleDto_Participants_Source"},{"name":"ScenarioFacultyRoles","relationship":"Self.ParticipantDto_ScenarioFacultyRoles","fromRole":"ParticipantDto_ScenarioFacultyRoles_Source","toRole":"ParticipantDto_ScenarioFacultyRoles_Target"}]},{"name":"CourseSlotPresenterDto","customannotation:ClrType":"SM.Dto.CourseSlotPresenterDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":[{"name":"CourseId"},{"name":"CourseSlotId"},{"name":"PresenterId"}]},"property":[{"name":"CourseId","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"CourseSlotId","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"PresenterId","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"}],"navigationProperty":[{"name":"Course","relationship":"Self.CourseSlotPresenterDto_Course","fromRole":"CourseSlotPresenterDto_Course_Source","toRole":"CourseSlotPresenterDto_Course_Target"},{"name":"CourseSlot","relationship":"Self.CourseSlotPresenterDto_CourseSlot","fromRole":"CourseSlotPresenterDto_CourseSlot_Source","toRole":"CourseSlotPresenterDto_CourseSlot_Target"},{"name":"Presenter","relationship":"Self.ParticipantDto_CourseSlotPresentations","fromRole":"ParticipantDto_CourseSlotPresentations_Target","toRole":"ParticipantDto_CourseSlotPresentations_Source"}]},{"name":"ProfessionalRoleDto","customannotation:ClrType":"SM.Dto.ProfessionalRoleDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"Description","type":"Edm.String","maxLength":"50","fixedLength":"false","unicode":"true","nullable":"false"},{"name":"Category","type":"Edm.Self.ProfessionalCategory","nullable":"false"}],"navigationProperty":[{"name":"CourseParticipants","relationship":"Self.ProfessionalRoleDto_CourseParticipants","fromRole":"ProfessionalRoleDto_CourseParticipants_Source","toRole":"ProfessionalRoleDto_CourseParticipants_Target"},{"name":"Institutions","relationship":"Self.InstitutionDto_ProfessionalRoles","fromRole":"InstitutionDto_ProfessionalRoles_Target","toRole":"InstitutionDto_ProfessionalRoles_Source"},{"name":"Participants","relationship":"Self.ProfessionalRoleDto_Participants","fromRole":"ProfessionalRoleDto_Participants_Source","toRole":"ProfessionalRoleDto_Participants_Target"}]},{"name":"ScenarioDto","customannotation:ClrType":"SM.Dto.ScenarioDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"Description","type":"Edm.String","maxLength":"128","fixedLength":"false","unicode":"true","nullable":"false"},{"name":"DepartmentId","type":"Edm.Guid","nullable":"false"},{"name":"Complexity","type":"Edm.Self.Difficulty","nullable":"false"},{"name":"EmersionCategory","type":"Edm.Self.Emersion"},{"name":"TemplateFilename","type":"Edm.String","maxLength":"256","fixedLength":"false","unicode":"true"},{"name":"ManequinId","type":"Edm.Guid"},{"name":"CourseTypeId","type":"Edm.Guid","nullable":"false"}],"navigationProperty":[{"name":"Courses","relationship":"Self.ScenarioDto_Courses","fromRole":"ScenarioDto_Courses_Source","toRole":"ScenarioDto_Courses_Target"},{"name":"CourseType","relationship":"Self.CourseTypeDto_Scenarios","fromRole":"CourseTypeDto_Scenarios_Target","toRole":"CourseTypeDto_Scenarios_Source"},{"name":"Department","relationship":"Self.DepartmentDto_Scenarios","fromRole":"DepartmentDto_Scenarios_Target","toRole":"DepartmentDto_Scenarios_Source"},{"name":"Manequin","relationship":"Self.ManequinDto_Scenarios","fromRole":"ManequinDto_Scenarios_Target","toRole":"ManequinDto_Scenarios_Source"},{"name":"Resources","relationship":"Self.ScenarioResourceDto_Scenario","fromRole":"ScenarioResourceDto_Scenario_Target","toRole":"ScenarioResourceDto_Scenario_Source"},{"name":"ScenarioFacultyRoles","relationship":"Self.ScenarioDto_ScenarioFacultyRoles","fromRole":"ScenarioDto_ScenarioFacultyRoles_Source","toRole":"ScenarioDto_ScenarioFacultyRoles_Target"}]},{"name":"ManequinDto","customannotation:ClrType":"SM.Dto.ManequinDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"Description","type":"Edm.String","maxLength":"50","fixedLength":"false","unicode":"true","nullable":"false"},{"name":"DepartmentId","type":"Edm.Int32"},{"name":"ManufacturerId","type":"Edm.Int32","nullable":"false"}],"navigationProperty":[{"name":"Department","relationship":"Self.ManequinDto_Department","fromRole":"ManequinDto_Department_Source","toRole":"ManequinDto_Department_Target"},{"name":"Manufacturer","relationship":"Self.ManequinDto_Manufacturer","fromRole":"ManequinDto_Manufacturer_Source","toRole":"ManequinDto_Manufacturer_Target"},{"name":"Scenarios","relationship":"Self.ManequinDto_Scenarios","fromRole":"ManequinDto_Scenarios_Source","toRole":"ManequinDto_Scenarios_Target"}]},{"name":"ManequinManufacturerDto","customannotation:ClrType":"SM.Dto.ManequinManufacturerDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false","annotation:StoreGeneratedPattern":"None"},{"name":"Name","type":"Edm.String","maxLength":"256","fixedLength":"false","unicode":"true"}]},{"name":"ScenarioResourceDto","customannotation:ClrType":"SM.Dto.ScenarioResourceDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false"},{"name":"ScenarioId","type":"Edm.Guid","nullable":"false"},{"name":"Name","type":"Edm.String","maxLength":"Max","fixedLength":"false","unicode":"true"},{"name":"ResourceFilename","type":"Edm.String","maxLength":"Max","fixedLength":"false","unicode":"true"}],"navigationProperty":{"name":"Scenario","relationship":"Self.ScenarioResourceDto_Scenario","fromRole":"ScenarioResourceDto_Scenario_Source","toRole":"ScenarioResourceDto_Scenario_Target"}},{"name":"RoomDto","customannotation:ClrType":"SM.Dto.RoomDto, SM.DTOs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","key":{"propertyRef":{"name":"Id"}},"property":[{"name":"Id","type":"Edm.Guid","nullable":"false"},{"name":"ShortDescription","type":"Edm.String","maxLength":"32","fixedLength":"false","unicode":"true"},{"name":"FullDescription","type":"Edm.String","maxLength":"64","fixedLength":"false","unicode":"true"},{"name":"Directions","type":"Edm.String","maxLength":"256","fixedLength":"false","unicode":"true"},{"name":"DepartmentId","type":"Edm.Guid","nullable":"false"}],"navigationProperty":[{"name":"Courses","relationship":"Self.RoomDto_Courses","fromRole":"RoomDto_Courses_Source","toRole":"RoomDto_Courses_Target"},{"name":"Department","relationship":"Self.DepartmentDto_Rooms","fromRole":"DepartmentDto_Rooms_Target","toRole":"DepartmentDto_Rooms_Source"}]}],"enumType":[{"name":"Emersion","isFlags":"false","customannotation:ClrType":"SM.DataAccess.Enums.Emersion, SM.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","underlyingType":"Int32","member":[{"name":"Interactive","value":"0"},{"name":"Pause","value":"1"},{"name":"Emersive","value":"2"}]},{"name":"ProfessionalCategory","isFlags":"false","customannotation:ClrType":"SM.DataAccess.Enums.ProfessionalCategory, SM.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","underlyingType":"Int32","member":[{"name":"Nursing","value":"1"},{"name":"Medical","value":"2"},{"name":"SimTech","value":"3"},{"name":"AnaestheticTech","value":"4"},{"name":"Perfusionist","value":"5"},{"name":"Other","value":"6"}]},{"name":"Difficulty","isFlags":"false","customannotation:ClrType":"SM.DataAccess.Enums.Difficulty, SM.DataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","underlyingType":"Int32","member":[{"name":"Easy","value":"0"},{"name":"Moderate","value":"1"},{"name":"Hard","value":"2"}]}],"association":[{"name":"CountryDto_CountryLocales","end":[{"role":"CountryDto_CountryLocales_Source","type":"Edm.Self.CountryDto","multiplicity":"1","onDelete":{"action":"Cascade"}},{"role":"CountryDto_CountryLocales_Target","type":"Edm.Self.CountryLocaleCodeDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"CountryDto_CountryLocales_Source","propertyRef":{"name":"Code"}},"dependent":{"role":"CountryDto_CountryLocales_Target","propertyRef":{"name":"CountryCode"}}}},{"name":"InstitutionDto_Country","end":[{"role":"InstitutionDto_Country_Source","type":"Edm.Self.InstitutionDto","multiplicity":"*"},{"role":"InstitutionDto_Country_Target","type":"Edm.Self.CountryDto","multiplicity":"0..1"}],"referentialConstraint":{"principal":{"role":"InstitutionDto_Country_Target","propertyRef":{"name":"Code"}},"dependent":{"role":"InstitutionDto_Country_Source","propertyRef":{"name":"CountryCode"}}}},{"name":"CourseDto_CourseParticipants","end":[{"role":"CourseDto_CourseParticipants_Source","type":"Edm.Self.CourseDto","multiplicity":"1"},{"role":"CourseDto_CourseParticipants_Target","type":"Edm.Self.CourseParticipantDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"CourseDto_CourseParticipants_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"CourseDto_CourseParticipants_Target","propertyRef":{"name":"CourseId"}}}},{"name":"CourseSlotDto_CourseTypes","end":[{"role":"CourseSlotDto_CourseTypes_Source","type":"Edm.Self.CourseSlotDto","multiplicity":"*"},{"role":"CourseSlotDto_CourseTypes_Target","type":"Edm.Self.CourseTypeDto","multiplicity":"*"}]},{"name":"CourseSlotDto_DefaultResources","end":[{"role":"CourseSlotDto_DefaultResources_Source","type":"Edm.Self.CourseSlotDto","multiplicity":"1"},{"role":"CourseSlotDto_DefaultResources_Target","type":"Edm.Self.CourseTeachingResourceDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"CourseSlotDto_DefaultResources_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"CourseSlotDto_DefaultResources_Target","propertyRef":{"name":"CourseSlotId"}}}},{"name":"CourseTypeDto_Courses","end":[{"role":"CourseTypeDto_Courses_Source","type":"Edm.Self.CourseTypeDto","multiplicity":"1"},{"role":"CourseTypeDto_Courses_Target","type":"Edm.Self.CourseDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"CourseTypeDto_Courses_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"CourseTypeDto_Courses_Target","propertyRef":{"name":"CourseTypeId"}}}},{"name":"ScenarioSlotDto_CourseTypes","end":[{"role":"ScenarioSlotDto_CourseTypes_Source","type":"Edm.Self.ScenarioSlotDto","multiplicity":"*"},{"role":"ScenarioSlotDto_CourseTypes_Target","type":"Edm.Self.CourseTypeDto","multiplicity":"*"}]},{"name":"ScenarioRoleDescriptionDto_CourseTypes","end":[{"role":"ScenarioRoleDescriptionDto_CourseTypes_Source","type":"Edm.Self.ScenarioRoleDescriptionDto","multiplicity":"*"},{"role":"ScenarioRoleDescriptionDto_CourseTypes_Target","type":"Edm.Self.CourseTypeDto","multiplicity":"*"}]},{"name":"ParticipantDto_CourseParticipants","end":[{"role":"ParticipantDto_CourseParticipants_Source","type":"Edm.Self.ParticipantDto","multiplicity":"1"},{"role":"ParticipantDto_CourseParticipants_Target","type":"Edm.Self.CourseParticipantDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"ParticipantDto_CourseParticipants_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"ParticipantDto_CourseParticipants_Target","propertyRef":{"name":"ParticipantId"}}}},{"name":"CourseSlotPresenterDto_Course","end":[{"role":"CourseSlotPresenterDto_Course_Source","type":"Edm.Self.CourseSlotPresenterDto","multiplicity":"*"},{"role":"CourseSlotPresenterDto_Course_Target","type":"Edm.Self.CourseDto","multiplicity":"1","onDelete":{"action":"Cascade"}}],"referentialConstraint":{"principal":{"role":"CourseSlotPresenterDto_Course_Target","propertyRef":{"name":"Id"}},"dependent":{"role":"CourseSlotPresenterDto_Course_Source","propertyRef":{"name":"CourseId"}}}},{"name":"CourseSlotPresenterDto_CourseSlot","end":[{"role":"CourseSlotPresenterDto_CourseSlot_Source","type":"Edm.Self.CourseSlotPresenterDto","multiplicity":"*"},{"role":"CourseSlotPresenterDto_CourseSlot_Target","type":"Edm.Self.CourseSlotDto","multiplicity":"1","onDelete":{"action":"Cascade"}}],"referentialConstraint":{"principal":{"role":"CourseSlotPresenterDto_CourseSlot_Target","propertyRef":{"name":"Id"}},"dependent":{"role":"CourseSlotPresenterDto_CourseSlot_Source","propertyRef":{"name":"CourseSlotId"}}}},{"name":"ParticipantDto_CourseSlotPresentations","end":[{"role":"ParticipantDto_CourseSlotPresentations_Source","type":"Edm.Self.ParticipantDto","multiplicity":"1"},{"role":"ParticipantDto_CourseSlotPresentations_Target","type":"Edm.Self.CourseSlotPresenterDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"ParticipantDto_CourseSlotPresentations_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"ParticipantDto_CourseSlotPresentations_Target","propertyRef":{"name":"PresenterId"}}}},{"name":"ProfessionalRoleDto_CourseParticipants","end":[{"role":"ProfessionalRoleDto_CourseParticipants_Source","type":"Edm.Self.ProfessionalRoleDto","multiplicity":"1"},{"role":"ProfessionalRoleDto_CourseParticipants_Target","type":"Edm.Self.CourseParticipantDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"ProfessionalRoleDto_CourseParticipants_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"ProfessionalRoleDto_CourseParticipants_Target","propertyRef":{"name":"ProfessionalRoleId"}}}},{"name":"ProfessionalRoleDto_Participants","end":[{"role":"ProfessionalRoleDto_Participants_Source","type":"Edm.Self.ProfessionalRoleDto","multiplicity":"1"},{"role":"ProfessionalRoleDto_Participants_Target","type":"Edm.Self.ParticipantDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"ProfessionalRoleDto_Participants_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"ProfessionalRoleDto_Participants_Target","propertyRef":{"name":"DefaultProfessionalRoleId"}}}},{"name":"ParticipantDto_ScenarioFacultyRoles","end":[{"role":"ParticipantDto_ScenarioFacultyRoles_Source","type":"Edm.Self.ParticipantDto","multiplicity":"1"},{"role":"ParticipantDto_ScenarioFacultyRoles_Target","type":"Edm.Self.ScenarioFacultyRoleDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"ParticipantDto_ScenarioFacultyRoles_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"ParticipantDto_ScenarioFacultyRoles_Target","propertyRef":{"name":"FacultyMemberId"}}}},{"name":"ScenarioDto_Courses","end":[{"role":"ScenarioDto_Courses_Source","type":"Edm.Self.ScenarioDto","multiplicity":"*"},{"role":"ScenarioDto_Courses_Target","type":"Edm.Self.CourseDto","multiplicity":"*"}]},{"name":"ManequinDto_Department","end":[{"role":"ManequinDto_Department_Source","type":"Edm.Self.ManequinDto","multiplicity":"*"},{"role":"ManequinDto_Department_Target","type":"Edm.Self.DepartmentDto","multiplicity":"0..1"}]},{"name":"ManequinDto_Manufacturer","end":[{"role":"ManequinDto_Manufacturer_Source","type":"Edm.Self.ManequinDto","multiplicity":"*"},{"role":"ManequinDto_Manufacturer_Target","type":"Edm.Self.ManequinManufacturerDto","multiplicity":"0..1"}]},{"name":"ManequinDto_Scenarios","end":[{"role":"ManequinDto_Scenarios_Source","type":"Edm.Self.ManequinDto","multiplicity":"0..1"},{"role":"ManequinDto_Scenarios_Target","type":"Edm.Self.ScenarioDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"ManequinDto_Scenarios_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"ManequinDto_Scenarios_Target","propertyRef":{"name":"ManequinId"}}}},{"name":"ScenarioResourceDto_Scenario","end":[{"role":"ScenarioResourceDto_Scenario_Source","type":"Edm.Self.ScenarioResourceDto","multiplicity":"*"},{"role":"ScenarioResourceDto_Scenario_Target","type":"Edm.Self.ScenarioDto","multiplicity":"1","onDelete":{"action":"Cascade"}}],"referentialConstraint":{"principal":{"role":"ScenarioResourceDto_Scenario_Target","propertyRef":{"name":"Id"}},"dependent":{"role":"ScenarioResourceDto_Scenario_Source","propertyRef":{"name":"ScenarioId"}}}},{"name":"ScenarioDto_ScenarioFacultyRoles","end":[{"role":"ScenarioDto_ScenarioFacultyRoles_Source","type":"Edm.Self.ScenarioDto","multiplicity":"1"},{"role":"ScenarioDto_ScenarioFacultyRoles_Target","type":"Edm.Self.ScenarioFacultyRoleDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"ScenarioDto_ScenarioFacultyRoles_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"ScenarioDto_ScenarioFacultyRoles_Target","propertyRef":{"name":"ScenarioId"}}}},{"name":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles","end":[{"role":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles_Source","type":"Edm.Self.ScenarioRoleDescriptionDto","multiplicity":"1"},{"role":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles_Target","type":"Edm.Self.ScenarioFacultyRoleDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles_Target","propertyRef":{"name":"RoleId"}}}},{"name":"CourseTypeDto_Scenarios","end":[{"role":"CourseTypeDto_Scenarios_Source","type":"Edm.Self.CourseTypeDto","multiplicity":"1"},{"role":"CourseTypeDto_Scenarios_Target","type":"Edm.Self.ScenarioDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"CourseTypeDto_Scenarios_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"CourseTypeDto_Scenarios_Target","propertyRef":{"name":"CourseTypeId"}}}},{"name":"CourseDto_Department","end":[{"role":"CourseDto_Department_Source","type":"Edm.Self.CourseDto","multiplicity":"*"},{"role":"CourseDto_Department_Target","type":"Edm.Self.DepartmentDto","multiplicity":"1","onDelete":{"action":"Cascade"}}],"referentialConstraint":{"principal":{"role":"CourseDto_Department_Target","propertyRef":{"name":"Id"}},"dependent":{"role":"CourseDto_Department_Source","propertyRef":{"name":"DepartmentId"}}}},{"name":"RoomDto_Courses","end":[{"role":"RoomDto_Courses_Source","type":"Edm.Self.RoomDto","multiplicity":"1"},{"role":"RoomDto_Courses_Target","type":"Edm.Self.CourseDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"RoomDto_Courses_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"RoomDto_Courses_Target","propertyRef":{"name":"RoomId"}}}},{"name":"CourseDto_ScenarioFacultyRoles","end":[{"role":"CourseDto_ScenarioFacultyRoles_Source","type":"Edm.Self.CourseDto","multiplicity":"1"},{"role":"CourseDto_ScenarioFacultyRoles_Target","type":"Edm.Self.ScenarioFacultyRoleDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"CourseDto_ScenarioFacultyRoles_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"CourseDto_ScenarioFacultyRoles_Target","propertyRef":{"name":"CourseId"}}}},{"name":"DepartmentDto_CourseParticipants","end":[{"role":"DepartmentDto_CourseParticipants_Source","type":"Edm.Self.DepartmentDto","multiplicity":"1"},{"role":"DepartmentDto_CourseParticipants_Target","type":"Edm.Self.CourseParticipantDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"DepartmentDto_CourseParticipants_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"DepartmentDto_CourseParticipants_Target","propertyRef":{"name":"DepartmentId"}}}},{"name":"DepartmentDto_Courses","end":[{"role":"DepartmentDto_Courses_Source","type":"Edm.Self.DepartmentDto","multiplicity":"0..1"},{"role":"DepartmentDto_Courses_Target","type":"Edm.Self.CourseDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"DepartmentDto_Courses_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"DepartmentDto_Courses_Target","propertyRef":{"name":"OutreachingDepartmentId"}}}},{"name":"DepartmentDto_CourseTypes","end":[{"role":"DepartmentDto_CourseTypes_Source","type":"Edm.Self.DepartmentDto","multiplicity":"*"},{"role":"DepartmentDto_CourseTypes_Target","type":"Edm.Self.CourseTypeDto","multiplicity":"*"}]},{"name":"DepartmentDto_Participants","end":[{"role":"DepartmentDto_Participants_Source","type":"Edm.Self.DepartmentDto","multiplicity":"1","onDelete":{"action":"Cascade"}},{"role":"DepartmentDto_Participants_Target","type":"Edm.Self.ParticipantDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"DepartmentDto_Participants_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"DepartmentDto_Participants_Target","propertyRef":{"name":"DefaultDepartmentId"}}}},{"name":"DepartmentDto_Rooms","end":[{"role":"DepartmentDto_Rooms_Source","type":"Edm.Self.DepartmentDto","multiplicity":"1"},{"role":"DepartmentDto_Rooms_Target","type":"Edm.Self.RoomDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"DepartmentDto_Rooms_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"DepartmentDto_Rooms_Target","propertyRef":{"name":"DepartmentId"}}}},{"name":"DepartmentDto_Scenarios","end":[{"role":"DepartmentDto_Scenarios_Source","type":"Edm.Self.DepartmentDto","multiplicity":"1"},{"role":"DepartmentDto_Scenarios_Target","type":"Edm.Self.ScenarioDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"DepartmentDto_Scenarios_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"DepartmentDto_Scenarios_Target","propertyRef":{"name":"DepartmentId"}}}},{"name":"InstitutionDto_Departments","end":[{"role":"InstitutionDto_Departments_Source","type":"Edm.Self.InstitutionDto","multiplicity":"1"},{"role":"InstitutionDto_Departments_Target","type":"Edm.Self.DepartmentDto","multiplicity":"*"}],"referentialConstraint":{"principal":{"role":"InstitutionDto_Departments_Source","propertyRef":{"name":"Id"}},"dependent":{"role":"InstitutionDto_Departments_Target","propertyRef":{"name":"InstitutionId"}}}},{"name":"InstitutionDto_ProfessionalRoles","end":[{"role":"InstitutionDto_ProfessionalRoles_Source","type":"Edm.Self.InstitutionDto","multiplicity":"*"},{"role":"InstitutionDto_ProfessionalRoles_Target","type":"Edm.Self.ProfessionalRoleDto","multiplicity":"*"}]}],"entityContainer":{"name":"MedSimDtoContextPretender","customannotation:UseClrTypes":"true","entitySet":[{"name":"Countries","entityType":"Self.CountryDto"},{"name":"CountryLocales","entityType":"Self.CountryLocaleCodeDto"},{"name":"Institutions","entityType":"Self.InstitutionDto"},{"name":"Departments","entityType":"Self.DepartmentDto"},{"name":"CourseParticipants","entityType":"Self.CourseParticipantDto"},{"name":"Courses","entityType":"Self.CourseDto"},{"name":"CourseTypes","entityType":"Self.CourseTypeDto"},{"name":"CourseEvents","entityType":"Self.CourseSlotDto"},{"name":"CourseTeachingResources","entityType":"Self.CourseTeachingResourceDto"},{"name":"CourseScenarios","entityType":"Self.ScenarioSlotDto"},{"name":"SenarioRoles","entityType":"Self.ScenarioRoleDescriptionDto"},{"name":"ScenarioFacultyRoles","entityType":"Self.ScenarioFacultyRoleDto"},{"name":"Participants","entityType":"Self.ParticipantDto"},{"name":"CourseSlotPresenters","entityType":"Self.CourseSlotPresenterDto"},{"name":"ProfessionalRoles","entityType":"Self.ProfessionalRoleDto"},{"name":"Scenarios","entityType":"Self.ScenarioDto"},{"name":"Manequins","entityType":"Self.ManequinDto"},{"name":"ManequinManufacturers","entityType":"Self.ManequinManufacturerDto"},{"name":"ScenarioResources","entityType":"Self.ScenarioResourceDto"},{"name":"RoomDtoes","entityType":"Self.RoomDto"}],"associationSet":[{"name":"CountryDto_CountryLocales","association":"Self.CountryDto_CountryLocales","end":[{"role":"CountryDto_CountryLocales_Source","entitySet":"Countries"},{"role":"CountryDto_CountryLocales_Target","entitySet":"CountryLocales"}]},{"name":"InstitutionDto_Country","association":"Self.InstitutionDto_Country","end":[{"role":"InstitutionDto_Country_Source","entitySet":"Institutions"},{"role":"InstitutionDto_Country_Target","entitySet":"Countries"}]},{"name":"CourseDto_CourseParticipants","association":"Self.CourseDto_CourseParticipants","end":[{"role":"CourseDto_CourseParticipants_Source","entitySet":"Courses"},{"role":"CourseDto_CourseParticipants_Target","entitySet":"CourseParticipants"}]},{"name":"CourseSlotDto_CourseTypes","association":"Self.CourseSlotDto_CourseTypes","end":[{"role":"CourseSlotDto_CourseTypes_Source","entitySet":"CourseEvents"},{"role":"CourseSlotDto_CourseTypes_Target","entitySet":"CourseTypes"}]},{"name":"CourseSlotDto_DefaultResources","association":"Self.CourseSlotDto_DefaultResources","end":[{"role":"CourseSlotDto_DefaultResources_Source","entitySet":"CourseEvents"},{"role":"CourseSlotDto_DefaultResources_Target","entitySet":"CourseTeachingResources"}]},{"name":"CourseTypeDto_Courses","association":"Self.CourseTypeDto_Courses","end":[{"role":"CourseTypeDto_Courses_Source","entitySet":"CourseTypes"},{"role":"CourseTypeDto_Courses_Target","entitySet":"Courses"}]},{"name":"ScenarioSlotDto_CourseTypes","association":"Self.ScenarioSlotDto_CourseTypes","end":[{"role":"ScenarioSlotDto_CourseTypes_Source","entitySet":"CourseScenarios"},{"role":"ScenarioSlotDto_CourseTypes_Target","entitySet":"CourseTypes"}]},{"name":"ScenarioRoleDescriptionDto_CourseTypes","association":"Self.ScenarioRoleDescriptionDto_CourseTypes","end":[{"role":"ScenarioRoleDescriptionDto_CourseTypes_Source","entitySet":"SenarioRoles"},{"role":"ScenarioRoleDescriptionDto_CourseTypes_Target","entitySet":"CourseTypes"}]},{"name":"ParticipantDto_CourseParticipants","association":"Self.ParticipantDto_CourseParticipants","end":[{"role":"ParticipantDto_CourseParticipants_Source","entitySet":"Participants"},{"role":"ParticipantDto_CourseParticipants_Target","entitySet":"CourseParticipants"}]},{"name":"CourseSlotPresenterDto_Course","association":"Self.CourseSlotPresenterDto_Course","end":[{"role":"CourseSlotPresenterDto_Course_Source","entitySet":"CourseSlotPresenters"},{"role":"CourseSlotPresenterDto_Course_Target","entitySet":"Courses"}]},{"name":"CourseSlotPresenterDto_CourseSlot","association":"Self.CourseSlotPresenterDto_CourseSlot","end":[{"role":"CourseSlotPresenterDto_CourseSlot_Source","entitySet":"CourseSlotPresenters"},{"role":"CourseSlotPresenterDto_CourseSlot_Target","entitySet":"CourseEvents"}]},{"name":"ParticipantDto_CourseSlotPresentations","association":"Self.ParticipantDto_CourseSlotPresentations","end":[{"role":"ParticipantDto_CourseSlotPresentations_Source","entitySet":"Participants"},{"role":"ParticipantDto_CourseSlotPresentations_Target","entitySet":"CourseSlotPresenters"}]},{"name":"ProfessionalRoleDto_CourseParticipants","association":"Self.ProfessionalRoleDto_CourseParticipants","end":[{"role":"ProfessionalRoleDto_CourseParticipants_Source","entitySet":"ProfessionalRoles"},{"role":"ProfessionalRoleDto_CourseParticipants_Target","entitySet":"CourseParticipants"}]},{"name":"ProfessionalRoleDto_Participants","association":"Self.ProfessionalRoleDto_Participants","end":[{"role":"ProfessionalRoleDto_Participants_Source","entitySet":"ProfessionalRoles"},{"role":"ProfessionalRoleDto_Participants_Target","entitySet":"Participants"}]},{"name":"ParticipantDto_ScenarioFacultyRoles","association":"Self.ParticipantDto_ScenarioFacultyRoles","end":[{"role":"ParticipantDto_ScenarioFacultyRoles_Source","entitySet":"Participants"},{"role":"ParticipantDto_ScenarioFacultyRoles_Target","entitySet":"ScenarioFacultyRoles"}]},{"name":"ScenarioDto_Courses","association":"Self.ScenarioDto_Courses","end":[{"role":"ScenarioDto_Courses_Source","entitySet":"Scenarios"},{"role":"ScenarioDto_Courses_Target","entitySet":"Courses"}]},{"name":"ManequinDto_Department","association":"Self.ManequinDto_Department","end":[{"role":"ManequinDto_Department_Source","entitySet":"Manequins"},{"role":"ManequinDto_Department_Target","entitySet":"Departments"}]},{"name":"ManequinDto_Manufacturer","association":"Self.ManequinDto_Manufacturer","end":[{"role":"ManequinDto_Manufacturer_Source","entitySet":"Manequins"},{"role":"ManequinDto_Manufacturer_Target","entitySet":"ManequinManufacturers"}]},{"name":"ManequinDto_Scenarios","association":"Self.ManequinDto_Scenarios","end":[{"role":"ManequinDto_Scenarios_Source","entitySet":"Manequins"},{"role":"ManequinDto_Scenarios_Target","entitySet":"Scenarios"}]},{"name":"ScenarioResourceDto_Scenario","association":"Self.ScenarioResourceDto_Scenario","end":[{"role":"ScenarioResourceDto_Scenario_Source","entitySet":"ScenarioResources"},{"role":"ScenarioResourceDto_Scenario_Target","entitySet":"Scenarios"}]},{"name":"ScenarioDto_ScenarioFacultyRoles","association":"Self.ScenarioDto_ScenarioFacultyRoles","end":[{"role":"ScenarioDto_ScenarioFacultyRoles_Source","entitySet":"Scenarios"},{"role":"ScenarioDto_ScenarioFacultyRoles_Target","entitySet":"ScenarioFacultyRoles"}]},{"name":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles","association":"Self.ScenarioRoleDescriptionDto_ScenarioFacultyRoles","end":[{"role":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles_Source","entitySet":"SenarioRoles"},{"role":"ScenarioRoleDescriptionDto_ScenarioFacultyRoles_Target","entitySet":"ScenarioFacultyRoles"}]},{"name":"CourseTypeDto_Scenarios","association":"Self.CourseTypeDto_Scenarios","end":[{"role":"CourseTypeDto_Scenarios_Source","entitySet":"CourseTypes"},{"role":"CourseTypeDto_Scenarios_Target","entitySet":"Scenarios"}]},{"name":"CourseDto_Department","association":"Self.CourseDto_Department","end":[{"role":"CourseDto_Department_Source","entitySet":"Courses"},{"role":"CourseDto_Department_Target","entitySet":"Departments"}]},{"name":"RoomDto_Courses","association":"Self.RoomDto_Courses","end":[{"role":"RoomDto_Courses_Source","entitySet":"RoomDtoes"},{"role":"RoomDto_Courses_Target","entitySet":"Courses"}]},{"name":"CourseDto_ScenarioFacultyRoles","association":"Self.CourseDto_ScenarioFacultyRoles","end":[{"role":"CourseDto_ScenarioFacultyRoles_Source","entitySet":"Courses"},{"role":"CourseDto_ScenarioFacultyRoles_Target","entitySet":"ScenarioFacultyRoles"}]},{"name":"DepartmentDto_CourseParticipants","association":"Self.DepartmentDto_CourseParticipants","end":[{"role":"DepartmentDto_CourseParticipants_Source","entitySet":"Departments"},{"role":"DepartmentDto_CourseParticipants_Target","entitySet":"CourseParticipants"}]},{"name":"DepartmentDto_Courses","association":"Self.DepartmentDto_Courses","end":[{"role":"DepartmentDto_Courses_Source","entitySet":"Departments"},{"role":"DepartmentDto_Courses_Target","entitySet":"Courses"}]},{"name":"DepartmentDto_CourseTypes","association":"Self.DepartmentDto_CourseTypes","end":[{"role":"DepartmentDto_CourseTypes_Source","entitySet":"Departments"},{"role":"DepartmentDto_CourseTypes_Target","entitySet":"CourseTypes"}]},{"name":"DepartmentDto_Participants","association":"Self.DepartmentDto_Participants","end":[{"role":"DepartmentDto_Participants_Source","entitySet":"Departments"},{"role":"DepartmentDto_Participants_Target","entitySet":"Participants"}]},{"name":"DepartmentDto_Rooms","association":"Self.DepartmentDto_Rooms","end":[{"role":"DepartmentDto_Rooms_Source","entitySet":"Departments"},{"role":"DepartmentDto_Rooms_Target","entitySet":"RoomDtoes"}]},{"name":"DepartmentDto_Scenarios","association":"Self.DepartmentDto_Scenarios","end":[{"role":"DepartmentDto_Scenarios_Source","entitySet":"Departments"},{"role":"DepartmentDto_Scenarios_Target","entitySet":"Scenarios"}]},{"name":"InstitutionDto_Departments","association":"Self.InstitutionDto_Departments","end":[{"role":"InstitutionDto_Departments_Source","entitySet":"Institutions"},{"role":"InstitutionDto_Departments_Target","entitySet":"Departments"}]},{"name":"InstitutionDto_ProfessionalRoles","association":"Self.InstitutionDto_ProfessionalRoles","end":[{"role":"InstitutionDto_ProfessionalRoles_Source","entitySet":"Institutions"},{"role":"InstitutionDto_ProfessionalRoles_Target","entitySet":"ProfessionalRoles"}]}]}}})});
+; Object.defineProperty(window, 'medsimMetadata', {enumerable: false, configurable: false, writable: false,value: JSON.stringify({
+  "metadataVersion": "1.0.5",
+  "namingConvention": "noChange",
+  "localQueryComparisonOptions": "caseInsensitiveSQL",
+  "dataServices": [],
+  "structuralTypes": [
+    {
+      "shortName": "CountryDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "Countries",
+      "dataProperties": [
+        {
+          "name": "Code",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "isPartOfKey": true,
+          "maxLength": 2,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "stringLength",
+              "minLength": 2,
+              "maxLength": 2
+            }
+          ]
+        },
+        {
+          "name": "Name",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 50,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 50,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "DialCode",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 3,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "name": "stringLength",
+              "minLength": 2,
+              "maxLength": 3
+            },
+            {
+              "name": "regularExpression",
+              "expression": "\\d+"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "CountryLocales",
+          "entityTypeName": "CountryLocaleCodeDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "CountryDto_CountryLocales",
+          "invForeignKeyNames": [
+            "CountryCode"
+          ]
+        },
+        {
+          "name": "Hospitals",
+          "entityTypeName": "InstitutionDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "InstitutionDto_Country",
+          "invForeignKeyNames": [
+            "CountryCode"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "CountryLocaleCodeDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "CountryLocales",
+      "dataProperties": [
+        {
+          "name": "CountryCode",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "isPartOfKey": true,
+          "maxLength": 2,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "maxLength": 2,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "LocaleCode",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "isPartOfKey": true,
+          "maxLength": 5,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "stringLength",
+              "minLength": 5,
+              "maxLength": 5
+            },
+            {
+              "name": "regularExpression",
+              "expression": "[a-z]{2}-[A-Z]{2}"
+            }
+          ]
+        },
+        {
+          "name": "Preference",
+          "dataType": "Byte",
+          "isNullable": false,
+          "defaultValue": 0,
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": 0,
+              "max": 255,
+              "name": "byte"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "Country",
+          "entityTypeName": "CountryDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "CountryDto_CountryLocales",
+          "foreignKeyNames": [
+            "CountryCode"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "InstitutionDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "Institutions",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Name",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 50,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 50,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "About",
+          "dataType": "String",
+          "validators": [
+            {
+              "name": "string"
+            }
+          ]
+        },
+        {
+          "name": "CountryCode",
+          "dataType": "String",
+          "maxLength": 2,
+          "validators": [
+            {
+              "name": "stringLength",
+              "minLength": 2,
+              "maxLength": 2
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "Country",
+          "entityTypeName": "CountryDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "InstitutionDto_Country",
+          "foreignKeyNames": [
+            "CountryCode"
+          ]
+        },
+        {
+          "name": "Departments",
+          "entityTypeName": "DepartmentDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "InstitutionDto_Departments",
+          "invForeignKeyNames": [
+            "InstitutionId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "DepartmentDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "Departments",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Name",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 64,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 64,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "Abbreviation",
+          "dataType": "String",
+          "maxLength": 16,
+          "validators": [
+            {
+              "maxLength": 16,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "InstitutionId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "InvitationLetterFilename",
+          "dataType": "String",
+          "maxLength": 256,
+          "validators": [
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "CertificateFilename",
+          "dataType": "String",
+          "maxLength": 256,
+          "validators": [
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "CourseParticipants",
+          "entityTypeName": "CourseParticipantDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "DepartmentDto_CourseParticipants",
+          "invForeignKeyNames": [
+            "DepartmentId"
+          ]
+        },
+        {
+          "name": "Courses",
+          "entityTypeName": "CourseDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "DepartmentDto_Courses",
+          "invForeignKeyNames": [
+            "OutreachingDepartmentId"
+          ]
+        },
+        {
+          "name": "Institution",
+          "entityTypeName": "InstitutionDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "InstitutionDto_Departments",
+          "foreignKeyNames": [
+            "InstitutionId"
+          ]
+        },
+        {
+          "name": "Manequins",
+          "entityTypeName": "ManequinDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "ManequinDto_Department"
+        },
+        {
+          "name": "Participants",
+          "entityTypeName": "ParticipantDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "DepartmentDto_Participants",
+          "invForeignKeyNames": [
+            "DefaultDepartmentId"
+          ]
+        },
+        {
+          "name": "Rooms",
+          "entityTypeName": "RoomDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "DepartmentDto_Rooms",
+          "invForeignKeyNames": [
+            "DepartmentId"
+          ]
+        },
+        {
+          "name": "Scenarios",
+          "entityTypeName": "ScenarioDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "DepartmentDto_Scenarios",
+          "invForeignKeyNames": [
+            "DepartmentId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "CourseParticipantDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "CourseParticipants",
+      "dataProperties": [
+        {
+          "name": "CourseId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "ParticipantId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "IsConfirmed",
+          "dataType": "Boolean",
+          "isNullable": false,
+          "defaultValue": false,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "bool"
+            }
+          ]
+        },
+        {
+          "name": "IsFaculty",
+          "dataType": "Boolean",
+          "isNullable": false,
+          "defaultValue": false,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "bool"
+            }
+          ]
+        },
+        {
+          "name": "IsOrganiser",
+          "dataType": "Boolean",
+          "isNullable": false,
+          "defaultValue": false,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "bool"
+            }
+          ]
+        },
+        {
+          "name": "DepartmentId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "ProfessionalRoleId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "Course",
+          "entityTypeName": "CourseDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "CourseDto_CourseParticipants",
+          "foreignKeyNames": [
+            "CourseId"
+          ]
+        },
+        {
+          "name": "Department",
+          "entityTypeName": "DepartmentDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "DepartmentDto_CourseParticipants",
+          "foreignKeyNames": [
+            "DepartmentId"
+          ]
+        },
+        {
+          "name": "Participant",
+          "entityTypeName": "ParticipantDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ParticipantDto_CourseParticipants",
+          "foreignKeyNames": [
+            "ParticipantId"
+          ]
+        },
+        {
+          "name": "ProfessionalRole",
+          "entityTypeName": "ProfessionalRoleDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ProfessionalRoleDto_CourseParticipants",
+          "foreignKeyNames": [
+            "ProfessionalRoleId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "CourseDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "Courses",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "StartTime",
+          "dataType": "DateTime",
+          "isNullable": false,
+          "defaultValue": "1899-12-31T-13:00:00.000Z",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "date"
+            }
+          ]
+        },
+        {
+          "name": "DepartmentId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "OutreachingDepartmentId",
+          "dataType": "Guid",
+          "validators": [
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "RoomId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "FacultyNoRequired",
+          "dataType": "Byte",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": 0,
+              "max": 255,
+              "name": "byte"
+            }
+          ]
+        },
+        {
+          "name": "CourseTypeId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "ParticipantVideoFilename",
+          "dataType": "String",
+          "maxLength": 256,
+          "validators": [
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "FeedbackSummaryFilename",
+          "dataType": "String",
+          "maxLength": 256,
+          "validators": [
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "CourseParticipants",
+          "entityTypeName": "CourseParticipantDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "CourseDto_CourseParticipants",
+          "invForeignKeyNames": [
+            "CourseId"
+          ]
+        },
+        {
+          "name": "CourseType",
+          "entityTypeName": "CourseTypeDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "CourseTypeDto_Courses",
+          "foreignKeyNames": [
+            "CourseTypeId"
+          ]
+        },
+        {
+          "name": "Department",
+          "entityTypeName": "DepartmentDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "CourseDto_Department",
+          "foreignKeyNames": [
+            "DepartmentId"
+          ]
+        },
+        {
+          "name": "OutreachingDepartment",
+          "entityTypeName": "DepartmentDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "DepartmentDto_Courses",
+          "foreignKeyNames": [
+            "OutreachingDepartmentId"
+          ]
+        },
+        {
+          "name": "Room",
+          "entityTypeName": "RoomDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "RoomDto_Courses",
+          "foreignKeyNames": [
+            "RoomId"
+          ]
+        },
+        {
+          "name": "ScenarioFacultyRoles",
+          "entityTypeName": "ScenarioFacultyRoleDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "CourseDto_ScenarioFacultyRoles",
+          "invForeignKeyNames": [
+            "CourseId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "CourseTypeDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "CourseTypes",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Description",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 50,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 50,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "IsInstructorCourse",
+          "dataType": "Boolean",
+          "isNullable": false,
+          "defaultValue": false,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "bool"
+            }
+          ]
+        },
+        {
+          "name": "DaysDuration",
+          "dataType": "Byte",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": 0,
+              "max": 255,
+              "name": "byte"
+            }
+          ]
+        },
+        {
+          "name": "EmersionCategory",
+          "dataType": "String",
+          "validators": [
+            {
+              "name": "string"
+            }
+          ],
+          "enumType": "Edm.Self.Emersion"
+        },
+        {
+          "name": "Abbrev",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 32,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 32,
+              "name": "maxLength"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "Courses",
+          "entityTypeName": "CourseDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "CourseTypeDto_Courses",
+          "invForeignKeyNames": [
+            "CourseTypeId"
+          ]
+        },
+        {
+          "name": "Scenarios",
+          "entityTypeName": "ScenarioDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "CourseTypeDto_Scenarios",
+          "invForeignKeyNames": [
+            "CourseTypeId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "CourseSlotDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "CourseEvents",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Name",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 50,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 50,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "MinimumFaculty",
+          "dataType": "Byte",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": 0,
+              "max": 255,
+              "name": "byte"
+            }
+          ]
+        },
+        {
+          "name": "MaximumFaculty",
+          "dataType": "Byte",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": 0,
+              "max": 255,
+              "name": "byte"
+            }
+          ]
+        },
+        {
+          "name": "MinutesDuration",
+          "dataType": "Int32",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": -2147483648,
+              "max": 2147483647,
+              "name": "int32"
+            },
+            {
+              "name": "range",
+              "min": 1,
+              "max": 240
+            }
+          ]
+        },
+        {
+          "name": "Day",
+          "dataType": "Byte",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": 0,
+              "max": 255,
+              "name": "byte"
+            }
+          ]
+        },
+        {
+          "name": "Order",
+          "dataType": "Int32",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": -2147483648,
+              "max": 2147483647,
+              "name": "int32"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "DefaultResources",
+          "entityTypeName": "CourseTeachingResourceDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "CourseSlotDto_DefaultResources",
+          "invForeignKeyNames": [
+            "CourseSlotId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "CourseTeachingResourceDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "CourseTeachingResources",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "CourseSlotId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Name",
+          "dataType": "String",
+          "validators": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "name": "maxLength",
+              "maxLength": 50
+            }
+          ]
+        },
+        {
+          "name": "ResourceFilename",
+          "dataType": "String",
+          "validators": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "name": "maxLength",
+              "maxLength": 256
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "CourseSlot",
+          "entityTypeName": "CourseSlotDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "CourseSlotDto_DefaultResources",
+          "foreignKeyNames": [
+            "CourseSlotId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "ScenarioSlotDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "CourseScenarios",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "MinutesDuration",
+          "dataType": "Int32",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": -2147483648,
+              "max": 2147483647,
+              "name": "int32"
+            },
+            {
+              "name": "range",
+              "min": 1,
+              "max": 240
+            }
+          ]
+        },
+        {
+          "name": "Day",
+          "dataType": "Byte",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": 0,
+              "max": 255,
+              "name": "byte"
+            }
+          ]
+        },
+        {
+          "name": "Order",
+          "dataType": "Int32",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": -2147483648,
+              "max": 2147483647,
+              "name": "int32"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "ScenarioRoleDescriptionDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "SenarioRoles",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Description",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 50,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 50,
+              "name": "maxLength"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "ScenarioFacultyRoles",
+          "entityTypeName": "ScenarioFacultyRoleDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "ScenarioRoleDescriptionDto_ScenarioFacultyRoles",
+          "invForeignKeyNames": [
+            "RoleId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "ScenarioFacultyRoleDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "ScenarioFacultyRoles",
+      "dataProperties": [
+        {
+          "name": "CourseId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "ScenarioId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "FacultyMemberId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "RoleId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "Course",
+          "entityTypeName": "CourseDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "CourseDto_ScenarioFacultyRoles",
+          "foreignKeyNames": [
+            "CourseId"
+          ]
+        },
+        {
+          "name": "FacultyMember",
+          "entityTypeName": "ParticipantDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ParticipantDto_ScenarioFacultyRoles",
+          "foreignKeyNames": [
+            "FacultyMemberId"
+          ]
+        },
+        {
+          "name": "Role",
+          "entityTypeName": "ScenarioRoleDescriptionDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ScenarioRoleDescriptionDto_ScenarioFacultyRoles",
+          "foreignKeyNames": [
+            "RoleId"
+          ]
+        },
+        {
+          "name": "Scenario",
+          "entityTypeName": "ScenarioDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ScenarioDto_ScenarioFacultyRoles",
+          "foreignKeyNames": [
+            "ScenarioId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "ParticipantDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "Participants",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Email",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 256,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            },
+            {
+              "name": "emailAddress"
+            }
+          ]
+        },
+        {
+          "name": "PhoneNumber",
+          "dataType": "String",
+          "maxLength": 32,
+          "validators": [
+            {
+              "maxLength": 32,
+              "name": "maxLength"
+            },
+            {
+              "name": "phone"
+            }
+          ]
+        },
+        {
+          "name": "AlternateEmail",
+          "dataType": "String",
+          "maxLength": 256,
+          "validators": [
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            },
+            {
+              "name": "emailAddress"
+            }
+          ]
+        },
+        {
+          "name": "FullName",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 256,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "DefaultDepartmentId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "DefaultProfessionalRoleId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "CourseParticipants",
+          "entityTypeName": "CourseParticipantDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "ParticipantDto_CourseParticipants",
+          "invForeignKeyNames": [
+            "ParticipantId"
+          ]
+        },
+        {
+          "name": "CourseSlotPresentations",
+          "entityTypeName": "CourseSlotPresenterDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "ParticipantDto_CourseSlotPresentations",
+          "invForeignKeyNames": [
+            "PresenterId"
+          ]
+        },
+        {
+          "name": "Department",
+          "entityTypeName": "DepartmentDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "DepartmentDto_Participants",
+          "foreignKeyNames": [
+            "DefaultDepartmentId"
+          ]
+        },
+        {
+          "name": "ProfessionalRole",
+          "entityTypeName": "ProfessionalRoleDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ProfessionalRoleDto_Participants",
+          "foreignKeyNames": [
+            "DefaultProfessionalRoleId"
+          ]
+        },
+        {
+          "name": "ScenarioFacultyRoles",
+          "entityTypeName": "ScenarioFacultyRoleDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "ParticipantDto_ScenarioFacultyRoles",
+          "invForeignKeyNames": [
+            "FacultyMemberId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "CourseSlotPresenterDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "CourseSlotPresenters",
+      "dataProperties": [
+        {
+          "name": "CourseId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "CourseSlotId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "PresenterId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "Course",
+          "entityTypeName": "CourseDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "CourseSlotPresenterDto_Course",
+          "foreignKeyNames": [
+            "CourseId"
+          ]
+        },
+        {
+          "name": "CourseSlot",
+          "entityTypeName": "CourseSlotDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "CourseSlotPresenterDto_CourseSlot",
+          "foreignKeyNames": [
+            "CourseSlotId"
+          ]
+        },
+        {
+          "name": "Presenter",
+          "entityTypeName": "ParticipantDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ParticipantDto_CourseSlotPresentations",
+          "foreignKeyNames": [
+            "PresenterId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "ProfessionalRoleDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "ProfessionalRoles",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Description",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 50,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 50,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "Category",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "string"
+            }
+          ],
+          "enumType": "Edm.Self.ProfessionalCategory"
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "CourseParticipants",
+          "entityTypeName": "CourseParticipantDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "ProfessionalRoleDto_CourseParticipants",
+          "invForeignKeyNames": [
+            "ProfessionalRoleId"
+          ]
+        },
+        {
+          "name": "Participants",
+          "entityTypeName": "ParticipantDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "ProfessionalRoleDto_Participants",
+          "invForeignKeyNames": [
+            "DefaultProfessionalRoleId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "ScenarioDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "Scenarios",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Description",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 128,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 128,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "DepartmentId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Complexity",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "string"
+            }
+          ],
+          "enumType": "Edm.Self.Difficulty"
+        },
+        {
+          "name": "EmersionCategory",
+          "dataType": "String",
+          "validators": [
+            {
+              "name": "string"
+            }
+          ],
+          "enumType": "Edm.Self.Emersion"
+        },
+        {
+          "name": "TemplateFilename",
+          "dataType": "String",
+          "maxLength": 256,
+          "validators": [
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "ManequinId",
+          "dataType": "Guid",
+          "validators": [
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "CourseTypeId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "CourseType",
+          "entityTypeName": "CourseTypeDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "CourseTypeDto_Scenarios",
+          "foreignKeyNames": [
+            "CourseTypeId"
+          ]
+        },
+        {
+          "name": "Department",
+          "entityTypeName": "DepartmentDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "DepartmentDto_Scenarios",
+          "foreignKeyNames": [
+            "DepartmentId"
+          ]
+        },
+        {
+          "name": "Manequin",
+          "entityTypeName": "ManequinDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ManequinDto_Scenarios",
+          "foreignKeyNames": [
+            "ManequinId"
+          ]
+        },
+        {
+          "name": "Resources",
+          "entityTypeName": "ScenarioResourceDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "ScenarioResourceDto_Scenario",
+          "invForeignKeyNames": [
+            "ScenarioId"
+          ]
+        },
+        {
+          "name": "ScenarioFacultyRoles",
+          "entityTypeName": "ScenarioFacultyRoleDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "ScenarioDto_ScenarioFacultyRoles",
+          "invForeignKeyNames": [
+            "ScenarioId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "ManequinDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "Manequins",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Description",
+          "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
+          "maxLength": 50,
+          "validators": [
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "maxLength": 50,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "DepartmentId",
+          "dataType": "Int32",
+          "validators": [
+            {
+              "min": -2147483648,
+              "max": 2147483647,
+              "name": "int32"
+            }
+          ]
+        },
+        {
+          "name": "ManufacturerId",
+          "dataType": "Int32",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": -2147483648,
+              "max": 2147483647,
+              "name": "int32"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "Department",
+          "entityTypeName": "DepartmentDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ManequinDto_Department"
+        },
+        {
+          "name": "Manufacturer",
+          "entityTypeName": "ManequinManufacturerDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ManequinDto_Manufacturer"
+        },
+        {
+          "name": "Scenarios",
+          "entityTypeName": "ScenarioDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "ManequinDto_Scenarios",
+          "invForeignKeyNames": [
+            "ManequinId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "ManequinManufacturerDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "ManequinManufacturers",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Name",
+          "dataType": "String",
+          "maxLength": 256,
+          "validators": [
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "ScenarioResourceDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "ScenarioResources",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "ScenarioId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "Name",
+          "dataType": "String",
+          "validators": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "name": "maxLength",
+              "maxLength": 50
+            }
+          ]
+        },
+        {
+          "name": "ResourceFilename",
+          "dataType": "String",
+          "validators": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "required",
+              "allowEmptyStrings": false
+            },
+            {
+              "name": "maxLength",
+              "maxLength": 256
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "Scenario",
+          "entityTypeName": "ScenarioDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "ScenarioResourceDto_Scenario",
+          "foreignKeyNames": [
+            "ScenarioId"
+          ]
+        }
+      ]
+    },
+    {
+      "shortName": "RoomDto",
+      "namespace": "SM.Dto",
+      "autoGeneratedKeyType": "None",
+      "defaultResourceName": "RoomDtoes",
+      "dataProperties": [
+        {
+          "name": "Id",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "isPartOfKey": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        },
+        {
+          "name": "ShortDescription",
+          "dataType": "String",
+          "maxLength": 32,
+          "validators": [
+            {
+              "maxLength": 32,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "FullDescription",
+          "dataType": "String",
+          "maxLength": 64,
+          "validators": [
+            {
+              "maxLength": 64,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "Directions",
+          "dataType": "String",
+          "maxLength": 256,
+          "validators": [
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            }
+          ]
+        },
+        {
+          "name": "DepartmentId",
+          "dataType": "Guid",
+          "isNullable": false,
+          "defaultValue": "00000000-0000-0000-0000-000000000000",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "guid"
+            }
+          ]
+        }
+      ],
+      "navigationProperties": [
+        {
+          "name": "Courses",
+          "entityTypeName": "CourseDto:#SM.Dto",
+          "isScalar": false,
+          "associationName": "RoomDto_Courses",
+          "invForeignKeyNames": [
+            "RoomId"
+          ]
+        },
+        {
+          "name": "Department",
+          "entityTypeName": "DepartmentDto:#SM.Dto",
+          "isScalar": true,
+          "associationName": "DepartmentDto_Rooms",
+          "foreignKeyNames": [
+            "DepartmentId"
+          ]
+        }
+      ]
+    }
+  ],
+  "resourceEntityTypeMap": {
+    "Countries": "CountryDto:#SM.Dto",
+    "CountryLocales": "CountryLocaleCodeDto:#SM.Dto",
+    "Institutions": "InstitutionDto:#SM.Dto",
+    "Departments": "DepartmentDto:#SM.Dto",
+    "CourseParticipants": "CourseParticipantDto:#SM.Dto",
+    "Courses": "CourseDto:#SM.Dto",
+    "CourseTypes": "CourseTypeDto:#SM.Dto",
+    "CourseEvents": "CourseSlotDto:#SM.Dto",
+    "CourseTeachingResources": "CourseTeachingResourceDto:#SM.Dto",
+    "CourseScenarios": "ScenarioSlotDto:#SM.Dto",
+    "SenarioRoles": "ScenarioRoleDescriptionDto:#SM.Dto",
+    "ScenarioFacultyRoles": "ScenarioFacultyRoleDto:#SM.Dto",
+    "Participants": "ParticipantDto:#SM.Dto",
+    "CourseSlotPresenters": "CourseSlotPresenterDto:#SM.Dto",
+    "ProfessionalRoles": "ProfessionalRoleDto:#SM.Dto",
+    "Scenarios": "ScenarioDto:#SM.Dto",
+    "Manequins": "ManequinDto:#SM.Dto",
+    "ManequinManufacturers": "ManequinManufacturerDto:#SM.Dto",
+    "ScenarioResources": "ScenarioResourceDto:#SM.Dto",
+    "RoomDtoes": "RoomDto:#SM.Dto"
+  }
+})});

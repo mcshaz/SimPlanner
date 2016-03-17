@@ -97,7 +97,7 @@ namespace SM.DataAccess
 
             foreach (var t in new Course[] { c, c2, c0 })
             {
-                var cp = new CourseParticipant { Participant = trish, IsConfirmed = true, IsFaculty = true, Course = t, DepartmentId = trish.DefaultDepartmentId, ProfessionalRoleId = trish.DefaultProfessionalRoleId };
+                var cp = new CourseParticipant { Participant = trish, IsConfirmed = true, IsFaculty = true, IsOrganiser=true, Course = t, DepartmentId = trish.DefaultDepartmentId, ProfessionalRoleId = trish.DefaultProfessionalRoleId };
                 context.CourseParticipants.Add(cp);
                 var cp2 = new CourseParticipant { Participant = brent, IsConfirmed = false, IsFaculty = false, Course = t, DepartmentId = brent.DefaultDepartmentId, ProfessionalRoleId = brent.DefaultProfessionalRoleId };
                 context.CourseParticipants.Add(cp2);
