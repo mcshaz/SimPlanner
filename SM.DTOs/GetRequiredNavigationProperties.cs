@@ -110,7 +110,7 @@ namespace SM.Dto
                 }
                 
                 var newProperties = new EdmxProperty[1];
-                Array.Copy(Properties, i, newProperties,0, 1); 
+                Array.Copy(Properties, 1-i, newProperties,0, 1); 
                 Properties = newProperties;
             }
 

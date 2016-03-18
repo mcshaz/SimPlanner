@@ -8,15 +8,10 @@
                         <label for="department" class="col-md-2 control-label">Department</label>
                         <div class="col-md-10">
 
-                            <select id="department" class="form-control" data-z-validate  data-ng-model="vm.course.departmentId">
-                                <option value="vm.emptyGuid">
+                            <select id="department" class="form-control" data-z-validate  data-ng-model="vm.course.department" ng-options="d as d.name group by d.institution.name for d in vm.departments">
+                                <option disabled selected hidden value="">
                                     Select Department...
                                 </option>
-                                <optgroup label="{{i.name}}" data-ng-repeat="i in vm.institutions">
-                                    <option value="{{d.id}}" data-ng-repeat="d in i.departments">
-                                        {{d.name}}
-                                    </option>
-                                </optgroup>
                             </select>
                             <span class="text-danger" />
                         </div>
@@ -25,8 +20,8 @@
                     <div class="form-group">
                         <label for="courseType" class="col-md-2 control-label">Course Type</label>
                         <div class="col-md-10">
-                            <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypes track by ct.id" data-ng-model="vm.course.courseType">
-                                <option value="" disabled="disabled">
+                            <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypes" data-ng-model="vm.course.courseType">
+                                <option disabled selected hidden value="">
                                     Select Course Type...
                                 </option>
                             </select>
@@ -57,15 +52,10 @@
                     <div class="form-group">
                         <label for="courseType" class="col-md-2 control-label">Location</label>
                         <div class="col-md-10">
-                            <select id="courseType" class="form-control" data-z-validate data-ng-model="vm.course.roomId">
-                                <option value="" disabled="disabled">
+                            <select id="courseType" class="form-control" data-z-validate data-ng-model="vm.course.room" data-ng-options="r as r.shortDescription group by r.department.name for r in vm.rooms">
+                                <option disabled selected hidden value="">
                                     Select Room...
                                 </option>
-                                <optgroup label="{{d.name}}" data-ng-repeat="d in vm.institution.departments track by d.id" ng-if="d.rooms.length">
-                                    <option value="{{r.id}}" data-ng-repeat="r in d.rooms track by r.id">
-                                        {{r.shortDescription}}
-                                    </option>
-                                </optgroup>
                             </select>
                             <span class="text-danger" />
                         </div>

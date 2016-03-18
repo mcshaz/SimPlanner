@@ -19,14 +19,13 @@
         vm.dateFormat = '';
         vm.deleteCourseParticipant = deleteCourseParticipant;
         vm.dpPopup = { isOpen: false };
-        vm.emptyGuid = "00000000-0000-0000-0000-000000000000";
-        vm.institutions = [];
-        vm.institution = {};
+        vm.departments = [];
         vm.maxDate = new Date();
         vm.maxDate.setFullYear(vm.maxDate.getFullYear() + 1);
         vm.minDate = new Date(2007, 1);
         vm.openDp = openDp;
         vm.openCourseParticipant = openCourseParticipant;
+        vm.rooms = [];
         vm.save = save;
         vm.title = 'course';
 
@@ -39,19 +38,22 @@
             datacontext.ready().then(function () {
                 var promises =[ datacontext.courseTypes.all().then(function (data) {
                         vm.courseTypes = data;
-                        if (data.length === 1 && !id) {
+                        if (data.length === 1 && isNew()) {
                             vm.course.courseType = data[0];
                     }
-                }),
-                    datacontext.institutions.all().then(function (data) {
-                        vm.institutions = data;
-                        if (data.length === 1 && !id) {
-                            vm.institution = data[0];
+                }),datacontext.departments.all().then(function (data) {
+                        vm.departments = data;
+                        if (data.length === 1 && isNew()) {
+                            vm.course.department = data[0];
                         }
+                }), datacontext.rooms.all().then(function (data) {
+                    vm.rooms = data;
+                    if (data.length === 1 && isNew()) {
+                        vm.course.room = data[0];
+                    }
                 })];
-                if (id == 'new') {
+                if (isNew()) {
                     vm.course = datacontext.courses.create();
-                    id = vm.course.id;
                 }else{
                     promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant'}).then(function (data) {
                         if (!data) {
@@ -60,7 +62,6 @@
                             //gotoCourses();
                         }
                         vm.course = data;
-                        vm.institution = vm.course.department.institution;
                     }));
                 }
                 vm.dateFormat = moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
@@ -70,6 +71,11 @@
                     });
             });
         }
+
+        function isNew() {
+            return id == 'new';
+        }
+
         function openDp() {
             this.dpPopup.isOpen = true;
         }
@@ -86,7 +92,7 @@
                 //size: 'lg',
                 resolve: {
                     courseParticipantIds: function () {
-                        return { courseId: id, participantId:participantId };
+                        return { courseId: vm.course.id, participantId:participantId };
                     }
                 }
             });

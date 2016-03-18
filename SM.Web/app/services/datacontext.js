@@ -23,13 +23,14 @@
 
 
         this.courses = repository.create(provider, 'CourseDto', 'Courses');
-        this.departments = repository.create(provider, 'DepartmentDto', 'Departments', breeze.FetchStrategy.FromLocalCache);
-        this.institutions = repository.create(provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);
-        this.courseTypes = repository.create(provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);
-        this.professionalRoles = repository.create(provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);
         this.countries = repository.create(provider, 'CountryDto', 'Countries', breeze.FetchStrategy.FromLocalCache);
         this.courseParticipants = repository.create(provider, 'CourseParticipantDto', 'CourseParticipants'/* 'Courses' */);
+        this.courseTypes = repository.create(provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);
+        this.departments = repository.create(provider, 'DepartmentDto', 'Departments', breeze.FetchStrategy.FromLocalCache);
+        this.institutions = repository.create(provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);
         this.participants = repository.create(provider, 'ParticipantDto', 'Participants');
+        this.professionalRoles = repository.create(provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);
+        this.rooms = repository.create(provider, 'RoomDto', 'Rooms', breeze.FetchStrategy.FromLocalCache);
 
         function saveFailed(error) {
             var msg = config.appErrorPrefix + 'Save failed: ' +
