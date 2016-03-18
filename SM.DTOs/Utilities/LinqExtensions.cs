@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SM.DTOs.Utilities
+namespace SM.Dto.Utilities
 {
     public static class LinqExtensions
     {

@@ -19,6 +19,7 @@
         vm.dateFormat = '';
         vm.deleteCourseParticipant = deleteCourseParticipant;
         vm.dpPopup = { isOpen: false };
+        vm.emptyGuid = "00000000-0000-0000-0000-000000000000";
         vm.institutions = [];
         vm.institution = {};
         vm.maxDate = new Date();
@@ -49,7 +50,7 @@
                         }
                 })];
                 if (id == 'new') {
-                    vm.course = datacontext.courses.create(breeze.EntityState.Detached);
+                    vm.course = datacontext.courses.create();
                     id = vm.course.id;
                 }else{
                     promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant'}).then(function (data) {

@@ -84,12 +84,24 @@ namespace SM.DataAccess
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Course>()
+                .HasMany(e => e.CourseSlotPresenters)
+                .WithRequired(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<CourseSlot>()
                 .HasMany(e => e.CourseTypes)
                 .WithMany(e => e.CourseEvents);
 
             modelBuilder.Entity<CourseSlot>()
                 .HasMany(e => e.DefaultResources)
+                .WithRequired(e => e.CourseSlot)
+                .HasForeignKey(e => e.CourseSlotId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseSlot>()
+                .HasMany(e => e.CourseSlotPresenters)
                 .WithRequired(e => e.CourseSlot)
                 .HasForeignKey(e => e.CourseSlotId)
                 .WillCascadeOnDelete(false);
@@ -121,6 +133,12 @@ namespace SM.DataAccess
 
             modelBuilder.Entity<Department>()
                 .HasMany(e => e.Courses)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e => e.DepartmentId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Department>()
+                .HasMany(e => e.OutreachCourses)
                 .WithOptional(e => e.OutreachingDepartment)
                 .HasForeignKey(e => e.OutreachingDepartmentId)
                 .WillCascadeOnDelete(false);
@@ -156,7 +174,13 @@ namespace SM.DataAccess
             modelBuilder.Entity<Institution>()
                 .HasMany(e => e.ProfessionalRoles)
                 .WithMany(e => e.Institutions);
-                //.Map(m => m.ToTable("CountryProfessionalRole").MapLeftKey("CountryCode").MapRightKey("ProfessionalRoleId"));
+            //.Map(m => m.ToTable("CountryProfessionalRole").MapLeftKey("CountryCode").MapRightKey("ProfessionalRoleId"));
+
+            modelBuilder.Entity<ManequinManufacturer>()
+                .HasMany(e => e.Manequins)
+                .WithRequired(e => e.Manufacturer)
+                .HasForeignKey(e => e.ManufacturerId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Participant>()
                 .HasMany(e => e.CourseParticipants)

@@ -10,6 +10,6 @@ namespace SM.Metadata
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
         [Range(1,240)]
-        public int MinutesDuration { get; set; }
+        public byte MinutesDuration { get; set; }
     }
 }

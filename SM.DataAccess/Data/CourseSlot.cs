@@ -24,5 +24,16 @@ namespace SM.DataAccess
             set { _defaultResources = value; }
         }
 
+        ICollection<CourseSlotPresenter> _courseSlotPresenters;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public ICollection<CourseSlotPresenter> CourseSlotPresenters
+        {
+            get
+            {
+                return _courseSlotPresenters ?? (_courseSlotPresenters = new List<CourseSlotPresenter>());
+            }
+            set { _courseSlotPresenters = value; }
+        }
+
     }
 }

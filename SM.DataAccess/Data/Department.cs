@@ -64,6 +64,20 @@ namespace SM.DataAccess
 			}
 		}
 
+        ICollection<Course> _outreachCourses;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Course> OutreachCourses
+        {
+            get
+            {
+                return _outreachCourses ?? (_outreachCourses = new List<Course>());
+            }
+            set
+            {
+                _outreachCourses = value;
+            }
+        }
+
         ICollection<Scenario> _scenrios;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Scenario> Scenarios

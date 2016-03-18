@@ -9,11 +9,10 @@ namespace SM.Dto
 	{
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public int? DepartmentId { get; set; }
-        public int ManufacturerId { get; set; }
+        public Guid? DepartmentId { get; set; }
+        public Guid ManufacturerId { get; set; }
         public DepartmentDto Department { get; set; }
-        public virtual ICollection<ScenarioDto> Scenarios { get; set; }
         public ManequinManufacturerDto Manufacturer { get; set; }
-
+        public virtual ICollection<ScenarioDto> Scenarios { get; set; }
     }
 }

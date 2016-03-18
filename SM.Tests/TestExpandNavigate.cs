@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using SM.DataAccess;
 using System.Data.Entity;
 using System.Linq;
-using SM.DTOs.Maps;
+using SM.Dto.Maps;
 using SM.Dto;
 
 namespace SimManager.Tests

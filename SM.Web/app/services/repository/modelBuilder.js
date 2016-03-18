@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('app')
-        .factory('modelBuilder', [factory]);
+        .factory('modelBuilder', ['breeze', factory]);
 
-    function factory() {
+    function factory(breeze) {
         var self = {
             extendMetadata: extendMetadata
         };
@@ -13,6 +13,7 @@
 
         function extendMetadata(metadataStore) {
             extendCourse(metadataStore);
+            extendValidators(metadataStore);
         }
 
         function extendCourse(metadataStore) {
@@ -68,6 +69,21 @@
                 throw new Error('Object must be an entity of type ' + entityTypeName);
             }
         }
+
+        function extendValidators(metadataStore)
+        {
+            var required = window.medsimMetadata.getBreezeValidators();
+            var validator = breeze.Validator;
+            for (var typeName in required) {
+                if (required.hasOwnProperty(typeName)) {
+                    var repo = metadataStore.getEntityType(typeName);
+                    required[typeName].forEach(function (propName) {
+                        repo.getProperty(propName).validators.push(validator.requireReferenceValidator);
+                    });
+                }
+            }
+        }
+
     }
 
 })(window.angular);

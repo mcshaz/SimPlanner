@@ -10,6 +10,7 @@ namespace SM.Dto
     {
         public Guid Id { get; set; }
         public DateTime StartTime { get; set; }
+        public DateTime? FacultyMeetingTime { get; set; }
         public Guid DepartmentId { get; set; }
         public Guid? OutreachingDepartmentId { get; set; }
         public Guid RoomId { get; set; }
@@ -26,6 +27,7 @@ namespace SM.Dto
         public virtual ICollection<CourseParticipantDto> CourseParticipants { get; set; }
         public virtual ICollection<ScenarioDto> Scenarios { get; set; }
         public virtual ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
+        public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresenters { get; set; }
     }
 
 }

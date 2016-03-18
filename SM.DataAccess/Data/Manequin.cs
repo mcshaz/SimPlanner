@@ -13,13 +13,15 @@ namespace SM.DataAccess
 
         public string Description { get; set; }
 
-        public int? DepartmentId { get; set; }
+        public Guid? DepartmentId { get; set; }
 
-        public int ManufacturerId { get; set; }
+        public Guid ManufacturerId { get; set; }
 
         public virtual Department Department { get; set; }
 
-		ICollection<Scenario> _scenarios; 
+        public virtual ManequinManufacturer Manufacturer { get; set; }
+
+        ICollection<Scenario> _scenarios; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Scenario> Scenarios
 		{
@@ -32,7 +34,5 @@ namespace SM.DataAccess
 				_scenarios = value;
 			}
 		}
-
-        public virtual ManequinManufacturer Manufacturer { get; set; }
     }
 }

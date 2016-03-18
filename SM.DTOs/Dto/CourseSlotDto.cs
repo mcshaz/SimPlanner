@@ -10,6 +10,6 @@ namespace SM.Dto
         public byte MinimumFaculty { get; set; }
         public byte MaximumFaculty { get; set; }
         public virtual ICollection<CourseTeachingResourceDto> DefaultResources { get; set; }
-
+        public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresenters { get; set; }
     }
 }

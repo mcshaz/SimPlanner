@@ -2,7 +2,7 @@ using SM.DataAccess;
 using SM.Dto;
 using System;
 using System.Linq.Expressions;
-namespace SM.DTOs.Maps
+namespace SM.Dto.Maps
 {
     internal static class ProfessionalRoleMaps
     {

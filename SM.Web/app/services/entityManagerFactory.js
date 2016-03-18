@@ -19,7 +19,7 @@
         var metadataStore = new breeze.MetadataStore(); /*{namingConvention: camelCaseConvention // if you use this convention)*/
 
         // initialize it from the application's metadata variable
-        metadataStore.importMetadata(window.medsimMetadata);
+        metadataStore.importMetadata(window.medsimMetadata.getBreezeMetadata());
 
         var masterManager = new breeze.EntityManager({
             dataService: dataService,

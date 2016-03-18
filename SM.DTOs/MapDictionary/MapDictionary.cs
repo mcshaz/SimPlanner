@@ -1,5 +1,5 @@
 ﻿using SM.DataAccess;
-using SM.DTOs.Utilities;
+using SM.Dto.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace SM.DTOs.Maps
+namespace SM.Dto.Maps
 {
     public static class MapperConfig
     {
@@ -15,10 +15,11 @@ namespace SM.DTOs.Maps
         static MapperConfig()
         {
             _maps = new ReadOnlyDictionary<string, LambdaExpression>(
-                    CreateMapDictionary(new[] {
-                        new DtoMap(typeof(Country),CountryMaps.mapFromRepo(), "Countries"),
+                CreateMapDictionary(
+                    new[] {
+                        new DtoMap(typeof(Country),CountryMaps.mapFromRepo(), false,"Countries"),
                         new DtoMap(typeof(CountryLocaleCode),  CountryLocaleCodeMaps.mapFromRepo()),
-                        new DtoMap(typeof(Department),  DepartmentMaps.mapFromRepo()),
+                        new DtoMap(typeof(Department),  DepartmentMaps.mapFromRepo(), true,"OutreachingDepartment"),
                         new DtoMap(typeof(ScenarioRoleDescription),  ScenarioRoleDescriptionMaps.mapFromRepo()),
                         new DtoMap(typeof(Institution),  InstitutionMaps.mapFromRepo()),
                         new DtoMap(typeof(Manequin),  ManequinMaps.mapFromRepo()),
@@ -27,7 +28,7 @@ namespace SM.DTOs.Maps
                         new DtoMap(typeof(ProfessionalRole),  ProfessionalRoleMaps.mapFromRepo()),
                         new DtoMap(typeof(Scenario),  ScenarioMaps.mapFromRepo()),
                         new DtoMap(typeof(ScenarioResource),  ScenarioResourceMaps.mapFromRepo()),
-                        new DtoMap(typeof(Course),  CourseMaps.mapFromRepo()),
+                        new DtoMap(typeof(Course),  CourseMaps.mapFromRepo(), true, "OutreachCourses"),
                         new DtoMap(typeof(CourseParticipant),  CourseParticipantMaps.mapFromRepo()),
                         new DtoMap(typeof(CourseType),  CourseTypeMaps.mapFromRepo()),
                         new DtoMap(typeof(CourseSlot),  CourseSlotMaps.mapFromRepo()),
@@ -36,16 +37,17 @@ namespace SM.DTOs.Maps
                         new DtoMap(typeof(CourseSlotPresenter),  CourseSlotPresenterMaps.mapFromRepo()),
                         new DtoMap(typeof(ScenarioFacultyRole),  ScenarioFacultyRoleMaps.mapFromRepo()),
                         new DtoMap(typeof(Room),  RoomMaps.mapFromRepo())
-                    }).ToDictionary(kv=>kv.Key, kv=>kv.Value)
-                );
+                    }).ToDictionary(kv=>kv.Key, kv=>kv.Value));
         }
 
-        static IEnumerable<KeyValuePair<string,LambdaExpression>> CreateMapDictionary(IEnumerable<DtoMap> maps)
+        static IEnumerable<KeyValuePair<string, LambdaExpression>> CreateMapDictionary(IEnumerable<DtoMap> maps)
         {
             foreach (var m in maps)
             {
-                yield return new KeyValuePair<string, LambdaExpression>(m.TypeName, m.Map);
-                yield return new KeyValuePair<string, LambdaExpression>(m.PleuralName, m.Map);
+                foreach (var t in m.PropertyNames)
+                {
+                    yield return new KeyValuePair<string, LambdaExpression>(t, m.Map);
+                }
             }
         }
         public static IQueryable<TMap> Project<T, TMap>(this IQueryable<T> queryable, string[] includes = null, string[] selects=null, char sepChar='.')
@@ -67,14 +69,13 @@ namespace SM.DTOs.Maps
 
         private class DtoMap
         {
-            public DtoMap(Type t, LambdaExpression map, string pleuralName=null)
+            public DtoMap(Type t, LambdaExpression map, bool simple_s_pleuralisation = true, params string[] aliases)
             {
-                TypeName = t.Name;
-                PleuralName = pleuralName ?? t.Name + 's';
+                PropertyNames = aliases.Concat(new[] { t.Name });
+                if (simple_s_pleuralisation) { PropertyNames = PropertyNames.Concat(new[] { t.Name + 's' }); }
                 Map = map;
             }
-            public readonly string TypeName;
-            public readonly string PleuralName;
+            public readonly IEnumerable<string> PropertyNames;
             public readonly LambdaExpression Map;
         }
 

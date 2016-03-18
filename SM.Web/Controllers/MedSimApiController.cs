@@ -8,7 +8,6 @@ using System;
 using SM.Dto;
 using Breeze.ContextProvider;
 using System.Web.Http.OData.Query;
-using SM.DTOs.Maps;
 using SM.Web.Controllers.Helpers;
 
 namespace SM.Web.Controllers

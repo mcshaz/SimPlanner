@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SM.DTOs.Utilities;
+using SM.Dto.Utilities;
 using System.Linq;
 
 namespace SimManager.Tests

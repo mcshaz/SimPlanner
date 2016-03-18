@@ -1,6 +1,7 @@
 ﻿using Jint;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SM.Dto.Utilities;
 using SM.Metadata;
 using System;
 using System.Collections.Generic;
@@ -12,23 +13,38 @@ using System.Reflection;
 
 namespace SM.Dto
 {
+    public class MetaDataStrings
+    {
+        public string Breeze { get; set; }
+        public string RequiredNavProperties { get; set; }
+    }
     public static class MedSimDtoMetadata
     {
         const string breezeJsPath = @"C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\Scripts\breeze.min.js";
-        public static string GetBreezeMetadata(bool pretty = false)
+        public static string GetBreezeMetadata(string edmx, bool pretty = false)
         {
             var engine = new Engine().Execute("var setInterval;var setTimeout = setInterval = function(){}"); //if using an engine like V8.NET, would not be required - not part of DOM spec
-
             engine.Execute(File.ReadAllText(breezeJsPath));
             engine.Execute("breeze.NamingConvention.camelCase.setAsDefault();" + //mirror here what you are doing in the client side code
+                           "breeze.DataType.DateTime.defaultValue = '';" + //personal preference
                            "var edmxMetadataStore = new breeze.MetadataStore();" +
-                           "edmxMetadataStore.importMetadata(" + MedSimDtoRepository.GetEdmxMetadata() + ");" +
+                           "edmxMetadataStore.importMetadata(JSON.stringify(" + edmx + "));" +
                            "edmxMetadataStore.exportMetadata();");
             var exportedMeta = JObject.Parse(engine.GetCompletionValue().AsString());
             AddValidators(exportedMeta);
             return exportedMeta.ToString(pretty ? Formatting.Indented : Formatting.None);
         }
 
+        public static MetaDataStrings GetAllMetadata(bool pretty = false)
+        {
+            string edmx = MedSimDtoRepository.GetEdmxMetadata();
+            //File.WriteAllText("dtoMetadata.edmx", edmx);
+            return new MetaDataStrings
+            {
+                RequiredNavProperties = JsonConvert.SerializeObject(EdmxExplorer.GetRequiredNavProperties(edmx), pretty?Formatting.Indented:Formatting.None),
+                Breeze = GetBreezeMetadata(edmx, pretty)
+            };
+        }
 
         //http://stackoverflow.com/questions/26570638/how-to-add-extend-breeze-entity-types-with-metadata-pulled-from-property-attribu
         static void AddValidators(JObject metadata)
@@ -47,7 +63,7 @@ namespace SM.Dto
                 foreach (var breezePropertyInfo in breezeEntityType["dataProperties"])
                 {
                     string propName = breezePropertyInfo["name"].ToString();
-                    propName = char.ToUpper(propName[0]) + propName.Substring(1); //IF client using breeze.NamingConvention.camelCase & server using PascalCase
+                    propName = propName.CamelToPascalCase(); //IF client using breeze.NamingConvention.camelCase & server using PascalCase
                     var propInfo = metaTypeFromAttr.GetProperty(propName);
 
                     if (propInfo == null)
@@ -100,13 +116,7 @@ namespace SM.Dto
                     Dictionary<string, object> rangeVal;
                     if (intTypes.Contains(propInfo.PropertyType) && validators.TryGetValue("numericRange", out rangeVal))
                     {
-                        if (((IComparable)propInfo.PropertyType.GetField("MinValue").GetValue(null)).CompareTo(rangeVal["min"]) > 0 ||
-                            ((IComparable)propInfo.PropertyType.GetField("MaxValue").GetValue(null)).CompareTo(rangeVal["max"]) < 0)
-                        {
-                            throw new ArgumentOutOfRangeException(string.Format("the underlying type {0} requires values {1} - {2} but the RangeAttribute declares a range of {3} - {4}",
-                                propInfo.PropertyType, propInfo.GetValue("minValue"), propInfo.GetValue("maxValue"), rangeVal["min"], rangeVal["max"]));
-                        }
-                        validators.Remove(char.ToLower(propInfo.PropertyType.Name[0]) + propInfo.PropertyType.Name.Substring(1));
+                        validators.Remove(propInfo.PropertyType.Name.PascalToCamelCase());
                     }
                     breezePropertyInfo["validators"] = JToken.FromObject(validators.Values);
                 }

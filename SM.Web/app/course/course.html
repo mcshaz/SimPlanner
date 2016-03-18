@@ -3,21 +3,20 @@
         <div class="container col-md-12">
             <form class="form-horizontal">
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="institution" class="col-md-2 control-label">Institution</label>
-                        <div class="col-md-10">
-                            <select class="form-control" id="institution" data-z-validate data-ng-options="i as i.name for i in vm.institutions track by i.id" data-ng-model="vm.institution" data-ng-disabled="{{vm.institutions<=1}}"></select>
-                            <span class="text-danger" />
-                        </div>
-                    </div>
 
                     <div class="form-group">
                         <label for="department" class="col-md-2 control-label">Department</label>
                         <div class="col-md-10">
-                            <select class="form-control" id="department" data-z-validate data-ng-options="d as d.name for d in vm.institution.departments track by d.id" data-ng-model="vm.course.department">
-                                <option value="" disabled="disabled">
+
+                            <select id="department" class="form-control" data-z-validate  data-ng-model="vm.course.departmentId">
+                                <option value="vm.emptyGuid">
                                     Select Department...
                                 </option>
+                                <optgroup label="{{i.name}}" data-ng-repeat="i in vm.institutions">
+                                    <option value="{{d.id}}" data-ng-repeat="d in i.departments">
+                                        {{d.name}}
+                                    </option>
+                                </optgroup>
                             </select>
                             <span class="text-danger" />
                         </div>

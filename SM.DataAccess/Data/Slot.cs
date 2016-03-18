@@ -9,7 +9,7 @@ namespace SM.DataAccess
     {
         public Guid Id { get; set; }
 
-        public int MinutesDuration { get; set; }
+        public byte MinutesDuration { get; set; }
 
         public byte Day { get; set; }
 

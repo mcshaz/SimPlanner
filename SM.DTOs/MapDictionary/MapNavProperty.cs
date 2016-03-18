@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 //http://stackoverflow.com/questions/35681045/expressiontree-method-to-assign-memberinitexpression-to-property
-namespace SM.DTOs.Maps
+namespace SM.Dto.Maps
 {
     public static class ExpressionTreeExtensions
     {

@@ -2,7 +2,7 @@
 using Breeze.ContextProvider.EF6;
 using Newtonsoft.Json.Linq;
 using SM.DataAccess;
-using SM.DTOs.Maps;
+using SM.Dto.Maps;
 using System;
 using System.Collections.Generic;
 using System.Linq;

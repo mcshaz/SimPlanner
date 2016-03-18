@@ -11,7 +11,7 @@ namespace SM.Web.App_Start
         {
             //const string category = "MetadataScriptWriter";
             // get the metadata the same way we get it for the controller
-            string metadata = MedSimDtoMetadata.GetBreezeMetadata(pretty:true);
+            var metadata = MedSimDtoMetadata.GetAllMetadata();
             const string metadataPath = "~/app/metadata.js";
 
             // construct the filename and runtime file location
@@ -19,15 +19,24 @@ namespace SM.Web.App_Start
                 ?? @"C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web" + metadataPath.Substring(1).Replace('/', '\\');
 
             // the same pre- and post-fix strings we used earlier
-            const string prefix = "; Object.defineProperty(window, 'medsimMetadata', {enumerable: false, configurable: false, writable: false,"
-                + "value: JSON.stringify(";
-
-            const string postfix = ")});";
 
             // write to file
             using (var writer = new StreamWriter(fileName))
             {
-                writer.WriteLine(prefix + metadata + postfix);
+                writer.WriteLine(
+                    "(function(){" +
+                    "	window.medsimMetadata = {\r\n" +
+                    "		getBreezeMetadata: getBreezeMetadata,\r\n" +
+                    "		getBreezeValidators: getBreezeValidators\r\n" +
+                    "	}\r\n" +
+                    "	function getBreezeMetadata(){\r\n" +
+                    "		return JSON.stringify("+ metadata.Breeze + ");\r\n" +
+                    "	}\r\n" +
+                    "	function getBreezeValidators(){\r\n" +
+                    "		return "+ metadata.RequiredNavProperties + ";\r\n" +
+                    "	}\r\n" +
+                    "})();\r\n"
+                    );
             }
         }
 
