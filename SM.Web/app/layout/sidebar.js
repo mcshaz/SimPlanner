@@ -3,12 +3,15 @@
     
     var controllerId = 'sidebar';
     angular.module('app').controller(controllerId,
-        ['$route', 'config', 'routes', sidebar]);
+        ['$route', 'config', 'routes', 'tokenStorageService', '$rootScope','AUTH_EVENTS',sidebar]);
 
-    function sidebar($route, config, routes) {
+    function sidebar($route, config, routes, tokenStorageService, $rootScope, AUTH_EVENTS) {
         var vm = this;
 
         vm.isCurrent = isCurrent;
+
+        $rootScope.$on(AUTH_EVENTS.loginConfirmed, getNavRoutes);
+        $rootScope.$on(AUTH_EVENTS.loginCancelled, getNavRoutes);
 
         activate();
 
@@ -17,7 +20,7 @@
         function getNavRoutes() {
             var rx = /:id$/;
             vm.navRoutes = routes.filter(function(r) {
-                return r.config.settings && r.config.settings.nav;
+                return r.config.settings && r.config.settings.nav && (!r.config.access || tokenStorageService.isAuthorized(r.config.access.allowedRoles));
             }).sort(function(r1, r2) {
                 return r1.config.settings.nav - r2.config.settings.nav;
             });

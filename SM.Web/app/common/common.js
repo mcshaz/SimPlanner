@@ -33,12 +33,12 @@
         var service = {
             // common angular dependencies
             $broadcast: $broadcast,
-            $q: $q,
             $timeout: $timeout,
             // generic
             activateController: activateController,
             createSearchThrottle: createSearchThrottle,
             debouncedThrottle: debouncedThrottle,
+            isEmptyObject: isEmptyObject,
             isNumber: isNumber,
             logger: logger, // for accessibility
             //dateUtilities: dateUtilities,  // for accessibility
@@ -124,6 +124,13 @@
         function isNumber(val) {
             // negative or positive
             return /^[-]?\d+$/.test(val);
+        }
+
+        function isEmptyObject(val) {
+            for (var p in val) {
+                return false;
+            }
+            return true;
         }
 
         function textContains(text, searchText) {

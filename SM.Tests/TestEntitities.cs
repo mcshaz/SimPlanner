@@ -11,7 +11,7 @@ namespace ServerSideUnitTests
     public class TestEntitities
     {
         [TestMethod]
-        public void TestCreate()
+        public void TestCreateDatabase()
         {
             MedSimDbContext db = null;
             try 

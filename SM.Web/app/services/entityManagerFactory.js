@@ -26,9 +26,12 @@
             metadataStore: metadataStore
         });
         //var log = common.logger.getLogFn(serviceId);
+        /*
         masterManager.hasChangesChanged.subscribe(function () {
             $rootScope.$broadcast('hasChanges', arguments[0]);
         });
+        subscribe from the dataservice - then one can choose entityChanged
+        */
 
         var self = {
             manager: masterManager,

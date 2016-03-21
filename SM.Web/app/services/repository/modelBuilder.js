@@ -21,9 +21,9 @@
                 //
             };
 
-            CourseCtor.prototype.addParticipant = function (participantId) {
+            CourseCtor.prototype.addParticipant = function (participant /* or participantId */) {
                 return this.entityAspect.entityManager.createEntity('CourseParticipantDto', {
-                    participantId: participantId || breeze.core.getUuid(),
+                    participantId: (participant.id || participant),
                     courseId: this.id
                 });
             };

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SM.Dto.Utilities;
 using SM.Metadata;
+using SM.Metadata.CustomValidators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -164,11 +165,11 @@ namespace SM.Dto
                 [typeof(MaxLengthAttribute)] = x => GetStrLenDictionary(((MaxLengthAttribute)x).Length),
                 [typeof(UrlAttribute)] = x => new Dictionary<string, object>
                 {
-                    ["name"] = "url",
+                    ["name"] = "url"
                 },
                 [typeof(CreditCardAttribute)] = x=> new Dictionary<string, object>
                 {
-                    ["name"] = "creditCard",
+                    ["name"] = "creditCard"
                 },
                 [typeof(FixedLengthAttribute)] = x => //note this is one of my attributes to force fixed length
                 {
@@ -183,6 +184,13 @@ namespace SM.Dto
                         ["min"] = ra.Minimum,
                         ["max"] = ra.Maximum
                     }; 
+                },
+                [typeof(PersonFullNameAttribute)] = x=> new Dictionary<string, object>
+                {
+                    ["name"] = "personFullName",
+                    ["minNames"] = PersonFullNameAttribute.MinNames,
+                    ["maxNames"] = PersonFullNameAttribute.MaxNames,
+                    ["minNameLength"] = PersonFullNameAttribute.MinNameLength
                 },
                 [typeof(KeyAttribute)] = ignore
             };

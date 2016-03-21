@@ -34,6 +34,7 @@
         $rootScope.$on('$routeChangeStart',newRoute);
 
         function newRoute(event, next, current) {
+            if (event.defaultPrevented) { return; }
             toggleSpinner(true);
         }
         

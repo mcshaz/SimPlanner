@@ -62,8 +62,9 @@ namespace SM.Dto
                 }
             }
 
-            return relationships.Values.Select(v => v.Properties.Single())
-                .ToLookup(k => k.TypeName, v => v.PropertyName.PascalToCamelCase()).ToDictionary(k=>k.Key, v=>v.AsEnumerable());
+            return relationships.Values.Select(v => v.RequiredProperty)
+                .ToLookup(k => k.TypeName, v => v.PropertyName.PascalToCamelCase())
+                .ToDictionary(k=>k.Key, v=>v.AsEnumerable());
             //could return the lookup directly, but newtonsoft serialisation would require a custom converter
                 
         }
@@ -85,33 +86,32 @@ namespace SM.Dto
         {
             public NavigationProperty(EdmxProperty propName)
             {
-                Properties = new EdmxProperty[2];
-                Properties[0] = propName;
+                _properties = new EdmxProperty[2];
+                _properties[0] = propName;
             }
-            public EdmxProperty[] Properties { get; private set; }
+            readonly EdmxProperty[] _properties;
+            public EdmxProperty RequiredProperty { get; private set; }
 
             public void AddProperty(EdmxProperty propName)
             {
-                Debug.Assert(Properties[1] == null);
-                Properties[1] = propName;
+                Debug.Assert(_properties[1] == null);
+                _properties[1] = propName;
             }
 
             public void SetSingleMultiplicityType(string typeName)
             {
                 int i;
-                for (i=0; i < Properties.Length; i++)
+                for (i=0; i < _properties.Length; i++)
                 {
                     //if this throws, it is because the relationships in the entity model are not configured to be bi-directional
                     //modify this accordingly, but I want it to throw until I have my entity model sorted out
-                    if (Properties[i].TypeName == typeName)
+                    if (_properties[i].TypeName == typeName)
                     {
                         break;
                     } 
                 }
-                
-                var newProperties = new EdmxProperty[1];
-                Array.Copy(Properties, 1-i, newProperties,0, 1); 
-                Properties = newProperties;
+
+                RequiredProperty = _properties[1 - i];
             }
 
         }

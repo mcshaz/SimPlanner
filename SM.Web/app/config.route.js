@@ -3,8 +3,17 @@
 
     var app = angular.module('app');
 
+    var userRoles = {
+        all: '*',
+        siteAdmin: 'siteAdmin',
+        institutionAdmin: 'institutionAdmin',
+        faculty: 'faculty',
+        participant: 'participant'
+    };
+
     // Collect the routes
-    app.constant('routes', getRoutes());
+    app.constant('USER_ROLES', userRoles)
+        .constant('routes', getRoutes());
     
     // Configure the routes and route resolvers
     app.config(['$routeProvider', 'routes', routeConfigurator]);
@@ -27,9 +36,6 @@
                     settings: {
                         nav: 1,
                         content: '<i class="fa fa-dashboard"></i> Dashboard'
-                    },
-                    access: {
-                        requiresLogin: false
                     }
                 }
             }, {
@@ -42,7 +48,7 @@
                         content: '<i class="fa fa-lock"></i> Admin'
                     },
                     access: {
-                        requiresLogin: true
+                        allowedRoles: userRoles.siteAdmin
                     }
                 }
             }, {
@@ -55,7 +61,7 @@
                         content: 'New Course' //<i class="fa fa-"></i> 
                     },
                     access: {
-                        requiresLogin: true
+                        allowedRoles: userRoles.all
                     }
                 }
             }

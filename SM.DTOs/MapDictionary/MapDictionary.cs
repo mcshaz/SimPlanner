@@ -60,7 +60,7 @@ namespace SM.Dto.Maps
             return (Expression<Func<T, TMap>>)GetLambda(typeof(T).Name, includes, selects, sepChar);
         }
 
-        private static LambdaExpression GetLambda(string typeName, string[] includes, string[] selects, char sepChar)
+        internal static LambdaExpression GetLambda(string typeName, string[] includes, string[] selects, char sepChar)
         {
             var includeSelects = new IncludeSelectOptions(typeName, includes, selects, sepChar);
             VisitNodes(includeSelects.RequiredMappings);

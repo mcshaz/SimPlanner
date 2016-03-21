@@ -5,59 +5,53 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['$routeParams','common','datacontext', '$rootScope', '$uibModal', 'breeze']; 
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$uibModal', 'breeze', '$scope'];
 
-    function controller($routeParams, common, datacontext, $rootScope, $uibModal, breeze) {
+    function controller(abstractController, $routeParams, common, datacontext,  $uibModal, breeze, $scope) {
         /* jshint validthis:true */
         var vm = this;
-        var log = common.logger.getLogFn(controllerId);
+        abstractController.constructor.call(this, {
+            controllerId: controllerId,
+            watchedEntityName: 'course',
+            $scope: $scope
+        })
         var id = $routeParams.id;
+        var isNew = id == 'new';
 
-        vm.canSave = false;
         vm.course = {};
         vm.courseTypes = [];
         vm.dateFormat = '';
         vm.deleteCourseParticipant = deleteCourseParticipant;
         vm.dpPopup = { isOpen: false };
         vm.departments = [];
+        
+        vm.hasChanges = false;
         vm.maxDate = new Date();
         vm.maxDate.setFullYear(vm.maxDate.getFullYear() + 1);
-        vm.minDate = new Date(2007, 1);
+        vm.minDate = new Date(2007, 0);
         vm.openDp = openDp;
         vm.openCourseParticipant = openCourseParticipant;
         vm.rooms = [];
         vm.save = save;
         vm.title = 'course';
 
-        $rootScope.$on('hasChanges', function () {
-            vm.canSave = datacontext.courses.hasChanges();
-        });
         activate();
 
         function activate() {
             datacontext.ready().then(function () {
                 var promises =[ datacontext.courseTypes.all().then(function (data) {
-                        vm.courseTypes = data;
-                        if (data.length === 1 && isNew()) {
-                            vm.course.courseType = data[0];
-                    }
+                    vm.courseTypes = data;
                 }),datacontext.departments.all().then(function (data) {
-                        vm.departments = data;
-                        if (data.length === 1 && isNew()) {
-                            vm.course.department = data[0];
-                        }
+                    vm.departments = data;
                 }), datacontext.rooms.all().then(function (data) {
                     vm.rooms = data;
-                    if (data.length === 1 && isNew()) {
-                        vm.course.room = data[0];
-                    }
                 })];
-                if (isNew()) {
+                if (isNew) {
                     vm.course = datacontext.courses.create();
                 }else{
                     promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant'}).then(function (data) {
                         if (!data) {
-                            log.warning('Could not find course id = ' +id);
+                            vm.log.warning('Could not find course id = ' +id);
                             return;
                             //gotoCourses();
                         }
@@ -67,13 +61,9 @@
                 vm.dateFormat = moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
                 common.activateController(promises, controllerId)
                     .then(function () {
-                        log('Activated Course View');
+                        vm.log('Activated Course View');
                     });
             });
-        }
-
-        function isNew() {
-            return id == 'new';
         }
 
         function openDp() {
@@ -81,30 +71,57 @@
         }
 
         function save() {
-            log({ msg: 'saved date: ' + vm.course.startTime });
-        }//datacontext.save;
+            datacontext.save();
+        }//;
 
         function openCourseParticipant(participantId) {
+            var isNew = participantId.startsWith('new');
+            var isFaculty = isNew
+                ? participantId.endsWith('Faculty')
+                : getCourseParticipant(participantId).isFaculty;
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/courseParticipant/courseParticipant.html',
                 controller: 'courseParticipant',
                 controllerAs: 'cp',
                 //size: 'lg',
                 resolve: {
-                    courseParticipantIds: function () {
-                        return { courseId: vm.course.id, participantId:participantId };
+                    currentCourse: function () {
+                        return {
+                            participantId: isNew
+                                ? null
+                                : participantId,
+                            courseId:vm.course.id,
+                            isFaculty: isFaculty,
+                            createCourseParticipant: function (participant) {
+                                if (vm.course.courseParticipants.some(function(cp) {
+                                    return cp.participantId === participant.id;
+                                })) {
+                                    throw new Error("course participant already exists");
+                                }
+                                var cp = vm.course.addParticipant(participant);
+                                cp.isFaculty = isFaculty;
+                                if (vm.course.entityAspect.entityState !== breeze.EntityState.Added){
+                                    datacontext.save(cp);
+                                }
+                                return cp;
+                            }
+                        };
                     }
                 }
             });
         }
 
         function deleteCourseParticipant(participantId) {
-            var cp = vm.course.courseParticipants.find(function (el) {
-                return el.participantId == participantId;
-            });
-            if (!cp) { log.warning({ msg: 'could not delete course participant', data: 'failed delete participant:' + participantId }); }
+            var cp = getCourseParticipant(participantId);
             cp.entityAspect.setDeleted();
+            datacontext.save(cp).then(function (data) { vm.log('removed ' + cp.participant.fullName + ' from course');},
+                function (error) { log.error({ msg: 'failed to remove ' + cp.participant.fullName + ' from course' }) })
+        }
 
+        function getCourseParticipant(participantId) {
+            vm.course.courseParticipants.find(function (cp) {
+                return cp.participantId == participantId;
+            })
         }
     }
 })();

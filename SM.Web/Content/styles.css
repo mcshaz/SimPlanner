@@ -432,6 +432,10 @@ div.time-accompany{
     margin-left:-15px;
     min-width:175px;
 }
+
+.starshipLogo {
+    background-color:#FFFFFF;
+}
 /*#endregion*/
 
 /*#region Angular ng-show dissolve animation */

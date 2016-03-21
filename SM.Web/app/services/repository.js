@@ -49,27 +49,9 @@
                     return executeQuery(query);
                 };
 
-                self.create = function (/*ids and/or entityState*/) {
+                self.create = function (ids) {
                     var newIds = {};
-                    var ids;
-                    var entityState;
-                    switch (arguments.length) {
-                        case 0:
-                            break;
-                        case 1:
-                            if (arguments[0] && arguments[0].parentEnum && arguments[0].parentEnum.name=="EntityState") {
-                                entityState = arguments[0];
-                            } else {
-                                ids = arguments[0];
-                            }
-                            break;
-                        case 2:
-                            ids = arguments[0];
-                            entityState = arguments[1];
-                            break;
-                        default:
-                            throw new SyntaxError('create requires 0-2 arguments');
-                    }
+
                     var keyProps = entityType.keyProperties;
                     if (!ids) {
                         if (keyProps.length !== 1) {
@@ -84,10 +66,10 @@
                             newIds[keyProps[i].name] = ids[i];
                         }
                     } else {
-                        angular.extend(newIds,ids);
+                        newIds = ids;
                     }
 
-                    return manager().createEntity(entityType, newIds, entityState || breeze.EntityState.Added);
+                    return manager().createEntity(entityType, newIds);
                 }
 
                 function keyPropsToArray(key) {

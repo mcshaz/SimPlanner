@@ -16,7 +16,7 @@
     };
 
     var config = {
-        appErrorPrefix: '[HT Error] ', //Configure the exceptionHandler decorator
+        appErrorPrefix: '[SM Error] ', //Configure the exceptionHandler decorator
         docTitle: 'SimManager: ',
         events: events,
         remoteServiceName: remoteServiceName,

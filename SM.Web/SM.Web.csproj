@@ -341,7 +341,7 @@
     <Content Include="sink.html" />
     <Content Include="app\instructorCourse\instructorCourse.html" />
     <Content Include="app\instructorCourse\instructorCourse.js" />
-    <Content Include="app\services\repository\repository.abstract.js" />
+    <Content Include="app\services\controller.abstract.js" />
     <Content Include="app\services\repository\repository.participant.js" />
     <Content Include="Web.config" />
   </ItemGroup>

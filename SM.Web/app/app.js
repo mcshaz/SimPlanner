@@ -21,14 +21,7 @@
     ]);
 
     /*Constants regarding user login defined here*/
-    app.constant('USER_ROLES', {
-            all: '*',
-            siteAdmin: 'siteAdmin',
-            institutionAdmin: 'institutionAdmin',
-            faculty: 'faculty',
-            participant: 'participant'
-        })
-        .constant('AUTH_EVENTS', {
+    app.constant('AUTH_EVENTS', {
             forbidden: 'event:auth-forbidden',
             loginRequired: 'event:auth-loginRequired',
             loginConfirmed: 'event:auth-loginConfirmed',

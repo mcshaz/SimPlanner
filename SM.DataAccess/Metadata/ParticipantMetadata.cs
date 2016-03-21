@@ -1,3 +1,4 @@
+using SM.Metadata.CustomValidators;
 using System.ComponentModel.DataAnnotations;
 
 namespace SM.Metadata
@@ -16,6 +17,7 @@ namespace SM.Metadata
         public string AlternateEmail { get; set; }
         [Required]
         [StringLength(256)]
+        [PersonFullName]
         public string FullName { get; set; }
     }
 }

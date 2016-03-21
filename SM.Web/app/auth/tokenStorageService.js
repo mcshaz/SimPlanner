@@ -63,8 +63,8 @@
         //e.g. <p ng-if="isAuthorized(authorizedRoles)">show this only to admins</p>
         function isAuthorized(authorizedRoles) {
             if (!isLoggedIn()) {return false;}
-            if (!angular.isArray(authorizedRoles)) {
-                authorizedRoles = [authorizedRoles];
+            if (typeof(authorizedRoles) === 'string') {
+                authorizedRoles = authorizedRoles.split(',');
             }
             if (authorizedRoles.length === 1 && authorizedRoles[0] === '*') {
                 return true;

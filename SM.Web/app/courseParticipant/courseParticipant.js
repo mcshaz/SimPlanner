@@ -5,30 +5,34 @@
         .module('app')
         .controller(controllerId, courseParticipantCtrl);
 
-    courseParticipantCtrl.$inject = ['common', 'datacontext', '$rootScope', 'breeze', '$uibModalInstance','courseParticipantIds'];
+    courseParticipantCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope', 'currentCourse', 'controller.abstract'];
+    //changed $uibModalInstance to $scope to get the events
 
-    function courseParticipantCtrl(common, datacontext, $rootScope, breeze, $modalInstance,courseParticipantIds) {
+    function courseParticipantCtrl(common, datacontext, breeze, $scope, currentCourse, abstractController) {
         /* jshint validthis:true */
         var vm = this;
-        var log = common.logger.getLogFn(controllerId);
-        var lastData = [];
+        abstractController.constructor.call(this, {
+            controllerId: controllerId,
+            watchedEntityName: 'participant',
+            $scope: $scope
+        })
+
+        var isNewCourseParticipant = vm.isNew = (currentCourse.participantId === null);
 
         vm.canSave = false;
         vm.close = close;
-        vm.courseParticipant = { participant: {fullName:''} };
+        vm.createCourseParticipant = createCourseParticipant;
+        vm.createNewPerson = createNewPerson;
         vm.dialCode = '';
         vm.departments = [];
+        vm.isFaculty = currentCourse.isFaculty;
+        vm.isValidParticipantName = isValidParticipantName;
         vm.getPeople = getPeople;
-        vm.isNullCourseParticipant = courseParticipantIds.participantId.startsWith('new');
-        vm.noResults;
-        vm.createAddParticipant = createAddParticipant;
-        vm.participantSelected = participantSelected;
+        vm.participant = { fullName: '' };
+        vm.onParticipantSelected = onParticipantSelected;
         vm.professionalRoles = [];
-        vm.save = save;
+        vm.saveParticipant = saveParticipant;
 
-        $rootScope.$on('hasChanges', function () {
-            vm.canSave = datacontext.courseParticipants.hasChanges();
-        });
         activate();
 
         function activate() {
@@ -40,109 +44,97 @@
                 datacontext.professionalRoles.all().then(function (data) {
                     vm.professionalRoles = data;
                 })];
-                if (!vm.isNullCourseParticipant) {
-                    promises.push(datacontext.courseParticipants.fetchByKey(courseParticipantIds, { expand: "participant" }).then(function (data) {
+                if (!isNewCourseParticipant) {
+                    promises.push(datacontext.participants.fetchByKey(currentCourse.participantId, { expand: "participant" }).then(function (data) {
                         if (!data) {
-                            log.warning({ msg: 'Could not find specified course participant', data: courseParticipantIds });
+                            vm.log.warning({ msg: 'Could not find specified course participant', data: currentCourse.participantId });
                             return;
                             //gotoCourses();
                         }
-                        vm.courseParticipant = data;
+                        vm.participant = data;
                     }));
                 } 
                 common.activateController(promises, controllerId)
                     .then(function () {
-                        log('Activated CourseParticipant Dialog');
+                        vm.log('Activated Course Participant Dialog');
                     });
                 });
         }
         function close() {
-            destroy();
-            $modalInstance.close();
+            $scope.$close('closeButton');
         }
-        function save() {
-            log({ msg: 'saved date: ' + vm.course.startTime });
-        }//datacontext.save;
 
-        var notThisCourse = breeze.Predicate.create('courseParticipants', 'any', 'courseId', '==', courseParticipantIds.courseId).not();
+        function createCourseParticipant($event) {
+            var entState = vm.participant.entityAspect.entityState;
+            if (entState.isAdded()) {
+                datacontext.save(vm.participant);
+            } else if (entState.isModified()) {
+                //TODO compare names and show alert
+            }
+            var cp = currentCourse.createCourseParticipant(vm.participant);
+            vm.log.success(cp.participant.fullName + ' added to course ' + (cp.isFaculty ? 'faculty' : 'participants'));
+            vm.isNew = true;
+            vm.participant = { fullName: '' };
+        }
 
-        function createAddParticipant() {
-            var name = vm.courseParticipant.participant.fullName;
+        function createNewPerson() {
             var match;
-            if (!vm.isNullCourseParticipant) {
-                throw new Error('createAddParticipant called but courseParticipant is not empty')
+            if (match = _lastData.find(function (ld) {
+                return ld.fullName.startsWith(name);
+            })) {
+                if (!confirm("Are you sure you want to create a new person rather than select " + match.fullName)) {
+                    return;
+                }
             }
-            if (match = lastData.find(function (el) { return el.startsWith(name); })
-                    && !confirm("Are you SURE this person is not the existing " + match.description)) {
-                return;
-            }
-            var participant = datacontext.participants.create(breeze.EntityState.Detached);
-            participant.fullName =name;
-            assignParticipant(participant.id);
+            vm.participant = datacontext.participants.create();
+
+            //todo check event fires
         }
 
+        function saveParticipant() {
+            var origName = vm.participant.entityAspect.originalValues.fullName;
+            if (origName !== vm.participant.fullName) {
+                if (!confirm("Are you sure you wish to change the name of " + origName + " to " + vm.participant.fullName +"?\nYou should only click yes if\n-This person's name was mispelt\n-You are adding something to differentiate from others with a similar name, e.g. John 'tall' Smith\n-The person has changed their name, e.g. after marriage")) {
+
+                }
+            }
+            datacontext.save(vm.participant);
+        }
+
+        var notThisCourse = breeze.Predicate.create('courseParticipants', 'any', 'courseId', '==', currentCourse.courseId).not();
         var baseArgs = {
             orderBy: 'fullName',
             take: 10,
             select: 'id,fullName,professionalRole.category,department.abbreviation'
         };
-        var lastVal;
+        var _lastVal;
+        var _lastData;
         function getPeople(val) {
-            if (lastVal && lastVal.length < baseArgs.take && val.toLowerCase().startsWith(lastVal)) {
+            if (_lastVal && _lastVal.length < baseArgs.take && val.toLowerCase().startsWith(_lastVal)) {
                 val = val.toLowerCase();
                 //I think the uib - typeahead handles either promises or objects, but seems cleaner to have a function return one or tother
-                return lastData.filter(function (el) { return el.fullName.toLowerCase().startsWith(val); });
+                return _lastData.filter(function (el) { return el.fullName.toLowerCase().startsWith(val); });
             }
             baseArgs.where = breeze.Predicate.create('fullName', 'startsWith', val).and(notThisCourse);
             return datacontext.participants.find(baseArgs).then(function (results) {
                 results.forEach(function (el) {
                     el.description = el.fullName + ' (' + el.department_Abbreviation + ' ' + common.toSeperateWords(el.professionalRole_Category) + ')';
                 });
-                lastVal = val.toLowerCase();
-                return (lastData = results);
+                _lastVal = val.toLowerCase();
+                return (_lastData = results);
             });
             delete baseArgs.where;
         }
 
-
-        function participantSelected(item) {
-            //for now assuming we make courseParticipant equivalent of 'immutable'
-            assignParticipant(item.id);
+        function onParticipantSelected(item) {
             datacontext.participants.fetchByKey(item.id).then(function (part) {
-                vm.courseParticipant.participant = part;
+                vm.participant = part;
             });
         }
 
-        function assignParticipant(participantId) {
-            if (vm.courseParticipant.entityAspect) {
-                throw new Error('should not be calling assignParticipant if courseParticipant is already an entity');
-            }
-            vm.courseParticipant = datacontext.courseParticipants.create({courseId: courseParticipantIds.courseId, participantId: participantId}, breeze.EntityState.Detached);
-            vm.courseParticipant.isFaculty = /faculty$/i.test(courseParticipantIds.participantId);
-            
-            vm.isNullCourseParticipant = false;
-        }
-
-        function destroy($event) {
-            deleteAdded([vm.courseParticipant.participant, vm.courseParticipant], $event);
-        }
-
-        function deleteAdded(entArray, $event) {
-            if (!entArray) { return; }
-            if (!Array.isArray(entArray)) { entArray = [entArray]; }
-            var hasChecked = !($event && angular.isFunction($event.preventDefault));
-            for (var i = 0; i < entArray.length; i++) {
-                if (entArray[i].entityAspect && ent.entityAspect.entityState.isDetached()) {
-                    if (!hasChecked) {
-                        if (!(hasChecked = confirm('Are you sure you want to discard changes?'))) {
-                            $event.preventDefault();
-                            return;
-                        }
-                    }
-                    entArray[i].entityAspect.setDeleted();
-                }
-            }
+        function isValidParticipantName() {
 
         }
+
     }
 })();
