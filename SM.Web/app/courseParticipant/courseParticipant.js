@@ -17,7 +17,7 @@
             $scope: $scope
         })
 
-        var isNewCourseParticipant = vm.isNew = (currentCourse.participantId === null);
+        vm.isNew = (currentCourse.courseParticipant == null);
 
         vm.canSave = false;
         vm.close = close;
@@ -28,10 +28,11 @@
         vm.isFaculty = currentCourse.isFaculty;
         vm.isValidParticipantName = isValidParticipantName;
         vm.getPeople = getPeople;
-        vm.participant = { fullName: '' };
+        vm.participant = vm.isNew
+            ? datacontext.participants.create(breeze.EntityState.Detached)
+            :currentCourse.courseParticipant.participant;//{ fullName: '' };
         vm.onParticipantSelected = onParticipantSelected;
         vm.professionalRoles = [];
-        vm.saveParticipant = saveParticipant;
 
         activate();
 
@@ -44,16 +45,6 @@
                 datacontext.professionalRoles.all().then(function (data) {
                     vm.professionalRoles = data;
                 })];
-                if (!isNewCourseParticipant) {
-                    promises.push(datacontext.participants.fetchByKey(currentCourse.participantId, { expand: "participant" }).then(function (data) {
-                        if (!data) {
-                            vm.log.warning({ msg: 'Could not find specified course participant', data: currentCourse.participantId });
-                            return;
-                            //gotoCourses();
-                        }
-                        vm.participant = data;
-                    }));
-                } 
                 common.activateController(promises, controllerId)
                     .then(function () {
                         vm.log('Activated Course Participant Dialog');
@@ -65,16 +56,29 @@
         }
 
         function createCourseParticipant($event) {
-            var entState = vm.participant.entityAspect.entityState;
-            if (entState.isAdded()) {
-                datacontext.save(vm.participant);
-            } else if (entState.isModified()) {
-                //TODO compare names and show alert
+            if (!validateSaveParticipant()) { return; }
+            var cp;
+            if (vm.isNew) {
+                cp = currentCourse.course.addParticipant(vm.participant, { isFaculty: vm.isFaculty });
+                datacontext.save([cp, cp.participant]).then(function () {
+                    vm.log.success(cp.participant.fullName + ' added to course ' + (cp.isFaculty ? 'faculty' : 'participants'));
+                    afterSave();
+                });
+            } else {
+                cp = currentCourse.courseParticipant;
+                cp.professionalRoleId = cp.participant.defaultProfessionalRoleId;
+                cp.departmentId = cp.participant.defaultDepartmentId;
+                datacontext.save([cp, cp.participant]).then(function () {
+                    vm.log.success(cp.participant.fullName + ' updated');
+                    vm.isNew = true;
+                    afterSave();
+                });
             }
-            var cp = currentCourse.createCourseParticipant(vm.participant);
-            vm.log.success(cp.participant.fullName + ' added to course ' + (cp.isFaculty ? 'faculty' : 'participants'));
-            vm.isNew = true;
-            vm.participant = { fullName: '' };
+
+            function afterSave() {
+                vm.participant = datacontext.participants.create(breeze.EntityState.Detached);
+                _lastData = _lastVal = null;
+            }
         }
 
         function createNewPerson() {
@@ -83,25 +87,32 @@
                 return ld.fullName.startsWith(name);
             })) {
                 if (!confirm("Are you sure you want to create a new person rather than select " + match.fullName)) {
+                    onParticipantSelected(match);
                     return;
                 }
             }
-            vm.participant = datacontext.participants.create();
+            datacontext.addEntity(vm.participant);
 
             //todo check event fires
         }
 
-        function saveParticipant() {
+        function validateSaveParticipant() {
             var origName = vm.participant.entityAspect.originalValues.fullName;
-            if (origName !== vm.participant.fullName) {
-                if (!confirm("Are you sure you wish to change the name of " + origName + " to " + vm.participant.fullName +"?\nYou should only click yes if\n-This person's name was mispelt\n-You are adding something to differentiate from others with a similar name, e.g. John 'tall' Smith\n-The person has changed their name, e.g. after marriage")) {
-
+            if (origName && origName !== vm.participant.fullName) {
+                if (!confirm("Are you sure you wish to change the name of " + origName + " to " + vm.participant.fullName +"?\n\nYou should only click yes if:\n-This person's name was originally mispelt [sic]\n-You are adding something to differentiate from others with a similar name, e.g. John 'tall' Smith\n-The person has changed their name, e.g. after marriage")) {
+                    var oldVal = vm.participant;
+                    vm.participant = datacontext.participants.cloneItem(vm.participant);
+                    oldval.entityAspect.rejectChanges();
+                    ["email", "alternateEmail", "phoneNumber"].foreach(function(propName){
+                        if (vm.participant[propName] === oldVal[propName]) { vm.participant["propName"] = null; }
+                    });
+                    return false
                 }
             }
-            datacontext.save(vm.participant);
+            return true;
         }
 
-        var notThisCourse = breeze.Predicate.create('courseParticipants', 'any', 'courseId', '==', currentCourse.courseId).not();
+        var notThisCourse = breeze.Predicate.create('courseParticipants', 'any', 'courseId', '==', currentCourse.course.id).not();
         var baseArgs = {
             orderBy: 'fullName',
             take: 10,
@@ -133,7 +144,7 @@
         }
 
         function isValidParticipantName() {
-
+            return vm.participant.entityAspect.validateProperty("fullName");
         }
 
     }

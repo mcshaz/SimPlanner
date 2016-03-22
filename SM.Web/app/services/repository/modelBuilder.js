@@ -21,11 +21,18 @@
                 //
             };
 
-            CourseCtor.prototype.addParticipant = function (participant /* or participantId */) {
-                return this.entityAspect.entityManager.createEntity('CourseParticipantDto', {
-                    participantId: (participant.id || participant),
-                    courseId: this.id
-                });
+            CourseCtor.prototype.addParticipant = function (participant) {
+                if (!participant.entityAspect) { throw new TypeError("addParticipant requires a participant entity as an argument");}
+                var keys = {
+                    participantId: participant.id ,
+                    courseId: this.id,
+                    departmentId: participant.defaultDepartmentId,
+                    professionalRoleId: participant.defaultProfessionalRoleId
+                };
+                if (arguments.length > 1) {
+                    angular.extend(keys, arguments[1]);
+                }
+                return this.entityAspect.entityManager.createEntity('CourseParticipantDto', keys);
             };
 
             CourseCtor.prototype.removeParticipant = function (courseParticipant) {

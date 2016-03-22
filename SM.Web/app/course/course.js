@@ -76,35 +76,24 @@
 
         function openCourseParticipant(participantId) {
             var isNew = participantId.startsWith('new');
+            var courseParticipant = isNew
+                ? null
+                : getCourseParticipant(participantId);
             var isFaculty = isNew
                 ? participantId.endsWith('Faculty')
-                : getCourseParticipant(participantId).isFaculty;
+                : courseParticipant.participant.isFaculty;
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/courseParticipant/courseParticipant.html',
                 controller: 'courseParticipant',
                 controllerAs: 'cp',
+                $scope:{}, //?
                 //size: 'lg',
                 resolve: {
                     currentCourse: function () {
                         return {
-                            participantId: isNew
-                                ? null
-                                : participantId,
-                            courseId:vm.course.id,
-                            isFaculty: isFaculty,
-                            createCourseParticipant: function (participant) {
-                                if (vm.course.courseParticipants.some(function(cp) {
-                                    return cp.participantId === participant.id;
-                                })) {
-                                    throw new Error("course participant already exists");
-                                }
-                                var cp = vm.course.addParticipant(participant);
-                                cp.isFaculty = isFaculty;
-                                if (vm.course.entityAspect.entityState !== breeze.EntityState.Added){
-                                    datacontext.save(cp);
-                                }
-                                return cp;
-                            }
+                            courseParticipant: courseParticipant,
+                            course:vm.course, //possibly should pass the id here and use datacontext to fetch from cache - would make it more usable outside of a modal window
+                            isFaculty: isFaculty
                         };
                     }
                 }
@@ -119,8 +108,8 @@
         }
 
         function getCourseParticipant(participantId) {
-            vm.course.courseParticipants.find(function (cp) {
-                return cp.participantId == participantId;
+            return vm.course.courseParticipants.find(function (cp) {
+                return cp.participantId === participantId;
             })
         }
     }

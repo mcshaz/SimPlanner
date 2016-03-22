@@ -113,7 +113,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <button class="btn-link" ng-click="vm.openCourseParticipant('newFaculty')">Add Faculty Member</button>
+                            <button class="btn-link" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
+                                    uib-tooltip="Please save the course first" tooltip-enable="vm.course.entityAspect.entityState.isAdded()" >Add Faculty Member</button>
                         </fieldset>
                     </div>
                     <div class="form-group">
@@ -160,7 +161,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <button class="btn-link" ng-click="vm.openCourseParticipant('newParticipant')">Add Participant</button>
+                            <button class="btn-link" ng-click="vm.openCourseParticipant('newParticipant')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
+                                    uib-tooltip="Please save the course first" tooltip-enable="vm.course.entityAspect.entityState.isAdded()" >Add Participant</button>
                         </fieldset>
                     </div>
                 </div>

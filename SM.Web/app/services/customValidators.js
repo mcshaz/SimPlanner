@@ -51,7 +51,7 @@
         // The last parameter below is the 'context' object that will be passed into the 'ctx' parameter above
         // when this validator executes. Several other properties, such as displayName will get added to this object as well.
         var template = breeze.core.formatString(
-            "'%displayName%' must be between %1 and %2 words, with a first and last name of at least %3 letters each",
+            "'%displayName%' of %1-%2 words, first & last of ≥%3 letters",
             context.minNames, context.maxNames, context.minNameLength);
         return new validator("personFullName", valFn, {
             messageTemplate: template

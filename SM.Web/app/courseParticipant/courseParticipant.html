@@ -12,8 +12,8 @@
                            uib-typeahead="p.fullName as p.description for p in cp.getPeople($viewValue)" 
                            typeahead-focus-first="false" typeahead-on-select="cp.onParticipantSelected($item)" 
                            typeahead-loading="loadingPeople" typeahead-no-results="cp.noResults" 
-                           typeahead-select-on-blur="true" typeahead-show-hint="true" data-z-validate 
-                           /> 
+                           typeahead-select-on-blur="true"  data-z-validate 
+                           /> <!--typeahead-show-hint="true" is off for now as will have to fiddle with the left ?margin/padding ?tt-typeahed class? in the error state-->
                     <i ng-show="loadingPeople" class="glyphicon glyphicon-refresh"></i>
                     <div ng-show="noResults">
                         <i class="glyphicon glyphicon-remove"></i> No Existing Participants
@@ -23,8 +23,8 @@
             </div>
             <div class="row">
                 <div class="pull-right">
-                    <button class="btn btn-info" ng-disabled="cp.participant.entityAspect || !cp.isValidParticipantName()" type="button" ng-click="cp.createNewPerson()">Create New Person</button>
-                    <button class="btn btn-success" type="submit" ng-disabled="!cp.participant.entityAspect || cp.participant.entityAspect.hasValidationErrors">Add To Sim</button>
+                    <button class="btn btn-info" ng-disabled="!cp.isValidParticipantName() || !cp.participant.entityAspect.entityState.isDetached()" type="button" ng-click="cp.createNewPerson()">Create New Person</button>
+                    <button class="btn btn-success" type="submit" ng-disabled="cp.participant.entityAspect.isDetached() || cp.participant.entityAspect.hasValidationErrors">{{cp.isNew?'Add to Sim':'Update Details'}}</button>
                 </div>
                 <div class="clearfix"/>
                 <hr />
@@ -32,7 +32,7 @@
             <div class="form-group">
                 <label for="email" class="col-md-2 control-label">Work Email</label>
                 <div class="col-md-10">
-                    <input class="form-control" type="email" id="email" data-z-validate ng-model="cp.participant.email" ng-disabled="!cp.participant.entityAspect"/>
+                    <input class="form-control" type="email" id="email" data-z-validate ng-model="cp.participant.email" ng-disabled="cp.participant.entityAspect.entityState.isDetached()"/>
                     <span class="text-danger" />
                 </div>
             </div>
@@ -40,7 +40,7 @@
             <div class="form-group">
                 <label for="alternateEmail" class="col-md-2 control-label">Personal Email</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="alternateEmail" type="email" data-z-validate ng-model="cp.participant.alternateEmail" ng-disabled="!cp.participant.entityAspect"/>
+                    <input class="form-control" id="alternateEmail" type="email" data-z-validate ng-model="cp.participant.alternateEmail" ng-disabled="cp.participant.entityAspect.entityState.isDetached()"/>
                     <span class="text-danger" />
                 </div>
             </div>
@@ -50,7 +50,7 @@
                 <div class="col-md-10">
                     <div class="input-group">
                         <span class="input-group-addon">(+{{cp.dialCode}})</span>
-                        <input class="form-control" type="tel" id="phoneNumber" data-z-validate ng-model="cp.participant.phoneNumber" ng-disabled="!cp.participant.entityAspect"/>
+                        <input class="form-control" type="tel" id="phoneNumber" data-z-validate ng-model="cp.participant.phoneNumber" ng-disabled="cp.participant.entityAspect.entityState.isDetached()"/>
 
                     </div>
                     <span class="text-danger" />
@@ -61,7 +61,7 @@
                 <label for="professionalRole" class="col-md-2 control-label">Professional Role</label>
                 <div class="col-md-10">
                     <select id="professionalRole" class="form-control" data-z-validate data-ng-options="pr as pr.description group by pr.category for pr in cp.professionalRoles"
-                            data-ng-model="cp.participant.professionalRole" ng-disabled="!cp.participant.entityAspect">
+                            data-ng-model="cp.participant.professionalRole" ng-disabled="cp.participant.entityAspect.entityState.isDetached()">
                         <option value="" disabled="disabled">
                             Select Professional Role...
                         </option>
@@ -74,7 +74,7 @@
                 <label for="cpDepartment" class="col-md-2 control-label">Department</label>
                 <div class="col-md-10">
                     <select id="cpDepartment" class="form-control" data-z-validate data-ng-options="d as d.name for d in cp.departments"
-                            data-ng-model="cp.participant.department" ng-disabled="!cp.participant.entityAspect">
+                            data-ng-model="cp.participant.department" ng-disabled="cp.participant.entityAspect.entityState.isDetached()">
                         <option value="" disabled="disabled">
                             Select Department...
                         </option>

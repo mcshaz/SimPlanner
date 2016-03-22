@@ -9,6 +9,7 @@
         var self = this;
         var log = common.logger.getLogFn(serviceId);
 
+        self.addEntity = addEntity;
         self.ready = entityManagerFactory.ready;
 
         self.rejectChanges = provider.rejectChanges;
@@ -44,6 +45,10 @@
         self.participants = repository.create(provider, 'ParticipantDto', 'Participants');
         self.professionalRoles = repository.create(provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);
         self.rooms = repository.create(provider, 'RoomDto', 'Rooms', breeze.FetchStrategy.FromLocalCache);
+
+        function addEntity(entity) {
+            provider.addEntity(entity);
+        }
 
         function saveFailed(error) {
             var msg = config.appErrorPrefix + 'Save failed: ' +

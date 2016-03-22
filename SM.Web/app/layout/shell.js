@@ -9,7 +9,7 @@
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
         var events = config.events;
-        vm.busyMessage = 'Please wait ...';
+        //vm.busyMessage = 'Please wait ...';
         vm.isBusy = true;
         vm.spinnerOptions = {
             radius: 40,

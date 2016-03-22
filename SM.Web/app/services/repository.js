@@ -6,7 +6,7 @@
     function factory(breeze, common, $q) {
         var Repository = (function () {
 
-            var repository = function (entityManagerFactory, entityTypeName, resourceName, fetchStrategy) {
+            var repository = function (manager, entityTypeName, resourceName, fetchStrategy) {
                 var log = common.logger.getLogFn(serviceId);
                 // Ensure resourceName is registered
                 var self = this;
@@ -18,8 +18,10 @@
                     getMetastore().setEntityTypeForResourceName(resourceName, entityTypeName);
                 }
 
+                self.cloneItem = cloneItem;
+
                 self.hasChanges = function () {
-                    return manager().hasChanges(entityTypeName);
+                    return manager.hasChanges(entityTypeName);
                 }
 
                 self.fetchByKey = function (key, argObj) {
@@ -27,7 +29,7 @@
                 };
 
                 self.getByKey = function (key) {
-                    return manager().getEntityByKey(entityTypeName, keyPropsToArray(key));
+                    return manager.getEntityByKey(entityTypeName, keyPropsToArray(key));
                 }
 
                 self.find = function () {
@@ -49,8 +51,28 @@
                     return executeQuery(query);
                 };
 
-                self.create = function (ids) {
+                self.create = function (/*ids and/or entityState*/) {
+                    var ids;
+                    var entityState;
                     var newIds = {};
+                    switch (arguments.length) {
+                        case 0:
+                            break;
+                        case 1:
+                            var arg = arguments[0];
+                            if (arg && arg.parentEnum && arg.parentEnum.name=="EntityState") {
+                                entityState = arg;
+                            } else {
+                                ids = arg;
+                            }
+                            break;
+                        case 2:
+                            ids = arguments[0];
+                            entityState = arguments[1];
+                            break;
+                        default:
+                            throw new SyntaxError('create requires 0-2 arguments');
+                    }
 
                     var keyProps = entityType.keyProperties;
                     if (!ids) {
@@ -69,8 +91,29 @@
                         newIds = ids;
                     }
 
-                    return manager().createEntity(entityType, newIds);
+                    return manager.createEntity(entityType, newIds, entityState);
                 }
+
+
+                //Ward is a legend - http://stackoverflow.com/questions/20566093/breeze-create-entity-from-existing-one
+                function cloneItem(item) {
+                    if (item.entityType !== entityType) {
+                        throw new TypeError("item to clone is of type " + item.entityType.typeName + " expected type " + entityTypeName);
+                    }
+                    // export w/o metadata and then parse the exported string.
+                    var exported = JSON.parse(manager.exportEntities([item], false));
+                    // extract the entity from the export
+                    var type = item.entityType;
+                    var copy = exported.entityGroupMap[type.name].entities[0];
+                    // remove the entityAspect
+                    delete copy.entityAspect;
+                    // remove the key properties
+                    type.keyProperties.forEach(function (p) { delete copy[p.name]; });
+
+                    // the "copy" provides the initial values for the create
+                    return manager.createEntity(type, copy);
+                }
+
 
                 function keyPropsToArray(key) {
                     if (Array.isArray(key)) { return key; }
@@ -181,7 +224,7 @@
                 }
 
                 function executeQuery(query) {
-                    return manager()
+                    return manager
                         .executeQuery(query.using(fetchStrategy || breeze.FetchStrategy.FromServer))
                         .then(function (data) {
                             return data.results;
@@ -189,16 +232,13 @@
                 }
 
                 function executeCacheQuery(query) {
-                    return manager().executeQueryLocally(query);
+                    return manager.executeQueryLocally(query);
                 }
 
                 function getMetastore() {
-                    return manager().metadataStore;
+                    return manager.metadataStore;
                 }
 
-                function manager() {
-                    return entityManagerFactory;
-                }
             };
 
             return repository;
@@ -208,8 +248,8 @@
             create: create
         };
 
-        function create(entityManagerFactory, entityTypeName, resourceName, fetchStrategy) {
-            return new Repository(entityManagerFactory, entityTypeName, resourceName, fetchStrategy);
+        function create(manager, entityTypeName, resourceName, fetchStrategy) {
+            return new Repository(manager, entityTypeName, resourceName, fetchStrategy);
         }
     }
 

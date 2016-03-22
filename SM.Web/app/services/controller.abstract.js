@@ -23,13 +23,14 @@
                 if (watched && watched.entityAspect) {
                     var entityState = watched.entityAspect.entityState;
                     if (entityState && ([breeze.EntityState.Modified, breeze.EntityState.Deleted].indexOf(entityState) > -1
-                        || (entityState === breeze.EntityState.Added && !common.isEmptyObject(watched.entityAspect.originalValues)))
-                            && !confirm('Are you sure you want to discard changes?')) {
-                        if (evtArgs && evtArgs.preventDefault) { evtArgs.preventDefault(); }
-                        common.$broadcast(commonConfig.config.controllerActivateSuccessEvent); //switch the spinner off
-                        return false; //the false if it is a beforeunload event
+                        || (entityState === breeze.EntityState.Added && !common.isEmptyObject(watched.entityAspect.originalValues)))) {
+                        vm.log.debug({msg:"confirming if data changed", data: watched.entityAspect});
+                        if (!confirm('Are you sure you want to discard changes?')) {
+                            if (evtArgs && evtArgs.preventDefault) { evtArgs.preventDefault(); }
+                            common.$broadcast(commonConfig.config.controllerActivateSuccessEvent); //switch the spinner off
+                            return false; //the false if it is a beforeunload event
+                        }
                     }
-                    vm[argObj.watchedEntityName].entityAspect.rejectChanges();
                 }
 
                 $window.onbeforeunload = null;

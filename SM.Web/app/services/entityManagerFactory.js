@@ -64,7 +64,6 @@
                 log.error(arg);
                 defer.reject(arg);
             });
-            resolved = true;
             unwatchImport(); //only run once - will be called on every recredential
             unwatchImport = null;
         };

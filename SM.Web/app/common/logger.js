@@ -56,7 +56,18 @@
             var toastType = logType;
             var msg = argOpts.message || argOpts.msg;
             var src = argOpts.source || argOpts.src;
-            var data = typeof argOpts.data == 'undefined' ? '' : angular.toJson(JSON.decycle(argOpts.data), true);//pretty
+            var data = argOpts.data;
+            if (data) data = JSON.prune(data, {
+                arrayMaxLength: 5,
+                depthDecr:3,
+                //inheritedProperties:true,
+                replacer:function(value, defaultValue, circular){
+                    if (circular) return '"-circular-"';
+                    if (value === undefined) return '"-undefined-"';
+                    if (Array.isArray(value)) return '"-array('+value.length+')-"';
+                    return defaultValue;
+                }
+            });
 
             switch(logType){
                 case 'success':
@@ -77,5 +88,8 @@
                 toastr[toastType](msg);
             }
         }
+
+
+
     }
 })();
