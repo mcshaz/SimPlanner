@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="pull-right">
                     <button class="btn btn-info" ng-disabled="!cp.isValidParticipantName() || !cp.participant.entityAspect.entityState.isDetached()" type="button" ng-click="cp.createNewPerson()">Create New Person</button>
-                    <button class="btn btn-success" type="submit" ng-disabled="cp.participant.entityAspect.isDetached() || cp.participant.entityAspect.hasValidationErrors">{{cp.isNew?'Add to Sim':'Update Details'}}</button>
+                    <button class="btn btn-success" type="submit" ng-disabled="cp.participant.entityAspect.entityState.isDetached() || cp.participant.entityAspect.hasValidationErrors">{{cp.isNew?'Add to Sim':'Update Details'}}</button>
                 </div>
                 <div class="clearfix"/>
                 <hr />
@@ -32,7 +32,7 @@
             <div class="form-group">
                 <label for="email" class="col-md-2 control-label">Work Email</label>
                 <div class="col-md-10">
-                    <input class="form-control" type="email" id="email" data-z-validate ng-model="cp.participant.email" ng-disabled="cp.participant.entityAspect.entityState.isDetached()"/>
+                    <input class="form-control" type="text" id="email" data-z-validate ng-model="cp.participant.email" ng-disabled="cp.participant.entityAspect.entityState.isDetached()"/>
                     <span class="text-danger" />
                 </div>
             </div>
@@ -40,7 +40,7 @@
             <div class="form-group">
                 <label for="alternateEmail" class="col-md-2 control-label">Personal Email</label>
                 <div class="col-md-10">
-                    <input class="form-control" id="alternateEmail" type="email" data-z-validate ng-model="cp.participant.alternateEmail" ng-disabled="cp.participant.entityAspect.entityState.isDetached()"/>
+                    <input class="form-control" id="alternateEmail" type="text" data-z-validate ng-model="cp.participant.alternateEmail" ng-disabled="cp.participant.entityAspect.entityState.isDetached()"/>
                     <span class="text-danger" />
                 </div>
             </div>
@@ -50,12 +50,14 @@
                 <div class="col-md-10">
                     <div class="input-group">
                         <span class="input-group-addon">(+{{cp.dialCode}})</span>
-                        <input class="form-control" type="tel" id="phoneNumber" data-z-validate ng-model="cp.participant.phoneNumber" ng-disabled="cp.participant.entityAspect.entityState.isDetached()"/>
+                        <input class="form-control" type="text" id="phoneNumber" data-z-validate ng-model="cp.participant.phoneNumber" ng-disabled="cp.participant.entityAspect.entityState.isDetached()"/>
 
                     </div>
                     <span class="text-danger" />
                 </div>
             </div>
+
+            <!--note eventually above 3 inputs might be type = email & tel -->
 
             <div class="form-group">
                 <label for="professionalRole" class="col-md-2 control-label">Professional Role</label>

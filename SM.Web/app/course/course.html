@@ -1,14 +1,14 @@
 ﻿<section id="dashboard-view" class="mainbar" data-ng-controller="course as vm">
     <section class="matter">
         <div class="container col-md-12">
-            <form class="form-horizontal" ng-submit="vm.save()" id="courseForm">
+            <form class="form-horizontal" ng-submit="vm.save($event)" id="courseForm">
                 <div class="col-md-6">
 
                     <div class="form-group">
                         <label for="department" class="col-md-2 control-label">Department</label>
                         <div class="col-md-10">
 
-                            <select id="department" class="form-control" data-z-validate  data-ng-model="vm.course.department" ng-options="d as d.name group by d.institution.name for d in vm.departments">
+                            <select id="department" class="form-control" data-z-validate data-ng-model="vm.course.department" ng-options="d as d.name group by d.institution.name for d in vm.departments">
                                 <option disabled selected hidden value="">
                                     Select Department...
                                 </option>
@@ -66,107 +66,106 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="col-md-6">
-                    <div>
-                        <fieldset>
-                            <legend>Faculty</legend>
-                            <div>
-                                <table class="table table-condensed table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Name
-                                            </th>
-                                            <th>
-                                                Role
-                                            </th>
-                                            <th>
-                                                Organiser
-                                            </th>
-                                            <th>
-                                                Confirmed
-                                            </th>
-                                            <th>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="cp in vm.course.courseParticipants | filter:{isFaculty:'true'}">
-                                            <td>
-                                                {{cp.participant.fullName}}
-                                            </td>
-                                            <td>
-                                                {{cp.participant.professionalRole.category}}
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" ng-checked="cp.isOrganiser" />
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" ng-checked="cp.isConfirmed" />
-                                            </td>
-                                            <td>
-                                                <button class="btn-link" ng-click="vm.deleteCourseParticipant(cp.participantId)">Remove</button> |
-                                                <button class="btn-link" ng-click="vm.openCourseParticipant(cp.participantId)">Edit</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button class="btn-link" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
-                                    uib-tooltip="Please save the course first" tooltip-enable="vm.course.entityAspect.entityState.isAdded()" >Add Faculty Member</button>
-                        </fieldset>
-                    </div>
-                    <div class="form-group">
-                        &nbsp;
-                        <hr/>
-                        &nbsp;
-                    </div>
-                    <div>
-                        <fieldset>
-                            <legend>Participants</legend>
-                            <div>
-                                <table class="table table-condensed table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Name
-                                            </th>
-                                            <th>
-                                                Role
-                                            </th>
-                                            <th>
-                                                Confirmed
-                                            </th>
-                                            <th>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="cp in vm.course.courseParticipants | filter:{isFaculty:'false'}">
-                                            <td>
-                                                {{cp.participant.fullName}}
-                                            </td>
-                                            <td>
-                                                {{cp.participant.professionalRole.description}}
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" ng-checked="cp.isConfirmed" />
-                                            </td>
-                                            <td>
-                                                <button class="btn-link" ng-click="vm.deleteCourseParticipant(cp.participantId)">Remove</button> |
-                                                <button class="btn-link" ng-click="vm.openCourseParticipant(cp.participantId)">Edit</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button class="btn-link" ng-click="vm.openCourseParticipant('newParticipant')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
-                                    uib-tooltip="Please save the course first" tooltip-enable="vm.course.entityAspect.entityState.isAdded()" >Add Participant</button>
-                        </fieldset>
-                    </div>
-                </div>
             </form>
+            <div class="col-md-6">
+                <div>
+                    <fieldset>
+                        <legend>Faculty</legend>
+                        <div>
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Role
+                                        </th>
+                                        <th>
+                                            Organiser
+                                        </th>
+                                        <th>
+                                            Confirmed
+                                        </th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cp in vm.course.courseParticipants | filter:{isFaculty:'true'}">
+                                        <td>
+                                            {{cp.participant.fullName}}
+                                        </td>
+                                        <td>
+                                            {{cp.participant.professionalRole.category}}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" ng-checked="cp.isOrganiser" />
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" ng-checked="cp.isConfirmed" />
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn-link" ng-click="vm.deleteCourseParticipant(cp.participantId)">Remove</button> |
+                                            <button type="button" class="btn-link" ng-click="vm.openCourseParticipant(cp.participantId)">Edit</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
+                                uib-tooltip="Please save the course first" tooltip-enable="vm.course.entityAspect.entityState.isAdded()" >Add Faculty Member</button>
+                    </fieldset>
+                </div>
+                <div class="form-group">
+                    &nbsp;
+                    <hr/>
+                    &nbsp;
+                </div>
+                <div>
+                    <fieldset>
+                        <legend>Participants</legend>
+                        <div>
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Role
+                                        </th>
+                                        <th>
+                                            Confirmed
+                                        </th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cp in vm.course.courseParticipants | filter:{isFaculty:'false'}">
+                                        <td>
+                                            {{cp.participant.fullName}}
+                                        </td>
+                                        <td>
+                                            {{cp.participant.professionalRole.description}}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" ng-checked="cp.isConfirmed" />
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn-link" ng-click="vm.deleteCourseParticipant(cp.participantId)">Remove</button> |
+                                            <button type="button" class="btn-link" ng-click="vm.openCourseParticipant(cp.participantId)">Edit</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newParticipant')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
+                                uib-tooltip="Please save the course first" tooltip-enable="vm.course.entityAspect.entityState.isAdded()" >Add Participant</button>
+                    </fieldset>
+                </div>
+            </div>
         </div>
     </section>
 </section>

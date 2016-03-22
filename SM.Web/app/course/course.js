@@ -70,7 +70,8 @@
             this.dpPopup.isOpen = true;
         }
 
-        function save() {
+        function save($event) {
+            //vm.log.debug($event);
             datacontext.save();
         }//;
 
