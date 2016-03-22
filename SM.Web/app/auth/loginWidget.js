@@ -3,9 +3,9 @@
 
 var controllerId = 'loginWidget';
     angular.module('app')
-        .controller(controllerId, ['$rootScope', 'loginFactory', '$uibModal', 'AUTH_EVENTS', 'tokenStorageService', loginWidget]);
+        .controller(controllerId, ['$rootScope', 'loginFactory', '$modal', 'AUTH_EVENTS', 'tokenStorageService', loginWidget]);
     
-    function loginWidget($rootScope, loginFactory, $uibModal,AUTH_EVENTS,tokenStorageService) {
+    function loginWidget($rootScope, loginFactory, $modal,AUTH_EVENTS,tokenStorageService) {
         var modalInstance = null;
         var vm = this;
         vm.currentUser = tokenStorageService.getUserName();
@@ -17,16 +17,18 @@ var controllerId = 'loginWidget';
         //now we have a method to display login if the token has expired, we can notify
         $rootScope.$broadcast(AUTH_EVENTS.loginWidgetReady);
         function getCredentials() {
-            modalInstance =  $uibModal.open({
+            modalInstance =  $modal({
                 templateUrl: 'app/auth/getCredentials.html',
                 controller: 'getCredentials',
+                animation:'am-fade-and-slide-top',
+                show:true
             });
         };
 
         function loggedIn(e, data) {
             vm.currentUser = tokenStorageService.getUserName();
             if (modalInstance) {
-                modalInstance.close();
+                modalInstance.destroy(); //(could use hide)
                 modalInstance = null;
             }
         }

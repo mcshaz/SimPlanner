@@ -30,25 +30,27 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="date" class="col-md-2 control-label time-accompany">Start Time</label>
-                        <div class="col-md-10">
-                            <div class="col-md-6 time-accompany align-form-group">
-                                <div class="input-group">
-                                    <input id="date" type="text" class="form-control" uib-datepicker-popup="{{vm.dateFormat}}" ng-model="vm.course.startTime"
-                                           is-open="vm.dpPopup.isOpen" min-date="vm.minDate" max-date="vm.maxDate"
-                                           ng-required="true" close-text="Close" placeholder="Date" />
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="vm.openDp()"><span class="glyphicon glyphicon-calendar"></span></button>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <uib-timepicker ng-model="vm.course.startTime" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
+                        <label for="startDate" class="col-md-2 control-label">Start Time</label>
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input id="startDate" class="form-control" ng-model="vm.course.startTime" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
+                                       data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" data-date-format="{{vm.dateFormat}}" z-validate>
+
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
                             </div>
                         </div>
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input class="form-control" ng-model="vm.course.startTime" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </span>
+                            </div>
+
+                        </div>
                     </div>
-
-
                     <div class="form-group">
                         <label for="courseType" class="col-md-2 control-label">Location</label>
                         <div class="col-md-10">
@@ -114,7 +116,7 @@
                             </table>
                         </div>
                         <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
-                                uib-tooltip="Please save the course first" tooltip-enable="vm.course.entityAspect.entityState.isAdded()" >Add Faculty Member</button>
+                               data-animation="am-flip-x" bs-tooltip bs-title="Please save the course first" bs-enabled="vm.course.entityAspect.entityState.isAdded()" >Add Faculty Member</button>
                     </fieldset>
                 </div>
                 <div class="form-group">
@@ -162,7 +164,7 @@
                             </table>
                         </div>
                         <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newParticipant')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
-                                uib-tooltip="Please save the course first" tooltip-enable="vm.course.entityAspect.entityState.isAdded()" >Add Participant</button>
+                               data-animation="am-flip-x" bs-tooltip bs-title="Please save the course first" bs-enabled="vm.course.entityAspect.entityState.isAdded()" >Add Participant</button>
                     </fieldset>
                 </div>
             </div>

@@ -259,6 +259,10 @@
     <Content Include="app\auth\authComplete.html" />
     <Content Include="app\services\datacontext.js" />
     <Content Include="app\services\utilities.js" />
+    <Content Include="Content\angular-motion.css" />
+    <Content Include="Content\angular-motion.min.css" />
+    <Content Include="Content\bootstrap-additions.css" />
+    <Content Include="Content\bootstrap-additions.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.cosmo.css" />
@@ -278,7 +282,6 @@
     <Content Include="Content\styles.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
-    <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -294,6 +297,8 @@
     <Content Include="index.html" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
+    <Content Include="Scripts\angular-cookies.js" />
+    <Content Include="Scripts\angular-cookies.min.js" />
     <Content Include="Scripts\angular-local-storage.js" />
     <Content Include="app\auth\authComplete.js" />
     <Content Include="Scripts\angular-local-storage.min.js" />
@@ -304,12 +309,23 @@
     <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular-sanitize.js" />
     <Content Include="Scripts\angular-sanitize.min.js" />
-    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
-    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
-    <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
-    <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.compat.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.compat.min.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.min.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.tpl.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.tpl.min.js" />
+    <Content Include="Scripts\angular-strap\compiler.js" />
+    <Content Include="Scripts\angular-strap\date-formatter.js" />
+    <Content Include="Scripts\angular-strap\date-parser.js" />
+    <Content Include="Scripts\angular-strap\debounce.js" />
+    <Content Include="Scripts\angular-strap\dimensions.js" />
+    <Content Include="Scripts\angular-strap\parse-options.js" />
+    <Content Include="Scripts\angular-strap\raf.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.js" />
+    <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\breeze.bridge.angular.js" />
@@ -319,7 +335,6 @@
     <Content Include="Scripts\breeze.saveErrorExtensions.js" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
-    <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -383,6 +398,12 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
     <Content Include="Scripts\angular-local-storage.min.js.map" />
+    <Content Include="Content\bootstrap-additions.min.css.map" />
+    <Content Include="Content\angular-motion.min.css.map" />
+    <Content Include="Scripts\angular-strap\angular-strap.min.js.map" />
+    <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.min.js.map" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-cookies.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$uibModal', 'breeze', '$scope'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$modal', 'breeze', '$scope'];
 
-    function controller(abstractController, $routeParams, common, datacontext,  $uibModal, breeze, $scope) {
+    function controller(abstractController, $routeParams, common, datacontext,  $modal, breeze, $scope) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -58,7 +58,6 @@
                         vm.course = data;
                     }));
                 }
-                vm.dateFormat = moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
                 common.activateController(promises, controllerId)
                     .then(function () {
                         vm.log('Activated Course View');
@@ -83,10 +82,11 @@
             var isFaculty = isNew
                 ? participantId.endsWith('Faculty')
                 : courseParticipant.participant.isFaculty;
-            var modalInstance = $uibModal.open({
+            var modalInstance = $modal({
                 templateUrl: 'app/courseParticipant/courseParticipant.html',
                 controller: 'courseParticipant',
                 controllerAs: 'cp',
+                show:true,
                 $scope:{}, //?
                 //size: 'lg',
                 resolve: {
