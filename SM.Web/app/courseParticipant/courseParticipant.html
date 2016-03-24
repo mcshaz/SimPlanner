@@ -1,28 +1,28 @@
 ﻿<div class="aside mainbox" id="courseParticipantBox" tabindex="-1" role="dialog" ng-controller="courseParticipant as cp">
     <div class="aside-dialog">
         <div class="aside-content">
-            <div class="aside-header">
-                <button class="close" type="button" ng-click="cp.close()">&times;</button>
-                <h4 class="aside-title">
-                    {{cp.isNew?'Add':'Update'}} Course &nbsp;
-                </h4>
-                <div class="btn-group radio" ng-model="cp.isFaculty" bs-radio-group>
-                    <label class="btn btn-primary"><input class="btn btn-default" value="true" type="radio" ng-disabled="!cp.isNew"/>Faculty</label>
-                    <label class="btn btn-primary"><input class="btn btn-default" value="false" type="radio" ng-disabled="!cp.isNew"/>Participant</label>
+            <form ng-submit="cp.createCourseParticipant($event)" id="courseParticipantForm">
+                <div class="aside-header">
+                    <button class="close" type="button" ng-click="cp.close()">&times;</button>
+                    <h4 class="aside-title">
+                        {{cp.isNew?'Add':'Update'}} Course &nbsp;
+                    </h4>
+                    <div class="btn-group radio" ng-model="cp.isFaculty" bs-radio-group>
+                        <label class="btn btn-primary"><input class="btn btn-default" value="true" type="radio" ng-disabled="!cp.isNew" />Faculty</label>
+                        <label class="btn btn-primary"><input class="btn btn-default" value="false" type="radio" ng-disabled="!cp.isNew" />Participant</label>
+                    </div>
                 </div>
-            </div>
-            <div class="aside-body">
-                <form class="form-horizontal" ng-submit="cp.createCourseParticipant($event)" id="courseParticipantForm">
+                <div class="aside-body">
                     <div class="form-group">
-                        <label for="fullName" class="col-md-2 control-label">Full Name</label>
-                        <div class="col-md-10">
+                        <label for="fullName" class="control-label">Full Name</label>
+                        <div>
                             <!--
-                                
-                            strap typeahed
-                            <input id="getFullName" class="form-control" ng-model="cp.participant.fullName" data-animation="am-flip-x" data-html="1"
-                                   bs-options="p.fullName as p.label for p in getPeople($viewValue)" placeholder="e.g. John Smith" bs-typeahead type="text"
-                                   data-limit="{{nameLimit}}" ng-model-options="{ debounce: 200 }" trimValue="false" data-z-validate>
-                            -->
+
+                    strap typeahed
+                    <input id="getFullName" class="form-control" ng-model="cp.participant.fullName" data-animation="am-flip-x" data-html="1"
+                           bs-options="p.fullName as p.label for p in getPeople($viewValue)" placeholder="e.g. John Smith" bs-typeahead type="text"
+                           data-limit="{{nameLimit}}" ng-model-options="{ debounce: 200 }" trimValue="false" data-z-validate>
+                    -->
                             <input class="form-control" id="fullName" type="text" ng-model="cp.participant.fullName" placeholder="e.g. John Smith"
                                    ng-model-options="{ debounce: 200 }" autocomplete="off"
                                    uib-typeahead="p.fullName as p.label for p in cp.getPeople($viewValue)"
@@ -36,35 +36,35 @@
                             <span class="text-danger" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="pull-right">
+                    <div class="form-group">
+                        <div class="btn-group" role="group">
                             <button class="btn btn-info" ng-disabled="!cp.isValidParticipantName() || !cp.participant.entityAspect.entityState.isDetached()" type="button" ng-click="cp.createNewPerson()">Create New Person</button>
                             <button class="btn btn-success" type="submit" ng-disabled="cp.disableSave()">{{cp.isNew?'Add to Sim':'Update Details'}}</button>
                         </div>
-                        <div class="clearfix" />
-                        <hr />
                     </div>
+                    <div class="clearfix" />
+                    <hr />
                     <div class="form-group">
-                        <label for="email" class="col-md-2 control-label">Work Email</label>
-                        <div class="col-md-10">
+                        <label for="email" class="control-label">Work Email</label>
+                        <div>
                             <input class="form-control" type="text" id="email" data-z-validate ng-model="cp.participant.email" ng-disabled="cp.participant.entityAspect.entityState.isDetached()" />
                             <span class="text-danger" />
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="alternateEmail" class="col-md-2 control-label">Personal Email</label>
-                        <div class="col-md-10">
+                        <label for="alternateEmail" class="control-label">Personal Email</label>
+                        <div>
                             <input class="form-control" id="alternateEmail" type="text" data-z-validate ng-model="cp.participant.alternateEmail" ng-disabled="cp.participant.entityAspect.entityState.isDetached()" />
                             <span class="text-danger" />
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="phoneNumber" class="col-md-2 control-label">Mobile</label>
-                        <div class="col-md-10">
+                        <label for="phoneNumber" class="control-label">Mobile</label>
+                        <div>
                             <div class="input-group">
-                                <span class="input-group-addon">(+{{dialCode}})</span>
+                                <span class="input-group-addon">(+{{cp.dialCode}})</span>
                                 <input class="form-control" type="text" id="phoneNumber" data-z-validate ng-model="cp.participant.phoneNumber" ng-disabled="cp.participant.entityAspect.entityState.isDetached()" />
 
                             </div>
@@ -75,8 +75,8 @@
                     <!--note eventually above 3 inputs might be type = email & tel -->
 
                     <div class="form-group">
-                        <label for="professionalRole" class="col-md-2 control-label">Professional Role</label>
-                        <div class="col-md-10">
+                        <label for="professionalRole" class="control-label">Professional Role</label>
+                        <div>
                             <select id="professionalRole" class="form-control" data-z-validate data-ng-options="pr as pr.description group by pr.category for pr in cp.professionalRoles"
                                     data-ng-model="cp.participant.professionalRole" ng-disabled="cp.participant.entityAspect.entityState.isDetached()">
                                 <option value="" disabled="disabled">
@@ -88,8 +88,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="cpDepartment" class="col-md-2 control-label">Department</label>
-                        <div class="col-md-10">
+                        <label for="cpDepartment" class="control-label">Department</label>
+                        <div>
                             <select id="cpDepartment" class="form-control" data-z-validate data-ng-options="d as d.name for d in cp.departments"
                                     data-ng-model="cp.participant.department" ng-disabled="cp.participant.entityAspect.entityState.isDetached()">
                                 <option value="" disabled="disabled">
@@ -100,12 +100,11 @@
                         </div>
                     </div>
 
-                </form>
-            </div>
-            <div class="aside-footer">
+                </div>
+                <div class="aside-footer">
 
-            </div>
-
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -99,6 +99,7 @@
                     placement: 'left',
                     animation: 'am-slide-left',
                     scope: scope,
+
                 });
                 scope.asideInstance = _modalInstance;
                 scope.course = vm.course;

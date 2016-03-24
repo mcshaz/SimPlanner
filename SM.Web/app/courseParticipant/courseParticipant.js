@@ -8,7 +8,7 @@
     courseParticipantCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope','controller.abstract'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseParticipantCtrl(common, datacontext, breeze, $scope,abstractController) {
+    function courseParticipantCtrl(common, datacontext, breeze, $scope, abstractController) {
         /* jshint validthis:true */
         var cp = this;
         
@@ -18,7 +18,6 @@
             $scope: $scope
         })
         
-        cp.close = $scope.asideInstance.hide;
         cp.createCourseParticipant = createCourseParticipant;
         cp.createNewPerson = createNewPerson;
         cp.dialCode = '';

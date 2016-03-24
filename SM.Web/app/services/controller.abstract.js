@@ -3,11 +3,11 @@
 
     var serviceId = 'controller.abstract';
     angular.module('app').factory(serviceId,
-        ['common', '$window', 'commonConfig', 'breeze',AbstractRepository]);
+        ['common', '$window', 'commonConfig', 'breeze', AbstractRepository]);
 
     function AbstractRepository(common, $window, commonConfig, breeze) {
         var confirmDiscardMsg = 'Are you sure you want to discard changes without saving?';
-        var _savableStates = [breeze.EntityState.Added, breeze.EntityState.Modified];
+
         //var provider = entityManagerFactory.manager;
 
         function Ctor(argObj /* controllerId, $scope, watchedEntityName*/) {
@@ -18,7 +18,7 @@
             var unwatchers = [$on('$destroy', destroy)]; 
 
             if (argObj.$scope.asideInstance) {
-                unwatchers.push(argObj.$scope.$parent.$on('aside.hide.before', beforeRouteChange));
+                vm.close = modalClose;
             } else {
                 unwatchers.push($on('$routeChangeStart', beforeRouteChange));
             }
@@ -31,10 +31,8 @@
 
             function hasDataChanged(){
                 var ent = vm[argObj.watchedEntityName];
-                if (ent) {
-                    var entityState = ent.entityAspect.entityState;
-                    return (entityState === breeze.EntityState.Deleted
-                        || (_savableStates.indexOf(entityState) > -1 && !common.isEmptyObject(ent.entityAspect.originalValues))) 
+                if (ent && ent.entityAspect) {
+                    return ent.entityAspect.entityState.isAddedModifiedOrDeleted(); 
                 }
                 return false;
             }
@@ -75,13 +73,13 @@
             function disableSave() {
                 var watched = vm[argObj.watchedEntityName];
                 if (watched && watched.entityAspect) {
-                    return _savableStates.indexOf(watched.entityAspect.entityState) === -1
+                    return !watched.entityAspect.entityState.isAddedModifiedOrDeleted()
                         || watched.entityAspect.hasValidationErrors;
                 }
                 return true;
             }
 
-            /*
+
             function modalClose() {
                 var evtArg = {
                     defaultPrevented: false,
@@ -89,12 +87,12 @@
                         this.defaultPrevented = true;
                     }
                 };
-                beforeLeave(evtArg);
+                beforeRouteChange(evtArg);
                 if (!evtArg.defaultPrevented) {
-                    argObj.modal.destroy();
+                    argObj.$scope.asideInstance.hide();
+                    destroy(evtArg);
                 }
             }
-            */
         }
 
         //no point instantiating above (as true factory method) as will only extend other methods
