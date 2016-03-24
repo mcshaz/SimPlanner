@@ -15,9 +15,10 @@
         'LocalStorageModule',
 
         // 3rd Party Modules
-        'mgcrea.ngStrap',      
-        'breeze.angular',
+        'mgcrea.ngStrap',
+        'ui.bootstrap',
         'angularMoment',
+        'breeze.angular',
         'breeze.directives',
         'tmh.dynamicLocale'
     ]);
@@ -29,36 +30,28 @@
             loginConfirmed: 'event:auth-loginConfirmed',
             loginCancelled: 'event:auth-loginCancelled',
             loginWidgetReady: 'event:auth-loginWidgetReady'
-        })
-        .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
-            localStorageServiceProvider
-                .setPrefix('loginApp')
-                .setStorageType('sessionStorage');
-        }])
-        .constant('ngAuthSettings', {
-            apiServiceBaseUri: serviceBase,
-            clientId: 'simmanager'
-        })
-        .config(['zDirectivesConfigProvider', configDirective])
-        .config(['tmhDynamicLocaleProvider',
-            function (tmhDynamicLocaleProvider) {
-            tmhDynamicLocaleProvider.useStorage('$cookies');
-            tmhDynamicLocaleProvider.localeLocationPattern("https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.2/angular-locale_{{locale}}.min.js");
-        }]);
+    })
+    .constant('emptyGuid', window.emptyGuid)
+    .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
+        localStorageServiceProvider
+            .setPrefix('loginApp')
+            .setStorageType('sessionStorage');
+    }])
+    .constant('ngAuthSettings', {
+        apiServiceBaseUri: serviceBase,
+        clientId: 'simmanager'
+    })
+    .config(['zDirectivesConfigProvider', configDirective])
+    .config(['tmhDynamicLocaleProvider',
+        function (tmhDynamicLocaleProvider) {
+        tmhDynamicLocaleProvider.useStorage('$cookies');
+        tmhDynamicLocaleProvider.localeLocationPattern("https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.2/angular-locale_{{locale}}.min.js");
+    }]);
 
     // Include $route to kick start the router.
-    app.run(['tokenStorageService', 'entityManagerFactory', 'modelBuilder', '$rootScope', 'AUTH_EVENTS', '$route', 'tmhDynamicLocale',
-    function (tokenStorageService, entityManagerFactory, modelBuilder, $rootScope, AUTH_EVENTS, $route, tmhDynamicLocale) {
+    app.run(['tokenStorageService', 'entityManagerFactory', 'modelBuilder', '$rootScope', 'AUTH_EVENTS','$route',
+    function (tokenStorageService, entityManagerFactory, modelBuilder, $rootScope, AUTH_EVENTS,$route) {
         entityManagerFactory.modelBuilder = modelBuilder.extendMetadata;
-        //set locale once logged in 
-        var unwatchLocales = $rootScope.$on(AUTH_EVENTS.loginConfirmed, function (evt) {
-            var locales = tokenStorageService.getUserLocales();
-            //moment.locale(locales); //TODO - really needed now moved to angular strap???
-
-            tmhDynamicLocale.set(locales[0].toLowerCase()); //moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
-            unwatchLocales();
-            unwatchLocales = null;
-        });
 
         $rootScope.$on('$routeChangeStart', function(event, next, current){
             if (next.access && next.access.requiresLogin && !tokenStorageService.isLoggedIn()) {

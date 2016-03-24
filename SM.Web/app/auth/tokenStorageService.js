@@ -2,8 +2,8 @@
     'use strict';
     var serviceId = 'tokenStorageService';
     angular.module('app')
-        .service(serviceId, ['authService', 'AUTH_EVENTS', '$http', 'localStorageService' , '$rootScope', tokenStorageService]);
-    function tokenStorageService(authService, AUTH_EVENTS, $http, localStorage ,$rootScope ) {
+        .service(serviceId, ['authService', 'AUTH_EVENTS', '$http', 'localStorageService' , '$rootScope', 'common', 'tmhDynamicLocale', tokenStorageService]);
+    function tokenStorageService(authService, AUTH_EVENTS, $http, localStorage, $rootScope, common, tmhDynamicLocale) {
         var currentUser = localStorage.get('currentUser');
         var token = localStorage.get('token');
         var unAuthUser = {
@@ -12,6 +12,7 @@
             id:null
         };
         var self = this;
+        var log = common.logger.getLogFn(serviceId);
 
         self.getUserName = getUserName;
         self.getUserRoles = getUserRoles;
@@ -90,7 +91,9 @@
             token = data.user_token || data.access_token;
             localStorage.set('token', token);
             setTokenHeader();
-            if (!recredentialled){
+            if (recredentialled) {
+                authService.loginConfirmed({ recredentialled: true }, replaceToken);
+            } else {
                 currentUser = {
                     name: data.fullName,
                     roles: data.userRoles.split(','),
@@ -99,8 +102,18 @@
                 }
                 localStorage.set('currentUser', currentUser);
                 //now broadcast
+
+                //set locale once logged in 
+                //not sure this is enough separation of concers
+                moment.locale(currentUser.locales);
+                tmhDynamicLocale.set(currentUser.locales[0].toLowerCase())
+                    .then(null, log.error)
+                    .finally(function () {
+                        //only broadcast after the appropriate locale for the user is loaded
+                        authService.loginConfirmed({ recredentialled: false }, replaceToken);
+                    }); //moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
+                
             }
-            authService.loginConfirmed({ recredentialled: recredentialled }, replaceToken);
         }
 
         function notifyLogout() {

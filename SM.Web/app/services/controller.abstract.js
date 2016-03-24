@@ -3,49 +3,98 @@
 
     var serviceId = 'controller.abstract';
     angular.module('app').factory(serviceId,
-        ['common', 'entityManagerFactory', '$window', 'commonConfig', 'breeze',AbstractRepository]);
+        ['common', '$window', 'commonConfig', 'breeze',AbstractRepository]);
 
-    function AbstractRepository(common, entityManagerFactory, $window, commonConfig, breeze) {
+    function AbstractRepository(common, $window, commonConfig, breeze) {
+        var confirmDiscardMsg = 'Are you sure you want to discard changes without saving?';
+        var _savableStates = [breeze.EntityState.Added, breeze.EntityState.Modified];
+        //var provider = entityManagerFactory.manager;
 
         function Ctor(argObj /* controllerId, $scope, watchedEntityName*/) {
-            var provider = entityManagerFactory.manager;
             var vm = this;
             var hasAddedEntityPropertyChanged = false;
-            var unwatch = argObj.$scope.$on((argObj.$scope.$close && argObj.$scope.$dismiss) ? 'modal.closing' : '$routeChangeStart', beforeLeave) //todo can we check if this is a modal //$destroy //for UI Router this would be $stateChangeStart
+
+            var $on = argObj.$scope.$on.bind(argObj.$scope);
+            var unwatchers = [$on('$destroy', destroy)]; 
+
+            if (argObj.$scope.asideInstance) {
+                unwatchers.push(argObj.$scope.$parent.$on('aside.hide.before', beforeRouteChange));
+            } else {
+                unwatchers.push($on('$routeChangeStart', beforeRouteChange));
+            }
+
+            if (argObj.$watches) {unwatchers = unwatchers.concat(argObj.$watches);}
+            $window.addEventListener("beforeunload", beforeUnload);
 
             vm.log = common.logger.getLogFn(argObj.controllerId);
             vm.disableSave = disableSave;
 
-            $window.onbeforeunload = beforeLeave;
+            function hasDataChanged(){
+                var ent = vm[argObj.watchedEntityName];
+                if (ent) {
+                    var entityState = ent.entityAspect.entityState;
+                    return (entityState === breeze.EntityState.Deleted
+                        || (_savableStates.indexOf(entityState) > -1 && !common.isEmptyObject(ent.entityAspect.originalValues))) 
+                }
+                return false;
+            }
 
-            function beforeLeave(evtArgs) {
-                var watched = vm[argObj.watchedEntityName];
-                if (watched && watched.entityAspect) {
-                    var entityState = watched.entityAspect.entityState;
-                    if (entityState && ([breeze.EntityState.Modified, breeze.EntityState.Deleted].indexOf(entityState) > -1
-                        || (entityState === breeze.EntityState.Added && !common.isEmptyObject(watched.entityAspect.originalValues)))) {
-                        vm.log.debug({msg:"confirming if data changed", data: watched.entityAspect});
-                        if (!confirm('Are you sure you want to discard changes?')) {
-                            if (evtArgs && evtArgs.preventDefault) { evtArgs.preventDefault(); }
-                            common.$broadcast(commonConfig.config.controllerActivateSuccessEvent); //switch the spinner off
-                            return false; //the false if it is a beforeunload event
+            function beforeUnload(e){
+                if (hasDataChanged()){
+                    e.returnValue = confirmDiscardMsg; // Gecko, Trident, Chrome 34+
+                    return confirmDiscardMsg;          // Gecko, WebKit, Chrome <34
+                }
+            }
+
+            function beforeRouteChange(e) {
+                if (!e.defaultPrevented) {
+                    if (hasDataChanged() && !confirm(confirmDiscardMsg)) {
+                        e.preventDefault();
+                        common.$broadcast(commonConfig.config.controllerActivateSuccessEvent); //switch the spinner off
+                    } else {
+                        var watched = vm[argObj.watchedEntityName];
+                        if (watched && watched.entityAspect && watched.entityAspect.entityState.isAddedModifiedOrDeleted()) {
+                            watched.entityAspect.rejectChanges();
                         }
+                        destroy({}); //note this will remove listeners on the hide event, but as the controller has a new controller injected ever time
+                        //, this will do for now
                     }
                 }
+            }
 
-                $window.onbeforeunload = null;
-                unwatch();
-                return true;
+            function destroy(e) {
+                if (unwatchers && !e.defaultPrevented) {
+                    $window.removeEventListener("beforeunload", beforeUnload);
+                    unwatchers.forEach(function (unwatch) {
+                        unwatch();
+                    });
+                    unwatchers = null;
+                }
             }
 
             function disableSave() {
                 var watched = vm[argObj.watchedEntityName];
                 if (watched && watched.entityAspect) {
-                    return !watched.entityAspect.entityState.isAddedModifiedOrDeleted()
+                    return _savableStates.indexOf(watched.entityAspect.entityState) === -1
                         || watched.entityAspect.hasValidationErrors;
                 }
                 return true;
             }
+
+            /*
+            function modalClose() {
+                var evtArg = {
+                    defaultPrevented: false,
+                    preventDefault: function () {
+                        this.defaultPrevented = true;
+                    }
+                };
+                beforeLeave(evtArg);
+                if (!evtArg.defaultPrevented) {
+                    argObj.modal.destroy();
+                }
+            }
+            */
         }
 
         //no point instantiating above (as true factory method) as will only extend other methods

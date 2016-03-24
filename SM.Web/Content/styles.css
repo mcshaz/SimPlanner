@@ -436,6 +436,35 @@ div.time-accompany{
 .starshipLogo {
     background-color:#FFFFFF;
 }
+
+.btn-group.radio label{
+    text-decoration: line-through;
+}
+.btn-group.radio label.active{
+    text-decoration: none;
+}
+
+.btn-group.radio label.active::before {
+   content:  "\2611 ";
+}
+    /*#region overide breeze directives*/
+        .z-decorator {
+            display: block;
+            margin-bottom: 20px;
+        }
+        span.invalid {
+            max-height:none;
+            right:0;
+            top:38px;
+        }
+    /*#endregion*/
+        h4.aside-title{
+            color:#FFFFFF;
+        }
+    /*#region overide angular strap*/
+
+    /*#endregion*/
+
 /*#endregion*/
 
 /*#region Angular ng-show dissolve animation */

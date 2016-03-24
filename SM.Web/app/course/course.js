@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$modal', 'breeze', '$scope'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope'];
 
-    function controller(abstractController, $routeParams, common, datacontext,  $modal, breeze, $scope) {
+    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -75,37 +75,43 @@
         }//;
 
         function openCourseParticipant(participantId) {
+            var modal = getModalInstance();
+            var scope = modal.$scope;
             var isNew = participantId.startsWith('new');
-            var courseParticipant = isNew
+            scope.courseParticipant = isNew
                 ? null
                 : getCourseParticipant(participantId);
-            var isFaculty = isNew
+            scope.isFaculty = isNew
                 ? participantId.endsWith('Faculty')
-                : courseParticipant.participant.isFaculty;
-            var modalInstance = $modal({
-                templateUrl: 'app/courseParticipant/courseParticipant.html',
-                controller: 'courseParticipant',
-                controllerAs: 'cp',
-                show:true,
-                $scope:{}, //?
-                //size: 'lg',
-                resolve: {
-                    currentCourse: function () {
-                        return {
-                            courseParticipant: courseParticipant,
-                            course:vm.course, //possibly should pass the id here and use datacontext to fetch from cache - would make it more usable outside of a modal window
-                            isFaculty: isFaculty
-                        };
-                    }
-                }
-            });
+                : scope.courseParticipant.isFaculty;
+            modal.$promise.then(modal.show);
+        }
+
+        var _modalInstance;
+        function getModalInstance() {
+            if (!_modalInstance) {
+                var scope = $scope.$new();
+                _modalInstance = $aside({
+                    templateUrl: 'app/courseParticipant/courseParticipant.html',
+                    controller: 'courseParticipant',
+                    show: false,
+                    id: 'cpModal',
+                    placement: 'left',
+                    animation: 'am-slide-left',
+                    scope: scope,
+                });
+                scope.asideInstance = _modalInstance;
+                scope.course = vm.course;
+            }
+            return _modalInstance;
         }
 
         function deleteCourseParticipant(participantId) {
             var cp = getCourseParticipant(participantId);
+            var name = cp.participant.fullName;
             cp.entityAspect.setDeleted();
-            datacontext.save(cp).then(function (data) { vm.log('removed ' + cp.participant.fullName + ' from course');},
-                function (error) { log.error({ msg: 'failed to remove ' + cp.participant.fullName + ' from course' }) })
+            datacontext.save(cp).then(function (data) { vm.log('removed ' + name + ' from course');},
+                function (error) { log.error({ msg: 'failed to remove ' + name + ' from course' }) })
         }
 
         function getCourseParticipant(participantId) {

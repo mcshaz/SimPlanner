@@ -241,8 +241,6 @@
     <Content Include="app\course\course.js" />
     <Content Include="app\dashboard\dashboard.html" />
     <Content Include="app\dashboard\dashboard.js" />
-    <Content Include="app\dateTimeDirective\dateTimeCtrl.html" />
-    <Content Include="app\dateTimeDirective\timespanMinutes.js" />
     <Content Include="app\layout\shell.html" />
     <Content Include="app\layout\shell.js" />
     <Content Include="app\layout\sidebar.html" />
@@ -326,6 +324,11 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.js" />
     <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.min.js" />
+    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-1.2.5-csp.css" />
+    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-1.2.5.js" />
+    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-1.2.5.min.js" />
+    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-tpls-1.2.5.js" />
+    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-tpls-1.2.5.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\breeze.bridge.angular.js" />

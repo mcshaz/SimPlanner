@@ -1,73 +1,116 @@
-﻿<section id="dashboard-view" class="mainbar" data-ng-controller="course as vm">
+﻿<section id="course-view" class="mainbar" data-ng-controller="course as vm">
     <section class="matter">
         <div class="container col-md-12">
             <form class="form-horizontal" ng-submit="vm.save($event)" id="courseForm">
                 <div class="col-md-6">
+                    <fieldset>
+                        <legend>Required</legend>
+                        <div class="form-group">
+                            <label for="department" class="col-md-2 control-label">Department</label>
+                            <div class="col-md-10">
 
-                    <div class="form-group">
-                        <label for="department" class="col-md-2 control-label">Department</label>
-                        <div class="col-md-10">
-
-                            <select id="department" class="form-control" data-z-validate data-ng-model="vm.course.department" ng-options="d as d.name group by d.institution.name for d in vm.departments">
-                                <option disabled selected hidden value="">
-                                    Select Department...
-                                </option>
-                            </select>
-                            <span class="text-danger" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="courseType" class="col-md-2 control-label">Course Type</label>
-                        <div class="col-md-10">
-                            <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypes" data-ng-model="vm.course.courseType">
-                                <option disabled selected hidden value="">
-                                    Select Course Type...
-                                </option>
-                            </select>
-                            <span class="text-danger" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="startDate" class="col-md-2 control-label">Start Time</label>
-                        <div class="col-md-5">
-                            <div class="input-group">
-                                <input id="startDate" class="form-control" ng-model="vm.course.startTime" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
-                                       data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" data-date-format="{{vm.dateFormat}}" z-validate>
-
-                                <span class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
+                                <select id="department" class="form-control" data-z-validate data-ng-model="vm.course.department" ng-options="d as d.name group by d.institution.name for d in vm.departments">
+                                    <option disabled selected hidden value="">
+                                        Select Department...
+                                    </option>
+                                </select>
+                                <span class="text-danger" />
                             </div>
                         </div>
-                        <div class="col-md-5">
-                            <div class="input-group">
-                                <input class="form-control" ng-model="vm.course.startTime" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" />
-                                <span class="input-group-addon">
-                                    <i class="fa fa-clock-o"></i>
-                                </span>
-                            </div>
 
+                        <div class="form-group">
+                            <label for="courseType" class="col-md-2 control-label">Course Type</label>
+                            <div class="col-md-10">
+                                <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypes" data-ng-model="vm.course.courseType">
+                                    <option disabled selected hidden value="">
+                                        Select Course Type...
+                                    </option>
+                                </select>
+                                <span class="text-danger" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="courseType" class="col-md-2 control-label">Location</label>
-                        <div class="col-md-10">
-                            <select id="courseType" class="form-control" data-z-validate data-ng-model="vm.course.room" data-ng-options="r as r.shortDescription group by r.department.name for r in vm.rooms">
-                                <option disabled selected hidden value="">
-                                    Select Room...
-                                </option>
-                            </select>
-                            <span class="text-danger" />
+
+                        <div class="form-group">
+                            <label for="startDate" class="col-md-2 control-label">Course Start</label>
+                            <div class="col-md-5" id="startTimeGroup">
+                                <div class="input-group" >
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                    <input id="startDate" class="form-control" ng-model="vm.course.startTime" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
+                                           data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup">
+
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </span>
+                                    <input class="form-control" ng-model="vm.course.startTime" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" />
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="form-group">
+                            <label for="courseType" class="col-md-2 control-label">Location</label>
+                            <div class="col-md-10">
+                                <select id="courseType" class="form-control" data-z-validate data-ng-model="vm.course.room" data-ng-options="r as r.shortDescription group by r.department.name for r in vm.rooms">
+                                    <option disabled selected hidden value="">
+                                        Select Room...
+                                    </option>
+                                </select>
+                                <span class="text-danger" />
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset>
+                        <legend class="small">Optional</legend>
+                        <div class="form-group">
+                            <label for="planningDate" class="col-md-2 control-label">Planning Meeting</label>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                    <input id="planningDate" class="form-control" ng-model="vm.course.facultyMeetingTime" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
+                                           data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate>
+
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </span>
+                                    <input class="form-control" ng-model="vm.course.facultyMeetingTime" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="outreachingDepartment" class="col-md-2 control-label">Outreaching Department</label>
+                            <div class="col-md-10">
+
+                                <select id="outreachingDepartment" class="form-control" data-z-validate data-ng-model="vm.course.outreachingDepartment" ng-options="d as d.name group by d.institution.name for d in vm.departments">
+                                    <option value="">
+                                        None.
+                                    </option>
+                                </select>
+                                <span class="text-danger" />
+                            </div>
+                        </div>
+                    </fieldset>
                     <div class="form-group">
                         <div class="col-md-offset-10 col-md-1">
                             <button type="submit" data-ng-disabled="vm.disableSave()" class="btn btn-primary">Save</button>
                         </div>
                     </div>
-                </div>
+               </div>
             </form>
             <div class="col-md-6">
                 <div>
@@ -115,9 +158,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
-                               data-animation="am-flip-x" bs-tooltip bs-title="Please save the course first" bs-enabled="vm.course.entityAspect.entityState.isAdded()" >Add Faculty Member</button>
-                    </fieldset>
+                            <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
+                                    data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()" >
+                                Add Faculty Member
+                            </button>
+</fieldset>
                 </div>
                 <div class="form-group">
                     &nbsp;
@@ -164,7 +209,9 @@
                             </table>
                         </div>
                         <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newParticipant')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
-                               data-animation="am-flip-x" bs-tooltip bs-title="Please save the course first" bs-enabled="vm.course.entityAspect.entityState.isAdded()" >Add Participant</button>
+                               data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()" >
+                            Add Participant
+                        </button>
                     </fieldset>
                 </div>
             </div>

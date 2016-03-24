@@ -33,7 +33,7 @@ namespace SM.DataAccess
             context.ProfessionalRoles.Add(consultantRole);
             var nursingRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Nursing, Description = "Clinical Charge Nurse" };
             context.ProfessionalRoles.Add(nursingRole);
-            var techRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.SimTech, Description = "Simulation Technician" };
+            var techRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Tech, Description = "Simulation Technician" };
             context.ProfessionalRoles.Add(techRole);
 
             starship.ProfessionalRoles.Add(consultantRole);

@@ -5,85 +5,85 @@
         .module('app')
         .controller(controllerId, courseParticipantCtrl);
 
-    courseParticipantCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope', 'currentCourse', 'controller.abstract'];
+    courseParticipantCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope','controller.abstract'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseParticipantCtrl(common, datacontext, breeze, $scope, currentCourse, abstractController) {
+    function courseParticipantCtrl(common, datacontext, breeze, $scope,abstractController) {
         /* jshint validthis:true */
-        var vm = this;
+        var cp = this;
+        
         abstractController.constructor.call(this, {
             controllerId: controllerId,
             watchedEntityName: 'participant',
             $scope: $scope
         })
-
-        vm.isNew = (currentCourse.courseParticipant == null);
-
-        vm.canSave = false;
-        vm.close = close;
-        vm.createCourseParticipant = createCourseParticipant;
-        vm.createNewPerson = createNewPerson;
-        vm.dialCode = '';
-        vm.departments = [];
-        vm.isFaculty = currentCourse.isFaculty;
-        vm.isValidParticipantName = isValidParticipantName;
-        vm.getPeople = getPeople;
-        vm.participant = vm.isNew
+        
+        cp.close = $scope.asideInstance.hide;
+        cp.createCourseParticipant = createCourseParticipant;
+        cp.createNewPerson = createNewPerson;
+        cp.dialCode = '';
+        cp.departments = [];
+        cp.isFaculty = $scope.isFaculty;
+        cp.isNew = !$scope.courseParticipant;
+        cp.isValidParticipantName = isValidParticipantName;
+        cp.getPeople = getPeople;
+        cp.nameLimit = 10;
+        cp.participant = cp.isNew
             ? datacontext.participants.create(breeze.EntityState.Detached)
-            :currentCourse.courseParticipant.participant;//{ fullName: '' };
-        vm.onParticipantSelected = onParticipantSelected;
-        vm.professionalRoles = [];
+            : $scope.courseParticipant.participant;
+            
+        cp.onParticipantSelected = onParticipantSelected;
+        cp.professionalRoles = [];
 
         activate();
 
         function activate() {
             datacontext.ready().then(function () {
                 var promises = [datacontext.departments.all().then(function (data) {
-                    vm.departments = data;
-                    vm.dialCode = data[0].institution.country.dialCode;
+                    cp.departments = data;
+                    cp.dialCode = data[0].institution.country.dialCode;
                 }),
                 datacontext.professionalRoles.all().then(function (data) {
-                    vm.professionalRoles = data;
+                    cp.professionalRoles = data;
                 })];
                 common.activateController(promises, controllerId)
                     .then(function () {
-                        vm.log('Activated Course Participant Dialog');
+                        cp.log('Activated Course Participant Dialog');
                     });
                 });
         }
-        function close() {
-            $scope.$close('closeButton');
-        }
 
+        var _lastVal;
+        var _lastLookup;
         function createCourseParticipant($event) {
             if (!validateSaveParticipant()) { return; }
-            var cp;
-            if (vm.isNew) {
-                cp = currentCourse.course.addParticipant(vm.participant, { isFaculty: vm.isFaculty });
-                datacontext.save([cp, cp.participant]).then(function () {
-                    vm.log.success(cp.participant.fullName + ' added to course ' + (cp.isFaculty ? 'faculty' : 'participants'));
+            var forSave;
+            if (cp.isNew) {
+                forSave = $scope.course.addParticipant(cp.participant, { isFaculty: cp.isFaculty });
+                datacontext.save([forSave, forSave.participant]).then(function () {
+                    cp.log.success(cp.participant.fullName + ' added to course ' + (cp.isFaculty ? 'faculty' : 'participants'));
                     afterSave();
                 });
             } else {
-                cp = currentCourse.courseParticipant;
-                cp.professionalRoleId = cp.participant.defaultProfessionalRoleId;
-                cp.departmentId = cp.participant.defaultDepartmentId;
-                datacontext.save([cp, cp.participant]).then(function () {
-                    vm.log.success(cp.participant.fullName + ' updated');
-                    vm.isNew = true;
+                forSave = $scope.courseParticipant;
+                forSave.professionalRoleId = cp.participant.defaultProfessionalRoleId;
+                forSave.departmentId = cp.participant.defaultDepartmentId;
+                datacontext.save([forSave, forSave.participant]).then(function () {
+                    cp.log.success(cp.participant.fullName + ' updated');
                     afterSave();
                 });
+                cp.isNew = true;
             }
 
             function afterSave() {
-                vm.participant = datacontext.participants.create(breeze.EntityState.Detached);
-                _lastData = _lastVal = null;
+                cp.participant = datacontext.participants.create(breeze.EntityState.Detached);
+                _lastLookup = _lastVal = null;
             }
         }
 
         function createNewPerson() {
             var match;
-            if (match = _lastData.find(function (ld) {
+            if (match = _lastLookup.find(function (ld) {
                 return ld.fullName.startsWith(name);
             })) {
                 if (!confirm("Are you sure you want to create a new person rather than select " + match.fullName)) {
@@ -91,60 +91,83 @@
                     return;
                 }
             }
-            datacontext.addEntity(vm.participant);
+            datacontext.addEntity(cp.participant);
 
             //todo check event fires
         }
 
         function validateSaveParticipant() {
-            var origName = vm.participant.entityAspect.originalValues.fullName;
-            if (origName && origName !== vm.participant.fullName) {
-                if (!confirm("Are you sure you wish to change the name of " + origName + " to " + vm.participant.fullName +"?\n\nYou should only click yes if:\n-This person's name was originally mispelt [sic]\n-You are adding something to differentiate from others with a similar name, e.g. John 'tall' Smith\n-The person has changed their name, e.g. after marriage")) {
-                    var oldVal = vm.participant;
-                    vm.participant = datacontext.participants.cloneItem(vm.participant);
+            var origName = cp.participant.entityAspect.originalValues.fullName;
+            if (origName && origName !== cp.participant.fullName) {
+                if (!confirm("Are you sure you wish to change the name of " + origName + " to " + cp.participant.fullName +"?\n\nYou should only click yes if:\n-This person's name was originally mispelt [sic]\n-You are adding something to differentiate from others with a similar name, e.g. John 'tall' Smith\n-The person has changed their name, e.g. after marriage")) {
+                    cp.participant.entityAspect.rejectChanges();
+                    /*
+                    var oldVal = cp.participant;
+                    cp.participant = datacontext.participants.cloneItem(oldVal);
                     oldval.entityAspect.rejectChanges();
                     ["email", "alternateEmail", "phoneNumber"].foreach(function(propName){
-                        if (vm.participant[propName] === oldVal[propName]) { vm.participant["propName"] = null; }
+                        if (cp.participant[propName] === oldVal[propName]) { cp.participant["propName"] = null; }
                     });
                     return false
+                    */
                 }
             }
             return true;
         }
 
-        var notThisCourse = breeze.Predicate.create('courseParticipants', 'any', 'courseId', '==', currentCourse.course.id).not();
+        var notThisCourse = breeze.Predicate.create('courseParticipants', 'any', 'courseId', '==', $scope.course.id).not();
         var baseArgs = {
             orderBy: 'fullName',
-            take: 10,
+            take: $scope.nameLimit,
             select: 'id,fullName,professionalRole.category,department.abbreviation'
         };
-        var _lastVal;
-        var _lastData;
+
+        var icons = {
+            medical: 'stethoscope',
+            tech: 'wrench',
+            perfusionist: 'heart-o',
+            other: 'question',
+            paramedic: 'ambulance',
+            nursing: 'hearbeat'
+        }
+
         function getPeople(val) {
             if (_lastVal && _lastVal.length < baseArgs.take && val.toLowerCase().startsWith(_lastVal)) {
                 val = val.toLowerCase();
                 //I think the uib - typeahead handles either promises or objects, but seems cleaner to have a function return one or tother
-                return _lastData.filter(function (el) { return el.fullName.toLowerCase().startsWith(val); });
+                return _lastLookup.filter(function (el) { return el.fullName.toLowerCase().startsWith(val); });
             }
             baseArgs.where = breeze.Predicate.create('fullName', 'startsWith', val).and(notThisCourse);
             return datacontext.participants.find(baseArgs).then(function (results) {
                 results.forEach(function (el) {
-                    el.description = el.fullName + ' (' + el.department_Abbreviation + ' ' + common.toSeperateWords(el.professionalRole_Category) + ')';
+                    el.label = '<i class="fa fa-' + icons[el.professionalRole_Category.toLowerCase()] + '"></i> '
+                            + el.fullName
+                            + ' <small class="small">(' + el.department_Abbreviation + ' ' + common.toSeperateWords(el.professionalRole_Category) + ')</small>';
                 });
                 _lastVal = val.toLowerCase();
-                return (_lastData = results);
+                return (_lastLookup = results);
             });
             delete baseArgs.where;
         }
 
         function onParticipantSelected(item) {
             datacontext.participants.fetchByKey(item.id).then(function (part) {
-                vm.participant = part;
+                cp.participant = part;
             });
         }
 
+/* strap lookup
+        function onParticipantSelected(event, value, index, elem) {
+            if (elem.$id === "getFullName") {
+                datacontext.participants.fetchByKey(_lastCacheLookup[index].id).then(function (part) {
+                    cp.participant = part;
+                });
+            }
+        }
+*/
+
         function isValidParticipantName() {
-            return vm.participant.entityAspect.validateProperty("fullName");
+            return cp.participant.entityAspect.validateProperty("fullName");
         }
 
     }
