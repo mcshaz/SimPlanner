@@ -14,6 +14,6 @@ namespace SM.DataAccess
         public string Directions { get; set; }
         public Guid DepartmentId { get; set; }
         public Department Department { get; set; }
-        public ICollection <Course> Courses { get; set; }
+        public virtual ICollection <Course> Courses { get; set; }
     }
 }

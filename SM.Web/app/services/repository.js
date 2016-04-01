@@ -18,8 +18,6 @@
                     getMetastore().setEntityTypeForResourceName(resourceName, entityTypeName);
                 }
 
-                self.cloneItem = cloneItem;
-
                 self.hasChanges = function () {
                     return manager.hasChanges(entityTypeName);
                 }
@@ -37,6 +35,15 @@
 
                     return executeQuery(query);
                 };
+
+                self.findServerIfCacheEmpty = function() {
+                    var query = createQuery.apply(null,arguments);
+                    var entities = executeCacheQuery(query);
+                    if (entities.length){
+                        return $q.when(entities);
+                    }
+                    return executeQuery(query);
+                }
 
                 self.findInCache = function () {
                     var query = createQuery.apply(null,arguments);
@@ -94,27 +101,6 @@
                     return manager.createEntity(entityType, newIds, entityState);
                 }
 
-
-                //Ward is a legend - http://stackoverflow.com/questions/20566093/breeze-create-entity-from-existing-one
-                function cloneItem(item) {
-                    if (item.entityType !== entityType) {
-                        throw new TypeError("item to clone is of type " + item.entityType.typeName + " expected type " + entityTypeName);
-                    }
-                    // export w/o metadata and then parse the exported string.
-                    var exported = JSON.parse(manager.exportEntities([item], false));
-                    // extract the entity from the export
-                    var type = item.entityType;
-                    var copy = exported.entityGroupMap[type.name].entities[0];
-                    // remove the entityAspect
-                    delete copy.entityAspect;
-                    // remove the key properties
-                    type.keyProperties.forEach(function (p) { delete copy[p.name]; });
-
-                    // the "copy" provides the initial values for the create
-                    return manager.createEntity(type, copy);
-                }
-
-
                 function keyPropsToArray(key) {
                     if (Array.isArray(key)) { return key; }
                     switch (typeof (key)) {
@@ -165,7 +151,7 @@
                             return $q.when(ent);
                         }
                         query = getKeyQuery(key,{
-                            expand: missingExpands.map(function (el) { return el.props.join('.'); }),
+                            expand: missingExpands.map(function (el) { return el.props.join('.'); }).join(','),
                             select: argObj.select
                         });
                     }
@@ -174,32 +160,36 @@
                     });
                 }
 
-                function findMissingExpands(entity, expand) {
+                function findMissingExpands(entity, expands) {
                     var returnVar = [];
-                    if (!expand) { return returnVar; }
-                    var i = 0;
-                    if (!Array.isArray(expand)) {
-                        expand = [expand];
+                    if (!expands) { return returnVar; }
+                    if (typeof expands === 'string') {
+                        expands = expands.split(',');
                     }
-                    expand.forEach(function (el) {
+                    expands.forEach(function (el) {
                         var hasArray = false;
                         var props = el.split('.');
                         var currentProp = entity;
-                        var i = 0;
-                        for (; i < props.length; i++) {
-                            //to do deal with collections - null vs empty
+                        var i;
+                        if (props.some(function(p,indx){
                             if (Array.isArray(currentProp)) {
-                                if (!currentProp.length) {
-                                    return; 
-                                }
-                                currentProp = currentProp[0][props[i]];
                                 hasArray = true;
+                                if (!currentProp.length) {
+                                    i = indx;
+                                    return true;//TODO figure out if I can tell if it is empty but in cache
+                                } else {
+                                    currentProp = currentProp[0][p];
+                                }
                             } else {
-                                currentProp = currentProp[props[i]];
+                                currentProp = currentProp[p];
                             }
                             if (!currentProp) {
-                                returnVar.push({props:props, missingIndex:i, hasArray:hasArray});
+                                i = indx;
+                                return true;
                             }
+                            return false;
+                        }) || (hasArray = Array.isArray(currentProp)) && !currentProp.length) {
+                            returnVar.push({ props: props, missingIndex: i || (props.length-1), hasArray: hasArray });
                         }
                     });
                     return returnVar;

@@ -20,7 +20,8 @@
         'angularMoment',
         'breeze.angular',
         'breeze.directives',
-        'tmh.dynamicLocale'
+        'tmh.dynamicLocale',
+        'ui.sortable'
     ]);
 
     /*Constants regarding user login defined here*/

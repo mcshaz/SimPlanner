@@ -95,6 +95,16 @@ namespace SM.Dto
             }
         }
 
+        public IQueryable<CourseFormatDto> GetCourseFormats(string[] includes, string[] selects, char sepChar)
+        {
+            return Context.CourseFormats.Project<CourseFormat, CourseFormatDto>(includes, selects, sepChar);
+        }
+
+        public IQueryable<CourseSlotDto> GetCourseSlots(string[] includes, string[] selects, char sepChar)
+        {
+            return Context.CourseSlots.Project<CourseSlot, CourseSlotDto>(includes, selects, sepChar);
+        }
+
         public class UnknownPropertyException : Exception
         {
             public UnknownPropertyException() : base() { }
@@ -134,7 +144,7 @@ namespace SM.Dto
 
         public IQueryable<DepartmentDto> Departments { get { return Context.Departments.Project<Department,DepartmentDto>(); } }
 
-        public IQueryable<ScenarioRoleDescriptionDto> SenarioRoles { get { return Context.SenarioRoles.Project<ScenarioRoleDescription,ScenarioRoleDescriptionDto>(); } }
+        public IQueryable<FacultySimRoleDto> SenarioRoles { get { return Context.FacultySimRoles.Project<FacultySimRole,FacultySimRoleDto>(); } }
 
         public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.Project<Institution,InstitutionDto>(); } }
 
@@ -145,6 +155,10 @@ namespace SM.Dto
         public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.Project<Scenario,ScenarioDto>(); } }
 
         public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.Project<ScenarioResource,ScenarioResourceDto>(); } }
+
+        public IQueryable<CourseActivityDto> GetCourseActivities(string[] includes = null, string[] selects = null, char sepChar = '.') {
+            return Context.CourseActivities.Project<CourseActivity, CourseActivityDto>(includes, selects, sepChar);
+        }
 
 
         //might eventually run the visitor like so: http://stackoverflow.com/questions/18879779/select-and-expand-break-odataqueryoptions-how-to-fix
@@ -163,7 +177,7 @@ namespace SM.Dto
 
         public IQueryable<CourseTypeDto> GetCourseTypes()
         {
-            return Context.CourseTypes.Project<CourseType, CourseTypeDto>();
+            return Context.CourseTypes.Project<CourseType, CourseTypeDto>(includes: new[] { "CourseFormats" });
         }
 
 

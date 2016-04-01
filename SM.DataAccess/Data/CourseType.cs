@@ -10,16 +10,25 @@ namespace SM.DataAccess
     public partial class CourseType
     {
         public Guid Id { get; set; }
-
         public string Description { get; set; }
-
+        public string Abbrev { get; set; }
         public bool IsInstructorCourse { get; set; }
-
-        public byte DaysDuration { get; set; }
 
         public Emersion? EmersionCategory { get; set; }
 
-        public string Abbrev { get; set; }
+        ICollection<CourseActivity> _courseActivities;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CourseActivity> CourseActivities
+        {
+            get
+            {
+                return _courseActivities ?? (_courseActivities = new List<CourseActivity>());
+            }
+            set
+            {
+                _courseActivities = value;
+            }
+        }
 
         ICollection<Department> _departments;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -49,60 +58,32 @@ namespace SM.DataAccess
 			}
 		}
 
-		ICollection<Course> _courses; 
+        ICollection<FacultySimRole> _facultySimRoles;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Course> Courses
-		{
-			get
-			{
-				return _courses ?? (_courses = new List<Course>());
-			}
-			set
-			{
-				_courses = value;
-			}
-		}
+        public virtual ICollection<FacultySimRole> FacultySimRoles
+        {
+            get
+            {
+                return _facultySimRoles ?? (_facultySimRoles = new List<FacultySimRole>());
+            }
+            set
+            {
+                _facultySimRoles = value;
+            }
+        }
 
-		ICollection<CourseSlot> _courseEvents; 
+        ICollection<CourseFormat> _courseFormats;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseSlot> CourseEvents
-		{
-			get
-			{
-				return _courseEvents ?? (_courseEvents = new List<CourseSlot>());
-			}
-			set
-			{
-				_courseEvents = value;
-			}
-		}
-
-		ICollection<ScenarioSlot> _scenarioEvents; 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ScenarioSlot> ScenarioEvents
-		{
-			get
-			{
-				return _scenarioEvents ?? (_scenarioEvents = new List<ScenarioSlot>());
-			}
-			set
-			{
-				_scenarioEvents = value;
-			}
-		}
-
-		ICollection<ScenarioRoleDescription> _scenarioRoles; 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ScenarioRoleDescription> ScenarioRoles
-		{
-			get
-			{
-				return _scenarioRoles ?? (_scenarioRoles = new List<ScenarioRoleDescription>());
-			}
-			set
-			{
-				_scenarioRoles = value;
-			}
-		}
+        public virtual ICollection<CourseFormat> CourseFormats
+        {
+            get
+            {
+                return _courseFormats ?? (_courseFormats = new List<CourseFormat>());
+            }
+            set
+            {
+                _courseFormats = value;
+            }
+        }
     }
 }

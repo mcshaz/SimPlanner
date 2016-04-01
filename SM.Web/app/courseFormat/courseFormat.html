@@ -1,0 +1,101 @@
+﻿<section id="course-view" class="mainbar" data-ng-controller="courseFormat as vm">
+    <section class="matter">
+        <div class="container">
+            <form class="form-horizontal" ng-submit="vm.save($event)" id="courseFormatForm">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="cfDescription" class="col-md-3 control-label">
+                            Course Type
+                        </label>
+                        <div class="col-md-9">
+                            <input readonly id="cfDescription" class="form-control" type="text" ng-model="vm.courseFormat.courseType.description" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cfDescription" class="col-md-3 control-label">
+                            Course Format
+                        </label>
+                        <div class="col-md-9">
+                            <input id="cfDescription" class="form-control" type="text" z-validate ng-model="vm.courseFormat.description" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="daysDuration" class="col-md-3 control-label">
+                            Days Duration
+                        </label>
+                        <div class="col-md-9">
+                            <input id="daysDuration" class="form-control" type="number" z-validate step="1" ng-model="vm.courseFormat.daysDuration" />
+                        </div>
+
+                    </div>
+                </div>
+                <button class="btn-link" type="button" ng-click="vm.addActivity()">
+                    add new activity
+                </button>
+                <fieldset > <!--ng-disabled="!vm.selectedSlot"-->
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <td class="small">(drag)</td>
+                                <th>Activity</th>
+                                <th>Minutes</th>
+                                <td>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody ui-sortable="vm.sortableOptions" ng-model="vm.courseFormat.courseSlots">
+                            <tr ng-repeat="cs in vm.courseFormat.courseSlots" >
+                                <td class="handle">
+                                    :::
+                                </td>
+                                <td>
+                                    <span ng-if="!cs.activity" class="simulation">Simulation</span>
+                                    <span ng-if="cs.activity" class="activity">{{cs.activity.name}}</span>
+                                </td>
+                                <td>
+                                    {{cs.minutesDuration}}
+                                </td>
+
+                                <td>
+                                    <button class="btn-link" type="button">
+                                        edit
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="form-group">
+                                    <label class="control-label">
+                                        <input type="checkbox" ng-checked="!vm.selectedSlot.activity" id="isScenario" class="checkbox-inline" />
+                                        Sim
+                                    </label>
+                                </td>
+                                <td class="form-group">
+                                    <span ng-hide="vm.selectedSlot.activity" class="simulation">Simulation</span>
+                                    <input class="form-control" type="text" z-validate ng-model="vm.selectedSlot.activity.name" ng-show="vm.selectedSlot.activity">
+                                </td>
+                                <td class="form-group col-md-1">
+                                    <input class="form-control" type="number" step="1" z-validate ng-model="vm.selectedSlot.minutesDuration">
+                                </td>
+                                <td>
+                                    <button class="btn-link" type="button" ng-click="vm.editChoices()">
+                                        choices
+                                    </button> 
+                                    |
+                                    <button class="btn-link" type="button" ng-click="vm.saveSlot()" >
+                                        save
+                                    </button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </fieldset>
+                <button type="submit" class="btn btn-success" ng-click="vm.save()" ng-disabled="vm.disableSave()">Save</button>
+                <button type="submit" class="btn btn-info" ng-click="vm.clone()" ng-disabled="!vm.courseFormat.entityAspect.entityState.isUnchanged()">Copy</button>
+            </form>
+        </div>
+    </section>
+</section>

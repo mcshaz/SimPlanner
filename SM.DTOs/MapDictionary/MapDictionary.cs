@@ -17,26 +17,29 @@ namespace SM.Dto.Maps
             _maps = new ReadOnlyDictionary<string, LambdaExpression>(
                 CreateMapDictionary(
                     new[] {
+                        new DtoMap(typeof(ActivityTeachingResourceDto),  ActivityTeachingResourceMaps.mapFromRepo()),
+                        new DtoMap(typeof(ChosenTeachingResource),ChosenTeachingResourceMaps.mapFromRepo(), false),
                         new DtoMap(typeof(Country),CountryMaps.mapFromRepo(), false,"Countries"),
                         new DtoMap(typeof(CountryLocaleCode),  CountryLocaleCodeMaps.mapFromRepo()),
+                        new DtoMap(typeof(Course),  CourseMaps.mapFromRepo(), true, "OutreachCourses"),
+                        new DtoMap(typeof(CourseActivity),  CourseActivityMaps.mapFromRepo(), false, "CourseActivities", "Activity"),
+                        new DtoMap(typeof(CourseFormat),  CourseFormatMaps.mapFromRepo()),
+                        new DtoMap(typeof(CourseParticipant),  CourseParticipantMaps.mapFromRepo()),
+                        new DtoMap(typeof(CourseScenarioFacultyRole),  CourseScenarioFacultyRoleMaps.mapFromRepo()),
+                        new DtoMap(typeof(CourseSlot),  CourseSlotMaps.mapFromRepo()),
+                        new DtoMap(typeof(CourseSlotPresenter),  CourseSlotPresenterMaps.mapFromRepo()),
+                        new DtoMap(typeof(CourseSlotScenario),  CourseScenarioFacultyRoleMaps.mapFromRepo()),
+                        new DtoMap(typeof(CourseType),  CourseTypeMaps.mapFromRepo()),
                         new DtoMap(typeof(Department),  DepartmentMaps.mapFromRepo(), true,"OutreachingDepartment"),
-                        new DtoMap(typeof(ScenarioRoleDescription),  ScenarioRoleDescriptionMaps.mapFromRepo()),
+                        new DtoMap(typeof(FacultySimRole),  FacultySimRoleMaps.mapFromRepo()),
                         new DtoMap(typeof(Institution),  InstitutionMaps.mapFromRepo()),
                         new DtoMap(typeof(Manequin),  ManequinMaps.mapFromRepo()),
                         new DtoMap(typeof(ManequinManufacturer),  ManequinManufacturerMaps.mapFromRepo()),
                         new DtoMap(typeof(Participant),  ParticipantMaps.mapFromRepo()),
                         new DtoMap(typeof(ProfessionalRole),  ProfessionalRoleMaps.mapFromRepo()),
+                        new DtoMap(typeof(Room),  RoomMaps.mapFromRepo()),
                         new DtoMap(typeof(Scenario),  ScenarioMaps.mapFromRepo()),
                         new DtoMap(typeof(ScenarioResource),  ScenarioResourceMaps.mapFromRepo()),
-                        new DtoMap(typeof(Course),  CourseMaps.mapFromRepo(), true, "OutreachCourses"),
-                        new DtoMap(typeof(CourseParticipant),  CourseParticipantMaps.mapFromRepo()),
-                        new DtoMap(typeof(CourseType),  CourseTypeMaps.mapFromRepo()),
-                        new DtoMap(typeof(CourseSlot),  CourseSlotMaps.mapFromRepo()),
-                        new DtoMap(typeof(ScenarioSlot),  ScenarioSlotMaps.mapFromRepo()),
-                        new DtoMap(typeof(CourseTeachingResource),  CourseTeachingResourceMaps.mapFromRepo()),
-                        new DtoMap(typeof(CourseSlotPresenter),  CourseSlotPresenterMaps.mapFromRepo()),
-                        new DtoMap(typeof(ScenarioFacultyRole),  ScenarioFacultyRoleMaps.mapFromRepo()),
-                        new DtoMap(typeof(Room),  RoomMaps.mapFromRepo())
                     }).ToDictionary(kv=>kv.Key, kv=>kv.Value));
         }
 

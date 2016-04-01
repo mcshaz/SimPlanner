@@ -39,7 +39,8 @@
                     <div class="form-group">
                         <div class="btn-group" role="group">
                             <button class="btn btn-info" ng-disabled="!cp.isValidParticipantName() || !cp.participant.entityAspect.entityState.isDetached()" type="button" ng-click="cp.createNewPerson()">Create New Person</button>
-                            <button class="btn btn-success" type="submit" ng-disabled="cp.disableSave()">{{cp.isNew?'Add to Sim':'Update Details'}}</button>
+                            <button class="btn btn-success" type="submit" ng-show="cp.isNew" ng-disabled="cp.disableAdd()">Add to Sim</button>
+                            <button class="btn btn-success" type="submit" ng-show="!cp.isNew" ng-disabled="cp.disableSave()">Update Details</button>
                         </div>
                     </div>
                     <div class="clearfix" />

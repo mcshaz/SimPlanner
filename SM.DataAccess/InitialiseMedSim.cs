@@ -57,42 +57,60 @@ namespace SM.DataAccess
             context.ManequinManufacturers.Add(laerdal);
             var junior = new Manequin { Id = Guid.NewGuid(), Department = ced, Description = "Sim Junior", Manufacturer=laerdal };
             context.Manequins.Add(junior);
-            var crm = new CourseType { Id = Guid.NewGuid(), Abbrev = "CRM", DaysDuration = 1, Description = "Crisis Resourse Managment", EmersionCategory = Emersion.Emersive, IsInstructorCourse = false };
+            var crm = new CourseType { Id = Guid.NewGuid(), Abbrev = "CRM", Description = "Crisis Resourse Managment", EmersionCategory = Emersion.Emersive, IsInstructorCourse = false };
             context.CourseTypes.Add(crm);
+
+            var crm2 = new CourseFormat { Id = Guid.NewGuid(), DaysDuration = 1, Description = "2 Scenario", CourseType = crm };
             crm.Departments.Add(ced);
 
-            //NB alter so that resources belong to each department!!
-            var slides = new CourseTeachingResource { Id = Guid.NewGuid(), Name = "Slide Set", ResourceFilename = @"C:\whatever\Slides.ppt" };
-            context.CourseTeachingResources.Add(slides);
-            var didactic = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, MaximumFaculty = 1, MinimumFaculty = 1, Name = "Didactic Lecture", Order = 1 };
-            didactic.DefaultResources.Add(slides);
-            didactic.CourseTypes.Add(crm);
-            context.CourseEvents.Add(didactic);
+            //eventually resource filename should belong to each department
+            var slides = new ActivityTeachingResource { Id = Guid.NewGuid(), Name="PICU 2016 version",ResourceFilename = @"C:\whatever\Slides.ppt" };
+            context.ActivityTeachingResources.Add(slides);
+            var didactic = new CourseActivity { Id = Guid.NewGuid(), Name = "Didactic Lecture", CourseType = crm };
+            var didacticSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20,  Activity = didactic, Order = 1, CourseFormat = crm2 };
+            didactic.ActivityChoices.Add(slides);
+            context.CourseActivities.Add(didactic);
 
-            var sim1 = new ScenarioSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 40, Order = 2 };
-            sim1.CourseTypes.Add(crm);
-            context.CourseScenarios.Add(sim1);
+            var ballGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Name="Multi-sized balls" };
+            var eggGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Name = "Egg, plate, ribons" };
+            var solarGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Name = "Solar Blanket" };
+            context.ActivityTeachingResources.AddRange(new[] { ballGame, eggGame, solarGame });
 
-            var ld = new ScenarioRoleDescription { Id = Guid.NewGuid(), Description = "Lead Debrief" };
-            var ad = new ScenarioRoleDescription { Id = Guid.NewGuid(), Description = "Assistant Debrief" };
-            var lt = new ScenarioRoleDescription { Id = Guid.NewGuid(), Description = "Lead Tech" };
-            var at = new ScenarioRoleDescription { Id = Guid.NewGuid(), Description = "Assistant Tech" };
-            var d = new ScenarioRoleDescription { Id = Guid.NewGuid(), Description = "Director" };
-            var r = new ScenarioRoleDescription { Id = Guid.NewGuid(), Description = "Runner" };
-            crm.ScenarioRoles.Add(ld);
-            crm.ScenarioRoles.Add(ad);
-            crm.ScenarioRoles.Add(lt);
-            crm.ScenarioRoles.Add(at);
-            crm.ScenarioRoles.Add(d);
-            crm.ScenarioRoles.Add(r);
+            var teamBuilder = new CourseActivity { Id = Guid.NewGuid(), Name = "Team Building", CourseType = crm };
+            var teamSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = teamBuilder, Order = 2, CourseFormat = crm2 };
 
-            var coffee = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration =20, MaximumFaculty = 0, MinimumFaculty = 0, Name = "Coffee break", Order = 3 };
-            coffee.CourseTypes.Add(crm);
-            context.CourseEvents.Add(coffee);
+            teamBuilder.ActivityChoices.Add(ballGame);
+            teamBuilder.ActivityChoices.Add(eggGame);
+            teamBuilder.ActivityChoices.Add(solarGame);
+            context.CourseActivities.Add(didactic);
+            context.CourseSlots.Add(teamSlot);
 
-            var c = new Course { Id = Guid.NewGuid(), CourseType = crm, Department = ced, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(14), Room=cedConf };
-            var c2 = new Course { Id = Guid.NewGuid(), CourseType = crm, Department = picu, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(28), Room=picuConf };
-            var c0 = new Course { Id = Guid.NewGuid(), CourseType = crm, Department = ced, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(-30), Room = cedConf };
+            var sim1 = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 40, Order = 3, CourseFormat = crm2 };
+
+            context.CourseSlots.Add(didacticSlot);
+            context.CourseSlots.Add(sim1);
+
+            var coffee = new CourseActivity { Id = Guid.NewGuid(), Name = "Coffee Break", CourseType = crm };
+            var coffeeSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity=coffee, Order=4, CourseFormat = crm2 };
+            context.CourseActivities.Add(coffee);
+            context.CourseSlots.Add(coffeeSlot);
+
+            var ld = new FacultySimRole { Id = Guid.NewGuid(), Description = "Lead Debrief" };
+            var ad = new FacultySimRole { Id = Guid.NewGuid(), Description = "Assistant Debrief" };
+            var lt = new FacultySimRole { Id = Guid.NewGuid(), Description = "Tech" };
+            var d = new FacultySimRole { Id = Guid.NewGuid(), Description = "Director" };
+            var r = new FacultySimRole { Id = Guid.NewGuid(), Description = "Runner" };
+            crm.FacultySimRoles.Add(ld);
+            crm.FacultySimRoles.Add(ad);
+            crm.FacultySimRoles.Add(lt);
+            crm.FacultySimRoles.Add(d);
+            crm.FacultySimRoles.Add(r);
+
+
+
+            var c = new Course { Id = Guid.NewGuid(), CourseFormat = crm2, Department = ced, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(14), Room=cedConf };
+            var c2 = new Course { Id = Guid.NewGuid(), CourseFormat = crm2, Department = picu, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(28), Room=picuConf };
+            var c0 = new Course { Id = Guid.NewGuid(), CourseFormat = crm2, Department = ced, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(-30), Room = cedConf };
             context.Courses.AddRange(new Course[] { c, c0, c2 });
 
             foreach (var t in new Course[] { c, c2, c0 })
@@ -127,13 +145,14 @@ namespace SM.DataAccess
 
             context.SaveChanges();
 
-            var pres = new CourseSlotPresenter { Course = c, CourseSlot = didactic, Presenter = trish };
-
-            var role = new ScenarioFacultyRole { Course = c, FacultyMember = trish, Role = ld, Scenario = s };
-
+            var pres = new CourseSlotPresenter { Course = c, CourseSlot = didacticSlot, Presenter = trish };
             context.CourseSlotPresenters.Add(pres);
 
-            context.ScenarioFacultyRoles.Add(role);
+            var simScenario1 = new CourseSlotScenario { Course = c, CourseSlot=sim1, Scenario = s };
+            context.CourseSlotScenarios.Add(simScenario1);
+
+            var simRole1 = new CourseScenarioFacultyRole { Course = c, CourseSlot = sim1, FacultyMember = trish, FacultySimRole = lt };
+            context.CourseScenarioFacultyRoles.Add(simRole1);
 
             context.SaveChanges();
 

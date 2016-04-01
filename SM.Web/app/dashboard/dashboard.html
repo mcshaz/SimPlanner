@@ -134,7 +134,7 @@
                                             </a>
                                         </td>
                                         <td><input type="checkbox" disabled="disabled" data-ng-checked="c.includesUser(vm.currentUserId)" /></td>
-                                        <td><button class="btn-link" data-ng-click="vm.gotoCourse(c)">Edit</button></td>
+                                        <td><a ng-href="#course/{{c.id}}" class="btn-link">Edit</a></td>
                                     </tr>
                                 </tbody>
                                 <tfoot data-ng-if="!vm.upcomingCourses.length">

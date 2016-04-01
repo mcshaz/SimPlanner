@@ -21,13 +21,15 @@ namespace SM.Dto
 
         public DepartmentDto Department { get; set; }
         public DepartmentDto OutreachingDepartment { get; set; }
-        public CourseTypeDto CourseType { get; set; }
+        public CourseFormatDto CourseFormat { get; set; }
         public RoomDto Room { get; set; }
 
         public virtual ICollection<CourseParticipantDto> CourseParticipants { get; set; }
         public virtual ICollection<ScenarioDto> Scenarios { get; set; }
-        public virtual ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
+        public virtual ICollection<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
+        public virtual ICollection<CourseSlotScenarioDto> CourseSlotScenarios { get; set; }
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresenters { get; set; }
+        public virtual ICollection<ChosenTeachingResourceDto> ChosenTeachingResources { get; set; }
     }
 
 }

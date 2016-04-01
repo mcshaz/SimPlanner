@@ -2,19 +2,40 @@
 using Microsoft.Data.OData.Query.SemanticAst;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http.OData.Query;
 
 namespace SM.Web.Controllers.Helpers
 {
     public class FindAnyAllFilterOptions
     {
-        public static IList<string> GetPaths(FilterQueryOption filterOption)
+        public FindAnyAllFilterOptions()
+        {
+            _paths = new List<IList<string>>();
+            addPath();
+        }
+        public static IList<string> GetPaths(FilterQueryOption filterOption, string separator = ".")
         {
             var findAnyAll = new FindAnyAllFilterOptions();
             findAnyAll.Find(filterOption.FilterClause.Expression);
-            return findAnyAll.Paths;
+
+            return findAnyAll.GetPaths(separator);
         }
-        public readonly IList<string> Paths = new List<string>();
+        readonly IList<IList<string>> _paths;
+        void addPath()
+        {
+            _paths.Add(new List<string>());
+        }
+        void AddNav(string navName)
+        {
+            _paths[_paths.Count - 1].Add(navName);
+        }
+        public List<string> GetPaths(string separator = ".")
+        {
+            return (from p in _paths
+                    where p.Count > 0
+                    select string.Join(separator, p)).ToList();
+        }
         public void Find(QueryNode node)
         {
             switch (node.Kind)
@@ -22,12 +43,13 @@ namespace SM.Web.Controllers.Helpers
                 case QueryNodeKind.All:
                 case QueryNodeKind.Any:
                     var l = (LambdaNode)node;
-                    Paths.Add(((CollectionNavigationNode)l.Source).NavigationProperty.Name);
+                    Find(l.Source);
                     Find(l.Body);
                     break;
                 case QueryNodeKind.BinaryOperator:
                     var bo = (BinaryOperatorNode)node;
                     Find(bo.Left);
+                    addPath();
                     Find(bo.Right);
                     break;
                 case QueryNodeKind.NonentityRangeVariableReference:
@@ -49,11 +71,12 @@ namespace SM.Web.Controllers.Helpers
                                     */
                 case QueryNodeKind.CollectionNavigationNode:
                     var cnn = (CollectionNavigationNode)node;
-                    Paths[Paths.Count - 1] += '.' + cnn.NavigationProperty.Name;
+                    Find(cnn.Source);
+                    AddNav(cnn.NavigationProperty.Name);
                     break;
                 case QueryNodeKind.SingleNavigationNode:
                     var snn = (SingleNavigationNode)node;
-                    Paths[Paths.Count - 1] += '.' + snn.NavigationProperty.Name;
+                    AddNav(snn.NavigationProperty.Name);
                     break;
                 //case QueryNodeKind.SingleValueOpenPropertyAccess:        
                 //case QueryNodeKind.SingleEntityCast:        
@@ -64,5 +87,6 @@ namespace SM.Web.Controllers.Helpers
                     break;
             }
         }
+
     }
 }

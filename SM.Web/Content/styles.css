@@ -447,6 +447,13 @@ div.time-accompany{
 .btn-group.radio label.active::before {
    content:  "\2611 ";
 }
+.simulation{
+    color:navy;
+}
+.handle{
+    cursor:move;
+    text-align:center;
+}
     /*#region overide breeze directives*/
         .z-decorator {
             display: block;

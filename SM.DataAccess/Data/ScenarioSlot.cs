@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace SM.DataAccess
 {
     [MetadataType(typeof(SlotMetadata))]
-    public class ScenarioSlot : Slot
+    public class ScenarioSlot : CourseSlot
     {
     }
 }

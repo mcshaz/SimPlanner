@@ -69,10 +69,37 @@ namespace SimManager.Tests
             ODataQueryContext context = new ODataQueryContext(builder.GetEdmModel(), typeof(Bar));
             //ODataQueryOptions<Customer> query = new ODataQueryOptions<Customer>(context, new HttpRequestMessage(HttpMethod.Get, "http://server/?$top=10"));
 
-            FilterQueryOption f = new FilterQueryOption("(startswith(BarString,'b') eq true) and (not (Foos/any(x1: x1/B/BarId eq 1)))", context);
+            FilterQueryOption f = new FilterQueryOption("startswith(BarString,'b') eq true", context);
             var fo = new FindAnyAllFilterOptions();
             fo.Find(f.FilterClause.Expression);
-            CollectionAssert.AreEqual((List<string>)fo.Paths, new[] { "Foos.B" });
+            List<string> pathsString = fo.GetPaths();
+            CollectionAssert.AreEqual(pathsString, new string[0]);
+
+            f = new FilterQueryOption("F/FooId eq 1", context);
+            fo = new FindAnyAllFilterOptions();
+            fo.Find(f.FilterClause.Expression);
+            pathsString = fo.GetPaths();
+            CollectionAssert.AreEqual(pathsString, new[] { "F" });
+
+            f = new FilterQueryOption("(startswith(BarString,'b') eq true) and (not (Foos/any(x1: x1/B/BarId eq 1)))", context);
+            fo = new FindAnyAllFilterOptions();
+            fo.Find(f.FilterClause.Expression);
+            pathsString = fo.GetPaths();
+            CollectionAssert.AreEqual(pathsString, new[] { "Foos.B" });
+
+            f = new FilterQueryOption("Foos/any(x1: x1/B/BarId eq 1)", context);
+            fo = new FindAnyAllFilterOptions();
+            fo.Find(f.FilterClause.Expression);
+            pathsString = fo.GetPaths();
+            CollectionAssert.AreEqual(pathsString, new[] { "Foos.B" });
+
+            f = new FilterQueryOption("F/Bars/any(x1: x1/BarId eq 1)", context);
+            fo = new FindAnyAllFilterOptions();
+            fo.Find(f.FilterClause.Expression);
+            pathsString = fo.GetPaths();
+            CollectionAssert.AreEqual(pathsString, new[] { "F.Bars" });
+
+
         }
     }
 }

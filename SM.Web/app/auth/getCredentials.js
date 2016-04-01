@@ -15,8 +15,11 @@
 
         vm.errors = '';
 
+        vm.isWaiting = false;
+
         vm.login = function (credentials) {
             vm.errors = '';
+            vm.isWaiting = true;
             loginFactory.login(credentials).then(function (user) {
                 log.success({ msg: "logged in as " + user.fullName, data: user });
             }, function (response) {
@@ -24,7 +27,7 @@
                     log.error({ msg: "unhandled data returned after attempted login", data: response });
                 }
                 vm.errors = response.data.error_description;
-            });
+            }).finally(function () { vm.isWaiting = false; });
         };
 
         vm.authExternalProvider = function (provider) {

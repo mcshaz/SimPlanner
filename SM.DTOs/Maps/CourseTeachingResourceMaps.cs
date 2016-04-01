@@ -4,27 +4,27 @@ using System;
 using System.Linq.Expressions;
 namespace SM.Dto.Maps
 {
-    internal static class CourseTeachingResourceMaps
+    internal static class ActivityTeachingResourceMaps
     {
-        internal static Func<CourseTeachingResourceDto, CourseTeachingResource> mapToRepo()
+        internal static Func<ActivityTeachingResourceDto, DataAccess.ActivityTeachingResource> mapToRepo()
         { 
-            return m => new CourseTeachingResource {
+            return m => new DataAccess.ActivityTeachingResource {
                 Id = m.Id,
                 Name = m.Name,
                 ResourceFilename = m.ResourceFilename,
-                CourseSlotId = m.CourseSlotId,
+                CourseActivityId = m.CourseActivityId,
                 //CourseSlot = m.CourseSlot
             };
         }
 
-        internal static Expression<Func<CourseTeachingResource, CourseTeachingResourceDto>> mapFromRepo()
+        internal static Expression<Func<DataAccess.ActivityTeachingResource, ActivityTeachingResourceDto>> mapFromRepo()
         {
-            return m => new CourseTeachingResourceDto
+            return m => new ActivityTeachingResourceDto
             {
                 Id = m.Id,
                 Name = m.Name,
                 ResourceFilename = m.ResourceFilename,
-                CourseSlotId = m.CourseSlotId,
+                CourseActivityId = m.CourseActivityId,
                 //CourseSlot = m.CourseSlot
             };
         }

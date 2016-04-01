@@ -1,3 +1,4 @@
+using SM.DataAccess;
 using SM.DataAccess.Enums;
 using SM.Metadata;
 using System;
@@ -16,12 +17,13 @@ namespace SM.Dto
         public string TemplateFilename { get; set; }
         public Guid? ManequinId { get; set; }
         public Guid CourseTypeId { get; set; }
-        public ManequinDto Manequin { get; set; }
-        public CourseTypeDto CourseType { get; set; }
-        public DepartmentDto Department { get; set; }
-        public virtual ICollection<CourseDto> Courses { get; set; }
-        public virtual ICollection<ScenarioResourceDto> Resources { get; set; }
-        public virtual ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
 
+        public virtual ManequinDto Manequin { get; set; }
+        public virtual CourseTypeDto CourseType { get; set; }
+        public virtual DepartmentDto Department { get; set; }
+
+        public virtual ICollection<CourseDto> Courses { get; set; }
+        public virtual ICollection<ScenarioResourceDto> ScenarioResources { get; set; }
+        public virtual ICollection<CourseSlotScenarioDto> CourseSlotScenarios { get; set; }
     }
 }

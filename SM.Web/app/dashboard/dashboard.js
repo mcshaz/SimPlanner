@@ -9,7 +9,6 @@
         var FilterQueryOp = breeze.FilterQueryOp;
         var vm = this;
         vm.currentUserId = null;
-        vm.gotoCourse = gotoCourse;
         vm.userCourses = [];
         vm.upcomingCourses = [];
         vm.userSummaryData = {};
@@ -73,14 +72,6 @@
             return uow.staffingResourceListItems.find().then(function (data) {
                 return vm.userCourses = data;
             });
-        }
-
-        function gotoCourse(course) {
-            if (course && course.id) {
-                // '#/course/71'
-                //$route.transition(url)
-                $location.path('/course/' + course.id);
-            }
         }
 
         function updateDash() {

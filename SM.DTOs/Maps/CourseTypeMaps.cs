@@ -11,11 +11,10 @@ namespace SM.Dto.Maps
             return m => new CourseType
             {
                 Id = m.Id,
+                Abbrev = m.Abbrev,
                 Description = m.Description,
-                IsInstructorCourse = m.IsInstructorCourse,
-                DaysDuration = m.DaysDuration,
-                EmersionCategory = m.EmersionCategory,
-                Abbrev = m.Abbrev
+                IsInstructorCourse = m.IsInstructorCourse, 
+                EmersionCategory = m.EmersionCategory, 
             };
         }
 
@@ -25,12 +24,10 @@ namespace SM.Dto.Maps
             return m => new CourseTypeDto
             {
                 Id = m.Id,
+                Abbrev = m.Abbrev,
                 Description = m.Description,
                 IsInstructorCourse = m.IsInstructorCourse,
-                DaysDuration = m.DaysDuration,
                 EmersionCategory = m.EmersionCategory,
-                Abbrev = m.Abbrev
-
                 //Departments = m.Departments,
 
                 //Scenarios = m.Scenarios,

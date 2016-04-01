@@ -11,12 +11,10 @@ namespace SM.Dto.Maps
             {
                 Id = m.Id,
                 MinutesDuration = m.MinutesDuration,
-                Day = m.Day,
-                Order = m.Order,
-
-                Name = m.Name,
-                MinimumFaculty = m.MinimumFaculty,
-                MaximumFaculty = m.MaximumFaculty
+                Day = m.Day, 
+                ActivityId = m.ActivityId,
+                CourseFormatId = m.CourseFormatId,
+                Order = m.Order
             };
         }
 
@@ -27,12 +25,9 @@ namespace SM.Dto.Maps
                 Id = m.Id,
                 MinutesDuration = m.MinutesDuration,
                 Day = m.Day,
-                Order = m.Order,
-
-                Name = m.Name,
-                MinimumFaculty = m.MinimumFaculty,
-                MaximumFaculty = m.MaximumFaculty,
-                //DefaultResources = m.DefaultResources
+                ActivityId = m.ActivityId,
+                CourseFormatId = m.CourseFormatId,
+                Order = m.Order
             };
         }
     }

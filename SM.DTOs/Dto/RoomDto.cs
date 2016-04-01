@@ -13,6 +13,6 @@ namespace SM.Dto
         public string Directions { get; set; }
         public Guid DepartmentId { get; set; }
         public DepartmentDto Department { get; set; }
-        public ICollection<CourseDto> Courses { get; set; }
+        public virtual ICollection<CourseDto> Courses { get; set; }
     }
 }

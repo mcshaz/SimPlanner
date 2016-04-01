@@ -6,9 +6,9 @@ namespace SM.Dto.Maps
 {
     internal static class ScenarioSlotMaps
     {
-        internal static Func<ScenarioSlotDto, ScenarioSlot> mapToRepo()
+        internal static Func<CourseSlotDto, CourseSlot> mapToRepo()
         {
-            return m => new ScenarioSlot
+            return m => new CourseSlot
             {
                 Id = m.Id,
                 MinutesDuration = m.MinutesDuration,
@@ -18,9 +18,9 @@ namespace SM.Dto.Maps
             };
         }
 
-        internal static Expression<Func<ScenarioSlot, ScenarioSlotDto>> mapFromRepo()
+        internal static Expression<Func<CourseSlot, CourseSlotDto>> mapFromRepo()
         {
-            return m => new ScenarioSlotDto
+            return m => new CourseSlotDto
             {
                 Id = m.Id,
                 MinutesDuration = m.MinutesDuration,

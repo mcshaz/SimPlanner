@@ -12,37 +12,44 @@ namespace SM.Dto
             // Prevent attempt to initialize a database for this context
             Database.SetInitializer<MedSimDtoContextPretender>(null);
         }
-
-        //  Dto versions of these Northwind Model classes
+        public virtual DbSet<ActivityTeachingResourceDto> ActivityTeachingResources { get; set; }
+        public virtual DbSet<ChosenTeachingResourceDto> ChosenTeachingResources { get; set; }
         public virtual DbSet<CountryDto> Countries { get; set; }
-        public virtual DbSet<CountryLocaleCodeDto> CountryLocales { get; set; }
+        public virtual DbSet<CountryLocaleCodeDto> CountryLocaleCodes { get; set; }
+        public virtual DbSet<CourseDto> Courses { get; set; }
+        public virtual DbSet<CourseActivityDto> CourseActivities { get; set; }
+        public virtual DbSet<CourseFormatDto> CourseFormats { get; set; }
+        public virtual DbSet<CourseParticipantDto> CourseParticipants { get; set; }
+        public virtual DbSet<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
+        public virtual DbSet<CourseSlotDto> CourseSlots { get; set; }
+        public virtual DbSet<CourseSlotPresenterDto> CourseSlotPresenters { get; set; }
+        public virtual DbSet<CourseSlotScenarioDto> CourseSlotScenarios { get; set; }
+        public virtual DbSet<CourseTypeDto> CourseTypes { get; set; }
         public virtual DbSet<DepartmentDto> Departments { get; set; }
-        public virtual DbSet<ScenarioRoleDescriptionDto> SenarioRoles { get; set; }
+        public virtual DbSet<FacultySimRoleDto> FacultySimRoles { get; set; }
         public virtual DbSet<InstitutionDto> Institutions { get; set; }
         public virtual DbSet<ManequinDto> Manequins { get; set; }
         public virtual DbSet<ManequinManufacturerDto> ManequinManufacturers { get; set; }
-        public virtual DbSet<ParticipantDto> Participants { get; set; }
         public virtual DbSet<ProfessionalRoleDto> ProfessionalRoles { get; set; }
+        public virtual DbSet<RoomDto> Rooms { get; set; }
         public virtual DbSet<ScenarioDto> Scenarios { get; set; }
         public virtual DbSet<ScenarioResourceDto> ScenarioResources { get; set; }
-        public virtual DbSet<CourseDto> Courses { get; set; }
-        public virtual DbSet<CourseParticipantDto> CourseParticipants { get; set; }
-        public virtual DbSet<CourseTypeDto> CourseTypes { get; set; }
-        public virtual DbSet<CourseSlotDto> CourseEvents { get; set; }
-        public virtual DbSet<ScenarioSlotDto> CourseScenarios { get; set; }
-        public virtual DbSet<CourseTeachingResourceDto> CourseTeachingResources { get; set; }
-        public virtual DbSet<CourseSlotPresenterDto> CourseSlotPresenters { get; set; }
-        public virtual DbSet<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Add(new FixedLengthAttributeConvention());
 
-            modelBuilder.Entity<CountryDto>()
-                .Property(e => e.Code)
-                .IsFixedLength();
+            modelBuilder.Entity<ActivityTeachingResourceDto>()
+                .HasMany(e => e.ChosenTeachingResources)
+                .WithRequired(e => e.ActivityTeachingResource)
+                .HasForeignKey(e => e.ActivityTeachingResourceId);
+
+            modelBuilder.Entity<ActivityTeachingResourceDto>()
+                .HasMany(e => e.ChosenTeachingResources)
+                .WithRequired(e => e.ActivityTeachingResource)
+                .HasForeignKey(e => e.ActivityTeachingResourceId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CountryDto>()
                 .HasMany(e => e.CountryLocales)
@@ -56,7 +63,13 @@ namespace SM.Dto
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseDto>()
-                .HasMany(e => e.ScenarioFacultyRoles)
+                .HasMany(e => e.CourseScenarioFacultyRoles)
+                .WithRequired(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseDto>()
+                .HasMany(e => e.CourseSlotScenarios)
                 .WithRequired(e => e.Course)
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);
@@ -67,12 +80,38 @@ namespace SM.Dto
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<CourseSlotDto>()
-                .HasMany(e => e.CourseTypes)
-                .WithMany(e => e.CourseEvents);
+            modelBuilder.Entity<CourseDto>()
+                .HasMany(e => e.ChosenTeachingResources)
+                .WithRequired(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseActivityDto>()
+                    .HasMany(e => e.CourseSlots)
+                    .WithOptional(e => e.Activity)
+                    .HasForeignKey(e => e.ActivityId)
+                    .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseActivityDto>()
+                .HasMany(e => e.ActivityChoices)
+                .WithRequired(e => e.CourseActivity)
+                .HasForeignKey(e => e.CourseActivityId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseFormatDto>()
+                .HasMany(e => e.CourseSlots)
+                .WithRequired(e => e.CourseFormat)
+                .HasForeignKey(e => e.CourseFormatId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseFormatDto>()
+                .HasMany(e => e.Courses)
+                .WithRequired(e => e.CourseFormat)
+                .HasForeignKey(e => e.CourseTypeId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseSlotDto>()
-                .HasMany(e => e.DefaultResources)
+                .HasMany(e => e.ChosenTeachingResources)
                 .WithRequired(e => e.CourseSlot)
                 .HasForeignKey(e => e.CourseSlotId)
                 .WillCascadeOnDelete(false);
@@ -83,21 +122,45 @@ namespace SM.Dto
                 .HasForeignKey(e => e.CourseSlotId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<CourseSlotDto>()
+                .HasMany(e => e.CourseScenarioFacultyRoles)
+                .WithRequired(e => e.CourseSlot)
+                .HasForeignKey(e => e.CourseSlotId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseSlotDto>()
+                .HasMany(e => e.CourseSlotScenarios)
+                .WithRequired(e => e.CourseSlot)
+                .HasForeignKey(e => e.CourseSlotId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseSlotDto>()
+                .HasMany(e => e.ChosenTeachingResources)
+                .WithRequired(e => e.CourseSlot)
+                .HasForeignKey(e => e.CourseSlotId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseTypeDto>()
+                .HasMany(e => e.FacultySimRoles)
+                .WithRequired(e => e.CourseType)
+                .HasForeignKey(e => e.CourseTypeId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseTypeDto>()
+                .HasMany(e => e.CourseFormats)
+                .WithRequired(e => e.CourseType)
+                .HasForeignKey(e => e.CourseTypeId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<CourseTypeDto>()
                 .HasMany(e => e.Scenarios)
                 .WithRequired(e => e.CourseType)
-                .HasForeignKey(e => e.CourseTypeId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.CourseTypeId);
 
             modelBuilder.Entity<CourseTypeDto>()
-                .HasMany(e => e.CourseEvents)
-                .WithMany(e => e.CourseTypes);
-
-            modelBuilder.Entity<CourseTypeDto>()
-                .HasMany(e => e.Courses)
+                .HasMany(e => e.CourseActivities)
                 .WithRequired(e => e.CourseType)
-                .HasForeignKey(e => e.CourseTypeId)
-                .WillCascadeOnDelete(false);
+                .HasForeignKey(e => e.CourseTypeId);
 
             modelBuilder.Entity<DepartmentDto>()
                 .HasMany(e => e.CourseTypes)
@@ -138,6 +201,12 @@ namespace SM.Dto
                 .HasForeignKey(e => e.DepartmentId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<FacultySimRoleDto>()
+                .HasMany(e => e.CourseScenarioFacultyRoles)
+                .WithRequired(e => e.FacultySimRole)
+                .HasForeignKey(e => e.FacultySimRoleId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<InstitutionDto>()
                 .Property(e => e.CountryCode)
                 .IsFixedLength();
@@ -151,7 +220,6 @@ namespace SM.Dto
             modelBuilder.Entity<InstitutionDto>()
                 .HasMany(e => e.ProfessionalRoles)
                 .WithMany(e => e.Institutions);
-            //.Map(m => m.ToTable("CountryProfessionalRole").MapLeftKey("CountryCode").MapRightKey("ProfessionalRoleId"));
 
             modelBuilder.Entity<ManequinManufacturerDto>()
                 .HasMany(e => e.Manequins)
@@ -166,7 +234,7 @@ namespace SM.Dto
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ParticipantDto>()
-                .HasMany(e => e.ScenarioFacultyRoles)
+                .HasMany(e => e.CourseScenarioFacultyRoles)
                 .WithRequired(e => e.FacultyMember)
                 .HasForeignKey(e => e.FacultyMemberId)
                 .WillCascadeOnDelete(false);
@@ -196,27 +264,12 @@ namespace SM.Dto
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ScenarioDto>()
-                .HasMany(e => e.ScenarioFacultyRoles)
+                .HasMany(e => e.CourseSlotScenarios)
                 .WithRequired(e => e.Scenario)
                 .HasForeignKey(e => e.ScenarioId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<ScenarioRoleDescriptionDto>()
-                .HasMany(e => e.ScenarioFacultyRoles)
-                .WithRequired(e => e.Role)
-                .HasForeignKey(e => e.RoleId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<ScenarioRoleDescriptionDto>()
-                .HasMany(e => e.CourseTypes)
-                .WithMany(e => e.ScenarioRoles);
-
-            modelBuilder.Entity<ScenarioSlotDto>()
-                .HasMany(e => e.CourseTypes)
-                .WithMany(e => e.ScenarioEvents);
-
             base.OnModelCreating(modelBuilder);
-
         }
     }
 }

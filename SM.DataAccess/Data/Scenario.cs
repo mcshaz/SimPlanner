@@ -16,8 +16,6 @@ namespace SM.DataAccess
 
         public string Description { get; set; }
 
-        public Guid DepartmentId { get; set; }
-
         public Difficulty Complexity { get; set; }
 
         public Emersion? EmersionCategory { get; set; }
@@ -25,13 +23,11 @@ namespace SM.DataAccess
         public string TemplateFilename { get; set; }
 
         public Guid? ManequinId { get; set; }
-
         public Guid CourseTypeId { get; set; }
+        public Guid DepartmentId { get; set; }
 
         public virtual Manequin Manequin { get; set; }
-
         public virtual CourseType CourseType { get; set; }
-
         public virtual Department Department { get; set; }
 
 		ICollection<Course> _courses; 
@@ -48,33 +44,32 @@ namespace SM.DataAccess
 			}
 		}
 
-		ICollection<ScenarioResource> _resources; 
+		ICollection<ScenarioResource> _scenarioResources; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ScenarioResource> Resources
+        public virtual ICollection<ScenarioResource> ScenarioResources
 		{
 			get
 			{
-				return _resources ?? (_resources = new List<ScenarioResource>());
+				return _scenarioResources ?? (_scenarioResources = new List<ScenarioResource>());
 			}
 			set
 			{
-				_resources = value;
+                _scenarioResources = value;
 			}
 		}
 
-		ICollection<ScenarioFacultyRole> _scenarioFacultyRoles; 
+		ICollection<CourseSlotScenario> _courseSlotScenarios; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ScenarioFacultyRole> ScenarioFacultyRoles
-		{
+        public virtual ICollection<CourseSlotScenario> CourseSlotScenarios
+        {
 			get
 			{
-				return _scenarioFacultyRoles ?? (_scenarioFacultyRoles = new List<ScenarioFacultyRole>());
+				return _courseSlotScenarios ?? (_courseSlotScenarios = new List<CourseSlotScenario>());
 			}
 			set
 			{
-				_scenarioFacultyRoles = value;
+				_courseSlotScenarios = value;
 			}
 		}
-
     }
 }

@@ -40,13 +40,13 @@ namespace SM.Dto
                 }
             }
             //uncomment the line below to find all entity relations which are 1 way (i.e. you have forgotten to map between both entities)
-            /*
+            
             Debug.WriteLine(string.Join("\r\n",
                                 from r in relationships
-                                where r.Value.Properties[1] == null
-                                let p = r.Value.Properties[0]
+                                let p = r.Value.UnmatchedProperty
+                                where p != null
                                 select string.Format("{0}: {1}.{2}", r.Key, p.TypeName, p.PropertyName)));
-            */
+            
             foreach (var node in metadata["association"])
             {
                 var single = node["end"].FirstOrDefault(n => (string)n["multiplicity"] == "1");
@@ -96,6 +96,15 @@ namespace SM.Dto
             {
                 Debug.Assert(_properties[1] == null);
                 _properties[1] = propName;
+            }
+
+            public EdmxProperty UnmatchedProperty
+            {
+                get
+                {
+                    if (_properties[1] != null) { return null; }
+                    return _properties[0];
+                }
             }
 
             public void SetSingleMultiplicityType(string typeName)

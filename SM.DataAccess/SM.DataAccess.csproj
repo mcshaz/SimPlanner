@@ -47,7 +47,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlSanitizer, Version=3.0.0.0, Culture=neutral, PublicKeyToken=61c49a1a9e79cc28, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlSanitizer.3.1.98\lib\net45\HtmlSanitizer.dll</HintPath>
+      <HintPath>..\packages\HtmlSanitizer.3.2.103\lib\net45\HtmlSanitizer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -85,16 +85,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\CourseActivity.cs" />
+    <Compile Include="Data\ChosenTeachingResource.cs" />
     <Compile Include="Data\CountryLocaleCode.cs" />
     <Compile Include="Data\Authentication\AspNetRole.cs" />
     <Compile Include="Data\Authentication\AspNetUserClaim.cs" />
     <Compile Include="Data\Authentication\AspNetUserLogin.cs" />
     <Compile Include="Data\Authentication\AspNetUserRole.cs" />
     <Compile Include="Data\Country.cs" />
-    <Compile Include="Data\Room.cs" />
-    <Compile Include="Data\ScenarioFacultyRole.cs" />
-    <Compile Include="Data\CourseSlotPresenter.cs" />
+    <Compile Include="Data\CourseScenarioFacultyRole.cs" />
+    <Compile Include="Data\CourseType.cs" />
     <Compile Include="Data\Resource.cs" />
+    <Compile Include="Data\Room.cs" />
+    <Compile Include="Data\CourseSlotScenario.cs" />
+    <Compile Include="Data\CourseSlotPresenter.cs" />
     <Compile Include="Data\Department.cs" />
     <Compile Include="Data\Enum\Complexity.cs" />
     <Compile Include="Data\Enum\Emersion.cs" />
@@ -104,24 +108,27 @@
     <Compile Include="Data\ManequinManufacturer.cs" />
     <Compile Include="Data\ProfessionalRole.cs" />
     <Compile Include="Data\Scenario.cs" />
-    <Compile Include="Data\ScenarioRoleDescription.cs" />
+    <Compile Include="Data\FacultySimRole.cs" />
     <Compile Include="Data\Course.cs" />
     <Compile Include="Data\CourseParticipant.cs" />
-    <Compile Include="Data\CourseSlot.cs" />
-    <Compile Include="Data\CourseType.cs" />
+    <Compile Include="Data\CourseFormat.cs" />
     <Compile Include="Data\Participant.cs" />
-    <Compile Include="Data\ScenarioSlot.cs" />
-    <Compile Include="Data\Slot.cs" />
+    <Compile Include="Data\CourseSlot.cs" />
     <Compile Include="InitialiseMedSim.cs" />
     <Compile Include="MedSimDbContext.cs" />
+    <Compile Include="Metadata\ActivityChoiceMetadata.cs" />
+    <Compile Include="Metadata\ChosenTeachingResourceMetadata.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
     <Compile Include="Metadata\CountryLocaleCodeMetadata.cs" />
     <Compile Include="Metadata\CountryMetadata.cs" />
+    <Compile Include="Metadata\CourseActivityMetadata.cs" />
+    <Compile Include="Metadata\CourseSlotScenarioMetadata.cs" />
+    <Compile Include="Metadata\CourseTypeMetadata.cs" />
     <Compile Include="Metadata\CourseMetadata.cs" />
     <Compile Include="Metadata\CourseParticipantMetadata.cs" />
     <Compile Include="Metadata\CourseSlotMetadata.cs" />
     <Compile Include="Metadata\CourseSlotPresenterMetadata.cs" />
-    <Compile Include="Metadata\CourseTypeMetadata.cs" />
+    <Compile Include="Metadata\CourseFormatMetadata.cs" />
     <Compile Include="Metadata\CustomValidators\PersonFullNameAttribute.cs" />
     <Compile Include="Metadata\DepartmentMetadata.cs" />
     <Compile Include="Metadata\InstitutionMetadata.cs" />
@@ -131,10 +138,9 @@
     <Compile Include="Metadata\ProfessionalRoleMetadata.cs" />
     <Compile Include="Metadata\ResourceMetadata.cs" />
     <Compile Include="Metadata\RoomMetadata.cs" />
-    <Compile Include="Metadata\ScenarioFacultyRoleMetadata.cs" />
+    <Compile Include="Metadata\CourseScenarioFacultyRoleMetadata.cs" />
     <Compile Include="Metadata\ScenarioMetadata.cs" />
     <Compile Include="Metadata\ScenarioRoleDescriptionMetadata.cs" />
-    <Compile Include="Metadata\SlotMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SanitizeStringProperties.cs" />
   </ItemGroup>

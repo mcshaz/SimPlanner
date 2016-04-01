@@ -17,7 +17,7 @@ namespace SM.Dto
         public DepartmentDto Department { get; set; }
         public ProfessionalRoleDto ProfessionalRole { get; set; }
         public virtual ICollection<CourseParticipantDto> CourseParticipants { get; set; }
-        public virtual ICollection<ScenarioFacultyRoleDto> ScenarioFacultyRoles { get; set; }
+        public virtual ICollection<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresentations { get; set; }
     }
 }

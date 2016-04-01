@@ -4,15 +4,16 @@ using System;
 using System.Linq.Expressions;
 namespace SM.Dto.Maps
 {
-    internal static class ScenarioFacultyRoleMaps
+    internal static class CourseScenarioFacultyRoleMaps
     {
-        internal static Func<ScenarioFacultyRoleDto, ScenarioFacultyRole> mapToRepo()
+        internal static Func<CourseScenarioFacultyRoleDto, CourseScenarioFacultyRole> mapToRepo()
         { 
-            return m => new ScenarioFacultyRole {
+            return m => new CourseScenarioFacultyRole
+            {
                 CourseId = m.CourseId,
-                ScenarioId = m.ScenarioId,
+                CourseSlotId = m.CourseSlotId,
                 FacultyMemberId = m.FacultyMemberId,
-                RoleId = m.RoleId,
+                FacultySimRoleId =m.FacultySimRoleId
                 //Course = m.Course,
                 //Scenario = m.Scenario,
                 //Role = m.Role,
@@ -20,14 +21,14 @@ namespace SM.Dto.Maps
             };
         }
 
-        internal static Expression<Func<ScenarioFacultyRole, ScenarioFacultyRoleDto>> mapFromRepo()
+        internal static Expression<Func<CourseScenarioFacultyRoleDto, CourseScenarioFacultyRoleDto>> mapFromRepo()
         {
-            return m => new ScenarioFacultyRoleDto
+            return m => new CourseScenarioFacultyRoleDto
             {
                 CourseId = m.CourseId,
-                ScenarioId = m.ScenarioId,
+                CourseSlotId = m.CourseSlotId,
                 FacultyMemberId = m.FacultyMemberId,
-                RoleId = m.RoleId,
+                FacultySimRoleId = m.FacultySimRoleId
                 //Course = m.Course,
                 //Scenario = m.Scenario,
                 //Role = m.Role,

@@ -103,12 +103,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\ChosenTeachingResourceDto.cs" />
     <Compile Include="Dto\CountryDto.cs" />
     <Compile Include="Dto\CountryLocaleCodeDto.cs" />
+    <Compile Include="Dto\CourseActivityDto.cs" />
     <Compile Include="Dto\CourseDto.cs" />
     <Compile Include="Dto\CourseParticipantDto.cs" />
     <Compile Include="Dto\CourseSlotDto.cs" />
     <Compile Include="Dto\CourseSlotPresenterDto.cs" />
+    <Compile Include="Dto\CourseFormatDto.cs" />
+    <Compile Include="Dto\CourseSlotScenarioDto.cs" />
     <Compile Include="Dto\CourseTypeDto.cs" />
     <Compile Include="Dto\DepartmentDto.cs" />
     <Compile Include="Dto\InstitutionDto.cs" />
@@ -119,14 +123,16 @@
     <Compile Include="Dto\ResourceDto.cs" />
     <Compile Include="Dto\RoomDto.cs" />
     <Compile Include="Dto\ScenarioDto.cs" />
-    <Compile Include="Dto\ScenarioFacultyRoleDto.cs" />
-    <Compile Include="Dto\ScenarioRoleDescriptionDto.cs" />
-    <Compile Include="Dto\ScenarioSlotDto.cs" />
+    <Compile Include="Dto\CourseScenarioFacultyRoleDto.cs" />
+    <Compile Include="Dto\FacultySimRoleDto.cs" />
     <Compile Include="Dto\SlotDto.cs" />
     <Compile Include="GetRequiredNavigationProperties.cs" />
     <Compile Include="MapDictionary\MapDictionary.cs" />
     <Compile Include="MapDictionary\MapNavProperty.cs" />
     <Compile Include="Maps\CountryLocaleCodeMaps.cs" />
+    <Compile Include="Maps\ActivityFacultyMaps.cs" />
+    <Compile Include="Maps\CourseFormatMaps.cs" />
+    <Compile Include="Maps\CourseActivityMaps.cs" />
     <Compile Include="Maps\CountryMaps.cs" />
     <Compile Include="Maps\RoomMaps.cs" />
     <Compile Include="Maps\CourseMaps.cs" />
@@ -141,7 +147,8 @@
     <Compile Include="Maps\ManequinMaps.cs" />
     <Compile Include="Maps\ParticipantMaps.cs" />
     <Compile Include="Maps\ProfessionalRoleMaps.cs" />
-    <Compile Include="Maps\ScenarioFacultyRoleMaps.cs" />
+    <Compile Include="Maps\CourseSlotScenarioMaps.cs" />
+    <Compile Include="Maps\CourseScenarioFacultyRoleMaps.cs" />
     <Compile Include="Maps\ScenarioMaps.cs" />
     <Compile Include="Maps\ScenarioResourceMaps.cs" />
     <Compile Include="Maps\ScenarioRoleDescriptionMaps.cs" />

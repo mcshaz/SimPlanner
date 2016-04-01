@@ -58,7 +58,33 @@
                     templateUrl: 'app/course/course.html',
                     settings: {
                         nav: 3,
-                        content: 'New Course' //<i class="fa fa-"></i> 
+                        content: 'Course' //<i class="fa fa-"></i> 
+                    },
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
+                url: '/courseTypes',
+                config: {
+                    title: 'Course Types',
+                    templateUrl: 'app/courseTypes/courseTypes.html',
+                    settings: {
+                        nav: 4,
+                        content: 'Course Types' //<i class="fa fa-"></i> 
+                    },
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
+                url: '/courseFormat/:id',
+                config: {
+                    title: 'Course Format',
+                    templateUrl: 'app/courseFormat/courseFormat.html',
+                    settings: {
+                        nav: 5,
+                        content: 'Course Format' //<i class="fa fa-"></i> 
                     },
                     access: {
                         allowedRoles: userRoles.all

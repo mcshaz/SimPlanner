@@ -19,7 +19,7 @@
         var isNew = id == 'new';
 
         vm.course = {};
-        vm.courseTypes = [];
+        vm.courseFormats = [];
         vm.dateFormat = '';
         vm.deleteCourseParticipant = deleteCourseParticipant;
         vm.dpPopup = { isOpen: false };
@@ -39,8 +39,8 @@
 
         function activate() {
             datacontext.ready().then(function () {
-                var promises =[ datacontext.courseTypes.all().then(function (data) {
-                    vm.courseTypes = data;
+                var promises =[ datacontext.courseFormats.all().then(function (data) {
+                    vm.courseFormats = data;
                 }),datacontext.departments.all().then(function (data) {
                     vm.departments = data;
                 }), datacontext.rooms.all().then(function (data) {

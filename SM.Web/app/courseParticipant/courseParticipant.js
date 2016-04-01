@@ -21,6 +21,7 @@
         cp.createCourseParticipant = createCourseParticipant;
         cp.createNewPerson = createNewPerson;
         cp.dialCode = '';
+        cp.disableAdd = disableAdd;
         cp.departments = [];
         cp.isFaculty = $scope.isFaculty;
         cp.isNew = !$scope.courseParticipant;
@@ -95,6 +96,11 @@
             //todo check event fires
         }
 
+        function disableAdd() {
+            var ent = cp.participant.entityAspect;
+            return ent.entityState.isDetached() || ent.hasValidationErrors;
+        }
+
         function validateSaveParticipant() {
             var origName = cp.participant.entityAspect.originalValues.fullName;
             if (origName && origName !== cp.participant.fullName) {
@@ -102,7 +108,7 @@
                     cp.participant.entityAspect.rejectChanges();
                     /*
                     var oldVal = cp.participant;
-                    cp.participant = datacontext.participants.cloneItem(oldVal);
+                    cp.participant = datacontext.cloneItem(oldVal);
                     oldval.entityAspect.rejectChanges();
                     ["email", "alternateEmail", "phoneNumber"].foreach(function(propName){
                         if (cp.participant[propName] === oldVal[propName]) { cp.participant["propName"] = null; }

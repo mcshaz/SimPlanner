@@ -56,17 +56,17 @@ namespace SM.DataAccess
 			}
 		}
 
-        ICollection<ScenarioFacultyRole> _scenarioFacultyRoles;
+        ICollection<CourseScenarioFacultyRole> _courseScenarioFacultyRoles;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ScenarioFacultyRole> ScenarioFacultyRoles
+        public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles
         {
             get
             {
-                return _scenarioFacultyRoles ?? (_scenarioFacultyRoles = new List<ScenarioFacultyRole>());
+                return _courseScenarioFacultyRoles ?? (_courseScenarioFacultyRoles = new List<CourseScenarioFacultyRole>());
             }
             set
             {
-                _scenarioFacultyRoles = value;
+                _courseScenarioFacultyRoles = value;
             }
         }
 
@@ -81,6 +81,20 @@ namespace SM.DataAccess
             set
             {
                 _courseSlotPresentations = value;
+            }
+        }
+
+        ICollection<ChosenTeachingResource> _activityFaculty;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ChosenTeachingResource> ActivityFaculty
+        {
+            get
+            {
+                return _activityFaculty ?? (_activityFaculty = new List<ChosenTeachingResource>());
+            }
+            set
+            {
+                _activityFaculty = value;
             }
         }
     }

@@ -44,11 +44,16 @@ namespace SM.Web.Controllers
             return Repo.GetParticipants(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
         [HttpGet]
-		public IQueryable<CountryDto> Countries(){ return Repo.Countries; } 
+		public IQueryable<CountryDto> Countries(){ return Repo.Countries; }
+        [HttpGet, EnableBreezeQuery]
+        public IQueryable<CourseActivityDto> CourseActivities(ODataQueryOptions options) {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetCourseActivities(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
         [HttpGet]
 		public IQueryable<DepartmentDto> Departments(){ return Repo.Departments; } 
         [HttpGet]
-		public IQueryable<ScenarioRoleDescriptionDto> SenarioRoles(){ return Repo.SenarioRoles; } 
+		public IQueryable<FacultySimRoleDto> SenarioRoles(){ return Repo.SenarioRoles; } 
         [HttpGet]
 		public IQueryable<InstitutionDto> Hospitals(){ return Repo.Institutions; } 
         [HttpGet]
@@ -59,7 +64,22 @@ namespace SM.Web.Controllers
 		public IQueryable<ScenarioDto> Scenarios()
         {
             return Repo.Scenarios;
-        } 
+        }
+
+        [HttpGet, EnableBreezeQuery]
+        public IQueryable<CourseSlotDto> CourseSlots(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetCourseSlots(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
+
+        [HttpGet, EnableBreezeQuery]
+        public IQueryable<CourseFormatDto> CourseFormats(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetCourseFormats(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
+
         [HttpGet]
 		public IQueryable<ScenarioResourceDto> ScenarioResources()
         {
@@ -81,16 +101,16 @@ namespace SM.Web.Controllers
                 {
                     if (se.RawExpand != null)
                     {
-                        Includes =  se.RawExpand.Split(',');
+                        Includes =  se.RawExpand.Split(splitter);
                     }
                      if (se.RawSelect != null)
                     {
-                        Selects = se.RawSelect.Split(',');
+                        Selects = se.RawSelect.Split(splitter);
                     }
                 }
                 if (options.Filter != null)
                 {
-                    var anyAlls = FindAnyAllFilterOptions.GetPaths(options.Filter);
+                    var anyAlls = FindAnyAllFilterOptions.GetPaths(options.Filter, Seperator.ToString());
                     if (anyAlls.Any())
                     {
                         Includes = (Includes ?? new string[0]).Concat(anyAlls).ToArray();
@@ -100,6 +120,7 @@ namespace SM.Web.Controllers
             public readonly string[] Includes;
             public readonly string[] Selects;
             public const char Seperator = '/';
+            const char splitter = ',';
         }
         [HttpGet]
 		public IQueryable<CourseTypeDto> CourseTypes()
@@ -112,8 +133,8 @@ namespace SM.Web.Controllers
         {
             return new LookupBundle
             {
-                CourseTypes = Repo.GetCourseTypes().ToList(),
                 Institutions = Repo.Institutions.ToList(),
+                CourseTypes = Repo.GetCourseTypes().ToList(),
                 ProfessionalRoles = Repo.ProfessionalRoles.ToList()
             };
         }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SM.Metadata
 {
-    public class ScenarioFacultyRoleMetadata
+    public class CourseSlotScenarioMetadata
     {
         [Key]
         [Column(Order = 0)]
@@ -14,16 +14,11 @@ namespace SM.Metadata
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid ScenarioId { get; set; }
+        public Guid CourseSlotId { get; set; }
 
         [Key]
         [Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid FacultyMemberId { get; set; }
-
-        [Key]
-        [Column(Order = 3)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid RoleId { get; set; }
+        public Guid ScenarioId { get; set; }
     }
 }

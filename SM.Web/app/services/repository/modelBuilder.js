@@ -13,6 +13,7 @@
 
         function extendMetadata(metadataStore) {
             extendCourse(metadataStore);
+            extendCourseFormat(metadataStore);
             extendValidators(metadataStore);
         }
 
@@ -68,8 +69,27 @@
             */
 
             metadataStore.registerEntityTypeCtor('CourseDto', CourseCtor /*, courseInitializer */);
-
         }
+
+        function extendCourseFormat(metadataStore) {
+
+            var CourseFormatCtor = function () {
+                //
+            };
+
+            var courseFormatInitializer = function (courseFormat) {
+                Object.defineProperty(CourseFormatCtor.prototype, 'typeFormatDescriptor', {
+                    enumerable: true,
+                    configurable: true,
+                    get: function () {
+                        return this.courseType.abbrev + ' - ' + this.description;
+                    }
+                });
+            };
+
+            metadataStore.registerEntityTypeCtor('CourseFormatDto', CourseFormatCtor, courseFormatInitializer);
+        }
+
 
         function ensureEntityType(obj, entityTypeName) {
             if (!obj.entityType || obj.entityType.shortName !== entityTypeName) {

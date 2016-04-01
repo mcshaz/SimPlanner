@@ -1,0 +1,22 @@
+﻿<section id="dashboard-view" class="mainbar" ng-controller="courseTypes as vm">
+    <section class="matter">
+        <div class="container">
+            <a class="btn-link" href="#/courseType/new">add new course type</a>
+            <ul>
+                <li ng-repeat="ct in vm.courseTypes track by ct.id">
+                    {{ct.description}} |
+                    <a class="btn-link" ng-href="#/courseType/{{ct.id}}">edit</a>
+                    <ul>
+                        <li>
+                            <a class="btn-link" ng-href="#/courseFormat/new?courseType={{ct.id}}">add new {{ct.abbrev}} format</a>
+                        </li>
+                        <li ng-repeat="cf in ct.courseFormats track by cf.id">
+                            {{cf.description}} |
+                            <a class="btn-link" ng-href="#/courseFormat/{{cf.id}}">edit</a>
+                        </li> 
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+</section>

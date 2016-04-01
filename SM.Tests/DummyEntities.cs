@@ -15,7 +15,7 @@ namespace SimManager.Tests
         [ForeignKey("B")]
         public int BId { get; set; }
         public Bar B { get; set; }
-        public ICollection<Bar> Bars { get; set; }
+        public virtual ICollection<Bar> Bars { get; set; }
     }
 
     internal class FooDto
@@ -25,7 +25,7 @@ namespace SimManager.Tests
         [ForeignKey("B")]
         public int BId { get; set; }
         public BarDto B { get; set; }
-        public ICollection<BarDto> Bars { get; set; }
+        public virtual ICollection<BarDto> Bars { get; set; }
     }
 
     internal class Bar
@@ -36,7 +36,7 @@ namespace SimManager.Tests
         [ForeignKey("F")]
         public int FId { get; set; }
         public Foo F { get; set; }
-        public ICollection<Foo> Foos { get; set; }
+        public virtual ICollection<Foo> Foos { get; set; }
     }
 
     internal class BarDto
@@ -47,6 +47,6 @@ namespace SimManager.Tests
         [ForeignKey("F")]
         public int FId { get; set; }
         public FooDto F { get; set; }
-        public ICollection<FooDto> Foos { get; set; }
+        public virtual ICollection<FooDto> Foos { get; set; }
     }
 }
