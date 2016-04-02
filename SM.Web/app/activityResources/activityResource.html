@@ -1,0 +1,32 @@
+﻿<div class="aside mainbox" id="activityResourceBox" tabindex="-1" role="dialog" ng-controller="courseParticipant as cp">
+    <div class="aside-dialog">
+        <div class="aside-content">
+                <div class="aside-header">
+                    <button class="close" type="button" ng-click="cp.close()">&times;</button>
+                    <h4 class="aside-title">
+                        {{}} choices
+                    </h4>
+                </div>
+                <div class="aside-body">
+                    <ul>
+                        <li ng-repeat="ca in ar. track by ca.id">
+                            {{}}
+                        </li>
+                    </ul>
+                    <form ng-submit="cp.createCourseParticipant($event)" id="courseParticipantForm">
+                        <div class="form-group">
+                            <label for="cpDepartment" class="control-label">Description</label>
+                            <div>
+                                <input type="text" id="cpDepartment" class="form-control" z-validate
+                                        data-ng-model="cp.participant.department" ng-disabled="cp.participant.entityAspect.entityState.isDetached()" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="aside-footer">
+
+                </div>
+
+        </div>
+    </div>
+</div>

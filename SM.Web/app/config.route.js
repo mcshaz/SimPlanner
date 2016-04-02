@@ -83,7 +83,6 @@
                     title: 'Course Format',
                     templateUrl: 'app/courseFormat/courseFormat.html',
                     settings: {
-                        nav: 5,
                         content: 'Course Format' //<i class="fa fa-"></i> 
                     },
                     access: {

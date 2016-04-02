@@ -58,8 +58,8 @@
                     return executeQuery(query);
                 };
 
-                self.create = function (/*ids and/or entityState*/) {
-                    var ids;
+                self.create = function (/*initialVals and/or entityState*/) {
+                    var initialVals;
                     var entityState;
                     var newIds = {};
                     switch (arguments.length) {
@@ -70,11 +70,11 @@
                             if (arg && arg.parentEnum && arg.parentEnum.name=="EntityState") {
                                 entityState = arg;
                             } else {
-                                ids = arg;
+                                initialVals = arg;
                             }
                             break;
                         case 2:
-                            ids = arguments[0];
+                            initialVals = arguments[0];
                             entityState = arguments[1];
                             break;
                         default:
@@ -82,23 +82,17 @@
                     }
 
                     var keyProps = entityType.keyProperties;
-                    if (!ids) {
+
+                    if (!initialVals) {
                         if (keyProps.length !== 1) {
                             throw new Error(entityTypeName + ' has a complex key - ids must be specified when creating');
                         }
-                        newIds.id = breeze.core.getUuid();
-                    } else if (Array.isArray(ids)){
-                        if (ids && ids.length !== keyProps.length) {
-                            throw new Error(entityTypeName + ' requires exactly ' + keyProps.length + ' keys to be specified, but ' + ids.length + ' were instead specified');
-                        }
-                        for (var i=0;i<keyProps.length;i++){
-                            newIds[keyProps[i].name] = ids[i];
-                        }
-                    } else {
-                        newIds = ids;
+                        initialVals = { id: breeze.core.getUuid() };
+                    } else if (keyProps.length === 1 && !initialVals.id) {
+                        initialVals.id = breeze.core.getUuid();
                     }
 
-                    return manager.createEntity(entityType, newIds, entityState);
+                    return manager.createEntity(entityType, initialVals, entityState);
                 }
 
                 function keyPropsToArray(key) {
@@ -133,7 +127,7 @@
                     if (argObj instanceof breeze.Predicate) {
                         return query.where(argObj);
                     }
-                    ['where', 'select', 'orderBy', 'skip', 'take', 'expand'].forEach(function (el) {
+                    ['where', 'withParameters', 'select', 'orderBy', 'skip', 'take', 'expand'].forEach(function (el) {
                         if (argObj[el]) {
                             query = query[el](argObj[el]);
                         }

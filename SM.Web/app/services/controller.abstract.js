@@ -28,21 +28,10 @@
 
             vm.log = common.logger.getLogFn(argObj.controllerId);
             vm.disableSave = disableSave;
+            vm.disableSaveInclChildren = disableSaveInclChildren;
 
             function hasDataChangedInWatchedOrChildren(){
-                var ent = vm[argObj.watchedEntityName];
-                var returnVar = [];
-                if (ent && ent.entityAspect) {
-                    if (hasChangedEnt(ent)) {
-                        returnVar.push(ent);
-                        ent.entityType.navigationProperties.forEach(function (np) {
-                            if (!np.isScalar) {
-                                returnVar = returnVar.concat(ent[np.name].filter(hasChangedEnt));
-                            }
-                        });
-                    }
-                }
-                return returnVar;
+                return getEntAndChildrenArray().filter(hasChangedEnt);
 
                 function hasChangedEnt(ent) {
                     switch (ent.entityAspect.entityState) {
@@ -85,6 +74,7 @@
                 }
             }
 
+
             function destroy(e) {
                 if (unwatchers && !e.defaultPrevented) {
                     $window.removeEventListener("beforeunload", beforeUnload);
@@ -95,13 +85,38 @@
                 }
             }
 
-            function disableSave() {
-                var watched = vm[argObj.watchedEntityName];
-                if (watched && watched.entityAspect) {
-                    return !watched.entityAspect.entityState.isAddedModifiedOrDeleted()
-                        || watched.entityAspect.hasValidationErrors;
+            function disableSave(ent) {
+                ent = ent || vm[argObj.watchedEntityName];
+                if (ent && ent.entityAspect) {
+                    return !ent.entityAspect.entityState.isAddedModifiedOrDeleted()
+                        || ent.entityAspect.hasValidationErrors;
                 }
                 return true;
+            }
+
+            function getEntAndChildrenArray() {
+                var ent = vm[argObj.watchedEntityName];
+                if (ent && ent.entityAspect) {
+                    var returnVar = [ent];
+                    ent.entityType.navigationProperties.forEach(function(np){
+                        if (!np.isScalar){
+                            Array.prototype.push.apply(returnVar, ent[np.name]);
+                        }
+                    });
+                    return returnVar;
+                }
+                return [];
+            }
+
+            function disableSaveInclChildren() {
+                var entArray = getEntAndChildrenArray().map(function (el) {
+                    return el.entityAspect;
+                });
+                return entArray.some(function (ea) {
+                    ea.isBeingSaved || ea.hasValidationErrors;
+                    }) || !entArray.some(function (ea) {
+                        return ea.entityState.isAddedModifiedOrDeleted();
+                });
             }
 
 

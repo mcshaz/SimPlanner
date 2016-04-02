@@ -25,6 +25,8 @@
             dataService: dataService,
             metadataStore: metadataStore
         });
+
+        masterManager.enableSaveQueuing(true);
         //var log = common.logger.getLogFn(serviceId);
         /*
         masterManager.hasChangesChanged.subscribe(function () {

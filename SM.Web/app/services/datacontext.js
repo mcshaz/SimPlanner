@@ -34,7 +34,7 @@
                 .then(function (saveResult) {
                     $rootScope.$broadcast('saved', saveResult.entities);
                     log.success({ msg: 'Saved data', data: saveResult, showToast: true });
-                }).catch(saveFailed);
+                },saveFailed);
         };
 
         self.courses = repository.create(provider, 'CourseDto', 'Courses');
@@ -42,6 +42,7 @@
         self.courseActivities = repository.create(provider, 'CourseActivityDto', 'CourseActivities');
         self.courseFormats = repository.create(provider, 'CourseFormatDto', 'CourseFormats');
         self.courseParticipants = repository.create(provider, 'CourseParticipantDto', 'CourseParticipants'/* 'Courses' */);
+        self.courseSlots = repository.create(provider, 'CourseSlotDto', 'CourseSlots'/* 'Courses' */);
         self.courseTypes = repository.create(provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);
         self.departments = repository.create(provider, 'DepartmentDto', 'Departments', breeze.FetchStrategy.FromLocalCache);
         self.institutions = repository.create(provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);

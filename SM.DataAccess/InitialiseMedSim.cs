@@ -67,7 +67,7 @@ namespace SM.DataAccess
             var slides = new ActivityTeachingResource { Id = Guid.NewGuid(), Name="PICU 2016 version",ResourceFilename = @"C:\whatever\Slides.ppt" };
             context.ActivityTeachingResources.Add(slides);
             var didactic = new CourseActivity { Id = Guid.NewGuid(), Name = "Didactic Lecture", CourseType = crm };
-            var didacticSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20,  Activity = didactic, Order = 1, CourseFormat = crm2 };
+            var didacticSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20,  Activity = didactic, Order = 0, CourseFormat = crm2 };
             didactic.ActivityChoices.Add(slides);
             context.CourseActivities.Add(didactic);
 
@@ -77,7 +77,7 @@ namespace SM.DataAccess
             context.ActivityTeachingResources.AddRange(new[] { ballGame, eggGame, solarGame });
 
             var teamBuilder = new CourseActivity { Id = Guid.NewGuid(), Name = "Team Building", CourseType = crm };
-            var teamSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = teamBuilder, Order = 2, CourseFormat = crm2 };
+            var teamSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = teamBuilder, Order = 1, CourseFormat = crm2 };
 
             teamBuilder.ActivityChoices.Add(ballGame);
             teamBuilder.ActivityChoices.Add(eggGame);
@@ -85,13 +85,13 @@ namespace SM.DataAccess
             context.CourseActivities.Add(didactic);
             context.CourseSlots.Add(teamSlot);
 
-            var sim1 = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 40, Order = 3, CourseFormat = crm2 };
+            var sim1 = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 40, Order = 2, CourseFormat = crm2 };
 
             context.CourseSlots.Add(didacticSlot);
             context.CourseSlots.Add(sim1);
 
             var coffee = new CourseActivity { Id = Guid.NewGuid(), Name = "Coffee Break", CourseType = crm };
-            var coffeeSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity=coffee, Order=4, CourseFormat = crm2 };
+            var coffeeSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity=coffee, Order = 3, CourseFormat = crm2 };
             context.CourseActivities.Add(coffee);
             context.CourseSlots.Add(coffeeSlot);
 
