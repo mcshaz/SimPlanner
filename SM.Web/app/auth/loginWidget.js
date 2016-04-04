@@ -18,20 +18,25 @@ var controllerId = 'loginWidget';
         $rootScope.$broadcast(AUTH_EVENTS.loginWidgetReady);
         function getCredentials() {
             common.$broadcast(commonConfig.config.controllerActivateSuccessEvent); //switch the spinner off
-            modalInstance =  $modal({
+            var modal = getModalInstance();
+            modal.$promise.then(modal.show);
+        };
+
+        var _modalInstance;
+        function getModalInstance() {
+            return _modalInstance || (_modalInstance=$modal({
                 templateUrl: 'app/auth/getCredentials.html',
                 controller: 'getCredentials',
-                animation:'am-fade-and-slide-top',
-                show:true
-            });
-        };
+                animation: 'am-fade-and-slide-top',
+                controllerAs: 'gc',
+                show:false
+            }));
+        }
 
         function loggedIn(e, data) {
             vm.currentUser = tokenStorageService.getUserName();
-            if (modalInstance) {
-                modalInstance.hide(); //(could use hide)
-                modalInstance.destroy();
-                modalInstance = null;
+            if (_modalInstance) {
+                _modalInstance.hide(); //(could use hide)
             }
         }
 

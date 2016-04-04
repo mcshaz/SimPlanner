@@ -18,7 +18,6 @@
         self.save = function (/*entitiesToSave*/) {
             //var saveOptions = new breeze.SaveOptions({ resourceName: 'savechanges' });
             var entititiesToSave;
-            console.log(provider.getChanges().length);
             switch (arguments.length) {
                 case 0:
                     // = save all;
@@ -39,6 +38,7 @@
                 }, saveFailed);
         };
 
+        self.activityResources = repository.create(provider, 'ActivityTeachingResourceDto', 'ActivityTeachingResources');
         self.courses = repository.create(provider, 'CourseDto', 'Courses');
         self.countries = repository.create(provider, 'CountryDto', 'Countries', breeze.FetchStrategy.FromLocalCache);
         self.courseActivities = repository.create(provider, 'CourseActivityDto', 'CourseActivities');

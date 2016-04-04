@@ -100,9 +100,9 @@
                     var returnVar = [ent];
                     ent.entityType.navigationProperties.forEach(function(np){
                         if (!np.isScalar){
-                            Array.prototype.push.apply(returnVar, ent[np.name]);
+                            returnVar = returnVar.concat(ent[np.name]);
 
-                            Array.prototype.push.apply(returnVar, ent.entityAspect.entityManager.getEntities(np.entityType, breeze.EntityState.Deleted)
+                            returnVar = returnVar.concat(ent.entityAspect.entityManager.getEntities(np.entityType, breeze.EntityState.Deleted)
                                 .filter(function (deletedEnt) {
                                     for (var i = 0; i < np.invForeignKeyNames.length; i++) {
                                         if (deletedEnt[np.invForeignKeyNames[i]] !== ent[ent.entityType.keyProperties[i].name]) {
@@ -125,10 +125,10 @@
                     return el.entityAspect;
                 });
                 return entArray.some(function (ea) {
-                    ea.isBeingSaved || ea.hasValidationErrors;
+                        return ea.isBeingSaved || ea.hasValidationErrors;
                     }) || !entArray.some(function (ea) {
                         return ea.entityState.isAddedModifiedOrDeleted();
-                });
+                    });
             }
 
 

@@ -17,7 +17,7 @@ namespace SM.Dto.Maps
             _maps = new ReadOnlyDictionary<string, LambdaExpression>(
                 CreateMapDictionary(
                     new[] {
-                        new DtoMap(typeof(ActivityTeachingResourceDto),  ActivityTeachingResourceMaps.mapFromRepo()),
+                        new DtoMap(typeof(ActivityTeachingResource),  ActivityTeachingResourceMaps.mapFromRepo(),false,"ActivityChoices"),
                         new DtoMap(typeof(ChosenTeachingResource),ChosenTeachingResourceMaps.mapFromRepo(), false),
                         new DtoMap(typeof(Country),CountryMaps.mapFromRepo(), false,"Countries"),
                         new DtoMap(typeof(Course),  CourseMaps.mapFromRepo(), true, "OutreachCourses"),

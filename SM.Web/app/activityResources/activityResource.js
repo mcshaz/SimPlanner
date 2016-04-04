@@ -19,7 +19,11 @@
         })
 
         vm.courseActivity = $scope.courseActivity;
-        vm.selectedActivityResource = {};
+        vm.createActivityResource = createActivityResource;
+        vm.selectedActivityResource = null;
+
+        vm.selectActivityResource = selectActivityResource;
+        vm.save = save;
 
         activate();
 
@@ -28,10 +32,10 @@
                 var ent = vm.courseActivity.entityAspect;
                 var promises = ent.isNavigationPropertyLoaded('activityChoices')
                     ? []
-                    : ent.loadNavigationProperty('activityChoices');
+                    : [ent.loadNavigationProperty('activityChoices')];
                 common.activateController(promises, controllerId)
                     .then(function () {
-                        cp.log('Activated Course Participant Dialog');
+                        vm.log('Activated Activity Resources Dialog');
                     });
             });
         }
@@ -41,9 +45,14 @@
         }
 
         function createActivityResource() {
-            vm.currentActivityResource = datacontext.activityResourcess.create({
+            vm.selectedActivityResource = datacontext.activityResources.create({
                 courseActivityId: $scope.courseActivity.id
             });
+        }
+
+        function save() {
+            datacontext.save(vm.courseActivity.activityChoices);
+            vm.selectedActivityResource = null;
         }
     }
 })();

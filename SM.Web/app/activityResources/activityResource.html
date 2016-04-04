@@ -1,4 +1,4 @@
-﻿<div class="aside mainbox" id="activityResourceBox" tabindex="-1" role="dialog" ng-controller="activityResource as ar">
+﻿<div class="aside mainbox" id="activityResourceBox" tabindex="-1" role="dialog">
     <div class="aside-dialog">
         <div class="aside-content">
                 <div class="aside-header">
@@ -8,7 +8,7 @@
                     </h4>
                 </div>
                 <div class="aside-body">
-                    <form id="courseParticipantForm">
+                    <form id="courseParticipantForm" ng-submit="ar.save()">
                         <button type="button" class="btn-link" ng-click="ar.createActivityResource()">Create new choice</button>
                         <ul>
                             <li ng-repeat="ac in ar.courseActivity.activityChoices track by ac.id">
@@ -19,10 +19,10 @@
                         </ul>
 
                         <div class="form-group">
-                            <label for="cpDepartment" class="control-label">Name</label>
+                            <label for="resourceName" class="control-label">Name</label>
                             <div>
-                                <input type="text" id="cpDepartment" class="form-control" z-validate
-                                       data-ng-model="ar.selectedActivityResource.name" />
+                                <input type="text" id="resourceName" class="form-control" data-z-validate
+                                       data-ng-model="ar.selectedActivityResource.name" ng-disabled="!ar.selectedActivityResource"/>
                             </div>
                         </div>
 

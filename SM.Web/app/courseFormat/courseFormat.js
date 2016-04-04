@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$location'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$location', '$aside'];
 
-    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $location) {
+    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $location, $aside) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -170,7 +170,9 @@
         }
 
         function editChoices() {
-
+            var modal = getModalInstance();
+            modal.$scope.courseActivity = vm.selectedSlot.activity;
+            modal.$promise.then(modal.show);
         }
 
         function editSlot(courseSlot) {
@@ -193,17 +195,17 @@
             if (!_modalInstance) {
                 var scope = $scope.$new();
                 _modalInstance = $aside({
-                    templateUrl: 'app/courseParticipant/courseParticipant.html',
-                    controller: 'courseParticipant',
+                    templateUrl: 'app/activityResources/activityResource.html',
+                    controller: 'activityResource',
                     show: false,
                     id: 'cpModal',
                     placement: 'left',
                     animation: 'am-slide-left',
                     scope: scope,
+                    controllerAs:'ar'
 
                 });
                 scope.asideInstance = _modalInstance;
-                scope.course = vm.course;
             }
             return _modalInstance;
         }

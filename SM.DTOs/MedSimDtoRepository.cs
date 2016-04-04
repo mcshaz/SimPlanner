@@ -47,6 +47,11 @@ namespace SM.Dto
             return new EFContextProvider<MedSimDtoContextPretender>().Metadata();
         }
 
+        public IQueryable<ActivityTeachingResourceDto> ActivityTeachingResources(string[] includes, string[] selects, char sepChar)
+        {
+            return Context.ActivityTeachingResources.Project<ActivityTeachingResource, ActivityTeachingResourceDto>(includes, selects, sepChar);
+        }
+
         public SaveResult SaveChanges(JObject saveBundle)
         {
             // Todo: transform entities in saveBundle from DTO form into server-model form.

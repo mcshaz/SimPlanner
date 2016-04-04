@@ -36,7 +36,12 @@ namespace SM.Web.Controllers
         {
             return Repo.SaveChanges(saveBundle);
         }
-
+        [HttpGet, EnableBreezeQuery]
+		public IQueryable<ActivityTeachingResourceDto> ActivityTeachingResources(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.ActivityTeachingResources(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
         [HttpGet, EnableBreezeQuery]
 		public IQueryable<ParticipantDto> Participants(ODataQueryOptions options)
         {
