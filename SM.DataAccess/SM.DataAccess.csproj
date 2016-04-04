@@ -87,7 +87,6 @@
   <ItemGroup>
     <Compile Include="Data\CourseActivity.cs" />
     <Compile Include="Data\ChosenTeachingResource.cs" />
-    <Compile Include="Data\CountryLocaleCode.cs" />
     <Compile Include="Data\Authentication\AspNetRole.cs" />
     <Compile Include="Data\Authentication\AspNetUserClaim.cs" />
     <Compile Include="Data\Authentication\AspNetUserLogin.cs" />
@@ -95,6 +94,8 @@
     <Compile Include="Data\Country.cs" />
     <Compile Include="Data\CourseScenarioFacultyRole.cs" />
     <Compile Include="Data\CourseType.cs" />
+    <Compile Include="Data\ManequinService.cs" />
+    <Compile Include="Data\ManequinModel.cs" />
     <Compile Include="Data\Resource.cs" />
     <Compile Include="Data\Room.cs" />
     <Compile Include="Data\CourseSlotScenario.cs" />
@@ -119,7 +120,6 @@
     <Compile Include="Metadata\ActivityChoiceMetadata.cs" />
     <Compile Include="Metadata\ChosenTeachingResourceMetadata.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
-    <Compile Include="Metadata\CountryLocaleCodeMetadata.cs" />
     <Compile Include="Metadata\CountryMetadata.cs" />
     <Compile Include="Metadata\CourseActivityMetadata.cs" />
     <Compile Include="Metadata\CourseSlotScenarioMetadata.cs" />
@@ -133,7 +133,9 @@
     <Compile Include="Metadata\DepartmentMetadata.cs" />
     <Compile Include="Metadata\InstitutionMetadata.cs" />
     <Compile Include="Metadata\ManequinManufacturerMetadata.cs" />
+    <Compile Include="Metadata\ManequinModelMetadata.cs" />
     <Compile Include="Metadata\ManequinMetadata.cs" />
+    <Compile Include="Metadata\ManequinServiceMetadata.cs" />
     <Compile Include="Metadata\ParticipantMetadata.cs" />
     <Compile Include="Metadata\ProfessionalRoleMetadata.cs" />
     <Compile Include="Metadata\ResourceMetadata.cs" />

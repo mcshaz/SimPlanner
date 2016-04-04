@@ -10,7 +10,7 @@ namespace SM.Dto.Maps
         {
             return m => new Country
             {
-                Code = m.Code,
+                LocaleCode = m.LocaleCode,
                 Name = m.Name,
                 DialCode = m.DialCode
                 //Hospitals = m.Hospitals,
@@ -21,7 +21,7 @@ namespace SM.Dto.Maps
         internal static Expression<Func<Country, CountryDto>> mapFromRepo()
         {
             return m => new CountryDto {
-            Code = m.Code,
+            LocaleCode = m.LocaleCode,
             Name = m.Name,
             DialCode = m.DialCode
             //Hospitals = m.Hospitals,

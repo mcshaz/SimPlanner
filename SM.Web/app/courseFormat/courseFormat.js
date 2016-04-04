@@ -26,9 +26,8 @@
         vm.courseFormat = {};
         vm.courseActivities = [];
         vm.createSlot = createSlot;
-        vm.deleteSlot = deleteSlot;
+        vm.removeSlot = removeSlot;
         vm.isScenarioChanged = isScenarioChanged;
-        vm.saveSlot = saveSlot;
         vm.editSlot = editSlot;
         vm.editChoices = editChoices;
         vm.selectedSlot = null;
@@ -64,22 +63,22 @@
                 } else {
                     promises = [
                         datacontext.courseActivities.findServerIfCacheEmpty(courseActivitiesPredicate).then(mapCourseActivities),
-                         datacontext.courseFormats.fetchByKey(id, { expand: 'courseSlots,courseType' }).then(function (data) {
-                             if (!data) {
-                                 vm.log.warning({msg:'could not find courseFormat Id: ' + id})
-                             }
-                             vm.courseFormat = data;
-                             data.courseSlots = data.courseSlots.sort(function (a, b) {
-                                 if (a.order > b.order) {
-                                     return 1;
-                                 }
-                                 if (a.order < b.order) {
-                                     return -1;
-                                 }
-                                 // a must be equal to b
-                                 return 0;
-                             });
-                         })
+                        datacontext.courseFormats.fetchByKey(id, { expand: 'courseSlots,courseType' }).then(function (data) {
+                            if (!data) {
+                                vm.log.warning({msg:'could not find courseFormat Id: ' + id})
+                            }
+                            vm.courseFormat = data;
+                            data.courseSlots = data.courseSlots.sort(function (a, b) {
+                                if (a.order > b.order) {
+                                    return 1;
+                                }
+                                if (a.order < b.order) {
+                                    return -1;
+                                }
+                                // a must be equal to b
+                                return 0;
+                            });
+                        })
                     ];
                 }
                 common.activateController(promises, controllerId)
@@ -91,10 +90,20 @@
 
         function activitySelected(activityName) {
             removeActivity();
-            vm.selectedSlot.activity = datacontext.courseActivities.findInCache()
+            var selectedActivity = datacontext.courseActivities.findInCache()
                 .find(function (el) {
                     return el.name === activityName && el.courseTypeId === vm.courseFormat.courseTypeId;
                 });
+            var inactiveSlot;
+            if (inactiveSlot = vm.courseFormat.courseSlots.find(function (cs) {
+                return !cs.isActive && cs.activityId === selectedActivity.id
+            })) {
+                inactiveSlot.isActive = true;
+                vm.selectedSlot = inactiveSlot;
+            } else {
+                vm.selectedSlot.activity = selectedActivity;
+            }
+            
             /*
             vm.selectedSlot.activity = datacontext.courseActivities.findInCache({
                 withParameters: {
@@ -126,7 +135,9 @@
 
         function save($event) {
             //vm.log.debug($event);
-            datacontext.save().then(function () { vm.selectedSlot = null; });
+            datacontext.save().then(function () {
+                vm.selectedSlot = null;
+            });
         }//;
 
         function updateCourseActivities() {
@@ -142,15 +153,20 @@
             vm.selectedSlot = datacontext.courseSlots.create({
                 courseFormatId: vm.courseFormat.id,
                 order: (vm.courseActivities || []).length,
+                isActive: true,
                 day:1 //**todo** remove this & allow for multi day courses
             });
             vm.selectedSlot.isScenario = false;
             createActivity();
-
         }
 
-        function deleteSlot(courseSlot) {
-            courseSlot.entityAspect.setDeleted();
+        function removeSlot(courseSlot) {
+            if (courseSlot.entityAspect.entityState.isAdded()) {
+                courseSlot.entityAspect.setDeleted();
+            } else {
+                courseSlot.isActive = false;
+            }
+            
         }
 
         function editChoices() {
@@ -169,11 +185,6 @@
             } else {
                 createActivity();
             }
-        }
-
-        function saveSlot() {
-            datacontext.save([vm.selectedSlot]);
-            vm.selectedSlot = null;
         }
 
 

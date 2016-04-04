@@ -4,7 +4,6 @@ namespace SM.DataAccess
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     [MetadataType(typeof(ManequinMetadata))]
     public partial class Manequin
@@ -15,24 +14,26 @@ namespace SM.DataAccess
 
         public Guid? DepartmentId { get; set; }
 
-        public Guid ManufacturerId { get; set; }
+        public Guid ModelId { get; set; }
+
+        public bool PurchasedNew { get; set; }
+
+        public DateTime? PurchaseDate { get; set; }
+
+        public decimal? LocalCurrencyPurchasePrice { get; set; }
+
+        public DateTime? DecommissionDate { get; set; }
+
+        public string DecommissionReason { get; set; }
 
         public virtual Department Department { get; set; }
 
-        public virtual ManequinManufacturer Manufacturer { get; set; }
+        public virtual ManequinModel Model { get; set; }
 
-        ICollection<Scenario> _scenarios; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Scenario> Scenarios
-		{
-			get
-			{
-				return _scenarios ?? (_scenarios = new List<Scenario>());
-			}
-			set
-			{
-				_scenarios = value;
-			}
-		}
+        public virtual ICollection<ManequinService> ManequinServices { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CourseSlotScenario> CourseSlotScenarios { get; set; }
     }
 }

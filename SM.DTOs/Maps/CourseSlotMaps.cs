@@ -1,5 +1,4 @@
 using SM.DataAccess;
-using SM.Dto;
 using System;
 using System.Linq.Expressions;
 namespace SM.Dto.Maps
@@ -12,6 +11,7 @@ namespace SM.Dto.Maps
                 Id = m.Id,
                 MinutesDuration = m.MinutesDuration,
                 Day = m.Day, 
+                IsActive = m.IsActive,
                 ActivityId = m.ActivityId,
                 CourseFormatId = m.CourseFormatId,
                 Order = m.Order
@@ -25,6 +25,7 @@ namespace SM.Dto.Maps
                 Id = m.Id,
                 MinutesDuration = m.MinutesDuration,
                 Day = m.Day,
+                IsActive = m.IsActive,
                 ActivityId = m.ActivityId,
                 CourseFormatId = m.CourseFormatId,
                 Order = m.Order

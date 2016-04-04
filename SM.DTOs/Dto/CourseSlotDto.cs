@@ -9,6 +9,7 @@ namespace SM.Dto
     {
         public Guid Id { get; set; }
         public byte MinutesDuration { get; set; }
+        public bool IsActive { get; set; }
         public byte Order { get; set; }
         public byte Day { get; set; }
         /// <summary>

@@ -20,7 +20,6 @@ namespace SM.DataAccess
         public virtual DbSet<ActivityTeachingResource> ActivityTeachingResources { get; set; }
         public virtual DbSet<ChosenTeachingResource> ChosenTeachingResources { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
-        public virtual DbSet<CountryLocaleCode> CountryLocaleCodes { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<CourseActivity> CourseActivities { get; set; }
         public virtual DbSet<CourseFormat> CourseFormats { get; set; }
@@ -35,6 +34,8 @@ namespace SM.DataAccess
         public virtual DbSet<Institution> Institutions { get; set; }
         public virtual DbSet<Manequin> Manequins { get; set; }
         public virtual DbSet<ManequinManufacturer> ManequinManufacturers { get; set; }
+        public virtual DbSet<ManequinModel> ManequinModels { get; set; }
+        public virtual DbSet<ManequinService> ManequinServices { get; set; }
         public virtual DbSet<ProfessionalRole> ProfessionalRoles { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<Scenario> Scenarios { get; set; }
@@ -81,9 +82,10 @@ namespace SM.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Country>()
-                .HasMany(e => e.CountryLocales)
+                .HasMany(e => e.Institutions)
                 .WithRequired(e => e.Country)
-                .HasForeignKey(e=>e.CountryCode);
+                .HasForeignKey(e => e.LocaleCode)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Course>()
                 .HasMany(e => e.CourseParticipants)
@@ -237,7 +239,7 @@ namespace SM.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Institution>()
-                .Property(e => e.CountryCode)
+                .Property(e => e.LocaleCode)
                 .IsFixedLength();
 
             modelBuilder.Entity<Institution>()
@@ -250,10 +252,34 @@ namespace SM.DataAccess
                 .HasMany(e => e.ProfessionalRoles)
                 .WithMany(e => e.Institutions);
 
+            modelBuilder.Entity<Manequin>()
+                .HasMany(e => e.ManequinServices)
+                .WithRequired(e => e.Manequin)
+                .HasForeignKey(e => e.ManequinId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Manequin>()
+                .HasMany(e => e.CourseSlotScenarios)
+                .WithRequired(e => e.Manequin)
+                .HasForeignKey(e => e.ManequinId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ManequinManufacturer>()
-                .HasMany(e => e.Manequins)
+                .HasMany(e => e.ManequinModels)
                 .WithRequired(e => e.Manufacturer)
                 .HasForeignKey(e => e.ManufacturerId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ManequinModel>()
+                .HasMany(e => e.Manequins)
+                .WithRequired(e => e.Model)
+                .HasForeignKey(e => e.ModelId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ManequinModel>()
+                .HasMany(e => e.Scenarios)
+                .WithOptional(e => e.ManequinModel)
+                .HasForeignKey(e => e.ManequinModelId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Participant>()

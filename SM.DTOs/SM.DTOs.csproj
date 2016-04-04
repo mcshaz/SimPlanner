@@ -105,7 +105,6 @@
   <ItemGroup>
     <Compile Include="Dto\ChosenTeachingResourceDto.cs" />
     <Compile Include="Dto\CountryDto.cs" />
-    <Compile Include="Dto\CountryLocaleCodeDto.cs" />
     <Compile Include="Dto\CourseActivityDto.cs" />
     <Compile Include="Dto\CourseDto.cs" />
     <Compile Include="Dto\CourseParticipantDto.cs" />
@@ -118,6 +117,8 @@
     <Compile Include="Dto\InstitutionDto.cs" />
     <Compile Include="Dto\ManequinDto.cs" />
     <Compile Include="Dto\ManequinManufacturersDto.cs" />
+    <Compile Include="Dto\ManequinModelDto.cs" />
+    <Compile Include="Dto\ManequinServiceDto.cs" />
     <Compile Include="Dto\ParticipantDto.cs" />
     <Compile Include="Dto\ProfessionalRoleDto.cs" />
     <Compile Include="Dto\ResourceDto.cs" />
@@ -129,11 +130,12 @@
     <Compile Include="GetRequiredNavigationProperties.cs" />
     <Compile Include="MapDictionary\MapDictionary.cs" />
     <Compile Include="MapDictionary\MapNavProperty.cs" />
-    <Compile Include="Maps\CountryLocaleCodeMaps.cs" />
     <Compile Include="Maps\ActivityFacultyMaps.cs" />
     <Compile Include="Maps\CourseFormatMaps.cs" />
     <Compile Include="Maps\CourseActivityMaps.cs" />
     <Compile Include="Maps\CountryMaps.cs" />
+    <Compile Include="Maps\ManequinServiceMaps.cs" />
+    <Compile Include="Maps\ManequinModelMaps.cs" />
     <Compile Include="Maps\RoomMaps.cs" />
     <Compile Include="Maps\CourseMaps.cs" />
     <Compile Include="Maps\CourseParticipantMaps.cs" />

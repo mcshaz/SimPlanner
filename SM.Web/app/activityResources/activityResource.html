@@ -1,26 +1,32 @@
-﻿<div class="aside mainbox" id="activityResourceBox" tabindex="-1" role="dialog" ng-controller="courseParticipant as cp">
+﻿<div class="aside mainbox" id="activityResourceBox" tabindex="-1" role="dialog" ng-controller="activityResource as ar">
     <div class="aside-dialog">
         <div class="aside-content">
                 <div class="aside-header">
-                    <button class="close" type="button" ng-click="cp.close()">&times;</button>
+                    <button class="close" type="button" ng-click="ar.close()">&times;</button>
                     <h4 class="aside-title">
-                        {{}} choices
+                        {{ar.courseActivity.name}} choices
                     </h4>
                 </div>
                 <div class="aside-body">
-                    <ul>
-                        <li ng-repeat="ca in ar. track by ca.id">
-                            {{}}
-                        </li>
-                    </ul>
-                    <form ng-submit="cp.createCourseParticipant($event)" id="courseParticipantForm">
+                    <form id="courseParticipantForm">
+                        <button type="button" class="btn-link" ng-click="ar.createActivityResource()">Create new choice</button>
+                        <ul>
+                            <li ng-repeat="ac in ar.courseActivity.activityChoices track by ac.id">
+                                {{ac.name}} |
+                                <button type="button" ng-click="ar.selectActivityResource(ac)" class="btn-link" >Edit</button> |
+                                <button type="button" ng-click="ac.entityAspect.setDeleted()" class="btn-link" >Delete</button>
+                            </li>
+                        </ul>
+
                         <div class="form-group">
-                            <label for="cpDepartment" class="control-label">Description</label>
+                            <label for="cpDepartment" class="control-label">Name</label>
                             <div>
                                 <input type="text" id="cpDepartment" class="form-control" z-validate
-                                        data-ng-model="cp.participant.department" ng-disabled="cp.participant.entityAspect.entityState.isDetached()" />
+                                       data-ng-model="ar.selectedActivityResource.name" />
                             </div>
                         </div>
+
+                        <button class="btn btn-success" type="submit" ng-disabled="ar.disableSaveInclChildren()">Save</button>
                     </form>
                 </div>
                 <div class="aside-footer">

@@ -16,8 +16,8 @@ namespace SM.Dto.Maps
                 Complexity = m.Complexity,
                 EmersionCategory = m.EmersionCategory,
                 TemplateFilename = m.TemplateFilename,
-                ManequinId = m.ManequinId,
                 CourseTypeId = m.CourseTypeId,
+                ManequinModelId = m.ManequinModelId
                 //Manequin = m.Manequin,
                 //CourseType = m.CourseType,
                 //Department = m.Department,
@@ -37,8 +37,8 @@ namespace SM.Dto.Maps
                 Complexity = m.Complexity,
                 EmersionCategory = m.EmersionCategory,
                 TemplateFilename = m.TemplateFilename,
-                ManequinId = m.ManequinId,
                 CourseTypeId = m.CourseTypeId,
+                ManequinModelId = m.ManequinModelId
                 //Manequin = m.Manequin,
                 //CourseType = m.CourseType,
                 //Department = m.Department,

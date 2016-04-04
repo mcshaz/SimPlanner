@@ -101,8 +101,20 @@
                     ent.entityType.navigationProperties.forEach(function(np){
                         if (!np.isScalar){
                             Array.prototype.push.apply(returnVar, ent[np.name]);
-                        }
+
+                            Array.prototype.push.apply(returnVar, ent.entityAspect.entityManager.getEntities(np.entityType, breeze.EntityState.Deleted)
+                                .filter(function (deletedEnt) {
+                                    for (var i = 0; i < np.invForeignKeyNames.length; i++) {
+                                        if (deletedEnt[np.invForeignKeyNames[i]] !== ent[ent.entityType.keyProperties[i].name]) {
+                                            return false;
+                                        }
+                                    }
+                                    return true;
+                                }));
+                         }
+                        //
                     });
+                    
                     return returnVar;
                 }
                 return [];

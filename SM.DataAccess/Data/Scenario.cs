@@ -22,11 +22,11 @@ namespace SM.DataAccess
 
         public string TemplateFilename { get; set; }
 
-        public Guid? ManequinId { get; set; }
+        public Guid? ManequinModelId { get; set; }
         public Guid CourseTypeId { get; set; }
         public Guid DepartmentId { get; set; }
 
-        public virtual Manequin Manequin { get; set; }
+        public virtual ManequinModel ManequinModel { get; set; }
         public virtual CourseType CourseType { get; set; }
         public virtual Department Department { get; set; }
 

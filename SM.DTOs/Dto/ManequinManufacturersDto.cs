@@ -11,7 +11,7 @@ namespace SM.Dto
 
         public string Name { get; set; }
 
-        public virtual ICollection<ManequinDto> Manequins { get; set; }
+        public virtual ICollection<ManequinModelDto> ManequinModels { get; set; }
 
     }
 }

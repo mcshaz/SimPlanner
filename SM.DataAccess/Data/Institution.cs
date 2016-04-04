@@ -14,7 +14,7 @@ namespace SM.DataAccess
 
         public string About { get; set; }
 
-        public string CountryCode { get; set; }
+        public string LocaleCode { get; set; }
 
         public virtual Country Country { get; set; }
 

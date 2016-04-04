@@ -13,11 +13,15 @@ namespace SM.DataAccess
 
         public Guid ScenarioId { get; set; }
 
+        public Guid? ManequinId { get; set; }
+
         public virtual Course Course { get; set; }
 
         public virtual CourseSlot CourseSlot { get; set; }
 
         public virtual Scenario Scenario{ get; set; }
+
+        public virtual Manequin Manequin { get; set; }
     }
 
     /*

@@ -12,7 +12,7 @@ namespace SM.Dto.Maps
                 Id = m.Id,
                 Name = m.Name,
                 About = m.About,
-                CountryCode = m.CountryCode
+                LocaleCode = m.LocaleCode
             };
         }
 
@@ -24,7 +24,7 @@ namespace SM.Dto.Maps
                 Id = m.Id,
                 Name = m.Name,
                 About = m.About,
-                CountryCode = m.CountryCode,
+                LocaleCode = m.LocaleCode,
             };
         }
     }

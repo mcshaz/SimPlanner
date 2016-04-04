@@ -13,11 +13,15 @@ namespace SM.Dto
 
         public Guid ScenarioId { get; set; }
 
+        public Guid? ManequinId { get; set; }
+
         public virtual CourseDto Course { get; set; }
 
         public virtual CourseSlotDto CourseSlot { get; set; }
 
         public virtual ScenarioDto Scenario{ get; set; }
+
+        public virtual ManequinDto Manequin { get; set; }
     }
 
     /*

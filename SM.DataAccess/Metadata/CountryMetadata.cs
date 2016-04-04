@@ -6,9 +6,10 @@ namespace SM.Metadata
     public class CountryMetadata
     {
         [Key]
-        [FixedLength(Length = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Code { get; set; }
+        [FixedLength(Length = 5)]
+        [RegularExpression("[a-z]{2}-[A-Z]{2}", ErrorMessage = "must be [2 lower case letters] [-(dash)] [2 upper case] - e.g. en-NZ")]
+        public string LocaleCode { get; set; }
 
         [Required]
         [StringLength(50)]

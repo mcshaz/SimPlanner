@@ -13,34 +13,12 @@ namespace SM.DataAccess
 
         public Guid CourseTypeId { get; set; }
 
-        public CourseType CourseType { get; set; }
+        public virtual CourseType CourseType { get; set; }
 
-        ICollection<CourseSlot> _courseSlots;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseSlot> CourseSlots
-        {
-            get
-            {
-                return _courseSlots ?? (_courseSlots = new List<CourseSlot>());
-            }
-            set
-            {
-                _courseSlots = value;
-            }
-        }
+        public virtual ICollection<CourseSlot> CourseSlots { get; set; }
 
-        ICollection<ActivityTeachingResource> _activityChoices;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ActivityTeachingResource> ActivityChoices
-        {
-            get
-            {
-                return _activityChoices ?? (_activityChoices = new List<ActivityTeachingResource>());
-            }
-            set
-            {
-                _activityChoices = value;
-            }
-        }
+        public virtual ICollection<ActivityTeachingResource> ActivityChoices { get; set; }
     }
 }

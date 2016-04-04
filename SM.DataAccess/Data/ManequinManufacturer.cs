@@ -12,18 +12,7 @@ namespace SM.DataAccess
 
         public string Name {get; set;}
 
-        ICollection<Manequin> _manequins;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Manequin> Manequins
-        {
-            get
-            {
-                return _manequins ?? (_manequins = new List<Manequin>());
-            }
-            set
-            {
-                _manequins = value;
-            }
-        }
+        public virtual ICollection<ManequinModel> ManequinModels { get; set; }
     }
 }

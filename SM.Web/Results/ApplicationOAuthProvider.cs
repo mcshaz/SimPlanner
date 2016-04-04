@@ -105,16 +105,9 @@ namespace SM.Web.Providers
                 { "userId", user.Id.ToString() },
                 { "fullName", user.FullName },
                 { "userRoles", string.Join(",",roles) },
-                { "userLocales", string.Join(",",GetLocaleCodes(user)) }
+                { "locale", user.Department.Institution.LocaleCode }
             };
             return new AuthenticationProperties(data);
-        }
-
-        private static IEnumerable<string> GetLocaleCodes(Participant p)
-        {
-            return (from cl in p.Department.Institution.Country.CountryLocales
-                    orderby cl.Preference
-                    select cl.LocaleCode).ToList();
         }
     }
 }

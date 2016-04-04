@@ -21,7 +21,7 @@ namespace SM.Dto.Maps
             };
         }
 
-        internal static Expression<Func<CourseScenarioFacultyRoleDto, CourseScenarioFacultyRoleDto>> mapFromRepo()
+        internal static Expression<Func<CourseScenarioFacultyRole, CourseScenarioFacultyRoleDto>> mapFromRepo()
         {
             return m => new CourseScenarioFacultyRoleDto
             {

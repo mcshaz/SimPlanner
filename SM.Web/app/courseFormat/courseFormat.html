@@ -46,7 +46,7 @@
                             </tr>
                         </thead>
                         <tbody ui-sortable="vm.sortableOptions" ng-model="vm.courseFormat.courseSlots">
-                            <tr ng-repeat="cs in vm.courseFormat.courseSlots track by cs.id" >
+                            <tr ng-repeat="cs in vm.courseFormat.courseSlots | filter: {isActive: true} track by cs.id" >
                                 <td class="handle">
                                     :::
                                 </td>
@@ -63,7 +63,7 @@
                                         edit
                                     </button>
                                     |
-                                    <button class="btn-link" type="button" ng-click="vm.deleteSlot(cs)">
+                                    <button class="btn-link" type="button" ng-click="vm.removeSlot(cs)">
                                         remove
                                     </button>
                                 </td>
@@ -104,8 +104,8 @@
                         </tfoot>
                     </table>
                 </fieldset>
-                <button type="submit" class="btn btn-success" ng-click="vm.save()" ng-disabled="vm.disableSaveInclChildren()">Save</button>
-                <button type="submit" class="btn btn-info" ng-click="vm.clone()" ng-disabled="!vm.courseFormat.entityAspect.entityState.isUnchanged()">Copy</button>
+                <button type="submit" class="btn btn-success" ng-disabled="vm.disableSaveInclChildren()">Save</button>
+                <button type="button" class="btn btn-info" ng-click="vm.clone()" ng-disabled="!vm.courseFormat.entityAspect.entityState.isUnchanged()">Copy</button>
             </form>
         </div>
     </section>

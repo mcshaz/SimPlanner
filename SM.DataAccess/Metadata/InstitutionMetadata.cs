@@ -14,7 +14,7 @@ namespace SM.Metadata
         public string Name { get; set; }
         //[AllowHtml]
         //public string About { get; set; }
-        [FixedLength(Length=2)]
-        public string CountryCode { get; set; }
+        [FixedLength(Length=5)]
+        public string LocaleCode { get; set; }
     }
 }

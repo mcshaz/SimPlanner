@@ -13,6 +13,7 @@ namespace SM.Dto.Maps
             {
                 Id = m.Id,
                 StartTime = m.StartTime,
+                FinishTime = m.FinishTime,
                 DepartmentId = m.DepartmentId,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
                 FacultyNoRequired = m.FacultyNoRequired,
@@ -34,6 +35,7 @@ namespace SM.Dto.Maps
             {
                 Id = m.Id,
                 StartTime = m.StartTime,
+                FinishTime = m.FinishTime,
                 DepartmentId = m.DepartmentId,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
                 FacultyNoRequired = m.FacultyNoRequired,

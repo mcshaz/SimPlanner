@@ -16,11 +16,12 @@
         self.rejectChanges = provider.rejectChanges;
 
         self.save = function (/*entitiesToSave*/) {
-            var saveOptions = new breeze.SaveOptions({ resourceName: 'savechanges' });
+            //var saveOptions = new breeze.SaveOptions({ resourceName: 'savechanges' });
             var entititiesToSave;
+            console.log(provider.getChanges().length);
             switch (arguments.length) {
                 case 0:
-                    entititiesToSave = null; // = save all;
+                    // = save all;
                     break;
                 case 1:
                     entititiesToSave = Array.isArray(arguments[0])
@@ -30,11 +31,12 @@
                 default:
                     entititiesToSave = Array.prototype.slice.call(arguments);
             }
-            return provider.saveChanges(entititiesToSave, saveOptions)
+            return provider.saveChanges(entititiesToSave)
                 .then(function (saveResult) {
                     $rootScope.$broadcast('saved', saveResult.entities);
                     log.success({ msg: 'Saved data', data: saveResult, showToast: true });
-                },saveFailed);
+                    return saveResult;
+                }, saveFailed);
         };
 
         self.courses = repository.create(provider, 'CourseDto', 'Courses');

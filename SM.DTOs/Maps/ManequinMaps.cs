@@ -13,7 +13,12 @@ namespace SM.Dto.Maps
                 Id = m.Id,
                 Description = m.Description,
                 DepartmentId = m.DepartmentId,
-                ManufacturerId = m.ManufacturerId,
+                ModelId = m.ModelId,
+                DecommissionDate = m.DecommissionDate,
+                DecommissionReason = m.DecommissionReason,
+                PurchaseDate = m.PurchaseDate,
+                PurchasedNew = m.PurchasedNew,
+                LocalCurrencyPurchasePrice = m.LocalCurrencyPurchasePrice
             };
         }
 
@@ -24,7 +29,11 @@ namespace SM.Dto.Maps
                 Id = m.Id,
                 Description = m.Description,
                 DepartmentId = m.DepartmentId,
-                ManufacturerId = m.ManufacturerId,
+                ModelId = m.ModelId,
+                DecommissionDate = m.DecommissionDate,
+                DecommissionReason = m.DecommissionReason,
+                PurchaseDate = m.PurchaseDate,
+                PurchasedNew = m.PurchasedNew
                 //Department = m.Department,
                 //Scenarios = m.Scenarios,
                 //Manufacturer = m.Manufacturer

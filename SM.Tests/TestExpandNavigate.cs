@@ -133,7 +133,7 @@ namespace SimManager.Tests
         [TestMethod]
         public void TestComplexDtoTreeMapping()
         {
-            var test = MapperConfig.GetLambda<Participant, ParticipantDto>(new[] { "Department", "Department.Institution", "Department.Manequins", "Department.Manequins.Scenarios", "ProfessionalRole.CourseParticipants" });
+            var test = MapperConfig.GetLambda<Participant, ParticipantDto>(new[] { "Department", "Department.Institution", "Department.Manequins", "Department.Manequins.CourseSlotScenarios", "ProfessionalRole.CourseParticipants" });
             Console.WriteLine(test);
         }
     }

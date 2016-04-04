@@ -4,16 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SM.Metadata
 {    
-	public class CourseMetadata
-    {
+    public class ManequinModelMetadata
+	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
-
-        [StringLength(256)]
-        public string ParticipantVideoFilename { get; set; }
-
-        [StringLength(256)]
-        public string FeedbackSummaryFilename { get; set; }
+        [Required]
+        [StringLength(128)]
+        public string Description { get; set; }
     }
 }

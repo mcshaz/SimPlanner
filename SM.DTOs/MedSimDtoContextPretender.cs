@@ -15,7 +15,6 @@ namespace SM.Dto
         public virtual DbSet<ActivityTeachingResourceDto> ActivityTeachingResources { get; set; }
         public virtual DbSet<ChosenTeachingResourceDto> ChosenTeachingResources { get; set; }
         public virtual DbSet<CountryDto> Countries { get; set; }
-        public virtual DbSet<CountryLocaleCodeDto> CountryLocaleCodes { get; set; }
         public virtual DbSet<CourseDto> Courses { get; set; }
         public virtual DbSet<CourseActivityDto> CourseActivities { get; set; }
         public virtual DbSet<CourseFormatDto> CourseFormats { get; set; }
@@ -52,9 +51,10 @@ namespace SM.Dto
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CountryDto>()
-                .HasMany(e => e.CountryLocales)
+                .HasMany(e => e.Institutions)
                 .WithRequired(e => e.Country)
-                .HasForeignKey(e => e.CountryCode);
+                .HasForeignKey(e => e.LocaleCode)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseDto>()
                 .HasMany(e => e.CourseParticipants)
@@ -208,7 +208,7 @@ namespace SM.Dto
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<InstitutionDto>()
-                .Property(e => e.CountryCode)
+                .Property(e => e.LocaleCode)
                 .IsFixedLength();
 
             modelBuilder.Entity<InstitutionDto>()
@@ -221,10 +221,34 @@ namespace SM.Dto
                 .HasMany(e => e.ProfessionalRoles)
                 .WithMany(e => e.Institutions);
 
+            modelBuilder.Entity<ManequinDto>()
+                .HasMany(e => e.ManequinServices)
+                .WithRequired(e => e.Manequin)
+                .HasForeignKey(e => e.ManequinId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ManequinDto>()
+                .HasMany(e => e.CourseSlotScenarios)
+                .WithRequired(e => e.Manequin)
+                .HasForeignKey(e => e.ManequinId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ManequinManufacturerDto>()
-                .HasMany(e => e.Manequins)
+                .HasMany(e => e.ManequinModels)
                 .WithRequired(e => e.Manufacturer)
                 .HasForeignKey(e => e.ManufacturerId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ManequinModelDto>()
+                .HasMany(e => e.Manequins)
+                .WithRequired(e => e.Model)
+                .HasForeignKey(e => e.ModelId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ManequinModelDto>()
+                .HasMany(e => e.Scenarios)
+                .WithOptional(e => e.ManequinModel)
+                .HasForeignKey(e => e.ManequinModelId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ParticipantDto>()

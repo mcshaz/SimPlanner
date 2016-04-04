@@ -20,19 +20,8 @@ namespace SM.DataAccess
         public Guid CourseActivityId { get; set; }
         public virtual CourseActivity CourseActivity { get; set; }
 
-        ICollection<ChosenTeachingResource> _chosenTeachingResources;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChosenTeachingResource> ChosenTeachingResources
-        {
-            get
-            {
-                return _chosenTeachingResources ?? (_chosenTeachingResources = new List<ChosenTeachingResource>());
-            }
-            set
-            {
-                _chosenTeachingResources = value;
-            }
-        }
+        public virtual ICollection<ChosenTeachingResource> ChosenTeachingResources { get; set; }
     }
 
     [MetadataType(typeof(ResourceMetadata))]

@@ -39,7 +39,8 @@
                 self.findServerIfCacheEmpty = function() {
                     var query = createQuery.apply(null,arguments);
                     var entities = executeCacheQuery(query);
-                    if (entities.length){
+                    if (entities.length) {
+                        
                         return $q.when(entities);
                     }
                     return executeQuery(query);
@@ -144,10 +145,18 @@
                         if (!missingExpands.length) {
                             return $q.when(ent);
                         }
-                        query = getKeyQuery(key,{
-                            expand: missingExpands.map(function (el) { return el.props.join('.'); }).join(','),
-                            select: argObj.select
-                        });
+                        if (missingExpands.length === 1 && missingExpands[0].props.length === 1) {
+                            var defer = $q.defer(); //need defer here as the promise below will return the related entities
+                            ent.entityAspect.loadNavigationProperty(missingExpands[0].props[0],
+                                function (data) { defer.resolve(ent); },
+                                function (err) { defer.reject(err); });
+                            return defer.promise;
+                        } else {
+                            query = getKeyQuery(key, {
+                                expand: missingExpands.map(function (el) { return el.props.join('.'); }).join(','),
+                                select: argObj.select
+                            });
+                        }
                     }
                     return executeQuery(query).then(function (data) {
                         return data?data[0]:undefined;
@@ -166,24 +175,22 @@
                         var currentProp = entity;
                         var i;
                         if (props.some(function(p,indx){
-                            if (Array.isArray(currentProp)) {
-                                hasArray = true;
-                                if (!currentProp.length) {
-                                    i = indx;
-                                    return true;//TODO figure out if I can tell if it is empty but in cache
-                                } else {
-                                    currentProp = currentProp[0][p];
-                                }
-                            } else {
-                                currentProp = currentProp[p];
-                            }
-                            if (!currentProp) {
+                            if (!currentProp.entityAspect.isNavigationPropertyLoaded(p)) {
                                 i = indx;
                                 return true;
                             }
+                            var np = currentProp.entityType.navigationProperties.find(function (np) { return np.name === p; });
+                            currentProp = currentProp[p];
+                            if (!np.isScalar) {
+                                if (currentProp.length) {
+                                    currentProp = currentProp[0]; //todo recursive function or at least every to ensure every member of the collection has children properties loaded
+                                } else {
+                                    return false;
+                                }
+                            }
                             return false;
-                        }) || (hasArray = Array.isArray(currentProp)) && !currentProp.length) {
-                            returnVar.push({ props: props, missingIndex: i || (props.length-1), hasArray: hasArray });
+                        })){
+                            returnVar.push({ props: props, missingIndex: i || (props.length - 1), hasArray: hasArray });
                         }
                     });
                     return returnVar;

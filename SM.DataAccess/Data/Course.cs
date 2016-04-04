@@ -4,13 +4,15 @@ namespace SM.DataAccess
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
+    using System.Linq;
     [MetadataType(typeof(CourseMetadata))]
     public class Course
     {
         public Guid Id { get; set; }
 
         public DateTime StartTime { get; set; }
+
+        public DateTime FinishTime { get; set; }
 
         public DateTime? FacultyMeetingTime { get; set; }
 
@@ -118,6 +120,16 @@ namespace SM.DataAccess
             {
                 _chosenTeachingResources = value;
             }
+        }
+    }
+
+    public static class CourseExtensions
+    {
+        public static void CalculateFinishTime(this Course course)
+        {
+
+            //todo account for multiday courses
+            course.FinishTime = course.StartTime + TimeSpan.FromMinutes(course.CourseFormat.CourseSlots.Sum(cs => cs.MinutesDuration));
         }
     }
 }

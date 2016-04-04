@@ -98,15 +98,15 @@
                     name: data.fullName,
                     roles: data.userRoles.split(','),
                     id: data.userId,
-                    locales: data.userLocales.split(',')
+                    locale: data.locale
                 }
                 localStorage.set('currentUser', currentUser);
                 //now broadcast
 
                 //set locale once logged in 
                 //not sure this is enough separation of concers
-                moment.locale(currentUser.locales);
-                tmhDynamicLocale.set(currentUser.locales[0].toLowerCase())
+                moment.locale(currentUser.locale);
+                tmhDynamicLocale.set(currentUser.locale.toLowerCase())
                     .then(null, log.error)
                     .finally(function () {
                         //only broadcast after the appropriate locale for the user is loaded
