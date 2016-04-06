@@ -1,0 +1,52 @@
+﻿<section id="course-view" class="mainbar" data-ng-controller="courseRoles as vm">
+    <section class="matter">
+        <div class="container col-md-12">
+            <form ng-submit="vm.save($event)" id="courseForm">
+                <div class="col-md-8">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                {{vm.course.department}}
+                                {{vm.course.typeFormatDescriptor}}
+                                {{vm.course.startTime | amDateFormat:'LL'}}
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-unstyled" ng-repeat="slot in vm.course.courseFormat.courseSlots">
+                                <li ng-if="slot.courseActivity">
+                                    <label class="label">
+                                        {{slot.courseActivity.name}}
+                                    </label>
+                                    <div class="form-control">
+                                        <select ng-options="ac as ac.description for ac in slot.courseActivity.activityChoices"></select>
+                                    </div>
+                                </li>
+                                <li ng-if="!slot.courseActivity">
+                                    <select ng-options="s as s.description for s in vm.course.courseFormat.courseType.scenarios"></select>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel affix col-md-3">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                Faculty
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-unstyled" ng-repeat="cp in vm.course.courseParticipants | filter:{isFaculty:'true'}">
+                                {{cp.name}} - roles
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</section>

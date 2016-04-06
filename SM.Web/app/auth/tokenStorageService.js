@@ -107,7 +107,9 @@
                 //not sure this is enough separation of concers
                 moment.locale(currentUser.locale);
                 tmhDynamicLocale.set(currentUser.locale.toLowerCase())
-                    .then(null, log.error)
+                    .then(null, function (data) {
+                        log.error({ msg:'unable to set user locale',data:data });
+                    })
                     .finally(function () {
                         //only broadcast after the appropriate locale for the user is loaded
                         authService.loginConfirmed({ recredentialled: false }, replaceToken);

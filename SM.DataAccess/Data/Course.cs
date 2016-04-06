@@ -38,89 +38,23 @@ namespace SM.DataAccess
 
         public virtual Room Room { get; set; }
 
-		ICollection<CourseParticipant> _participants; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseParticipant> CourseParticipants
-		{
-			get
-			{
-				return _participants ?? (_participants = new List<CourseParticipant>());
-			}
-			set
-			{
-				_participants = value;
-			}
-		}
+        public virtual ICollection<CourseParticipant> CourseParticipants { get; set; }
 
-		ICollection<Scenario> _scenarios; 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Scenario> Scenarios
-		{
-			get
-			{
-				return _scenarios ?? (_scenarios = new List<Scenario>());
-			}
-			set
-			{
-				_scenarios = value;
-			}
-		}
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<Scenario> Scenarios { get; set; } //todo IS THIS NEEDED??????
 
-        ICollection<CourseScenarioFacultyRole> _courseScenarioFacultyRoles;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles
-        {
-            get
-            {
-                return _courseScenarioFacultyRoles ?? (_courseScenarioFacultyRoles = new List<CourseScenarioFacultyRole>());
-            }
-            set
-            {
-                _courseScenarioFacultyRoles = value;
-            }
-        }
+        public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
 
-        ICollection<CourseSlotScenario> _courseSlotScenarios;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseSlotScenario> CourseSlotScenarios
-        {
-            get
-            {
-                return _courseSlotScenarios ?? (_courseSlotScenarios = new List<CourseSlotScenario>());
-            }
-            set
-            {
-                _courseSlotScenarios = value;
-            }
-        }
+        public virtual ICollection<CourseSlotScenario> CourseSlotScenarios { get; set; }
 
-        ICollection<CourseSlotPresenter> _courseSlotPresenters;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseSlotPresenter> CourseSlotPresenters
-        {
-            get
-            {
-                return _courseSlotPresenters ?? (_courseSlotPresenters = new List<CourseSlotPresenter>());
-            }
-            set
-            {
-                _courseSlotPresenters = value;
-            }
-        }
+        public virtual ICollection<CourseSlotPresenter> CourseSlotPresenters { get; set; }
 
-        ICollection<ChosenTeachingResource> _chosenTeachingResources;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChosenTeachingResource> ChosenTeachingResources
-        {
-            get
-            {
-                return _chosenTeachingResources ?? (_chosenTeachingResources = new List<ChosenTeachingResource>());
-            }
-            set
-            {
-                _chosenTeachingResources = value;
-            }
-        }
+        public virtual ICollection<ChosenTeachingResource> ChosenTeachingResources { get; set; }
     }
 
     public static class CourseExtensions

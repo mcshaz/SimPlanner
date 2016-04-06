@@ -16,5 +16,8 @@ namespace SM.Metadata
         //public string About { get; set; }
         [FixedLength(Length=5)]
         public string LocaleCode { get; set; }
+
+        [StringLength(40)]
+        public string StandardTimeZone { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace SM.Dto.Maps
                 CreateMapDictionary(
                     new[] {
                         new DtoMap(typeof(ActivityTeachingResource),  ActivityTeachingResourceMaps.mapFromRepo(),false,"ActivityChoices"),
-                        new DtoMap(typeof(ChosenTeachingResource),ChosenTeachingResourceMaps.mapFromRepo(), false),
+                        new DtoMap(typeof(ChosenTeachingResource),ChosenTeachingResourceMaps.mapFromRepo()),
                         new DtoMap(typeof(Country),CountryMaps.mapFromRepo(), false,"Countries"),
                         new DtoMap(typeof(Course),  CourseMaps.mapFromRepo(), true, "OutreachCourses"),
                         new DtoMap(typeof(CourseActivity),  CourseActivityMaps.mapFromRepo(), false, "CourseActivities", "Activity"),
@@ -119,6 +119,8 @@ namespace SM.Dto.Maps
                 }
 
                 RequiredMappings = GetRequiredIncludes(typeName, mappings);
+
+                //RequiredMappings.PrintPretty("  ");
             }
 
             static IEnumerable<string[]> SelectNavProperties(IEnumerable<string[]> selects)
@@ -169,7 +171,7 @@ namespace SM.Dto.Maps
                     for (; j < includeList[i].Length; j++)
                     {
                         match.Children.Add(new Node(includeList[i][j]));
-                        match = match.Children[0];
+                        match = match.Children[match.Children.Count-1];
                     }
                 }
                 return returnVar;
@@ -185,25 +187,26 @@ namespace SM.Dto.Maps
                     Name = name;
                     Children = new List<Node>();
                 }
-                /*
-                                public void PrintPretty(string indent, bool last)
-                                {
-                                    Console.Write(indent);
-                                    if (last)
-                                    {
-                                        Console.Write("\\-");
-                                        indent += "  ";
-                                    }
-                                    else
-                                    {
-                                        Console.Write("|-");
-                                        indent += "| ";
-                                    }
-                                    Console.WriteLine(Name);
+                public void PrintPretty(string indent, bool last=false)
+                {
+                    Debug.Write(indent);
+                    if (last)
+                    {
+                        Debug.Write("\\-");
+                        indent += "  ";
+                    }
+                    else
+                    {
+                        Debug.Write("|-");
+                        indent += "| ";
+                    }
+                    Debug.WriteLine(Name);
 
-                                    for (int i = 0; i < Children.Count; i++)
-                                        Children[i].PrintPretty(indent, i == Children.Count - 1);
-               */
+                    for (int i = 0; i < Children.Count; i++)
+                    {
+                        Children[i].PrintPretty(indent, i == Children.Count - 1);
+                    }
+                }
             }
         }
     }

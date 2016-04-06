@@ -10,12 +10,22 @@
 
         //var provider = entityManagerFactory.manager;
 
-        function Ctor(argObj /* controllerId, $scope, watchedEntityName*/) {
+        function Ctor(argObj /* controllerId, $scope, watchedEntityNames*/) {
             var vm = this;
             var hasAddedEntityPropertyChanged = false;
 
             var $on = argObj.$scope.$on.bind(argObj.$scope);
-            var unwatchers = [$on('$destroy', destroy)]; 
+            var unwatchers = [$on('$destroy', destroy)];
+            var watchedEntities =
+                argObj.watchedEntityNames
+                    ?Array.isArray(argObj.watchedEntityNames)
+                        ? argObj.watchedEntityNames
+                        : [argObj.watchedEntityNames]
+                    :[];
+
+            for (var i = 0; i < watchedEntities.length; i++) {
+                watchedEntities[i] = watchedEntities[i].split(',');
+            }
 
             if (argObj.$scope.asideInstance) {
                 vm.close = modalClose;
@@ -31,7 +41,7 @@
             vm.disableSaveInclChildren = disableSaveInclChildren;
 
             function hasDataChangedInWatchedOrChildren(){
-                return getEntAndChildrenArray().filter(hasChangedEnt);
+                return getWatched().filter(hasChangedEnt);
 
                 function hasChangedEnt(ent) {
                     switch (ent.entityAspect.entityState) {
@@ -94,34 +104,27 @@
                 return true;
             }
 
-            function getEntAndChildrenArray() {
-                var ent = vm[argObj.watchedEntityName];
-                if (ent && ent.entityAspect) {
-                    var returnVar = [ent];
-                    ent.entityType.navigationProperties.forEach(function(np){
-                        if (!np.isScalar){
-                            returnVar = returnVar.concat(ent[np.name]);
-
-                            returnVar = returnVar.concat(ent.entityAspect.entityManager.getEntities(np.entityType, breeze.EntityState.Deleted)
-                                .filter(function (deletedEnt) {
-                                    for (var i = 0; i < np.invForeignKeyNames.length; i++) {
-                                        if (deletedEnt[np.invForeignKeyNames[i]] !== ent[ent.entityType.keyProperties[i].name]) {
-                                            return false;
-                                        }
-                                    }
-                                    return true;
-                                }));
-                         }
-                        //
-                    });
-                    
-                    return returnVar;
-                }
-                return [];
+            function getWatched() {
+                var returnVar = [];
+                return watchedEntities.forEach(function (el) {
+                    var ent = vm[el[0]]; //todo if required allow for array of array
+                    for (var i = 1; i < el.length; i++) {
+                        if (!ent) { break; }
+                        ent = ent[el[i]];
+                    }
+                    if (ent) {
+                        if (ent.entityAspect) {
+                            returnVar.push(ent);
+                        } else if (ent.length && ent[0].entityAspect) {
+                            returnVar = returnVar.concat(ent);
+                        }
+                    }
+                });
+                return returnVar;
             }
 
             function disableSaveInclChildren() {
-                var entArray = getEntAndChildrenArray().map(function (el) {
+                var entArray = getWatched().map(function (el) {
                     return el.entityAspect;
                 });
                 return entArray.some(function (ea) {

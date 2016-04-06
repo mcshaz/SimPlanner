@@ -133,8 +133,56 @@ namespace SimManager.Tests
         [TestMethod]
         public void TestComplexDtoTreeMapping()
         {
-            var test = MapperConfig.GetLambda<Participant, ParticipantDto>(new[] { "Department", "Department.Institution", "Department.Manequins", "Department.Manequins.CourseSlotScenarios", "ProfessionalRole.CourseParticipants" });
-            Console.WriteLine(test);
+            //var test = MapperConfig.GetLambda<Participant, ParticipantDto>(new[] { "Department", "Department.Institution", "Department.Manequins", "Department.Manequins.CourseSlotScenarios", "ProfessionalRole.CourseParticipants" });
+            //Console.WriteLine(test);
+
+            var test2 = MapperConfig.GetLambda<Course, CourseDto>(new[] {
+                        "CourseParticipants",
+                        "CourseFormat.CourseSlots.Activity.ActivityChoices",
+                        "CourseSlotScenarios",
+                        "CourseSlotPresenters",
+                        "CourseScenarioFacultyRoles",
+                        "ChosenTeachingResources",
+                        "CourseFormat.CourseType.Scenarios"});
+
+
+
+            Console.WriteLine(test2);
+            using (MedSimDbContext db = new MedSimDbContext())
+            {
+                var c = db.Courses.Select(test2).First();
+                /*
+            var c = db.Courses.Select(m => new CourseDto()
+            {
+                CourseParticipants = m.CourseParticipants.Select(cp => new CourseParticipantDto()
+                {
+                    ParticipantId = cp.ParticipantId,
+                }).ToList(),
+                CourseFormat = new CourseFormatDto()
+                {
+                    Id = m.CourseFormat.Id,
+                    CourseSlots = m.CourseFormat.CourseSlots.Select(cs => new CourseSlotDto()
+                    {
+                        Id = cs.Id,
+                        MinutesDuration = cs.MinutesDuration,
+                        Day = cs.Day,
+                        Activity = cs.Activity==null
+                            ?null
+                            :new CourseActivityDto()
+                            {
+                                Id = cs.Activity.Id,
+                                ActivityChoices = cs.Activity.ActivityChoices.Select(at => new ActivityTeachingResourceDto()
+                                    {
+                                        Id = m.Id,
+                                    }).ToList() 
+                            }
+                    }).ToList()
+                }
+            }).First();
+                            */
+                Console.Write(c);
+
+            }
         }
     }
 

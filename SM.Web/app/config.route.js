@@ -65,6 +65,15 @@
                     }
                 }
             }, {
+                url: '/courseRoles/:id',
+                config: {
+                    title: 'course',
+                    templateUrl: 'app/course/courseRoles.html',
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
                 url: '/courseTypes',
                 config: {
                     title: 'Course Types',

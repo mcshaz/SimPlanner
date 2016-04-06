@@ -17,6 +17,7 @@ namespace SM.Dto.Maps
         {
             return (Expression<Func<T, TMap>>)MapNavProperty((LambdaExpression)parent, navs);
         }
+        static ConstantExpression nullExpression = Expression.Constant(null, typeof(object));
         public static LambdaExpression MapNavProperty(this LambdaExpression parent, IEnumerable<KeyValuePair<string, LambdaExpression>> navs)
         {
             var parentParam = parent.Parameters[0];
@@ -37,8 +38,11 @@ namespace SM.Dto.Maps
                 }
                 else
                 {
-                    var mergeVisitor = new ReplaceVisitor(nav.Value.Parameters[0], source);
-                    var newNavBody = mergeVisitor.Visit(nav.Value.Body);
+                    var navParam = nav.Value.Parameters[0];
+                    var mergeVisitor = new ReplaceVisitor(navParam, source);
+                    var isNull = Expression.Equal(navParam, nullExpression);
+                    var ternary = Expression.Condition(isNull, Expression.Constant(null,nav.Value.Body.Type), nav.Value.Body);
+                    var newNavBody = mergeVisitor.Visit(ternary);
                     bindings.Add(Expression.Bind(target, newNavBody));
                 }
             }

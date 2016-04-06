@@ -90,7 +90,7 @@ namespace SM.Web.Controllers
         {
             return Repo.ScenarioResources;
         } 
-        [HttpGet, EnableBreezeQuery]
+        [HttpGet, EnableBreezeQuery(MaxExpansionDepth = 4)]
 		public IQueryable<CourseDto> Courses(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);

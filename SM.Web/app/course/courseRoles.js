@@ -1,6 +1,6 @@
 ﻿(function () {
     'use strict';
-    var controllerId = 'course';
+    var controllerId = 'courseRoles';
     angular
         .module('app')
         .controller(controllerId, controller);
@@ -12,56 +12,64 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: 'course',
+            watchedEntityNames: 'coursesSlotPresenter',
             $scope: $scope
         })
         var id = $routeParams.id;
-        var isNew = id == 'new';
 
         vm.course = {};
-        vm.courseFormats = [];
-        vm.dateFormat = '';
-        vm.deleteCourseParticipant = deleteCourseParticipant;
-        vm.dpPopup = { isOpen: false };
-        vm.departments = [];
-        
-        vm.hasChanges = false;
-        vm.maxDate = new Date();
-        vm.maxDate.setFullYear(vm.maxDate.getFullYear() + 1);
-        vm.minDate = new Date(2007, 0);
-        vm.openDp = openDp;
-        vm.openCourseParticipant = openCourseParticipant;
-        vm.rooms = [];
-        vm.save = save;
-        vm.title = 'course';
+
+        vm.title = 'course roles';
 
         activate();
 
         function activate() {
             datacontext.ready().then(function () {
-                var promises =[ datacontext.courseFormats.all().then(function (data) {
-                    vm.courseFormats = data;
-                }),datacontext.departments.all().then(function (data) {
-                    vm.departments = data;
-                }), datacontext.rooms.all().then(function (data) {
-                    vm.rooms = data;
-                })];
-                if (isNew) {
-                    vm.course = datacontext.courses.create();
-                }else{
-                    promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant'}).then(function (data) {
-                        if (!data) {
-                            vm.log.warning('Could not find course id = ' +id);
-                            return;
-                            //gotoCourses();
+                common.activateController(datacontext.courses.fetchByKey(id, {
+                    expand: ['courseParticipants',
+                        'courseFormat.courseSlots.activity.activityChoices',
+                        'courseSlotScenarios',
+                        'courseSlotPresenters',
+                        'courseScenarioFacultyRoles',
+                        'chosenTeachingResources',
+                        'courseFormat.courseType.scenarios'],
+                }).then(function (data) {
+                    if (!data) {
+                        vm.log.warning('Could not find course id = ' +id);
+                        return;
+                        //gotoCourses();
+                    }
+                    vm.map = vm.course.courseFormat.courseSlots.map(function(cs){
+                        var isThisSlot = function(el) {
+                            return el.courseSlotId === cs.id;
+                        };
+                        if (cs.courseActivity){
+                            return {
+                                name: cs.courseActivity.name,
+                                choices: cs.courseActivity.activityChoices,
+                                selectedChoice: data.courseSlotActivities.find(isThisSlot),
+                                isSim: false,
+                                faculty: data.courseSlotPresenters.filter(isThisSlot)
+                            }
                         }
-                        vm.course = data;
-                    }));
-                }
-                common.activateController(promises, controllerId)
-                    .then(function () {
-                        vm.log('Activated Course View');
+                        return {
+                            name:'Simulation',
+                            choices: data.courseFormat.courseType.scenarios,
+                            selectedChoice: data.courseslotScenarios.find(isThisSlot),
+                            isSim: true,
+                            roles: data.courseFormat.courseType.facultyRoles.map(function (fr) {
+                                return {
+                                    name: fr.name,
+                                    id: fr.id,
+                                    presenters: cs.courseSlotScenarioPresenterRoles.filter(isThisSlot)
+                                }
+                            })
+                        };
                     });
+
+                }), controllerId).then(function () {
+                        vm.log('Activated Course View');
+                });
             });
         }
 

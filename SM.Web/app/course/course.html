@@ -98,7 +98,7 @@
 
                                 <select id="outreachingDepartment" class="form-control" data-z-validate data-ng-model="vm.course.outreachingDepartment" ng-options="d as d.name group by d.institution.name for d in vm.departments">
                                     <option value="">
-                                        None.
+                                        Not Applicable
                                     </option>
                                 </select>
                                 <span class="text-danger" />
@@ -106,8 +106,11 @@
                         </div>
                     </fieldset>
                     <div class="form-group">
-                        <div class="col-md-offset-10 col-md-1">
-                            <button type="submit" data-ng-disabled="vm.disableSave()" class="btn btn-primary">Save</button>
+                        <div class="col-md-offset-6 col-md-6">
+                            <button type="submit" data-ng-disabled="vm.disableSave()" class="btn btn-success">Save</button>
+                            <a class="btn btn-info" ng-href="#/courseRoles/{{vm.course.id}}">
+                                <i class="fa fa-arrow-right"></i>Assign Roles
+                            </a>
                         </div>
                     </div>
                </div>
@@ -158,11 +161,11 @@
                                 </tbody>
                             </table>
                         </div>
-                            <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
-                                    data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()" >
-                                Add Faculty Member
-                            </button>
-</fieldset>
+                        <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
+                                data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()" >
+                            Add Faculty Member
+                        </button>
+                    </fieldset>
                 </div>
                 <div class="form-group">
                     &nbsp;

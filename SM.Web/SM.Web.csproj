@@ -243,6 +243,8 @@
     <Content Include="app\courseFormat\courseFormat.js" />
     <Content Include="app\courseParticipant\courseParticipant.html" />
     <Content Include="app\courseParticipant\courseParticipant.js" />
+    <Content Include="app\course\courseRoles.html" />
+    <Content Include="app\course\courseRoles.js" />
     <Content Include="app\course\course.html" />
     <Content Include="app\course\course.js" />
     <Content Include="app\dashboard\dashboard.html" />
@@ -384,6 +386,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Helpers\FindAnyAllFilterOptions.cs" />
     <Compile Include="Controllers\LookupBundle.cs" />
+    <Compile Include="Controllers\UtilitiesController.cs" />
     <Compile Include="Controllers\MedSimApiController.cs" />
     <Compile Include="Controllers\SummaryDataController.cs" />
     <Compile Include="Global.asax.cs">

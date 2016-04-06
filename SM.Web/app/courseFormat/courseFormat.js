@@ -12,7 +12,7 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityName: 'courseFormat',
+            watchedEntityNames: ['courseFormat','courseFormat.courseActivities'],
             $scope: $scope
         })
         var id = $routeParams.id;

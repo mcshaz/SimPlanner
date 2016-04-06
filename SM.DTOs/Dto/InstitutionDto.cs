@@ -11,6 +11,7 @@ namespace SM.Dto
         public string Name { get; set; }
         public string About { get; set; }
         public string LocaleCode { get; set; }
+        public string StandardTimeZone { get; set; }
         public CountryDto Country { get; set; }
         public virtual ICollection<DepartmentDto> Departments { get; set; }
         public virtual ICollection<ProfessionalRoleDto> ProfessionalRoles { get; set; }

@@ -30,20 +30,6 @@ namespace SM.DataAccess
         public virtual CourseType CourseType { get; set; }
         public virtual Department Department { get; set; }
 
-		ICollection<Course> _courses; 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Course> Courses
-		{
-			get
-			{
-				return _courses ?? (_courses = new List<Course>());
-			}
-			set
-			{
-				_courses = value;
-			}
-		}
-
 		ICollection<ScenarioResource> _scenarioResources; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ScenarioResource> ScenarioResources

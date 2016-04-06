@@ -1,5 +1,6 @@
 ﻿using SM.DataAccess.Enums;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace SM.DataAccess
@@ -138,10 +139,15 @@ namespace SM.DataAccess
             };
 
             var proforma = new ScenarioResource { Id = Guid.NewGuid(), Name = "proforma", ResourceFilename = @"C:\whatever.doc", Scenario=s };
-
+            context.ScenarioResources.Add(proforma);
+            /*
+            c.Scenarios = new List<Scenario>();
+            c2.Scenarios = new List<Scenario>();
+            c0.Scenarios = new List<Scenario>();
             c.Scenarios.Add(s);
             c2.Scenarios.Add(s2);
             c0.Scenarios.Add(s);
+            */
 
             context.SaveChanges();
 
