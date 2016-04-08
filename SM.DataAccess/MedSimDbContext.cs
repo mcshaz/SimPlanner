@@ -290,14 +290,14 @@ namespace SM.DataAccess
 
             modelBuilder.Entity<Participant>()
                 .HasMany(e => e.CourseScenarioFacultyRoles)
-                .WithRequired(e => e.FacultyMember)
-                .HasForeignKey(e => e.FacultyMemberId)
+                .WithRequired(e => e.Participant)
+                .HasForeignKey(e => e.ParticipantId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Participant>()
                 .HasMany(e => e.CourseSlotPresentations)
-                .WithRequired(e => e.Presenter)
-                .HasForeignKey(e => e.PresenterId)
+                .WithRequired(e => e.Participant)
+                .HasForeignKey(e => e.ParticipantId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ProfessionalRole>()

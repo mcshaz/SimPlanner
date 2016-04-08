@@ -11,7 +11,7 @@ namespace SM.Metadata
         public Guid Id { get; set; }
         [Required]
         [StringLength(128)]
-        public string Name { get; set; }
+        public string Description { get; set; }
         [StringLength(256)]
         public string ResourceFilename { get; set; }
 	}

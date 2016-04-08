@@ -10,7 +10,7 @@ namespace SM.Dto.Maps
         { 
             return m => new DataAccess.ActivityTeachingResource {
                 Id = m.Id,
-                Name = m.Name,
+                Description = m.Description,
                 ResourceFilename = m.ResourceFilename,
                 CourseActivityId = m.CourseActivityId,
                 //CourseSlot = m.CourseSlot
@@ -22,7 +22,7 @@ namespace SM.Dto.Maps
             return m => new ActivityTeachingResourceDto
             {
                 Id = m.Id,
-                Name = m.Name,
+                Description = m.Description,
                 ResourceFilename = m.ResourceFilename,
                 CourseActivityId = m.CourseActivityId,
                 //CourseSlot = m.CourseSlot

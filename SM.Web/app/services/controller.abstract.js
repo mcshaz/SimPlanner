@@ -39,11 +39,29 @@
             vm.log = common.logger.getLogFn(argObj.controllerId);
             vm.disableSave = disableSave;
             vm.disableSaveInclChildren = disableSaveInclChildren;
+            vm.sortOnOrderProperty = sortOnOrderProperty;
 
-            function hasDataChangedInWatchedOrChildren(){
-                return getWatched().filter(hasChangedEnt);
+            function getWatched() {
+                var returnVar = [];
+                watchedEntities.forEach(function (el) {
+                    var ent = vm[el[0]]; //todo if required allow for array of array
+                    for (var i = 1; i < el.length; i++) {
+                        if (!ent) { break; }
+                        ent = ent[el[i]];
+                    }
+                    if (ent) {
+                        if (ent.entityAspect) {
+                            returnVar.push(ent);
+                        } else if (ent.length && ent[0].entityAspect) {
+                            returnVar = returnVar.concat(ent);
+                        }
+                    }
+                });
+                return returnVar;
+            }
 
-                function hasChangedEnt(ent) {
+            function hasDataChangedInWatched() {
+                return getWatched().filter(function (ent) {
                     switch (ent.entityAspect.entityState) {
                         case breeze.EntityState.Modified:
                         case breeze.EntityState.Deleted:
@@ -57,11 +75,11 @@
                         default:
                             return false;
                     }
-                }
+                });
             }
 
             function beforeUnload(e){
-                if (hasDataChangedInWatchedOrChildren().length) {
+                if (hasDataChangedInWatched().length) {
                     e.returnValue = confirmDiscardMsg; // Gecko, Trident, Chrome 34+
                     return confirmDiscardMsg;          // Gecko, WebKit, Chrome <34
                 }
@@ -69,7 +87,7 @@
 
             function beforeRouteChange(e) {
                 if (!e.defaultPrevented) {
-                    var changed = hasDataChangedInWatchedOrChildren();
+                    var changed = hasDataChangedInWatched();
                     if (changed.length && !confirm(confirmDiscardMsg)) {
                         e.preventDefault();
                         common.$broadcast(commonConfig.config.controllerActivateSuccessEvent); //switch the spinner off
@@ -104,25 +122,6 @@
                 return true;
             }
 
-            function getWatched() {
-                var returnVar = [];
-                return watchedEntities.forEach(function (el) {
-                    var ent = vm[el[0]]; //todo if required allow for array of array
-                    for (var i = 1; i < el.length; i++) {
-                        if (!ent) { break; }
-                        ent = ent[el[i]];
-                    }
-                    if (ent) {
-                        if (ent.entityAspect) {
-                            returnVar.push(ent);
-                        } else if (ent.length && ent[0].entityAspect) {
-                            returnVar = returnVar.concat(ent);
-                        }
-                    }
-                });
-                return returnVar;
-            }
-
             function disableSaveInclChildren() {
                 var entArray = getWatched().map(function (el) {
                     return el.entityAspect;
@@ -147,6 +146,17 @@
                     argObj.$scope.asideInstance.hide();
                     destroy(evtArg);
                 }
+            }
+
+            function sortOnOrderProperty(a, b) {
+                if (a.order > b.order) {
+                    return 1;
+                }
+                if (a.order < b.order) {
+                    return -1;
+                }
+                // a must be equal to b
+                return 0;
             }
         }
 

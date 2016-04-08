@@ -44,7 +44,9 @@
         self.courseActivities = repository.create(provider, 'CourseActivityDto', 'CourseActivities');
         self.courseFormats = repository.create(provider, 'CourseFormatDto', 'CourseFormats');
         self.courseParticipants = repository.create(provider, 'CourseParticipantDto', 'CourseParticipants'/* 'Courses' */);
+        self.courseScenarioFacultyRoles = repository.create(provider, 'CourseScenarioFacultyRoleDto', 'CourseScenarioFacultyRoles'/* 'Courses' */);
         self.courseSlots = repository.create(provider, 'CourseSlotDto', 'CourseSlots'/* 'Courses' */);
+        self.courseSlotPresenters = repository.create(provider, 'CourseSlotPresenterDto', 'CourseSlotPresenters'/* 'Courses' */);
         self.courseTypes = repository.create(provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);
         self.departments = repository.create(provider, 'DepartmentDto', 'Departments', breeze.FetchStrategy.FromLocalCache);
         self.institutions = repository.create(provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);

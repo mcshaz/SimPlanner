@@ -19,7 +19,7 @@ namespace SM.Metadata
         [Key]
         [Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid FacultyMemberId { get; set; }
+        public Guid ParticipantId { get; set; }
 
         [Key]
         [Column(Order = 3)]

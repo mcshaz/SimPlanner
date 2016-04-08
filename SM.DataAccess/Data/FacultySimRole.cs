@@ -13,18 +13,8 @@ namespace SM.DataAccess
     
 		public CourseType CourseType { get; set; }
 
-        ICollection<CourseScenarioFacultyRole> _courseScenarioFacultyRoles;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles
-        {
-            get
-            {
-                return _courseScenarioFacultyRoles ?? (_courseScenarioFacultyRoles = new List<CourseScenarioFacultyRole>());
-            }
-            set
-            {
-                _courseScenarioFacultyRoles = value;
-            }
-        }
+        public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
+
     }
 }

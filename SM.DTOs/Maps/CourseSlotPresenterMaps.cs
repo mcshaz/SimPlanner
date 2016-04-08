@@ -11,7 +11,7 @@ namespace SM.Dto.Maps
             {
                 CourseId = m.CourseId,
                 CourseSlotId = m.CourseSlotId,
-                PresenterId = m.PresenterId
+                ParticipantId = m.ParticipantId
             };
         }
 
@@ -22,7 +22,7 @@ namespace SM.Dto.Maps
             {
                 CourseId = m.CourseId,
                 CourseSlotId = m.CourseSlotId,
-                PresenterId = m.PresenterId,
+                ParticipantId = m.ParticipantId,
                 //Course = m.Course,
                 //CourseSlot = m.CourseSlot,
                 //Presenter = m.Presenter

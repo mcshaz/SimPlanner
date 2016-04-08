@@ -12,7 +12,7 @@ namespace SM.Dto.Maps
             return m => new ScenarioResource
             {
                 Id = m.Id,
-                Name = m.Name,
+                Description = m.Description,
                 ResourceFilename = m.ResourceFilename,
                 ScenarioId = m.ScenarioId,
                 //Scenario = m.Scenario
@@ -24,7 +24,7 @@ namespace SM.Dto.Maps
             return m => new ScenarioResourceDto
             {
                 Id = m.Id,
-                Name = m.Name,
+                Description = m.Description,
                 ResourceFilename = m.ResourceFilename,
                 ScenarioId = m.ScenarioId,
                 //Scenario = m.Scenario

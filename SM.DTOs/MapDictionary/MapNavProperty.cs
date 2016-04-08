@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SM.Dto.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -40,8 +41,11 @@ namespace SM.Dto.Maps
                 {
                     var navParam = nav.Value.Parameters[0];
                     var mergeVisitor = new ReplaceVisitor(navParam, source);
+                    //TODO allow flag to bypass this step
                     var isNull = Expression.Equal(navParam, nullExpression);
-                    var ternary = Expression.Condition(isNull, Expression.Constant(null,nav.Value.Body.Type), nav.Value.Body);
+                    //will see if creating default object (therefore id = guid.empty) stops OData error 'Cannot compare elements of type'
+                    var ternary = Expression.Condition(isNull, Expression.Constant(null, nav.Value.Body.Type), nav.Value.Body);
+                    //var ternary = Expression.Condition(isNull, Expression.Constant(null,nav.Value.Body.Type), nav.Value.Body);
                     var newNavBody = mergeVisitor.Visit(ternary);
                     bindings.Add(Expression.Bind(target, newNavBody));
                 }
@@ -107,3 +111,67 @@ namespace SM.Dto.Maps
     }
 }
 
+/*
+code to create member inti  bindings of default values 
+                    var mi = (MemberInitExpression)nav.Value.Body;
+                    var defaultBindings = mi.Bindings.Map(b => {
+                        var ma = ((MemberAssignment)b);
+                        var pi = (PropertyInfo)ma.Member;
+                        var type = pi.PropertyType;
+                        ConstantExpression defaultVal;
+                        switch (Type.GetTypeCode(type))
+                        {
+                            case TypeCode.Boolean:
+                                defaultVal = Expression.Constant(default(bool),type);
+                                break;
+                            case TypeCode.Char:
+                                defaultVal = Expression.Constant(default(char),type);
+                                break;
+                            case TypeCode.SByte:
+                                defaultVal = Expression.Constant(default(sbyte),type);
+                                break;
+                            case TypeCode.Byte:
+                                defaultVal = Expression.Constant(default(byte),type);
+                                break;
+                            case TypeCode.Int16:
+                                defaultVal = Expression.Constant(default(short),type);
+                                break;
+                            case TypeCode.UInt16:
+                                defaultVal = Expression.Constant(default(ushort),type);
+                                break;
+                            case TypeCode.Int32:
+                                defaultVal = Expression.Constant(default(int),type);
+                                break;
+                            case TypeCode.UInt32:
+                                defaultVal = Expression.Constant(default(uint),type);
+                                break;
+                            case TypeCode.Int64:
+                                defaultVal = Expression.Constant(default(long),type);
+                                break;
+                            case TypeCode.UInt64:
+                                defaultVal = Expression.Constant(default(ulong),type);
+                                break;
+                            case TypeCode.Single:
+                                defaultVal = Expression.Constant(default(float),type);
+                                break;
+                            case TypeCode.Double:
+                                defaultVal = Expression.Constant(default(double),type);
+                                break;
+                            case TypeCode.Decimal:
+                                defaultVal = Expression.Constant(default(decimal),type);
+                                break;
+                            case TypeCode.DateTime:
+                                defaultVal = Expression.Constant(default(DateTime),type);
+                                break;
+                            default:
+                                defaultVal = type==typeof(Guid)
+                                    ? Expression.Constant(Guid.Empty, type)
+                                    :Expression.Constant(null, type);
+                                break;
+                        }
+                        return Expression.Bind(b.Member, defaultVal);
+                    });
+                    var isNull = Expression.Equal(navParam, nullExpression);
+                    //will see if creating default object (therefore id = guid.empty) stops OData error 'Cannot compare elements of type'
+                    var ternary = Expression.Condition(isNull, Expression.MemberInit(Expression.New(nav.Value.Body.Type), defaultBindings), nav.Value.Body);
+    */

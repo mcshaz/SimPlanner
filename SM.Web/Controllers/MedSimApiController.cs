@@ -9,6 +9,7 @@ using SM.Dto;
 using Breeze.ContextProvider;
 using System.Web.Http.OData.Query;
 using SM.Web.Controllers.Helpers;
+using Microsoft.Data.OData.Query.SemanticAst;
 
 namespace SM.Web.Controllers
 {
@@ -94,7 +95,20 @@ namespace SM.Web.Controllers
 		public IQueryable<CourseDto> Courses(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
-            return Repo.GetCourses(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+            var returnVar = Repo.GetCourses(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+            //hack alert - currently options.applyto does not handle includes which are deeper than a null parent
+            //the following hack works around this for a very specific use scenario
+            //this is about as ugly as hacks get, so steel yourself before reading ahead
+            if (iso.Includes.Any(i=>i.Contains("Activity/")))
+            {
+                var exp = (BinaryOperatorNode)options.Filter.FilterClause.Expression;
+                System.Diagnostics.Debug.Assert(exp.OperatorKind == Microsoft.Data.OData.Query.BinaryOperatorKind.Equal);
+                System.Diagnostics.Debug.Assert(((SingleValuePropertyAccessNode)exp.Left).Property.Name == "Id");
+                Guid id = (Guid)((ConstantNode)exp.Right).Value;
+                //todo fix this method up so that the query isn't being applied twice
+                return returnVar.Where(c=>c.Id==id).ToList().AsQueryable();
+            }
+            return returnVar;
         }
 
         private class IncludeSelectOptions

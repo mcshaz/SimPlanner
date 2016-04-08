@@ -7,7 +7,7 @@ namespace SM.Dto
     public abstract class ResourceDto 
 	{
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Description { get; set; }
         public string ResourceFilename { get; set; }
 	}
     [MetadataType(typeof(ResourceMetadata))]

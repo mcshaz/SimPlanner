@@ -351,6 +351,11 @@
     <Content Include="Scripts\http-auth-interceptor.js" />
     <Content Include="Scripts\ios-html5-drag-drop-shim.js" />
     <Content Include="Scripts\breeze.savequeuing.js" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Scripts\angular-cookies.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-sanitize.min.js.map" />
     <None Include="Scripts\jquery-2.2.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.2.js" />
     <Content Include="Scripts\jquery-2.2.2.min.js" />
@@ -415,11 +420,6 @@
     <Content Include="Content\angular-motion.min.css.map" />
     <Content Include="Scripts\angular-strap\angular-strap.min.js.map" />
     <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.min.js.map" />
-    <Content Include="Scripts\angular.min.js.map" />
-    <Content Include="Scripts\angular-cookies.min.js.map" />
-    <Content Include="Scripts\angular-animate.min.js.map" />
-    <Content Include="Scripts\angular-route.min.js.map" />
-    <Content Include="Scripts\angular-sanitize.min.js.map" />
     <Content Include="Scripts\jquery-2.2.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

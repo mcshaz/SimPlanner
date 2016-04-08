@@ -1,34 +1,74 @@
 ﻿<section id="course-view" class="mainbar" data-ng-controller="courseRoles as vm">
     <section class="matter">
         <div class="container col-md-12">
-            <form ng-submit="vm.save($event)" id="courseForm">
+            <form ng-submit="vm.save($event)" id="courseForm" class="form-inline">
                 <div class="col-md-8">
                     <div class="panel">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                {{vm.course.department}}
-                                {{vm.course.typeFormatDescriptor}}
+                                {{vm.course.department.name}}
+                                {{vm.course.courseFormat.typeFormatDescriptor}}
                                 {{vm.course.startTime | amDateFormat:'LL'}}
                             </div>
                         </div>
                         <div class="panel-body">
-                            <ul class="list-unstyled" ng-repeat="slot in vm.course.courseFormat.courseSlots">
-                                <li ng-if="slot.courseActivity">
-                                    <label class="label">
-                                        {{slot.courseActivity.name}}
-                                    </label>
-                                    <div class="form-control">
-                                        <select ng-options="ac as ac.description for ac in slot.courseActivity.activityChoices"></select>
+                            <div class="panel-group" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
+                                <div class="panel panel-default" ng-repeat="m in vm.map track by m.id">
+                                    <div class="panel-heading" role="tab" bs-collapse-toggle>
+                                        <h4 class="panel-title">
+                                            <a>
+                                                {{m.startTime | amDateFormat:'hh:mm a'}}
+                                                <span class="label" ng-class="m.isSim?'label-success':'label-info'">
+                                                    {{m.name}}
+                                                </span>
+                                            </a>
+                                        </h4>
                                     </div>
-                                </li>
-                                <li ng-if="!slot.courseActivity">
-                                    <select ng-options="s as s.description for s in vm.course.courseFormat.courseType.scenarios"></select>
-                                </li>
-                            </ul>
+                                    <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                        <div class="panel-body">
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label" for="resource">
+                                                    Resource
+                                                </label>                          
+                                                <select id="resource" class="form-control" ng-options="s as s.description for s in m.choices" ng-model="m.selectedChoice" ng-if="m.choices.length">
+                                                    <option disabled selected hidden value="">
+                                                        Please Select...
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <span class="label label-default">
+                                                    Faculty
+                                                </span> 
+
+                                                <ul class="list-group col-md-12 faculty" ng-if="!m.isSim" ng-model="m.faculty" ui-sortable="vm.sortableOptions">
+                                                    <li class="list-group-item col-md-6" ng-repeat="r in m.faculty track by r.participantId" >
+                                                        {{r.participant.fullName}}
+                                                    </li>
+                                                </ul>
+                                                <!--TODO add manequin used-->
+                                                <div ng-repeat="r in m.roles track by r.id" ng-if="m.isSim" class="dl-horizontal">
+                                                    <div class="simRoleDescription col-md-3">
+                                                        {{r.description}}
+                                                    </div>
+                                                    <ul class="list-group col-md-9 faculty" ng-model="r.faculty" ui-sortable="vm.sortableOptions">
+                                                        <li class="list-group-item col-md-6" ng-repeat="p in r.faculty track by p.participantId">
+                                                            {{p.participant.fullName}}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="panel-footer">
                         </div>
                     </div>
+                    <a class="btn btn-info" ng-href="#/course/{{vm.course.id}}">
+                        <i class="fa fa-arrow-left"></i>course planner
+                    </a>
                 </div>
                 <div class="col-md-4">
                     <div class="panel affix col-md-3">
@@ -38,8 +78,16 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <ul class="list-unstyled" ng-repeat="cp in vm.course.courseParticipants | filter:{isFaculty:'true'}">
-                                {{cp.name}} - roles
+                            <ul class="list-group faculty" ng-model="vm.faculty" ui-sortable="vm.sortableOptions">
+                                <li ng-repeat="cp in vm.faculty track by cp.participantId" class="list-group-item">
+                                    {{cp.name}} - roles 
+                                    <span class="label label-default pull-xs-right">
+                                        {{cp.slotCount}}
+                                    </span>
+                                    <span class="label label-info pull-xs-right">
+                                        {{cp.scenarioCount}}
+                                    </span>
+                                </li>
                             </ul>
                         </div>
                         <div class="panel-footer">

@@ -8,10 +8,10 @@ namespace SM.Dto
     {
         public Guid CourseId { get; set; }
         public Guid CourseSlotId { get; set; }
-        public Guid PresenterId { get; set; }
+        public Guid ParticipantId { get; set; }
         public CourseDto Course { get; set; }
         public CourseSlotDto CourseSlot { get; set; }
-        public ParticipantDto Presenter { get; set; }
+        public ParticipantDto Participant { get; set; }
 
     }
 }

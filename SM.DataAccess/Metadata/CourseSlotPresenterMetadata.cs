@@ -19,6 +19,6 @@ namespace SM.DataAccess.Metadata
         [Key]
         [Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid PresenterId { get; set; }
+        public Guid ParticipantId { get; set; }
     }
 }

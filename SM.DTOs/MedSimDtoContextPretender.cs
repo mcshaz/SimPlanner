@@ -259,14 +259,14 @@ namespace SM.Dto
 
             modelBuilder.Entity<ParticipantDto>()
                 .HasMany(e => e.CourseScenarioFacultyRoles)
-                .WithRequired(e => e.FacultyMember)
-                .HasForeignKey(e => e.FacultyMemberId)
+                .WithRequired(e => e.Participant)
+                .HasForeignKey(e => e.ParticipantId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ParticipantDto>()
                 .HasMany(e => e.CourseSlotPresentations)
-                .WithRequired(e => e.Presenter)
-                .HasForeignKey(e => e.PresenterId)
+                .WithRequired(e => e.Participant)
+                .HasForeignKey(e => e.ParticipantId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ProfessionalRoleDto>()

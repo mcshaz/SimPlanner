@@ -394,6 +394,10 @@ a {
 
 /*#endregion*/
 /*#region mystyles*/
+.faculty{
+    border:1px solid darkgreen; 
+    min-height:45px;
+}
 .btn-google-plus,.btn-facebook,.btn-linkedin,.btn-twitter {
     margin-bottom:4px;
 }

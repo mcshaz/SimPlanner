@@ -180,7 +180,7 @@ namespace SimManager.Tests
                 }
             }).First();
                             */
-                Console.Write(c);
+                Console.Write(Newtonsoft.Json.JsonConvert.SerializeObject(c, Newtonsoft.Json.Formatting.Indented));
 
             }
         }

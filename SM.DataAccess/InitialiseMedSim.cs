@@ -66,7 +66,7 @@ namespace SM.DataAccess
 
             var didactic = new CourseActivity { Id = Guid.NewGuid(), Name = "Didactic Lecture", CourseType = crm };
             context.CourseActivities.Add(didactic);
-            var slides = new ActivityTeachingResource { Id = Guid.NewGuid(), Name = "PICU 2016 version", ResourceFilename = @"C:\whatever\Slides.ppt", CourseActivity = didactic };
+            var slides = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "PICU 2016 version", ResourceFilename = @"C:\whatever\Slides.ppt", CourseActivity = didactic };
             context.ActivityTeachingResources.Add(slides);
             var didacticSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = didactic, Order = 0, CourseFormat = crm2, IsActive = true };
             didactic.ActivityChoices.Add(slides);
@@ -75,9 +75,9 @@ namespace SM.DataAccess
             var teamBuilder = new CourseActivity { Id = Guid.NewGuid(), Name = "Team Building", CourseType = crm };
             context.CourseActivities.Add(teamBuilder);
 
-            var ballGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Name="Multi-sized balls", CourseActivity=teamBuilder};
-            var eggGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Name = "Egg, plate, ribons", CourseActivity = teamBuilder };
-            var solarGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Name = "Solar Blanket", CourseActivity = teamBuilder };
+            var ballGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Description="Multi-sized balls", CourseActivity=teamBuilder};
+            var eggGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "Egg, plate, ribons", CourseActivity = teamBuilder };
+            var solarGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "Solar Blanket", CourseActivity = teamBuilder };
             context.ActivityTeachingResources.AddRange(new[] { ballGame, eggGame, solarGame });
 
             var teamSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = teamBuilder, Order = 1, CourseFormat = crm2, IsActive = true };
@@ -138,7 +138,10 @@ namespace SM.DataAccess
                 Department = picu
             };
 
-            var proforma = new ScenarioResource { Id = Guid.NewGuid(), Name = "proforma", ResourceFilename = @"C:\whatever.doc", Scenario=s };
+            context.Scenarios.Add(s);
+            context.Scenarios.Add(s2);
+
+            var proforma = new ScenarioResource { Id = Guid.NewGuid(), Description = "proforma", ResourceFilename = @"C:\whatever.doc", Scenario=s };
             context.ScenarioResources.Add(proforma);
             /*
             c.Scenarios = new List<Scenario>();
@@ -151,13 +154,16 @@ namespace SM.DataAccess
 
             context.SaveChanges();
 
-            var pres = new CourseSlotPresenter { Course = c, CourseSlot = didacticSlot, Presenter = trish };
+            var pres = new CourseSlotPresenter { Course = c, CourseSlot = didacticSlot, Participant = trish };
             context.CourseSlotPresenters.Add(pres);
+
+            var game = new ChosenTeachingResource { ActivityTeachingResource = ballGame, Course = c, CourseSlot = teamSlot };
+            context.ChosenTeachingResources.Add(game);
 
             var simScenario1 = new CourseSlotScenario { Course = c, CourseSlot=sim1, Scenario = s, Manequin=cedJunior };
             context.CourseSlotScenarios.Add(simScenario1);
 
-            var simRole1 = new CourseScenarioFacultyRole { Course = c, CourseSlot = sim1, FacultyMember = trish, FacultySimRole = lt };
+            var simRole1 = new CourseScenarioFacultyRole { Course = c, CourseSlot = sim1, Participant = trish, FacultySimRole = lt };
             context.CourseScenarioFacultyRoles.Add(simRole1);
 
             context.SaveChanges();

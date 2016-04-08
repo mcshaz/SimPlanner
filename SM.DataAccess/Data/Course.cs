@@ -55,6 +55,7 @@ namespace SM.DataAccess
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChosenTeachingResource> ChosenTeachingResources { get; set; }
+
     }
 
     public static class CourseExtensions

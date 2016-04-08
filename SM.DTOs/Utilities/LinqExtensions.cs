@@ -69,6 +69,16 @@ namespace SM.Dto.Utilities
             }
         }
 
+
+        public static TDest[] Map<TSource, TDest>(this IList<TSource> source, Func<TSource, TDest> predicate)
+        {
+            var returnVar = new TDest[source.Count];
+            for (int i = 0; i < returnVar.Length; i++)
+            {
+                returnVar[i] = predicate(source[i]);
+            }
+            return returnVar;
+        }
         /// <summary>
         /// Note for arrays - better to use Array.Copy
         /// </summary>

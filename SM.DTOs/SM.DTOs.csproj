@@ -131,8 +131,8 @@
     <Compile Include="MapDictionary\MapDictionary.cs" />
     <Compile Include="MapDictionary\MapNavProperty.cs" />
     <Compile Include="Maps\ActivityFacultyMaps.cs" />
-    <Compile Include="Maps\CourseFormatMaps.cs" />
     <Compile Include="Maps\CourseActivityMaps.cs" />
+    <Compile Include="Maps\CourseFormatMaps.cs" />
     <Compile Include="Maps\CountryMaps.cs" />
     <Compile Include="Maps\ManequinServiceMaps.cs" />
     <Compile Include="Maps\ManequinModelMaps.cs" />

@@ -8,12 +8,12 @@ namespace SM.Dto
     {
         public Guid CourseId { get; set; }
         public Guid CourseSlotId { get; set; }
-        public Guid FacultyMemberId { get; set; }
+        public Guid ParticipantId { get; set; }
         public Guid FacultySimRoleId { get; set; }
 
         public CourseDto Course { get; set; }
         public CourseSlotDto CourseSlot { get; set; }
-        public ParticipantDto FacultyMember { get; set; }
+        public ParticipantDto Participant { get; set; }
         public FacultySimRoleDto FacultySimRole { get; set; }
 
     }

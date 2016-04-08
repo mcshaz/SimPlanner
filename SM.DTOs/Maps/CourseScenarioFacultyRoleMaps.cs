@@ -12,7 +12,7 @@ namespace SM.Dto.Maps
             {
                 CourseId = m.CourseId,
                 CourseSlotId = m.CourseSlotId,
-                FacultyMemberId = m.FacultyMemberId,
+                ParticipantId = m.ParticipantId,
                 FacultySimRoleId =m.FacultySimRoleId
                 //Course = m.Course,
                 //Scenario = m.Scenario,
@@ -27,7 +27,7 @@ namespace SM.Dto.Maps
             {
                 CourseId = m.CourseId,
                 CourseSlotId = m.CourseSlotId,
-                FacultyMemberId = m.FacultyMemberId,
+                ParticipantId = m.ParticipantId,
                 FacultySimRoleId = m.FacultySimRoleId
                 //Course = m.Course,
                 //Scenario = m.Scenario,
