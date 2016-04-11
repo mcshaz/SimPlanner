@@ -13,6 +13,7 @@ namespace SM.DataAccess
         public byte Order { get; set; }
         public byte Day { get; set; }
         public bool IsActive { get; set; }
+        public byte SimultaneousStreams { get; set; }
         public Guid? ActivityId { get; set; }
         public Guid CourseFormatId { get; set; }
         public virtual CourseActivity Activity { get; set; }

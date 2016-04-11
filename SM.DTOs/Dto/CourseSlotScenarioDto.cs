@@ -15,6 +15,8 @@ namespace SM.Dto
 
         public Guid? ManequinId { get; set; }
 
+        public byte StreamNumber { get; set; }
+
         public virtual CourseDto Course { get; set; }
 
         public virtual CourseSlotDto CourseSlot { get; set; }

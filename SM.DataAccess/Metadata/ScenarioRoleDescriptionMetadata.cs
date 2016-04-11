@@ -13,5 +13,8 @@ namespace SM.Metadata
         [Required]
         [StringLength(50)]
         public string Description { get; set; }
+
+        [Range(0,20)]
+        public byte Order { get; set; }
     }
 }

@@ -15,6 +15,8 @@ namespace SM.DataAccess
 
         public Guid? ManequinId { get; set; }
 
+        public byte StreamNumber { get; set; }
+
         public virtual Course Course { get; set; }
 
         public virtual CourseSlot CourseSlot { get; set; }

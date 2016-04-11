@@ -12,7 +12,7 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: ['courseFormat','courseFormat.courseActivities'],
+            watchedEntityNames: ['courseFormat', 'courseFormat.courseActivities'],
             $scope: $scope
         })
         var id = $routeParams.id;
@@ -31,8 +31,8 @@
         vm.editSlot = editSlot;
         vm.editChoices = editChoices;
         vm.selectedSlot = null;
-
-        vm.save = save;
+        var baseSave = vm.save;
+        vm.save = saveOverride;
         vm.title = 'Course Format';
 
         vm.sortableOptions = {
@@ -60,6 +60,7 @@
                     ];
                     vm.courseFormat = datacontext.courseFormats.create();
                     vm.courseFormat.courseTypeId = $routeParams.courseTypeId;
+                    vm.notifyViewModelPropChanged();
                 } else {
                     promises = [
                         datacontext.courseActivities.findServerIfCacheEmpty(courseActivitiesPredicate).then(mapCourseActivities),
@@ -68,7 +69,8 @@
                                 vm.log.warning({msg:'could not find courseFormat Id: ' + id})
                             }
                             vm.courseFormat = data;
-                            data.courseSlots = data.courseSlots.sort(vm.sortOnOrderProperty);
+                            data.courseSlots = data.courseSlots.sort(common.sortOnPropertyName('order'));
+                            vm.notifyViewModelPropChanged();
                         })
                     ];
                 }
@@ -124,9 +126,9 @@
             vm.selectedSlot.activity = null;
         }
 
-        function save($event) {
+        function saveOverride($event) {
             //vm.log.debug($event);
-            datacontext.save().then(function () {
+            baseSave().then(function () {
                 vm.selectedSlot = null;
             });
         }//;

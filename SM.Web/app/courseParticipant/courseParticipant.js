@@ -10,7 +10,7 @@
 
     function courseParticipantCtrl(common, datacontext, breeze, $scope, abstractController) {
         /* jshint validthis:true */
-        var cp = this;
+        var vm = this;
         
         abstractController.constructor.call(this, {
             controllerId: controllerId,
@@ -18,37 +18,38 @@
             $scope: $scope
         })
         
-        cp.createCourseParticipant = createCourseParticipant;
-        cp.createNewPerson = createNewPerson;
-        cp.dialCode = '';
-        cp.disableAdd = disableAdd;
-        cp.departments = [];
-        cp.isFaculty = $scope.isFaculty;
-        cp.isNew = !$scope.courseParticipant;
-        cp.isValidParticipantName = isValidParticipantName;
-        cp.getPeople = getPeople;
-        cp.nameLimit = 10;
-        cp.participant = cp.isNew
+        vm.createCourseParticipant = createCourseParticipant;
+        vm.createNewPerson = createNewPerson;
+        vm.dialCode = '';
+        vm.disableAdd = disableAdd;
+        vm.departments = [];
+        vm.isFaculty = $scope.isFaculty;
+        vm.isNew = !$scope.courseParticipant;
+        vm.isValidParticipantName = isValidParticipantName;
+        vm.getPeople = getPeople;
+        vm.nameLimit = 10;
+        vm.participant = vm.isNew
             ? datacontext.participants.create(breeze.EntityState.Detached)
             : $scope.courseParticipant.participant;
-            
-        cp.onParticipantSelected = onParticipantSelected;
-        cp.professionalRoles = [];
+        vm.notifyViewModelPropChanged();
+
+        vm.onParticipantSelected = onParticipantSelected;
+        vm.professionalRoles = [];
 
         activate();
 
         function activate() {
             datacontext.ready().then(function () {
                 var promises = [datacontext.departments.all().then(function (data) {
-                    cp.departments = data;
-                    cp.dialCode = data[0].institution.country.dialCode;
+                    vm.departments = data;
+                    vm.dialCode = data[0].institution.country.dialCode;
                 }),
                 datacontext.professionalRoles.all().then(function (data) {
-                    cp.professionalRoles = data;
+                    vm.professionalRoles = data;
                 })];
                 common.activateController(promises, controllerId)
                     .then(function () {
-                        cp.log('Activated Course Participant Dialog');
+                        vm.log('Activated Course Participant Dialog');
                     });
                 });
         }
@@ -58,25 +59,26 @@
         function createCourseParticipant($event) {
             if (!validateSaveParticipant()) { return; }
             var forSave;
-            if (cp.isNew) {
-                forSave = $scope.course.addParticipant(cp.participant, { isFaculty: cp.isFaculty });
-                datacontext.save([forSave, forSave.participant]).then(function () {
-                    cp.log.success(cp.participant.fullName + ' added to course ' + (cp.isFaculty ? 'faculty' : 'participants'));
+            if (vm.isNew) {
+                forSave = $scope.course.addParticipant(vm.participant, { isFaculty: vm.isFaculty });
+                vm.save([forSave, forSave.participant]).then(function () {
+                    vm.log.success(vm.participant.fullName + ' added to course ' + (vm.isFaculty ? 'faculty' : 'participants'));
                     afterSave();
                 });
             } else {
                 forSave = $scope.courseParticipant;
-                forSave.professionalRoleId = cp.participant.defaultProfessionalRoleId;
-                forSave.departmentId = cp.participant.defaultDepartmentId;
-                datacontext.save([forSave, forSave.participant]).then(function () {
-                    cp.log.success(cp.participant.fullName + ' updated');
+                forSave.professionalRoleId = vm.participant.defaultProfessionalRoleId;
+                forSave.departmentId = vm.participant.defaultDepartmentId;
+                vm.save([forSave, forSave.participant]).then(function () {
+                    vm.log.success(vm.participant.fullName + ' updated');
                     afterSave();
                 });
-                cp.isNew = true;
+                vm.isNew = true;
             }
 
             function afterSave() {
-                cp.participant = datacontext.participants.create(breeze.EntityState.Detached);
+                vm.participant = datacontext.participants.create(breeze.EntityState.Detached);
+                vm.notifyViewModelPropChanged();
                 _lastLookup = _lastVal = null;
             }
         }
@@ -91,27 +93,27 @@
                     return;
                 }
             }
-            datacontext.addEntity(cp.participant);
+            datacontext.addEntity(vm.participant);
 
             //todo check event fires
         }
 
         function disableAdd() {
-            var ent = cp.participant.entityAspect;
+            var ent = vm.participant.entityAspect;
             return ent.entityState.isDetached() || ent.hasValidationErrors;
         }
 
         function validateSaveParticipant() {
-            var origName = cp.participant.entityAspect.originalValues.fullName;
-            if (origName && origName !== cp.participant.fullName) {
-                if (!confirm("Are you sure you wish to change the name of " + origName + " to " + cp.participant.fullName +"?\n\nYou should only click yes if:\n-This person's name was originally mispelt [sic]\n-You are adding something to differentiate from others with a similar name, e.g. John 'tall' Smith\n-The person has changed their name, e.g. after marriage")) {
-                    cp.participant.entityAspect.rejectChanges();
+            var origName = vm.participant.entityAspect.originalValues.fullName;
+            if (origName && origName !== vm.participant.fullName) {
+                if (!confirm("Are you sure you wish to change the name of " + origName + " to " + vm.participant.fullName +"?\n\nYou should only click yes if:\n-This person's name was originally mispelt [sic]\n-You are adding something to differentiate from others with a similar name, e.g. John 'tall' Smith\n-The person has changed their name, e.g. after marriage")) {
+                    vm.participant.entityAspect.rejectChanges();
                     /*
-                    var oldVal = cp.participant;
-                    cp.participant = datacontext.cloneItem(oldVal);
+                    var oldVal = vm.participant;
+                    vm.participant = datacontext.cloneItem(oldVal);
                     oldval.entityAspect.rejectChanges();
                     ["email", "alternateEmail", "phoneNumber"].foreach(function(propName){
-                        if (cp.participant[propName] === oldVal[propName]) { cp.participant["propName"] = null; }
+                        if (vm.participant[propName] === oldVal[propName]) { vm.participant["propName"] = null; }
                     });
                     return false
                     */
@@ -127,15 +129,6 @@
             select: 'id,fullName,professionalRole.category,department.abbreviation'
         };
 
-        var icons = {
-            medical: 'stethoscope',
-            tech: 'wrench',
-            perfusionist: 'heart-o',
-            other: 'question',
-            paramedic: 'ambulance',
-            nursing: 'hearbeat'
-        }
-
         function getPeople(val) {
             if (_lastVal && _lastVal.length < baseArgs.take && val.toLowerCase().startsWith(_lastVal)) {
                 val = val.toLowerCase();
@@ -145,7 +138,7 @@
             baseArgs.where = breeze.Predicate.create('fullName', 'startsWith', val).and(notThisCourse);
             return datacontext.participants.find(baseArgs).then(function (results) {
                 results.forEach(function (el) {
-                    el.label = '<i class="fa fa-' + icons[el.professionalRole_Category.toLowerCase()] + '"></i> '
+                    el.label = '<i class="'+ common.getRoleIcon(el.professionalRole_Category) + '"></i> '
                             + el.fullName
                             + ' <small class="small">(' + el.department_Abbreviation + ' ' + common.toSeperateWords(el.professionalRole_Category) + ')</small>';
                 });
@@ -157,7 +150,8 @@
 
         function onParticipantSelected(item) {
             datacontext.participants.fetchByKey(item.id).then(function (part) {
-                cp.participant = part;
+                vm.participant = part;
+                vm.notifyViewModelPropChanged();
             });
         }
 
@@ -165,14 +159,14 @@
         function onParticipantSelected(event, value, index, elem) {
             if (elem.$id === "getFullName") {
                 datacontext.participants.fetchByKey(_lastCacheLookup[index].id).then(function (part) {
-                    cp.participant = part;
+                    vm.participant = part;
                 });
             }
         }
 */
 
         function isValidParticipantName() {
-            return cp.participant.entityAspect.validateProperty("fullName");
+            return vm.participant.entityAspect.validateProperty("fullName");
         }
 
     }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SM.DataAccess.Metadata
+namespace SM.Metadata
 {
     public class CourseSlotPresenterMetadata
     {
@@ -20,5 +20,8 @@ namespace SM.DataAccess.Metadata
         [Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid ParticipantId { get; set; }
+
+        [Range(0, CourseSlotMetadata.MaxStreams)]
+        public byte StreamNumber { get; set; }
     }
 }

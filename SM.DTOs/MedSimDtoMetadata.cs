@@ -6,6 +6,7 @@ using SM.Metadata;
 using SM.Metadata.CustomValidators;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
@@ -85,6 +86,10 @@ namespace SM.Dto
                         Type t = attr.GetType();
                         if (t.Namespace == "System.ComponentModel.DataAnnotations.Schema") {
                             continue;
+                        } else if (t == typeof(DefaultValueAttribute))
+                        {
+                            var def = (DefaultValueAttribute)attr;
+                            breezePropertyInfo["defaultValue"] = JToken.FromObject(def.Value);
                         }
                         Func<Attribute, Dictionary<string,object>> getVal;
                         if (attrValDict.TryGetValue(t, out getVal))

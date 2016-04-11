@@ -12,6 +12,7 @@ namespace SM.Dto
         public bool IsActive { get; set; }
         public byte Order { get; set; }
         public byte Day { get; set; }
+        public byte SimultaneousStreams { get; set; }
         /// <summary>
         /// if activity/activityId is null, must be a scenario
         /// </summary>

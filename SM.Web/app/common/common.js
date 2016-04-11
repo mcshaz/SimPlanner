@@ -38,10 +38,14 @@
             activateController: activateController,
             createSearchThrottle: createSearchThrottle,
             debouncedThrottle: debouncedThrottle,
+            getRoleIcon: getRoleIcon,
             isEmptyObject: isEmptyObject,
             isNumber: isNumber,
             logger: logger, // for accessibility
             //dateUtilities: dateUtilities,  // for accessibility
+            sortOnPropertyName: sortOnPropertyName,
+            sortOnChildPropertyName: sortOnChildPropertyName,
+            
             textContains: textContains,
             toSeperateWords: toSeperateWords
         };
@@ -139,6 +143,51 @@
 
         function toSeperateWords(text) {
             return text.replace(/([A-Z])/g,"  $1").trimLeft();
+        }
+
+        function sortOnPropertyName(propName) {
+            return function (a, b) {
+                if (a[propName] > b[propName]) {
+                    return 1;
+                }
+                if (a[propName] < b[propName]) {
+                    return -1;
+                }
+                // a must be equal to b
+                return 0;
+            }
+        }
+
+        function sortOnChildPropertyName(propName, childPropName) {
+            return function (a, b) {
+                if (a[propName][childPropName] > b[propName][childPropName]) {
+                    return 1;
+                }
+                if (a[propName][childPropName] < b[propName][childPropName]) {
+                    return -1;
+                }
+                // a must be equal to b
+                return 0;
+            }
+        }
+
+        var _roleIcons;
+        function getRoleIcon(roleName) {
+            if (!_roleIcons) {
+                var symbols = {
+                    Medical: 'stethoscope',
+                    Tech: 'wrench',
+                    Perfusionist: 'cog',
+                    Other: 'question',
+                    Paramedic: 'ambulance',
+                    Nursing: 'heartbeat'
+                }
+                _roleIcons = {};
+                angular.forEach(symbols, function (val,key) {
+                    _roleIcons[key] = "fa fa-" + val;
+                });
+            }
+            return _roleIcons[roleName];
         }
     }
 })();

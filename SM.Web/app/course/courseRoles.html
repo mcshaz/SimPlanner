@@ -28,7 +28,7 @@
                                         <div class="panel-body">
                                             <div class="form-group col-md-12">
                                                 <label class="control-label" for="resource">
-                                                    Resource
+                                                    {{m.isSim?'Scenario':'Resource'}}
                                                 </label>                          
                                                 <select id="resource" class="form-control" ng-options="s as s.description for s in m.choices" ng-model="m.selectedChoice" ng-if="m.choices.length">
                                                     <option disabled selected hidden value="">
@@ -37,13 +37,14 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-12">
-                                                <span class="label label-default">
+                                                <span class="label" ng-class="m.isSim?'label-info':'label-default'">
                                                     Faculty
                                                 </span> 
 
-                                                <ul class="list-group col-md-12 faculty" ng-if="!m.isSim" ng-model="m.faculty" ui-sortable="vm.sortableOptions">
+                                                <ul class="col-md-12 faculty" ng-if="!m.isSim" ng-model="m.faculty" ui-sortable="vm.sortableOptions">
                                                     <li class="list-group-item col-md-6" ng-repeat="r in m.faculty track by r.participantId" >
-                                                        {{r.participant.fullName}}
+                                                        <i ng-class="r.participant.icon"></i> {{r.participant.fullName}} <small class="small">({{r.participant.department.abbreviation}})</small>
+                                                        <button ng-click="m.faculty.removeFaculty(r)" class="pull-right"><i class="fa fa-trash"></i></button>
                                                     </li>
                                                 </ul>
                                                 <!--TODO add manequin used-->
@@ -51,24 +52,32 @@
                                                     <div class="simRoleDescription col-md-3">
                                                         {{r.description}}
                                                     </div>
-                                                    <ul class="list-group col-md-9 faculty" ng-model="r.faculty" ui-sortable="vm.sortableOptions">
+                                                    <ul class="col-md-9 faculty" ng-model="r.faculty" ui-sortable="vm.sortableOptions">
                                                         <li class="list-group-item col-md-6" ng-repeat="p in r.faculty track by p.participantId">
-                                                            {{p.participant.fullName}}
+                                                            <i ng-class="p.participant.icon"></i> {{p.participant.fullName}} <small class="small">({{p.participant.department.abbreviation}})</small>
+                                                            <button ng-click="r.faculty.removeFaculty(p)" class="pull-right"><i class="fa fa-trash"></i></button>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-6 col-md-6">
+                                    <button type="submit" data-ng-disabled="vm.disableSave()" class="btn btn-success">Save</button>
+                                    <a class="btn btn-info" ng-href="#/course/{{vm.course.id}}">
+                                        <i class="fa fa-arrow-left"></i>course planner
+                                    </a>
                                 </div>
                             </div>
                         </div>
                         <div class="panel-footer">
                         </div>
                     </div>
-                    <a class="btn btn-info" ng-href="#/course/{{vm.course.id}}">
-                        <i class="fa fa-arrow-left"></i>course planner
-                    </a>
+
                 </div>
                 <div class="col-md-4">
                     <div class="panel affix col-md-3">
@@ -78,14 +87,16 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <ul class="list-group faculty" ng-model="vm.faculty" ui-sortable="vm.sortableOptions">
+                            <ul class="list-group" ng-model="vm.faculty" ui-sortable="vm.dragableOptions">
                                 <li ng-repeat="cp in vm.faculty track by cp.participantId" class="list-group-item">
-                                    {{cp.name}} - roles 
-                                    <span class="label label-default pull-xs-right">
-                                        {{cp.slotCount}}
-                                    </span>
-                                    <span class="label label-info pull-xs-right">
-                                        {{cp.scenarioCount}}
+                                    <i ng-class="cp.icon"></i> {{cp.fullName}} <small class="small">({{cp.department}})</small>
+                                    <span class="pull-right">
+                                        <span class="label label-default">
+                                            {{cp.slotCount}}
+                                        </span>
+                                        <span class="label label-info">
+                                            {{cp.scenarioCount}}
+                                        </span>
                                     </span>
                                 </li>
                             </ul>

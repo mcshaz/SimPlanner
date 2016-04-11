@@ -68,7 +68,7 @@ namespace SM.DataAccess
             context.CourseActivities.Add(didactic);
             var slides = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "PICU 2016 version", ResourceFilename = @"C:\whatever\Slides.ppt", CourseActivity = didactic };
             context.ActivityTeachingResources.Add(slides);
-            var didacticSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = didactic, Order = 0, CourseFormat = crm2, IsActive = true };
+            var didacticSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = didactic, Order = 0, CourseFormat = crm2, IsActive = true, SimultaneousStreams=1 };
             didactic.ActivityChoices.Add(slides);
             context.CourseSlots.Add(didacticSlot);
 
@@ -80,33 +80,31 @@ namespace SM.DataAccess
             var solarGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "Solar Blanket", CourseActivity = teamBuilder };
             context.ActivityTeachingResources.AddRange(new[] { ballGame, eggGame, solarGame });
 
-            var teamSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = teamBuilder, Order = 1, CourseFormat = crm2, IsActive = true };
+            var teamSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = teamBuilder, Order = 1, CourseFormat = crm2, IsActive = true, SimultaneousStreams = 1 };
             context.CourseSlots.Add(teamSlot);
 
             teamBuilder.ActivityChoices.Add(ballGame);
             teamBuilder.ActivityChoices.Add(eggGame);
             teamBuilder.ActivityChoices.Add(solarGame);
 
-            var sim1 = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 40, Order = 2, CourseFormat = crm2, IsActive = true };
+            var sim1 = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 40, Order = 2, CourseFormat = crm2, IsActive = true, SimultaneousStreams = 1 };
             context.CourseSlots.Add(sim1);
 
             var coffee = new CourseActivity { Id = Guid.NewGuid(), Name = "Coffee Break", CourseType = crm };
-            var coffeeSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity=coffee, Order = 3, CourseFormat = crm2, IsActive = true };
+            var coffeeSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity=coffee, Order = 3, CourseFormat = crm2, IsActive = true, SimultaneousStreams = 1 };
             context.CourseActivities.Add(coffee);
             context.CourseSlots.Add(coffeeSlot);
 
-            var ld = new FacultySimRole { Id = Guid.NewGuid(), Description = "Lead Debrief" };
-            var ad = new FacultySimRole { Id = Guid.NewGuid(), Description = "Assistant Debrief" };
-            var lt = new FacultySimRole { Id = Guid.NewGuid(), Description = "Tech" };
-            var d = new FacultySimRole { Id = Guid.NewGuid(), Description = "Director" };
-            var r = new FacultySimRole { Id = Guid.NewGuid(), Description = "Runner" };
+            var d = new FacultySimRole { Id = Guid.NewGuid(), Description = "Director", Order=0 };
+            var lt = new FacultySimRole { Id = Guid.NewGuid(), Description = "Tech", Order =1 };
+            var r = new FacultySimRole { Id = Guid.NewGuid(), Description = "Runner", Order =2 };
+            var ld = new FacultySimRole { Id = Guid.NewGuid(), Description = "Lead Debrief", Order=3 };
+            var ad = new FacultySimRole { Id = Guid.NewGuid(), Description = "Assistant Debrief", Order=4 };
             crm.FacultySimRoles.Add(ld);
             crm.FacultySimRoles.Add(ad);
             crm.FacultySimRoles.Add(lt);
             crm.FacultySimRoles.Add(d);
             crm.FacultySimRoles.Add(r);
-
-
 
             var c = new Course { Id = Guid.NewGuid(), CourseFormat = crm2, Department = ced, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(14), Room=cedConf };
             var c2 = new Course { Id = Guid.NewGuid(), CourseFormat = crm2, Department = picu, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(28), Room=picuConf };

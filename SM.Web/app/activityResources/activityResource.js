@@ -23,7 +23,8 @@
         vm.selectedActivityResource = null;
 
         vm.selectActivityResource = selectActivityResource;
-        vm.save = save;
+        var baseSave = vm.save;
+        vm.save = saveOverride;
 
         activate();
 
@@ -35,6 +36,7 @@
                     : [ent.loadNavigationProperty('activityChoices')];
                 common.activateController(promises, controllerId)
                     .then(function () {
+                        vm.notifyViewModelPropChanged();
                         vm.log('Activated Activity Resources Dialog');
                     });
             });
@@ -50,8 +52,8 @@
             });
         }
 
-        function save() {
-            datacontext.save(vm.courseActivity.activityChoices);
+        function saveOverride() {
+            baseSave(vm.courseActivity.activityChoices);
             vm.selectedActivityResource = null;
         }
     }

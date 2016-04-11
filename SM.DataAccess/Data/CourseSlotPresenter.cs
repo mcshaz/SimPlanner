@@ -1,4 +1,4 @@
-﻿using SM.DataAccess.Metadata;
+﻿using SM.Metadata;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,6 +12,8 @@ namespace SM.DataAccess
         public Guid CourseSlotId { get; set; }
 
         public Guid ParticipantId { get; set; }
+
+        public byte StreamNumber { get; set; }
 
         public virtual Course Course { get; set; }
         public virtual CourseSlot CourseSlot { get; set; }

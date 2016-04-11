@@ -12,7 +12,7 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: 'course',
+            //watchedEntityNames: 'course',
             $scope: $scope
         })
         var id = $routeParams.id;
@@ -32,7 +32,6 @@
         vm.openDp = openDp;
         vm.openCourseParticipant = openCourseParticipant;
         vm.rooms = [];
-        vm.save = save;
         vm.title = 'course';
 
         activate();
@@ -48,6 +47,7 @@
                 })];
                 if (isNew) {
                     vm.course = datacontext.courses.create();
+                    vm.notifyViewModelPropChanged();
                 }else{
                     promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant'}).then(function (data) {
                         if (!data) {
@@ -56,6 +56,7 @@
                             //gotoCourses();
                         }
                         vm.course = data;
+                        vm.notifyViewModelPropChanged();
                     }));
                 }
                 common.activateController(promises, controllerId)
@@ -69,10 +70,6 @@
             this.dpPopup.isOpen = true;
         }
 
-        function save($event) {
-            //vm.log.debug($event);
-            datacontext.save();
-        }//;
 
         function openCourseParticipant(participantId) {
             var modal = getModalInstance();

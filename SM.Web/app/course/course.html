@@ -154,8 +154,8 @@
                                             <input type="checkbox" ng-checked="cp.isConfirmed" />
                                         </td>
                                         <td>
-                                            <button type="button" class="btn-link" ng-click="vm.deleteCourseParticipant(cp.participantId)">Remove</button> |
-                                            <button type="button" class="btn-link" ng-click="vm.openCourseParticipant(cp.participantId)">Edit</button>
+                                            <button type="button" ng-click="vm.openCourseParticipant(cp.participantId)"><i class="fa fa-edit"></i></button>
+                                            <button type="button" ng-click="vm.deleteCourseParticipant(cp.participantId)"><i class="fa fa-trash-o"></i></button> |
                                         </td>
                                     </tr>
                                 </tbody>
@@ -163,7 +163,7 @@
                         </div>
                         <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
                                 data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()" >
-                            Add Faculty Member
+                            <i class="fa fa-plus"></i> Faculty Member
                         </button>
                     </fieldset>
                 </div>
@@ -213,7 +213,7 @@
                         </div>
                         <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newParticipant')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
                                data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()" >
-                            Add Participant
+                            <i class="fa fa-plus"></i> Participant
                         </button>
                     </fieldset>
                 </div>

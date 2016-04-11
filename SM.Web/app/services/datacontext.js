@@ -5,15 +5,15 @@
         .service(serviceId, ['$rootScope', 'entityManagerFactory', 'repository', 'common', 'config',service]);
 
     function service($rootScope, entityManagerFactory, repository, common, config) {
-        var provider = entityManagerFactory.manager;
         var self = this;
         var log = common.logger.getLogFn(serviceId);
 
-        self.addEntity = provider.addEntity.bind(provider);
+        self.provider = entityManagerFactory.manager;
+        self.addEntity = self.provider.addEntity.bind(self.provider);
         self.cloneItem = cloneItem;
         self.ready = entityManagerFactory.ready;
 
-        self.rejectChanges = provider.rejectChanges;
+        self.rejectChanges = self.provider.rejectChanges;
 
         self.save = function (/*entitiesToSave*/) {
             //var saveOptions = new breeze.SaveOptions({ resourceName: 'savechanges' });
@@ -30,29 +30,29 @@
                 default:
                     entititiesToSave = Array.prototype.slice.call(arguments);
             }
-            return provider.saveChanges(entititiesToSave)
+            return self.provider.saveChanges(entititiesToSave)
                 .then(function (saveResult) {
                     $rootScope.$broadcast('saved', saveResult.entities);
-                    log.success({ msg: 'Saved data', data: saveResult, showToast: true });
+                    log.success({ msg: 'Saved changes', data: saveResult, showToast: true });
                     return saveResult;
                 }, saveFailed);
         };
 
-        self.activityResources = repository.create(provider, 'ActivityTeachingResourceDto', 'ActivityTeachingResources');
-        self.courses = repository.create(provider, 'CourseDto', 'Courses');
-        self.countries = repository.create(provider, 'CountryDto', 'Countries', breeze.FetchStrategy.FromLocalCache);
-        self.courseActivities = repository.create(provider, 'CourseActivityDto', 'CourseActivities');
-        self.courseFormats = repository.create(provider, 'CourseFormatDto', 'CourseFormats');
-        self.courseParticipants = repository.create(provider, 'CourseParticipantDto', 'CourseParticipants'/* 'Courses' */);
-        self.courseScenarioFacultyRoles = repository.create(provider, 'CourseScenarioFacultyRoleDto', 'CourseScenarioFacultyRoles'/* 'Courses' */);
-        self.courseSlots = repository.create(provider, 'CourseSlotDto', 'CourseSlots'/* 'Courses' */);
-        self.courseSlotPresenters = repository.create(provider, 'CourseSlotPresenterDto', 'CourseSlotPresenters'/* 'Courses' */);
-        self.courseTypes = repository.create(provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);
-        self.departments = repository.create(provider, 'DepartmentDto', 'Departments', breeze.FetchStrategy.FromLocalCache);
-        self.institutions = repository.create(provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);
-        self.participants = repository.create(provider, 'ParticipantDto', 'Participants');
-        self.professionalRoles = repository.create(provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);
-        self.rooms = repository.create(provider, 'RoomDto', 'Rooms', breeze.FetchStrategy.FromLocalCache);
+        self.activityResources = repository.create(self.provider, 'ActivityTeachingResourceDto', 'ActivityTeachingResources');
+        self.courses = repository.create(self.provider, 'CourseDto', 'Courses');
+        self.countries = repository.create(self.provider, 'CountryDto', 'Countries', breeze.FetchStrategy.FromLocalCache);
+        self.courseActivities = repository.create(self.provider, 'CourseActivityDto', 'CourseActivities');
+        self.courseFormats = repository.create(self.provider, 'CourseFormatDto', 'CourseFormats');
+        self.courseParticipants = repository.create(self.provider, 'CourseParticipantDto', 'CourseParticipants'/* 'Courses' */);
+        self.courseScenarioFacultyRoles = repository.create(self.provider, 'CourseScenarioFacultyRoleDto', 'CourseScenarioFacultyRoles'/* 'Courses' */);
+        self.courseSlots = repository.create(self.provider, 'CourseSlotDto', 'CourseSlots'/* 'Courses' */);
+        self.courseSlotPresenters = repository.create(self.provider, 'CourseSlotPresenterDto', 'CourseSlotPresenters'/* 'Courses' */);
+        self.courseTypes = repository.create(self.provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);
+        self.departments = repository.create(self.provider, 'DepartmentDto', 'Departments', breeze.FetchStrategy.FromLocalCache);
+        self.institutions = repository.create(self.provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);
+        self.participants = repository.create(self.provider, 'ParticipantDto', 'Participants');
+        self.professionalRoles = repository.create(self.provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);
+        self.rooms = repository.create(self.provider, 'RoomDto', 'Rooms', breeze.FetchStrategy.FromLocalCache);
 
         function saveFailed(error) {
             var msg = config.appErrorPrefix + 'Save failed: ' +

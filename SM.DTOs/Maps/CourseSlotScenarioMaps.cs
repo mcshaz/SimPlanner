@@ -13,7 +13,8 @@ namespace SM.Dto.Maps
                 CourseId = m.CourseId,
                 CourseSlotId = m.CourseSlotId,
                 ScenarioId = m.ScenarioId,
-                ManequinId = m.ManequinId
+                ManequinId = m.ManequinId,
+                StreamNumber = m.StreamNumber
                 //Course = m.Course,
                 //Scenario = m.Scenario,
                 //Role = m.Role,
@@ -28,7 +29,8 @@ namespace SM.Dto.Maps
                 CourseId = m.CourseId,
                 CourseSlotId = m.CourseSlotId,
                 ScenarioId = m.ScenarioId,
-                ManequinId = m.ManequinId
+                ManequinId = m.ManequinId,
+                StreamNumber = m.StreamNumber
                 //Course = m.Course,
                 //Scenario = m.Scenario,
                 //Role = m.Role,

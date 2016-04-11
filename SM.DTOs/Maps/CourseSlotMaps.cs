@@ -14,7 +14,8 @@ namespace SM.Dto.Maps
                 IsActive = m.IsActive,
                 ActivityId = m.ActivityId,
                 CourseFormatId = m.CourseFormatId,
-                Order = m.Order
+                Order = m.Order,
+                SimultaneousStreams = m.SimultaneousStreams
             };
         }
 
@@ -28,7 +29,8 @@ namespace SM.Dto.Maps
                 IsActive = m.IsActive,
                 ActivityId = m.ActivityId,
                 CourseFormatId = m.CourseFormatId,
-                Order = m.Order
+                Order = m.Order,
+                SimultaneousStreams = m.SimultaneousStreams
             };
         }
     }

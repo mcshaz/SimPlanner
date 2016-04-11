@@ -12,6 +12,7 @@ namespace SM.Dto.Maps
             {
                 Id = m.Id,
                 Description = m.Description,
+                Order = m.Order
                 //CourseTypes = m.CourseTypes,
                 //ScenarioFacultyRoles = m.ScenarioFacultyRoles
             };
@@ -23,6 +24,7 @@ namespace SM.Dto.Maps
             {
                 Id = m.Id,
                 Description = m.Description,
+                Order = m.Order
                 //CourseTypes = m.CourseTypes,
                 //ScenarioFacultyRoles = m.ScenarioFacultyRoles
             };

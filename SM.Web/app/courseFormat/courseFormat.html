@@ -31,8 +31,8 @@
 
                     </div>
                 </div>
-                <button class="btn-link" type="button" ng-click="vm.createSlot()">
-                    add new activity
+                <button type="button" class="btn-link" ng-click="vm.createSlot()">
+                    <i class="fa fa-plus"></i> Activity
                 </button>
                 <fieldset > <!--ng-disabled="!vm.selectedSlot"-->
                     <table class="table table-bordered table-striped">
@@ -41,6 +41,7 @@
                                 <td class="small">(drag)</td>
                                 <th>Activity</th>
                                 <th>Minutes</th>
+                                <th>Streams</th>
                                 <td>
                                 </td>
                             </tr>
@@ -57,14 +58,17 @@
                                 <td>
                                     {{cs.minutesDuration}}
                                 </td>
+                                <td>
+                                    {{cs.simultaneousStreams}}
+                                </td>
 
                                 <td>
-                                    <button class="btn-link" type="button" ng-click="vm.editSlot(cs)">
-                                        edit
+                                    <button type="button" ng-click="vm.editSlot(cs)">
+                                        <i class="fa fa-edit"></i>
                                     </button>
                                     |
-                                    <button class="btn-link" type="button" ng-click="vm.removeSlot(cs)">
-                                        remove
+                                    <button type="button" ng-click="vm.removeSlot(cs)">
+                                        <i class="fa fa-trash-o"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -95,6 +99,9 @@
                                 <td class="form-group col-md-1">
                                     <input class="form-control" type="number" step="1" z-validate ng-model="vm.selectedSlot.minutesDuration"  ng-disabled="!vm.selectedSlot">
                                 </td>
+                                <td class="form-group  col-md-1">
+                                    <input class="form-control" type="number" step="1" z-validate ng-model="vm.selectedSlot.simultaneousStreams" ng-disabled="!vm.selectedSlot">
+                                </td>
                                 <td>
                                     <button class="btn btn-link" type="button" ng-click="vm.editChoices()" ng-disabled="!vm.selectedSlot || vm.selectedSlot.isScenario">
                                         choices
@@ -104,8 +111,8 @@
                         </tfoot>
                     </table>
                 </fieldset>
-                <button type="submit" class="btn btn-success" ng-disabled="vm.disableSaveInclChildren()">Save</button>
-                <button type="button" class="btn btn-info" ng-click="vm.clone()" ng-disabled="!vm.courseFormat.entityAspect.entityState.isUnchanged()">Copy</button>
+                <button type="submit" class="btn btn-success" ng-disabled="vm.disableSave()">Save</button>
+                <button type="button" class="btn btn-info" ng-click="vm.clone()" ng-disabled="!vm.disableSave()">Copy</button>
             </form>
         </div>
     </section>

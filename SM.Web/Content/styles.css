@@ -397,6 +397,8 @@ a {
 .faculty{
     border:1px solid darkgreen; 
     min-height:45px;
+    margin:-1px 0 0 0;
+    padding:0;
 }
 .btn-google-plus,.btn-facebook,.btn-linkedin,.btn-twitter {
     margin-bottom:4px;

@@ -10,11 +10,13 @@
                 <div class="aside-body">
                     <form id="courseParticipantForm" ng-submit="ar.save()">
                         <button type="button" class="btn-link" ng-click="ar.createActivityResource()">Create new choice</button>
-                        <ul>
-                            <li ng-repeat="ac in ar.courseActivity.activityChoices track by ac.id">
-                                {{ac.name}} |
-                                <button type="button" ng-click="ar.selectActivityResource(ac)" class="btn-link" >Edit</button> |
-                                <button type="button" ng-click="ac.entityAspect.setDeleted()" class="btn-link" >Delete</button>
+                        <ul class="list-unstyled">
+                            <li ng-repeat="ac in ar.courseActivity.activityChoices track by ac.id" class="clearfix">
+                                {{ac.description}} 
+                                <span class="pull-right">
+                                    <button type="button" ng-click="ar.selectActivityResource(ac)"><i class="fa fa-edit"></i></button> |
+                                    <button type="button" ng-click="ac.entityAspect.setDeleted()"><i class="fa fa-trash-o"></i></button>
+                                </span>
                             </li>
                         </ul>
 
@@ -22,11 +24,11 @@
                             <label for="resourceName" class="control-label">Name</label>
                             <div>
                                 <input type="text" id="resourceName" class="form-control" data-z-validate
-                                       data-ng-model="ar.selectedActivityResource.name" ng-disabled="!ar.selectedActivityResource"/>
+                                       data-ng-model="ar.selectedActivityResource.description" ng-disabled="!ar.selectedActivityResource"/>
                             </div>
                         </div>
 
-                        <button class="btn btn-success" type="submit" ng-disabled="ar.disableSaveInclChildren()">Save</button>
+                        <button class="btn btn-success" type="submit" ng-disabled="ar.disableSave()">Save</button>
                     </form>
                 </div>
                 <div class="aside-footer">
