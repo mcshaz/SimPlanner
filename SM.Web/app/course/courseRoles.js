@@ -186,12 +186,11 @@
         function updateSortable(event, ui) {
             var sortable = ui.item.sortable;
             if (ui.sender) {
-                if (sortable.isCanceled() && sortable.droptargetModel.availableFaculty) {
+                if (sortable.droptargetModel.availableFaculty && sortable.isCanceled()) {
                     sortable.sourceModel.splice(sortable.index, 1);
                 }
                 return; 
             } //sender has a value only when the receiving table. in order to cancel both sending and receiving events, cancel must be called from the sending table;
-            if (sortable.isCanceled()) { return; }
             var participantId = sortable.model.participantId;
             if (sortable.droptargetModel.some(function (el) {
                     return el.participantId === participantId

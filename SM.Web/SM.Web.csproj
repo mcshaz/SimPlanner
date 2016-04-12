@@ -306,8 +306,8 @@
     <Content Include="Scripts\angular-cookies.js" />
     <Content Include="Scripts\angular-cookies.min.js" />
     <Content Include="Scripts\angular-drag-and-drop-lists.js" />
-    <Content Include="Scripts\angular-local-storage.js" />
     <Content Include="app\auth\authComplete.js" />
+    <Content Include="Scripts\angular-local-storage.js" />
     <Content Include="Scripts\angular-local-storage.min.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-moment.js" />
@@ -356,6 +356,7 @@
     <Content Include="Scripts\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <Content Include="Scripts\angular-local-storage.min.js.map" />
     <None Include="Scripts\jquery-2.2.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.2.js" />
     <Content Include="Scripts\jquery-2.2.2.min.js" />
@@ -415,7 +416,6 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="Scripts\angular-local-storage.min.js.map" />
     <Content Include="Content\bootstrap-additions.min.css.map" />
     <Content Include="Content\angular-motion.min.css.map" />
     <Content Include="Scripts\angular-strap\angular-strap.min.js.map" />
