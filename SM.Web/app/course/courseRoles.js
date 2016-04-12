@@ -186,9 +186,6 @@
         function updateSortable(event, ui) {
             var sortable = ui.item.sortable;
             if (ui.sender) {
-                if (sortable.droptargetModel.availableFaculty && sortable.isCanceled()) {
-                    sortable.sourceModel.splice(sortable.index, 1);
-                }
                 return; 
             } //sender has a value only when the receiving table. in order to cancel both sending and receiving events, cancel must be called from the sending table;
             var participantId = sortable.model.participantId;
@@ -198,7 +195,7 @@
                 sortable.cancel();
                 return;
             }
-            if (ui.item.sortable.isCopy) { //?? should be in stop
+            if (ui.item.sortable.isCopy) { //?? should be in stop - add the item back in if in copy mode
                 sortable.sourceModel.splice(sortable.index,0,sortable.model);
             }
         }
@@ -206,13 +203,19 @@
         function updateSortableRepo(key, repo, event, ui) {
             updateSortable(event, ui);
             var sortable = ui.item.sortable;
-            if (sortable.isCanceled()) { return; }
+            var cancelled = sortable.isCanceled();
+            //at the moment this works because the only reason to cancel is if there is a duplicate - beware if cancelling for other reasons
+            var removingDuplicate = sortable.droptargetModel.availableFaculty && cancelled;
+            if (removingDuplicate) {
+                 //? should be in stop
+                sortable.sourceModel.splice(sortable.index, 1);
+            }
 
             key.participantId = sortable.model.participantId;
 
-            if (ui.sender) { //receiving = adding 
+            if (ui.sender && !cancelled) { //receiving = adding 
                 repo.create(key);
-            } else { //sending = deleting
+            } else if (!ui.item.sortable.isCopy && (!cancelled || removingDuplicate)) { //sending = deleting
                 var ent = repo.getByKey(key);
                 ent.entityAspect.setDeleted();
             }

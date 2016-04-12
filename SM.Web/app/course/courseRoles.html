@@ -74,7 +74,7 @@
                                                     </li>
                                                 </ul>
                                                 <div ng-repeat="r in m.roles track by r.id" ng-if="m.isSim" class="dl-horizontal">
-                                                    <div class="simRoleDescription col-md-3">
+                                                    <div class="simRoleDescription col-md-3 control-label">
                                                         {{r.description}}
                                                     </div>
                                                     <ul class="col-md-9 faculty" ng-model="r.assignedFaculty" ui-sortable="r.sortableOptions" ng-class="m.groupClass">
