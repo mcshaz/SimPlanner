@@ -400,6 +400,9 @@ a {
     margin:-1px 0 0 0;
     padding:0;
 }
+.faculty li{
+    cursor:move;
+}
 .btn-google-plus,.btn-facebook,.btn-linkedin,.btn-twitter {
     margin-bottom:4px;
 }

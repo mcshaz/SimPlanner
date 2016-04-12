@@ -16,7 +16,7 @@ namespace SM.DataAccess
             context.Institutions.Add(starship);
             var ced = new Department { Id = Guid.NewGuid(), Institution = starship, Abbreviation = "CED", Name="Children's Emergency Department"};
             context.Departments.Add(ced);
-            var simProgram = new Department { Id = Guid.NewGuid(), Institution = starship, Name = "Simulation Programme", Abbreviation = "Sim Team" };
+            var simProgram = new Department { Id = Guid.NewGuid(), Institution = starship, Name = "Simulation Programme", Abbreviation = "Sim" };
             context.Departments.Add(simProgram);
             var picu = new Department {Id = Guid.NewGuid(), Institution = starship, Abbreviation = "PICU" , Name="Paediatric Intensive Care Unit"};
             context.Departments.Add(ced);

@@ -53,6 +53,7 @@
         self.participants = repository.create(self.provider, 'ParticipantDto', 'Participants');
         self.professionalRoles = repository.create(self.provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);
         self.rooms = repository.create(self.provider, 'RoomDto', 'Rooms', breeze.FetchStrategy.FromLocalCache);
+        self.manequins = repository.create(self.provider, 'ManequinDto', 'Manequins', breeze.FetchStrategy.FromLocalCache);
 
         function saveFailed(error) {
             var msg = config.appErrorPrefix + 'Save failed: ' +

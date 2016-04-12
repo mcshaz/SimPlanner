@@ -20,19 +20,11 @@
 
         vm.title = 'course roles';
 
-        vm.sortableOptions = {};
-
-        vm.dragableOptions = {
-            placeholder: "faculty here",
-            connectWith: ".faculty",
-            update: updateSortable
-        };
-
         activate();
 
         function activate() {
             datacontext.ready().then(function () {
-                common.activateController(datacontext.courses.fetchByKey(id, {
+                common.activateController([datacontext.courses.fetchByKey(id, {
                     expand: ['courseParticipants.participant',
                         'courseFormat.courseSlots.activity.activityChoices',
                         'courseSlotScenarios',
@@ -48,74 +40,120 @@
                         //gotoCourses();
                     }
                     var slotTime = data.startTime;
-                    data.courseFormat.courseSlots.sort(common.sortOnPropertyName('order'));
-                    vm.map = data.courseFormat.courseSlots.map(function(cs){
-                        var isThisSlot = function(el) {
-                            return el.courseSlotId === cs.id;
-                        };
-                        var startTime = slotTime;
-                        slotTime = new Date(startTime.getTime() + cs.minutesDuration * 60000);;
-                        if (cs.activity) {
-                            var faculty = data.courseSlotPresenters.filter(isThisSlot);
-                            faculty.addFaculty = function (participantId) {
-                                return datacontext.courseSlotPresenters.create({ participantId: participantId, courseSlotId: cs.id, courseId: data.id });
-                            };
-                            faculty.removeFaculty = removeFaculty.bind(faculty);
-                            return {
-                                id: cs.id,
-                                name: cs.activity.name,
-                                startTime: startTime,
-                                choices: cs.activity.activityChoices,
-                                selectedChoice: (data.chosenTeachingResources.find(isThisSlot)||{}).activityTeachingResource,
-                                isSim: false,
-                                faculty: faculty
-                                
-                            }
-                        }
-                        var slotRoles = cs.courseScenarioFacultyRoles.filter(isThisSlot);
-                        data.courseFormat.courseType.facultySimRoles.sort(common.sortOnPropertyName('order'));
-                        return {
-                            id:cs.id,
-                            name: 'Simulation',
-                            startTime: startTime,
-                            choices: data.courseFormat.courseType.scenarios,
-                            selectedChoice: (data.courseSlotScenarios.find(isThisSlot) || {}).scenario,
-                            isSim: true,
-                            roles: data.courseFormat.courseType.facultySimRoles.map(function (fr) {
-                                var faculty = slotRoles.filter(function (el) { return fr.id === el.facultySimRoleId; });
-                                faculty.addFaculty = function (participantId) {
-                                    return datacontext.courseScenarioFacultyRoles.create({ participantId: participantId, courseSlotId: cs.id, courseId: data.id, facultySimRoleId: fr.id });
-                                };
-                                faculty.removeFaculty = removeFaculty.bind(faculty);
-                                return {
-                                    description: fr.description,
-                                    id: fr.id,
-                                    faculty:faculty
-                                }
-                            })
-                        };
-                    });
+                    var count = 0;
+
                     vm.course = data;
-                    vm.faculty = [];
-                    data.courseParticipants.sort(common.sortOnChildPropertyName('participant','fullName'));
+
+                    data.courseFormat.courseSlots.sort(common.sortOnPropertyName('order'));
+                    data.courseParticipants.sort(common.sortOnChildPropertyName('participant', 'fullName'));
+
+                    //map faculty
+                    var faculty = [];
+
                     data.courseParticipants.forEach(function (el) {
                         if (el.isFaculty) {
                             //add the icon property so we can access it in the other categories
-                            if (!el.participant.icon) {
-                                el.participant.icon = common.getRoleIcon(el.participant.professionalRole.category);
-                            }
-                            vm.faculty.push(angular.extend(
-                                calculateCourseRoles(el.participantId),
-                                {
-                                    participantId: el.participantId,
-                                    fullName: el.participant.fullName,
-                                    icon: el.participant.icon,
-                                    department: el.participant.department.abbreviation
-                                }));
+                            faculty.push(angular.extend(calculateCourseRoles(el.participantId),
+                                                {
+                                                    participantId: el.participantId,
+                                                    fullName: el.participant.fullName,
+                                                    icon: common.getRoleIcon(el.participant.professionalRole.category),
+                                                    departmentName: el.participant.department.abbreviation
+                                                }));
                         }
                     });
+                    //end region map faculty
+
+                    vm.map = data.courseFormat.courseSlots.map(function(cs){
+                        var startTime = slotTime;
+                        var returnVar = {
+                            id: cs.id,
+                            startTime: startTime,
+                            groupClass: 'grp' + count++,
+                            availableFaculty: faculty.slice(0),
+                        };
+                        var sortableOptions = {
+                            connectWith: '.' + returnVar.groupClass,
+                        };
+                        returnVar.availableFacultyOptions = angular.extend({
+                            update: updateSortable
+                        },sortableOptions);
+                        var isThisSlot = function (el) { return el.courseSlotId === cs.id; }
+                        slotTime = new Date(startTime.getTime() + cs.minutesDuration * 60000);
+                        if (cs.activity) {
+                            var assignedFaculty = [];
+                            data.courseSlotPresenters.forEach(function (csp) {
+                                if (csp.courseSlotId === cs.id) {
+                                    var indx = returnVar.availableFaculty.findIndex(function (f) {
+                                        return f.participantId === csp.participantId;
+                                    });
+                                    assignedFaculty.push(returnVar.availableFaculty[indx]);
+                                    returnVar.availableFaculty.splice(indx, 1);
+                                }
+                            });
+                            sortableOptions.update = updateSortableRepo.bind(null, {
+                                courseSlotId: cs.id,
+                                courseId: data.id
+                            }, datacontext.courseSlotPresenters);
+
+                            return angular.extend(returnVar, {
+                                name: cs.activity.name,
+                                startTime: startTime,
+                                choices: cs.activity.activityChoices,
+                                selectedChoice: (data.chosenTeachingResources.find(isThisSlot) || {}).activityTeachingResource,
+                                isSim: false,
+                                assignedFaculty: assignedFaculty,
+                                sortableOptions: sortableOptions
+                            });
+                        }
+                        //extra properties to allow duplication
+                        returnVar.availableFacultyOptions.start = startSortable;
+                        returnVar.availableFaculty.availableFaculty = true;
+
+                        var slotRoles = cs.courseScenarioFacultyRoles.filter(isThisSlot);
+                        data.courseFormat.courseType.facultySimRoles.sort(common.sortOnPropertyName('order'));
+                        return angular.extend(returnVar, {
+                            name: 'Simulation',
+                            choices: data.courseFormat.courseType.scenarios,
+                            selectedChoice: (data.courseSlotScenarios.find(isThisSlot) || {}),
+                            isSim: true,
+                            roles: data.courseFormat.courseType.facultySimRoles.map(function (fsr) {
+                                var assignedFaculty = [];
+                                slotRoles.forEach(function (sr) {
+                                    if (fsr.id === sr.facultySimRoleId) {
+                                        var findMatch = function (f) {
+                                            return f.participantId === sr.participantId;
+                                        };
+                                        var indx = returnVar.availableFaculty.findIndex(findMatch);
+                                        if (indx === -1) {
+                                            assignedFaculty.push(faculty.find(findMatch));
+                                        } else {
+                                            assignedFaculty.push(returnVar.availableFaculty[indx]);
+                                            returnVar.availableFaculty.splice(indx, 1);
+                                        }
+                                    }
+                                });
+
+                                return {
+                                    description: fsr.description,
+                                    id: fsr.id,
+                                    assignedFaculty: assignedFaculty,
+                                    sortableOptions: angular.extend({
+                                        update: updateSortableRepo.bind(null, {
+                                                courseSlotId: cs.id,
+                                                courseId: data.id,
+                                                facultySimRoleId: fsr.id
+                                            }, datacontext.courseScenarioFacultyRoles),
+                                        start: startSortable
+                                    }, sortableOptions)
+                                }
+                            })
+                        });
+                    });
                     vm.notifyViewModelPropChanged();
-                }), controllerId).then(function () {
+                }), datacontext.manequins.all().then(function (data) {
+                    vm.manequins = data;
+                })], controllerId).then(function () {
                         vm.log('Activated Course Roles View');
                 });
             });
@@ -138,44 +176,49 @@
             });
             return returnVar;
         }
-
-        function removeFaculty(item) {
-            var indx = this.indexOf(item);
-            item.entityAspect.setDeleted();
-            this.splice(indx, 1);
+        //duplicate ctrl key windows/ubuntu, option[alt] key mac, 
+        function startSortable(event, ui) {
+            if (event.ctrlKey) {
+                //ui.placeholder.css('visibility', 'visible').text('[copying]');
+                ui.item.sortable.isCopy = true;
+            }
         }
-
         function updateSortable(event, ui) {
-            // on cross list sortings recieved is not true
-            // during the first update
-            // which is fired on the source sortable
             var sortable = ui.item.sortable;
+            if (ui.sender) {
+                if (sortable.isCanceled() && sortable.droptargetModel.availableFaculty) {
+                    sortable.sourceModel.splice(sortable.index, 1);
+                }
+                return; 
+            } //sender has a value only when the receiving table. in order to cancel both sending and receiving events, cancel must be called from the sending table;
+            if (sortable.isCanceled()) { return; }
             var participantId = sortable.model.participantId;
-            sortable.cancel();
-            if (sortable.droptarget[0] === sortable.source[0] ||
-                sortable.droptargetModel.some(function (el) {
+            if (sortable.droptargetModel.some(function (el) {
                     return el.participantId === participantId
-            })) {
+            })) { //if the sender, ui.sender will be null - only cancel if the sender
+                sortable.cancel();
                 return;
             }
+            if (ui.item.sortable.isCopy) { //?? should be in stop
+                sortable.sourceModel.splice(sortable.index,0,sortable.model);
+            }
+        }
 
-            var model = sortable.droptargetModel.addFaculty(participantId);
-            angular.extend(sortable.model, calculateCourseRoles(participantId));
+        function updateSortableRepo(key, repo, event, ui) {
+            updateSortable(event, ui);
+            var sortable = ui.item.sortable;
+            if (sortable.isCanceled()) { return; }
 
-            // restore the removed item
-            //unless it has been moved out of a faculty area
-            //not necessary now calling cancel
-            //sortable.sourceModel.push(sortable.model);
+            key.participantId = sortable.model.participantId;
 
-            // clone the original model to restore the removed item is another option if wishing to keep list order the same
-            //vm.sourceScreens = originalScreens.slice();
+            if (ui.sender) { //receiving = adding 
+                repo.create(key);
+            } else { //sending = deleting
+                var ent = repo.getByKey(key);
+                ent.entityAspect.setDeleted();
+            }
 
-            //$scope.$apply(function () {
-                sortable.droptargetModel.splice(
-                  sortable.dropindex, 0,
-                  model);
-            //});
-            //options 
+            angular.extend(sortable.model, calculateCourseRoles(key.participantId));
         }
     }
 })();

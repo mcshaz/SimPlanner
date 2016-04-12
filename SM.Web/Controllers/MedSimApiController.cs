@@ -154,7 +154,9 @@ namespace SM.Web.Controllers
             {
                 Institutions = Repo.Institutions.ToList(),
                 CourseTypes = Repo.GetCourseTypes().ToList(),
-                ProfessionalRoles = Repo.ProfessionalRoles.ToList()
+                ProfessionalRoles = Repo.ProfessionalRoles.ToList(),
+                ManequinManufacturers = Repo.ManequinManufacturers.ToList(),
+                Manequins = Repo.Manequins.ToList()
             };
         }
         

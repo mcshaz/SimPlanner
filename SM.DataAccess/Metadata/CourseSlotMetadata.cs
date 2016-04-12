@@ -15,10 +15,10 @@ namespace SM.Metadata
         [Range(0,100)]
         public byte Order { get; set; }
         [Range(1, 28)]
+        [DefaultValue(1)]
         public byte Day { get; set; }
 
         internal const int MaxStreams = 16;
-
         [Range(1,MaxStreams)]
         [DefaultValue(1)]
         public byte SimultaneousStreams { get; set; }

@@ -127,7 +127,7 @@ namespace SM.Dto
                     returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)));
                 }
                 //currently allowing users to view all departmetns within their institution - but only edit thseir department
-                return returnVar.Project<Institution,InstitutionDto>(includes: new[] { "Departments.Rooms","ProfessionalRoles","Country" });
+                return returnVar.Project<Institution,InstitutionDto>(includes: new[] { "Departments.Rooms","ProfessionalRoles","Country", "Departments.Manequins" });
 
             }
         }
@@ -153,13 +153,28 @@ namespace SM.Dto
 
         public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.Project<Institution,InstitutionDto>(); } }
 
-        public IQueryable<ManequinDto> Manequins { get { return Context.Manequins.Project<Manequin,ManequinDto>(); } }
+        public IQueryable<ManequinDto> Manequins
+        {
+            get
+            {
+                IQueryable<Manequin> returnVar = Context.Manequins.Where(m => m.Department.Institution.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)));
+                return returnVar.Project<Manequin, ManequinDto>();
+            }
+        }
 
         public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.Project<ProfessionalRole,ProfessionalRoleDto>(); } }
 
         public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.Project<Scenario,ScenarioDto>(); } }
 
         public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.Project<ScenarioResource,ScenarioResourceDto>(); } }
+
+        public IQueryable<ManequinManufacturerDto> ManequinManufacturers
+        {
+            get
+            {
+                return Context.ManequinManufacturers.Project<ManequinManufacturer, ManequinManufacturerDto>(includes: new[] { "ManequinModels" });
+            }
+        }
 
         public IQueryable<CourseActivityDto> GetCourseActivities(string[] includes = null, string[] selects = null, char sepChar = '.') {
             return Context.CourseActivities.Project<CourseActivity, CourseActivityDto>(includes, selects, sepChar);

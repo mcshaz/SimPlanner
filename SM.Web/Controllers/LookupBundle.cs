@@ -15,5 +15,7 @@ namespace SM.Web.Controllers
         public IEnumerable<CourseTypeDto> CourseTypes { get; set; }
         public IEnumerable<InstitutionDto> Institutions { get; set; }
         public IEnumerable<ProfessionalRoleDto> ProfessionalRoles { get; set; }
+        public IEnumerable<ManequinManufacturerDto> ManequinManufacturers {get; set;}
+        public IEnumerable<ManequinDto> Manequins { get; set; }
     }
 }
