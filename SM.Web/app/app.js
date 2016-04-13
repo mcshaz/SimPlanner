@@ -21,7 +21,9 @@
         'breeze.angular',
         'breeze.directives',
         'tmh.dynamicLocale',
-        'ui.sortable'
+        'ui.sortable',
+        'ui.grid',
+        'ui.grid.pagination'
     ]);
 
     /*Constants regarding user login defined here*/

@@ -16,7 +16,7 @@ namespace SM.Dto
         public Guid? OutreachingDepartmentId { get; set; }
         public Guid RoomId { get; set; }
         public byte FacultyNoRequired { get; set; }
-        public Guid CourseTypeId { get; set; }
+        public Guid CourseFormatId { get; set; }
         public string ParticipantVideoFilename { get; set; }
         public string FeedbackSummaryFilename { get; set; }
 

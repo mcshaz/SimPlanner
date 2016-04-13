@@ -99,7 +99,7 @@ namespace SM.Web.Controllers
             //hack alert - currently options.applyto does not handle includes which are deeper than a null parent
             //the following hack works around this for a very specific use scenario
             //this is about as ugly as hacks get, so steel yourself before reading ahead
-            if (iso.Includes.Any(i=>i.Contains("Activity/")))
+            if (iso.Includes != null && iso.Includes.Any(i=>i.Contains("Activity/")))
             {
                 var exp = (BinaryOperatorNode)options.Filter.FilterClause.Expression;
                 System.Diagnostics.Debug.Assert(exp.OperatorKind == Microsoft.Data.OData.Query.BinaryOperatorKind.Equal);
@@ -134,6 +134,10 @@ namespace SM.Web.Controllers
                     {
                         Includes = (Includes ?? new string[0]).Concat(anyAlls).ToArray();
                     }
+                }
+                if (options.OrderBy != null)
+                {
+                    Selects = (Selects ?? new string[0]).Concat(options.OrderBy.RawValue.Split(splitter)).ToArray();
                 }
             }
             public readonly string[] Includes;

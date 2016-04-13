@@ -5,7 +5,6 @@
 
     function dashboard(common, errorhandler, datacontext, breeze, tokenStorageService, $rootScope, AUTH_EVENTS,$q,$location) {
         var log = common.logger.getLogFn(controllerId);
-        var Predicate = breeze.Predicate;
         var FilterQueryOp = breeze.FilterQueryOp;
         var vm = this;
         vm.currentUserId = null;
@@ -43,7 +42,7 @@
         function getCourses() {
             var now = new Date();
             return datacontext.courses.find({
-                where: Predicate.create('startTime', '>', now),
+                where: breeze.Predicate.create('startTime', '>', now),
                 orderBy: 'startTime',
                 take: 5,
                 expand: 'courseParticipants',

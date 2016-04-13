@@ -128,11 +128,10 @@
                     if (argObj instanceof breeze.Predicate) {
                         return query.where(argObj);
                     }
-                    ['where', 'withParameters', 'select', 'orderBy', 'skip', 'take', 'expand'].forEach(function (el) {
-                        if (argObj[el]) {
-                            query = query[el](argObj[el]);
-                        }
-                    });
+                    //['where', 'withParameters', 'select', 'orderBy', 'skip', 'take', 'expand', 'inlineCount']
+                    for(var propName in argObj) {
+                        query = query[propName](argObj[propName]);
+                    };
                     return query;
                 }
 
@@ -204,12 +203,10 @@
                     var entityKey = new breeze.EntityKey(entityType, key);
                     var query = breeze.EntityQuery.fromEntityKey(entityKey);
                     if (argObj) {
-                        ['select', 'expand'].forEach(function (el) {
-                            //TODO - check this!
-                            if (argObj[el]) {
-                                query = query[el](argObj[el]);
-                            }
-                        });
+                        //['select', 'expand'].forEach(function (el) {
+                        for (var propName in argObj) {
+                            query = query[propName](argObj[propName]);
+                        };
                     }
                     return query;
                 }
@@ -218,6 +215,7 @@
                     return manager
                         .executeQuery(query.using(fetchStrategy || breeze.FetchStrategy.FromServer))
                         .then(function (data) {
+                            if (data.inlineCount) { data.results.inlineCount = data.inlineCount; }
                             return data.results;
                         }, log.error );
                 }

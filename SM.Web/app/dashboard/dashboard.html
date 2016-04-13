@@ -121,7 +121,7 @@
                                         <th>Department</th>
                                         <th>Location</th>
                                         <th>Involving You</th>
-                                        <th></th>
+                                        <td><small class="small">edit</small></td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -134,7 +134,7 @@
                                             </a>
                                         </td>
                                         <td><input type="checkbox" disabled="disabled" data-ng-checked="c.includesUser(vm.currentUserId)" /></td>
-                                        <td><a ng-href="#course/{{c.id}}" class="btn-link">Edit</a></td>
+                                        <td><a ng-href="#course/{{c.id}}" class="btn-link"><i class="fa fa-edit"></i></a></td>
                                     </tr>
                                 </tbody>
                                 <tfoot data-ng-if="!vm.upcomingCourses.length">

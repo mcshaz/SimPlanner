@@ -107,7 +107,7 @@ namespace SM.Dto
             modelBuilder.Entity<CourseFormatDto>()
                 .HasMany(e => e.Courses)
                 .WithRequired(e => e.CourseFormat)
-                .HasForeignKey(e => e.CourseTypeId)
+                .HasForeignKey(e => e.CourseFormatId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseSlotDto>()

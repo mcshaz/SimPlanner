@@ -19,7 +19,7 @@ namespace SM.Dto.Maps
                 FacultyNoRequired = m.FacultyNoRequired,
                 ParticipantVideoFilename = m.ParticipantVideoFilename,
                 FeedbackSummaryFilename = m.FeedbackSummaryFilename,
-                CourseTypeId = m.CourseTypeId,
+                CourseFormatId = m.CourseFormatId,
                 RoomId = m.RoomId
             };
         }
@@ -41,7 +41,7 @@ namespace SM.Dto.Maps
                 FacultyNoRequired = m.FacultyNoRequired,
                 ParticipantVideoFilename = m.ParticipantVideoFilename,
                 FeedbackSummaryFilename = m.FeedbackSummaryFilename,
-                CourseTypeId = m.CourseTypeId,
+                CourseFormatId = m.CourseFormatId,
                 RoomId = m.RoomId
             };
             //Department = m.Department,

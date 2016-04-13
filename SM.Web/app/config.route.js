@@ -65,6 +65,19 @@
                     }
                 }
             }, {
+                url: '/all-courses',
+                config: {
+                    title: 'all courses',
+                    templateUrl: 'app/course/courses.html',
+                    settings: {
+                        nav: 4,
+                        content: 'All Courses' //<i class="fa fa-"></i> 
+                    },
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
                 url: '/courseRoles/:id',
                 config: {
                     title: 'course',
@@ -79,7 +92,7 @@
                     title: 'Course Types',
                     templateUrl: 'app/courseTypes/courseTypes.html',
                     settings: {
-                        nav: 4,
+                        nav: 5,
                         content: 'Course Types' //<i class="fa fa-"></i> 
                     },
                     access: {

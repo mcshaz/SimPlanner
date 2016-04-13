@@ -42,16 +42,20 @@ namespace SM.Web.Models
                 var userStore = new CustomUserStore(context);
                 var userManager = new ApplicationUserManager(userStore);
 
-                var user = context.Users.FirstOrDefault(u=>u.Email=="brentm@adhb.govt.nz");
-                var result = userManager.AddPassword(userId: user.Id, password: "Admin_1");
-                if (result.Succeeded)
+                foreach(string userName in new[] { "brentm@adhb.govt.nz" , "denishk@adhb.govt.nz" })
                 {
-                    userManager.AddToRole(user.Id, RoleConstants.AccessAllData);
+                    var user = context.Users.FirstOrDefault(u => u.Email == userName);
+                    var result = userManager.AddPassword(userId: user.Id, password: "Admin_1");
+                    if (result.Succeeded)
+                    {
+                        userManager.AddToRole(user.Id, RoleConstants.AccessAllData);
+                    }
+                    else
+                    {
+                        throw new DbSeedException(result.Errors);
+                    }
                 }
-                else
-                {
-                    throw new DbSeedException(result.Errors);
-                }
+
             }
 
 
