@@ -365,9 +365,9 @@
     <Content Include="Content\ui-grid.woff" />
     <Content Include="Content\ui-grid.ttf" />
     <Content Include="Content\ui-grid.eot" />
-    <None Include="Scripts\jquery-2.2.2.intellisense.js" />
-    <Content Include="Scripts\jquery-2.2.2.js" />
-    <Content Include="Scripts\jquery-2.2.2.min.js" />
+    <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\jquery-2.2.3.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jQueryUi\jquery-ui.js" />
     <Content Include="Scripts\jQueryUi\jquery-ui.min.js" />
     <Content Include="Scripts\JSON.decycle.js" />
@@ -429,7 +429,7 @@
     <Content Include="Content\angular-motion.min.css.map" />
     <Content Include="Scripts\angular-strap\angular-strap.min.js.map" />
     <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.min.js.map" />
-    <Content Include="Scripts\jquery-2.2.2.min.map" />
+    <Content Include="Scripts\jquery-2.2.3.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
