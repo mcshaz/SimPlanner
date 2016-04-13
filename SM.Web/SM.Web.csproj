@@ -243,6 +243,8 @@
     <Content Include="app\courseFormat\courseFormat.js" />
     <Content Include="app\courseParticipant\courseParticipant.html" />
     <Content Include="app\courseParticipant\courseParticipant.js" />
+    <Content Include="app\course\courses.html" />
+    <Content Include="app\course\courses.js" />
     <Content Include="app\course\courseRoles.html" />
     <Content Include="app\course\courseRoles.js" />
     <Content Include="app\course\course.html" />
@@ -288,6 +290,9 @@
     <Content Include="Content\styles.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
+    <Content Include="Content\ui-grid.css" />
+    <Content Include="Content\ui-grid.min.css" />
+    <Content Include="Content\ui-grid.svg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -357,6 +362,9 @@
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
     <Content Include="Scripts\angular-local-storage.min.js.map" />
+    <Content Include="Content\ui-grid.woff" />
+    <Content Include="Content\ui-grid.ttf" />
+    <Content Include="Content\ui-grid.eot" />
     <None Include="Scripts\jquery-2.2.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.2.js" />
     <Content Include="Scripts\jquery-2.2.2.min.js" />
@@ -374,10 +382,11 @@
     <Content Include="Scripts\spin.min.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Scripts\ui-grid.js" />
+    <Content Include="Scripts\ui-grid.min.js" />
     <Content Include="Scripts\ui-sortable.js" />
     <Content Include="sink.html" />
     <Content Include="app\services\controller.abstract.js" />
-    <Content Include="app\services\repository\repository.participant.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -429,6 +438,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\manequin\" />
+    <Folder Include="app\scenario\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
