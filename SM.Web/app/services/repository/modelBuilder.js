@@ -82,7 +82,7 @@
                     enumerable: true,
                     configurable: true,
                     get: function () {
-                        return this.courseType.abbrev + ' - ' + this.description;
+                        return this.courseType.abbreviation + ' - ' + this.description;
                     }
                 });
             };

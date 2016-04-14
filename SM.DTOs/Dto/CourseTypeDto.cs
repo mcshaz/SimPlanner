@@ -13,11 +13,13 @@ namespace SM.Dto
 
         public string Description { get; set; }
 
-        public string Abbrev { get; set; }
-
-        public bool IsInstructorCourse { get; set; }
+        public string Abbreviation { get; set; }
 
         public Emersion? EmersionCategory { get; set; }
+
+        public Guid? InstructorCourseId { get; set; }
+
+        public virtual CourseTypeDto InstructorCourse { get; set; }
 
         public ICollection<CourseActivityDto> CourseActivities { get; set; }
 

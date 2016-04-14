@@ -149,6 +149,11 @@ namespace SM.Dto
 
         public IQueryable<DepartmentDto> Departments { get { return Context.Departments.Project<Department,DepartmentDto>(); } }
 
+        public IQueryable<CourseTypeDto> GetCourseTypes(string[] includes, string[] selects, char sepChar)
+        {
+            return Context.CourseTypes.Project<CourseType, CourseTypeDto>(includes, selects, sepChar);
+        }
+
         public IQueryable<FacultySimRoleDto> SenarioRoles { get { return Context.FacultySimRoles.Project<FacultySimRole,FacultySimRoleDto>(); } }
 
         public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.Project<Institution,InstitutionDto>(); } }

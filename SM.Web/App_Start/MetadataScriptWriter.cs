@@ -27,13 +27,17 @@ namespace SM.Web.App_Start
                     "(function(){" +
                     "	window.medsimMetadata = {\r\n" +
                     "		getBreezeMetadata: getBreezeMetadata,\r\n" +
-                    "		getBreezeValidators: getBreezeValidators\r\n" +
+                    "		getBreezeValidators: getBreezeValidators,\r\n" +
+                    "       getEnums: getEnums\r\n" +
                     "	}\r\n" +
                     "	function getBreezeMetadata(){\r\n" +
                     "		return JSON.stringify("+ metadata.Breeze + ");\r\n" +
                     "	}\r\n" +
                     "	function getBreezeValidators(){\r\n" +
                     "		return "+ metadata.RequiredNavProperties + ";\r\n" +
+                    "	}\r\n" +
+                    "	function getEnums(){\r\n" +
+                    "		return " + MedSimDtoMetadata.GetEnums() + ";\r\n" +
                     "	}\r\n" +
                     "})();\r\n"
                     );

@@ -17,6 +17,8 @@ namespace SM.Metadata
         [Range(1, 28)]
         [DefaultValue(1)]
         public byte Day { get; set; }
+        [DefaultValue(true)]
+        public bool IsActive { get; set; }
 
         internal const int MaxStreams = 16;
         [Range(1,MaxStreams)]

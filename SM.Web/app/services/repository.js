@@ -39,8 +39,8 @@
                 self.findServerIfCacheEmpty = function() {
                     var query = createQuery.apply(null,arguments);
                     var entities = executeCacheQuery(query);
+                    entities = filterWithParameters(entities, query.parameters);
                     if (entities.length) {
-                        
                         return $q.when(entities);
                     }
                     return executeQuery(query);
@@ -159,6 +159,30 @@
                     }
                     return executeQuery(query).then(function (data) {
                         return data?data[0]:undefined;
+                    });
+                }
+
+                function filterWithParameters(entities, withParameters) {
+                    if (!withParameters || common.isEmptyObject(withParameters)) { return entities; }
+                    var propName;
+                    for (propName in withParameters) {
+                        if (entityType.dataProperties.every(function (el) { return el.name !== propName})) {
+                            throw new Error('undefined property ' + propName + ' on entity type ' + entityType.shortName);
+                        }
+                    }
+                    return entities.filter(function(ent){
+                        for (propName in withParameters) {
+                            var compare = withParameters[propName];
+                            var entVal = ent[propName];
+                            if (Array.isArray(compare)) {
+                                if (compare.every(function (el) { return el !== entVal; })) {
+                                    return false;
+                                }
+                            } else if (compare !== entVal) {
+                                return false;
+                            }
+                        }
+                        return true;
                     });
                 }
 

@@ -90,7 +90,7 @@
                 url: '/courseTypes',
                 config: {
                     title: 'Course Types',
-                    templateUrl: 'app/courseTypes/courseTypes.html',
+                    templateUrl: 'app/courseType/courseTypes.html',
                     settings: {
                         nav: 5,
                         content: 'Course Types' //<i class="fa fa-"></i> 
@@ -100,12 +100,12 @@
                     }
                 }
             }, {
-                url: '/courseFormat/:id',
+                url: '/courseType/:id',
                 config: {
-                    title: 'Course Format',
-                    templateUrl: 'app/courseFormat/courseFormat.html',
+                    title: 'Course Type',
+                    templateUrl: 'app/courseType/courseType.html',
                     settings: {
-                        content: 'Course Format' //<i class="fa fa-"></i> 
+                        content: 'Course Type' //<i class="fa fa-"></i> 
                     },
                     access: {
                         allowedRoles: userRoles.all

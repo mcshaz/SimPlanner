@@ -1,6 +1,7 @@
 ﻿using Jint;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SM.DataAccess.Enums;
 using SM.Dto.Utilities;
 using SM.Metadata;
 using SM.Metadata.CustomValidators;
@@ -20,6 +21,7 @@ namespace SM.Dto
         public string Breeze { get; set; }
         public string RequiredNavProperties { get; set; }
     }
+
     public static class MedSimDtoMetadata
     {
         const string breezeJsPath = @"C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\Scripts\breeze.min.js";
@@ -233,6 +235,15 @@ namespace SM.Dto
                 }
             }
 
+        }
+
+        public static string GetEnums()
+        {
+            var returnVar = new Dictionary<string, IEnumerable<string>>();
+            foreach (var t in new[] { typeof(Emersion), typeof(Difficulty), typeof(ProfessionalCategory)}){
+                returnVar.Add(char.ToLower(t.Name[0]) + t.Name.Substring(1), Enum.GetNames(t));
+            }
+            return JsonConvert.SerializeObject(returnVar);
         }
     }
 }

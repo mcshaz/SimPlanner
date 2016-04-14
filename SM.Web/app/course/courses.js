@@ -111,7 +111,7 @@
                 orderBy = sortColumns.map(function (el) {
                     var dir = el.sort.direction === "desc" ? " desc" : "";
                     if (el.colDef.field === "courseFormat.typeFormatDescriptor") {
-                        return "courseFormat.courseType.abbrev" + dir + "," +
+                        return "courseFormat.courseType.abbreviation" + dir + "," +
                             "courseFormat.description" + dir;
                     }
                     return el.colDef.field + dir;

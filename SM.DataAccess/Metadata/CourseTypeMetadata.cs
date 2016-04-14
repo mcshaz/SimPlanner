@@ -14,6 +14,6 @@ namespace SM.Metadata
         public string Description { get; set; }
         [Required]
         [StringLength(32)]
-        public string Abbrev { get; set; }
+        public string Abbreviation { get; set; }
     }
 }

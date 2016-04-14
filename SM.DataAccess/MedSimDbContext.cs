@@ -172,6 +172,12 @@ namespace SM.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseType>()
+                .HasOptional(e => e.InstructorCourse)
+                .WithMany()
+                .HasForeignKey(e => e.InstructorCourseId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseType>()
                 .HasMany(e => e.FacultySimRoles)
                 .WithRequired(e => e.CourseType)
                 .HasForeignKey(e=>e.CourseTypeId)

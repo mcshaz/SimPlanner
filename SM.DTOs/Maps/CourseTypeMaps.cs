@@ -11,9 +11,9 @@ namespace SM.Dto.Maps
             return m => new CourseType
             {
                 Id = m.Id,
-                Abbrev = m.Abbrev,
+                Abbreviation = m.Abbreviation,
                 Description = m.Description,
-                IsInstructorCourse = m.IsInstructorCourse, 
+                InstructorCourseId = m.InstructorCourseId, 
                 EmersionCategory = m.EmersionCategory, 
             };
         }
@@ -24,9 +24,9 @@ namespace SM.Dto.Maps
             return m => new CourseTypeDto
             {
                 Id = m.Id,
-                Abbrev = m.Abbrev,
+                Abbreviation = m.Abbreviation,
                 Description = m.Description,
-                IsInstructorCourse = m.IsInstructorCourse,
+                InstructorCourseId = m.InstructorCourseId,
                 EmersionCategory = m.EmersionCategory,
                 //Departments = m.Departments,
 

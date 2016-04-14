@@ -27,10 +27,10 @@
                                    ng-model-options="{ debounce: 200 }" autocomplete="off"
                                    uib-typeahead="p.fullName as p.label for p in cp.getPeople($viewValue)"
                                    typeahead-focus-first="false" typeahead-on-select="cp.onParticipantSelected($item)"
-                                   typeahead-loading="loadingPeople" typeahead-no-results="cp.noResults"
+                                   typeahead-loading="cp.loadingPeople" typeahead-no-results="cp.noResults"
                                    typeahead-select-on-blur="true" data-z-validate /> <!--typeahead-show-hint="true" is off for now as will have to fiddle with the left ?margin/padding ?tt-typeahed class? in the error state-->
-                            <i ng-show="loadingPeople" class="glyphicon glyphicon-refresh"></i>
-                            <div ng-show="noResults">
+                            <i ng-show="cp.loadingPeople" class="glyphicon glyphicon-refresh"></i>
+                            <div ng-show="cp.noResults">
                                 <i class="glyphicon glyphicon-remove"></i> No Existing Participants
                             </div>
                             <span class="text-danger" />

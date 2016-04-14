@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,5 +25,8 @@ namespace SM.Metadata
 
         [Column(TypeName = "date")]
         public DateTime? DecommissionDate { get; set; }
+
+        [DefaultValue(true)]
+        public bool PurchasedNew { get; set; }
     }
 }

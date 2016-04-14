@@ -1,0 +1,12 @@
+﻿<section id="dashboard-view" class="mainbar" ng-controller="courseTypes as vm">
+    <section class="matter">
+        <div class="container">
+            <a class="btn-link" href="#/courseType/new"><i class="fa fa-plus"></i> New Course Type</a>
+            <ul>
+                <li ng-repeat="cf in vm.courseFormats track by cf.id">
+                    {{cf.courseType.description + ' ' + cf.description}} <a class="btn-link" ng-href="#/courseType/{{cf.courseType.id}}?formatId={{cf.id}}"><i class="fa fa-edit"></i></a>
+                </li>
+            </ul>
+        </div>
+    </section>
+</section>

@@ -38,6 +38,7 @@
             activateController: activateController,
             createSearchThrottle: createSearchThrottle,
             debouncedThrottle: debouncedThrottle,
+            getEnumValues: window.medsimMetadata.getEnums,
             getRoleIcon: getRoleIcon,
             isEmptyObject: isEmptyObject,
             isNumber: isNumber,

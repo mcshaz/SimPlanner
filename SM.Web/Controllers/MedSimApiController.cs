@@ -145,10 +145,11 @@ namespace SM.Web.Controllers
             public const char Seperator = '/';
             const char splitter = ',';
         }
-        [HttpGet]
-		public IQueryable<CourseTypeDto> CourseTypes()
+        [HttpGet, EnableBreezeQuery]
+        public IQueryable<CourseTypeDto> CourseTypes(ODataQueryOptions options)
         {
-            return Repo.GetCourseTypes();
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetCourseTypes(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
 
         [HttpGet]
