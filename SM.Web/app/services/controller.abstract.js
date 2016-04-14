@@ -197,7 +197,7 @@
                 isSaving = true;
 
                 return datacontext.save().finally(function() {
-                    isSaving = false;
+                    isEntityStateChanged = isSaving = false;
                 });
             }
 
