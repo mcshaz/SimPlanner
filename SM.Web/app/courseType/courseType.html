@@ -73,23 +73,23 @@
 
                                         </div>
                                     </div>
-                                    <button type="button" class="btn-link" ng-click="vm.createSlot(cf)">
-                                        <i class="fa fa-plus"></i> Activity
-                                    </button>
                                     <fieldset>
                                         <!--ng-disabled="!cf.selectedSlot"-->
                                         <table class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
                                                     <td class="small">(drag)</td>
-                                                    <th>Activity</th>
+                                                    <th>Activities (<button type="button" class="btn-link" ng-click="vm.createSlot(cf)">
+                                                            <i class="fa fa-plus"></i> New Activity
+                                                        </button>)
+                                                    </th>
                                                     <th>Minutes</th>
                                                     <th>Streams</th>
                                                     <td></td>
                                                 </tr>
                                             </thead>
                                             <tbody ui-sortable="cf.sortableOptions" ng-model="cf.courseSlots">
-                                                <tr ng-repeat="cs in cf.courseSlots | filter: {isActive: true} track by cs.id">
+                                                <tr ng-repeat="cs in cf.courseSlots | filter: {isActive: true} track by cs.id" ng-class="cs===cf.selectedSlot?'warning':''">
                                                     <td class="handle">
                                                         :::
                                                     </td>
@@ -115,7 +115,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr ng-if="!cf.courseSlots.length">
-                                                    <td colspan="5">please click the <i class="fa fa-plus"></i> Activity above to add an activity</td>
+                                                    <td colspan="5">please click the <i class="fa fa-plus"></i> Add Activity above to add an activity</td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
@@ -130,10 +130,10 @@
                                                     <td class="form-group">
                                                         <input class="form-control simulation" type="text" ng-show="cf.selectedSlot.isScenario" value="Simulation" disabled="disabled">
                                                         <div ng-hide="cf.selectedSlot.isScenario">
-                                                            <input ng-hide="cf.selectedSlot.isNew"  class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name" />
-                                                            <input ng-show="cf.selectedSlot.isNew" class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name"
+                                                            <input ng-hide="cf.selectedSlot.entityAspect.entityState.isAdded()"  class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name" />
+                                                            <input ng-show="cf.selectedSlot.entityAspect.entityState.isAdded()" class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name"
                                                                     autocomplete="off" ng-disabled="!cf.selectedSlot"
-                                                                    uib-typeahead="ca as ca.name for ca in vm.getCourseActivityNames($viewValue)"
+                                                                    uib-typeahead="ca for ca in vm.getCourseActivityNames($viewValue)"
                                                                     typeahead-focus-first="false" typeahead-on-select="vm.activitySelected($item, cf.selectedSlot)"
                                                                     typeahead-no-results="cf.noResults"
                                                                     typeahead-select-on-blur="true" data-z-validate /> <!--typeahead-show-hint="true" is off for now as will have to fiddle with the left ?margin/padding ?tt-typeahed class? in the error state-->

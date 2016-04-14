@@ -47,7 +47,7 @@
                 })];
                 if (isNew) {
                     vm.course = datacontext.courses.create();
-                    vm.notifyViewModelPropChanged();
+                    vm.notifyViewModelLoaded();
                 }else{
                     promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant'}).then(function (data) {
                         if (!data) {
@@ -56,7 +56,7 @@
                             //gotoCourses();
                         }
                         vm.course = data;
-                        vm.notifyViewModelPropChanged();
+                        vm.notifyViewModelLoaded();
                     }));
                 }
                 common.activateController(promises, controllerId)

@@ -18,9 +18,11 @@
         function activate() {
             datacontext.ready().then(function () {
                 common.activateController([
-                    datacontext.courseFormats.findServerIfCacheEmpty().then(function (data) {
-                        vm.courseFormats = data;
-                        vm.courseFormats.sort(common.sortOnChildPropertyName('courseType','description'));
+                    datacontext.courseTypes.all().then(function (data) {
+                        data.sort(common.sortOnPropertyName('description'));
+                        vm.courseFormats = data.reduce(function (prev, cur) {
+                            return prev.concat(cur.courseFormats);
+                        }, []);
                     })], controllerId)
             });
         }

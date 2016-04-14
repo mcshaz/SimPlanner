@@ -36,7 +36,7 @@
                     : [ent.loadNavigationProperty('activityChoices')];
                 common.activateController(promises, controllerId)
                     .then(function () {
-                        vm.notifyViewModelPropChanged();
+                        vm.notifyViewModelLoaded();
                         vm.log('Activated Activity Resources Dialog');
                     });
             });

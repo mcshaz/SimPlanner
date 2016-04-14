@@ -31,7 +31,7 @@
         vm.participant = vm.isNew
             ? datacontext.participants.create(breeze.EntityState.Detached)
             : $scope.courseParticipant.participant;
-        vm.notifyViewModelPropChanged();
+        vm.notifyViewModelLoaded();
 
         vm.onParticipantSelected = onParticipantSelected;
         vm.professionalRoles = [];
@@ -78,7 +78,7 @@
 
             function afterSave() {
                 vm.participant = datacontext.participants.create(breeze.EntityState.Detached);
-                vm.notifyViewModelPropChanged();
+                vm.notifyViewModelLoaded();
                 _lastLookup = _lastVal = null;
             }
         }
@@ -151,7 +151,7 @@
         function onParticipantSelected(item) {
             datacontext.participants.fetchByKey(item.id).then(function (part) {
                 vm.participant = part;
-                vm.notifyViewModelPropChanged();
+                vm.notifyViewModelLoaded();
             });
         }
 

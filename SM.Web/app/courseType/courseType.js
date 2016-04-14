@@ -12,8 +12,9 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseActivities'],
-            $scope: $scope
+            watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseSlots', 'courseType.courseFormats.courseSlots.activity'],
+            $scope: $scope,
+            $watchers: [$scope.$on('$destroy',removeSelectedSlots)]
         })
         var id = $routeParams.id;
         var isNew = id === 'new';
@@ -24,13 +25,13 @@
         vm.courseType = {};
 
         vm.createSlot = createSlot;
+        vm.getCourseActivityNames = getCourseActivityNames;
         vm.removeSlot = removeSlot;
         vm.instructorCourses = [];
         vm.isScenarioChanged = isScenarioChanged;
         vm.editSlot = editSlot;
         vm.editChoices = editChoices;
         vm.emersionCategories = common.getEnumValues().emersion;
-        vm.selectedSlot = null;
         var baseSave = vm.save;
         vm.save = saveOverride;
         vm.title = 'Course Format';
@@ -59,7 +60,7 @@
                 if (isNew) {
                     vm.courseType = datacontext.courseTypes.create();
                     datacontext.courseFormats.create({ courseType: vm.courseType });
-                    vm.notifyViewModelPropChanged();
+                    vm.notifyViewModelLoaded();
                 } else {
                     //promises.push(datacontext.courseTypes.fetchByKey(id, { expand: 'courseFormats.courseSlots' }).then(function (data) { - if the courseFormats were not already loaded from the server
                     vm.courseType = datacontext.courseTypes.getByKey(id);
@@ -80,7 +81,7 @@
                             return el.id === $routeParams.formatId;
                         });
 
-                        vm.notifyViewModelPropChanged();
+                        vm.notifyViewModelLoaded();
                     }));
                 }
                 common.activateController(promises, controllerId)
@@ -94,79 +95,65 @@
         //-altering the name of a slot - don't allow reassignment of activity, as course participants etc will be all mucked up
         //-only show typeahead if a new slot (otherwise simple input)
         //-if a new slot/activity and activity selected, delete new activity, replace with selected
-        function activitySelected(activity) {
-            removeActivity();
-            if (!activity.courseSlots.length) {
-                activity.isActive = true;
-            }
-            
-            /*
-            vm.selectedSlot.activity = datacontext.courseActivities.findInCache({
-                withParameters: {
-                    name: activityName,
-                    courseTypeId: vm.courseFormat.courseTypeId
-                }
-            })[0];
-            */
+        function activitySelected(activityName, slot) {
+            removeActivity(slot);
+            slot.activity = vm.courseType.courseActivities.find(function (el) {
+                return el.name === activityName;
+            });
+            reinstateInactive(slot.courseFormat);
         }
 
-        function createActivity() {
-            vm.selectedSlot.activity = datacontext.courseActivities.create({
+        function createActivity(slot) {
+            slot.activity = datacontext.courseActivities.create({
                 courseTypeId: vm.courseType.Id
             });
         }
 
-        function removeActivity() {
-            var ca = vm.selectedSlot.activity
+        function removeSelectedSlots() {
+            if (vm.courseType) {
+                vm.courseType.courseFormats.forEach(function (el) {
+                    delete el.selectedSlot;
+                });
+            }
+        }
+
+        function removeActivity(slot) {
+            var ca = slot.activity
             if (ca && ca.entityAspect.entityState.isAdded()) {
                 ca.entityAspect.setDeleted();
             }
-            vm.selectedSlot.activity = null;
+            slot.activity = null;
         }
 
         function getCourseActivityNames(name) {
             name = name.toLowerCase();
-            var returnVar = [];
+            var returnVar =[];
             if (vm.courseType.courseActivities) {
                 vm.courseType.courseActivities.forEach(function (el) {
                     if (el.name.toLowerCase().indexOf(name) !== -1) {
                         returnVar.push(el.name);
-                    }
-                });
+                }
+            });
             }
             return returnVar;
         }
 
         function saveOverride($event) {
             //vm.log.debug($event);
-            baseSave().then(function () {
-                vm.selectedSlot = null;
-            });
+            baseSave().then(removeSelectedSlots);
         }//;
 
-        function updateCourseActivities() {
-            if (vm.selectedSlot) {
-                //rerun query in case we have just changed or edited
-                var activities = datacontext.courseActivities.findInCache(courseActivitiesPredicate);
-                mapCourseActivities(activities);
-            }
-        }
-
         function createSlot(courseFormat) {
-            updateCourseActivities();
             courseFormat.selectedSlot = datacontext.courseSlots.create({
                 courseFormatId: courseFormat.id,
-                order: (courseFormat.courseActivities || []).length,
-                isActive: true
+                order: (courseFormat.courseActivities ||[]).length
             });
-            courseFormat.selectedSlot.isScenario = false;
-            createActivity();
+            createActivity(courseFormat.selectedSlot);
         }
 
         function removeSlot(courseSlot) {
-            if (courseSlot.courseActivity && courseSlot.courseActivity.entityAspect.entityState.isAdded()) {
-                courseSlot.courseActivity.entityAspect.setDeleted();
-            }
+            removeActivity(courseSlot);
+            delete courseSlot.courseFormat.selectedSlot;
             if (courseSlot.entityAspect.entityState.isAdded()) {
                 courseSlot.entityAspect.setDeleted();
             } else {
@@ -174,50 +161,66 @@
             }
         }
 
-        function editChoices() {
+        function editChoices(slot) {
             var modal = getModalInstance();
-            modal.$scope.courseActivity = vm.selectedSlot.activity;
+            modal.$scope.courseActivity = slot.activity;
             modal.$promise.then(modal.show);
         }
 
         function editSlot(courseSlot) {
-            updateCourseActivities();
-            courseSlot.isScenario = courseSlot.activity === null;
+            courseSlot.courseFormat.selectedSlot = courseSlot;
+            courseSlot.isScenario = !courseSlot.activity;
         }
 
-        function isScenarioChanged() {
-            if (vm.selectedSlot.isScenario) {
-                removeActivity();
+        function isScenarioChanged(slot) {
+            if (slot.isScenario) {
+                removeActivity(slot);
+                reinstateInactive(slot.courseFormat);
             } else {
-                createActivity();
+                createActivity(slot);
+            }
+        }
+
+        function reinstateInactive(courseFormat) {
+            var selectedSlot = courseFormat.selectedSlot;
+            if (!selectedSlot.entityAspect.entityState.isAdded()) {
+                return;
+            }
+            var emptyScenarioSlot = courseFormat.courseSlots.some(function (el) {
+                return !el.isActive && el !== selectedSlot && el.activity === selectedSlot.activity
+            });
+            if (emptyScenarioSlot) { 
+                selectedSlot.setDeleted();
+                courseFormat.selectedSlot = emptyScenarioSlot;
+                courseFormat.selectedSlot.isActive = true;
             }
         }
 
         var _modalInstance;
-        function getModalInstance() {
-            if (!_modalInstance) {
-                var scope = $scope.$new();
-                _modalInstance = $aside({
-                    templateUrl: 'app/activityResources/activityResource.html',
-                    controller: 'activityResource',
-                    show: false,
-                    id: 'cpModal',
-                    placement: 'left',
-                    animation: 'am-slide-left',
-                    scope: scope,
-                    controllerAs:'ar'
+            function getModalInstance() {
+                if (!_modalInstance) {
+                    var scope = $scope.$new();
+                    _modalInstance = $aside({
+                            templateUrl: 'app/activityResources/activityResource.html',
+                            controller: 'activityResource',
+                        show: false,
+                        id: 'cpModal',
+                        placement: 'left',
+                            animation: 'am-slide-left',
+                        scope: scope,
+                        controllerAs: 'ar'
 
-                });
-                scope.asideInstance = _modalInstance;
+            });
+            scope.asideInstance = _modalInstance;
             }
-            return _modalInstance;
+                return _modalInstance;
         }
 
         function clone(cf) {
             var newFormat = datacontext.cloneItem(cf, ['courseSlots']);
             newFormat.description += " - copy";
             //?notify I believe not but test
-            activeFormatIndex = vm.courseType.courseFormats.length - 1;
+            activeFormatIndex = vm.courseType.courseFormats.length -1;
         }
     }
 })();

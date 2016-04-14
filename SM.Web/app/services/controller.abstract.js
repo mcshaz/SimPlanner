@@ -19,7 +19,7 @@
             var unwatchers = [$on('$destroy', removeListeners)];
             var breezeWatcher;
             var isEntityStateChanged;
-            var hasValidationErrors;
+            var errorEntities = [];
             var isSaving = false;
 
             var watchedEntityNames;
@@ -39,40 +39,65 @@
                 unwatchers.push($on('$routeChangeStart', beforeRouteChange));
             }
 
-            if (argObj.$watches) {unwatchers = unwatchers.concat(argObj.$watches);}
+            if (argObj.$watchers) {unwatchers = unwatchers.concat(argObj.$watchers);}
             $window.addEventListener("beforeunload", beforeUnload);
 
             vm.log = common.logger.getLogFn(argObj.controllerId);
             vm.disableSave = disableSave;
-            vm.notifyViewModelPropChanged = notifyViewModelPropChanged;
+            vm.notifyViewModelLoaded = notifyViewModelLoaded;
             vm.save = save;
 
-            function getWatched() {
-                if (!watchedEntityNames){
-                    return manager.getEntities(undefined, [breeze.EntityState.Modified, breeze.EntityState.Added, breeze.EntityState.Deleted]);
+            var _watched;
+            function getWatched(force) {
+                if (!watchedEntityNames) {
+                    return manager.getEntities();
                 }
-                var returnVar = [];
-                watchedEntityNames.forEach(function (el) {
-                    var ent = vm[el[0]]; //todo if required allow for array of array
-                    for (var i = 1; i < el.length; i++) {
-                        if (!ent) { break; }
-                        ent = ent[el[i]];
-                    }
-                    if (ent) {
-                        if (ent.entityAspect) {
-                            returnVar.push(ent);
-                        } else if (ent.length && ent[0].entityAspect) {
-                            returnVar = returnVar.concat(ent);
+                if (!_watched || force) {
+                    _watched = [];
+                    watchedEntityNames.forEach(function (wen) {
+                        var ent = vm[wen[0]];
+                        var currentLevel;
+                        if (Array.isArray(ent)) {
+                            ent = ent.filter(filterEnts);
+                        } else {
+                            if (!filterEnts(ent)) { return; }
+                            ent = [ent];
                         }
-                    }
-                });
-                return returnVar;
+
+                        for (var i = 1; i < wen.length; i++) {
+                            currentLevel = [];
+                            ent.forEach(function (el) {
+                                var child = el[wen[i]];
+                                if (typeof child === 'undefined') {
+                                    throw new Error('watched entity child is undefined - ' + wen[i] + ' (' + wen.join(',') + ') entity ' +
+                                        el.entityType.shortName + ' [available options =(' + el.entityType.navigationProperties.map(function (dp) { return dp.name }).join(',') + ')]');
+                                }
+                                if (Array.isArray(child)) {
+                                    currentLevel = currentLevel.concat(child);
+                                } else if (child && filterEnts(child)) {
+                                    currentLevel.push(child);
+                                }
+                            });
+                            ent = currentLevel;
+                        }
+
+                        _watched = _watched.concat(ent);
+                    });
+                }
+                return _watched;
             }
 
-            function notifyViewModelPropChanged() {
-                var watched = getWatched();
+
+            function filterEnts(ent) {
+                return ent && ent.entityAspect;
+            }
+
+            function filterHasValidationErrors(el) { return el.entityAspect.hasValidationErrors; }
+
+            function notifyViewModelLoaded() {
+                var watched = getWatched(true);
                 isEntityStateChanged = watched.some(isUserChanged);
-                hasValidationErrors = isEntityStateChanged && watched.some(function (el) { return el.entityAspect.hasValidationErrors; });
+                errorEntities = watched.filter(filterHasValidationErrors);
                 //binding the watcher here as no point binding earlier - propertychanged will fire for every property as the entity is being hydrated
                 if (!breezeWatcher) {
                     breezeWatcher = manager.entityChanged.subscribe(entityChanged);
@@ -83,20 +108,32 @@
                 var ent = changeArgs.entity;
                 //note, when creating entities, this will be called before the entity has been assigned to the viewmodel property.
                 //this can probaby be used to advantage
-                if (watchedEntityNames && getWatched().indexOf(ent)===-1){
-                    return;
-                }
+                //console.log(changeArgs.entityAction.name + '\t-\t' + ent.entityType.shortName + '\t-\t' + ent.entityAspect.entityState.name);
                 switch (changeArgs.entityAction) {
                     case breeze.EntityAction.EntityStateChange:
-                        isEntityStateChanged |= isUserChanged(ent);
+                        if (getWatched().indexOf(ent) !== -1) {
+                            isEntityStateChanged |= isUserChanged(ent);
+                        }
                         break;
                     case breeze.EntityAction.PropertyChange:
-                        hasValidationErrors |= (ent.entityAspect.entityState !== breeze.EntityState.Deleted && ent.entityAspect.hasValidationErrors);
+                        var indx = errorEntities.indexOf(ent);
+                        if (ent.entityAspect.entityState !== breeze.EntityState.Deleted  && ent.entityAspect.hasValidationErrors) { //?detached
+                            if (indx === -1 && getWatched().indexOf(ent) !== -1) {
+                                errorEntities.push(ent);
+                            }
+   
+                        } else {
+                            if (indx !== -1) {
+                                errorEntities.splice(indx, 1);
+                            }
+                        }
                         break;
-                    case breeze.EntityAction.MergeOnSave:
+                    case breeze.EntityAction.Attach:
                     case breeze.EntityAction.Detach:
-                        notifyViewModelPropChanged();
+                        notifyViewModelLoaded();
                         break;
+                    //default:
+                        //console.log(changeArgs.entityAction.name + '\t-\t' + ent.entityType.shortName + '\t-\t' + ent.entityAspect.entityState.name);
                 }
             }
 
@@ -153,7 +190,7 @@
             }
             
             function disableSave() {
-                return isSaving || hasValidationErrors || !isEntityStateChanged;
+                return isSaving || errorEntities.length || !isEntityStateChanged;
             }
 
             function save() {

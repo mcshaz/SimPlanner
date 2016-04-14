@@ -9627,7 +9627,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
     }
 
 
-    // Set up $watches for isolate scope and controller bindings. This process
+    // Set up $watchers for isolate scope and controller bindings. This process
     // only occurs for isolate scopes and new scopes with controllerAs.
     function initializeDirectiveBindings(scope, attrs, destination, bindings, directive) {
       var removeWatchCollection = [];
@@ -25957,7 +25957,7 @@ is set to `true`. The parse error is stored in `ngModel.$error.parse`.
  *
  * @property {Array.<Function>} $viewChangeListeners Array of functions to execute whenever the
  *     view value has changed. It is called with no arguments, and its return value is ignored.
- *     This can be used in place of additional $watches against the model value.
+ *     This can be used in place of additional $watchers against the model value.
  *
  * @property {Object} $error An object hash with all failing validator ids as keys.
  * @property {Object} $pending An object hash with all pending validator ids as keys.

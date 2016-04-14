@@ -150,7 +150,7 @@
                             })
                         });
                     });
-                    vm.notifyViewModelPropChanged();
+                    vm.notifyViewModelLoaded();
                 }), datacontext.manequins.all().then(function (data) {
                     vm.manequins = data;
                 })], controllerId).then(function () {

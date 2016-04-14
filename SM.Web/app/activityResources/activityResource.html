@@ -14,8 +14,8 @@
                             <li ng-repeat="ac in ar.courseActivity.activityChoices track by ac.id" class="clearfix">
                                 {{ac.description}} 
                                 <span class="pull-right">
-                                    <button type="button" ng-click="ar.selectActivityResource(ac)"><i class="fa fa-edit"></i></button> |
-                                    <button type="button" ng-click="ac.entityAspect.setDeleted()"><i class="fa fa-trash-o"></i></button>
+                                    <button type="button" class="btn-link" ng-click="ar.selectActivityResource(ac)"><i class="fa fa-edit"></i></button> |
+                                    <button type="button" class="btn-link" ng-click="ac.entityAspect.setDeleted()"><i class="fa fa-trash-o"></i></button>
                                 </span>
                             </li>
                         </ul>
