@@ -52,9 +52,6 @@
         function activate() {
             datacontext.ready().then(function () {
                 var promises = [
-                    datacontext.courseActivities.findServerIfCacheEmpty({
-                        where: breeze.Predicate.create('courseTypeId', '==', id)
-                    }),
                     datacontext.courseTypes.find({where: breeze.Predicate.create('instructorCourseId','==',null).and('id','!=',id)}).then(function (data) {
                         vm.instructorCourses = data;
                     })
@@ -69,7 +66,13 @@
                     if (!vm.courseType) {
                         vm.log.warning({ msg: 'could not find courseType Id: ' + id });
                     }
-                    promises.push(datacontext.courseSlots.findServerIfCacheEmpty({ withParameters: { courseFormatId: vm.courseType.courseFormats.map(function (el) { return el.id; }) } }).then(function (data) {
+                    promises.push(datacontext.courseFormats.findServerIfCacheEmpty(
+                            {
+                                withParameters: {
+                                    id: vm.courseType.courseFormats.map(function (el) { return el.id; })
+                                },
+                                expand: ["courseSlots.activity"]
+                            }).then(function (data) {
                         vm.courseType.courseFormats.forEach(function (el) {
                             el.courseSlots.sort(common.sortOnPropertyName('order'));
                         });

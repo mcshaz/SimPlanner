@@ -36,12 +36,16 @@
                     return executeQuery(query);
                 };
 
-                self.findServerIfCacheEmpty = function() {
+                self.findServerIfCacheEmpty = function(/*arguments*/) {
                     var query = createQuery.apply(null,arguments);
                     var entities = executeCacheQuery(query);
                     entities = filterWithParameters(entities, query.parameters);
                     if (entities.length) {
-                        return $q.when(entities);
+                        //to do - as per find missing expands, should check each member of array
+                        var missingExpands = findMissingExpands(entities[0], query.expandClause);
+                        if (!missingExpands.length) {
+                            return $q.when(entities);
+                        }
                     }
                     return executeQuery(query);
                 }
@@ -140,7 +144,7 @@
                     var ent = executeCacheQuery(query)[0];
                     
                     if (ent) {
-                        var missingExpands = findMissingExpands(ent, (argObj || {}).expand);
+                        var missingExpands = findMissingExpands(ent, query.expandClause);
                         if (!missingExpands.length) {
                             return $q.when(ent);
                         }
@@ -186,13 +190,10 @@
                     });
                 }
 
-                function findMissingExpands(entity, expands) {
+                function findMissingExpands(entity, expandClause) {
                     var returnVar = [];
-                    if (!expands) { return returnVar; }
-                    if (typeof expands === 'string') {
-                        expands = expands.split(',');
-                    }
-                    expands.forEach(function (el) {
+                    if (!expandClause) { return returnVar; }
+                    expandClause.propertyPaths.forEach(function (el) {
                         var hasArray = false;
                         var props = el.split('.');
                         var currentProp = entity;
