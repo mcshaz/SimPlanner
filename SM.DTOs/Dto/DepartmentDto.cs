@@ -13,8 +13,8 @@ namespace SM.Dto
         public Guid InstitutionId { get; set; }
         public string InvitationLetterFilename { get; set; }
         public string CertificateFilename { get; set; }
-        public virtual ICollection<CourseTypeDto> CourseTypes { get; set; }
         public InstitutionDto Institution { get; set; }
+        public virtual ICollection<CourseTypeDepartmentDto> CourseTypeDepartments { get; set; }
         public virtual ICollection<ManequinDto> Manequins { get; set; }
         public virtual ICollection<CourseDto> Courses { get; set; }
         public virtual ICollection<CourseDto> OutreachCourses { get; set; }

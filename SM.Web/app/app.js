@@ -23,7 +23,8 @@
         'tmh.dynamicLocale',
         'ui.sortable',
         'ui.grid',
-        'ui.grid.pagination'
+        'ui.grid.pagination',
+        'isteven-multi-select'
     ]);
 
     /*Constants regarding user login defined here*/

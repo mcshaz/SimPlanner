@@ -109,8 +109,8 @@ namespace SM.DTOs.ProcessBreezeRequests
                 { 
                     returnVar.Add(new EFEntityError(p.Info,
                         "DuplicateUser",
-                        "2 users cannot exist within the same department with the same name and category",
-                        string.Empty));
+                        "2 users with the same name, department and profession",
+                        "FullName"));
                 }
 
             }

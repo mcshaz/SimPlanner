@@ -199,9 +199,15 @@ namespace SM.DataAccess
                 .WithRequired(e => e.CourseType)
                 .HasForeignKey(e => e.CourseTypeId);
 
+            modelBuilder.Entity<CourseType>()
+                .HasMany(e => e.CourseTypeDepartments)
+                .WithRequired(e => e.CourseType)
+                .HasForeignKey(e => e.CourseTypeId);
+
             modelBuilder.Entity<Department>()
-                .HasMany(e => e.CourseTypes)
-                .WithMany(e=>e.Departments);
+                .HasMany(e => e.CourseTypeDepartments)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e => e.DepartmentId);
 
             modelBuilder.Entity<Department>()
                 .HasMany(e => e.Participants)

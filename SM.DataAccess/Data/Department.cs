@@ -20,9 +20,8 @@ namespace SM.DataAccess
 
         public string CertificateFilename { get; set; }
 
-		ICollection<CourseType> _courseTypes; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseType> CourseTypes
+        public virtual ICollection<CourseTypeDepartment> CourseTypeDepartments
 		{
             get; set;
 		}

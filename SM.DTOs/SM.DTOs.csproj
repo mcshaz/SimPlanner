@@ -120,6 +120,7 @@
     <Compile Include="Dto\CourseSlotPresenterDto.cs" />
     <Compile Include="Dto\CourseFormatDto.cs" />
     <Compile Include="Dto\CourseSlotScenarioDto.cs" />
+    <Compile Include="Dto\CourseTypeDepartmentDto.cs" />
     <Compile Include="Dto\CourseTypeDto.cs" />
     <Compile Include="Dto\DepartmentDto.cs" />
     <Compile Include="Dto\InstitutionDto.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Maps\CourseActivityMaps.cs" />
     <Compile Include="Maps\CourseFormatMaps.cs" />
     <Compile Include="Maps\CountryMaps.cs" />
+    <Compile Include="Maps\CourseTypeDepartmentMaps.cs" />
     <Compile Include="Maps\ManequinServiceMaps.cs" />
     <Compile Include="Maps\ManequinModelMaps.cs" />
     <Compile Include="Maps\RoomMaps.cs" />

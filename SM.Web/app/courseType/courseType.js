@@ -25,6 +25,7 @@
         vm.courseType = {};
 
         vm.createSlot = createSlot;
+        vm.departments = [];
         vm.getCourseActivityNames = getCourseActivityNames;
         vm.removeSlot = removeSlot;
         vm.instructorCourses = [];
@@ -34,6 +35,8 @@
         vm.emersionCategories = common.getEnumValues().emersion;
         var baseSave = vm.save;
         vm.save = saveOverride;
+
+        vm.selectedDepartments = [];
         vm.title = 'Course Format';
 
         vm.sortableOptions = {
@@ -52,9 +55,13 @@
 
         function activate() {
             datacontext.ready().then(function () {
+                var departments;
                 var promises = [
                     datacontext.courseTypes.find({where: breeze.Predicate.create('instructorCourseId','==',null).and('id','!=',id)}).then(function (data) {
                         vm.instructorCourses = data;
+                    }),
+                    datacontext.institutions.all({expand:'departments'}).then(function(data){
+                        departments = data;
                     })
                 ];
                 if (isNew) {
@@ -63,29 +70,31 @@
                     vm.notifyViewModelLoaded();
                 } else {
                     //promises.push(datacontext.courseTypes.fetchByKey(id, { expand: 'courseFormats.courseSlots' }).then(function (data) { - if the courseFormats were not already loaded from the server
-                    vm.courseType = datacontext.courseTypes.getByKey(id);
-                    if (!vm.courseType) {
-                        vm.log.warning({ msg: 'could not find courseType Id: ' + id });
-                    }
-                    promises.push(datacontext.courseFormats.findServerIfCacheEmpty(
-                            {
-                                withParameters: {
-                                    id: vm.courseType.courseFormats.map(function (el) { return el.id; })
-                                },
-                                expand: ["courseSlots.activity"]
-                            }).then(function (data) {
+                    promises.push(datacontext.courseTypes.fetchByKey(id,
+                    {
+                        expand: ["courseFormats.courseSlots.activity", "courseTypeDepartments"]
+                    }).then(function (data) {
+                        vm.courseType = data;
                         vm.courseType.courseFormats.forEach(function (el) {
                             el.courseSlots.sort(common.sortOnPropertyName('order'));
                         });
                         vm.activeFormatIndex = vm.courseType.courseFormats.findIndex(function (el) {
                             return el.id === $routeParams.formatId;
                         });
-
-                        vm.notifyViewModelLoaded();
                     }));
                 }
                 common.activateController(promises, controllerId)
                     .then(function () {
+                        var ctds = vm.courseType.courseTypeDepartments;
+                        departments.forEach(function (el) {
+                            vm.departments.push({ name: '<strong>' + el.name + '</strong>', dptGroup: true });
+                            el.departments.forEach(iterateDpt);
+                            vm.departments.push({ dptGroup: false });
+                        });
+                        function iterateDpt(d) {
+                            var ctd = ctds.find(function(c){return c.departmentId === d.id;});
+                            vm.departments.push({ name: d.name, abbreviation: d.abbreviation, ctd:ctd });
+                        }
                         vm.log('Activated Course Format View');
                     });
             });

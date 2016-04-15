@@ -56,11 +56,10 @@ namespace SM.DataAccess
             context.ManequinModels.Add(junior);
 
             var cedJunior = new Manequin { Id = Guid.NewGuid(), Department = ced, Description = "'charlie' (sim junior purchased 2007)", Model = junior, PurchasedNew = true, PurchaseDate = new DateTime(2008, 1, 1), LocalCurrencyPurchasePrice = 80000.00m };
-            var crm = new CourseType { Id = Guid.NewGuid(), Abbreviation = "CRM", Description = "Crisis Resourse Managment", EmersionCategory = Emersion.Emersive, Departments=new List<Department>(), FacultySimRoles=new List<FacultySimRole>() };
+            var crm = new CourseType { Id = Guid.NewGuid(), Abbreviation = "CRM", Description = "Crisis Resourse Managment", EmersionCategory = Emersion.Emersive, FacultySimRoles=new List<FacultySimRole>() };
             context.CourseTypes.Add(crm);
 
             var crm2 = new CourseFormat { Id = Guid.NewGuid(), DaysDuration = 1, Description = "2 Scenario", CourseType = crm };
-            crm.Departments.Add(ced);
 
             //eventually resource filename should belong to each department
 

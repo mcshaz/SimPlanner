@@ -46,8 +46,9 @@
                         if (!missingExpands.length) {
                             return $q.when(entities);
                         }
+                        query = query.expand(missingExpands.map(joinExpandProps));
                     }
-                    return executeQuery(query);
+                    return executeQuery(query, true);
                 }
 
                 self.findInCache = function () {
@@ -155,16 +156,15 @@
                                 function (err) { defer.reject(err); });
                             return defer.promise;
                         } else {
-                            query = getKeyQuery(key, {
-                                expand: missingExpands.map(function (el) { return el.props.join('.'); }).join(','),
-                                select: argObj.select
-                            });
+                            query = query.expand(missingExpands.map(joinExpandProps));
                         }
                     }
-                    return executeQuery(query).then(function (data) {
+                    return executeQuery(query,true).then(function (data) {
                         return data?data[0]:undefined;
                     });
                 }
+
+                function joinExpandProps(el) { return el.props.join('.'); };
 
                 function filterWithParameters(entities, withParameters) {
                     if (!withParameters || common.isEmptyObject(withParameters)) { return entities; }
@@ -236,9 +236,12 @@
                     return query;
                 }
 
-                function executeQuery(query) {
+                function executeQuery(query, force) {
+                    var fetch = force
+                        ? breeze.FetchStrategy.FromServer
+                        : fetchStrategy || breeze.FetchStrategy.FromServer;
                     return manager
-                        .executeQuery(query.using(fetchStrategy || breeze.FetchStrategy.FromServer))
+                        .executeQuery(query.using(fetch))
                         .then(function (data) {
                             if (data.inlineCount) { data.results.inlineCount = data.inlineCount; }
                             return data.results;

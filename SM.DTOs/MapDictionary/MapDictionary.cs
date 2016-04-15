@@ -29,6 +29,7 @@ namespace SM.Dto.Maps
                         new DtoMap(typeof(CourseSlotPresenter),  CourseSlotPresenterMaps.mapFromRepo()),
                         new DtoMap(typeof(CourseSlotScenario),  CourseSlotScenarioMaps.mapFromRepo()),
                         new DtoMap(typeof(CourseType),  CourseTypeMaps.mapFromRepo()),
+                        new DtoMap(typeof(CourseTypeDepartment),  CourseTypeDepartmentMaps.mapFromRepo()),
                         new DtoMap(typeof(Department),  DepartmentMaps.mapFromRepo(), true,"OutreachingDepartment"),
                         new DtoMap(typeof(FacultySimRole),  FacultySimRoleMaps.mapFromRepo()),
                         new DtoMap(typeof(Institution),  InstitutionMaps.mapFromRepo()),

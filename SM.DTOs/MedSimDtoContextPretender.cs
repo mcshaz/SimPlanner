@@ -152,7 +152,6 @@ namespace SM.Dto
                 .HasForeignKey(e => e.CourseTypeId)
                 .WillCascadeOnDelete(false);
 
-
             modelBuilder.Entity<CourseTypeDto>()
                 .HasOptional(e => e.InstructorCourse)
                 .WithMany()
@@ -169,9 +168,15 @@ namespace SM.Dto
                 .WithRequired(e => e.CourseType)
                 .HasForeignKey(e => e.CourseTypeId);
 
+            modelBuilder.Entity<CourseTypeDto>()
+                .HasMany(e => e.CourseTypeDepartments)
+                .WithRequired(e => e.CourseType)
+                .HasForeignKey(e => e.CourseTypeId);
+
             modelBuilder.Entity<DepartmentDto>()
-                .HasMany(e => e.CourseTypes)
-                .WithMany(e => e.Departments);
+                .HasMany(e => e.CourseTypeDepartments)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e => e.DepartmentId);
 
             modelBuilder.Entity<DepartmentDto>()
                 .HasMany(e => e.Participants)

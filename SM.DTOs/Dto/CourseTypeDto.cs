@@ -23,7 +23,7 @@ namespace SM.Dto
 
         public ICollection<CourseActivityDto> CourseActivities { get; set; }
 
-        public ICollection<DepartmentDto> Departments { get; set; }
+        public ICollection<CourseTypeDepartmentDto> CourseTypeDepartments { get; set; }
 
         public ICollection<ScenarioDto> Scenarios { get; set; }
 

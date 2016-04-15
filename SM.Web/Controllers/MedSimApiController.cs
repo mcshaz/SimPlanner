@@ -141,7 +141,7 @@ namespace SM.Web.Controllers
             public const char Seperator = '/';
             const char splitter = ',';
         }
-        [HttpGet, EnableBreezeQuery]
+        [HttpGet, EnableBreezeQuery(MaxExpansionDepth = 3)]
         public IQueryable<CourseTypeDto> CourseTypes(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);

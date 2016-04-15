@@ -94,6 +94,7 @@
     <Compile Include="Data\Country.cs" />
     <Compile Include="Data\CourseScenarioFacultyRole.cs" />
     <Compile Include="Data\CourseType.cs" />
+    <Compile Include="Data\CourseTypeDepartment.cs" />
     <Compile Include="Data\ManequinService.cs" />
     <Compile Include="Data\ManequinModel.cs" />
     <Compile Include="Data\Resource.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
     <Compile Include="Metadata\CountryMetadata.cs" />
     <Compile Include="Metadata\CourseActivityMetadata.cs" />
+    <Compile Include="Metadata\CourseTypeDepartmentMetadata.cs" />
     <Compile Include="Metadata\CourseSlotScenarioMetadata.cs" />
     <Compile Include="Metadata\CourseTypeMetadata.cs" />
     <Compile Include="Metadata\CourseMetadata.cs" />
