@@ -64,7 +64,7 @@ namespace SimManager.Tests
                          where r.Users.Any(u => u.UserId == userId)
                          select r.Name).ToList();
             }
-            _repo = new MedSimDtoRepository(userId, () => roles);
+            _repo = new MedSimDtoRepository(new MockIPrincipal());
         }
         //
         // Use TestCleanup to run code after each test has run
@@ -84,6 +84,20 @@ namespace SimManager.Tests
                            select new { c.StartTime, c.CourseParticipants }).ToList();
             Console.WriteLine(string.Join("\r\n",courses.Select(a => a.StartTime.ToString("s"))));
             Assert.IsFalse(courses.Zip(courses.Skip(1), (a, b) => a.StartTime < b.StartTime).Contains(false));
+        }
+
+        class MockIPrincipal: System.Security.Principal.IPrincipal
+        {
+            internal MockIPrincipal() { Identity = new MockIIdentity(); }
+            public System.Security.Principal.IIdentity Identity { get; private set; }
+            public bool IsInRole(string roleName) { return true; }
+
+            public class MockIIdentity : System.Security.Principal.IIdentity
+            {
+                public string Name { get { return "brentm@adhb.govt.nz"; } }
+                public bool IsAuthenticated {  get { return true; } }
+                public string AuthenticationType { get { return "Mock"; } }
+            }
         }
     }
 }

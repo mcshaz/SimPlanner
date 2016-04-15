@@ -196,8 +196,10 @@
             function save() {
                 isSaving = true;
 
-                return datacontext.save().finally(function() {
-                    isEntityStateChanged = isSaving = false;
+                return datacontext.save().then(function () {
+                    isEntityStateChanged = false;
+                }).finally(function() {
+                    isSaving = false;
                 });
             }
 

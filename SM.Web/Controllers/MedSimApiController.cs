@@ -23,11 +23,7 @@ namespace SM.Web.Controllers
         {
             get
             {
-                return _repository ?? (_repository = new MedSimDtoRepository(
-                    Guid.Parse(User.Identity.GetUserId()), 
-                    () => ((ClaimsIdentity)User.Identity).Claims
-                        .Where(c => c.Type == ClaimTypes.Role)
-                        .Select(c => c.Value)));
+                return _repository ?? (_repository = new MedSimDtoRepository(User));
             }
         }
 

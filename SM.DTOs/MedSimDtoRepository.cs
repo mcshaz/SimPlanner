@@ -1,43 +1,34 @@
-﻿using Breeze.ContextProvider;
+﻿using Breeze.BusinessTime.Authorization;
+using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
 using Newtonsoft.Json.Linq;
 using SM.DataAccess;
 using SM.Dto.Maps;
+using SM.DTOs.ProcessBreezeRequests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Principal;
 
 namespace SM.Dto
 {
     public class MedSimDtoRepository : IDisposable
     {
-        private readonly EFContextProvider<MedSimDbContext> _contextProvider;
-        private readonly Guid _userId;
-        private readonly Func<IEnumerable<string>> _getUserRoles; // ? eventually async
-        private IEnumerable<string> _userRoles;
-        private IEnumerable<string> UserRoles
-        {
-            get
-            {
-                if (_userRoles == null)
-                {
-                    _userRoles = _getUserRoles();
-                }
-                return _userRoles;
-            }
-        }
+        private readonly AuthorizedDbContextProvider<MedSimDbContext> _contextProvider;
+        private readonly IPrincipal _user;
+        private MedSimDbContext _validationContext;
 
         private MedSimDbContext Context
         {
             get { return _contextProvider.Context; }
         }
 
-        public MedSimDtoRepository(Guid userId, Func<IEnumerable<string>> getUserRoles)
+        public MedSimDtoRepository(IPrincipal user)
         {
-            _userId = userId;
-            _getUserRoles = getUserRoles;
-            _contextProvider = new EFContextProvider<MedSimDbContext>();
+
+            _contextProvider = new AuthorizedDbContextProvider<MedSimDbContext>(user, allowedRoles: new[] { RoleConstants.AccessAllData });
+            _user = user;
             //_entitySaveGuard = new EntitySaveGuard();
             //_contextProvider.BeforeSaveEntityDelegate += _entitySaveGuard.BeforeSaveEntity;
         }
@@ -54,6 +45,12 @@ namespace SM.Dto
 
         public SaveResult SaveChanges(JObject saveBundle)
         {
+            _validationContext = new MedSimDbContext();
+            if (!_contextProvider.BeforePipeline.Any(p=>p is CourseFormatProtector)){
+                _validationContext = new MedSimDbContext();
+                _contextProvider.BeforePipeline.Add(new CourseFormatProtector(_user, _validationContext));
+            }
+            
             // Todo: transform entities in saveBundle from DTO form into server-model form.
             // At least change the namespace from Northwind.DtoModels to Northwind.Models :-)
             // will fail until then
@@ -122,9 +119,9 @@ namespace SM.Dto
             get
             {
                 IQueryable<Institution> returnVar = Context.Institutions;
-                if (!UserRoles.Contains(RoleConstants.AccessAllData))
+                if (!_user.IsInRole(RoleConstants.AccessAllData))
                 {
-                    returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)));
+                    returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
                 }
                 //currently allowing users to view all departmetns within their institution - but only edit thseir department
                 return returnVar.Project<Institution,InstitutionDto>(includes: new[] { "Departments.Rooms","ProfessionalRoles","Country", "Departments.Manequins" });
@@ -162,7 +159,7 @@ namespace SM.Dto
         {
             get
             {
-                IQueryable<Manequin> returnVar = Context.Manequins.Where(m => m.Department.Institution.Departments.Any(d => d.Participants.Any(p => p.Id == _userId)));
+                IQueryable<Manequin> returnVar = Context.Manequins.Where(m => m.Department.Institution.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
                 return returnVar.Project<Manequin, ManequinDto>();
             }
         }
@@ -231,6 +228,7 @@ namespace SM.Dto
                 // free other managed objects that implement
                 // IDisposable only
                 _contextProvider.Context.Dispose();
+                if (_validationContext != null) { _validationContext.Dispose(); }
             }
 
             // release any unmanaged objects

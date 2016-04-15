@@ -10,7 +10,7 @@ namespace SM.Metadata
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [StringLength(50)]
         public string Description { get; set; }
         [Range(1,250)]

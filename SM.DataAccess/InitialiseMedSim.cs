@@ -12,7 +12,7 @@ namespace SM.DataAccess
             var nz = new Country { LocaleCode = "en-NZ", Name = "New Zealand", DialCode="64" };
             context.Countries.Add(nz);
 
-            var starship = new Institution { Id = Guid.NewGuid(), Country = nz, Name="Starship" };
+            var starship = new Institution { Id = Guid.NewGuid(), Country = nz, Name="Starship", ProfessionalRoles=new List<ProfessionalRole>() };
             context.Institutions.Add(starship);
             var ced = new Department { Id = Guid.NewGuid(), Institution = starship, Abbreviation = "CED", Name="Children's Emergency Department"};
             context.Departments.Add(ced);

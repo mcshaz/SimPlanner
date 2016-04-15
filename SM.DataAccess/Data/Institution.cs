@@ -20,32 +20,11 @@ namespace SM.DataAccess
 
         public virtual Country Country { get; set; }
 
-		ICollection<Department> _departments; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Department> Departments
-		{
-			get
-			{
-				return _departments ?? (_departments = new List<Department>());
-			}
-			set
-			{
-				_departments = value;
-			}
-		}
+        public virtual ICollection<Department> Departments { get; set; }
 
-        ICollection<ProfessionalRole> _professionalRoles;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProfessionalRole> ProfessionalRoles
-        {
-            get
-            {
-                return _professionalRoles ?? (_professionalRoles = new List<ProfessionalRole>());
-            }
-            set
-            {
-                _professionalRoles = value;
-            }
-        }
+        public virtual ICollection<ProfessionalRole> ProfessionalRoles { get; set; }
+
     }
 }

@@ -24,114 +24,57 @@ namespace SM.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseType> CourseTypes
 		{
-			get
-			{
-				return _courseTypes ?? (_courseTypes = new List<CourseType>());
-			}
-			set
-			{
-				_courseTypes = value;
-			}
+            get; set;
 		}
 
         public virtual Institution Institution { get; set; }
 
-		ICollection<Manequin> _manequins; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Manequin> Manequins
 		{
-			get
-			{
-				return _manequins ?? (_manequins = new List<Manequin>());
-			}
-			set
-			{
-				_manequins = value;
-			}
+            get; set;
 		}
 
 		ICollection<Course> _courses; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> Courses
 		{
-			get
-			{
-				return _courses ?? (_courses = new List<Course>());
-			}
-			set
-			{
-				_courses = value;
-			}
+            get; set;
 		}
 
         ICollection<Course> _outreachCourses;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> OutreachCourses
         {
-            get
-            {
-                return _outreachCourses ?? (_outreachCourses = new List<Course>());
-            }
-            set
-            {
-                _outreachCourses = value;
-            }
+            get; set;
         }
 
         ICollection<Scenario> _scenrios;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Scenario> Scenarios
         {
-            get
-            {
-                return _scenrios ?? (_scenrios = new List<Scenario>());
-            }
-            set
-            {
-                _scenrios = value;
-            }
+            get; set;
         }
 
         ICollection<Participant> _participants;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Participant> Participants
         {
-            get
-            {
-                return _participants ?? (_participants = new List<Participant>());
-            }
-            set
-            {
-                _participants = value;
-            }
+            get; set;
         }
 
         ICollection<Room> _rooms;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Room> Rooms
         {
-            get
-            {
-                return _rooms ?? (_rooms = new List<Room>());
-            }
-            set
-            {
-                _rooms = value;
-            }
+            get; set;
         }
 
         ICollection<CourseParticipant> _courseParticipants;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseParticipant> CourseParticipants
         {
-            get
-            {
-                return _courseParticipants ?? (_courseParticipants = new List<CourseParticipant>());
-            }
-            set
-            {
-                _courseParticipants = value;
-            }
+            get; set;
         }
     }
 }

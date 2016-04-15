@@ -16,5 +16,6 @@ namespace SM.Dto
         public virtual ICollection<DepartmentDto> Departments { get; set; }
         public virtual ICollection<ProfessionalRoleDto> ProfessionalRoles { get; set; }
 
+
     }
 }
