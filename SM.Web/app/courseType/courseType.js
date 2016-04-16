@@ -12,7 +12,7 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseSlots', 'courseType.courseFormats.courseSlots.activity'],
+            watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseSlots', 'courseType.courseFormats.courseSlots.activity', 'courseType.courseTypeDepartments'],
             $scope: $scope,
             $watchers: [$scope.$on('$destroy',removeSelectedSlots)]
         })
@@ -92,10 +92,12 @@
                             vm.departments.push({ dptGroup: false });
                         });
                         function iterateDpt(d) {
-                            var ctd = ctds.find(function(c){return c.departmentId === d.id;});
-                            vm.departments.push({ name: d.name, abbreviation: d.abbreviation, ctd:ctd });
+                            var checked = ctds.some(function(c){return c.departmentId === d.id;});
+                            vm.departments.push({ name: d.name, abbreviation: d.abbreviation, dptId:d.id, checked:checked });
                         }
+                        $scope.$watchCollection(function () { return vm.selectedDepartments }, selectedDepartmentsChanged);
                         vm.log('Activated Course Format View');
+                        vm.notifyViewModelLoaded();
                     });
             });
         }
@@ -103,6 +105,52 @@
         //logic is - can't delete slots after course has been run, as they may have associated tables such as participants
         //-altering the name of a slot - don't allow reassignment of activity, as course participants etc will be all mucked up
         //-only show typeahead if a new slot (otherwise simple input)
+
+        function selectedDepartmentsChanged(newVals, oldVals) {
+            oldVals.forEach(function (o) {
+                if(!newVals.some(function (n) {
+                    return n.dptId === o.dptId;
+                })) {
+                    var ctd = datacontext.courseTypeDepartments.getByKey({
+                        departmentId: o.dptId,
+                        courseTypeId: vm.courseType.id
+                    });
+                    if (ctd) {
+                        ctd.entityAspect.setDeleted();
+                    } else {
+                        log.debug({
+                            msg: 'courseTpeDpt looks to be deleted in viewmodel, but cannot be found by key',
+                            data: {
+                                oldVals: oldVals,
+                                newVals: newVals,
+                                department: datacontext.departments.getByKey(o.dptId)
+                        }});
+                    }
+                    
+                }
+            });
+            newVals.forEach(function (n) {
+                if(!oldVals.some(function (o) {
+                    return n.dptId === o.dptId;
+                })) {
+                    var key = {
+                        departmentId: n.dptId,
+                        courseTypeId: vm.courseType.id
+                    };
+                    var ctd = datacontext.courseTypeDepartments.getByKey(key,true);
+                    if (ctd) {
+                        if (ctd.entityAspect.entityState.isDeleted()) {
+                            ctd.entityAspect.setUnchanged();
+                        } else if (!ctd.entityAspect.entityState.isUnchanged()) {
+                            vm.log.debug({ msg: 'courseTypeDepartment found in cache & to be added but in state other than deleted', data: ctd });
+                        }
+                    } else {
+                        datacontext.courseTypeDepartments.create(key);
+                    }
+                }
+            });
+            
+        }
         //-if a new slot/activity and activity selected, delete new activity, replace with selected
         function activitySelected(activityName, slot) {
             removeActivity(slot);

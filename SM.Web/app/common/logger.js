@@ -52,7 +52,7 @@
         }
 
         function logIt(argOpts, logType) {
-            var showToast = argOpts.showToast === true || (typeof argOpts.showToast === 'undefined' && service.autoToast.indexOf(logType) > -1);
+            var showToast = argOpts.showToast === true || (argOpts.showToast === undefined && service.autoToast.indexOf(logType) > -1);
             var toastType = logType;
             var msg = argOpts.message || argOpts.msg;
             var src = argOpts.source || argOpts.src;
@@ -62,7 +62,6 @@
                 depthDecr:3,
                 //inheritedProperties:true,
                 replacer:function(value, defaultValue, circular){
-                    if (circular) return '"-circular-"';
                     if (value === undefined) return '"-undefined-"';
                     if (Array.isArray(value)) return '"-array('+value.length+')-"';
                     return defaultValue;

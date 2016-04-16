@@ -68,7 +68,7 @@
                             currentLevel = [];
                             ent.forEach(function (el) {
                                 var child = el[wen[i]];
-                                if (typeof child === 'undefined') {
+                                if (child === undefined) {
                                     throw new Error('watched entity child is undefined - ' + wen[i] + ' (' + wen.join(',') + ') entity ' +
                                         el.entityType.shortName + ' [available options =(' + el.entityType.navigationProperties.map(function (dp) { return dp.name }).join(',') + ')]');
                                 }
@@ -111,8 +111,8 @@
                 //console.log(changeArgs.entityAction.name + '\t-\t' + ent.entityType.shortName + '\t-\t' + ent.entityAspect.entityState.name);
                 switch (changeArgs.entityAction) {
                     case breeze.EntityAction.EntityStateChange:
-                        if (getWatched().indexOf(ent) !== -1) {
-                            isEntityStateChanged |= isUserChanged(ent);
+                        if (getWatched().indexOf(ent) !== -1 && !isEntityStateChanged) {
+                            isEntityStateChanged = isUserChanged(ent);
                         }
                         break;
                     case breeze.EntityAction.PropertyChange:

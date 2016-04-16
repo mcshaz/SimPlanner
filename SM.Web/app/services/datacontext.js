@@ -48,6 +48,7 @@
         self.courseSlots = repository.create(self.provider, 'CourseSlotDto', 'CourseSlots'/* 'Courses' */);
         self.courseSlotPresenters = repository.create(self.provider, 'CourseSlotPresenterDto', 'CourseSlotPresenters'/* 'Courses' */);
         self.courseTypes = repository.create(self.provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);
+        self.courseTypeDepartments = repository.create(self.provider, 'CourseTypeDepartmentDto', 'CourseTypeDepartments');
         self.departments = repository.create(self.provider, 'DepartmentDto', 'Departments', breeze.FetchStrategy.FromLocalCache);
         self.institutions = repository.create(self.provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);
         self.participants = repository.create(self.provider, 'ParticipantDto', 'Participants');

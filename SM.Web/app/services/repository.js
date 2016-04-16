@@ -22,12 +22,22 @@
                     return manager.hasChanges(entityTypeName);
                 }
 
-                self.fetchByKey = function (key, argObj) {
-                    return executeKeyQuery(keyPropsToArray(key), argObj);
+                self.fetchByKey = function (keyObj, argObj) {
+                    return executeKeyQuery(keyPropsToArray(keyObj), argObj);
                 };
 
-                self.getByKey = function (key) {
-                    return manager.getEntityByKey(entityTypeName, keyPropsToArray(key));
+                self.getByKey = function (keyObj, includeDeleted) {
+                    var key = new breeze.EntityKey(entityType, keyPropsToArray(keyObj));
+                    if (includeDeleted) {
+                        return manager.getEntities(entityType).find(function (el) {
+                            //speed at the price of unsupported/undocumented/liable to change etc.
+                            //correct way to do things beneath
+                            return el.entityAspect._entityKey._keyInGroup === key._keyInGroup;
+                            //return el.entityAspect.getKey().equals(key);
+                        });
+                    } else {
+                        return manager.getEntityByKey(key);
+                    }
                 }
 
                 self.find = function () {
@@ -110,13 +120,13 @@
                         case 'object':
                             return entityType.keyProperties.map(function (el) {
                                 var returnVar = key[el.name];
-                                if (typeof (returnVar) === 'undefined') {
+                                if ((returnVar) === undefined) {
                                     throw new TypeError('entity key object is missing required key ' + el.name);
                                 }
                                 return returnVar;
                             });
                         default:
-                            throw new TypeError('entity key of type' + typeof(key));
+                            throw new TypeError('entity key of type - ' + typeof(key));
                     }
 
                 }

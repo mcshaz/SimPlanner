@@ -214,7 +214,17 @@
             key.participantId = sortable.model.participantId;
 
             if (ui.sender && !cancelled) { //receiving = adding 
-                repo.create(key);
+                var ent = repo.getByKey(key)
+                if (ent) {
+                    if (ent.entityAspect.entityState.isDeleted()) {
+                        ent.entityAspect.setUnchanged();
+                    } else {
+                        log.debug({msg:'attempted to readd existing entity in unknown state', data:ent});
+                    }
+                } else {
+                    repo.create(key);
+                }
+                
             } else if (!ui.item.sortable.isCopy && (!cancelled || removingDuplicate)) { //sending = deleting
                 var ent = repo.getByKey(key);
                 ent.entityAspect.setDeleted();
