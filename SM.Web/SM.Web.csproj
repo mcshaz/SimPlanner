@@ -441,6 +441,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\department\" />
     <Folder Include="app\manequin\" />
     <Folder Include="app\scenario\" />
     <Folder Include="App_Data\" />

@@ -32,7 +32,7 @@
                 url: '/',
                 config: {
                     templateUrl: 'app/dashboard/dashboard.html',
-                    title: 'dashboard',
+                    title: 'Dashboard',
                     settings: {
                         nav: 1,
                         content: '<i class="fa fa-dashboard"></i> Dashboard'
@@ -41,7 +41,7 @@
             }, {
                 url: '/admin',
                 config: {
-                    title: 'admin',
+                    title: 'Admin',
                     templateUrl: 'app/admin/admin.html',
                     settings: {
                         nav: 2,
@@ -54,7 +54,7 @@
             }, {
                 url: '/course/:id',
                 config: {
-                    title: 'course',
+                    title: 'Courses',
                     templateUrl: 'app/course/course.html',
                     settings: {
                         nav: 3,
@@ -67,7 +67,7 @@
             }, {
                 url: '/all-courses',
                 config: {
-                    title: 'all courses',
+                    title: 'All Courses',
                     templateUrl: 'app/course/courses.html',
                     settings: {
                         nav: 4,
@@ -80,7 +80,7 @@
             }, {
                 url: '/courseRoles/:id',
                 config: {
-                    title: 'course',
+                    title: 'Courses',
                     templateUrl: 'app/course/courseRoles.html',
                     access: {
                         allowedRoles: userRoles.all
@@ -89,7 +89,7 @@
             }, {
                 url: '/courseTypes',
                 config: {
-                    title: 'Course Types',
+                    title: 'Course Type',
                     templateUrl: 'app/courseType/courseTypes.html',
                     settings: {
                         nav: 5,
@@ -104,9 +104,46 @@
                 config: {
                     title: 'Course Type',
                     templateUrl: 'app/courseType/courseType.html',
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
+                url: '/Departments',
+                config: {
+                    title: 'Department',
+                    templateUrl: 'app/department/departments.html',
                     settings: {
-                        content: 'Course Type' //<i class="fa fa-"></i> 
+                        nav: 6,
+                        content: 'Departments' //<i class="fa fa-"></i> 
                     },
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
+                url: '/Department/:id',
+                config: {
+                    title: 'Department',
+                    templateUrl: 'app/department/department.html',
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
+                url: '/Scenario/:id',
+                config: {
+                    title: 'Scenario',
+                    templateUrl: 'app/scenario/scenario.html',
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
+                url: '/Manequin/:id',
+                config: {
+                    title: 'Manequin',
+                    templateUrl: 'app/manequin/manequin.html',
                     access: {
                         allowedRoles: userRoles.all
                     }

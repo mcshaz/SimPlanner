@@ -11,18 +11,16 @@
     function courseTypesCtrl(common, datacontext) {
         /* jshint validthis:true */
         var vm = this;
-        vm.courseFormats = [];
+        vm.courseTypes = [];
 
         activate();
 
         function activate() {
             datacontext.ready().then(function () {
                 common.activateController([
-                    datacontext.courseTypes.all().then(function (data) {
+                    datacontext.courseTypes.findServerIfCacheEmpty({ expand: ['courseFormats', 'scenarios'] }).then(function (data) {
                         data.sort(common.sortOnPropertyName('description'));
-                        vm.courseFormats = data.reduce(function (prev, cur) {
-                            return prev.concat(cur.courseFormats);
-                        }, []);
+                        vm.courseTypes = data;
                     })], controllerId)
             });
         }

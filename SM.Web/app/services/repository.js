@@ -46,21 +46,6 @@
                     return executeQuery(query);
                 };
 
-                self.findServerIfCacheEmpty = function(/*arguments*/) {
-                    var query = createQuery.apply(null,arguments);
-                    var entities = executeCacheQuery(query);
-                    entities = filterWithParameters(entities, query.parameters);
-                    if (entities.length) {
-                        //to do - as per find missing expands, should check each member of array
-                        var missingExpands = findMissingExpands(entities[0], query.expandClause);
-                        if (!missingExpands.length) {
-                            return $q.when(entities);
-                        }
-                        query = query.expand(missingExpands.map(joinExpandProps));
-                    }
-                    return executeQuery(query, true);
-                }
-
                 self.findInCache = function () {
                     var query = createQuery.apply(null,arguments);
 
@@ -152,29 +137,38 @@
 
                 function executeKeyQuery(key, argObj) {
                     var query = getKeyQuery(key, argObj);
-                    var ent = executeCacheQuery(query)[0];
-                    
-                    if (ent) {
+                    var entities = executeCacheQuery(query);
+                    return loadNavs(entities, query).then(function (data) {
+                        return data[0];
+                    })
+                }
+
+                function loadNavs(ent, query) {
+                    if (ent.length) {
                         var missingExpands = findMissingExpands(ent, query.expandClause);
                         if (!missingExpands.length) {
                             return $q.when(ent);
                         }
-                        if (missingExpands.length === 1 && missingExpands[0].props.length === 1) {
+                        if (ent.length === 1 && missingExpands.length === 1 && missingExpands[0].props.length === 1) {
                             var defer = $q.defer(); //need defer here as the promise below will return the related entities
-                            ent.entityAspect.loadNavigationProperty(missingExpands[0].props[0],
+                            ent[0].entityAspect.loadNavigationProperty(missingExpands[0].props[0],
                                 function (data) { defer.resolve(ent); },
                                 function (err) { defer.reject(err); });
                             return defer.promise;
-                        } else {
-                            query = query.expand(missingExpands.map(joinExpandProps));
                         }
+                        //if i can be bothered check here to query a different entity according to where in tree navigation property is not loaded
+                        //probably a micro-optimisation
+                        query = query.expand(missingExpands.map(function (el) { return el.props.join('.'); }));
                     }
-                    return executeQuery(query,true).then(function (data) {
-                        return data?data[0]:undefined;
-                    });
+                    return executeQuery(query, true);
                 }
 
-                function joinExpandProps(el) { return el.props.join('.'); };
+                self.findServerIfCacheEmpty = function (/*arguments*/) {
+                    var query = createQuery.apply(null, arguments);
+                    var entities = executeCacheQuery(query);
+                    entities = filterWithParameters(entities, query.parameters);
+                    return loadNavs(entities, query);
+                }
 
                 function filterWithParameters(entities, withParameters) {
                     if (!withParameters || common.isEmptyObject(withParameters)) { return entities; }
@@ -203,6 +197,10 @@
                 function findMissingExpands(entity, expandClause) {
                     var returnVar = [];
                     if (!expandClause) { return returnVar; }
+                    if (Array.isArray(entity)) {
+                        entity = entity[0]; //as per comment below - should look at all items in array
+                        if (!entity) { return returnVar; }
+                    }
                     expandClause.propertyPaths.forEach(function (el) {
                         var hasArray = false;
                         var props = el.split('.');

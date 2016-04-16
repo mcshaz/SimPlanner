@@ -3,8 +3,21 @@
         <div class="container">
             <a class="btn-link" href="#/courseType/new"><i class="fa fa-plus"></i> New Course Type</a>
             <ul>
-                <li ng-repeat="cf in vm.courseFormats track by cf.id">
-                    {{cf.courseType.description + ' ' + cf.description}} <a class="btn-link" ng-href="#/courseType/{{cf.courseType.id}}?formatId={{cf.id}}"><i class="fa fa-edit"></i></a>
+                <li ng-repeat="ct in vm.courseTypes track by ct.id">
+                    <h3>{{ct.description}}</h3>
+                    <ul>
+                        <li ng-repeat="cf in ct.courseFormats track by cf.id">
+                            {{cf.courseType.description + ' ' + cf.description}} <a class="btn-link" ng-href="#/courseType/{{cf.courseType.id}}?formatId={{cf.id}}"><i class="fa fa-edit"></i></a>
+                        </li>
+                        <li>
+                            <h4>Scenarios</h4> <a class="btn-link" ng-href="#/scenario/new?formatId={{cf.id}}"><i class="fa fa-plus"></i> New Scenario</a>
+                            <ul>
+                                <li ng-repeat="s in ct.scenarios track by s.id">
+                                    {{s.description}} <a class="btn-link" ng-href="#/scenario/{{s.id}}"><i class="fa fa-edit"></i></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
