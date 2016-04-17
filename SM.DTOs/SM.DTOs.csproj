@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Breeze.BusinessTime, Version=0.1.5493.24868, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Breeze.BusinessTime.2.0.0\lib\Breeze.BusinessTime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Breeze.ContextProvider, Version=1.5.5.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
       <HintPath>..\packages\Breeze.Server.ContextProvider.1.5.5\lib\Breeze.ContextProvider.dll</HintPath>
       <Private>True</Private>
@@ -169,7 +165,7 @@
     <Compile Include="MedSimDtoRepository.cs" />
     <Compile Include="MedSimDtoMetadata.cs" />
     <Compile Include="obj\Metadata\ParticipantDtoMetadata.cs" />
-    <Compile Include="ProcessBreezeRequests\CourseFormatProtector.cs" />
+    <Compile Include="ProcessBreezeRequests\ValidateMedSim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleConstants.cs" />
     <Compile Include="Utilities\LinqExtensions.cs" />

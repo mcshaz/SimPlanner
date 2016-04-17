@@ -1,29 +1,33 @@
-﻿using Breeze.BusinessTime;
-using Breeze.ContextProvider;
+﻿using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
 using LinqKit;
 using SM.DataAccess;
-using SM.DataAccess.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Security.Principal;
 
 namespace SM.DTOs.ProcessBreezeRequests
 {
-    internal class CourseFormatProtector : IProcessBreezeRequests
+    internal sealed class ValidateMedSim : IDisposable
     {
         private readonly IPrincipal _user;
-        private readonly MedSimDbContext _context;
+        private MedSimDbContext _context;
 
-        public CourseFormatProtector(IPrincipal user, MedSimDbContext context)
+        public ValidateMedSim(IPrincipal user)
         {
             _user = user;
-            _context = context;
         }
 
-        public void Process(Dictionary<Type, List<EntityInfo>> saveMap)
+        private MedSimDbContext Context
+        {
+            get
+            {
+                return _context ?? (_context = new MedSimDbContext());
+            }
+        }
+
+        public Dictionary<Type, List<EntityInfo>> Process(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             IEnumerable<EFEntityError> errors = new EFEntityError[0];
 
@@ -42,6 +46,7 @@ namespace SM.DTOs.ProcessBreezeRequests
             {
                 throw new EntityErrorsException(errors);
             }
+            return saveMap;
         }
 
         IEnumerable<EFEntityError> GetCourseFormatErrors(List<EntityInfo> currentInfos)
@@ -52,7 +57,7 @@ namespace SM.DTOs.ProcessBreezeRequests
             var pred = cfs.Aggregate(PredicateBuilder.False<CourseFormat>(), (prev, cur) => prev.Or(
                 c => cur.Entity.Id == c.Id && 
                     c.CourseTypeId != cur.Entity.CourseTypeId));
-            if (_context.CourseFormats.Any(pred.Compile()))
+            if (Context.CourseFormats.Any(pred.Compile()))
             {
                 throw new InvalidDataException();
             }
@@ -60,7 +65,7 @@ namespace SM.DTOs.ProcessBreezeRequests
             var ids = cfs.Select(cf => cf.Entity.Id).ToList();
             var courseTypeIds = cfs.Select(cf => cf.Entity.CourseTypeId);
 
-            var newFormatsForType = (from c in _context.CourseFormats
+            var newFormatsForType = (from c in Context.CourseFormats
                                      where courseTypeIds.Contains(c.CourseTypeId) && !ids.Contains(c.Id)
                                      select new { c.Id, c.Description }).ToList();
 
@@ -88,21 +93,21 @@ namespace SM.DTOs.ProcessBreezeRequests
                 object pr;
                 if (p.Info.OriginalValuesMap.TryGetValue("ProfessionalRoleId", out pr) && !p.Entity.DefaultProfessionalRoleId.Equals(pr))
                 {
-                    _context.ProfessionalRoles.;
+                    Context.ProfessionalRoles.;
                 }
             }
             */
             List<EFEntityError> returnVar = new List<EFEntityError>();
             foreach (var p in ps)
             {
-                var dup = (from u in _context.Users
+                var dup = (from u in Context.Users
                            where p.Entity.Id != u.Id &&
                                p.Entity.FullName == u.FullName &&
                                p.Entity.DefaultDepartmentId == u.DefaultDepartmentId
                            select u.DefaultProfessionalRoleId).FirstOrDefault();
                 if (dup != default(Guid) 
                     && ((dup == p.Entity.DefaultProfessionalRoleId 
-                        || (from r in _context.ProfessionalRoles
+                        || (from r in Context.ProfessionalRoles
                             where (new[] { dup, p.Entity.DefaultProfessionalRoleId}).Contains(r.Id)
                             group r by r.Description into c
                             select c).Count() == 1)))
@@ -134,5 +139,20 @@ namespace SM.DTOs.ProcessBreezeRequests
                 return info.Select(i => new TypedEntityinfo<T> { Info = i, Entity = (T)i.Entity }).ToList();
             }
         }
+
+        #region IDisposable
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        ~ValidateMedSim() { Dispose(false); }
+        void Dispose(bool disposing)
+        { // would be protected virtual if not sealed 
+            if (disposing && _context!=null)
+            { // only run this logic when Dispose is called
+                _context.Dispose();
+            }
+        }
+        #endregion //IDisposable
     }
 }

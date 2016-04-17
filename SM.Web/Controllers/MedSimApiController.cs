@@ -133,7 +133,7 @@ namespace SM.Web.Controllers
                 }
                 if (options.OrderBy != null)
                 {
-                    Selects = (Selects ?? new string[0]).Concat(options.OrderBy.RawValue.Split(splitter)).ToArray();
+                    Selects = (Selects ?? new string[0]).Union(options.OrderBy.RawValue.Split(splitter)).ToArray();
                 }
             }
             public readonly string[] Includes;

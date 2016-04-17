@@ -78,7 +78,6 @@
 
             function afterSave() {
                 vm.participant = datacontext.participants.create(breeze.EntityState.Detached);
-                vm.notifyViewModelLoaded();
                 _lastLookup = _lastVal = null;
             }
         }
@@ -151,7 +150,6 @@
         function onParticipantSelected(item) {
             datacontext.participants.fetchByKey(item.id).then(function (part) {
                 vm.participant = part;
-                vm.notifyViewModelLoaded();
             });
         }
 

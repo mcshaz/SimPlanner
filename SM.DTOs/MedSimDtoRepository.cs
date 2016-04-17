@@ -1,5 +1,4 @@
-﻿using Breeze.BusinessTime.Authorization;
-using Breeze.ContextProvider;
+﻿using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
 using Newtonsoft.Json.Linq;
 using SM.DataAccess;
@@ -15,9 +14,9 @@ namespace SM.Dto
 {
     public class MedSimDtoRepository : IDisposable
     {
-        private readonly AuthorizedDbContextProvider<MedSimDbContext> _contextProvider;
+        private readonly EFContextProvider<MedSimDbContext> _contextProvider;
+        private readonly ValidateMedSim _validationHelper;
         private readonly IPrincipal _user;
-        private MedSimDbContext _validationContext;
 
         private MedSimDbContext Context
         {
@@ -27,10 +26,10 @@ namespace SM.Dto
         public MedSimDtoRepository(IPrincipal user)
         {
 
-            _contextProvider = new AuthorizedDbContextProvider<MedSimDbContext>(user, allowedRoles: new[] { RoleConstants.AccessAllData });
+            _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
+            _validationHelper = new ValidateMedSim(user);
+            _contextProvider.BeforeSaveEntitiesDelegate += _validationHelper.Process;
             _user = user;
-            //_entitySaveGuard = new EntitySaveGuard();
-            //_contextProvider.BeforeSaveEntityDelegate += _entitySaveGuard.BeforeSaveEntity;
         }
 
         public static string GetEdmxMetadata()
@@ -45,18 +44,9 @@ namespace SM.Dto
 
         public SaveResult SaveChanges(JObject saveBundle)
         {
-            _validationContext = new MedSimDbContext();
-            if (!_contextProvider.BeforePipeline.Any(p=>p is CourseFormatProtector)){
-                _validationContext = new MedSimDbContext();
-                _contextProvider.BeforePipeline.Add(new CourseFormatProtector(_user, _validationContext));
-            }
-            
-            // Todo: transform entities in saveBundle from DTO form into server-model form.
-            // At least change the namespace from Northwind.DtoModels to Northwind.Models :-)
-            // will fail until then
-
             // save with server model's "real" contextProvider
             MapFromDto(saveBundle);
+
             var returnVar = _contextProvider.SaveChanges(saveBundle);
             Remap(returnVar);
             return returnVar;
@@ -228,7 +218,9 @@ namespace SM.Dto
                 // free other managed objects that implement
                 // IDisposable only
                 _contextProvider.Context.Dispose();
-                if (_validationContext != null) { _validationContext.Dispose(); }
+                //if (_validationHelper != null) {
+                _validationHelper.Dispose();
+                //}
             }
 
             // release any unmanaged objects
