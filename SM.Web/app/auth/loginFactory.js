@@ -2,9 +2,9 @@
     'use strict';
     var serviceId = 'loginFactory';
     angular.module('app')
-        .factory(serviceId, ['$http', '$httpParamSerializerJQLike', 'tokenStorageService', 'common',loginFactory]);
+        .factory(serviceId, ['$http', '$httpParamSerializerJQLike', 'tokenStorageService', 'common','$q',loginFactory]);
 
-    function loginFactory($http, $httpParamSerializerJQLike, tokenStorageService, common) {
+    function loginFactory($http, $httpParamSerializerJQLike, tokenStorageService, common,$q) {
         var log = common.logger.getLogFn(serviceId);
         var service = {
             login : login, 
@@ -35,7 +35,7 @@
 
         function logout() {
             if (tokenStorageService.isLoggedIn()) {
-                $http({
+                return $http({
                     method: 'POST',
                     url: 'api/Account/Logout',
                     ignoreAuthModule: true // if we had already timed out, a 401 will be returned
@@ -47,6 +47,7 @@
                 });
             } else {
                 log.debug({ msg: 'logout called - Not logged in' });
+                return $q.when();
             }
         };
 

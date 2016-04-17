@@ -37,38 +37,46 @@
 
         var self = {
             manager: masterManager,
-            ready: ready
+            ready: ready,
+            set modelBuilder(builder) {
+                builder(this.manager.metadataStore);
+            }
         };
 
-        var defer = $q.defer();
-        
-        var unwatchImport = $rootScope.$on(AUTH_EVENTS.loginConfirmed, importEntities);
+        var defer;
+        awaitLogin();
+        $rootScope.$on(AUTH_EVENTS.loginCancelled, logout);
         //to do empty values on logout;
-
         return self;
 
         function ready() {
             return defer.promise;
         }
 
-        function importEntities(args) {
-            if (args.recredentialled) {
-                return;
-            }
-            if (self.modelBuilder) {
-                self.modelBuilder(masterManager.metadataStore);
-            }
+        function awaitLogin() {
+            defer = $q.defer();
+            var unwatchImport = $rootScope.$on(AUTH_EVENTS.loginConfirmed, importEntities);
+            function importEntities(args) {
+                if (args.recredentialled) {
+                    return;
+                }
 
-            var query = breeze.EntityQuery.from('Lookups');
-            return masterManager.executeQuery(query).then(function () {
-                defer.resolve();
-            }, function (arg) {
-                log.error(arg);
-                defer.reject(arg);
-            });
-            unwatchImport(); //only run once - will be called on every recredential
-            unwatchImport = null;
-        };
+                var query = breeze.EntityQuery.from('Lookups');
+                return masterManager.executeQuery(query).then(function () {
+                    defer.resolve();
+                }, function (arg) {
+                    log.error(arg);
+                    defer.reject(arg);
+                });
+                unwatchImport(); //only run once - will be called on every recredential
+                unwatchImport = null;
+            };
+        }
+
+        function logout() {
+            self.manager.clear();
+            awaitLogin();
+        }
 
     }
 

@@ -17,7 +17,6 @@
         activate();
 
         function activate() {
-            $rootScope.$on(AUTH_EVENTS.loginCancelled, updateDash);
             if (!tokenStorageService.isLoggedIn()) {
                 $rootScope.$on(AUTH_EVENTS.loginConfirmed, updateDash);
             }
@@ -41,23 +40,23 @@
 
         function getCourses() {
             var now = new Date();
-            return datacontext.courses.find({
-                where: breeze.Predicate.create('startTime', '>', now),
-                orderBy: 'startTime',
-                take: 5,
-                expand: 'courseParticipants',
-                //select: 'id,startTime,courseParticipants,roomId'
-            }).then(function (data) {
-                if (data.length) {
-                    datacontext.ready().then(function () {
-                        vm.upcomingCourses = data;
-                        vm.nextUserCourse = data.find(function (course) {
-                            return course.includesUser(vm.currentUserId);
-                        });
-                        vm.loginState = (vm.nextUserCourse ? 'active' : 'inactive');
-                    });
-                }
-
+            return $q.all([
+                datacontext.ready(),
+                datacontext.courses.find({
+                    where: breeze.Predicate.create('startTime', '>', now),
+                    orderBy: 'startTime',
+                    take: 5,
+                    expand: 'courseParticipants',
+                    //select: 'id,startTime,courseParticipants,roomId'
+                }).then(function (data) { vm.upcomingCourses = data; })])
+           .then(function () {
+                vm.upcomingCourses.forEach(function (course) {
+                    course.includesCurrentUser = course.includesUser(vm.currentUserId);
+                    if (!vm.nextUserCourse && course.includesCurrentUser) {
+                        vm.nextUserCourse = course;
+                    }
+                });
+                vm.loginState = (vm.nextUserCourse ? 'active' : 'inactive');
             });
         }
 

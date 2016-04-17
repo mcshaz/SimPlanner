@@ -3,9 +3,9 @@
 
 var controllerId = 'loginWidget';
     angular.module('app')
-        .controller(controllerId, ['$rootScope', 'loginFactory', '$modal', 'AUTH_EVENTS', 'tokenStorageService','common', 'commonConfig',loginWidget]);
+        .controller(controllerId, ['$rootScope', 'loginFactory', '$modal', 'AUTH_EVENTS', 'tokenStorageService','common', 'commonConfig', '$location', '$route',loginWidget]);
     
-    function loginWidget($rootScope, loginFactory, $modal,AUTH_EVENTS,tokenStorageService, common,commonConfig) {
+    function loginWidget($rootScope, loginFactory, $modal,AUTH_EVENTS,tokenStorageService, common,commonConfig, $location, $route) {
         var modalInstance = null;
         var vm = this;
         vm.currentUser = tokenStorageService.getUserName();
@@ -41,8 +41,16 @@ var controllerId = 'loginWidget';
         }
 
         function logout() {
-            loginFactory.logout();
-            vm.currentUser = '';
+            loginFactory.logout().then(function () {
+                vm.currentUser = '';
+                //could also use $window.location.reload(); to not have to deal with emptying sensitive data
+
+                if ($location.path() === '/') {
+                    $route.reload();
+                } else {
+                    $location.path('/');
+                }
+            })
         }
     };
 })();
