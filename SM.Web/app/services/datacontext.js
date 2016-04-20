@@ -40,7 +40,7 @@
 
         self.activityResources = repository.create(self.provider, 'ActivityTeachingResourceDto', 'ActivityTeachingResources');
         self.courses = repository.create(self.provider, 'CourseDto', 'Courses');
-        self.countries = repository.create(self.provider, 'CountryDto', 'Countries', breeze.FetchStrategy.FromLocalCache);
+        self.cultures = repository.create(self.provider, 'CultureDto', 'Cultures', breeze.FetchStrategy.FromLocalCache);
         self.courseActivities = repository.create(self.provider, 'CourseActivityDto', 'CourseActivities');
         self.courseFormats = repository.create(self.provider, 'CourseFormatDto', 'CourseFormats');
         self.courseParticipants = repository.create(self.provider, 'CourseParticipantDto', 'CourseParticipants'/* 'Courses' */);
@@ -55,6 +55,9 @@
         self.professionalRoles = repository.create(self.provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);
         self.rooms = repository.create(self.provider, 'RoomDto', 'Rooms', breeze.FetchStrategy.FromLocalCache);
         self.manequins = repository.create(self.provider, 'ManequinDto', 'Manequins', breeze.FetchStrategy.FromLocalCache);
+        self.manequinModels = repository.create(self.provider, 'ManequinModelDto', 'ManequinModels');
+        self.scenarios = repository.create(self.provider, 'ScenarioDto', 'Scenarios');
+        self.professionalRoleInstitutions = repository.create(self.provider, 'ProfessionalRoleInstitutionDto', 'ProfessionalRoleInstitutions');
 
         function saveFailed(error) {
             var msg = config.appErrorPrefix + 'Save failed: ' +

@@ -10,7 +10,7 @@ namespace SM.DataAccess
         public Guid Id { get; set; }
         public string Description { get; set; }
         public Guid CourseTypeId { get; set; }
-        public byte Order { get; set; }
+        public int Order { get; set; }
     
 		public CourseType CourseType { get; set; }
 

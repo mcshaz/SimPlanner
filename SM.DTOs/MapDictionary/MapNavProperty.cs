@@ -137,7 +137,7 @@ code to create member inti  bindings of default values
                                 defaultVal = Expression.Constant(default(short),type);
                                 break;
                             case TypeCode.UInt16:
-                                defaultVal = Expression.Constant(default(ushort),type);
+                                defaultVal = Expression.Constant(default(int),type);
                                 break;
                             case TypeCode.Int32:
                                 defaultVal = Expression.Constant(default(int),type);

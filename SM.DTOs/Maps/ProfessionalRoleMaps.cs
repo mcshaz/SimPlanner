@@ -13,8 +13,9 @@ namespace SM.Dto.Maps
                 Id = m.Id,
                 Description = m.Description,
                 Category = m.Category,
+                Order = m.Order
                 //Participants = m.Participants,
-                //Countries = m.Countries
+                //cultures = m.cultures
             };
         }
 
@@ -25,8 +26,9 @@ namespace SM.Dto.Maps
                 Id = m.Id,
                 Description = m.Description,
                 Category = m.Category,
+                Order = m.Order
                 //Participants = m.Participants,
-                //Countries = m.Countries
+                //cultures = m.cultures
             };
         }
     }

@@ -1,0 +1,79 @@
+﻿<section id="course-view" class="mainbar" data-ng-controller="scenario as vm">
+    <section class="matter">
+        <div class="container col-md-12">
+            <form class="form-horizontal" ng-submit="vm.save($event)" id="courseForm">
+                <div class="validationSummary"></div>
+                <fieldset>
+                    <legend>Required</legend>
+                    <div class="form-group">
+                        <label for="courseTypeId" class="col-md-2 control-label">Course Type</label>
+                        <div class="col-md-10">
+                            <select id="courseTypeId" class="form-control" data-z-validate data-ng-model="vm.scenario.courseTypeId" data-ng-options="ct.id as ct.description for ct in vm.courseTypes">
+                                <option disabled selected hidden value="">
+                                    Select Course Type...
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+					<div class="form-group">
+						<label for="description" class="col-md-2 control-label">Description</label>
+						<div class="col-md-10">
+							<input type="text" id="description" class="form-control" ng-model="vm.scenario.description" z-validate/>
+						</div>
+					</div>
+			
+					<div class="form-group">
+						<label for="departmentId" class="col-md-2 control-label">Department</label>
+						<div class="col-md-10">
+							<select id="departmentId" class="form-control" data-z-validate data-ng-model="vm.scenario.departmentId" data-ng-options="d.id as d.name group by d.institution.name  for d in vm.departments">
+                                <option disabled selected hidden value="">
+                                    Select Department...
+                                </option>
+                            </select>
+						</div>
+					</div>
+
+                    </fieldset>
+                    <fieldset>
+                        <legend>Required</legend>
+
+                        <div class="form-group">
+                            <label for="emersionCategory" class="col-md-2 control-label">Emersion Category</label>
+                            <div class="col-md-10">
+                                <select id="emersionCategory" class="form-control" data-z-validate data-ng-model="vm.scenario.emersionCategory" data-ng-options="e for e in vm.emersionCategories">
+                                    <option disabled selected hidden value="">
+                                        Select Emersion Category...
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="complexity" class="col-md-2 control-label">Complexity</label>
+                            <div class="col-md-10">
+                                <select id="complexity" class="form-control" data-z-validate data-ng-model="vm.scenario.complexity" data-ng-options="c for c in vm.complexities">
+                                    <option disabled selected hidden value="">
+                                        Select Complexity...
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="templateFilename" class="col-md-2 control-label">Template Filename</label>
+                            <div class="col-md-10">
+                                <input type="text" id="templateFilename" class="form-control" ng-model="vm.scenario.templateFilename" z-validate />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="submit" class="btn btn-default" ng-disabled="vm.isDisabled()">Save</button>
+                            </div>
+                        </div>
+                    </fieldset>
+</form>
+        </div>
+    </section>
+</section>

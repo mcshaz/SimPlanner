@@ -15,6 +15,6 @@ namespace SM.Metadata
         public string Description { get; set; }
 
         [Range(0,20)]
-        public byte Order { get; set; }
+        public int Order { get; set; }
     }
 }

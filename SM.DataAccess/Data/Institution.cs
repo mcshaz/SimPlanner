@@ -18,13 +18,13 @@ namespace SM.DataAccess
 
         public string StandardTimeZone { get; set; }
 
-        public virtual Country Country { get; set; }
+        public virtual Culture Culture { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Department> Departments { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProfessionalRole> ProfessionalRoles { get; set; }
+        public virtual ICollection<ProfessionalRoleInstitution> ProfessionalRoleInstitutions { get; set; }
 
     }
 }

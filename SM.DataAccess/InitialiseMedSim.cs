@@ -9,10 +9,10 @@ namespace SM.DataAccess
     {
         protected override void Seed(MedSimDbContext context)
         {
-            var nz = new Country { LocaleCode = "en-NZ", Name = "New Zealand", DialCode="64" };
-            context.Countries.Add(nz);
+            var nz = new Culture { LocaleCode = "en-NZ", Name = "New Zealand", CountryCode=64 };
+            context.Cultures.Add(nz);
 
-            var starship = new Institution { Id = Guid.NewGuid(), Country = nz, Name="Starship", ProfessionalRoles=new List<ProfessionalRole>() };
+            var starship = new Institution { Id = Guid.NewGuid(), Culture = nz, Name="Starship", ProfessionalRoleInstitutions=new List<ProfessionalRoleInstitution>() };
             context.Institutions.Add(starship);
             var ced = new Department { Id = Guid.NewGuid(), Institution = starship, Abbreviation = "CED", Name="Children's Emergency Department"};
             context.Departments.Add(ced);
@@ -33,9 +33,9 @@ namespace SM.DataAccess
             var techRole = new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Tech, Description = "Simulation Technician" };
             context.ProfessionalRoles.Add(techRole);
 
-            starship.ProfessionalRoles.Add(consultantRole);
-            starship.ProfessionalRoles.Add(nursingRole);
-            starship.ProfessionalRoles.Add(techRole);
+            starship.ProfessionalRoleInstitutions.Add(new ProfessionalRoleInstitution { ProfessionalRole = consultantRole });
+            starship.ProfessionalRoleInstitutions.Add(new ProfessionalRoleInstitution { ProfessionalRole = nursingRole });
+            starship.ProfessionalRoleInstitutions.Add(new ProfessionalRoleInstitution { ProfessionalRole = techRole });
 
 
             //todo add Mike,Denish,Becks & check trish phone no and 2nd email 
@@ -121,7 +121,7 @@ namespace SM.DataAccess
 
             context.SaveChanges();
 
-            var s = new Scenario { Id = Guid.NewGuid(), Complexity = Difficulty.Easy, Description = "boy falls down well", EmersionCategory = Emersion.Emersive, CourseType = crm, ManequinModel = junior,
+            var s = new Scenario { Id = Guid.NewGuid(), Complexity = Difficulty.Easy, Description = "boy falls down well", EmersionCategory = Emersion.Emersive, CourseType = crm, 
                 Department = ced };
 
             var s2 = new Scenario
@@ -131,7 +131,6 @@ namespace SM.DataAccess
                 Description = "boy has fever",
                 EmersionCategory = Emersion.Emersive,
                 CourseType = crm,
-                ManequinModel = junior,
                 Department = picu
             };
 

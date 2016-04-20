@@ -10,10 +10,19 @@
                             {{cf.courseType.description + ' ' + cf.description}} <a class="btn-link" ng-href="#/courseType/{{cf.courseType.id}}?formatId={{cf.id}}"><i class="fa fa-edit"></i></a>
                         </li>
                         <li>
-                            <h4>Scenarios</h4> <a class="btn-link" ng-href="#/scenario/new?formatId={{cf.id}}"><i class="fa fa-plus"></i> New Scenario</a>
+                            <h4>Scenarios</h4> <a class="btn-link" ng-href="#/scenario/new?courseTypeId={{cf.id}}"><i class="fa fa-plus"></i> New Scenario</a>
                             <ul>
                                 <li ng-repeat="s in ct.scenarios track by s.id">
                                     {{s.description}} <a class="btn-link" ng-href="#/scenario/{{s.id}}"><i class="fa fa-edit"></i></a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <h4>Faculty Roles</h4>
+                            <ul class="list-inline list-group">
+                                <li class="list-group-item" ng-repeat="fr in ct.facultySimRoles track by fr.id">
+                                    {{fr.description}}
                                 </li>
                             </ul>
                         </li>

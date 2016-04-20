@@ -10,7 +10,7 @@ namespace SM.DataAccess
     {
         public Guid Id { get; set; }
         public byte MinutesDuration { get; set; }
-        public byte Order { get; set; }
+        public int Order { get; set; }
         public byte Day { get; set; }
         public bool IsActive { get; set; }
         public byte SimultaneousStreams { get; set; }

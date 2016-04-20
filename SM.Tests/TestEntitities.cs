@@ -17,7 +17,7 @@ namespace ServerSideUnitTests
             try 
             {
                 db = new MedSimDbContext();
-                Assert.IsTrue(db.Countries.Any(), "MedSimDbContext accessed, but no countries seeded");
+                Assert.IsTrue(db.Cultures.Any(), "MedSimDbContext accessed, but no cultures seeded");
             }
             catch(DataException e)
             {

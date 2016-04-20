@@ -14,7 +14,7 @@ namespace SM.Dto
         }
         public virtual DbSet<ActivityTeachingResourceDto> ActivityTeachingResources { get; set; }
         public virtual DbSet<ChosenTeachingResourceDto> ChosenTeachingResources { get; set; }
-        public virtual DbSet<CountryDto> Countries { get; set; }
+        public virtual DbSet<CultureDto> cultures { get; set; }
         public virtual DbSet<CourseDto> Courses { get; set; }
         public virtual DbSet<CourseActivityDto> CourseActivities { get; set; }
         public virtual DbSet<CourseFormatDto> CourseFormats { get; set; }
@@ -50,9 +50,9 @@ namespace SM.Dto
                 .HasForeignKey(e => e.ActivityTeachingResourceId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<CountryDto>()
+            modelBuilder.Entity<CultureDto>()
                 .HasMany(e => e.Institutions)
-                .WithRequired(e => e.Country)
+                .WithRequired(e => e.Culture)
                 .HasForeignKey(e => e.LocaleCode)
                 .WillCascadeOnDelete(false);
 
@@ -230,8 +230,9 @@ namespace SM.Dto
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<InstitutionDto>()
-                .HasMany(e => e.ProfessionalRoles)
-                .WithMany(e => e.Institutions);
+                .HasMany(e => e.ProfessionalRoleInstitutions)
+                .WithRequired(e => e.Institution)
+                .HasForeignKey(e => e.InstitutionId);
 
             modelBuilder.Entity<ManequinDto>()
                 .HasMany(e => e.ManequinServices)
@@ -255,12 +256,6 @@ namespace SM.Dto
                 .HasMany(e => e.Manequins)
                 .WithRequired(e => e.Model)
                 .HasForeignKey(e => e.ModelId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<ManequinModelDto>()
-                .HasMany(e => e.Scenarios)
-                .WithOptional(e => e.ManequinModel)
-                .HasForeignKey(e => e.ManequinModelId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ParticipantDto>()
@@ -293,6 +288,11 @@ namespace SM.Dto
                 .HasForeignKey(e => e.ProfessionalRoleId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<ProfessionalRoleDto>()
+                .HasMany(e => e.ProfessionalRoleInstitutions)
+                .WithRequired(e => e.ProfessionalRole)
+                .HasForeignKey(e => e.ProfessionalRoleId);
+
             modelBuilder.Entity<RoomDto>()
                 .HasMany(e => e.Courses)
                 .WithRequired(e => e.Room)
@@ -307,5 +307,7 @@ namespace SM.Dto
 
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<ManequinModelDto> ManequinModelDtoes { get; set; }
     }
 }

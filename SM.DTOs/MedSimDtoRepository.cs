@@ -104,19 +104,15 @@ namespace SM.Dto
         }
 
         //https://github.com/AutoMapper/AutoMapper/wiki/Queryable-Extensions
-        public IQueryable<InstitutionDto> Institutions
+        public IQueryable<InstitutionDto> GetInstitutions(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
-            get
+            IQueryable<Institution> returnVar = Context.Institutions;
+            if (!_user.IsInRole(RoleConstants.AccessAllData))
             {
-                IQueryable<Institution> returnVar = Context.Institutions;
-                if (!_user.IsInRole(RoleConstants.AccessAllData))
-                {
-                    returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
-                }
-                //currently allowing users to view all departmetns within their institution - but only edit thseir department
-                return returnVar.Project<Institution,InstitutionDto>(includes: new[] { "Departments.Rooms","ProfessionalRoles","Country", "Departments.Manequins" });
-
+                returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
             }
+            //currently allowing users to view all departmetns within their institution - but only edit thseir department
+            return returnVar.Project<Institution,InstitutionDto>(includes, selects,sepChar);
         }
 
         public IQueryable<ParticipantDto> GetParticipants(string[] includes = null, string[] selects = null, char sepChar = '.')
@@ -132,7 +128,10 @@ namespace SM.Dto
             //filteredQuery.Select(CourseMaps.mapFromRepo).ToList().AsQueryable();
         }
 
-        public IQueryable<CountryDto> Countries { get { return Context.Countries.Project<Country,CountryDto>(); } }
+        public IQueryable<CultureDto> GetCultures(string[] includes, string[] selects, char sepChar)
+        {
+            return Context.Cultures.Project<Culture, CultureDto>(includes, selects, sepChar);
+        }
 
         public IQueryable<DepartmentDto> Departments { get { return Context.Departments.Project<Department,DepartmentDto>(); } }
 
@@ -167,6 +166,8 @@ namespace SM.Dto
                 return Context.ManequinManufacturers.Project<ManequinManufacturer, ManequinManufacturerDto>(includes: new[] { "ManequinModels" });
             }
         }
+
+        public IQueryable<ManequinModelDto> ManequinModels { get { return Context.ManequinModels.Project<ManequinModel, ManequinModelDto>(); } }
 
         public IQueryable<CourseActivityDto> GetCourseActivities(string[] includes = null, string[] selects = null, char sepChar = '.') {
             return Context.CourseActivities.Project<CourseActivity, CourseActivityDto>(includes, selects, sepChar);

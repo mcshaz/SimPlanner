@@ -18,46 +18,20 @@ namespace SM.DataAccess
 
         public ProfessionalCategory Category { get; set; }
 
-		ICollection<Participant> _participants; 
+        public int Order { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Participant> Participants
 		{
-			get
-			{
-				return _participants ?? (_participants = new List<Participant>());
-			}
-			set
-			{
-				_participants = value;
-			}
+            get; set;
 		}
-
-		ICollection<Institution> _institutions; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Institution> Institutions
-		{
-			get
-			{
-				return _institutions ?? (_institutions = new List<Institution>());
-			}
-			set
-			{
-				_institutions = value;
-			}
-		}
+        public virtual ICollection<ProfessionalRoleInstitution> ProfessionalRoleInstitutions { get; set; }
 
-        ICollection<CourseParticipant> _courseParticipants;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseParticipant> CourseParticipants
         {
-            get
-            {
-                return _courseParticipants ?? (_courseParticipants = new List<CourseParticipant>());
-            }
-            set
-            {
-                _courseParticipants = value;
-            }
+            get; set;
         }
     }
 }

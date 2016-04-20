@@ -10,9 +10,10 @@ namespace SM.Dto
 	{
         public Guid Id { get; set; }
         public string Description { get; set; }
+        public int Order { get; set; }
         public ProfessionalCategory Category { get; set; }
         public virtual ICollection<ParticipantDto> Participants { get; set; }
-        public virtual ICollection<InstitutionDto> Institutions { get; set; }
+        public virtual ICollection<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get; set; }
         public virtual ICollection<CourseParticipantDto> CourseParticipants { get; set; }
     }
 }

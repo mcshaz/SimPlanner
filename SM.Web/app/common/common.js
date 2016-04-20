@@ -25,9 +25,9 @@
     });
 
     commonModule.factory('common',
-        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', /* 'dateUtilities', */common]);
+        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger','$http', /* 'dateUtilities', */common]);
 
-    function common($q, $rootScope, $timeout, commonConfig, logger /*, dateUtilities */) {
+    function common($q, $rootScope, $timeout, commonConfig, logger, $http /*, dateUtilities */) {
         var throttles = {};
 
         var service = {
@@ -38,6 +38,8 @@
             activateController: activateController,
             createSearchThrottle: createSearchThrottle,
             debouncedThrottle: debouncedThrottle,
+            fetchCultureFormats: fetchCultureFormats,
+            getFlagUrlFromLocaleCode: getFlagUrlFromLocaleCode,
             getEnumValues: window.medsimMetadata.getEnums,
             getRoleIcon: getRoleIcon,
             isEmptyObject: isEmptyObject,
@@ -48,7 +50,8 @@
             sortOnChildPropertyName: sortOnChildPropertyName,
             
             textContains: textContains,
-            toSeperateWords: toSeperateWords
+            toSeperateWords: toSeperateWords,
+            alphaNumericEqual: alphaNumericEqual
         };
 
         return service;
@@ -62,6 +65,11 @@
 
         function $broadcast() {
             return $rootScope.$broadcast.apply($rootScope, arguments);
+        }
+
+        function alphaNumericEqual(str1, str2){
+            var comp = /[^A-Za-z0-9]/g;
+            return str1.toLowerCase().replace(comp,"") === str2.toLowerCase().replace(comp,"");
         }
 
         function createSearchThrottle(viewmodel, list, filteredList, filter, delay) {
@@ -124,6 +132,20 @@
             } else {
                 throttles[key] = $timeout(callback, delay);
             }
+        }
+
+        function fetchCultureFormats() {
+            return $http({ method: 'GET', url: 'api/utilities/cultureFormats' }).then(function (response) {
+                response.data.forEach((function (el) {
+                    el.flagUrl = getFlagUrlFromLocaleCode(el.Key);
+                }));
+
+                return response.data;
+            });
+        }
+
+        function getFlagUrlFromLocaleCode(localeCode) {
+            return 'Content/images/flags/gif/' + localeCode.substring(localeCode.length - 2).toLowerCase() + '.gif';
         }
 
         function isNumber(val) {

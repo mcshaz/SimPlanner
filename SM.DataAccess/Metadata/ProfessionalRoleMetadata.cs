@@ -12,5 +12,10 @@ namespace SM.Metadata
         [Required]
         [StringLength(50)]
         public string Description { get; set; }
+        /// <summary>
+        /// 1st 2 digits Professional category, second 2 order within category
+        /// </summary>
+        [Range(0,9999)]
+        public int Order { get; set; }
     }
 }

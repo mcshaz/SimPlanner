@@ -12,13 +12,12 @@ namespace SM.Dto
         public Guid Id { get; set; }
         public string Description { get; set; }
         public Guid DepartmentId { get; set; }
-        public Difficulty Complexity { get; set; }
+        public Difficulty? Complexity { get; set; }
         public Emersion? EmersionCategory { get; set; }
         public string TemplateFilename { get; set; }
         public Guid? ManequinModelId { get; set; }
         public Guid CourseTypeId { get; set; }
 
-        public virtual ManequinModelDto ManequinModel { get; set; }
         public virtual CourseTypeDto CourseType { get; set; }
         public virtual DepartmentDto Department { get; set; }
 

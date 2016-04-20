@@ -13,7 +13,7 @@ namespace SM.Metadata
         [Range(1, 240)]
         public byte MinutesDuration { get; set; }
         [Range(0,100)]
-        public byte Order { get; set; }
+        public int Order { get; set; }
         [Range(1, 28)]
         [DefaultValue(1)]
         public byte Day { get; set; }

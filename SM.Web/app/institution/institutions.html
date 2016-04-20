@@ -1,0 +1,57 @@
+﻿<section id="dashboard-view" class="mainbar" ng-controller="cultures as vm">
+    <section class="matter">
+        <div class="container">
+            <ul class="list-unstyled">
+                <li ng-repeat="c in vm.cultures track by c.id">
+                    <h3>
+                        <img width="16" ng-src="{{c.flagUrl}}"> {{c.name}} 
+                    </h3> 
+                        <a class="btn-link" href="#/institution/new?localeCode={{c.localeCode}}">(<i class="fa fa-plus"></i> new institution in {{c.name}})</a>
+
+                    <ul>
+                        <li ng-repeat="i in c.institutions track by i.id">
+                            <h4>
+                                {{i.name}} <a class="btn-link small" ng-href="#/institution/{{i.id}}"><i class="fa fa-edit"></i></a>
+                            </h4> 
+                            <a class="btn-link" href="#/professionalRoles/{{i.id}}">(edit {{i.name}} professional roles)</a>
+                            <br />
+                            <a class="btn-link" href="#/department/new?institutionId={{i.id}}">(<i class="fa fa-plus"></i> New Department)</a>
+                            <ul>
+                                <li ng-repeat="d in i.departments track by d.id">
+                                    <h5>{{d.name}} <a class="btn-link small" ng-href="#/department/{{d.id}}"><i class="fa fa-edit"></i></a></h5>
+                                    <ul>
+                                        <li class="list-unstyled">
+                                            <h6>Manequins <a class="btn-link small" ng-href="#/manequin/new?departmentId={{d.id}}">(<i class="fa fa-plus"></i> New Manequin)</a></h6>
+                                            <ul>
+                                                <li ng-repeat="m in d.manequins track by m.id">
+                                                    {{m.description}} <a class="btn-link" ng-href="#/manequin/{{m.id}}"><i class="fa fa-edit"></i></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="list-unstyled">
+                                            <h6>Scenarios <a class="btn-link small" ng-href="#/scenario/new?departmentId={{d.id}}">(<i class="fa fa-plus"></i> New Scenario)</a></h6>
+                                            <ul>
+                                                <li ng-repeat="s in d.scenarios track by s.id">
+                                                    {{s.description}} <a class="btn-link" ng-href="#/scenario/{{s.id}}"><i class="fa fa-edit"></i></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="list-unstyled">
+                                            <h6>Rooms <a class="btn-link small" ng-href="#/room/new?departmentId={{d.id}}">(<i class="fa fa-plus"></i> New Room)</a></h6>
+                                            <ul>
+                                                <li ng-repeat="r in d.rooms track by r.id">
+                                                    {{r.shortDescription}} <a class="btn-link" ng-href="#/room/{{r.id}}"><i class="fa fa-edit"></i></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+</section>

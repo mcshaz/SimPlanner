@@ -17,7 +17,5 @@ namespace SM.Dto
         public virtual ManequinManufacturerDto Manufacturer { get; set; }
 
         public virtual ICollection<ManequinDto> Manequins { get; set; }
-
-        public virtual ICollection<ScenarioDto> Scenarios { get; set; }
     }
 }

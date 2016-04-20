@@ -7,7 +7,7 @@ namespace SM.Metadata
 
     public class FixedLengthAttribute : Attribute
     {
-        public ushort Length { get; set; }
+        public int Length { get; set; }
     }
 
     public class FixedLengthAttributeConvention

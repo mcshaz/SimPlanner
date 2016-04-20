@@ -45,21 +45,32 @@ namespace SM.Web.Controllers
             var iso = new IncludeSelectOptions(options);
             return Repo.GetParticipants(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
-        [HttpGet]
-		public IQueryable<CountryDto> Countries(){ return Repo.Countries; }
+        [HttpGet, EnableBreezeQuery(MaxExpansionDepth = 3)]
+        public IQueryable<CultureDto> Cultures(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetCultures(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator); ;
+        }
         [HttpGet, EnableBreezeQuery]
         public IQueryable<CourseActivityDto> CourseActivities(ODataQueryOptions options) {
             var iso = new IncludeSelectOptions(options);
             return Repo.GetCourseActivities(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
         [HttpGet]
-		public IQueryable<DepartmentDto> Departments(){ return Repo.Departments; } 
+		public IQueryable<DepartmentDto> Departments(){ return Repo.Departments; }
+
+        [HttpGet, EnableBreezeQuery(MaxExpansionDepth = 4)]
+        public IQueryable<InstitutionDto> Institutions(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetInstitutions(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
         [HttpGet]
 		public IQueryable<FacultySimRoleDto> SenarioRoles(){ return Repo.SenarioRoles; } 
         [HttpGet]
-		public IQueryable<InstitutionDto> Hospitals(){ return Repo.Institutions; } 
+		public IQueryable<ManequinDto> Manequins(){ return Repo.Manequins; }
         [HttpGet]
-		public IQueryable<ManequinDto> Manequins(){ return Repo.Manequins; } 
+        public IQueryable<ManequinModelDto> ManequinModels() { return Repo.ManequinModels; }
         [HttpGet]
 		public IQueryable<ProfessionalRoleDto> ProfessionalRoles(){ return Repo.ProfessionalRoles; } 
         [HttpGet]
@@ -153,7 +164,7 @@ namespace SM.Web.Controllers
         {
             return new LookupBundle
             {
-                Institutions = Repo.Institutions.ToList(),
+                Institutions = Repo.GetInstitutions(includes: new[] { "Departments.Rooms", "ProfessionalRoleInstitutions.ProfessionalRole", "Culture", "Departments.Manequins" }).ToList(),
                 CourseTypes = Repo.GetCourseTypes().ToList(),
                 ProfessionalRoles = Repo.ProfessionalRoles.ToList(),
                 ManequinManufacturers = Repo.ManequinManufacturers.ToList(),

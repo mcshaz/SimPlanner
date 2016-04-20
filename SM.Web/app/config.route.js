@@ -28,7 +28,7 @@
     // Define the routes 
     function getRoutes() {
         return [
-            {
+                {
                 url: '/',
                 config: {
                     templateUrl: 'app/dashboard/dashboard.html',
@@ -109,20 +109,29 @@
                     }
                 }
             }, {
-                url: '/Departments',
+                url: '/institutions',
                 config: {
-                    title: 'Department',
-                    templateUrl: 'app/department/departments.html',
+                    title: 'Institutions',
+                    templateUrl: 'app/institution/institutions.html',
                     settings: {
                         nav: 6,
-                        content: 'Departments' //<i class="fa fa-"></i> 
+                        content: 'Institutions' //<i class="fa fa-"></i> 
                     },
                     access: {
                         allowedRoles: userRoles.all
                     }
                 }
             }, {
-                url: '/Department/:id',
+                url: '/institution/:id',
+                config: {
+                    title: 'Institutions',
+                    templateUrl: 'app/institution/institution.html',
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
+                url: '/department/:id',
                 config: {
                     title: 'Department',
                     templateUrl: 'app/department/department.html',
@@ -131,7 +140,7 @@
                     }
                 }
             }, {
-                url: '/Scenario/:id',
+                url: '/scenario/:id',
                 config: {
                     title: 'Scenario',
                     templateUrl: 'app/scenario/scenario.html',
@@ -140,7 +149,7 @@
                     }
                 }
             }, {
-                url: '/Manequin/:id',
+                url: '/manequin/:id',
                 config: {
                     title: 'Manequin',
                     templateUrl: 'app/manequin/manequin.html',
@@ -148,7 +157,25 @@
                         allowedRoles: userRoles.all
                     }
                 }
-            }
+            }, {
+                url: '/room/:id',
+                config: {
+                    title: 'Room',
+                    templateUrl: 'app/room/room.html',
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
+                url: '/professionalRoles/:id',
+                config: {
+                    title: 'Professional Roles',
+                    templateUrl: 'app/professionalRoles/professionalRoles.html',
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            },
         ];
     }
 })();

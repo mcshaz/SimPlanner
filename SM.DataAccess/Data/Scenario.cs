@@ -16,7 +16,7 @@ namespace SM.DataAccess
 
         public string Description { get; set; }
 
-        public Difficulty Complexity { get; set; }
+        public Difficulty? Complexity { get; set; }
 
         public Emersion? EmersionCategory { get; set; }
 
@@ -26,7 +26,6 @@ namespace SM.DataAccess
         public Guid CourseTypeId { get; set; }
         public Guid DepartmentId { get; set; }
 
-        public virtual ManequinModel ManequinModel { get; set; }
         public virtual CourseType CourseType { get; set; }
         public virtual Department Department { get; set; }
 
@@ -34,28 +33,14 @@ namespace SM.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ScenarioResource> ScenarioResources
 		{
-			get
-			{
-				return _scenarioResources ?? (_scenarioResources = new List<ScenarioResource>());
-			}
-			set
-			{
-                _scenarioResources = value;
-			}
+            get; set;
 		}
 
 		ICollection<CourseSlotScenario> _courseSlotScenarios; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSlotScenario> CourseSlotScenarios
         {
-			get
-			{
-				return _courseSlotScenarios ?? (_courseSlotScenarios = new List<CourseSlotScenario>());
-			}
-			set
-			{
-				_courseSlotScenarios = value;
-			}
+            get; set;
 		}
     }
 }

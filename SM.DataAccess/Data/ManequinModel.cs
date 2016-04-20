@@ -18,7 +18,5 @@ namespace SM.DataAccess
 
         public virtual ICollection<Manequin> Manequins { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Scenario> Scenarios { get; set; }
     }
 }

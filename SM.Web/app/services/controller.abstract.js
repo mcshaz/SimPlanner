@@ -18,7 +18,6 @@
             var manager = datacontext.provider;
             var unwatchers = [$on('$destroy', removeListeners)];
             var breezeWatcher;
-            var isEntityStateChanged;
             var errorEntities = [];
             var isSaving = false;
 
@@ -57,10 +56,8 @@
                     watchedEntityNames.forEach(function (wen) {
                         var ent = vm[wen[0]];
                         var currentLevel;
-                        if (Array.isArray(ent)) {
-                            ent = ent.filter(filterEnts);
-                        } else {
-                            if (!filterEnts(ent)) { return; }
+                        if (!ent) { return; }
+                        if (!Array.isArray(ent)) {
                             ent = [ent];
                         }
 
@@ -74,19 +71,18 @@
                                 }
                                 if (Array.isArray(child)) {
                                     currentLevel = currentLevel.concat(child);
-                                } else if (child && filterEnts(child)) {
+                                } else {
                                     currentLevel.push(child);
                                 }
                             });
                             ent = currentLevel;
                         }
 
-                        _watched = _watched.concat(ent);
+                        _watched = _watched.concat(ent.filter(filterEnts));
                     });
                 }
                 return _watched;
             }
-
 
             function filterEnts(ent) {
                 return ent && ent.entityAspect;
@@ -96,7 +92,7 @@
 
             function notifyViewModelLoaded() {
                 var watched = getWatched(true);
-                isEntityStateChanged = watched.some(isUserChanged);
+                vm.isEntityStateChanged = watched.some(isUserChanged);
                 errorEntities = watched.filter(filterHasValidationErrors);
                 //binding the watcher here as no point binding earlier - propertychanged will fire for every property as the entity is being hydrated
                 if (!breezeWatcher) {
@@ -111,8 +107,8 @@
                 //console.log(changeArgs.entityAction.name + '\t-\t' + ent.entityType.shortName + '\t-\t' + ent.entityAspect.entityState.name);
                 switch (changeArgs.entityAction) {
                     case breeze.EntityAction.EntityStateChange:
-                        if (getWatched().indexOf(ent) !== -1 && !isEntityStateChanged) {
-                            isEntityStateChanged = isUserChanged(ent);
+                        if (getWatched().indexOf(ent) !== -1 && !vm.isEntityStateChanged) {
+                            vm.isEntityStateChanged = isUserChanged(ent);
                         }
                         break;
                     case breeze.EntityAction.PropertyChange:
@@ -154,7 +150,7 @@
             }
 
             function beforeUnload(e){
-                if (isEntityStateChanged) {
+                if (vm.isEntityStateChanged) {
                     e.returnValue = confirmDiscardMsg; // Gecko, Trident, Chrome 34+
                     return confirmDiscardMsg;          // Gecko, WebKit, Chrome <34
                 }
@@ -162,7 +158,7 @@
 
             function beforeRouteChange(e) {
                 if (!e.defaultPrevented) {
-                    if (isEntityStateChanged && !confirm(confirmDiscardMsg)) {
+                    if (vm.isEntityStateChanged && !confirm(confirmDiscardMsg)) {
                         e.preventDefault();
                         common.$broadcast(commonConfig.config.controllerActivateSuccessEvent); //switch the spinner off
                     } else {
@@ -190,14 +186,14 @@
             }
             
             function disableSave() {
-                return isSaving || errorEntities.length || !isEntityStateChanged;
+                return isSaving || errorEntities.length || !vm.isEntityStateChanged;
             }
 
             function save() {
                 isSaving = true;
-
-                return datacontext.save.apply(null,arguments).then(function () {
-                    isEntityStateChanged = false;
+                var args = Array.prototype.filter.call(arguments, function (el) { return el.entityAspect; });
+                return datacontext.save.apply(null, args).then(function () {
+                    vm.isEntityStateChanged = false;
                 }).finally(function() {
                     isSaving = false;
                 });

@@ -18,9 +18,12 @@
         function activate() {
             datacontext.ready().then(function () {
                 common.activateController([
-                    datacontext.courseTypes.findServerIfCacheEmpty({ expand: ['courseFormats', 'scenarios'] }).then(function (data) {
+                    datacontext.courseTypes.findServerIfCacheEmpty({ expand: ['courseFormats', 'scenarios', 'facultySimRoles'] }).then(function (data) {
                         data.sort(common.sortOnPropertyName('description'));
                         vm.courseTypes = data;
+                        data.forEach(function (el) {
+                            el.facultySimRoles.sort(common.sortOnPropertyName('order'));
+                        });
                     })], controllerId)
             });
         }

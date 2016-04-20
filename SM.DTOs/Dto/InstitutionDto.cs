@@ -12,9 +12,9 @@ namespace SM.Dto
         public string About { get; set; }
         public string LocaleCode { get; set; }
         public string StandardTimeZone { get; set; }
-        public CountryDto Country { get; set; }
+        public CultureDto Culture { get; set; }
         public virtual ICollection<DepartmentDto> Departments { get; set; }
-        public virtual ICollection<ProfessionalRoleDto> ProfessionalRoles { get; set; }
+        public virtual ICollection<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get; set; }
 
 
     }

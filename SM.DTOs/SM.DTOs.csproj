@@ -108,7 +108,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\ChosenTeachingResourceDto.cs" />
-    <Compile Include="Dto\CountryDto.cs" />
+    <Compile Include="Dto\ProfessionalRoleInstitutionDto.cs" />
+    <Compile Include="Dto\CultureDto.cs" />
     <Compile Include="Dto\CourseActivityDto.cs" />
     <Compile Include="Dto\CourseDto.cs" />
     <Compile Include="Dto\CourseParticipantDto.cs" />
@@ -138,7 +139,8 @@
     <Compile Include="Maps\ActivityFacultyMaps.cs" />
     <Compile Include="Maps\CourseActivityMaps.cs" />
     <Compile Include="Maps\CourseFormatMaps.cs" />
-    <Compile Include="Maps\CountryMaps.cs" />
+    <Compile Include="Maps\ProfessionalRoleInstitutionMaps.cs" />
+    <Compile Include="Maps\CultureMaps.cs" />
     <Compile Include="Maps\CourseTypeDepartmentMaps.cs" />
     <Compile Include="Maps\ManequinServiceMaps.cs" />
     <Compile Include="Maps\ManequinModelMaps.cs" />
@@ -159,12 +161,13 @@
     <Compile Include="Maps\CourseScenarioFacultyRoleMaps.cs" />
     <Compile Include="Maps\ScenarioMaps.cs" />
     <Compile Include="Maps\ScenarioResourceMaps.cs" />
-    <Compile Include="Maps\ScenarioRoleDescriptionMaps.cs" />
+    <Compile Include="Maps\FacultySimRoleMapsMaps.cs" />
     <Compile Include="Maps\ScenarioSlotMaps.cs" />
     <Compile Include="MedSimDtoContextPretender.cs" />
     <Compile Include="MedSimDtoRepository.cs" />
     <Compile Include="MedSimDtoMetadata.cs" />
     <Compile Include="obj\Metadata\ParticipantDtoMetadata.cs" />
+    <Compile Include="ProcessBreezeRequests\ISO3166.cs" />
     <Compile Include="ProcessBreezeRequests\ValidateMedSim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleConstants.cs" />

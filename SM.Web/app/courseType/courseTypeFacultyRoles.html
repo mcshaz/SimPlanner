@@ -1,0 +1,187 @@
+﻿<section id="course-view" class="mainbar" data-ng-controller="courseType as vm">
+    <section class="matter">
+        <div class="container">
+            <form class="form-horizontal" ng-submit="vm.save($event)" id="courseFormatForm">
+                <div class="row">
+                    <fieldset class="col-md-7">
+                        <legend>Shared Course Details</legend>
+                        <div class="form-group">
+                            <label for="ctDescription" class="col-md-3 control-label">
+                                Course Type
+                            </label>
+                            <div class="col-md-9">
+                                <input id="ctDescription" class="form-control" type="text" ng-model="vm.courseType.description" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ctDescription" class="col-md-3 control-label">
+                                Abbreviation
+                            </label>
+                            <div class="col-md-9">
+                                <input id="ctAbbrev" class="form-control" type="text" ng-model="vm.courseType.abbreviation" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Departments</label>
+                            <div class="col-md-9">
+                                <div id="departments" isteven-multi-select on-item-click="vm.departmentClicked(data)"
+                                     input-model="vm.departments"
+                                     output-model="vm.selectedDepartments"
+                                     button-label="abbreviation"
+                                     item-label="name" group-property="dptGroup"
+                                     tick-property="checked">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ctEmersion" class="col-md-3 control-label">
+                                Emersion Category
+                            </label>
+                            <div class="col-md-9">
+                                <select id="ctEmersion" class="form-control" type="text" ng-model="vm.courseType.emersionCategory" ng-options="e for e in vm.emersionCategories" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ctInstructorCourse" class="col-md-3 control-label">
+                                Instructor Course
+                            </label>
+                            <div class="col-md-9">
+                                <select id="ctEmersion" class="form-control" type="text" ng-model="vm.courseType.instructorCourse" ng-options="i as i.description for i in vm.instructorCourses track by i.id" />
+                            </div>
+                        </div>
+
+                        <button class="btn-link" ng-click="vm.createNewFormat"><i class="fa fa-plus"></i> New Format</button>
+                    </fieldset>
+                </div>
+                <div class="panel-group" ng-model="vm.activeFormatIndex" role="tablist" aria-multiselectable="true" bs-collapse>
+                    <div class="panel panel-default" ng-repeat="cf in vm.courseType.courseFormats track by cf.id">
+                        <div class="panel-heading" role="tab" bs-collapse-toggle>
+                            <h4 class="panel-title">
+                                {{cf.description}}
+                            </h4>
+                        </div>
+                        <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                            <div class="panel-body">
+                                <div class="row col-md-12">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="cfDescription" class="col-md-3 control-label">
+                                                Course Format
+                                            </label>
+                                            <div class="col-md-9">
+                                                <input id="cfDescription" class="form-control" type="text" z-validate ng-model="cf.description" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="daysDuration" class="col-md-3 control-label">
+                                                Days Duration
+                                            </label>
+                                            <div class="col-md-9">
+                                                <input id="daysDuration" class="form-control" type="number" z-validate step="1" ng-model="cf.daysDuration" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <fieldset>
+                                        <!--ng-disabled="!cf.selectedSlot"-->
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <td class="small">(drag)</td>
+                                                    <th>Activities (<button type="button" class="btn-link" ng-click="vm.createSlot(cf)">
+                                                            <i class="fa fa-plus"></i> New Activity
+                                                        </button>)
+                                                    </th>
+                                                    <th>Minutes</th>
+                                                    <th>Streams</th>
+                                                    <td></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody ui-sortable="cf.sortableOptions" ng-model="cf.courseSlots">
+                                                <tr ng-repeat="cs in cf.courseSlots | filter: {isActive: true} track by cs.id" ng-class="cs===cf.selectedSlot?'warning':''">
+                                                    <td class="handle">
+                                                        :::
+                                                    </td>
+                                                    <td>
+                                                        <span ng-hide="cs.activity" class="simulation">Simulation</span>
+                                                        <span ng-show="cs.activity" class="activity">{{cs.activity.name}}</span>
+                                                    </td>
+                                                    <td>
+                                                        {{cs.minutesDuration}}
+                                                    </td>
+                                                    <td>
+                                                        {{cs.simultaneousStreams}}
+                                                    </td>
+
+                                                    <td>
+                                                        <button type="button" class="btn-link" ng-click="vm.editSlot(cs)">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        |
+                                                        <button type="button" class="btn-link" ng-click="vm.removeSlot(cs)">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="!cf.courseSlots.length">
+                                                    <td colspan="5">please click the <i class="fa fa-plus"></i> Add Activity above to add an activity</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td class="form-group">
+                                                        <label class="control-label">
+                                                            <input type="checkbox" ng-model="cf.selectedSlot.isScenario" ng-change="vm.isScenarioChanged(cf.selectedSlot)" id="isScenario" class="checkbox-inline"
+                                                                    ng-disabled="!cf.selectedSlot.entityAspect.entityState.isAdded()" />
+                                                            Sim
+                                                        </label>
+                                                    </td>
+                                                    <td class="form-group">
+                                                        <input class="form-control simulation" type="text" ng-show="cf.selectedSlot.isScenario" value="Simulation" disabled="disabled">
+                                                        <div ng-hide="cf.selectedSlot.isScenario">
+                                                            <input ng-hide="cf.selectedSlot.entityAspect.entityState.isAdded()"  class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name" />
+                                                            <input ng-show="cf.selectedSlot.entityAspect.entityState.isAdded()" class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name"
+                                                                    autocomplete="off" ng-disabled="!cf.selectedSlot"
+                                                                    uib-typeahead="ca for ca in vm.getCourseActivityNames($viewValue)"
+                                                                    typeahead-focus-first="false" typeahead-on-select="vm.activitySelected($item, cf.selectedSlot)"
+                                                                    typeahead-no-results="cf.noResults"
+                                                                    typeahead-select-on-blur="true" data-z-validate /> <!--typeahead-show-hint="true" is off for now as will have to fiddle with the left ?margin/padding ?tt-typeahed class? in the error state-->
+                                                            <div ng-show="cf.selectedSlot.noResults">
+                                                                <i class="glyphicon glyphicon-remove"></i> No Existing Activities
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="form-group col-md-1">
+                                                        <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.minutesDuration" ng-disabled="!cf.selectedSlot">
+                                                    </td>
+                                                    <td class="form-group  col-md-1">
+                                                        <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.simultaneousStreams" ng-disabled="!cf.selectedSlot">
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-link" type="button" ng-click="vm.editChoices(cf.selectedSlot)" ng-disabled="!cf.selectedSlot || cf.selectedSlot.isScenario">
+                                                            choices
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <button type="button" class="btn btn-info" ng-click="vm.clone(cf)" ng-disabled="!vm.disableSave()">Clone This Format</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success" ng-disabled="vm.disableSave()">Save</button>
+                
+            </form>
+        </div>
+    </section>
+</section>

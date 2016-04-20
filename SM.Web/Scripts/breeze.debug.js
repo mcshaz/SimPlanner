@@ -2120,22 +2120,22 @@ var Validator = (function () {
   @example
   Most validators will be 'property' level validators, like this.
   @example
-      // v is this function is the value to be validated, in this case a "country" string.
+      // v is this function is the value to be validated, in this case a "Culture" string.
       var valFn = function (v) {
           if (v == null) return true;
           return (core.stringStartsWith(v, "US"));
       };
-      var countryValidator = new Validator("countryIsUS", valFn, {
-          displayName: "Country", 
+      var CultureValidator = new Validator("CultureIsUS", valFn, {
+          displayName: "Culture", 
           messageTemplate: "'%displayName%' must start with 'US'" 
       });
 
       // Now plug it into Breeze.
       // Assume em1 is a preexisting EntityManager.
       var custType = metadataStore.getEntityType("Customer");
-      var countryProp = custType.getProperty("Country");
+      var CultureProp = custType.getProperty("Culture");
       // Note that validator is added to a 'DataProperty' validators collection.
-      prop.validators.push(countryValidator);
+      prop.validators.push(CultureValidator);
   Entity level validators are also possible
   @example
       function isValidZipCode(value) {
@@ -2146,7 +2146,7 @@ var Validator = (function () {
       // v in this case will be a Customer entity
       var valFn = function (v) {
           // This validator only validates US Zip Codes.
-          if ( v.getProperty("Country") === "USA") {
+          if ( v.getProperty("Culture") === "USA") {
               var postalCode = v.getProperty("PostalCode");
               return isValidZipCode(postalCode);
           }
@@ -2386,16 +2386,16 @@ var Validator = (function () {
   Map of standard error message templates keyed by validator name.
   You can add to or modify this object to customize the template used for any validation error message.
   @example
-      // v is this function is the value to be validated, in this case a "country" string.
+      // v is this function is the value to be validated, in this case a "Culture" string.
       var valFn = function (v) {
           if (v == null) return true;
           return (core.stringStartsWith(v, "US"));
       };
-      var countryValidator = new Validator("countryIsUS", valFn, { displayName: "Country" });
-      Validator.messageTemplates.countryIsUS = "'%displayName%' must start with 'US'";
+      var CultureValidator = new Validator("CultureIsUS", valFn, { displayName: "Culture" });
+      Validator.messageTemplates.CultureIsUS = "'%displayName%' must start with 'US'";
       // This will have a similar effect to this
-      var countryValidator = new Validator("countryIsUS", valFn, {
-          displayName: "Country", 
+      var CultureValidator = new Validator("CultureIsUS", valFn, {
+          displayName: "Culture", 
           messageTemplate: "'%displayName%' must start with 'US'" 
       });
   @property messageTemplates {Object}
@@ -2799,7 +2799,7 @@ var Validator = (function () {
   Matches:
   International dialing prefix: {{}, +, 0, 0000} (with or without a trailing break character, if not '+': [-/. ])
   > ((\+)|(0(\d+)?[-/.\s]))
-  Country code: {{}, 1, ..., 999} (with or without a trailing break character: [-/. ])
+  Culture code: {{}, 1, ..., 999} (with or without a trailing break character: [-/. ])
   > [1-9]\d{,2}[-/.\s]?
   Area code: {(0), ..., (000000), 0, ..., 000000} (with or without a trailing break character: [-/. ])
   > ((\(\d{1,6}\)|\d{1,6})[-/.\s]?)?
@@ -7984,17 +7984,17 @@ var EntityType = (function () {
   @example
       // assume em1 is an EntityManager containing a number of existing entities.
       var custType = em1.metadataStore.getEntityType("Customer");
-      var countryProp = custType.getProperty("Country");
+      var CultureProp = custType.getProperty("Culture");
       var valFn = function (v) {
               if (v == null) return true;
               return (core.stringStartsWith(v, "US"));
           };
-      var countryValidator = new Validator("countryIsUS", valFn,
-      { displayName: "Country", messageTemplate: "'%displayName%' must start with 'US'" });
-      custType.addValidator(countryValidator, countryProp);
+      var CultureValidator = new Validator("CultureIsUS", valFn,
+      { displayName: "Culture", messageTemplate: "'%displayName%' must start with 'US'" });
+      custType.addValidator(CultureValidator, CultureProp);
   This is the same as adding an entity level validator via the 'validators' property of DataProperty or NavigationProperty
   @example
-      countryProp.validators.push(countryValidator);
+      CultureProp.validators.push(CultureValidator);
   Entity level validators can also be added by omitting the 'property' parameter.
   @example
       custType.addValidator(someEntityLevelValidator);
@@ -11544,18 +11544,18 @@ breeze.Predicate = Predicate;
   /**
   Returns a new query that includes a collection of parameters to pass to the server.
   @example
-      var query = EntityQuery.from("EmployeesFilteredByCountryAndBirthdate")
-        .withParameters({ BirthDate: "1/1/1960", Country: "USA" });
+      var query = EntityQuery.from("EmployeesFilteredByCultureAndBirthdate")
+        .withParameters({ BirthDate: "1/1/1960", Culture: "USA" });
    
-  will call the 'EmployeesFilteredByCountryAndBirthdate' method on the server and pass in 2 parameters. This
+  will call the 'EmployeesFilteredByCultureAndBirthdate' method on the server and pass in 2 parameters. This
   query will be uri encoded as
   @example
-      {serviceApi}/EmployeesFilteredByCountryAndBirthdate?birthDate=1%2F1%2F1960&country=USA
+      {serviceApi}/EmployeesFilteredByCultureAndBirthdate?birthDate=1%2F1%2F1960&Culture=USA
 
   Parameters may also be mixed in with other query criteria.
   @example
-      var query = EntityQuery.from("EmployeesFilteredByCountryAndBirthdate")
-        .withParameters({ BirthDate: "1/1/1960", Country: "USA" })
+      var query = EntityQuery.from("EmployeesFilteredByCultureAndBirthdate")
+        .withParameters({ BirthDate: "1/1/1960", Culture: "USA" })
         .where("LastName", "startsWith", "S")
         .orderBy("BirthDate");
 

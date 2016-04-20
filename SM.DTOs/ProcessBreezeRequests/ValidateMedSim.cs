@@ -4,6 +4,7 @@ using LinqKit;
 using SM.DataAccess;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
 
@@ -40,6 +41,11 @@ namespace SM.DTOs.ProcessBreezeRequests
             if (saveMap.TryGetValue(typeof(CourseType), out currentInfos))
             {
                 errors = errors.Concat(GetParticipantErrors(currentInfos));
+            }
+
+            if (saveMap.TryGetValue(typeof(Institution), out currentInfos))
+            {
+                errors = errors.Concat(GetInstitutionErrors(currentInfos));
             }
 
             if (errors.Any())
@@ -121,6 +127,82 @@ namespace SM.DTOs.ProcessBreezeRequests
             }
             return returnVar;
 
+        }
+
+        IEnumerable<EFEntityError> GetInstitutionErrors(List<EntityInfo> currentInfos)
+        {
+            var insts = TypedEntityinfo<Institution>.GetTyped(currentInfos);
+            List<EFEntityError> returnVar = new List<EFEntityError>();
+
+            foreach (var i in insts)
+            {
+                try
+                {
+                    var ci = CultureInfo.GetCultureInfo(i.Entity.LocaleCode);
+                    //not great separation of concerns here- this is not a buisness logic problem
+                    if (i.Info.EntityState == EntityState.Added && !Context.Cultures.Any(c => c.LocaleCode == ci.Name))
+                    {
+                        CreateCulture(ci);
+                    }
+                }
+                catch (CultureNotFoundException)
+                {
+                    returnVar.Add(new EFEntityError(i.Info,
+                        "UnknownLocale",
+                        "The Locale Code specified is not valid",
+                        "LocaleCode"));
+                }
+                if (!string.IsNullOrWhiteSpace(i.Entity.StandardTimeZone))
+                {
+                    try
+                    {
+                        TimeZoneInfo.FindSystemTimeZoneById(i.Entity.StandardTimeZone);
+                    }
+                    catch (TimeZoneNotFoundException)
+                    {
+                        returnVar.Add(new EFEntityError(i.Info,
+                            "UnknownTimeZone",
+                            "The Time Zone specified is not valid",
+                            "StandardTimeZone"));
+                    }
+                }
+            }
+            return returnVar;
+        }
+        //not great separation of concerns here- this is not a buisness logic problem 
+        /*
+        IEnumerable<EFEntityError> GetCourseSlotErrors(List<EntityInfo> currentInfos)
+        {
+            var insts = TypedEntityinfo<CourseSlot>.GetTyped(currentInfos);
+
+            foreach (var i in insts)
+            {
+                object wasActive;
+                if (!i.Entity.IsActive && i.Info.OriginalValuesMap.TryGetValue("IsActive", out wasActive) 
+                    && (bool)wasActive)
+                {
+                    //could check all collections, but probably easiest to have a crack and see how we go
+                    try
+                    {
+                        //need to do this as Participant of update
+                    }
+                }
+            }
+        }
+        */
+
+        private void CreateCulture(CultureInfo ci)
+        {
+            var ri = new RegionInfo(ci.LCID);
+            var iso = ISO3166.FromAlpha2(ri.TwoLetterISORegionName);
+            var c = new Culture
+            {
+                Name = ci.DisplayName,
+                LocaleCode = ci.Name,
+                CountryCode = iso.NumericCode
+            };
+            Context.Cultures.Add(c);
+            Context.SaveChanges();
         }
 
         public class InvalidDataException : Exception

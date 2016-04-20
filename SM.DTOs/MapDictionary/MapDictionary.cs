@@ -19,7 +19,7 @@ namespace SM.Dto.Maps
                     new[] {
                         new DtoMap(typeof(ActivityTeachingResource),  ActivityTeachingResourceMaps.mapFromRepo(),false,"ActivityChoices"),
                         new DtoMap(typeof(ChosenTeachingResource),ChosenTeachingResourceMaps.mapFromRepo()),
-                        new DtoMap(typeof(Country),CountryMaps.mapFromRepo(), false,"Countries"),
+                        new DtoMap(typeof(Culture),CultureMaps.mapFromRepo()),
                         new DtoMap(typeof(Course),  CourseMaps.mapFromRepo(), true, "OutreachCourses"),
                         new DtoMap(typeof(CourseActivity),  CourseActivityMaps.mapFromRepo(), false, "CourseActivities", "Activity"),
                         new DtoMap(typeof(CourseFormat),  CourseFormatMaps.mapFromRepo()),
@@ -39,6 +39,7 @@ namespace SM.Dto.Maps
                         new DtoMap(typeof(ManequinService),  ManequinServiceMaps.mapFromRepo()),
                         new DtoMap(typeof(Participant),  ParticipantMaps.mapFromRepo()),
                         new DtoMap(typeof(ProfessionalRole),  ProfessionalRoleMaps.mapFromRepo()),
+                        new DtoMap(typeof(ProfessionalRoleInstitution),  ProfessionalRoleInstitutionMaps.mapFromRepo()),
                         new DtoMap(typeof(Room),  RoomMaps.mapFromRepo()),
                         new DtoMap(typeof(Scenario),  ScenarioMaps.mapFromRepo()),
                         new DtoMap(typeof(ScenarioResource),  ScenarioResourceMaps.mapFromRepo()),

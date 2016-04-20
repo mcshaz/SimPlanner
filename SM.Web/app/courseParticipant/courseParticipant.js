@@ -42,7 +42,7 @@
             datacontext.ready().then(function () {
                 var promises = [datacontext.departments.all().then(function (data) {
                     vm.departments = data;
-                    vm.dialCode = data[0].institution.country.dialCode;
+                    vm.dialCode = data[0].institution.Culture.dialCode;
                 }),
                 datacontext.professionalRoles.all().then(function (data) {
                     vm.professionalRoles = data;
