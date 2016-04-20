@@ -7,7 +7,7 @@
 
     controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside'];
 
-    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside) {
+    function controller(abstractController, $routeParams, common, datacontext, $scope) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -16,7 +16,7 @@
         })
         var institutionId = $routeParams.id;
 
-        vm.categories=[]
+        vm.categories = [];
 
         vm.institution = {};
         vm.title = 'Course Type Professional Roles';
@@ -31,7 +31,7 @@
                         datacontext.professionalRoles.all().then(function (data) {
                             allRoles = data;
                         }),
-                        datacontext.institutions.fetchByKey(institutionId, { expand: 'professionalRoleInstitutions.professionalRole' }).then(function (data) {
+                        datacontext.institutions.fetchByKey(institutionId, { expand: 'professionalRoleInstitutions' }).then(function (data) {
                             vm.institution = data;
                             if (!vm.institution) {
                                 vm.log.warning('Could not find institution id = ' + institutionId);
@@ -49,13 +49,13 @@
             });
         }
 
-        function mapRoles(allRoles, cultureRoles) {
+        function mapRoles(allRoles, departmentRoles) {
             var dict = {};
             var categoryNames = common.getEnumValues().professionalCategory;
             var keyName;
             vm.categories = [];
             categoryNames.forEach(function (el) { dict[el] = { used: [], unused: [] }; });
-            cultureRoles.forEach(function (pr) { dict[pr.category].used.push(pr); });
+            departmentRoles.forEach(function (pr) { dict[pr.category].used.push(pr); });
             allRoles.forEach(function (pr) {
                 if (dict[pr.category].used.indexOf(pr) === -1) {
                     dict[pr.category].unused.push(pr);

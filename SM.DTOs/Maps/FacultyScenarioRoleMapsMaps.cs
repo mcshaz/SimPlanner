@@ -4,11 +4,11 @@ using System;
 using System.Linq.Expressions;
 namespace SM.Dto.Maps
 {
-    internal static class FacultySimRoleMaps
+    internal static class FacultyScenarioRoleMaps
     {
-        internal static Func<FacultySimRoleDto, FacultySimRole> mapToRepo()
+        internal static Func<FacultyScenarioRoleDto, FacultyScenarioRole> mapToRepo()
         {
-            return m => new FacultySimRole
+            return m => new FacultyScenarioRole
             {
                 Id = m.Id,
                 Description = m.Description,
@@ -18,9 +18,9 @@ namespace SM.Dto.Maps
             };
         }
 
-        internal static Expression<Func<FacultySimRole, FacultySimRoleDto>> mapFromRepo()
+        internal static Expression<Func<FacultyScenarioRole, FacultyScenarioRoleDto>> mapFromRepo()
         {
-            return m => new FacultySimRoleDto
+            return m => new FacultyScenarioRoleDto
             {
                 Id = m.Id,
                 Description = m.Description,

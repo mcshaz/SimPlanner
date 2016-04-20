@@ -29,14 +29,12 @@ namespace SM.DataAccess
         public virtual CourseType CourseType { get; set; }
         public virtual Department Department { get; set; }
 
-		ICollection<ScenarioResource> _scenarioResources; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ScenarioResource> ScenarioResources
 		{
             get; set;
 		}
 
-		ICollection<CourseSlotScenario> _courseSlotScenarios; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSlotScenario> CourseSlotScenarios
         {

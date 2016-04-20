@@ -66,13 +66,15 @@ namespace SM.Web.Controllers
             return Repo.GetInstitutions(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
         [HttpGet]
-		public IQueryable<FacultySimRoleDto> SenarioRoles(){ return Repo.SenarioRoles; } 
+		public IQueryable<FacultyScenarioRoleDto> SenarioRoles(){ return Repo.SenarioRoles; } 
         [HttpGet]
 		public IQueryable<ManequinDto> Manequins(){ return Repo.Manequins; }
         [HttpGet]
         public IQueryable<ManequinModelDto> ManequinModels() { return Repo.ManequinModels; }
         [HttpGet]
-		public IQueryable<ProfessionalRoleDto> ProfessionalRoles(){ return Repo.ProfessionalRoles; } 
+		public IQueryable<ProfessionalRoleDto> ProfessionalRoles(){ return Repo.ProfessionalRoles; }
+        [HttpGet]
+        public IQueryable<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions() { return Repo.ProfessionalRoleInstitutions; }
         [HttpGet]
 		public IQueryable<ScenarioDto> Scenarios()
         {
@@ -97,7 +99,20 @@ namespace SM.Web.Controllers
 		public IQueryable<ScenarioResourceDto> ScenarioResources()
         {
             return Repo.ScenarioResources;
-        } 
+        }
+
+        [HttpGet]
+        public IQueryable<CourseTypeScenarioRoleDto> CourseTypeScenarioRoles()
+        {
+            return Repo.CourseTypeScenarioRoles;
+        }
+
+        [HttpGet]
+        public IQueryable<FacultyScenarioRoleDto> FacultyScenarioRoles()
+        {
+            return Repo.FacultyScenarioRoles;
+        }
+
         [HttpGet, EnableBreezeQuery(MaxExpansionDepth = 4)]
 		public IQueryable<CourseDto> Courses(ODataQueryOptions options)
         {

@@ -49,15 +49,17 @@
         self.courseSlotPresenters = repository.create(self.provider, 'CourseSlotPresenterDto', 'CourseSlotPresenters'/* 'Courses' */);
         self.courseTypes = repository.create(self.provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);
         self.courseTypeDepartments = repository.create(self.provider, 'CourseTypeDepartmentDto', 'CourseTypeDepartments');
+        self.courseTypeScenarioRoles = repository.create(self.provider, 'CourseTypeScenarioRoleDto', 'CourseTypeScenarioRoles');
         self.departments = repository.create(self.provider, 'DepartmentDto', 'Departments', breeze.FetchStrategy.FromLocalCache);
+        self.facultyScenarioRoles = repository.create(self.provider, 'FacultyScenarioRoleDto', 'FacultyScenarioRoles');
         self.institutions = repository.create(self.provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);
+        self.manequinModels = repository.create(self.provider, 'ManequinModelDto', 'ManequinModels');
+        self.manequins = repository.create(self.provider, 'ManequinDto', 'Manequins', breeze.FetchStrategy.FromLocalCache);
         self.participants = repository.create(self.provider, 'ParticipantDto', 'Participants');
+        self.professionalRoleInstitutions = repository.create(self.provider, 'ProfessionalRoleInstitutionDto', 'ProfessionalRoleInstitutions');
         self.professionalRoles = repository.create(self.provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);
         self.rooms = repository.create(self.provider, 'RoomDto', 'Rooms', breeze.FetchStrategy.FromLocalCache);
-        self.manequins = repository.create(self.provider, 'ManequinDto', 'Manequins', breeze.FetchStrategy.FromLocalCache);
-        self.manequinModels = repository.create(self.provider, 'ManequinModelDto', 'ManequinModels');
         self.scenarios = repository.create(self.provider, 'ScenarioDto', 'Scenarios');
-        self.professionalRoleInstitutions = repository.create(self.provider, 'ProfessionalRoleInstitutionDto', 'ProfessionalRoleInstitutions');
 
         function saveFailed(error) {
             var msg = config.appErrorPrefix + 'Save failed: ' +

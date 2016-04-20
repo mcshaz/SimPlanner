@@ -29,14 +29,16 @@ namespace SM.DataAccess
         public virtual DbSet<CourseSlotPresenter> CourseSlotPresenters { get; set; }
         public virtual DbSet<CourseSlotScenario> CourseSlotScenarios { get; set; }
         public virtual DbSet<CourseType> CourseTypes { get; set; }
+        public virtual DbSet<CourseTypeScenarioRole> CourseTypeScenarioRoles { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
-        public virtual DbSet<FacultySimRole> FacultySimRoles { get; set; }
+        public virtual DbSet<FacultyScenarioRole> FacultyScenarioRoles { get; set; }
         public virtual DbSet<Institution> Institutions { get; set; }
         public virtual DbSet<Manequin> Manequins { get; set; }
         public virtual DbSet<ManequinManufacturer> ManequinManufacturers { get; set; }
         public virtual DbSet<ManequinModel> ManequinModels { get; set; }
         public virtual DbSet<ManequinService> ManequinServices { get; set; }
         public virtual DbSet<ProfessionalRole> ProfessionalRoles { get; set; }
+        public virtual DbSet<ProfessionalRoleInstitution> ProfessionalRoleInstitutions { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<Scenario> Scenarios { get; set; }
         public virtual DbSet<ScenarioResource> ScenarioResources { get; set; }
@@ -178,7 +180,7 @@ namespace SM.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseType>()
-                .HasMany(e => e.FacultySimRoles)
+                .HasMany(e => e.CourseTypeScenarioRoles)
                 .WithRequired(e => e.CourseType)
                 .HasForeignKey(e=>e.CourseTypeId)
                 .WillCascadeOnDelete(false);
@@ -244,10 +246,16 @@ namespace SM.DataAccess
                 .HasForeignKey(e => e.DepartmentId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<FacultySimRole>()
+            modelBuilder.Entity<FacultyScenarioRole>()
                 .HasMany(e => e.CourseScenarioFacultyRoles)
-                .WithRequired(e => e.FacultySimRole)
-                .HasForeignKey(e => e.FacultySimRoleId)
+                .WithRequired(e => e.FacultyScenarioRole)
+                .HasForeignKey(e => e.FacultyScenarioRoleId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<FacultyScenarioRole>()
+                .HasMany(e => e.CourseTypeScenarioRoles)
+                .WithRequired(e => e.FacultyScenarioRole)
+                .HasForeignKey(e => e.FacultyScenarioRoleId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Institution>()

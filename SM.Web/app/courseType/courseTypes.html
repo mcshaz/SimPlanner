@@ -19,10 +19,14 @@
                         </li>
 
                         <li>
-                            <h4>Faculty Roles</h4>
+                            <h4>
+                                Faculty Roles
+                                <a class="btn-link" ng-href="#/scenarioRoles/{{ct.id}}"><i class="fa fa-edit"></i></a>
+                            </h4> 
+                            
                             <ul class="list-inline list-group">
-                                <li class="list-group-item" ng-repeat="fr in ct.facultySimRoles track by fr.id">
-                                    {{fr.description}}
+                                <li class="list-group-item" ng-repeat="fr in ct.courseTypeScenarioRoles">
+                                    {{fr.facultyScenarioRole.description}}
                                 </li>
                             </ul>
                         </li>

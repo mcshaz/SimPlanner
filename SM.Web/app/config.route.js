@@ -175,7 +175,16 @@
                         allowedRoles: userRoles.all
                     }
                 }
-            },
+            }, {
+                url: '/scenarioRoles/:id',
+                config: {
+                    title: 'Course Roles',
+                    templateUrl: 'app/scenarioRoles/scenarioRoles.html',
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }
         ];
     }
 })();

@@ -18,11 +18,11 @@
         function activate() {
             datacontext.ready().then(function () {
                 common.activateController([
-                    datacontext.courseTypes.findServerIfCacheEmpty({ expand: ['courseFormats', 'scenarios', 'facultySimRoles'] }).then(function (data) {
+                    datacontext.courseTypes.findServerIfCacheEmpty({ expand: ['courseFormats', 'scenarios', 'courseTypeScenarioRoles.facultyScenarioRole'] }).then(function (data) {
                         data.sort(common.sortOnPropertyName('description'));
                         vm.courseTypes = data;
                         data.forEach(function (el) {
-                            el.facultySimRoles.sort(common.sortOnPropertyName('order'));
+                            el.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole','order'));
                         });
                     })], controllerId)
             });

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SM.Metadata
 {
-	public class FacultySimRoleMetadata
+	public class FacultyScenarioRoleMetadata
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

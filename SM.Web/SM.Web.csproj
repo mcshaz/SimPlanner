@@ -272,6 +272,8 @@
     <Content Include="app\metadata.js" />
     <Content Include="app\room\room.html" />
     <Content Include="app\room\room.js" />
+    <Content Include="app\scenarioRoles\scenarioRoles.html" />
+    <Content Include="app\scenarioRoles\scenarioRoles.js" />
     <Content Include="app\scenario\scenario.js" />
     <Content Include="app\services\customValidators.js" />
     <Content Include="app\services\repository\modelBuilder.js" />

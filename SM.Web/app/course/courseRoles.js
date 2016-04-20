@@ -32,7 +32,7 @@
                         'courseScenarioFacultyRoles',
                         'chosenTeachingResources',
                         'courseFormat.courseType.scenarios',
-                        'courseFormat.courseType.facultySimRoles'],
+                        'courseFormat.courseType.courseTypeScenarioRoles.facultyScenarioRole'],
                 }).then(function (data) {
                     if (!data) {
                         vm.log.warning('Could not find course id = ' +id);
@@ -111,16 +111,16 @@
                         returnVar.availableFaculty.availableFaculty = true;
 
                         var slotRoles = cs.courseScenarioFacultyRoles.filter(isThisSlot);
-                        data.courseFormat.courseType.facultySimRoles.sort(common.sortOnPropertyName('order'));
+                        data.courseFormat.courseType.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole', 'order'));
                         return angular.extend(returnVar, {
                             name: 'Simulation',
                             choices: data.courseFormat.courseType.scenarios,
                             selectedChoice: (data.courseSlotScenarios.find(isThisSlot) || {}),
                             isSim: true,
-                            roles: data.courseFormat.courseType.facultySimRoles.map(function (fsr) {
+                            roles: data.courseFormat.courseType.courseTypeScenarioRoles.map(function (ctsr) {
                                 var assignedFaculty = [];
                                 slotRoles.forEach(function (sr) {
-                                    if (fsr.id === sr.facultySimRoleId) {
+                                    if (ctsr.facultyScenarioRoleId === sr.facultyScenarioRoleId) {
                                         var findMatch = function (f) {
                                             return f.participantId === sr.participantId;
                                         };
@@ -135,14 +135,14 @@
                                 });
 
                                 return {
-                                    description: fsr.description,
-                                    id: fsr.id,
+                                    description: ctsr.facultyScenarioRole.description,
+                                    id: ctsr.facultyScenarioRoleId,
                                     assignedFaculty: assignedFaculty,
                                     sortableOptions: angular.extend({
                                         update: updateSortableRepo.bind(null, {
                                                 courseSlotId: cs.id,
                                                 courseId: data.id,
-                                                facultySimRoleId: fsr.id
+                                                facultyScenarioRoleId: ctsr.facultyScenarioRoleId
                                             }, datacontext.courseScenarioFacultyRoles),
                                         start: startSortable
                                     }, sortableOptions)

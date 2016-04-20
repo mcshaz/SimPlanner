@@ -28,7 +28,7 @@ namespace SM.DataAccess
         public virtual ICollection<Scenario> Scenarios { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FacultySimRole> FacultySimRoles{ get; set;}
+        public virtual ICollection<CourseTypeScenarioRole> CourseTypeScenarioRoles { get; set;}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseFormat> CourseFormats { get; set; }

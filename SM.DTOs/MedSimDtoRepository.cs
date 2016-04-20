@@ -140,7 +140,7 @@ namespace SM.Dto
             return Context.CourseTypes.Project<CourseType, CourseTypeDto>(includes, selects, sepChar);
         }
 
-        public IQueryable<FacultySimRoleDto> SenarioRoles { get { return Context.FacultySimRoles.Project<FacultySimRole,FacultySimRoleDto>(); } }
+        public IQueryable<FacultyScenarioRoleDto> SenarioRoles { get { return Context.FacultyScenarioRoles.Project<FacultyScenarioRole,FacultyScenarioRoleDto>(); } }
 
         public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.Project<Institution,InstitutionDto>(); } }
 
@@ -168,6 +168,20 @@ namespace SM.Dto
         }
 
         public IQueryable<ManequinModelDto> ManequinModels { get { return Context.ManequinModels.Project<ManequinModel, ManequinModelDto>(); } }
+
+        public IQueryable<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get { return Context.ProfessionalRoleInstitutions.Project<ProfessionalRoleInstitution, ProfessionalRoleInstitutionDto>(); } }
+
+        public IQueryable<FacultyScenarioRoleDto> FacultyScenarioRoles { get {
+                return Context.FacultyScenarioRoles.Project<FacultyScenarioRole, FacultyScenarioRoleDto>();
+        } }
+
+        public IQueryable<CourseTypeScenarioRoleDto> CourseTypeScenarioRoles
+        {
+            get
+            {
+                return Context.CourseTypeScenarioRoles.Project<CourseTypeScenarioRole, CourseTypeScenarioRoleDto>();
+            }
+        }
 
         public IQueryable<CourseActivityDto> GetCourseActivities(string[] includes = null, string[] selects = null, char sepChar = '.') {
             return Context.CourseActivities.Project<CourseActivity, CourseActivityDto>(includes, selects, sepChar);

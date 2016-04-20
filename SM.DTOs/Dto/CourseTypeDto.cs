@@ -27,7 +27,7 @@ namespace SM.Dto
 
         public ICollection<ScenarioDto> Scenarios { get; set; }
 
-        public ICollection<FacultySimRoleDto> FacultySimRoles { get; set; }
+        public ICollection<CourseTypeScenarioRoleDto> CourseTypeScenarioRoles { get; set; }
 
         public ICollection<CourseFormatDto> CourseFormats { get; set; }
     }

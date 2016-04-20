@@ -81,10 +81,10 @@
                                                         <li class="list-group-item col-md-6" ng-repeat="p in r.assignedFaculty track by p.participantId">
                                                             <i ng-class="p.icon"></i> {{p.fullName}} <small class="small">({{p.departmentName}})</small>
                                                             <span class="pull-right">
-                                                                <span class="label label-default">
+                                                                <span class="badge badge-info">
                                                                     {{p.slotCount}}
                                                                 </span>
-                                                                <span class="label label-info">
+                                                                <span class="badge badge-important">
                                                                     {{p.scenarioCount}}
                                                                 </span>
                                                             </span>
@@ -100,10 +100,10 @@
                                                     <li ng-repeat="cp in m.availableFaculty track by cp.participantId" class="list-group-item">
                                                         <i ng-class="cp.icon"></i> {{cp.fullName}} <small class="small">({{cp.departmentName}})</small>
                                                         <span class="pull-right">
-                                                            <span class="label label-default">
+                                                            <span class="badge badge-info">
                                                                 {{cp.slotCount}}
                                                             </span>
-                                                            <span class="label label-info">
+                                                            <span class="badge badge-important">
                                                                 {{cp.scenarioCount}}
                                                             </span>
                                                         </span>

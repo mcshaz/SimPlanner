@@ -56,7 +56,7 @@ namespace SM.DataAccess
             context.ManequinModels.Add(junior);
 
             var cedJunior = new Manequin { Id = Guid.NewGuid(), Department = ced, Description = "'charlie' (sim junior purchased 2007)", Model = junior, PurchasedNew = true, PurchaseDate = new DateTime(2008, 1, 1), LocalCurrencyPurchasePrice = 80000.00m };
-            var crm = new CourseType { Id = Guid.NewGuid(), Abbreviation = "CRM", Description = "Crisis Resourse Managment", EmersionCategory = Emersion.Emersive, FacultySimRoles=new List<FacultySimRole>() };
+            var crm = new CourseType { Id = Guid.NewGuid(), Abbreviation = "CRM", Description = "Crisis Resourse Managment", EmersionCategory = Emersion.Emersive, CourseTypeScenarioRoles=new List<CourseTypeScenarioRole>() };
             context.CourseTypes.Add(crm);
 
             var crm2 = new CourseFormat { Id = Guid.NewGuid(), DaysDuration = 1, Description = "2 Scenario", CourseType = crm };
@@ -94,16 +94,16 @@ namespace SM.DataAccess
             context.CourseActivities.Add(coffee);
             context.CourseSlots.Add(coffeeSlot);
 
-            var d = new FacultySimRole { Id = Guid.NewGuid(), Description = "Director", Order=0 };
-            var lt = new FacultySimRole { Id = Guid.NewGuid(), Description = "Tech", Order =1 };
-            var r = new FacultySimRole { Id = Guid.NewGuid(), Description = "Runner", Order =2 };
-            var ld = new FacultySimRole { Id = Guid.NewGuid(), Description = "Lead Debrief", Order=3 };
-            var ad = new FacultySimRole { Id = Guid.NewGuid(), Description = "Assistant Debrief", Order=4 };
-            crm.FacultySimRoles.Add(ld);
-            crm.FacultySimRoles.Add(ad);
-            crm.FacultySimRoles.Add(lt);
-            crm.FacultySimRoles.Add(d);
-            crm.FacultySimRoles.Add(r);
+            var d = new FacultyScenarioRole { Id = Guid.NewGuid(), Description = "Director", Order=0 };
+            var lt = new FacultyScenarioRole { Id = Guid.NewGuid(), Description = "Tech", Order =1 };
+            var r = new FacultyScenarioRole { Id = Guid.NewGuid(), Description = "Runner", Order =2 };
+            var ld = new FacultyScenarioRole { Id = Guid.NewGuid(), Description = "Lead Debrief", Order=3 };
+            var ad = new FacultyScenarioRole { Id = Guid.NewGuid(), Description = "Assistant Debrief", Order=4 };
+            crm.CourseTypeScenarioRoles.Add(new CourseTypeScenarioRole { FacultyScenarioRole = ld });
+            crm.CourseTypeScenarioRoles.Add(new CourseTypeScenarioRole { FacultyScenarioRole = ad });
+            crm.CourseTypeScenarioRoles.Add(new CourseTypeScenarioRole { FacultyScenarioRole = lt });
+            crm.CourseTypeScenarioRoles.Add(new CourseTypeScenarioRole { FacultyScenarioRole = d });
+            crm.CourseTypeScenarioRoles.Add(new CourseTypeScenarioRole { FacultyScenarioRole = r });
 
             var c = new Course { Id = Guid.NewGuid(), CourseFormat = crm2, Department = ced, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(14), Room=cedConf };
             var c2 = new Course { Id = Guid.NewGuid(), CourseFormat = crm2, Department = picu, FacultyNoRequired = 5, StartTime = DateTime.Now.AddDays(28), Room=picuConf };
@@ -159,7 +159,7 @@ namespace SM.DataAccess
             var simScenario1 = new CourseSlotScenario { Course = c, CourseSlot=sim1, Scenario = s, Manequin=cedJunior };
             context.CourseSlotScenarios.Add(simScenario1);
 
-            var simRole1 = new CourseScenarioFacultyRole { Course = c, CourseSlot = sim1, Participant = trish, FacultySimRole = lt };
+            var simRole1 = new CourseScenarioFacultyRole { Course = c, CourseSlot = sim1, Participant = trish, FacultyScenarioRole = lt };
             context.CourseScenarioFacultyRoles.Add(simRole1);
 
             context.SaveChanges();

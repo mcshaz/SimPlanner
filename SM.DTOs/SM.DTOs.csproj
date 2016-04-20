@@ -108,6 +108,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\ChosenTeachingResourceDto.cs" />
+    <Compile Include="Dto\CourseTypeScenarioRoleDto.cs" />
+    <Compile Include="Dto\FacultyScenarioRoleDto.cs" />
     <Compile Include="Dto\ProfessionalRoleInstitutionDto.cs" />
     <Compile Include="Dto\CultureDto.cs" />
     <Compile Include="Dto\CourseActivityDto.cs" />
@@ -131,7 +133,6 @@
     <Compile Include="Dto\RoomDto.cs" />
     <Compile Include="Dto\ScenarioDto.cs" />
     <Compile Include="Dto\CourseScenarioFacultyRoleDto.cs" />
-    <Compile Include="Dto\FacultySimRoleDto.cs" />
     <Compile Include="Dto\SlotDto.cs" />
     <Compile Include="GetRequiredNavigationProperties.cs" />
     <Compile Include="MapDictionary\MapDictionary.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Maps\ActivityFacultyMaps.cs" />
     <Compile Include="Maps\CourseActivityMaps.cs" />
     <Compile Include="Maps\CourseFormatMaps.cs" />
+    <Compile Include="Maps\CourseTypeScenarioRoleMaps.cs" />
     <Compile Include="Maps\ProfessionalRoleInstitutionMaps.cs" />
     <Compile Include="Maps\CultureMaps.cs" />
     <Compile Include="Maps\CourseTypeDepartmentMaps.cs" />
@@ -161,7 +163,7 @@
     <Compile Include="Maps\CourseScenarioFacultyRoleMaps.cs" />
     <Compile Include="Maps\ScenarioMaps.cs" />
     <Compile Include="Maps\ScenarioResourceMaps.cs" />
-    <Compile Include="Maps\FacultySimRoleMapsMaps.cs" />
+    <Compile Include="Maps\FacultyScenarioRoleMapsMaps.cs" />
     <Compile Include="Maps\ScenarioSlotMaps.cs" />
     <Compile Include="MedSimDtoContextPretender.cs" />
     <Compile Include="MedSimDtoRepository.cs" />
