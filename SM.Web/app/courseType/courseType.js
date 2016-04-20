@@ -162,7 +162,7 @@
 
         function createActivity(slot) {
             slot.activity = datacontext.courseActivities.create({
-                courseTypeId: vm.courseType.Id
+                courseTypeId: vm.courseType.id
             });
         }
 
