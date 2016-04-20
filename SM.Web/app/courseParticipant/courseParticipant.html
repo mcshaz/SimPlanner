@@ -7,9 +7,15 @@
                     <h4 class="aside-title">
                         {{cp.isNew?'Add':'Update'}} Course &nbsp;
                     </h4>
-                    <div class="btn-group radio" ng-model="cp.isFaculty" bs-radio-group>
-                        <label class="btn btn-primary"><input class="btn btn-default" value="true" type="radio" ng-disabled="!cp.isNew" />Faculty</label>
-                        <label class="btn btn-primary"><input class="btn btn-default" value="false" type="radio" ng-disabled="!cp.isNew" />Participant</label>
+                    <div class="btn-group" >
+                        <label class="btn btn-primary">
+                            <input class="btn btn-default" value="true" type="radio" ng-disabled="!cp.isNew" ng-model="cp.isFaculty" bs-radio/>
+                            Faculty
+                        </label>
+                        <label class="btn btn-primary">
+                            <input class="btn btn-default" value="false" type="radio" ng-disabled="!cp.isNew" ng-model="cp.isFaculty" bs-radio/>
+                            Participant
+                        </label>
                     </div>
                 </div>
                 <div class="aside-body">
