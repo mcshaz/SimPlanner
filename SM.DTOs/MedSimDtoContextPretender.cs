@@ -54,7 +54,7 @@ namespace SM.Dto
 
             modelBuilder.Entity<CultureDto>()
                 .HasMany(e => e.Institutions)
-                .WithRequired(e => e.Culture)
+                .WithOptional(e => e.Culture) //NOTE this is different from the DTO on purpose - if the entity doesn't exist, we have the tools to create it first
                 .HasForeignKey(e => e.LocaleCode)
                 .WillCascadeOnDelete(false);
 

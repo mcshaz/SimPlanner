@@ -37,6 +37,9 @@
             }, vm.log.error)];
             if (isNew) {
                 vm.institution = datacontext.institutions.create();
+                if ($routeParams.localeCode) {
+                    vm.institution.localeCode = $routeParams.localeCode;
+                }
                 vm.notifyViewModelLoaded();
             } else {
                 promises.push(datacontext.ready().then(function() {

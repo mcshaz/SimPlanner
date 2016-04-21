@@ -20,6 +20,7 @@
 
         vm.course = {};
         vm.courseFormats = [];
+        vm.dateChanged = dateChanged;
         vm.dateFormat = '';
         vm.deleteCourseParticipant = deleteCourseParticipant;
         vm.dpPopup = { isOpen: false };
@@ -102,6 +103,13 @@
                 scope.course = vm.course;
             }
             return _modalInstance;
+        }
+
+        function dateChanged(propName) {
+            var dateInst = vm.course[propName];
+            if (dateInst.getHours() === 0 && dateInst.getMinutes() === 0) { //bad luck if you want your course to start at midnight, but this would be an extreme edge case!
+                dateInst.setHours(8);
+            }
         }
 
         function deleteCourseParticipant(participantId) {

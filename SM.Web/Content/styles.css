@@ -446,13 +446,6 @@ div.time-accompany{
     background-color:#FFFFFF;
 }
 
-.btn-group.radio label{
-    text-decoration: line-through;
-}
-.btn-group.radio label.active{
-    text-decoration: none;
-}
-
 .btn-group.radio label.active::before {
    content:  "\2611 ";
 }
