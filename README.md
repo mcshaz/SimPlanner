@@ -18,6 +18,7 @@ organising medical simulation courses and keeping track of institution wide data
 **It is free to use for institutions such as hospitals and universities** (a small fee may be charged per text messaging reminder if you choose to use the text messaging service)
 
 ###To Do
+- [ ] Come up with appropriate icon for site (currently using hot towel icon!)
 - [ ] Sim Team to give current version a full test
 - [ ] Enable Migrations and move to live data
 - [ ] Test saving and subsequently changing/saving different combination of scenario & manequin for a given course slot
