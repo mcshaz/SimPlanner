@@ -22,27 +22,38 @@
         vm.createNewPerson = createNewPerson;
         vm.dialCode = '';
         vm.disableAdd = disableAdd;
-        vm.departments = [];
+        vm.getPeople = getPeople;
+        vm.institution = {};
+        vm.institutionChanged = institutionChanged;
+        vm.institutions = [];
         vm.isFaculty = $scope.isFaculty;
         vm.isNew = !$scope.courseParticipant;
         vm.isValidParticipantName = isValidParticipantName;
-        vm.getPeople = getPeople;
         vm.nameLimit = 10;
+        vm.notifyViewModelLoaded();
+        vm.onParticipantSelected = onParticipantSelected;
         vm.participant = vm.isNew
             ? datacontext.participants.create(breeze.EntityState.Detached)
             : $scope.courseParticipant.participant;
-        vm.notifyViewModelLoaded();
-
-        vm.onParticipantSelected = onParticipantSelected;
         vm.professionalRoles = [];
 
         activate();
 
         function activate() {
             datacontext.ready().then(function () {
-                var promises = [datacontext.departments.all().then(function (data) {
-                    vm.departments = data;
-                    vm.dialCode = data[0].institution.culture.dialCode;
+                var promises = [datacontext.institutions.all({expand:'culture'}).then(function (data) {
+                    vm.institutions = data;
+                    vm.institution = vm.isNew
+                        ? $scope.course.department.institution
+                        : $scope.courseParticipant.department.institution;
+                    institutionChanged();
+                    /*
+                    vm.institutions.forEach(function (el) {
+                        if (!el.culture.flagUrl) {
+                            el.culture.flagUrl = common.getFlagUrlFromLocaleCode(el.localeCode);
+                        }
+                    });
+                    */
                 }),
                 datacontext.professionalRoles.all().then(function (data) {
                     vm.professionalRoles = data;
@@ -122,6 +133,13 @@
         }
 
         var notThisCourse = breeze.Predicate.create('courseParticipants', 'any', 'courseId', '==', $scope.course.id).not();
+        var _pred;
+        function institutionChanged() {
+            _pred = notThisCourse.and('department.institutionId', '==', vm.institution.id);
+            _lastVal = _lastLookup = null;
+
+        }
+
         var baseArgs = {
             orderBy: 'fullName',
             take: $scope.nameLimit,
@@ -134,12 +152,10 @@
                 //I think the uib - typeahead handles either promises or objects, but seems cleaner to have a function return one or tother
                 return _lastLookup.filter(function (el) { return el.fullName.toLowerCase().startsWith(val); });
             }
-            baseArgs.where = breeze.Predicate.create('fullName', 'startsWith', val).and(notThisCourse);
+            baseArgs.where = breeze.Predicate.create('fullName', 'startsWith', val).and(_pred);
             return datacontext.participants.find(baseArgs).then(function (results) {
                 results.forEach(function (el) {
-                    el.label = '<i class="'+ common.getRoleIcon(el.professionalRole_Category) + '"></i> '
-                            + el.fullName
-                            + ' <small class="small">(' + el.department_Abbreviation + ' ' + common.toSeperateWords(el.professionalRole_Category) + ')</small>';
+                    el.class = common.getRoleIcon(el.professionalRole_Category);
                 });
                 _lastVal = val.toLowerCase();
                 return (_lastLookup = results);

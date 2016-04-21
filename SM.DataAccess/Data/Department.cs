@@ -20,13 +20,14 @@ namespace SM.DataAccess
 
         public string CertificateFilename { get; set; }
 
+
+        public virtual Institution Institution { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseTypeDepartment> CourseTypeDepartments
 		{
             get; set;
 		}
-
-        public virtual Institution Institution { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Manequin> Manequins
@@ -34,42 +35,36 @@ namespace SM.DataAccess
             get; set;
 		}
 
-		ICollection<Course> _courses; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> Courses
 		{
             get; set;
 		}
 
-        ICollection<Course> _outreachCourses;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> OutreachCourses
         {
             get; set;
         }
 
-        ICollection<Scenario> _scenrios;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Scenario> Scenarios
         {
             get; set;
         }
 
-        ICollection<Participant> _participants;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Participant> Participants
         {
             get; set;
         }
 
-        ICollection<Room> _rooms;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Room> Rooms
         {
             get; set;
         }
 
-        ICollection<CourseParticipant> _courseParticipants;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseParticipant> CourseParticipants
         {

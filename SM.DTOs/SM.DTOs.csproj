@@ -110,6 +110,7 @@
     <Compile Include="Dto\ChosenTeachingResourceDto.cs" />
     <Compile Include="Dto\CourseTypeScenarioRoleDto.cs" />
     <Compile Include="Dto\FacultyScenarioRoleDto.cs" />
+    <Compile Include="Dto\Metadata\ParticipantDtoMetadata.cs" />
     <Compile Include="Dto\ProfessionalRoleInstitutionDto.cs" />
     <Compile Include="Dto\CultureDto.cs" />
     <Compile Include="Dto\CourseActivityDto.cs" />
@@ -168,7 +169,6 @@
     <Compile Include="MedSimDtoContextPretender.cs" />
     <Compile Include="MedSimDtoRepository.cs" />
     <Compile Include="MedSimDtoMetadata.cs" />
-    <Compile Include="obj\Metadata\ParticipantDtoMetadata.cs" />
     <Compile Include="ProcessBreezeRequests\ISO3166.cs" />
     <Compile Include="ProcessBreezeRequests\ValidateMedSim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

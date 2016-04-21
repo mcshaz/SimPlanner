@@ -10,8 +10,10 @@ namespace SM.Metadata
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
         [Required]
-        [StringLength(128)]
-        public string Description { get; set; }
+        [StringLength(64)]
+        public string BriefDescription { get; set; }
+        [StringLength(256)]
+        public string FullDescription { get; set; }
         [StringLength(256)]
         public string TemplateFilename { get; set; }
     }

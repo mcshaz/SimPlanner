@@ -10,7 +10,8 @@ namespace SM.Dto
     public class ScenarioDto
 	{
         public Guid Id { get; set; }
-        public string Description { get; set; }
+        public string BriefDescription { get; set; }
+        public string FullDescription { get; set; }
         public Guid DepartmentId { get; set; }
         public Difficulty? Complexity { get; set; }
         public Emersion? EmersionCategory { get; set; }

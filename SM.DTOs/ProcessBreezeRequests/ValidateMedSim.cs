@@ -205,6 +205,7 @@ namespace SM.DTOs.ProcessBreezeRequests
             Context.SaveChanges();
         }
 
+        [Serializable]
         public class InvalidDataException : Exception
         {
             public InvalidDataException() : base() { }

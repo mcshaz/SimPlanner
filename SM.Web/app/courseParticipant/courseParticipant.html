@@ -20,6 +20,16 @@
                 </div>
                 <div class="aside-body">
                     <div class="form-group">
+                        <label for="institution" class="control-label">Institution</label>
+                        <div>
+                            <select id="institution" class="form-control" data-ng-model="cp.institution" ng-change="cp.institutionChanged()"
+                                    ng-options="i as i.name group by i.culture.name for i in cp.institutions" >
+                            </select>
+                            <span class="text-danger" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="fullName" class="control-label">Full Name</label>
                         <div>
                             <!--
@@ -30,8 +40,8 @@
                            data-limit="{{nameLimit}}" ng-model-options="{ debounce: 200 }" trimValue="false" data-z-validate>
                     -->
                             <input class="form-control" id="fullName" type="text" ng-model="cp.participant.fullName" placeholder="e.g. John Smith"
-                                   ng-model-options="{ debounce: 200 }" autocomplete="off"
-                                   uib-typeahead="p.fullName as p.label for p in cp.getPeople($viewValue)"
+                                   ng-model-options="{ debounce: 200 }" autocomplete="off" typeahead-template-url="courseParticipantSelectTemplate.html"
+                                   uib-typeahead="p.fullName for p in cp.getPeople($viewValue)"
                                    typeahead-focus-first="false" typeahead-on-select="cp.onParticipantSelected($item)"
                                    typeahead-loading="cp.loadingPeople" typeahead-no-results="cp.noResults"
                                    typeahead-select-on-blur="true" data-z-validate /> <!--typeahead-show-hint="true" is off for now as will have to fiddle with the left ?margin/padding ?tt-typeahed class? in the error state-->
@@ -71,7 +81,7 @@
                         <label for="phoneNumber" class="control-label">Mobile</label>
                         <div>
                             <div class="input-group">
-                                <span class="input-group-addon">(+{{cp.dialCode}})</span>
+                                <span class="input-group-addon">(+{{cp.insitution.culture.countryCode}})</span>
                                 <input class="form-control" type="text" id="phoneNumber" data-z-validate ng-model="cp.participant.phoneNumber" ng-disabled="cp.participant.entityAspect.entityState.isDetached()" />
 
                             </div>
@@ -97,7 +107,7 @@
                     <div class="form-group">
                         <label for="cpDepartment" class="control-label">Department</label>
                         <div>
-                            <select id="cpDepartment" class="form-control" data-z-validate data-ng-options="d as d.name for d in cp.departments"
+                            <select id="cpDepartment" class="form-control" data-z-validate data-ng-options="d as d.name for d in cp.institution.departments"
                                     data-ng-model="cp.participant.department" ng-disabled="cp.participant.entityAspect.entityState.isDetached()">
                                 <option value="" disabled="disabled">
                                     Select Department...
@@ -115,3 +125,10 @@
         </div>
     </div>
 </div>
+<script type="text/ng-template" id="courseParticipantSelectTemplate.html">
+    <a>
+        <i ng-class="match.model.class"></i> 
+        <span ng-bind-html="match.model.fullName | uibTypeaheadHighlight:query"></span>
+        <small class="small">({{match.model.department_Abbreviation}} {{match.model.professionalRole_Category}})</small>
+    </a>
+</script>

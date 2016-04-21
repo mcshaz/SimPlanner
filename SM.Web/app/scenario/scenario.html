@@ -17,11 +17,22 @@
                     </div>
 
 					<div class="form-group">
-						<label for="description" class="col-md-2 control-label">Description</label>
+						<label for="description" class="col-md-2 control-label" >
+                            Brief Description 
+                            <i class="fa fa-info-circle" data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Suggested proforma:[age] [gender] [problem] [cause]" bs-tooltip ></i>
+                        </label>
 						<div class="col-md-10">
-							<input type="text" id="description" class="form-control" ng-model="vm.scenario.description" z-validate/>
+							<input type="text" id="description" class="form-control" ng-model="vm.scenario.briefDescription" z-validate/>
 						</div>
+
 					</div>
+
+                    <div class="form-group">
+                        <label for="description" class="col-md-2 control-label">Full Description</label>
+                        <div class="col-md-10">
+                            <textarea id="description" class="form-control" ng-model="vm.scenario.fullDescription" z-validate />
+                        </div>
+                    </div>
 			
 					<div class="form-group">
 						<label for="departmentId" class="col-md-2 control-label">Department</label>
@@ -36,7 +47,7 @@
 
                     </fieldset>
                     <fieldset>
-                        <legend>Required</legend>
+                        <legend><small>Optional</small></legend>
 
                         <div class="form-group">
                             <label for="emersionCategory" class="col-md-2 control-label">Emersion Category</label>

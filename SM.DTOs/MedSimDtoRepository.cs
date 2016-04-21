@@ -97,6 +97,7 @@ namespace SM.Dto
             return Context.CourseSlots.Project<CourseSlot, CourseSlotDto>(includes, selects, sepChar);
         }
 
+        [Serializable]
         public class UnknownPropertyException : Exception
         {
             public UnknownPropertyException() : base() { }

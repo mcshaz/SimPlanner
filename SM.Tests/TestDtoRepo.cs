@@ -11,7 +11,7 @@ namespace SimManager.Tests
     /// Summary description for TestDtoRepo
     /// </summary>
     [TestClass]
-    public class TestDtoRepo
+    public sealed class TestDtoRepo: IDisposable
     {
         public TestDtoRepo()
         {
@@ -70,7 +70,10 @@ namespace SimManager.Tests
         // Use TestCleanup to run code after each test has run
         [TestCleanup()]
         public void MyTestCleanup() {
-            if (_repo != null) { _repo.Dispose(); }
+            if (_repo != null) {
+                _repo.Dispose();
+                _repo = null;
+            }
         }
         //
         #endregion
@@ -99,5 +102,39 @@ namespace SimManager.Tests
                 public string AuthenticationType { get { return "Mock"; } }
             }
         }
+
+        #region IDisposable
+
+        bool _disposed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~TestDtoRepo()
+        {
+            Dispose(false);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing && _repo!=null)
+            {
+                // free other managed objects that implement
+                // IDisposable only
+                _repo.Dispose();
+            }
+
+            // release any unmanaged objects
+            // set the object references to null
+
+            _disposed = true;
+        }
+        #endregion //IDisposable
     }
 }

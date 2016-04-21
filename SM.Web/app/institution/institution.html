@@ -22,7 +22,7 @@
                                 <input class="form-control" id="localeCode" type="text" ng-model="vm.institution.localeCode" placeholder="e.g. New Zealand"
                                        autocomplete="off" typeahead-select-on-exact="true" typeahead-showhint="true"
                                        uib-typeahead="cf.Key for cf in vm.getCultureFormats($viewValue)"
-                                       typeahead-on-select="vm.onLocaleSelected($item.Key)" typeahead-template-url="customTemplate.html"
+                                       typeahead-on-select="vm.onLocaleSelected($item.Key)" typeahead-template-url="institutionTemplate.html"
                                        typeahead-loading="vm.loadingPeople" typeahead-no-results="vm.noResults"
                                        typeahead-select-on-blur="true" data-z-validate /> <!--typeahead-show-hint="true" is off for now as will have to fiddle with the left ?margin/padding ?tt-typeahed class? in the error state-->
                                 <i ng-show="vm.loadingPeople" class="glyphicon glyphicon-refresh"></i>
@@ -65,7 +65,7 @@
         </div>
     </section>
 </section>
-<script type="text/ng-template" id="customTemplate.html">
+<script type="text/ng-template" id="institutionTemplate.html">
     <a>
         <img ng-src="{{match.model.flagUrl}}" width="16">
         <span ng-bind-html="match.model.Key | uibTypeaheadHighlight:query"></span>

@@ -14,12 +14,16 @@ namespace SM.DataAccess
 
             var starship = new Institution { Id = Guid.NewGuid(), Culture = nz, Name="Starship", ProfessionalRoleInstitutions=new List<ProfessionalRoleInstitution>() };
             context.Institutions.Add(starship);
+            var mmh = new Institution { Id = Guid.NewGuid(), Culture = nz, Name = "Middlemore", ProfessionalRoleInstitutions = new List<ProfessionalRoleInstitution>() };
+            context.Institutions.Add(mmh);
             var ced = new Department { Id = Guid.NewGuid(), Institution = starship, Abbreviation = "CED", Name="Children's Emergency Department"};
             context.Departments.Add(ced);
             var simProgram = new Department { Id = Guid.NewGuid(), Institution = starship, Name = "Simulation Programme", Abbreviation = "Sim" };
             context.Departments.Add(simProgram);
             var picu = new Department {Id = Guid.NewGuid(), Institution = starship, Abbreviation = "PICU" , Name="Paediatric Intensive Care Unit"};
-            context.Departments.Add(ced);
+            context.Departments.Add(picu);
+            var mmIcu = new Department { Id = Guid.NewGuid(), Institution = mmh, Abbreviation = "ICU", Name = "Intensive Care Unit" };
+            context.Departments.Add(mmIcu);
 
             var picuConf = new Room { Id = Guid.NewGuid(), Department = picu, ShortDescription="PICU Conf. Room",FullDescription = "PICU Conference Room (Meeting Room 252)", Directions = "Ask the Administrative assitants to let you in to the back offices. 2nd room on the left" };
             context.Rooms.Add(picuConf);
@@ -36,6 +40,7 @@ namespace SM.DataAccess
             starship.ProfessionalRoleInstitutions.Add(new ProfessionalRoleInstitution { ProfessionalRole = consultantRole });
             starship.ProfessionalRoleInstitutions.Add(new ProfessionalRoleInstitution { ProfessionalRole = nursingRole });
             starship.ProfessionalRoleInstitutions.Add(new ProfessionalRoleInstitution { ProfessionalRole = techRole });
+            mmh.ProfessionalRoleInstitutions.Add(new ProfessionalRoleInstitution { ProfessionalRole = consultantRole });
 
 
             //todo add Mike,Denish,Becks & check trish phone no and 2nd email 
@@ -48,6 +53,9 @@ namespace SM.DataAccess
 
             var denish = new Participant { Id = Guid.NewGuid(), Email = "denishk@adhb.govt.nz", FullName = "Denish Kumar", PhoneNumber = "999 999 999", ProfessionalRole = techRole, Department = simProgram };
             context.Users.Add(denish);
+
+            var carl = new Participant { Id = Guid.NewGuid(), Email = "carlh@cmhb.govt.nz", FullName = "Carl Horsley", PhoneNumber = "999 999 999", ProfessionalRole = consultantRole, Department = mmIcu };
+            context.Users.Add(carl);
 
             context.SaveChanges();
             var laerdal = new ManequinManufacturer { Id = Guid.NewGuid(), Name = "Laerdal" };
@@ -121,14 +129,14 @@ namespace SM.DataAccess
 
             context.SaveChanges();
 
-            var s = new Scenario { Id = Guid.NewGuid(), Complexity = Difficulty.Easy, Description = "boy falls down well", EmersionCategory = Emersion.Emersive, CourseType = crm, 
+            var s = new Scenario { Id = Guid.NewGuid(), Complexity = Difficulty.Easy, BriefDescription = "child multitrauma ", EmersionCategory = Emersion.Emersive, CourseType = crm, 
                 Department = ced };
 
             var s2 = new Scenario
             {
                 Id = Guid.NewGuid(),
                 Complexity = Difficulty.Moderate,
-                Description = "boy has fever",
+                BriefDescription = "boy has fever",
                 EmersionCategory = Emersion.Emersive,
                 CourseType = crm,
                 Department = picu

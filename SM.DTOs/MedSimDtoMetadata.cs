@@ -24,9 +24,12 @@ namespace SM.Dto
 
     public static class MedSimDtoMetadata
     {
-        const string breezeJsPath = @"C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\Scripts\breeze.min.js";
+
         public static string GetBreezeMetadata(string edmx, bool pretty = false)
         {
+            var breezeJsPath = GetExecutingPath();
+            int indx = breezeJsPath.IndexOf(@"\SimManager\");
+            breezeJsPath = breezeJsPath.Substring(0, indx) + @"\SimManager\SM.Web\Scripts\breeze.min.js";
             var engine = new Engine().Execute("var setInterval;var setTimeout = setInterval = function(){}"); //if using an engine like V8.NET, would not be required - not part of DOM spec
             engine.Execute(File.ReadAllText(breezeJsPath));
             engine.Execute("breeze.NamingConvention.camelCase.setAsDefault();" + //mirror here what you are doing in the client side code
@@ -244,6 +247,14 @@ namespace SM.Dto
                 returnVar.Add(char.ToLower(t.Name[0]) + t.Name.Substring(1), Enum.GetNames(t));
             }
             return JsonConvert.SerializeObject(returnVar);
+        }
+
+        static string GetExecutingPath()
+        {
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            return Path.GetDirectoryName(path);
         }
     }
 }

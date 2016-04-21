@@ -11,7 +11,8 @@ namespace SM.Dto.Maps
             return m => new Scenario
             {
                 Id = m.Id,
-                Description = m.Description,
+                BriefDescription = m.BriefDescription,
+                FullDescription =m.FullDescription,
                 DepartmentId = m.DepartmentId,
                 Complexity = m.Complexity,
                 EmersionCategory = m.EmersionCategory,
@@ -32,7 +33,8 @@ namespace SM.Dto.Maps
             return m => new ScenarioDto
             {
                 Id = m.Id,
-                Description = m.Description,
+                BriefDescription = m.BriefDescription,
+                FullDescription = m.FullDescription,
                 DepartmentId = m.DepartmentId,
                 Complexity = m.Complexity,
                 EmersionCategory = m.EmersionCategory,

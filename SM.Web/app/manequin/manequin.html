@@ -13,7 +13,7 @@
 					</div>
 			
 					<div class="form-group">
-						<label for="departmentId" class="col-md-2 control-label">DepartmentId</label>
+						<label for="departmentId" class="col-md-2 control-label">Owner</label>
 						<div class="col-md-10">
 							<select id="departmentId" class="form-control" data-z-validate data-ng-model="vm.manequin.departmentId" data-ng-options="d.id as d.name for d in vm.departments">
 								<option disabled selected hidden value="">
@@ -42,23 +42,26 @@
 							</div>
 						</div>
 					</div>
-			
-					<div class="form-group">
-						<label for="purchaseDate" class="col-md-2 control-label">Purchase Date</label>
+			    </fieldset>
+                <fieldset>
+                    <legend>Required</legend>
+
+                    <div class="form-group">
+                        <label for="purchaseDate" class="col-md-2 control-label">Purchase Date</label>
                         <div class="col-md-10">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </span>
                                 <input id="purchaseDate" class="form-control" ng-model="vm.manequin.purchaseDate" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
-                                       data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" />
+                                        data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" />
                             </div>
                         </div>
                     </div>
-			
-					<div class="form-group">
-						<label for="localCurrencyPurchasePrice" class="col-md-2 control-label">Purchase Price</label>
-						<div class="col-md-10">
+
+                    <div class="form-group">
+                        <label for="localCurrencyPurchasePrice" class="col-md-2 control-label">Purchase Price</label>
+                        <div class="col-md-10">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <strong>{{vm.currencySymbol}}</strong><small class="small">{{vm.isoCurrency}}</small>
@@ -66,33 +69,33 @@
                                 <input type="text" id="localCurrencyPurchasePrice" class="form-control" ng-model="vm.manequin.localCurrencyPurchasePrice" z-validate />
                             </div>
                         </div>
-					</div>
-			
-					<div class="form-group">
-						<label for="decommissionDate" class="col-md-2 control-label">Decommission Date</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="decommissionDate" class="col-md-2 control-label">Decommission Date</label>
                         <div class="col-md-10">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </span>
                                 <input id="decommissionDate" class="form-control" ng-model="vm.manequin.decommissionDate" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
-                                       data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" />
+                                        data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" />
                             </div>
                         </div>
-					</div>
-			
-					<div class="form-group">
-						<label for="decommissionReason" class="col-md-2 control-label">Decommission Reason</label>
-						<div class="col-md-10">
-							<textarea id="decommissionReason" class="form-control" ng-model="vm.manequin.decommissionReason" z-validate/>
-						</div>
-					</div>
-			
-					<div class="form-group">
-						<div class="col-md-offset-2 col-md-10">
-							<button type="submit" ng-disabled="vm.isDisabled()" class="btn btn-default" >Save</button>
-						</div>
-					</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="decommissionReason" class="col-md-2 control-label">Decommission Reason</label>
+                        <div class="col-md-10">
+                            <textarea id="decommissionReason" class="form-control" ng-model="vm.manequin.decommissionReason" z-validate />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" ng-disabled="vm.isDisabled()" class="btn btn-default">Save</button>
+                        </div>
+                    </div>
                 </fieldset>
             </form>
         </div>

@@ -14,7 +14,9 @@ namespace SM.DataAccess
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
-        public string Description { get; set; }
+        public string BriefDescription { get; set; }
+
+        public string FullDescription { get; set; }
 
         public Difficulty? Complexity { get; set; }
 
