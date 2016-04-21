@@ -19,7 +19,7 @@ uses BreezeJs & Angular, based on John Papa's Hot-Towel template
 - [ ] Print format of course roles page &/or use migradoc to allow user to edit RTF file
 - [ ] Check availability of manequins in course roles
 - [ ] Check previous scenario & resource exposure for participants in course roles
-- [ ] enable sign in with social media beyond facebook
+- [ ] enable sign in with other social media (more than just facebook)
 - [ ] reset facebook clientId key
 - [ ] Course participant/faculty notification chron & method (email/text)
 
@@ -28,3 +28,5 @@ uses BreezeJs & Angular, based on John Papa's Hot-Towel template
 - [ ] Department/Institution Reports
 - [ ] multi-stream courses with faculty/participants split into different rooms (tabbed on course roles form)
 - [ ] discuss with potential users re ways of splitting eg red/blue groups & ways of presenting in workable UI
+- [ ] sort out flags into sprite & classes - [see here for details of tools](https://css-tricks.com/css-sprites/)
+- [ ] Allow manequin room booking without specific course
