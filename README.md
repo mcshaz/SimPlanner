@@ -38,6 +38,7 @@ organising medical simulation courses and keeping track of institution wide data
 - [ ] reset facebook clientId key
 - [ ] Course participant/faculty notification chron & method (email/text)
 - [ ] keep a record of participant notifications
+- [ ] Zip & store resource files for courses
 
 ###Desired Features
 - [ ] Courses with 'faculty present throughout' & 'faculty only present for slots listed'. I guess being a course organiser in the latter would mean he/she present throughout - perhaps 'visitor checkbox'
