@@ -12,8 +12,13 @@
                         <li>
                             <h4>Scenarios</h4> <a class="btn-link" ng-href="#/scenario/new?courseTypeId={{cf.id}}"><i class="fa fa-plus"></i> New Scenario</a>
                             <ul>
-                                <li ng-repeat="s in ct.scenarios track by s.id" title="{{s.fullDescription}}">
-                                    {{s.briefDescription}} <a class="btn-link" ng-href="#/scenario/{{s.id}}"><i class="fa fa-edit"></i></a>
+                                <li ng-repeat="ctd in ct.courseTypeDepartments" >
+                                    {{ctd.department.name}} 
+                                    <ul>
+                                        <li ng-repeat="s in ctd.department.scenarios track by s.id" title="{{s.fullDescription}}">
+                                            {{s.briefDescription}} <a class="btn-link" ng-href="#/scenario/{{s.id}}"><i class="fa fa-edit"></i></a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>

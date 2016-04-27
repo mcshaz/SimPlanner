@@ -30,7 +30,6 @@
         vm.isNew = !$scope.courseParticipant;
         vm.isValidParticipantName = isValidParticipantName;
         vm.nameLimit = 10;
-        vm.notifyViewModelLoaded();
         vm.onParticipantSelected = onParticipantSelected;
         vm.participant = vm.isNew
             ? datacontext.participants.create(breeze.EntityState.Detached)
@@ -60,6 +59,7 @@
                 })];
                 common.activateController(promises, controllerId)
                     .then(function () {
+                        vm.notifyViewModelLoaded();
                         vm.log('Activated Course Participant Dialog');
                     });
                 });
@@ -104,7 +104,6 @@
                 }
             }
             datacontext.addEntity(vm.participant);
-
             //todo check event fires
         }
 

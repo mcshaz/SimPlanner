@@ -18,7 +18,7 @@
         function activate() {
             datacontext.ready().then(function () {
                 common.activateController([
-                    datacontext.courseTypes.findServerIfCacheEmpty({ expand: ['courseFormats', 'scenarios', 'courseTypeScenarioRoles.facultyScenarioRole'] }).then(function (data) {
+                    datacontext.courseTypes.findServerIfCacheEmpty({ expand: ['courseFormats', 'scenarios', 'courseTypeScenarioRoles.facultyScenarioRole', 'courseTypeDepartments'] }).then(function (data) {
                         data.sort(common.sortOnPropertyName('description'));
                         vm.courseTypes = data;
                         data.forEach(function (el) {

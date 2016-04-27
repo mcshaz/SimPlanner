@@ -101,7 +101,7 @@
         var _modalInstance;
         function getModalInstance() {
             if (!_modalInstance) {
-                var scope = $scope.$new();
+                var modalScope = $scope.$new();
                 _modalInstance = $aside({
                     templateUrl: 'app/courseParticipant/courseParticipant.html',
                     controller: 'courseParticipant',
@@ -109,11 +109,12 @@
                     id: 'cpModal',
                     placement: 'left',
                     animation: 'am-slide-left',
-                    scope: scope,
+                    scope: modalScope,
                     controllerAs: 'cp'
                 });
-                scope.asideInstance = _modalInstance;
-                scope.course = vm.course;
+                modalScope.asideInstance = _modalInstance;
+                modalScope.course = vm.course;
+                $scope.$on('$destroy', function () { _modalInstance.destroy(); })
             }
             return _modalInstance;
         }

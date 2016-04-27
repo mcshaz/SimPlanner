@@ -32,10 +32,9 @@
                 }
             }
 
+            unwatchers.push($on('$routeChangeStart', beforeRouteChange));
             if (argObj.$scope.asideInstance) {
                 vm.close = modalClose;
-            } else {
-                unwatchers.push($on('$routeChangeStart', beforeRouteChange));
             }
 
             if (argObj.$watchers) {unwatchers = unwatchers.concat(argObj.$watchers);}
