@@ -7,7 +7,7 @@ uses BreezeJs & Angular, based on John Papa's Hot-Towel template
 Simulation Manager is a tool originally designed by and for the Starship Hospital Simulation Program to simplify
 organising medical simulation courses and keeping track of institution wide data, including:
 * Faculty and participants attending a course
-* (including auto-notification and tracking reply confirmation by email ± text message)
+  * (including auto-notification and tracking reply confirmation by email ± text message)
 * Developing course timetables
 * Which scenarios are to be run during a course 
   * And checking which scenarios participants have previously completed, to avoid repeating scenarios
