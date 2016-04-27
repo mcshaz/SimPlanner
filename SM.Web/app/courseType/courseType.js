@@ -238,7 +238,7 @@
             var newFormat = datacontext.cloneItem(cf, ['courseSlots']);
             newFormat.description += " - copy";
             //?notify I believe not but test
-            activeFormatIndex = vm.courseType.courseFormats.length -1;
+            vm.activeFormatIndex = vm.courseType.courseFormats.length -1;
         }
     }
 })();

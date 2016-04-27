@@ -129,7 +129,7 @@
                                         <td>{{c.startTime | amDateFormat:'L'}}</td>
                                         <td>{{c.department.abbreviation}}</td>
                                         <td>
-                                            <a href="#" uib-popover="{{c.room.directions}}" popover-title="{{c.room.fullDescription}}" popover-trigger="mouseenter" >
+                                            <a data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="{{c.room.directions}}" bs-tooltip >
                                                 {{c.room.shortDescription}}
                                             </a>
                                         </td>
