@@ -64,14 +64,14 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-9">
+                                            <div class="col-md-8">
                                                 <span class="label" ng-class="m.isSim?'label-info':'label-default'">
                                                     Faculty
                                                 </span>
 
                                                 <ul class="col-md-12 faculty" ng-if="!m.isSim" ng-model="m.assignedFaculty" ui-sortable="m.sortableOptions"
                                                     ng-class="m.groupClass">
-                                                    <li class="list-group-item col-md-6" ng-repeat="r in m.assignedFaculty track by r.participantId"
+                                                    <li class="list-group-item col-sm-6 clearfix" ng-repeat="r in m.assignedFaculty track by r.participantId"
                                                         ng-class="{unavailableParticipant: r.isConfirmed===false}">
                                                         <i ng-class="r.icon"></i> {{r.fullName}} <small class="small">({{r.departmentName}})</small>
                                                         <span class="pull-right">
@@ -89,10 +89,14 @@
                                                         {{r.description}}
                                                     </div>
                                                     <ul class="col-md-9 faculty" ng-model="r.assignedFaculty" ui-sortable="r.sortableOptions" ng-class="m.groupClass">
-                                                        <li class="list-group-item col-md-6" ng-repeat="p in r.assignedFaculty track by p.participantId"
+                                                        <li class="list-group-item col-sm-6 clearfix" ng-repeat="p in r.assignedFaculty track by p.participantId"
                                                             ng-class="{unavailableParticipant: p.isConfirmed===false}">
-                                                            <i ng-class="p.icon"></i> {{p.fullName}} <small class="small">({{p.departmentName}})</small>
-                                                            <span class="pull-right">
+                                                            <i ng-class="p.icon"></i> 
+                                                            {{p.fullName}} 
+                                                            <small class="small">
+                                                                ({{p.departmentName}})
+                                                            </small>
+                                                            <span class="col-sm-2">
                                                                 <span class="badge badge-info">
                                                                     {{p.slotCount}}
                                                                 </span>
@@ -104,12 +108,12 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div class="label label-info" bs-enabled="m.isSim" bs-tooltip data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Ctrl + drag to assign faculty member to multiple roles">
                                                     Available Faculty
                                                 </div>
                                                 <ul class="list-group faculty" ng-model="m.availableFaculty" ui-sortable="m.availableFacultyOptions" ng-class="m.groupClass">
-                                                    <li ng-repeat="cp in m.availableFaculty track by cp.participantId" class="list-group-item"
+                                                    <li ng-repeat="cp in m.availableFaculty track by cp.participantId" class="list-group-item clearfix"
                                                         ng-class="{unavailableParticipant: cp.isConfirmed===false}">
                                                         <i ng-class="cp.icon"></i> {{cp.fullName}} <small class="small">({{cp.departmentName}})</small>
                                                         <span class="pull-right">
@@ -120,7 +124,7 @@
                                                                 {{cp.scenarioCount}}
                                                             </span>
                                                         </span>
-                                                    </li>
+</li>
                                                 </ul>
                                             </div>
                                         </div>
