@@ -25,9 +25,9 @@
     });
 
     commonModule.factory('common',
-        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger','$http', /* 'dateUtilities', */common]);
+        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger','$http', 'collectionManager' /* 'dateUtilities', */, common]);
 
-    function common($q, $rootScope, $timeout, commonConfig, logger, $http /*, dateUtilities */) {
+    function common($q, $rootScope, $timeout, commonConfig, logger, $http, collectionManager /*, dateUtilities */) {
         var throttles = {};
 
         var service = {
@@ -45,7 +45,8 @@
             isEmptyObject: isEmptyObject,
             isNumber: isNumber,
             logger: logger, // for accessibility
-            //dateUtilities: dateUtilities,  // for accessibility
+            manageCollectionChange: collectionManager.manageCollectionChange,  // for accessibility
+            collectionChange: collectionManager.collectionChange,
             sortOnPropertyName: sortOnPropertyName,
             sortOnChildPropertyName: sortOnChildPropertyName,
             

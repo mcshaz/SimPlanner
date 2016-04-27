@@ -18,7 +18,6 @@ namespace SM.Dto.Maps
                 EmersionCategory = m.EmersionCategory,
                 TemplateFilename = m.TemplateFilename,
                 CourseTypeId = m.CourseTypeId,
-                ManequinModelId = m.ManequinModelId
                 //Manequin = m.Manequin,
                 //CourseType = m.CourseType,
                 //Department = m.Department,
@@ -40,7 +39,6 @@ namespace SM.Dto.Maps
                 EmersionCategory = m.EmersionCategory,
                 TemplateFilename = m.TemplateFilename,
                 CourseTypeId = m.CourseTypeId,
-                ManequinModelId = m.ManequinModelId
                 //Manequin = m.Manequin,
                 //CourseType = m.CourseType,
                 //Department = m.Department,

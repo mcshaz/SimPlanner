@@ -151,7 +151,9 @@
                                             <input type="checkbox" ng-checked="cp.isOrganiser" />
                                         </td>
                                         <td>
-                                            <input type="checkbox" ng-checked="cp.isConfirmed" />
+                                            <button class="btn-link" ng-click="vm.cycleConfirmed(cp)">
+                                                <i class="fa" ng-class="{'fa-times-circle':cp.isConfirmed===false,'fa-question-circle':cp.isConfirmed===null,'fa-check-circle':cp.isConfirmed}"></i>
+                                            </button>
                                         </td>
                                         <td>
                                             <button type="button" class="btn-link" ng-click="vm.openCourseParticipant(cp.participantId)"><i class="fa fa-edit"></i></button> |
@@ -201,7 +203,9 @@
                                             {{cp.participant.professionalRole.description}}
                                         </td>
                                         <td>
-                                            <input type="checkbox" ng-checked="cp.isConfirmed" />
+                                            <button class="btn-link" ng-click="vm.cycleConfirmed(cp)">
+                                                <i class="fa" ng-class="{'fa-times-circle':cp.isConfirmed===false,'fa-question-circle':cp.isConfirmed===null,'fa-check-circle':cp.isConfirmed}"></i>
+                                            </button>
                                         </td>
                                         <td>
                                         <td>

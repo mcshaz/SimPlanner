@@ -7,7 +7,7 @@ namespace SM.Dto
     public class CourseParticipantDto
 	{
         public Guid CourseId { get; set; }
-        public bool IsConfirmed { get; set; }
+        public bool? IsConfirmed { get; set; }
         public bool IsFaculty { get; set; }
         public bool IsOrganiser { get; set; }
         public Guid DepartmentId { get; set; }

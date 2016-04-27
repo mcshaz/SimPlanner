@@ -88,7 +88,7 @@
                 return ent && ent.entityAspect;
             }
 
-            function filterHasValidationErrors(el) { return el.entityAspect.hasValidationErrors; }
+            function filterHasValidationErrors(el) { return el.entityAspect.hasValidationErrors && el.entityAspect.entityState !== breeze.EntityState.Deleted; }
 
             function notifyViewModelLoaded() {
                 var watched = getWatched(true);
@@ -107,8 +107,16 @@
                 //console.log(changeArgs.entityAction.name + '\t-\t' + ent.entityType.shortName + '\t-\t' + ent.entityAspect.entityState.name);
                 switch (changeArgs.entityAction) {
                     case breeze.EntityAction.EntityStateChange:
-                        if (getWatched().indexOf(ent) !== -1 && !vm.isEntityStateChanged) {
-                            vm.isEntityStateChanged = isUserChanged(ent);
+                        if (getWatched().indexOf(ent) !== -1) {
+                            if (!vm.isEntityStateChanged) {
+                                vm.isEntityStateChanged = isUserChanged(ent);
+                            }
+                            if (ent.entityAspect.entityState === breeze.EntityState.Deleted) {
+                                var indx = errorEntities.indexOf(ent);
+                                if (indx !== -1) {
+                                    errorEntities.splice(indx, 1);
+                                }
+                            }
                         }
                         break;
                     case breeze.EntityAction.PropertyChange:

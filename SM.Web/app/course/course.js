@@ -12,7 +12,7 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: 'course',
+            watchedEntityNames: ['course','course.courseParticipants'],
             $scope: $scope
         })
         var id = $routeParams.id;
@@ -20,6 +20,7 @@
 
         vm.course = {};
         vm.courseFormats = [];
+        vm.cycleConfirmed = cycleConfirmed;
         vm.dateChanged = dateChanged;
         vm.dateFormat = '';
         vm.deleteCourseParticipant = deleteCourseParticipant;
@@ -67,10 +68,22 @@
             });
         }
 
+        function cycleConfirmed(cp) {
+            switch (cp.isConfirmed) {
+                case true:
+                    cp.isConfirmed = false;
+                    break;
+                case false:
+                    cp.isConfirmed = null;
+                    break;
+                default: // case null
+                    cp.isConfirmed = true;
+            }
+        }
+
         function openDp() {
             this.dpPopup.isOpen = true;
         }
-
 
         function openCourseParticipant(participantId) {
             var modal = getModalInstance();

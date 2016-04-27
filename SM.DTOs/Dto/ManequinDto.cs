@@ -31,6 +31,6 @@ namespace SM.Dto
 
         public virtual ICollection<ManequinServiceDto> ManequinServices { get; set; }
 
-        public virtual ICollection<CourseSlotScenarioDto> CourseSlotScenarios { get; set; }
+        public virtual ICollection<CourseSlotManequinDto> CourseSlotManequins { get; set; }
     }
 }

@@ -129,21 +129,42 @@ namespace SM.DataAccess
 
             context.SaveChanges();
 
-            var s = new Scenario { Id = Guid.NewGuid(), Complexity = Difficulty.Easy, BriefDescription = "child multitrauma ", EmersionCategory = Emersion.Emersive, CourseType = crm, 
-                Department = ced };
+            var s = new Scenario
+            {
+                Id = Guid.NewGuid(),
+                Complexity = Difficulty.Easy,
+                BriefDescription = "2yo multitrauma ",
+                FullDescription = "MVA with simultaneous subdural and liver lacs",
+                EmersionCategory = Emersion.Emersive,
+                CourseType = crm, 
+                Department = ced
+            };
 
             var s2 = new Scenario
             {
                 Id = Guid.NewGuid(),
                 Complexity = Difficulty.Moderate,
-                BriefDescription = "boy has fever",
+                BriefDescription = "6yo meningococal sepsis",
+                FullDescription= "cardiovascular collapse, purpurae all over manequin",
                 EmersionCategory = Emersion.Emersive,
                 CourseType = crm,
                 Department = picu
             };
 
+            var s3 = new Scenario
+            {
+                Id = Guid.NewGuid(),
+                Complexity = Difficulty.Easy,
+                BriefDescription = "8yo fontan desaturating",
+                FullDescription = "develops LRTI and sats in 50s",
+                EmersionCategory = Emersion.Emersive,
+                CourseType = crm,
+                Department = ced
+            };
+
             context.Scenarios.Add(s);
             context.Scenarios.Add(s2);
+            context.Scenarios.Add(s3);
 
             var proforma = new ScenarioResource { Id = Guid.NewGuid(), Description = "proforma", ResourceFilename = @"C:\whatever.doc", Scenario=s };
             context.ScenarioResources.Add(proforma);
@@ -164,8 +185,11 @@ namespace SM.DataAccess
             var game = new ChosenTeachingResource { ActivityTeachingResource = ballGame, Course = c, CourseSlot = teamSlot };
             context.ChosenTeachingResources.Add(game);
 
-            var simScenario1 = new CourseSlotScenario { Course = c, CourseSlot=sim1, Scenario = s, Manequin=cedJunior };
+            var simScenario1 = new CourseSlotScenario { Course = c, CourseSlot=sim1, Scenario = s};
             context.CourseSlotScenarios.Add(simScenario1);
+
+            var simManequin1 = new CourseSlotManequin { Course = c, CourseSlot = sim1, Manequin = cedJunior};
+            context.CourseSlotManequins.Add(simManequin1);
 
             var simRole1 = new CourseScenarioFacultyRole { Course = c, CourseSlot = sim1, Participant = trish, FacultyScenarioRole = lt };
             context.CourseScenarioFacultyRoles.Add(simRole1);

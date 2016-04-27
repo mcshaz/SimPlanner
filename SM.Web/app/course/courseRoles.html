@@ -31,25 +31,35 @@
                                                     {{m.isSim?'Scenario':'Resource'}}
                                                 </label>
                                                 <div class="col-md-5">
-                                                    <select id="resource" class="form-control" ng-options="s as s.description for s in m.choices" ng-model="m.selectedChoice.scenario" ng-if="m.choices.length">
+                                                    <select id="resource" class="form-control" ng-model="m.selectedChoice" ng-options="s as s.description for s in m.choices" ng-if="m.choices.length && !m.isSim">
+                                                        <option disabled selected hidden value="">
+                                                            Please Select...
+                                                        </option>
+                                                    </select>
+
+                                                    <select id="resource" class="form-control" ng-model="m.scenario" ng-options="s as s.briefDescription for s in vm.scenarios" ng-change="vm.changeScenario(m)" ng-if="m.isSim">
                                                         <option disabled selected hidden value="">
                                                             Please Select...
                                                         </option>
                                                     </select>
                                                 </div>
+                                                <aside ng-if="m.isSim" class="col-md-6">
+                                                    {{m.scenario.fullDescription}}
+                                                </aside>
 
                                             </div>
                                             <div class="form-group" ng-if="m.isSim">
                                                 <label class="control-label col-md-1" for="manequin">
-                                                    Manequin
+                                                    Manequin(s)
                                                 </label>
                                                 <div class="col-md-5">
-                                                    <select id="manequin" class="form-control" ng-options="m as m.description group by m.department.name for m in vm.manequins"
-                                                            ng-model="m.selectedChoice.manequin" ng-disabled="!m.selectedChoice">
-                                                        <option disabled selected hidden value="">
-                                                            Select Manequin...
-                                                        </option>
-                                                    </select>
+
+                                                    <div isteven-multi-select
+                                                         input-model="m.manequins" helper-elements="filter"
+                                                         output-model="m.selectedManequins" tick-property="checked"
+                                                         button-label="description" group-property="isGroup"
+                                                         item-label="description">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -61,7 +71,8 @@
 
                                                 <ul class="col-md-12 faculty" ng-if="!m.isSim" ng-model="m.assignedFaculty" ui-sortable="m.sortableOptions"
                                                     ng-class="m.groupClass">
-                                                    <li class="list-group-item col-md-6" ng-repeat="r in m.assignedFaculty track by r.participantId">
+                                                    <li class="list-group-item col-md-6" ng-repeat="r in m.assignedFaculty track by r.participantId"
+                                                        ng-class="{unavailableParticipant: r.isConfirmed===false}">
                                                         <i ng-class="r.icon"></i> {{r.fullName}} <small class="small">({{r.departmentName}})</small>
                                                         <span class="pull-right">
                                                             <span class="badge badge-info">
@@ -78,7 +89,8 @@
                                                         {{r.description}}
                                                     </div>
                                                     <ul class="col-md-9 faculty" ng-model="r.assignedFaculty" ui-sortable="r.sortableOptions" ng-class="m.groupClass">
-                                                        <li class="list-group-item col-md-6" ng-repeat="p in r.assignedFaculty track by p.participantId">
+                                                        <li class="list-group-item col-md-6" ng-repeat="p in r.assignedFaculty track by p.participantId"
+                                                            ng-class="{unavailableParticipant: p.isConfirmed===false}">
                                                             <i ng-class="p.icon"></i> {{p.fullName}} <small class="small">({{p.departmentName}})</small>
                                                             <span class="pull-right">
                                                                 <span class="badge badge-info">
@@ -97,7 +109,8 @@
                                                     Available Faculty
                                                 </div>
                                                 <ul class="list-group faculty" ng-model="m.availableFaculty" ui-sortable="m.availableFacultyOptions" ng-class="m.groupClass">
-                                                    <li ng-repeat="cp in m.availableFaculty track by cp.participantId" class="list-group-item">
+                                                    <li ng-repeat="cp in m.availableFaculty track by cp.participantId" class="list-group-item"
+                                                        ng-class="{unavailableParticipant: cp.isConfirmed===false}">
                                                         <i ng-class="cp.icon"></i> {{cp.fullName}} <small class="small">({{cp.departmentName}})</small>
                                                         <span class="pull-right">
                                                             <span class="badge badge-info">

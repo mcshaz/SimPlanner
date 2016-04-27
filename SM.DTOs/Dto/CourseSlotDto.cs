@@ -25,5 +25,6 @@ namespace SM.Dto
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresenters { get; set; }
         public virtual ICollection<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
         public virtual ICollection<CourseSlotScenarioDto> CourseSlotScenarios { get; set; }
+        public virtual ICollection<CourseSlotManequinDto> CourseSlotManequins { get; set; }
     }
 }

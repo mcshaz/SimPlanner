@@ -237,10 +237,13 @@
     <Content Include="app\common\bootstrap\bootstrap.dialog.js" />
     <Content Include="app\common\common.js" />
     <Content Include="app\common\logger.js" />
+    <Content Include="app\common\collectionManager.js" />
     <Content Include="app\common\spinner.js" />
     <Content Include="app\config.exceptionHandler.js" />
     <Content Include="app\config.js" />
     <Content Include="app\config.route.js" />
+    <Content Include="app\contactUs\contactUs.html" />
+    <Content Include="app\contactUs\contactUs.js" />
     <Content Include="app\courseType\courseTypes.html" />
     <Content Include="app\courseType\courseTypes.js" />
     <Content Include="app\courseType\courseType.html" />
@@ -822,6 +825,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\tutorial\" />
+    <Folder Include="app\users\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>

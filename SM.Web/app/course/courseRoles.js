@@ -15,23 +15,27 @@
             $scope: $scope
         })
         var id = $routeParams.id;
-
+        
+        vm.changeScenario = changeScenario;
         vm.course = {};
+        vm.scenarios = [];
 
         vm.title = 'course roles';
 
         activate();
 
         function activate() {
+            var manequins = [];
             datacontext.ready().then(function () {
                 common.activateController([datacontext.courses.fetchByKey(id, {
                     expand: ['courseParticipants.participant',
                         'courseFormat.courseSlots.activity.activityChoices',
                         'courseSlotScenarios',
                         'courseSlotPresenters',
+                        'courseSlotManequins',
                         'courseScenarioFacultyRoles',
                         'chosenTeachingResources',
-                        'courseFormat.courseType.scenarios',
+                        'department.scenarios',
                         'courseFormat.courseType.courseTypeScenarioRoles.facultyScenarioRole'],
                 }).then(function (data) {
                     if (!data) {
@@ -43,6 +47,7 @@
                     var count = 0;
 
                     vm.course = data;
+                    vm.scenarios = data.department.scenarios;
 
                     data.courseFormat.courseSlots.sort(common.sortOnPropertyName('order'));
                     data.courseParticipants.sort(common.sortOnChildPropertyName('participant', 'fullName'));
@@ -57,6 +62,7 @@
                                                 {
                                                     participantId: el.participantId,
                                                     fullName: el.participant.fullName,
+                                                    isConfirmed:el.isConfirmed,
                                                     icon: common.getRoleIcon(el.participant.professionalRole.category),
                                                     departmentName: el.participant.department.abbreviation
                                                 }));
@@ -70,7 +76,7 @@
                             id: cs.id,
                             startTime: startTime,
                             groupClass: 'grp' + count++,
-                            availableFaculty: faculty.slice(0),
+                            availableFaculty: faculty.slice(),
                         };
                         var sortableOptions = {
                             connectWith: '.' + returnVar.groupClass,
@@ -112,11 +118,11 @@
 
                         var slotRoles = cs.courseScenarioFacultyRoles.filter(isThisSlot);
                         data.courseFormat.courseType.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole', 'order'));
-                        return angular.extend(returnVar, {
+                        angular.extend(returnVar, {
                             name: 'Simulation',
-                            choices: data.courseFormat.courseType.scenarios,
-                            selectedChoice: (data.courseSlotScenarios.find(isThisSlot) || {}),
+                            scenario: (data.courseSlotScenarios.find(isThisSlot) || {}).scenario,
                             isSim: true,
+                            courseSlotManequins: data.courseSlotManequins,
                             roles: data.courseFormat.courseType.courseTypeScenarioRoles.map(function (ctsr) {
                                 var assignedFaculty = [];
                                 slotRoles.forEach(function (sr) {
@@ -149,14 +155,64 @@
                                 }
                             })
                         });
+                        returnVar.oldScenario = returnVar.scenario;
+                        return returnVar;
                     });
                     vm.notifyViewModelLoaded();
                 }), datacontext.manequins.all().then(function (data) {
-                    vm.manequins = data;
+                    var departmentName;
+                    data.sort(common.sortOnChildPropertyName('deparment', 'name'));
+                    data.forEach(function (el) {
+                        if (departmentName !== el.department.name) {
+                            manequins.push({
+                                description: departmentName = el.department.name,
+                                isGroup:true
+                            });
+                        }
+                        manequins.push(el);
+                    });
                 })], controllerId).then(function () {
-                        vm.log('Activated Course Roles View');
+                    vm.map.forEach(function (el, indx) {
+                        if (el.courseSlotManequins) {
+                            el.manequins = manequins.map(function (m) {
+                                return m.isGroup
+                                    ? m
+                                    : {
+                                        checked: el.courseSlotManequins.some(function (cs) {
+                                            return cs.manequinId === m.id;
+                                        }),
+                                        description: m.description,
+                                        id: m.id
+                                    };
+                            });
+                            el.selectedManequins = el.manequins.filter(function (m) { return m.checked; })
+                            $scope.$watchCollection(function () {
+                                return el.selectedManequins 
+                            }, common.manageCollectionChange(datacontext.courseSlotManequins, 'id',
+                                function (member) {
+                                    return {
+                                        manequinId: member.id,
+                                        courseSlotId: vm.map[indx].id,//slight hack because the collection is replaced by the isteven multiselect - not really sure why this works, but otherwise digest in progress error on change
+                                        courseId: vm.course.id
+                                    };
+                                }));
+                        }
+                    });
+                    vm.log('Activated Course Roles View');
                 });
             });
+        }
+
+        function changeScenario(m) {
+            console.log(m.scenario.briefDescription);
+            common.collectionChange(datacontext.courseSlotScenarios, 'id', function (ent) {
+                return { 
+                    courseSlotId:m.id,
+                    scenarioId:ent.id,
+                    courseId:vm.course.id
+                };
+            }, m.scenario?[m.scenario]:[], m.oldScenario?[m.oldScenario]:[]);
+            m.oldScenario = m.scenario;
         }
 
         function calculateCourseRoles(participantId) {

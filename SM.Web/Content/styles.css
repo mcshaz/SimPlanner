@@ -456,7 +456,11 @@ div.time-accompany{
     cursor:move;
     text-align:center;
 }
-    /*#region overide breeze directives*/
+.unavailableParticipant{
+    text-decoration:line-through;
+    color:orangered;
+}    
+/*#region overide breeze directives*/
         .z-decorator {
             display: block;
             margin-bottom: 20px;

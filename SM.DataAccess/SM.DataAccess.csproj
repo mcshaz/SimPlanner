@@ -91,6 +91,7 @@
     <Compile Include="Data\Authentication\AspNetUserClaim.cs" />
     <Compile Include="Data\Authentication\AspNetUserLogin.cs" />
     <Compile Include="Data\Authentication\AspNetUserRole.cs" />
+    <Compile Include="Data\CourseSlotManequin.cs" />
     <Compile Include="Data\CourseType.cs" />
     <Compile Include="Data\ProfessionalRoleInstitution.cs" />
     <Compile Include="Data\Culture.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Metadata\ActivityChoiceMetadata.cs" />
     <Compile Include="Metadata\ChosenTeachingResourceMetadata.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
+    <Compile Include="Metadata\CourseSlotManequinMetadata.cs" />
     <Compile Include="Metadata\CourseTypeScenarioRoleMetadata.cs" />
     <Compile Include="Metadata\ProfessionalRoleInstitutionMetadata.cs" />
     <Compile Include="Metadata\CultureMetadata.cs" />

@@ -109,11 +109,17 @@ namespace SM.Dto
 
             public void SetSingleMultiplicityType(string typeName)
             {
+                if (_properties[1] == null)
+                {
+                    var unmatched = _properties[0];
+                    Debug.WriteLine("null reference - PropertyName:'{0}' TypeName:'{1}'", unmatched.PropertyName, unmatched.TypeName);
+                }
                 int i;
                 for (i=0; i < _properties.Length; i++)
                 {
                     //if this throws, it is because the relationships in the entity model are not configured to be bi-directional
                     //modify this accordingly, but I want it to throw until I have my entity model sorted out
+
                     if (_properties[i].TypeName == typeName)
                     {
                         break;

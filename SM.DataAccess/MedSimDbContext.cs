@@ -26,6 +26,7 @@ namespace SM.DataAccess
         public virtual DbSet<CourseParticipant> CourseParticipants { get; set; } 
         public virtual DbSet<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
         public virtual DbSet<CourseSlot> CourseSlots { get; set; }
+        public virtual DbSet<CourseSlotManequin> CourseSlotManequins { get; set; }
         public virtual DbSet<CourseSlotPresenter> CourseSlotPresenters { get; set; }
         public virtual DbSet<CourseSlotScenario> CourseSlotScenarios { get; set; }
         public virtual DbSet<CourseType> CourseTypes { get; set; }
@@ -108,6 +109,12 @@ namespace SM.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Course>()
+                .HasMany(e => e.CourseSlotManequins)
+                .WithRequired(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Course>()
                 .HasMany(e => e.CourseSlotPresenters)
                 .WithRequired(e => e.Course)
                 .HasForeignKey(e => e.CourseId)
@@ -163,6 +170,12 @@ namespace SM.DataAccess
 
             modelBuilder.Entity<CourseSlot>()
                 .HasMany(e => e.CourseSlotScenarios)
+                .WithRequired(e => e.CourseSlot)
+                .HasForeignKey(e => e.CourseSlotId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseSlot>()
+                .HasMany(e => e.CourseSlotManequins)
                 .WithRequired(e => e.CourseSlot)
                 .HasForeignKey(e => e.CourseSlotId)
                 .WillCascadeOnDelete(false);
@@ -280,7 +293,7 @@ namespace SM.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Manequin>()
-                .HasMany(e => e.CourseSlotScenarios)
+                .HasMany(e => e.CourseSlotManequins)
                 .WithRequired(e => e.Manequin)
                 .HasForeignKey(e => e.ManequinId)
                 .WillCascadeOnDelete(false);

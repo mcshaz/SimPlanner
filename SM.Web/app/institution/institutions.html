@@ -32,7 +32,7 @@
                                             <h6>Scenarios <a class="btn-link small" ng-href="#/scenario/new?departmentId={{d.id}}">(<i class="fa fa-plus"></i> New Scenario)</a></h6>
                                             <ul>
                                                 <li ng-repeat="s in d.scenarios track by s.id">
-                                                    {{s.description}} <a class="btn-link" ng-href="#/scenario/{{s.id}}"><i class="fa fa-edit"></i></a>
+                                                    {{s.briefDescription}} <a class="btn-link" ng-href="#/scenario/{{s.id}}"><i class="fa fa-edit"></i></a>
                                                 </li>
                                             </ul>
                                         </li>
