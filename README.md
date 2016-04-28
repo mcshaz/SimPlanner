@@ -20,8 +20,6 @@ organising medical simulation courses and keeping track of institution wide data
 ###To Do
 - [ ] Come up with appropriate icon for site (currently using hot towel icon!)
 - [ ] Sim Team to give current version a full test
-- [ ] Enable Migrations and move to live data
-- [ ] Test saving and subsequently changing/saving different combination of scenario & manequin for a given course slot
 - [ ] Add Contact us page
 - [ ] Add How To Use This Site page
 - [ ] Add Edit My Details page
