@@ -1,6 +1,7 @@
 namespace SM.DataAccess
 {
     using Microsoft.AspNet.Identity.EntityFramework;
+    using Migrations;
     using SM.Metadata;
     using System;
     using System.Data.Entity;
@@ -15,7 +16,7 @@ namespace SM.DataAccess
 
         static MedSimDbContext()
         {
-            Database.SetInitializer(new InitialiseMedSim());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<MedSimDbContext, Configuration>());
         }
         public virtual DbSet<ActivityTeachingResource> ActivityTeachingResources { get; set; }
         public virtual DbSet<ChosenTeachingResource> ChosenTeachingResources { get; set; }

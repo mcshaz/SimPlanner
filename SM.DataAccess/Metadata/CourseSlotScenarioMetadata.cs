@@ -16,11 +16,6 @@ namespace SM.Metadata
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid CourseSlotId { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid ScenarioId { get; set; }
-
         [Range(0,CourseSlotMetadata.MaxStreams)]
         public byte StreamNumber { get; set; }
     }

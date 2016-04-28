@@ -42,9 +42,8 @@ namespace SM.Web.Models
                 var userStore = new CustomUserStore(context);
                 var userManager = new ApplicationUserManager(userStore);
 
-                foreach(string userName in new[] { "brentm@adhb.govt.nz" , "denishk@adhb.govt.nz" })
+                foreach(var user in context.Users.Where(u=>u.Department.Institution.Name== "Starship").ToList())
                 {
-                    var user = context.Users.FirstOrDefault(u => u.Email == userName);
                     var result = userManager.AddPassword(userId: user.Id, password: "Admin_1");
                     if (result.Succeeded)
                     {
