@@ -1,0 +1,30 @@
+﻿<div class="modal mainbox" id="courseParticipantBox" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="man.save()" id="courseParticipantForm" class="form-horizontal">
+                <div class="modal-header">
+                    <button class="close" type="button" ng-click="man.close()">&times;</button>
+                    <h4 class="manequin-title">
+                        Manequin Manufacturer
+                    </h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="email" class="control-label">Name</label>
+                        <div>
+                            <input class="form-control" type="text" id="name" data-z-validate ng-model="man.manufacturer.name" />
+                            <span class="text-danger" />
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="submit" ng-disabled="man.disableSave()">Save</button>
+                    <button class="btn btn-danger" type="button" ng-click="man.cancel()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

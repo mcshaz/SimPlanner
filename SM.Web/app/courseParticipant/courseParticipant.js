@@ -20,7 +20,6 @@
         
         vm.createCourseParticipant = createCourseParticipant;
         vm.createNewPerson = createNewPerson;
-        vm.dialCode = '';
         vm.disableAdd = disableAdd;
         vm.getPeople = getPeople;
         vm.institution = {};

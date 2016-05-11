@@ -1,4 +1,4 @@
-﻿<section id="dashboard-view" class="mainbar" ng-controller="courseTypes as vm">
+﻿<section class="mainbar" ng-controller="courseTypes as vm">
     <section class="matter">
         <div class="container">
             <a class="btn-link" href="#/courseType/new"><i class="fa fa-plus"></i> New Course Type</a>
@@ -29,8 +29,8 @@
                                 <a class="btn-link" ng-href="#/scenarioRoles/{{ct.id}}"><i class="fa fa-edit"></i></a>
                             </h4> 
                             
-                            <ul class="list-inline list-group">
-                                <li class="list-group-item" ng-repeat="fr in ct.courseTypeScenarioRoles">
+                            <ul >
+                                <li ng-repeat="fr in ct.courseTypeScenarioRoles">
                                     {{fr.facultyScenarioRole.description}}
                                 </li>
                             </ul>

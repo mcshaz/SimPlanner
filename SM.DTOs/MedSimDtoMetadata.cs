@@ -27,10 +27,11 @@ namespace SM.Dto
 
         public static string GetBreezeMetadata(string edmx, bool pretty = false)
         {
-            var breezeJsPath = GetExecutingPath();
-            int indx = breezeJsPath.IndexOf(@"\SimManager\");
-            breezeJsPath = breezeJsPath.Substring(0, indx) + @"\SimManager\SM.Web\Scripts\breeze.min.js";
-            var engine = new Engine().Execute("var setInterval;var setTimeout = setInterval = function(){}"); //if using an engine like V8.NET, would not be required - not part of DOM spec
+            var breezeJsPath = AppDomain.CurrentDomain.BaseDirectory;
+            int indx = breezeJsPath.IndexOf(@"\SM.Web\");
+            if (indx == -1) { indx = breezeJsPath.IndexOf(@"\SM.Tests\"); }
+            breezeJsPath = breezeJsPath.Substring(0, indx) + @"\SM.Web\Scripts\breeze.min.js";
+            var engine = new Engine().Execute("var setInterval;var setTimeout = setInterval = function(){};"); //if using an engine like V8.NET, would not be required - not part of DOM spec
             engine.Execute(File.ReadAllText(breezeJsPath));
             engine.Execute("breeze.NamingConvention.camelCase.setAsDefault();" + //mirror here what you are doing in the client side code
                            "breeze.DataType.DateTime.defaultValue = '';" + //personal preference
@@ -248,7 +249,7 @@ namespace SM.Dto
             }
             return JsonConvert.SerializeObject(returnVar);
         }
-
+        /*
         static string GetExecutingPath()
         {
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;
@@ -256,5 +257,6 @@ namespace SM.Dto
             string path = Uri.UnescapeDataString(uri.Path);
             return Path.GetDirectoryName(path);
         }
+        */
     }
 }

@@ -140,6 +140,19 @@
                     }
                 }
             }, {
+                url: '/manequinModels',
+                config: {
+                    title: 'Manequin Models',
+                    templateUrl: 'app/manequinModels/manequinModels.html',
+                    settings: {
+                        nav: 7,
+                        content: 'Manequin Models' //<i class="fa fa-"></i> 
+                    },
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
                 url: '/scenario/:id',
                 config: {
                     title: 'Scenario',
@@ -180,6 +193,24 @@
                 config: {
                     title: 'Course Roles',
                     templateUrl: 'app/scenarioRoles/scenarioRoles.html',
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
+                url: '/updateDetails',
+                config: {
+                    title: 'Update My Details',
+                    templateUrl: 'app/user/updateDetails.html',
+                    access: {
+                        allowedRoles: userRoles.all
+                    }
+                }
+            }, {
+                url: '/changePassword',
+                config: {
+                    title: 'Change Password',
+                    templateUrl: 'app/user/changePassword.html',
                     access: {
                         allowedRoles: userRoles.all
                     }

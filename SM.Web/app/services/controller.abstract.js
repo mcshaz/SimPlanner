@@ -130,7 +130,11 @@
                                 errorEntities.splice(indx, 1);
                             }
                         }
+                        if (!vm.isEntityStateChanged) {
+                            vm.isEntityStateChanged = isUserChanged(ent);
+                        }
                         break;
+                    case breeze.EntityAction.MergeOnSave:
                     case breeze.EntityAction.Attach:
                     case breeze.EntityAction.Detach:
                         notifyViewModelLoaded();

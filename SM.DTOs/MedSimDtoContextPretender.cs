@@ -228,6 +228,12 @@ namespace SM.Dto
                 .HasForeignKey(e => e.DepartmentId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<DepartmentDto>()
+                .HasMany(e => e.Manequins)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e => e.DepartmentId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<FacultyScenarioRoleDto>()
                 .HasMany(e => e.CourseScenarioFacultyRoles)
                 .WithRequired(e => e.FacultyScenarioRole)

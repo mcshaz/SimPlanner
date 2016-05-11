@@ -260,6 +260,12 @@ namespace SM.DataAccess
                 .HasForeignKey(e => e.DepartmentId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Department>()
+                .HasMany(e => e.Manequins)
+                .WithRequired(e => e.Department)
+                .HasForeignKey(e => e.DepartmentId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<FacultyScenarioRole>()
                 .HasMany(e => e.CourseScenarioFacultyRoles)
                 .WithRequired(e => e.FacultyScenarioRole)

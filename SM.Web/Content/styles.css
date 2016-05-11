@@ -394,6 +394,10 @@ a {
 
 /*#endregion*/
 /*#region mystyles*/
+#userName {
+    display: inline;
+    text-decoration:underline
+}
 .faculty{
     border:1px solid darkgreen; 
     min-height:45px;

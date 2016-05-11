@@ -12,6 +12,7 @@ namespace SM.Dto
         public string PhoneNumber { get; set; }
         public string AlternateEmail { get; set; }
         public string FullName { get; set; }
+        public string UserName { get; set; }
         public Guid DefaultDepartmentId { get; set; }
         public Guid DefaultProfessionalRoleId { get; set; }
         public DepartmentDto Department { get; set; }

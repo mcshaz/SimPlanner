@@ -7,7 +7,7 @@
         'ngRoute',          // routing
         'ngSanitize',       // sanitizes html bindings (ex: sidebar.js)
         'ngCookies',
-
+        'ngMessages',
         // Custom modules 
         'common',           // common functions, logger, spinner
  //       'ui.router', 

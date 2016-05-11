@@ -15,7 +15,7 @@
 					<div class="form-group">
 						<label for="departmentId" class="col-md-2 control-label">Owner</label>
 						<div class="col-md-10">
-							<select id="departmentId" class="form-control" data-z-validate data-ng-model="vm.manequin.departmentId" data-ng-options="d.id as d.name for d in vm.departments">
+							<select id="departmentId" class="form-control" data-z-validate data-ng-model="vm.manequin.department" data-ng-options="d as d.name for d in vm.departments">
 								<option disabled selected hidden value="">
 									Select Department...
 								</option>
@@ -26,7 +26,7 @@
 					<div class="form-group">
 						<label for="modelId" class="col-md-2 control-label">Model</label>
 						<div class="col-md-10">
-							<select id="modelId" class="form-control" data-z-validate data-ng-model="vm.manequin.modelId" data-ng-options="m.id as m.description for m in vm.models">
+							<select id="modelId" class="form-control" data-z-validate data-ng-model="vm.manequin.model" data-ng-options="m as m.description for m in vm.models">
 								<option disabled selected hidden value="">
 									Select Manequin Model...
 								</option>
@@ -44,7 +44,7 @@
 					</div>
 			    </fieldset>
                 <fieldset>
-                    <legend>Required</legend>
+                    <legend>Optional</legend>
 
                     <div class="form-group">
                         <label for="purchaseDate" class="col-md-2 control-label">Purchase Date</label>
@@ -93,7 +93,7 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <button type="submit" ng-disabled="vm.isDisabled()" class="btn btn-default">Save</button>
+                            <button type="submit" ng-disabled="vm.disableSave()" class="btn btn-default">Save</button>
                         </div>
                     </div>
                 </fieldset>

@@ -61,6 +61,42 @@
         }
     });
 
+    //http://odetocode.com/blogs/scott/archive/2014/10/13/confirm-password-validation-in-angularjs.aspx
+    app.directive("compareTo", function () {
+        return {
+            require: "ngModel",
+            scope: {
+                otherModelValue: "=compareTo"
+            },
+            link: function (scope, element, attributes, ngModel) {
+
+                ngModel.$validators.compareTo = function (modelValue) {
+                    return modelValue === scope.otherModelValue;
+                };
+
+                scope.$watch("otherModelValue", function () {
+                    ngModel.$validate();
+                });
+            }
+        };
+    });
+
+    app.directive("validPassword", function () {
+        return {
+            require: "ngModel",
+            link: function (scope, element, attributes, ngModel) {
+
+                ngModel.$validators.validPassword = function (modelValue) {
+                    var containsDigit = /[0-9]/.test(modelValue);
+                    var containsLC = /[a-z]/.test(modelValue);
+                    var containsUC = /[A-Z]/.test(modelValue);
+                    var containsNonAlnum = /[^:alnum:]/.test(modelValue);
+                    return containsDigit && containsLC && containsUC && containsNonAlnum;
+                };
+            }
+        };
+    });
+
     /*
     app.directive('ccWidgetClose', function () {
         // Usage:

@@ -55,6 +55,7 @@
         self.departments = repository.create(self.provider, 'DepartmentDto', 'Departments', breeze.FetchStrategy.FromLocalCache);
         self.facultyScenarioRoles = repository.create(self.provider, 'FacultyScenarioRoleDto', 'FacultyScenarioRoles');
         self.institutions = repository.create(self.provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);
+        self.manequinManufacturers = repository.create(self.provider, 'ManequinManufacturerDto', 'ManequinManufacturers', breeze.FetchStrategy.FromLocalCache);
         self.manequinModels = repository.create(self.provider, 'ManequinModelDto', 'ManequinModels');
         self.manequins = repository.create(self.provider, 'ManequinDto', 'Manequins', breeze.FetchStrategy.FromLocalCache);
         self.participants = repository.create(self.provider, 'ParticipantDto', 'Participants');

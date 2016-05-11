@@ -18,7 +18,7 @@ namespace SM.Dto.Maps
                 FullName = m.FullName,
                 DefaultDepartmentId = m.DefaultDepartmentId,
                 DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
-
+                UserName = m.UserName
                 //Department = m.Department,
 
                 //ProfessionalRole = m.ProfessionalRole,
@@ -39,8 +39,8 @@ namespace SM.Dto.Maps
                 AlternateEmail = m.AlternateEmail,
                 FullName = m.FullName,
                 DefaultDepartmentId = m.DefaultDepartmentId,
-                DefaultProfessionalRoleId = m.DefaultProfessionalRoleId
-
+                DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
+                UserName = m.UserName
                 //CourseSlotPresentations = null,
                 //Department = null,
 
