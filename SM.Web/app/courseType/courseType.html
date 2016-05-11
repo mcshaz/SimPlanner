@@ -61,7 +61,7 @@
                             </div>
                         </div>
 
-                        <button class="btn-link" ng-click="vm.createNewFormat"><i class="fa fa-plus"></i> New Format</button>
+                        <button class="btn-link" ng-click="vm.createNewFormat()" type="button"><i class="fa fa-plus"></i> New Format</button>
                     </fieldset>
                 </div>
                 <div class="panel-group" ng-model="vm.activeFormatIndex" role="tablist" aria-multiselectable="true" bs-collapse>
@@ -151,7 +151,7 @@
                                                     <td class="form-group">
                                                         <input class="form-control simulation" type="text" ng-show="cf.selectedSlot.isScenario" value="Simulation" disabled="disabled">
                                                         <div ng-hide="cf.selectedSlot.isScenario">
-                                                            <input ng-hide="cf.selectedSlot.entityAspect.entityState.isAdded()"  class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name" />
+                                                            <input ng-hide="cf.selectedSlot.entityAspect.entityState.isAdded()"  class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name" ng-disabled="!cf.selectedSlot"/>
                                                             <input ng-show="cf.selectedSlot.entityAspect.entityState.isAdded()" class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name"
                                                                     autocomplete="off" ng-disabled="!cf.selectedSlot"
                                                                     uib-typeahead="ca for ca in vm.getCourseActivityNames($viewValue)"
@@ -183,6 +183,7 @@
                         </div>
                         <div class="panel-footer">
                             <button type="button" class="btn btn-info" ng-click="vm.clone(cf)" ng-disabled="!vm.disableSave()">Clone This Format</button>
+                            <button type="button" class="btn btn-danger" ng-click="vm.deleteFormat(cf)">Delete!</button>
                         </div>
                     </div>
                 </div>

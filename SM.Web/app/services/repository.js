@@ -208,21 +208,20 @@
                         var currentProp = entities;
                         var missingIndex = -1;
                         var i = 0;
-                        var p;
+                        var lastIndex = props.length - 1;
+                        var p, np;
                         for (; i < props.length; i++) {
                             p = props[i];
                             if (!currentProp.every(function (el) { return el.entityAspect.isNavigationPropertyLoaded(p); })) {
                                 missingIndex = i;
                                 break;
                             }
-                            var np = currentProp[0].entityType.navigationProperties.find(function (np) { return np.name === p; });
                             
-                            if (np.isScalar) {
-                                currentProp = currentProp.map(function (el) { return el[p]; });
-                            } else {
-                                currentProp = currentProp.reduce(function (a, b) {
-                                    return a.concat(b[p]);
-                                }, []);
+                            if (i < lastIndex) {
+                                np = currentProp[0].entityType.navigationProperties.find(function (n) { return n.name === p; });
+                                currentProp = np.isScalar
+                                    ?currentProp.map(function (el) { return el[p]; }).filter(Boolean)
+                                    :currentProp.reduce(function (a, b) {return a.concat(b[p]);}, []);
                                 if (!currentProp.length) {
                                     break;
                                 }

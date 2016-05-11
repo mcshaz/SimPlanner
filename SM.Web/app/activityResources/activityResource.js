@@ -14,7 +14,7 @@
 
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityName: 'courseActivity',
+            watchedEntityNames: 'courseActivity.activityChoices',
             $scope: $scope
         })
 

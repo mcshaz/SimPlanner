@@ -18,24 +18,24 @@
         })
         var id = $routeParams.id;
         var isNew = id === 'new';
+        var baseSave = vm.save;
 
         vm.activeFormatIndex = -1;
         vm.activitySelected = activitySelected;
         vm.clone = clone;
         vm.courseType = {};
-
         vm.createSlot = createSlot;
+        vm.createNewFormat = createNewFormat;
+        vm.deleteFormat = deleteFormat;
         vm.departments = [];
-        vm.getCourseActivityNames = getCourseActivityNames;
-        vm.removeSlot = removeSlot;
-        vm.instructorCourses = [];
-        vm.isScenarioChanged = isScenarioChanged;
         vm.editSlot = editSlot;
         vm.editChoices = editChoices;
         vm.emersionCategories = common.getEnumValues().emersion;
-        var baseSave = vm.save;
+        vm.getCourseActivityNames = getCourseActivityNames;
+        vm.instructorCourses = [];
+        vm.isScenarioChanged = isScenarioChanged;
+        vm.removeSlot = removeSlot;
         vm.save = saveOverride;
-
         vm.selectedDepartments = [];
         vm.title = 'Course Format';
 
@@ -102,6 +102,9 @@
                                     courseTypeId: vm.courseType.id
                                 };
                             }));
+                        if (vm.courseType.courseFormats.length === 1) {
+                            vm.activeFormatIndex = 0;
+                        }
                         vm.log('Activated Course Format View');
                         vm.notifyViewModelLoaded();
                     });
@@ -237,8 +240,19 @@
         function clone(cf) {
             var newFormat = datacontext.cloneItem(cf, ['courseSlots']);
             newFormat.description += " - copy";
-            //?notify I believe not but test
             vm.activeFormatIndex = vm.courseType.courseFormats.length -1;
+        }
+
+        function createNewFormat() {
+            datacontext.courseFormats.create({ courseTypeId: vm.courseType.id });
+            vm.activeFormatIndex = vm.courseType.courseFormats.length - 1;
+        }
+
+        function deleteFormat(cf) {
+            cf.courseSlots.forEach(function (el) {
+                el.entityAspect.setDeleted();
+            });
+            cf.entityAspect.setDeleted();
         }
     }
 })();
