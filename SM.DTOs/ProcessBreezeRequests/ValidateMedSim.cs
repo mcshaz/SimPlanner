@@ -38,11 +38,6 @@ namespace SM.DTOs.ProcessBreezeRequests
                 errors = errors.Concat(GetCourseFormatErrors(currentInfos));
             }
 
-            if (saveMap.TryGetValue(typeof(CourseType), out currentInfos))
-            {
-                errors = errors.Concat(GetParticipantErrors(currentInfos));
-            }
-
             if (saveMap.TryGetValue(typeof(Institution), out currentInfos))
             {
                 errors = errors.Concat(GetInstitutionErrors(currentInfos));

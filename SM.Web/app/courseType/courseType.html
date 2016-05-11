@@ -10,7 +10,7 @@
                                 Course Type
                             </label>
                             <div class="col-md-9">
-                                <input id="ctDescription" class="form-control" type="text" ng-model="vm.courseType.description" />
+                                <input id="ctDescription" class="form-control" type="text" ng-model="vm.courseType.description" data-z-validate/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -18,7 +18,7 @@
                                 Abbreviation
                             </label>
                             <div class="col-md-9">
-                                <input id="ctAbbrev" class="form-control" type="text" ng-model="vm.courseType.abbreviation" />
+                                <input id="ctAbbrev" class="form-control" type="text" ng-model="vm.courseType.abbreviation" data-z-validate/>
                             </div>
                         </div>
 
@@ -40,7 +40,11 @@
                                 Emersion Category
                             </label>
                             <div class="col-md-9">
-                                <select id="ctEmersion" class="form-control" type="text" ng-model="vm.courseType.emersionCategory" ng-options="e for e in vm.emersionCategories" />
+                                <select id="ctEmersion" class="form-control" type="text" ng-model="vm.courseType.emersionCategory" ng-options="e for e in vm.emersionCategories" data-z-validate>
+                                    <option disabled selected hidden value="">
+                                        Please Select...
+                                    </option>
+                                </select>
                             </div>
                         </div>
 
@@ -49,7 +53,11 @@
                                 Instructor Course
                             </label>
                             <div class="col-md-9">
-                                <select id="ctEmersion" class="form-control" type="text" ng-model="vm.courseType.instructorCourse" ng-options="i as i.description for i in vm.instructorCourses track by i.id" />
+                                <select id="ctEmersion" class="form-control" type="text" ng-model="vm.courseType.instructorCourseId" ng-options="i.id as i.description for i in vm.instructorCourses track by i.id" data-z-validate>
+                                    <option disabled selected hidden value="">
+                                        Please Select...
+                                    </option>
+                                </select>
                             </div>
                         </div>
 

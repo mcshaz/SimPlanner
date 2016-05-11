@@ -23,16 +23,17 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="abbreviation" class="col-md-2 control-label">Abbreviation</label>
-                        <div class="col-md-10">
-                            <input type="text" id="abbreviation" class="form-control" ng-model="vm.department.abbreviation" z-validate/>
-                        </div>
-                    </div>
-
                 </fieldset>
                 <fieldset>
                     <legend><small class="small">Optional</small></legend>
+
+                    <div class="form-group">
+                        <label for="abbreviation" class="col-md-2 control-label">Abbreviation</label>
+                        <div class="col-md-10">
+                            <input type="text" id="abbreviation" class="form-control" ng-model="vm.department.abbreviation" z-validate />
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="invitationLetterFilename" class="col-md-2 control-label">InvitationLetterFilename</label>
                         <div class="col-md-10">
@@ -49,7 +50,7 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <button type="submit" value="Create" class="btn btn-default" ng-disabled="vm.isDisabled()">Save</button>
+                            <button type="submit" value="Create" class="btn btn-success" ng-disabled="vm.disableSave()">Save</button>
                         </div>
                     </div>
                 </fieldset>

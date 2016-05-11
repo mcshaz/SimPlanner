@@ -17,7 +17,7 @@
             $scope: $scope
         })
         var id = $routeParams.id;
-        var isNew = id == 'new';
+        var isNew = id === 'new';
 
         vm.department = {};
         vm.institutions = [];
@@ -25,26 +25,32 @@
         activate();
 
         function activate() {
-            if (isNew) {
-                vm.institution = datacontext.institutions.create();
-            } 
-            common.activateController([datacontext.ready()], controllerId)
-                .then(function () {
-                    vm.department = datacontext.departments.getByKey(id);
-                    if (!vm.department) {
-                        vm.log.warning('Could not find department id = ' + id);
-                        return;
-                        //gotoCourses();
-                    }
-                    datacontext.institutions.all().then(function (data) {
-                        vm.institutions = data;
-                    });
-                    if (isNew && $routeParams.institutionId) {
+            datacontext.ready().then(function () {
+                var promises = [datacontext.institutions.all().then(function (data) {
+                    vm.institutions = data;
+                })];
+                if (isNew) {
+                    vm.department = datacontext.departments.create();
+
+                    if ($routeParams.institutionId) {
                         vm.department.institutionId = $routeParams.institutionId;
                     }
-                    vm.notifyViewModelLoaded();
-                    vm.log('Activated Department View');
-                });
+                } else {
+                    promises.push(datacontext.departments.fetchByKey(id).then(function(data){
+                        vm.department = data;
+                        if (!vm.department) {
+                            vm.log.warning('Could not find department id = ' + id);
+                            return;
+                            //gotoCourses();
+                        }
+                    }));
+                }
+                common.activateController(promises, controllerId)
+                    .then(function () {
+                        vm.notifyViewModelLoaded();
+                        vm.log('Activated Department View');
+                    });
+            });
         }
     }
 

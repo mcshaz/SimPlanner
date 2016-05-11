@@ -194,35 +194,42 @@
                     });
                 }
 
-                function findMissingExpands(entity, expandClause) {
+                function findMissingExpands(entities, expandClause) {
                     var returnVar = [];
                     if (!expandClause) { return returnVar; }
-                    if (Array.isArray(entity)) {
-                        entity = entity[0]; //as per comment below - should look at all items in array
-                        if (!entity) { return returnVar; }
+                    if (Array.isArray(entities)) {
+                        if (!entities.length) { return returnVar;}
+                    }else{
+                        if (!entities) { return returnVar; }
+                        entities = [entities]; //as per comment below - should look at all items in array
                     }
                     expandClause.propertyPaths.forEach(function (el) {
-                        var hasArray = false;
                         var props = el.split('.');
-                        var currentProp = entity;
-                        var i;
-                        if (props.some(function(p,indx){
-                            if (!currentProp.entityAspect.isNavigationPropertyLoaded(p)) {
-                                i = indx;
-                                return true;
+                        var currentProp = entities;
+                        var missingIndex = -1;
+                        var i = 0;
+                        var p;
+                        for (; i < props.length; i++) {
+                            p = props[i];
+                            if (!currentProp.every(function (el) { return el.entityAspect.isNavigationPropertyLoaded(p); })) {
+                                missingIndex = i;
+                                break;
                             }
-                            var np = currentProp.entityType.navigationProperties.find(function (np) { return np.name === p; });
-                            currentProp = currentProp[p];
-                            if (!np.isScalar) {
-                                if (currentProp.length) {
-                                    currentProp = currentProp[0]; //todo recursive function or at least every to ensure every member of the collection has children properties loaded
-                                } else {
-                                    return false;
+                            var np = currentProp[0].entityType.navigationProperties.find(function (np) { return np.name === p; });
+                            
+                            if (np.isScalar) {
+                                currentProp = currentProp.map(function (el) { return el[p]; });
+                            } else {
+                                currentProp = currentProp.reduce(function (a, b) {
+                                    return a.concat(b[p]);
+                                }, []);
+                                if (!currentProp.length) {
+                                    break;
                                 }
                             }
-                            return false;
-                        })){
-                            returnVar.push({ props: props, missingIndex: i || (props.length - 1), hasArray: hasArray });
+                        }
+                        if (missingIndex!==-1){
+                            returnVar.push({ props: props, missingIndex: missingIndex });
                         }
                     });
                     return returnVar;

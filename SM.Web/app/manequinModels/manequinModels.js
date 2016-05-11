@@ -36,8 +36,7 @@
 
         function editManufacturer(man) {
             var modal = getManModalInstance();
-            var scope = modal.$scope;
-            scope.manufacturer =  man === 'new'
+            modal.$scope.manufacturer = man === 'new'
                 ? datacontext.manequinManufacturers.create()
                 : man;
             modal.$promise.then(modal.show);
@@ -45,8 +44,7 @@
 
         function editModel(model) {
             var modal = getModelModalInstance();
-            var scope = modal.$scope;
-            scope.model = model === 'new'
+            modal.$scope.model = model === 'new'
                 ? datacontext.manequinModels.create()
                 : model;
             modal.$promise.then(modal.show);
@@ -72,6 +70,7 @@
                     if (man.entityAspect.entityState !== breeze.EntityState.Deleted && man.entityAspect.entityState !== breeze.EntityState.Detached && vm.manufacturers.indexOf(man) === -1) {
                         vm.manufacturers.push(man);
                     }
+                    arguments[1].$scope.manufacturer = null;
                 })
             }
             return _manModalInstance;
