@@ -7,9 +7,9 @@
     using System.Web;
     public static class MailExtensions
     {
-        public static void CreateHtmlBody(this MailMessage message, string title, object template)
+        internal static void CreateHtmlBody(this MailMessage message, IMailBody template)
         {
-            var mailTemplate = new EmailTemplate { BodyTemplate = template, Title = title };
+            var mailTemplate = new EmailTemplate { BodyTemplate = template };
 
             var pm = new PreMailer(mailTemplate.TransformText());
 
@@ -18,7 +18,9 @@
             var html = AlternateView.CreateAlternateViewFromString(output, Encoding.UTF8, "text/html");
             message.AlternateViews.Add(html);
 
-            message.Body = title + "\r\n\r\n" + HtmlToText.ConvertHtml(mailTemplate.Body);
+            message.Subject = mailTemplate.Title;
+
+            message.Body = mailTemplate.Title + new string('-', mailTemplate.Title.Length) + "\r\n\r\n" + HtmlToText.ConvertHtml(mailTemplate.Body);
         }
     }
 }

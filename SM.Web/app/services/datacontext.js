@@ -42,7 +42,7 @@
         self.courses = repository.create(self.provider, 'CourseDto', 'Courses');
         self.cultures = repository.create(self.provider, 'CultureDto', 'Cultures', breeze.FetchStrategy.FromLocalCache);
         self.courseActivities = repository.create(self.provider, 'CourseActivityDto', 'CourseActivities');
-        self.courseFormats = repository.create(self.provider, 'CourseFormatDto', 'CourseFormats');
+        self.courseFormats = repository.create(self.provider, 'CourseFormatDto', 'CourseFormats', breeze.FetchStrategy.FromLocalCache);
         self.courseParticipants = repository.create(self.provider, 'CourseParticipantDto', 'CourseParticipants'/* 'Courses' */);
         self.courseScenarioFacultyRoles = repository.create(self.provider, 'CourseScenarioFacultyRoleDto', 'CourseScenarioFacultyRoles'/* 'Courses' */);
         self.courseSlots = repository.create(self.provider, 'CourseSlotDto', 'CourseSlots'/* 'Courses' */);

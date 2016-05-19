@@ -254,23 +254,22 @@
         }
 
         var _modalInstance;
-            function getModalInstance() {
-                if (!_modalInstance) {
-                    var scope = $scope.$new();
-                    _modalInstance = $aside({
-                            templateUrl: 'app/activityResources/activityResource.html',
-                            controller: 'activityResource',
-                        show: false,
-                        id: 'cpModal',
-                        placement: 'left',
-                            animation: 'am-slide-left',
-                        scope: scope,
-                        controllerAs: 'ar'
+        function getModalInstance() {
+            if (!_modalInstance) {
+                var scope = $scope.$new();
+                _modalInstance = $aside({
+                        templateUrl: 'app/activityResources/activityResource.html',
+                        controller: 'activityResource',
+                    show: false,
+                    id: 'cpModal',
+                    placement: 'left',
+                        animation: 'am-slide-left',
+                    scope: scope,
+                    controllerAs: 'ar'
 
-            });
-            scope.asideInstance = _modalInstance;
+                });
             }
-                return _modalInstance;
+            return _modalInstance;
         }
 
         function clone(cf) {

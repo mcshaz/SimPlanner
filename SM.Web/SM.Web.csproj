@@ -482,6 +482,10 @@
     <Content Include="app\auth\authComplete.html" />
     <Content Include="app\services\datacontext.js" />
     <Content Include="app\services\utilities.js" />
+    <Content Include="app\user\resetPassword.html" />
+    <Content Include="app\user\resetPassword.js" />
+    <Content Include="app\user\forgotPassword.html" />
+    <Content Include="app\user\forgotPassword.js" />
     <Content Include="app\user\changePassword.html" />
     <Content Include="app\user\changePassword.js" />
     <Content Include="app\user\updateDetails.html" />
@@ -760,6 +764,9 @@
     <Content Include="Content\ui-grid.css" />
     <Content Include="Content\ui-grid.min.css" />
     <Content Include="Content\ui-grid.svg" />
+    <Content Include="Scripts\angular-location-update.js" />
+    <Content Include="Scripts\angular-messages.js" />
+    <Content Include="Scripts\angular-messages.min.js" />
     <Content Include="UserEmails\ForgotPasswordTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>ForgotPasswordTemplate.cs</LastGenOutput>
@@ -957,6 +964,7 @@
     <Content Include="Scripts\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <Content Include="Scripts\angular-messages.min.js.map" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\isteven-multi-select.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
@@ -1008,9 +1016,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ForgotPasswordTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserEmails\ForgotPasswordTemplateExtension.cs" />
-    <Compile Include="UserEmails\EmailTemplateExtension.cs" />
+    <Compile Include="UserEmails\ForgotPasswordTemplatePartial.cs" />
+    <Compile Include="UserEmails\EmailTemplatePartial.cs" />
     <Compile Include="UserEmails\HtmlToText.cs" />
+    <Compile Include="UserEmails\IMailBody.cs" />
     <Compile Include="UserEmails\MailExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1047,7 +1056,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\tutorial\" />
-    <Folder Include="app\users\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>

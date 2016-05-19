@@ -60,6 +60,7 @@
                         nav: 3,
                         content: 'Course' //<i class="fa fa-"></i> 
                     },
+                    reloadOnSearch:false,
                     access: {
                         allowedRoles: userRoles.all
                     }
@@ -214,6 +215,18 @@
                     access: {
                         allowedRoles: userRoles.all
                     }
+                }
+            }, {
+                url: '/forgotPassword',
+                config: {
+                    title: 'Forgot Password',
+                    templateUrl: 'app/user/forgotPassword.html',
+                }
+            }, {
+                url: '/resetPassword',
+                config: {
+                    title: 'Reset Password',
+                    templateUrl: 'app/user/resetPassword.html',
                 }
             }
         ];

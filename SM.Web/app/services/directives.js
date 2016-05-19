@@ -90,7 +90,7 @@
                     var containsDigit = /[0-9]/.test(modelValue);
                     var containsLC = /[a-z]/.test(modelValue);
                     var containsUC = /[A-Z]/.test(modelValue);
-                    var containsNonAlnum = /[^:alnum:]/.test(modelValue);
+                    var containsNonAlnum = /[^a-zA-Z0-9]/.test(modelValue);
                     return containsDigit && containsLC && containsUC && containsNonAlnum;
                 };
             }

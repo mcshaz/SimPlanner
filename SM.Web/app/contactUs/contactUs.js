@@ -99,7 +99,6 @@
                     scope: scope,
                     controllerAs: 'cp'
                 });
-                scope.asideInstance = _modalInstance;
                 scope.course = vm.course;
             }
             return _modalInstance;

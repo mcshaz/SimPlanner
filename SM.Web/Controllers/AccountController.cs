@@ -16,6 +16,8 @@ using SM.Web.Providers;
 using SM.Web.Results;
 using Facebook;
 using SM.DataAccess;
+using SM.Web.UserEmails;
+using System.Net.Mail;
 
 namespace SM.Web.Controllers
 {
@@ -134,7 +136,40 @@ namespace SM.Web.Controllers
             return Ok();
         }
 
+        [Route("ForgotPassword")]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> ForgotPassword(ForgotPasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var participant = await UserManager.FindByEmailAsync(model.Email);
+
+            if (participant != null)
+            {
+                var resetEmail = new ForgotPasswordTemplate
+                {
+                    Token = await UserManager.GeneratePasswordResetTokenAsync(participant.Id),
+                    UserId = participant.Id
+                };
+
+                var mail = new MailMessage();
+                mail.To.Add(model.Email);
+                mail.CreateHtmlBody(resetEmail);
+                using (var client = new SmtpClient())
+                {
+                    client.Send(mail);
+                }
+            }
+            //return GetErrorResult(result);
+
+            return Ok();
+        }
+
         // POST api/Account/SetPassword
+        /*
         [Route("SetPassword")]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
         {
@@ -151,6 +186,27 @@ namespace SM.Web.Controllers
             }
 
             return Ok();
+        }
+        */
+
+        // POST api/Account/ResetPassword
+        [Route("ResetPassword")]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> ResetPassword(ResetPasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IdentityResult result = await UserManager.ResetPasswordAsync(model.UserId, model.Token, model.NewPassword);
+
+            //return GetErrorResult(result);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            return Unauthorized();
         }
 
         // POST api/Account/AddExternalLogin

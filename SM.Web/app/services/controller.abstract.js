@@ -33,7 +33,7 @@
             }
 
             unwatchers.push($on('$routeChangeStart', beforeRouteChange));
-            if (argObj.$scope.asideInstance) {
+            if (argObj.$scope.$hide) {
                 vm.close = modalClose;
             }
 
@@ -221,7 +221,7 @@
                 };
                 beforeRouteChange(evtArg);
                 if (!evtArg.defaultPrevented) {
-                    argObj.$scope.asideInstance.hide();
+                    argObj.$scope.$hide();
                     removeListeners(evtArg);
                 }
             }

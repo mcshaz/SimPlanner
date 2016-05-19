@@ -14,6 +14,7 @@
         };
 
         vm.errors = '';
+        vm.forgotPassword = forgotPassword;
 
         vm.isWaiting = false;
 
@@ -45,13 +46,19 @@
                 loginFactory.registerExternal(fragment);
                 log.success({ msg: "logged in as " + fragment.fullName, data: fragment });
                 if (fragment.fullName) {
-                    $location.path('/dashBoard');
+                    $location.path('/dashboard');
                 }
                 else {
                     $location.path('/associate');
                 }
 
             });
+        }
+
+        function forgotPassword() {
+            //close dialog and redirect
+            $scope.$hide();
+            $location.path('/forgotPassword');
         }
     }
 

@@ -28,47 +28,49 @@ namespace SM.Web.UserEmails
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xht" +
-                    "ml1/DTD/xhtml1-strict.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\n  <head" +
-                    ">\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n    <m" +
-                    "eta name=\"viewport\" content=\"width=device-width\">\n\n  <body>\n    <!-- <style> -->" +
-                    "\n    <table class=\"body\" data-made-with-foundation=\"\">\n      <tr>\n        <td cl" +
-                    "ass=\"float-center\" align=\"center\" valign=\"top\">\n          <center data-parsed=\"\"" +
-                    ">\n            <style type=\"text/css\" align=\"center\" class=\"float-center\">\n      " +
-                    "        body,\n              html,\n              .body {\n                backgrou" +
-                    "nd: #f3f3f3 !important;\n              }\n              \n              .header {\n " +
-                    "               background: #f3f3f3;\n              }\n            </style>\n       " +
-                    "     <table class=\"container float-center\">\n              <tbody>\n              " +
-                    "  <tr>\n                  <td>\n                    <table class=\"row header\">\n   " +
-                    "                   <tbody>\n                        <tr>\n                        " +
-                    "  <th class=\"small-12 large-12 columns first last\">\n                            " +
-                    "<table>\n                              <tr>\n                                <th>\n" +
-                    "                                  <table class=\"spacer\">\n                       " +
-                    "             <tbody>\n                                      <tr>\n                " +
-                    "                        <td height=\"16px\" style=\"font-size:16px;line-height:16px" +
-                    ";\">&#xA0;</td>\n                                      </tr>\n                     " +
-                    "               </tbody>\n                                  </table>\n             " +
-                    "                     <h4 class=\"text-center\">Simulation Manager</h4> </th>\n     " +
-                    "                           <th class=\"expander\"></th>\n                          " +
-                    "    </tr>\n                            </table>\n                          </th>\n " +
-                    "                       </tr>\n                      </tbody>\n                    " +
-                    "</table>\n                    <table class=\"row\">\n                      <tbody>\n " +
-                    "                       <tr>\n                          <th class=\"small-12 large-" +
-                    "12 columns first last\">\n                            <table>\n                    " +
-                    "          <tr>\n                                <th>\n                            " +
-                    "      <table class=\"spacer\">\n                                    <tbody>\n       " +
-                    "                               <tr>\n                                        <td " +
-                    "height=\"32px\" style=\"font-size:32px;line-height:32px;\">&#xA0;</td>\n             " +
-                    "                         </tr>\n                                    </tbody>\n    " +
-                    "                              </table>\n                                  \n      " +
-                    "                            <table class=\"spacer\">\n                             " +
-                    "       <tbody>\n                                      <tr>\n                      " +
-                    "                  <td height=\"16px\" style=\"font-size:16px;line-height:16px;\">&#x" +
-                    "A0;</td>\n                                      </tr>\n                           " +
-                    "         </tbody>\n                                  </table>\n                   " +
-                    "               <h1 class=\"text-center\">");
+            this.Write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xh" +
+                    "tml1/DTD/xhtml1-strict.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n  <" +
+                    "head>\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n" +
+                    "    <meta name=\"viewport\" content=\"width=device-width\">\r\n\r\n  <body>\r\n    <!-- <s" +
+                    "tyle> -->\r\n    <table class=\"body\" data-made-with-foundation=\"\">\r\n      <tr>\r\n  " +
+                    "      <td class=\"float-center\" align=\"center\" valign=\"top\">\r\n          <center d" +
+                    "ata-parsed=\"\">\r\n            <style type=\"text/css\" align=\"center\" class=\"float-c" +
+                    "enter\">\r\n              body,\r\n              html,\r\n              .body {\r\n      " +
+                    "          background: #f3f3f3 !important;\r\n              }\r\n              \r\n    " +
+                    "          .header {\r\n                background: #f3f3f3;\r\n              }\r\n    " +
+                    "        </style>\r\n            <table class=\"container float-center\">\r\n          " +
+                    "    <tbody>\r\n                <tr>\r\n                  <td>\r\n                    <" +
+                    "table class=\"row header\">\r\n                      <tbody>\r\n                      " +
+                    "  <tr>\r\n                          <th class=\"small-12 large-12 columns first las" +
+                    "t\">\r\n                            <table>\r\n                              <tr>\r\n  " +
+                    "                              <th>\r\n                                  <table cla" +
+                    "ss=\"spacer\">\r\n                                    <tbody>\r\n                     " +
+                    "                 <tr>\r\n                                        <td height=\"16px\"" +
+                    " style=\"font-size:16px;line-height:16px;\">&#xA0;</td>\r\n                         " +
+                    "             </tr>\r\n                                    </tbody>\r\n              " +
+                    "                    </table>\r\n\t\t\t\t\t\t\t\t  <img class=\"float left\" src=\"\" alt=\"\">\r\n" +
+                    "                                  <h1 class=\"text-center\">Simulation Manager</h4" +
+                    "> \r\n\t\t\t\t\t\t\t\t  \r\n\t\t\t\t\t\t\t\t</th>\r\n                                <th class=\"expand" +
+                    "er\"></th>\r\n                              </tr>\r\n                            </ta" +
+                    "ble>\r\n                          </th>\r\n                        </tr>\r\n          " +
+                    "            </tbody>\r\n                    </table>\r\n                    <table c" +
+                    "lass=\"row\">\r\n                      <tbody>\r\n                        <tr>\r\n      " +
+                    "                    <th class=\"small-12 large-12 columns first last\">\r\n         " +
+                    "                   <table>\r\n                              <tr>\r\n                " +
+                    "                <th>\r\n                                  <table class=\"spacer\">\r\n" +
+                    "                                    <tbody>\r\n                                   " +
+                    "   <tr>\r\n                                        <td height=\"32px\" style=\"font-s" +
+                    "ize:32px;line-height:32px;\">&#xA0;</td>\r\n                                      <" +
+                    "/tr>\r\n                                    </tbody>\r\n                            " +
+                    "      </table>\r\n                                  \r\n                            " +
+                    "      <table class=\"spacer\">\r\n                                    <tbody>\r\n     " +
+                    "                                 <tr>\r\n                                        <" +
+                    "td height=\"16px\" style=\"font-size:16px;line-height:16px;\">&#xA0;</td>\r\n         " +
+                    "                             </tr>\r\n                                    </tbody>" +
+                    "\r\n                                  </table>\r\n                                  " +
+                    "<h3 class=\"text-center\">");
             
-            #line 7 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\EmailTemplate.tt"
+            #line 82 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Title));
             
             #line default
@@ -84,7 +86,7 @@ namespace SM.Web.UserEmails
 
                                   ");
             
-            #line 7 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\EmailTemplate.tt"
+            #line 91 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Body));
             
             #line default

@@ -63,7 +63,6 @@
                     scope: modalScope,
                     controllerAs: 'man'
                 });
-                modalScope.asideInstance = _manModalInstance;
                 $scope.$on('$destroy', function () { _manModalInstance.destroy(); })
                 modalScope.$on('modal.hide', function () {
                     var man = arguments[1].$scope.manufacturer;
@@ -88,7 +87,6 @@
                     scope: modalScope,
                     controllerAs: 'mm'
                 });
-                modalScope.asideInstance = _modelModalInstance;
                 $scope.$on('$destroy', function () { _modelModalInstance.destroy(); })
             }
             return _modelModalInstance;

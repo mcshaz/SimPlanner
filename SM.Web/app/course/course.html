@@ -21,7 +21,8 @@
                         <div class="form-group">
                             <label for="courseFormat" class="col-md-2 control-label">Course Type</label>
                             <div class="col-md-10">
-                                <select id="courseFormat" class="form-control" data-z-validate data-ng-options="cf as cf.typeFormatDescriptor group by cf.courseType.description for cf in vm.courseFormats" data-ng-model="vm.course.courseFormat">
+                                <select id="courseFormat" class="form-control" data-z-validate data-ng-options="cf as cf.typeFormatDescriptor group by cf.courseType.description for cf in vm.courseFormats" data-ng-model="vm.course.courseFormat"
+                                        ng-change="vm.formatChanged()">
                                     <option disabled selected hidden value="">
                                         Select Course Type/Format...
                                     </option>
@@ -47,10 +48,18 @@
                                     <span class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </span>
-                                    <input class="form-control" ng-model="vm.course.startTime" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" />
+                                    <input class="form-control" ng-model="vm.course.startTime" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" ng-change="vm.setFinish()"/>
                                 </div>
 
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <small class="col-md-2 text-right small">(finishing)</small>
+                            <div class="col-md-10" >
+                                {{vm.course.finishTime | amDateFormat:'LLL'}}
+                            </div>
+  
                         </div>
 
                         <div class="form-group">

@@ -33,7 +33,7 @@ namespace SM.Web.UserEmails
                     "tr>\n            <td>\n                <center data-parsed=\"\"><a href=\"");
             
             #line 8 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ForgotPasswordTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Href));
+            this.Write(this.ToStringHelper.ToStringWithCulture(AsQueryString()));
             
             #line default
             #line hidden

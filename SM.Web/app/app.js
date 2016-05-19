@@ -24,7 +24,8 @@
         'ui.sortable',
         'ui.grid',
         'ui.grid.pagination',
-        'isteven-multi-select'
+        'isteven-multi-select',
+        'ngLocationUpdate'
     ]);
 
     /*Constants regarding user login defined here*/
