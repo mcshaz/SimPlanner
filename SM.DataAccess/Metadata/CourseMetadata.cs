@@ -15,5 +15,8 @@ namespace SM.Metadata
 
         [StringLength(256)]
         public string FeedbackSummaryFilename { get; set; }
+
+        [Range(0,480)]
+        public int? FacultyMeetingDuration { get; set; }
     }
 }

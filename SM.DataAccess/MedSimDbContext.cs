@@ -358,6 +358,12 @@ namespace SM.DataAccess
                 .HasForeignKey(e => e.RoomId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Room>()
+                .HasMany(e => e.FacultyMeetings)
+                .WithOptional(e => e.FacultyMeetingRoom)
+                .HasForeignKey(e => e.FacultyMeetingRoomId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Scenario>()
                 .HasMany(e => e.CourseSlotScenarios)
                 .WithRequired(e => e.Scenario)
@@ -413,6 +419,7 @@ namespace SM.DataAccess
         public override int SaveChanges()
         {
             SanitizeHtml.ForEntities(ChangeTracker);
+
             return base.SaveChanges();
         }
 

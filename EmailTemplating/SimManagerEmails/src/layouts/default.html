@@ -12,12 +12,37 @@
   </head>
   <body>
     <!-- <style> -->
+	<table class="wrapper header" align="center"><tr><td class="wrapper-inner">
+		<table class="row collapse"><tbody><tr>
+			    <th class="small-12 large-12 columns">
+      <table>
+        <tr>
+		  <th width="75">
+				<img src="assets/img/manequin.jpg" alt="sim-manager logo" width="75" height="50">
+		  </th>
+          <th align="center">
+				<h1 class="text-center">Simulation Manager</h1>
+		  </th>
+		  <th width="75">
+				<img src="assets/img/logo-starship.png" alt="starship logo" height="50">
+		  </th>
+        </tr>
+      </table>
+    </th>
+		</tr></tbody></table>
+	</td></tr></table>
+	<spacer size="20"></spacer>
     <table class="body">
       <tr>
         <td class="center" align="center" valign="top">
           <center>
-            {{!-- Pages you create in the src/pages/ folder are inserted here when the flattened emails are created. --}}
-            {{> body}}
+			<container>
+				  <row>
+					<h3>Upcoming Course:</h3>
+				  </row>
+					{{!-- Pages you create in the src/pages/ folder are inserted here when the flattened emails are created. --}}
+					{{> body}}
+			</container>
           </center>
         </td>
       </tr>

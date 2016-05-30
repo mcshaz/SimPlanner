@@ -13,7 +13,9 @@ namespace SM.Dto.Maps
                 Name = m.Name,
                 About = m.About,
                 LocaleCode = m.LocaleCode,
-                StandardTimeZone = m.StandardTimeZone
+                StandardTimeZone = m.StandardTimeZone,
+                Latitude = m.Latitude,
+                Longitude = m.Longitude
             };
         }
 
@@ -26,7 +28,9 @@ namespace SM.Dto.Maps
                 Name = m.Name,
                 About = m.About,
                 LocaleCode = m.LocaleCode,
-                StandardTimeZone = m.StandardTimeZone
+                StandardTimeZone = m.StandardTimeZone,
+                Latitude = m.Latitude,
+                Longitude = m.Longitude
             };
         }
     }

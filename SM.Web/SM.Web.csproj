@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.1.2.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.2.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.2.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.2.2\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -58,6 +58,10 @@
     </Reference>
     <Reference Include="Breeze.WebApi2, Version=1.5.5.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
       <HintPath>..\packages\Breeze.Server.WebApi2.1.5.5\lib\Breeze.WebApi2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DDay.iCal, Version=1.0.2.575, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DDay.iCal.1.0.2.575\lib\DDay.iCal.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -150,183 +154,191 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.ArcGISOnline, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.ArcGISOnline.2.1.1\lib\net452\Owin.Security.Providers.ArcGISOnline.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.ArcGISOnline.2.3.0\lib\net45\Owin.Security.Providers.ArcGISOnline.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Asana, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Asana.2.1.1\lib\net452\Owin.Security.Providers.Asana.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Asana.2.3.0\lib\net45\Owin.Security.Providers.Asana.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Backlog, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Backlog.2.1.1\lib\net452\Owin.Security.Providers.Backlog.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Backlog.2.3.0\lib\net45\Owin.Security.Providers.Backlog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.BattleNet, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.BattleNet.2.1.1\lib\net452\Owin.Security.Providers.BattleNet.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.BattleNet.2.3.0\lib\net45\Owin.Security.Providers.BattleNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Bitbucket, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Bitbucket.2.1.1\lib\net452\Owin.Security.Providers.Bitbucket.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Bitbucket.2.3.0\lib\net45\Owin.Security.Providers.Bitbucket.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Buffer, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Buffer.2.1.1\lib\net452\Owin.Security.Providers.Buffer.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Buffer.2.3.0\lib\net45\Owin.Security.Providers.Buffer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Cosign, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Cosign.2.1.1\lib\net452\Owin.Security.Providers.Cosign.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Cosign.2.3.0\lib\net45\Owin.Security.Providers.Cosign.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.DeviantArt, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.DeviantArt.2.1.1\lib\net452\Owin.Security.Providers.DeviantArt.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.DeviantArt.2.3.0\lib\net45\Owin.Security.Providers.DeviantArt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin.Security.Providers.Discord, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.Security.Providers.Discord.2.3.0\lib\net45\Owin.Security.Providers.Discord.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.DoYouBuzz, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.DoYouBuzz.2.1.1\lib\net452\Owin.Security.Providers.DoYouBuzz.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.DoYouBuzz.2.3.0\lib\net45\Owin.Security.Providers.DoYouBuzz.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Dropbox, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Dropbox.2.1.1\lib\net452\Owin.Security.Providers.Dropbox.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Dropbox.2.3.0\lib\net45\Owin.Security.Providers.Dropbox.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.EVEOnline, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.EVEOnline.2.1.1\lib\net452\Owin.Security.Providers.EVEOnline.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.EVEOnline.2.3.0\lib\net45\Owin.Security.Providers.EVEOnline.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Fitbit, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Fitbit.2.1.1\lib\net452\Owin.Security.Providers.Fitbit.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Fitbit.2.3.0\lib\net45\Owin.Security.Providers.Fitbit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Flickr, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Flickr.2.1.1\lib\net452\Owin.Security.Providers.Flickr.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Flickr.2.3.0\lib\net45\Owin.Security.Providers.Flickr.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Foursquare, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Foursquare.2.1.1\lib\net452\Owin.Security.Providers.Foursquare.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Foursquare.2.3.0\lib\net45\Owin.Security.Providers.Foursquare.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin.Security.Providers.Geni, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.Security.Providers.Geni.2.3.0\lib\net45\Owin.Security.Providers.Geni.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.GitHub, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.GitHub.2.1.1\lib\net452\Owin.Security.Providers.GitHub.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.GitHub.2.3.0\lib\net45\Owin.Security.Providers.GitHub.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Gitter, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Gitter.2.1.1\lib\net452\Owin.Security.Providers.Gitter.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Gitter.2.3.0\lib\net45\Owin.Security.Providers.Gitter.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.GooglePlus, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.GooglePlus.2.1.1\lib\net452\Owin.Security.Providers.GooglePlus.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.GooglePlus.2.3.0\lib\net45\Owin.Security.Providers.GooglePlus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.HealthGraph, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.HealthGraph.2.1.1\lib\net452\Owin.Security.Providers.HealthGraph.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.HealthGraph.2.3.0\lib\net45\Owin.Security.Providers.HealthGraph.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Imgur, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Imgur.2.1.1\lib\net452\Owin.Security.Providers.Imgur.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Imgur.2.3.0\lib\net45\Owin.Security.Providers.Imgur.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Instagram, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Instagram.2.1.1\lib\net452\Owin.Security.Providers.Instagram.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Instagram.2.3.0\lib\net45\Owin.Security.Providers.Instagram.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.LinkedIn, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.LinkedIn.2.1.1\lib\net452\Owin.Security.Providers.LinkedIn.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.LinkedIn.2.3.0\lib\net45\Owin.Security.Providers.LinkedIn.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Onshape, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Onshape.2.1.1\lib\net452\Owin.Security.Providers.Onshape.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Onshape.2.3.0\lib\net45\Owin.Security.Providers.Onshape.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.OpenID, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.OpenID.2.1.1\lib\net452\Owin.Security.Providers.OpenID.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.OpenID.2.3.0\lib\net45\Owin.Security.Providers.OpenID.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.OpenIDBase, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.OpenIDBase.2.0.0\lib\net452\Owin.Security.Providers.OpenIDBase.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.OpenIDBase.2.1\lib\net45\Owin.Security.Providers.OpenIDBase.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Orcid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Orcid.2.1.1\lib\net452\Owin.Security.Providers.Orcid.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Orcid.2.3.0\lib\net45\Owin.Security.Providers.Orcid.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.PayPal, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.PayPal.2.1.1\lib\net452\Owin.Security.Providers.PayPal.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.PayPal.2.3.0\lib\net45\Owin.Security.Providers.PayPal.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Reddit, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Reddit.2.1.1\lib\net452\Owin.Security.Providers.Reddit.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Reddit.2.3.0\lib\net45\Owin.Security.Providers.Reddit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Salesforce, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Salesforce.2.1.1\lib\net452\Owin.Security.Providers.Salesforce.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Salesforce.2.3.0\lib\net45\Owin.Security.Providers.Salesforce.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Shopify, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Shopify.2.1.1\lib\net452\Owin.Security.Providers.Shopify.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Shopify.2.3.0\lib\net45\Owin.Security.Providers.Shopify.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Slack, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.SlackProvider.2.1.1\lib\net452\Owin.Security.Providers.Slack.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.SlackProvider.2.3.0\lib\net45\Owin.Security.Providers.Slack.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.SoundCloud, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.SoundCloud.2.1.1\lib\net452\Owin.Security.Providers.SoundCloud.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.SoundCloud.2.3.0\lib\net45\Owin.Security.Providers.SoundCloud.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Spotify, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Spotify.2.1.1\lib\net452\Owin.Security.Providers.Spotify.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Spotify.2.3.0\lib\net45\Owin.Security.Providers.Spotify.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.StackExchange, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.StackExchange.2.1.1\lib\net452\Owin.Security.Providers.StackExchange.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.StackExchange.2.3.0\lib\net45\Owin.Security.Providers.StackExchange.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Steam, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Steam.2.1.1\lib\net452\Owin.Security.Providers.Steam.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Steam.2.3.0\lib\net45\Owin.Security.Providers.Steam.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.TripIt, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.TripIt.2.1.1\lib\net452\Owin.Security.Providers.TripIt.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.TripIt.2.3.0\lib\net45\Owin.Security.Providers.TripIt.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Twitch, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Twitch.2.1.1\lib\net452\Owin.Security.Providers.Twitch.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Twitch.2.3.0\lib\net45\Owin.Security.Providers.Twitch.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Untappd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Untappd.2.1.1\lib\net452\Owin.Security.Providers.Untappd.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Untappd.2.3.0\lib\net45\Owin.Security.Providers.Untappd.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Vimeo, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Vimeo.2.1.1\lib\net452\Owin.Security.Providers.Vimeo.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Vimeo.2.3.0\lib\net45\Owin.Security.Providers.Vimeo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.VisualStudio, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.VisualStudio.2.1.1\lib\net452\Owin.Security.Providers.VisualStudio.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.VisualStudio.2.3.0\lib\net45\Owin.Security.Providers.VisualStudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.VKontakte, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.VKontakte.2.1.1\lib\net452\Owin.Security.Providers.VKontakte.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.VKontakte.2.3.0\lib\net45\Owin.Security.Providers.VKontakte.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Wargaming, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Wargaming.2.1.1\lib\net452\Owin.Security.Providers.Wargaming.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Wargaming.2.3.0\lib\net45\Owin.Security.Providers.Wargaming.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.WordPress, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.WordPress.2.1.1\lib\net452\Owin.Security.Providers.WordPress.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.WordPress.2.3.0\lib\net45\Owin.Security.Providers.WordPress.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Xing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Xing.2.1.1\lib\net452\Owin.Security.Providers.Xing.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Xing.2.3.0\lib\net45\Owin.Security.Providers.Xing.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Yahoo, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Yahoo.2.1.1\lib\net452\Owin.Security.Providers.Yahoo.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Yahoo.2.3.0\lib\net45\Owin.Security.Providers.Yahoo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Yammer, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Yammer.2.1.1\lib\net452\Owin.Security.Providers.Yammer.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Yammer.2.3.0\lib\net45\Owin.Security.Providers.Yammer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PreMailer.Net, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -469,6 +481,8 @@
     <Content Include="app\metadata.js" />
     <Content Include="app\room\room.html" />
     <Content Include="app\room\room.js" />
+    <Content Include="app\rsvp\rsvp.html" />
+    <Content Include="app\rsvp\rsvp.js" />
     <Content Include="app\scenarioRoles\scenarioRoles.html" />
     <Content Include="app\scenarioRoles\scenarioRoles.js" />
     <Content Include="app\scenario\scenario.js" />
@@ -755,7 +769,9 @@
     <Content Include="Content\images\flags\gif\zm.gif" />
     <Content Include="Content\images\flags\gif\zw.gif" />
     <Content Include="Content\images\icon.png" />
-    <Content Include="Content\images\logo-starship.png" />
+    <Content Include="Content\images\logo-starship.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\isteven-multi-select.css" />
     <Content Include="Content\social-buttons.css" />
     <Content Include="Content\styles.css" />
@@ -767,75 +783,6 @@
     <Content Include="Scripts\angular-location-update.js" />
     <Content Include="Scripts\angular-messages.js" />
     <Content Include="Scripts\angular-messages.min.js" />
-    <Content Include="UserEmails\ForgotPasswordTemplate.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ForgotPasswordTemplate.cs</LastGenOutput>
-    </Content>
-    <Content Include="UserEmails\EmailTemplate.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>EmailTemplate.cs</LastGenOutput>
-    </Content>
-    <Content Include="UserEmails\foundation.css" />
-    <Content Include="favicon.ico" />
-    <Content Include="fonts\fontawesome-webfont.svg" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Global.asax" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="index.html" />
-    <Content Include="Scripts\angular-animate.js" />
-    <Content Include="Scripts\angular-animate.min.js" />
-    <Content Include="Scripts\angular-cookies.js" />
-    <Content Include="Scripts\angular-cookies.min.js" />
-    <Content Include="Scripts\angular-drag-and-drop-lists.js" />
-    <Content Include="app\auth\authComplete.js" />
-    <Content Include="Scripts\angular-local-storage.js" />
-    <Content Include="Scripts\angular-local-storage.min.js" />
-    <Content Include="Scripts\angular-mocks.js" />
-    <Content Include="Scripts\angular-moment.js" />
-    <Content Include="Scripts\angular-moment.min.js" />
-    <Content Include="Scripts\angular-route.js" />
-    <Content Include="Scripts\angular-route.min.js" />
-    <Content Include="Scripts\angular-sanitize.js" />
-    <Content Include="Scripts\angular-sanitize.min.js" />
-    <Content Include="Scripts\angular-strap\angular-strap.compat.js" />
-    <Content Include="Scripts\angular-strap\angular-strap.compat.min.js" />
-    <Content Include="Scripts\angular-strap\angular-strap.js" />
-    <Content Include="Scripts\angular-strap\angular-strap.min.js" />
-    <Content Include="Scripts\angular-strap\angular-strap.tpl.js" />
-    <Content Include="Scripts\angular-strap\angular-strap.tpl.min.js" />
-    <Content Include="Scripts\angular-strap\compiler.js" />
-    <Content Include="Scripts\angular-strap\date-formatter.js" />
-    <Content Include="Scripts\angular-strap\date-parser.js" />
-    <Content Include="Scripts\angular-strap\debounce.js" />
-    <Content Include="Scripts\angular-strap\dimensions.js" />
-    <Content Include="Scripts\angular-strap\parse-options.js" />
-    <Content Include="Scripts\angular-strap\raf.js" />
-    <Content Include="Scripts\angular.js" />
-    <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.js" />
-    <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.min.js" />
-    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-1.2.5-csp.css" />
-    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-1.2.5.js" />
-    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-1.2.5.min.js" />
-    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-tpls-1.2.5.js" />
-    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-tpls-1.2.5.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\breeze.bridge.angular.js" />
-    <Content Include="Scripts\breeze.debug.js" />
-    <Content Include="Scripts\breeze.directives.js" />
-    <Content Include="Scripts\breeze.min.js" />
-    <Content Include="Scripts\breeze.saveErrorExtensions.js" />
-    <Content Include="Content\toastr.scss" />
-    <Content Include="Content\toastr.less" />
-    <Content Include="Scripts\angular-moment.min.js.map" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\ckeditor.js" />
     <Content Include="Scripts\ckeditor\config.js" />
@@ -942,6 +889,79 @@
     <Content Include="Scripts\ckeditor\skins\moono\images\refresh.png" />
     <Content Include="Scripts\ckeditor\skins\moono\images\spinner.gif" />
     <Content Include="Scripts\ckeditor\styles.js" />
+    <Content Include="UserEmails\app.css" />
+    <Content Include="UserEmails\CourseInvite.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CourseInvite.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\ForgotPasswordTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ForgotPasswordTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\EmailTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EmailTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="index.html" />
+    <Content Include="Scripts\angular-animate.js" />
+    <Content Include="Scripts\angular-animate.min.js" />
+    <Content Include="Scripts\angular-cookies.js" />
+    <Content Include="Scripts\angular-cookies.min.js" />
+    <Content Include="Scripts\angular-drag-and-drop-lists.js" />
+    <Content Include="app\auth\authComplete.js" />
+    <Content Include="Scripts\angular-local-storage.js" />
+    <Content Include="Scripts\angular-local-storage.min.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-moment.js" />
+    <Content Include="Scripts\angular-moment.min.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-sanitize.js" />
+    <Content Include="Scripts\angular-sanitize.min.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.compat.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.compat.min.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.min.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.tpl.js" />
+    <Content Include="Scripts\angular-strap\angular-strap.tpl.min.js" />
+    <Content Include="Scripts\angular-strap\compiler.js" />
+    <Content Include="Scripts\angular-strap\date-formatter.js" />
+    <Content Include="Scripts\angular-strap\date-parser.js" />
+    <Content Include="Scripts\angular-strap\debounce.js" />
+    <Content Include="Scripts\angular-strap\dimensions.js" />
+    <Content Include="Scripts\angular-strap\parse-options.js" />
+    <Content Include="Scripts\angular-strap\raf.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.js" />
+    <Content Include="Scripts\angularDynamicLocale\tmhDynamicLocale.min.js" />
+    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-1.2.5-csp.css" />
+    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-1.2.5.js" />
+    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-1.2.5.min.js" />
+    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-tpls-1.2.5.js" />
+    <Content Include="Scripts\bootstrap-ui-typeahead\ui-bootstrap-custom-tpls-1.2.5.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\breeze.bridge.angular.js" />
+    <Content Include="Scripts\breeze.debug.js" />
+    <Content Include="Scripts\breeze.directives.js" />
+    <Content Include="Scripts\breeze.min.js" />
+    <Content Include="Scripts\breeze.saveErrorExtensions.js" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
+    <Content Include="Scripts\angular-moment.min.js.map" />
     <Content Include="Scripts\http-auth-interceptor.js" />
     <Content Include="Scripts\ios-html5-drag-drop-shim.js" />
     <Content Include="Scripts\breeze.savequeuing.js" />
@@ -953,11 +973,7 @@
     <Content Include="app\institution\institution.html" />
     <Content Include="app\manequin\manequin.html" />
     <Content Include="app\scenario\scenario.html" />
-    <Content Include="Scripts\ckeditor\skins\moono\readme.md" />
-    <Content Include="Scripts\ckeditor\README.md" />
-    <Content Include="Scripts\ckeditor\package.json" />
     <Content Include="Scripts\ckeditor\LICENSE.md" />
-    <Content Include="Scripts\ckeditor\CHANGES.md" />
     <Content Include="Content\images\flags\gif\.DS_Store" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
@@ -965,6 +981,10 @@
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
     <Content Include="Scripts\angular-messages.min.js.map" />
+    <Content Include="Scripts\ckeditor\skins\moono\readme.md" />
+    <Content Include="Scripts\ckeditor\README.md" />
+    <Content Include="Scripts\ckeditor\package.json" />
+    <Content Include="Scripts\ckeditor\CHANGES.md" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\isteven-multi-select.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
@@ -1003,9 +1023,18 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Helpers\FindAnyAllFilterOptions.cs" />
     <Compile Include="Controllers\LookupBundles.cs" />
+    <Compile Include="Controllers\CoursePlanningController.cs" />
     <Compile Include="Controllers\UtilitiesController.cs" />
     <Compile Include="Controllers\MedSimApiController.cs" />
     <Compile Include="Controllers\SummaryDataController.cs" />
+    <Compile Include="Models\CoursePlanningBindingModel.cs" />
+    <Compile Include="UserEmails\CourseInvite.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CourseInvite.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\CourseInvitePartial.cs" />
+    <Compile Include="UserEmails\CreateCourseAppointment.cs" />
     <Compile Include="UserEmails\EmailTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1101,7 +1130,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.2.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.2.1\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.2.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.2.2\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

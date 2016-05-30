@@ -51,7 +51,7 @@
                     return manager.getEntities();
                 }
                 if (!_watched || force) {
-                    _watched = [];
+                    _watched = (_watched || []).filter(filterDeletedEnts); //keep a hold of these
                     watchedEntityNames.forEach(function (wen) {
                         var ent = vm[wen[0]];
                         var currentLevel;
@@ -84,7 +84,11 @@
             }
 
             function filterEnts(ent) {
-                return ent && ent.entityAspect;
+                return !!(ent && ent.entityAspect);
+            }
+
+            function filterDeletedEnts(ent) {
+                return !!(ent && ent.entityAspect && ent.entityAspect.entityState === breeze.EntityState.Deleted);
             }
 
             function filterHasValidationErrors(el) { return el.entityAspect.hasValidationErrors && el.entityAspect.entityState !== breeze.EntityState.Deleted; }
@@ -134,7 +138,7 @@
                             vm.isEntityStateChanged = isUserChanged(ent);
                         }
                         break;
-                    case breeze.EntityAction.MergeOnSave:
+                    //case breeze.EntityAction.MergeOnSave: //TODO check this works - we should be adding to watched collection on add, not on mergeOnSave
                     case breeze.EntityAction.Attach:
                     case breeze.EntityAction.Detach:
                         notifyViewModelLoaded();
@@ -168,6 +172,7 @@
             }
 
             function beforeRouteChange(e) {
+                vm.log.debug("changed entity count: " + manager.getChanges().length);
                 if (!e.defaultPrevented) {
                     if (vm.isEntityStateChanged && !confirm(confirmDiscardMsg)) {
                         e.preventDefault();
@@ -202,8 +207,23 @@
 
             function save() {
                 isSaving = true;
-                var args = Array.prototype.filter.call(arguments, function (el) { return el.entityAspect; });
-                return datacontext.save.apply(null, args).then(function () {
+                var toSave;
+                if (arguments.length) {
+                    toSave = [];
+                    for (var i = 0; i < arguments.length; i++) {
+                        if (Array.isArray(arguments[i])) {
+                            toSave = toSave.concat(arguments[i]);
+                        } else {
+                            toSave.push(arguments[i]);
+                        }
+                    }
+                } else {
+                    toSave = watchedEntityNames
+                        ?getWatched(true)
+                        :[];
+                }
+                toSave = toSave.filter(function (el) { return !!(el && el.entityAspect && el.entityAspect.entityState.isAddedModifiedOrDeleted()); })
+                return datacontext.save.apply(null, toSave).then(function () {
                     vm.isEntityStateChanged = false;
                 }).finally(function() {
                     isSaving = false;

@@ -326,6 +326,12 @@ namespace SM.Dto
                 .HasForeignKey(e => e.RoomId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<RoomDto>()
+                .HasMany(e => e.FacultyMeetings)
+                .WithOptional(e => e.FacultyMeetingRoom)
+                .HasForeignKey(e => e.FacultyMeetingRoomId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ScenarioDto>()
                 .HasMany(e => e.CourseSlotScenarios)
                 .WithRequired(e => e.Scenario)

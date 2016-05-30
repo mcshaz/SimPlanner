@@ -23,6 +23,8 @@
         vm.cultureFormats=[];
         vm.timeZonesForCulture = [];
         vm.getCultureFormats = getCultureFormats;
+        vm.googleMapAddress="";
+        vm.mapAddressChanged = mapAddressChanged;
         vm.onLocaleSelected = onLocaleSelected;
         vm.flagUrl = '';
 
@@ -81,6 +83,21 @@
         function getCultureFormats(val) {
             val = val.toLowerCase();
             return vm.cultureFormats.filter(function (el) { return el.searchString.indexOf(val) !== -1; });
+        }
+
+        function mapAddressChanged() {
+            var matches = /\/@(-?\d+\.\d+),(-?\d+\.\d+)/.exec(vm.googleMapAddress);
+            var float;
+            if (matches && matches.length === 3) {
+                float = parseFloat(matches[1]);
+                if (isFinite) {
+                    vm.institution.latitude = float;
+                }
+                float = parseFloat(matches[2]);
+                if (isFinite) {
+                    vm.institution.longitude = float;
+                }
+            }
         }
     }
 

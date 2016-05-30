@@ -167,7 +167,7 @@
         function createSlot(courseFormat) {
             courseFormat.selectedSlot = datacontext.courseSlots.create({
                 courseFormatId: courseFormat.id,
-                order: (courseFormat.courseActivities ||[]).length
+                order: (courseFormat.courseSlots || []).length
             });
             createActivity(courseFormat.selectedSlot);
         }

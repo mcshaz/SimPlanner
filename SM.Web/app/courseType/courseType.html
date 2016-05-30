@@ -170,7 +170,8 @@
                                                         <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.simultaneousStreams" ng-disabled="!cf.selectedSlot">
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-link" type="button" ng-click="vm.editChoices(cf.selectedSlot)" ng-disabled="!cf.selectedSlot || cf.selectedSlot.isScenario">
+                                                        <button class="btn btn-link" type="button" ng-click="vm.editChoices(cf.selectedSlot)" ng-disabled="!cf.selectedSlot || cf.selectedSlot.isScenario || cf.selectedSlot.entityAspect.entityState.isAdded()"
+                                                                data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save first" bs-tooltip bs-enabled="!!(cf.selectedSlot && cf.selectedSlot.entityAspect.entityState.isAdded())">
                                                             choices
                                                         </button>
                                                     </td>

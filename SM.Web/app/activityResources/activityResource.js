@@ -53,7 +53,7 @@
         }
 
         function saveOverride() {
-            baseSave(vm.courseActivity.activityChoices);
+            baseSave();
             vm.selectedActivityResource = null;
         }
     }

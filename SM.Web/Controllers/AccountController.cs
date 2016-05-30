@@ -155,13 +155,16 @@ namespace SM.Web.Controllers
                     UserId = participant.Id
                 };
 
-                var mail = new MailMessage();
-                mail.To.Add(model.Email);
-                mail.CreateHtmlBody(resetEmail);
-                using (var client = new SmtpClient())
+                using (var mail = new MailMessage())
                 {
-                    client.Send(mail);
+                    mail.To.Add(model.Email);
+                    mail.CreateHtmlBody(resetEmail);
+                    using (var client = new SmtpClient())
+                    {
+                        client.Send(mail);
+                    }
                 }
+
             }
             //return GetErrorResult(result);
 

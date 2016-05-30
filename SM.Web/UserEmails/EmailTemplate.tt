@@ -4,117 +4,62 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
-
+    <title>My Email Subject</title>
+  </head>
   <body>
     <!-- <style> -->
-    <table class="body" data-made-with-foundation="">
+	<table class="wrapper header" align="center"><tr><td class="wrapper-inner">
+		<table class="row collapse"><tbody><tr>
+			    <th class="small-12 large-12 columns">
+      <table>
+        <tr>
+		  <th width="75">
+				<img src="<#= BaseUrl #>Content/images/icon.png" alt="sim-manager logo" height="50"/>
+		  </th>
+          <th align="center">
+				<h1 class="text-center">Simulation Manager</h1>
+		  </th>
+		  <th width="93">
+				<img src="<#= BaseUrl #>Content/images/logo-starship.png" alt="Starship logo" height="50" style="background-color:#FFFFFF;"/>
+		  </th>
+        </tr>
+      </table>
+    </th>
+		</tr></tbody></table>
+	</td></tr></table>
+	<table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 
+    <table class="body">
       <tr>
-        <td class="float-center" align="center" valign="top">
+        <td class="center" align="center" valign="top">
           <center data-parsed="">
-            <style type="text/css" align="center" class="float-center">
-              body,
-              html,
-              .body {
-                background: #f3f3f3 !important;
-              }
-              
-              .header {
-                background: #f3f3f3;
-              }
-            </style>
-            <table class="container float-center">
-              <tbody>
-                <tr>
-                  <td>
-                    <table class="row header">
-                      <tbody>
-                        <tr>
-                          <th class="small-12 large-12 columns first last">
-                            <table>
-                              <tr>
-                                <th>
-                                  <table class="spacer">
-                                    <tbody>
-                                      <tr>
-                                        <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-								  <img class="float left" src="" alt="">
-                                  <h1 class="text-center">Simulation Manager</h4> 
-								  
-								</th>
-                                <th class="expander"></th>
-                              </tr>
-                            </table>
-                          </th>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table class="row">
-                      <tbody>
-                        <tr>
-                          <th class="small-12 large-12 columns first last">
-                            <table>
-                              <tr>
-                                <th>
-                                  <table class="spacer">
-                                    <tbody>
-                                      <tr>
-                                        <td height="32px" style="font-size:32px;line-height:32px;">&#xA0;</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  
-                                  <table class="spacer">
-                                    <tbody>
-                                      <tr>
-                                        <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <h3 class="text-center"><#= Title #></h1>
-                                  <table class="spacer">
-                                    <tbody>
-                                      <tr>
-                                        <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
+			<table class="container float-center">
+				<tbody><tr>
+					<td>
+					  <table class="row"><tbody><tr><th>
+							<h3>
+								<#= Title #>:
+							</h3>
+						</th></tr></tbody>
+					  </table>
 
-                                  <#= Body #>
+					  <#= Body #>
 
-                                  <hr>
-                                  <p><small>If you want to opt-out of future emails from SimManager, <a href="#">unsubscribe here</a>.</small></p>
-                                </th>
-                                <th class="expander"></th>
-                              </tr>
-                            </table>
-                          </th>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table class="spacer">
-                      <tbody>
-                        <tr>
-                          <td height="16px" style="font-size:16px;line-height:16px;">&#xA0;</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+					</td></tr>
+				</tbody>
+			</table>
           </center>
         </td>
       </tr>
     </table>
+    <!-- prevent Gmail on iOS font size manipulation -->
+   <div style="display:none; white-space:nowrap; font:15px courier; line-height:0;"> &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; &#xA0; </div>
   </body>
-
 </html>

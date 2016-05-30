@@ -22,6 +22,16 @@ namespace SM.DataAccess
 
         public Guid RoomId { get; set; }
 
+        public Guid? FacultyMeetingRoomId { get; set; }
+
+        public int? FacultyMeetingDuration { get; set; }
+
+        public byte EmailSequence { get; set; }
+
+        public DateTime Created { get; set; }
+
+        public DateTime LastModified { get; set; }
+
         public byte FacultyNoRequired { get; set; }
 
         public string ParticipantVideoFilename { get; set; }
@@ -37,6 +47,8 @@ namespace SM.DataAccess
         public virtual CourseFormat CourseFormat { get; set; }
 
         public virtual Room Room { get; set; }
+
+        public virtual Room FacultyMeetingRoom { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseParticipant> CourseParticipants { get; set; }
@@ -65,6 +77,16 @@ namespace SM.DataAccess
 
             //todo account for multiday courses
             course.FinishTime = course.StartTime + TimeSpan.FromMinutes(course.CourseFormat.CourseSlots.Sum(cs => cs.MinutesDuration));
+        }
+
+        public static DateTime LocalStart(this Course course)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(course.StartTime, TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone));
+        }
+
+        public static DateTime LocalFinish(this Course course)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(course.FinishTime, TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone));
         }
     }
 }

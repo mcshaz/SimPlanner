@@ -22,6 +22,7 @@ $success-color: #3adb76;
 $warning-color: #ffae00;
 $alert-color: #ec5840;
 $light-gray: #f3f3f3;
+$navy: #000080;
 $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
 $black: #0a0a0a;
@@ -71,7 +72,7 @@ $h6-font-size: 18px;
 $header-margin-bottom: 10px;
 $paragraph-margin-bottom: 10px;
 $small-font-size: 80%;
-$small-font-color: $medium-gray;
+$small-font-color: $navy;
 $lead-font-size: $global-font-size * 1.25;
 $lead-line-height: 1.6;
 $text-padding: 10px;
@@ -144,4 +145,11 @@ $thumbnail-shadow-hover: 0 0 6px 1px rgba($primary-color, 0.5);
 $thumbnail-transition: box-shadow 200ms ease-out;
 $thumbnail-radius: $global-radius;
 
-
+.header th.columns {
+    background-color: $black;
+    
+    padding-bottom: 0;
+}
+.header th{
+	color: $white;
+}

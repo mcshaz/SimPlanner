@@ -63,9 +63,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="courseType" class="col-md-2 control-label">Location</label>
+                            <label for="location" class="col-md-2 control-label">Location</label>
                             <div class="col-md-10">
-                                <select id="courseType" class="form-control" data-z-validate data-ng-model="vm.course.room" data-ng-options="r as r.shortDescription group by r.department.name for r in vm.rooms">
+                                <select id="location" class="form-control" data-z-validate data-ng-model="vm.course.room" data-ng-options="r as r.shortDescription group by r.department.name for r in vm.rooms">
                                     <option disabled selected hidden value="">
                                         Select Room...
                                     </option>
@@ -77,9 +77,9 @@
                     </fieldset>
 
                     <fieldset>
-                        <legend class="small">Optional</legend>
+                        <legend class="small">Planning Meeting</legend>
                         <div class="form-group">
-                            <label for="planningDate" class="col-md-2 control-label">Planning Meeting</label>
+                            <label for="planningDate" class="col-md-2 control-label">Time</label>
                             <div class="col-md-5">
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -101,6 +101,28 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="planningDuration" class="col-md-2 control-label">Duration (minutes)</label>
+                            <div class="col-md-10">
+                                <input id="planningDuration" type="number" step="5" class="form-control" data-z-validate data-ng-model="vm.course.facultyMeetingDuration" />
+                                <span class="text-danger" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="meetingRoom" class="col-md-2 control-label">Location</label>
+                            <div class="col-md-10">
+                                <select id="meetingRoom" class="form-control" data-z-validate data-ng-model="vm.course.facultyMeetingRoom" data-ng-options="r as r.shortDescription group by r.department.name for r in vm.rooms">
+                                    <option disabled selected hidden value="">
+                                        Select Room...
+                                    </option>
+                                </select>
+                                <span class="text-danger" />
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend class="small">Miscellaneous</legend>
                         <div class="form-group">
                             <label for="outreachingDepartment" class="col-md-2 control-label">Outreaching Department</label>
                             <div class="col-md-10">
@@ -157,7 +179,7 @@
                                             {{cp.participant.professionalRole.category}}
                                         </td>
                                         <td>
-                                            <input type="checkbox" ng-checked="cp.isOrganiser" />
+                                            <input type="checkbox" ng-model="cp.isOrganiser" />
                                         </td>
                                         <td>
                                             <button class="btn-link" ng-click="vm.cycleConfirmed(cp)">
@@ -231,6 +253,11 @@
                         </button>
                     </fieldset>
                 </div>
+                <button class="btn btn-default" ng-disabled="vm.isEntityStateChanged" ng-click="vm.sendEmails()" type="button"
+                        data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.isEntityStateChanged">
+                    Send Confirmation Emails
+                </button> 
+
             </div>
         </div>
     </section>

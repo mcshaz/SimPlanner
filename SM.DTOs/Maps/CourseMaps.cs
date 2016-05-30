@@ -15,12 +15,16 @@ namespace SM.Dto.Maps
                 StartTime = m.StartTime,
                 FinishTime = m.FinishTime,
                 DepartmentId = m.DepartmentId,
+                EmailSequence = m.EmailSequence,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
                 FacultyNoRequired = m.FacultyNoRequired,
                 ParticipantVideoFilename = m.ParticipantVideoFilename,
                 FeedbackSummaryFilename = m.FeedbackSummaryFilename,
                 CourseFormatId = m.CourseFormatId,
-                RoomId = m.RoomId
+                RoomId = m.RoomId,
+                FacultyMeetingRoomId = m.FacultyMeetingRoomId,
+                FacultyMeetingDuration = m.FacultyMeetingDuration,
+                FacultyMeetingTime = m.FacultyMeetingTime
             };
         }
         /*
@@ -37,12 +41,16 @@ namespace SM.Dto.Maps
                 StartTime = m.StartTime,
                 FinishTime = m.FinishTime,
                 DepartmentId = m.DepartmentId,
+                EmailSequence = m.EmailSequence,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
                 FacultyNoRequired = m.FacultyNoRequired,
                 ParticipantVideoFilename = m.ParticipantVideoFilename,
                 FeedbackSummaryFilename = m.FeedbackSummaryFilename,
                 CourseFormatId = m.CourseFormatId,
-                RoomId = m.RoomId
+                RoomId = m.RoomId,
+                FacultyMeetingRoomId = m.FacultyMeetingRoomId,
+                FacultyMeetingDuration = m.FacultyMeetingDuration,
+                FacultyMeetingTime = m.FacultyMeetingTime
             };
             //Department = m.Department,
 

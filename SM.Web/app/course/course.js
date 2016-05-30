@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$location'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$location', '$http'];
 
-    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $location) {
+    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $location, $http) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -38,6 +38,7 @@
         vm.openCourseParticipant = openCourseParticipant;
         vm.rooms = [];
         vm.save = save;
+        vm.sendEmails = sendEmails;
         vm.setFinish = setFinish;
         vm.title = 'course';
 
@@ -126,11 +127,16 @@
 
         function dateChanged(propName) {
             var dateInst = vm.course[propName];
+            if (!dateInst instanceof Date) { return; }
             if (dateInst.getHours() === 0 && dateInst.getMinutes() === 0) { //bad luck if you want your course to start at midnight, but this would be an extreme edge case!
                 dateInst.setHours(8);
             }
             if (propName === 'startTime') {
                 setFinish();
+            } else if (propName === 'facultyMeetingTime') {
+                if (!vm.course.facultyMeetingDuration) {
+                    vm.course.facultyMeetingDuration = 30;
+                }
             }
         }
 
@@ -181,6 +187,16 @@
                     $location.updatePath('course/' + vm.course.id,false);
                     isNew = false;
                 }
+            });
+        }
+
+        function sendEmails() {
+            $http({
+                method: 'POST',
+                url: 'api/CoursePlanning/EmailAll/',
+                data: { CourseId: vm.course.id },
+            }).then(function (response) {
+                alert(response.data || 'emails sent');
             });
         }
     }

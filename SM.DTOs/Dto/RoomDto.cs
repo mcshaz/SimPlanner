@@ -14,5 +14,6 @@ namespace SM.Dto
         public Guid DepartmentId { get; set; }
         public DepartmentDto Department { get; set; }
         public virtual ICollection<CourseDto> Courses { get; set; }
+        public virtual ICollection<CourseDto> FacultyMeetings { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using Ganss.XSS;
+using System;
+
 namespace SM.DataAccess
 {
     public class SanitizeStringProperties
@@ -17,7 +19,8 @@ namespace SM.DataAccess
             {
                 if (e.State == EntityState.Added || e.State == EntityState.Modified)
                 {
-                    foreach(var p in e.Entity.GetType().GetProperties())
+                    Type t = e.Entity.GetType();
+                    foreach (var p in t.GetProperties())
                     {
                         if (p.PropertyType == typeof(string))
                         {
@@ -26,6 +29,16 @@ namespace SM.DataAccess
                             {
                                 p.SetValue(e.Entity, Sanitizer.Sanitize(val));
                             }
+                        }
+                    }
+                    if(t == typeof(Course))
+                    {
+                        var course = (Course)e.Entity;
+                        var now = DateTime.UtcNow;
+                        course.LastModified = now;
+                        if (e.State == EntityState.Added)
+                        {
+                            course.Created = now;
                         }
                     }
                 }

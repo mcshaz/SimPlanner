@@ -158,6 +158,22 @@
     <Compile Include="Migrations\201605100331063_manequinDepartmentFK.Designer.cs">
       <DependentUpon>201605100331063_manequinDepartmentFK.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605200243533_latlong.cs" />
+    <Compile Include="Migrations\201605200243533_latlong.Designer.cs">
+      <DependentUpon>201605200243533_latlong.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605262305588_emailSequence.cs" />
+    <Compile Include="Migrations\201605262305588_emailSequence.Designer.cs">
+      <DependentUpon>201605262305588_emailSequence.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605291000188_CreateModCourse.cs" />
+    <Compile Include="Migrations\201605291000188_CreateModCourse.Designer.cs">
+      <DependentUpon>201605291000188_CreateModCourse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605300136311_FacultyMeetingRoom.cs" />
+    <Compile Include="Migrations\201605300136311_FacultyMeetingRoom.Designer.cs">
+      <DependentUpon>201605300136311_FacultyMeetingRoom.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SanitizeStringProperties.cs" />
@@ -172,6 +188,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605100331063_manequinDepartmentFK.resx">
       <DependentUpon>201605100331063_manequinDepartmentFK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605200243533_latlong.resx">
+      <DependentUpon>201605200243533_latlong.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605262305588_emailSequence.resx">
+      <DependentUpon>201605262305588_emailSequence.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605291000188_CreateModCourse.resx">
+      <DependentUpon>201605291000188_CreateModCourse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605300136311_FacultyMeetingRoom.resx">
+      <DependentUpon>201605300136311_FacultyMeetingRoom.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
