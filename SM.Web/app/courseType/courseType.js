@@ -18,7 +18,6 @@
         })
         var id = $routeParams.id;
         var isNew = id === 'new';
-        var baseSave = vm.save;
 
         vm.activeFormatIndex = -1;
         vm.activitySelected = activitySelected;
@@ -35,7 +34,7 @@
         vm.instructorCourses = [];
         vm.isScenarioChanged = isScenarioChanged;
         vm.removeSlot = removeSlot;
-        vm.save = saveOverride;
+
         vm.selectedDepartments = [];
         vm.title = 'Course Format';
 
@@ -158,11 +157,13 @@
             }
             return returnVar;
         }
-
-        function saveOverride($event) {
+        
+        /*
+        function saveOverride() {
             //vm.log.debug($event);
             baseSave().then(removeSelectedSlots);
         }//;
+        */
 
         function createSlot(courseFormat) {
             courseFormat.selectedSlot = datacontext.courseSlots.create({

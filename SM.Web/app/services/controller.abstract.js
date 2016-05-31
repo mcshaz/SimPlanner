@@ -51,6 +51,7 @@
                     return manager.getEntities();
                 }
                 if (!_watched || force) {
+                    //var oldWatched = _watched ? _watched.slice() : []; // DEBUG
                     _watched = (_watched || []).filter(filterDeletedEnts); //keep a hold of these
                     watchedEntityNames.forEach(function (wen) {
                         var ent = vm[wen[0]];
@@ -79,6 +80,9 @@
 
                         _watched = _watched.concat(ent.filter(filterEnts));
                     });
+
+                    //var dif = _watched.filter(function (el) { return oldWatched.indexOf(el) === -1; })
+                    //vm.log.debug({ msg: "+" + dif.length + " to watch", data: dif }) //DEBUG
                 }
                 return _watched;
             }
@@ -123,9 +127,15 @@
                         }
                         break;
                     case breeze.EntityAction.PropertyChange:
+                        if (changeArgs.args.property.isNavigationProperty) {
+                            notifyViewModelLoaded();
+                        }
+                        if (getWatched().indexOf(ent) === -1) {
+                            return;
+                        }
                         var indx = errorEntities.indexOf(ent);
                         if (ent.entityAspect.entityState !== breeze.EntityState.Deleted  && ent.entityAspect.hasValidationErrors) { //?detached
-                            if (indx === -1 && getWatched().indexOf(ent) !== -1) {
+                            if (indx === -1) {
                                 errorEntities.push(ent);
                             }
    
@@ -219,7 +229,7 @@
                     }
                 } else {
                     toSave = watchedEntityNames
-                        ?getWatched(true)
+                        ?getWatched()
                         :[];
                 }
                 toSave = toSave.filter(function (el) { return !!(el && el.entityAspect && el.entityAspect.entityState.isAddedModifiedOrDeleted()); })

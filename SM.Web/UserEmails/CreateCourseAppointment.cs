@@ -80,11 +80,10 @@ namespace SM.Web.UserEmails
                                 RSVP = false,
                                 ParticipationStatus = cp.IsConfirmed.HasValue
                                     ?cp.IsConfirmed.Value
-                                        ?"ACCEPTED"
-                                        :"DECLINED"
-                                    :"TENTATIVE"
+                                        ? ParticipationStatus.Accepted
+                                        : ParticipationStatus.Declined
+                                    :ParticipationStatus.Tentative
                             });
-
             // Create a serialization context and serializer factory.
             // These will be used to build the serializer for our object.
 
@@ -93,7 +92,7 @@ namespace SM.Web.UserEmails
             alarm.Action = AlarmAction.Display;
             alarm.Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation;
             alarm.Trigger = new Trigger(TimeSpan.FromHours(-1));
-
+            
             // Add the alarm to the event
             courseEvt.Alarms.Add(alarm);
 
@@ -102,6 +101,8 @@ namespace SM.Web.UserEmails
 
         public static void AddFacultyMeeting(iCalendar iCal, Course course)
         {
+            iCal.Method = CalendarMethods.Publish; //if more than 1 event, this is required
+
             var tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
             var courseEvent = iCal.Events.First();
             Event meeting = iCal.Create<Event>();
@@ -139,6 +140,14 @@ namespace SM.Web.UserEmails
             meeting.Attendees.AddRange(courseEvent.Attendees.Where(a=>fac.Contains(a.Value.OriginalString)));
 
             meeting.Organizer = courseEvent.Organizer;
+
+            Alarm alarm = new Alarm();
+            alarm.Action = AlarmAction.Display;
+            alarm.Summary = meeting.Summary;
+            alarm.Trigger = new Trigger(TimeSpan.FromHours(-1));
+
+            // Add the alarm to the event
+            meeting.Alarms.Add(alarm);
         }
     }
 
@@ -218,7 +227,9 @@ namespace SM.Web.UserEmails
             */
             //end writeOutlookFormat
 
+            //File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "calendar.ics", calString);
             var attach = System.Net.Mail.Attachment.CreateAttachmentFromString(calString, CalType);
+
             msg.Attachments.Add(attach);
 
         }
