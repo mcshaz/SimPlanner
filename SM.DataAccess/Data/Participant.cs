@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity.EntityFramework;
 using SM.Metadata;
+using System.Net.Mail;
 
 namespace SM.DataAccess
 {
@@ -95,6 +96,25 @@ namespace SM.DataAccess
             set
             {
                 _activityFaculty = value;
+            }
+        }
+    }
+
+    public static class ParticipantExtensions
+    {
+        public static void AddParticipants(this MailAddressCollection addresses, Participant participant)
+        {
+            AddParticipants(addresses, new[] { participant });
+        }
+        public static void AddParticipants(this MailAddressCollection addresses, IEnumerable<Participant> participants)
+        {
+            foreach(var participant in participants)
+            {
+                addresses.Add(new MailAddress(participant.Email, participant.FullName));
+                if (participant.AlternateEmail != null)
+                {
+                    addresses.Add(new MailAddress(participant.AlternateEmail, participant.FullName));
+                }
             }
         }
     }

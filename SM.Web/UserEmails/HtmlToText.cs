@@ -108,7 +108,8 @@ namespace SM.Web.UserEmails
                         case "address":
                         case "main":
                         case "div":
-                        case "p": // stylistic - adjust as you tend to use
+                        case "p":
+                        case "table":// stylistic - adjust as you tend to use
                             if (textInfo.IsFirstTextOfDocWritten)
                             {
                                 outText.Write("\r\n");

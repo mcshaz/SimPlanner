@@ -16,9 +16,12 @@
                 method: 'POST',
                 url: 'api/CoursePlanning/Rsvp',
                 data: $routeParams
-            }).then(function (data) {
-                vm.serverMessage = data;
+            }).then(function (response) {
+                vm.serverMessage = response.data;
                 log.success('RSVP registered');
+            }, function (response) {
+                vm.serverMessage = "Appologies - an error has occured";
+                log.error(err);
             })], controllerId);;
         }
 

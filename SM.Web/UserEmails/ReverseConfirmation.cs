@@ -18,9 +18,9 @@ namespace SM.Web.UserEmails
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ForgotPasswordTemplate.tt"
+    #line 1 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class ForgotPasswordTemplate : ForgotPasswordTemplateBase
+    public partial class ReverseConfirmation : ReverseConfirmationBase
     {
 #line hidden
         /// <summary>
@@ -28,18 +28,215 @@ namespace SM.Web.UserEmails
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\n<p class=\"text-center\">Click the link below to reset your password.</p>\r\n<table" +
-                    " class=\"button large expand\">\r\n    <tr>\r\n        <td>\r\n        <table>\r\n        " +
-                    "    <tr>\r\n            <td>\r\n                <center data-parsed=\"\"><a href=\"");
+            this.Write("\r\n<table class=\"callout\"><tr><th class=\"callout-inner primary\">\r\n\t\t\t<table class=" +
+                    "\"row\"><tbody><tr>\r\n\t\t\t\t\t\t<th class=\"small-12 large-12 columns first last\">\r\n\t\t\t\t" +
+                    "\t\t\t<table>\r\n\t\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t\t<th>\r\n\t\t\t\t\t\t\t\t\t\t<p> ");
             
-            #line 15 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ForgotPasswordTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(AsQueryString()));
+            #line 13 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Participant.FullName));
             
             #line default
             #line hidden
-            this.Write("\" align=\"center\" class=\"float-center\">Reset Password</a></center>\r\n            </" +
-                    "td>\r\n            </tr>\r\n        </table>\r\n        </td>\r\n        <td class=\"expa" +
-                    "nder\"></td>\r\n    </tr>\r\n</table>");
+            this.Write(" \r\n\t\t\t\t\t\t\t\t\t\t\t<small>");
+            
+            #line 14 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Participant.ProfessionalRole.Description));
+            
+            #line default
+            #line hidden
+            this.Write(" </small>\r\n\t\t\t\t\t\t\t\t\t\t\thad been confirmed as ");
+            
+            #line 15 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.IsConfirmed.Value?"attending":"unable to attend"));
+            
+            #line default
+            #line hidden
+            this.Write(" as a ");
+            
+            #line 15 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.IsFaculty?"faculty member":"participant"));
+            
+            #line default
+            #line hidden
+            this.Write(" in the \r\n\t\t\t\t\t\t\t\t\t\t\t");
+            
+            #line 16 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseName));
+            
+            #line default
+            #line hidden
+            this.Write(" on the ");
+            
+            #line 16 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(FormattedDate(CourseParticipant.Course.StartTime)));
+            
+            #line default
+            #line hidden
+            this.Write(".</p>\r\n\t\t\t\t\t\t\t\t\t\t<p>However, he/she would like to <strong>change this response</s" +
+                    "trong> to being ");
+            
+            #line 17 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.IsConfirmed.Value?"unable":"able"));
+            
+            #line default
+            #line hidden
+            this.Write(@" to attend.</p>
+									</th>
+									<th class=""expander""></th>
+								</tr>
+							</table>
+						</th>
+					</tr></tbody></table>
+		</th><th class=""expander""></th></tr></table>
+		<table class=""row""><tbody><tr>
+			<th class=""small-12 large-12 columns first last"">
+				<table>
+					<tr>
+						<th>
+							<p class=""small""><em>Note:</em> you can also change the confirmation status for any or all participants by logging in <a href=""");
+            
+            #line 30 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GetCourseRef()));
+            
+            #line default
+            #line hidden
+            this.Write(@""">here</a></p>
+						</th>
+					</tr>
+				</table>
+			</th>
+		</tr></tbody></table>
+
+		<table class=""row""><tbody><tr>
+			<th class=""small-offset-1 large-offset-1 small-11 large-11 columns first last"">
+				<table>
+					<tr>
+						<th>
+							<h3>Contact details for ");
+            
+            #line 42 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Participant.FullName));
+            
+            #line default
+            #line hidden
+            this.Write(":</h3>\r\n\t\t\t\t\t\t</th>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</th>\r\n\t\t</tr></tbody></table>\r" +
+                    "\n\r\n\t\t");
+            
+            #line 49 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+ if(CourseParticipant.Participant.PhoneNumber != null) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t<table class=\"row\"><tbody><tr>\r\n\t\t\t\t<th class=\"small-offset-1 large-offset-1 s" +
+                    "mall-11 large-11 columns first last\">\r\n\t\t\t\t\t<table>\r\n\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t<th>\r\n\t\t" +
+                    "\t\t\t\t\t\t<h5>Phone:</h5>\r\n\t\t\t\t\t\t\t\t<p>");
+            
+            #line 56 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Participant.PhoneNumber));
+            
+            #line default
+            #line hidden
+            this.Write("</p>\r\n\t\t\t\t\t\t\t</th>\r\n\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t</table>\r\n\t\t\t\t</th>\r\n\t\t\t</tr></tbody></tabl" +
+                    "e>\r\n\t\t");
+            
+            #line 62 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\r\n\t\t<table class=\"row\"><tbody><tr>\r\n\t\t\t<th class=\"small-offset-1 large-offset-1 s" +
+                    "mall-11 large-11 columns first last\">\r\n\t\t\t\t<table>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<th>\r\n\t\t\t\t\t" +
+                    "\t\t<h5>Email:</h5>\r\n\t\t\t\t\t\t\t<p><a href=\"mailto:");
+            
+            #line 70 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Participant.Email));
+            
+            #line default
+            #line hidden
+            this.Write("\">");
+            
+            #line 70 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Participant.Email));
+            
+            #line default
+            #line hidden
+            this.Write("</a></p>\r\n\t\t\t\t\t\t</th>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</th>\r\n\t\t</tr></tbody></table" +
+                    ">\r\n\r\n\t\t");
+            
+            #line 77 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+ if(CourseParticipant.Participant.AlternateEmail != null) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t<table class=\"row\"><tbody><tr>\r\n\t\t\t<th class=\"small-offset-1 large-offset-1 sm" +
+                    "all-11 large-11 columns first last\">\r\n\t\t\t\t<table>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<th>\r\n\t\t\t\t\t\t" +
+                    "\t<h5>Email:</h5>\r\n\t\t\t\t\t\t\t<p><a href=\"mailto:");
+            
+            #line 84 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Participant.AlternateEmail));
+            
+            #line default
+            #line hidden
+            this.Write("\">");
+            
+            #line 84 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Participant.AlternateEmail));
+            
+            #line default
+            #line hidden
+            this.Write("</a></p>\r\n\t\t\t\t\t\t</th>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</th>\r\n\t\t</tr></tbody></table" +
+                    ">\r\n\t\t");
+            
+            #line 90 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\r\n\t<hr/>\r\n\t<table class=\"row\"><tbody><tr>\r\n\t\t\t\t<th class=\"small-12 large-6 column" +
+                    "s first\">\r\n\t\t\t\t\t<table>\r\n\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t<th>\r\n\t\t\t\t\t\t\t\t<center data-parsed=\"\"" +
+                    ">\r\n\t\t\t\t\t\t\t\t\t<table class=\"button success float-center\"><tr><td><table><tr><td><a" +
+                    " href=\"");
+            
+            #line 99 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GetNotificationUrl(!CourseParticipant.IsConfirmed.Value)));
+            
+            #line default
+            #line hidden
+            this.Write("\">Accept Change <small>(");
+            
+            #line 99 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.IsConfirmed.Value?"not attending":"attending"));
+            
+            #line default
+            #line hidden
+            this.Write(@")</small></a></td></tr></table></td></tr></table> 
+									<center align=""center"" class=""float-center"" data-parsed="""">
+									</center></center></th>
+						</tr>
+					</table>
+				</th>
+				<th class=""small-12 large-6 columns last"">
+					<table>
+						<tr>
+							<th>
+								<center data-parsed="""">
+									<table class=""button alert float-center""><tr><td><table><tr><td><a href=""");
+            
+            #line 110 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(GetNotificationUrl(CourseParticipant.IsConfirmed.Value)));
+            
+            #line default
+            #line hidden
+            this.Write("\">Decline Change <small>(");
+            
+            #line 110 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ReverseConfirmation.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.IsConfirmed.Value?"attending":"not attending"));
+            
+            #line default
+            #line hidden
+            this.Write(")</small></a></td></tr></table></td></tr></table>\r\n\t\t\t\t\t\t\t\t\t<center align=\"center" +
+                    "\" class=\"float-center\" data-parsed=\"\">\t\t\r\n\t\t\t\t\t\t\t\t\t</center></center></th>\r\n\t\t\t\t" +
+                    "\t\t</tr>\r\n\t\t\t\t\t</table>\r\n\t\t\t\t</th>\r\n\t\t\t</tr></tbody></table>\r\n\t\t");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -51,7 +248,7 @@ namespace SM.Web.UserEmails
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class ForgotPasswordTemplateBase
+    public class ReverseConfirmationBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

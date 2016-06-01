@@ -228,6 +228,12 @@
                     title: 'Reset Password',
                     templateUrl: 'app/user/resetPassword.html',
                 }
+            }, {
+                url: '/rsvp',
+                config: {
+                    title: 'RSVP',
+                    templateUrl: 'app/rsvp/rsvp.html',
+                }
             }
         ];
     }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SM.Web.Models
 {
@@ -10,6 +6,7 @@ namespace SM.Web.Models
     {
         public Guid CourseId { get; set; }
         public Guid ParticipantId { get; set; }
+        public Guid? Auth { get; set; }
         bool? _isAttending;
         public bool IsAttending { get { return _isAttending.Value; } }
         public int Attending { set { _isAttending = value != 0; }  }

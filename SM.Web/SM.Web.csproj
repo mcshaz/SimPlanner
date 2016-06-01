@@ -890,6 +890,14 @@
     <Content Include="Scripts\ckeditor\skins\moono\images\spinner.gif" />
     <Content Include="Scripts\ckeditor\styles.js" />
     <Content Include="UserEmails\app.css" />
+    <Content Include="UserEmails\AuthConfirmationResult.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>AuthConfirmationResult.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\ReverseConfirmation.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ReverseConfirmation.cs</LastGenOutput>
+    </Content>
     <Content Include="UserEmails\CourseInvite.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CourseInvite.cs</LastGenOutput>
@@ -1028,6 +1036,18 @@
     <Compile Include="Controllers\MedSimApiController.cs" />
     <Compile Include="Controllers\SummaryDataController.cs" />
     <Compile Include="Models\CoursePlanningBindingModel.cs" />
+    <Compile Include="UserEmails\AuthConfirmationResult.cs">
+      <DependentUpon>AuthConfirmationResult.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="UserEmails\AuthConfirmationResultPartial.cs" />
+    <Compile Include="UserEmails\ReverseConfirmationPartial.cs" />
+    <Compile Include="UserEmails\ReverseConfirmation.cs">
+      <DependentUpon>ReverseConfirmation.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="UserEmails\CourseInvite.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

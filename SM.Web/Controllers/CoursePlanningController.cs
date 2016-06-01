@@ -42,18 +42,14 @@ namespace SM.Web.Controllers
 
             using (var cal = Appointment.CreateiCalendar(course, User.Identity))
             {
-                var faculty = course.CourseParticipants.Where(cp=>!cp.IsConfirmed.HasValue).ToLookup(cp => cp.IsFaculty);
+                var faculty = course.CourseParticipants.Where(cp=>!cp.IsConfirmed.HasValue || cp.IsOrganiser).ToLookup(cp => cp.IsFaculty);
                 using (var client = new SmtpClient())
                 {
                     
                     var sendMail = new Action<CourseParticipant>(cp => {
                         using (var mail = new MailMessage())
                         {
-                            mail.To.Add(cp.Participant.Email);
-                            if (cp.Participant.AlternateEmail != null)
-                            {
-                                mail.To.Add(cp.Participant.AlternateEmail);
-                            }
+                            mail.To.AddParticipants(cp.Participant);
                             var confirmEmail = new CourseInvite { CourseParticipant = cp };
                             mail.CreateHtmlBody(confirmEmail);
                             cal.AddAppointment(mail);
@@ -83,25 +79,76 @@ namespace SM.Web.Controllers
         [AllowAnonymous]
         public IHttpActionResult Rsvp(RsvpBindingModel model)
         {
-            var cp = Repo.CourseParticipants.Find(new[] { model.CourseId, model.ParticipantId});
-            if (cp==null)
-            {
-                return NotFound();
-            }
-            var returnString = "registered as " + (model.IsAttending ? "attending" : "unable to attend");
-            if (!cp.IsConfirmed.HasValue)
-            {
-                cp.IsConfirmed = model.IsAttending;
-                Repo.SaveChanges();
-                return Ok(returnString);
-            }
-            if (model.IsAttending == cp.IsConfirmed) { return Ok("already " + returnString); }
-            returnString = "had been confirmed as " + (cp.IsConfirmed.Value ? "attending" : "not attending")
-                + "but would like to be changed to being " + returnString;
-            //todo send email to organisers
-            cp.IsConfirmed = null;
+            var find = model.Auth.HasValue ? new[] { model.Auth.Value, model.ParticipantId }
+                : new[] { model.ParticipantId };
+            var cps = Repo.CourseParticipants.Include("Participant").Include("Course").Where(cp=>cp.CourseId == model.CourseId && find.Contains(cp.ParticipantId)).ToList();
 
-            return Ok("you " + returnString + ". An email will be sent to the course organiser(s), who will be able to confirm this change.");
+            var part = cps.First(cp => cp.ParticipantId == model.ParticipantId);
+
+            CourseParticipant auth = null;
+            if (model.Auth.HasValue)
+            {
+                auth = cps.First(cp => cp.ParticipantId == model.Auth && cp.IsOrganiser);
+            }
+
+            if (part.Course.StartTime < DateTime.UtcNow)
+            {
+                return Ok("Confirmation status cannot be changed after the course has commenced.");
+            }
+
+            string userName = part.Participant.FullName;
+            var returnString = "registered as " + (model.IsAttending ? "attending" : "unable to attend");
+            if (model.IsAttending == part.IsConfirmed && !model.Auth.HasValue)
+            {
+                return Ok(userName + " is already " + returnString);
+            }
+            if (model.Auth.HasValue)
+            {
+                bool wasConfirmed = part.IsConfirmed.Value;
+                part.IsConfirmed = model.IsAttending;
+                Repo.SaveChanges();
+                using (var client = new SmtpClient())
+                {
+                    using (var mail = new MailMessage())
+                    {
+                        mail.To.AddParticipants(part.Participant);
+                        mail.CC.AddParticipants((from cp in part.Course.CourseParticipants
+                                                    where cp.IsOrganiser
+                                                    select cp.Participant).ToArray());
+                        var confirmEmail = new AuthConfirmationResult
+                        {
+                            CourseParticipant = part,
+                            Auth = auth.Participant,
+                            IsChanged = wasConfirmed != model.IsAttending
+                        };
+                        mail.CreateHtmlBody(confirmEmail);
+                        client.Send(mail);
+                    }
+                }
+                return Ok(userName + " is now " + returnString + ". A confirmation email has been sent, with copies to the course organisers.");
+            }
+            if (!part.IsConfirmed.HasValue || part.IsOrganiser)
+            {
+                part.IsConfirmed = model.IsAttending;
+                Repo.SaveChanges();
+                return Ok(userName + " is now " + returnString);
+            }
+
+            using (var client = new SmtpClient())
+            {
+                foreach (var org in part.Course.CourseParticipants.Where(p=>p.IsOrganiser))
+                {
+                    using (var mail = new MailMessage())
+                    {
+                        mail.To.AddParticipants(org.Participant);
+                        var confirmEmail = new ReverseConfirmation(org.ParticipantId.ToString()) { CourseParticipant = part };
+                        mail.CreateHtmlBody(confirmEmail);
+                        client.Send(mail);
+                    }
+                }
+            }
+            return Ok(userName + " had been confirmed as " + (part.IsConfirmed.Value ? "attending" : "not attending")
+                + ", but would like to change to being " + returnString + ". An email has been sent to the course organiser(s), who will be able to confirm this change.");
         }
 
         protected override void Dispose(bool disposing)

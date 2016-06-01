@@ -1,0 +1,117 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<table class="callout"><tr><th class="callout-inner primary">
+			<table class="row"><tbody><tr>
+						<th class="small-12 large-12 columns first last">
+							<table>
+								<tr>
+									<th>
+										<p> <#= CourseParticipant.Participant.FullName #> 
+											<small><#= CourseParticipant.Participant.ProfessionalRole.Description #> </small>
+											had been confirmed as <#= CourseParticipant.IsConfirmed.Value?"attending":"unable to attend" #> as a <#= CourseParticipant.IsFaculty?"faculty member":"participant" #> in the 
+											<#= CourseName #> on the <#= FormattedDate(CourseParticipant.Course.StartTime) #>.</p>
+										<p>However, he/she would like to <strong>change this response</strong> to being <#= CourseParticipant.IsConfirmed.Value?"unable":"able" #> to attend.</p>
+									</th>
+									<th class="expander"></th>
+								</tr>
+							</table>
+						</th>
+					</tr></tbody></table>
+		</th><th class="expander"></th></tr></table>
+		<table class="row"><tbody><tr>
+			<th class="small-12 large-12 columns first last">
+				<table>
+					<tr>
+						<th>
+							<p class="small"><em>Note:</em> you can also change the confirmation status for any or all participants by logging in <a href="<#= GetCourseRef() #>">here</a></p>
+						</th>
+					</tr>
+				</table>
+			</th>
+		</tr></tbody></table>
+
+		<table class="row"><tbody><tr>
+			<th class="small-offset-1 large-offset-1 small-11 large-11 columns first last">
+				<table>
+					<tr>
+						<th>
+							<h3>Contact details for <#= CourseParticipant.Participant.FullName #>:</h3>
+						</th>
+					</tr>
+				</table>
+			</th>
+		</tr></tbody></table>
+
+		<# if(CourseParticipant.Participant.PhoneNumber != null) { #>
+			<table class="row"><tbody><tr>
+				<th class="small-offset-1 large-offset-1 small-11 large-11 columns first last">
+					<table>
+						<tr>
+							<th>
+								<h5>Phone:</h5>
+								<p><#= CourseParticipant.Participant.PhoneNumber #></p>
+							</th>
+						</tr>
+					</table>
+				</th>
+			</tr></tbody></table>
+		<# } #>
+
+		<table class="row"><tbody><tr>
+			<th class="small-offset-1 large-offset-1 small-11 large-11 columns first last">
+				<table>
+					<tr>
+						<th>
+							<h5>Email:</h5>
+							<p><a href="mailto:<#= CourseParticipant.Participant.Email #>"><#= CourseParticipant.Participant.Email #></a></p>
+						</th>
+					</tr>
+				</table>
+			</th>
+		</tr></tbody></table>
+
+		<# if(CourseParticipant.Participant.AlternateEmail != null) { #>
+			<table class="row"><tbody><tr>
+			<th class="small-offset-1 large-offset-1 small-11 large-11 columns first last">
+				<table>
+					<tr>
+						<th>
+							<h5>Email:</h5>
+							<p><a href="mailto:<#= CourseParticipant.Participant.AlternateEmail #>"><#= CourseParticipant.Participant.AlternateEmail #></a></p>
+						</th>
+					</tr>
+				</table>
+			</th>
+		</tr></tbody></table>
+		<# } #>
+
+	<hr/>
+	<table class="row"><tbody><tr>
+				<th class="small-12 large-6 columns first">
+					<table>
+						<tr>
+							<th>
+								<center data-parsed="">
+									<table class="button success float-center"><tr><td><table><tr><td><a href="<#= GetNotificationUrl(!CourseParticipant.IsConfirmed.Value) #>">Accept Change <small>(<#= CourseParticipant.IsConfirmed.Value?"not attending":"attending" #>)</small></a></td></tr></table></td></tr></table> 
+									<center align="center" class="float-center" data-parsed="">
+									</center></center></th>
+						</tr>
+					</table>
+				</th>
+				<th class="small-12 large-6 columns last">
+					<table>
+						<tr>
+							<th>
+								<center data-parsed="">
+									<table class="button alert float-center"><tr><td><table><tr><td><a href="<#= GetNotificationUrl(CourseParticipant.IsConfirmed.Value) #>">Decline Change <small>(<#= CourseParticipant.IsConfirmed.Value?"attending":"not attending" #>)</small></a></td></tr></table></td></tr></table>
+									<center align="center" class="float-center" data-parsed="">		
+									</center></center></th>
+						</tr>
+					</table>
+				</th>
+			</tr></tbody></table>
+		

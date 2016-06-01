@@ -18,9 +18,9 @@ namespace SM.Web.UserEmails
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ForgotPasswordTemplate.tt"
+    #line 1 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public partial class ForgotPasswordTemplate : ForgotPasswordTemplateBase
+    public partial class AuthConfirmationResult : AuthConfirmationResultBase
     {
 #line hidden
         /// <summary>
@@ -28,18 +28,108 @@ namespace SM.Web.UserEmails
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\n<p class=\"text-center\">Click the link below to reset your password.</p>\r\n<table" +
-                    " class=\"button large expand\">\r\n    <tr>\r\n        <td>\r\n        <table>\r\n        " +
-                    "    <tr>\r\n            <td>\r\n                <center data-parsed=\"\"><a href=\"");
+            this.Write("\r\n<table class=\"callout\"><tr><th class=\"callout-inner ");
             
-            #line 15 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\ForgotPasswordTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(AsQueryString()));
+            #line 7 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(IsChanged?"success":"warning"));
             
             #line default
             #line hidden
-            this.Write("\" align=\"center\" class=\"float-center\">Reset Password</a></center>\r\n            </" +
-                    "td>\r\n            </tr>\r\n        </table>\r\n        </td>\r\n        <td class=\"expa" +
-                    "nder\"></td>\r\n    </tr>\r\n</table>");
+            this.Write("\">\r\n\t\t\t<table class=\"row\"><tbody><tr>\r\n\t\t\t\t\t\t<th class=\"small-12 large-12 columns" +
+                    " first last\">\r\n\t\t\t\t\t\t\t<table>\r\n\t\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t\t<th>\r\n\t\t\t\t\t\t\t\t\t\t<p>");
+            
+            #line 13 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Auth.FullName));
+            
+            #line default
+            #line hidden
+            this.Write(" has <strong>");
+            
+            #line 13 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(IsChanged?"accepted":"declined"));
+            
+            #line default
+            #line hidden
+            this.Write("</strong> your request to change confirmation status.</p>\r\n\t\t\t\t\t\t\t\t\t\t<p>");
+            
+            #line 14 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Participant.FullName));
+            
+            #line default
+            #line hidden
+            this.Write(" ");
+            
+            #line 14 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(IsChanged?"is now":"remains"));
+            
+            #line default
+            #line hidden
+            this.Write(" registered as ");
+            
+            #line 14 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.IsConfirmed.Value?"attending":"not attending"));
+            
+            #line default
+            #line hidden
+            this.Write(".</p>\r\n\t\t\t\t\t\t\t\t\t</th>\r\n\t\t\t\t\t\t\t\t\t<th class=\"expander\"></th>\r\n\t\t\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t\t" +
+                    "\t</table>\r\n\t\t\t\t\t\t</th>\r\n\t\t\t\t\t</tr></tbody></table>\r\n\t\t</th><th class=\"expander\">" +
+                    "</th></tr></table>\r\n\r\n");
+            
+            #line 23 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+ if(!IsChanged) { 
+            
+            #line default
+            #line hidden
+            this.Write(@"	<table class=""row""><tbody><tr>
+			<th class=""small-12 large-12 columns first last"">
+				<table>
+					<tr>
+						<th>
+							<p>If you would like to discuss this further, you may wish to contact one of the organiser(s) below:</p>
+							<ul>
+								");
+            
+            #line 31 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+ foreach(var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant)){ 
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t\t\t\t<a href=\"mailto:");
+            
+            #line 33 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(o.Email));
+            
+            #line default
+            #line hidden
+            this.Write("\">");
+            
+            #line 33 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(o.FullName));
+            
+            #line default
+            #line hidden
+            this.Write("</a> Tel: ");
+            
+            #line 33 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(o.PhoneNumber));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n\t\t\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t\t");
+            
+            #line 35 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t</th>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</th>\r\n\t\t</tr>" +
+                    "</tbody></table>\r\n");
+            
+            #line 43 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\AuthConfirmationResult.tt"
+ } 
+            
+            #line default
+            #line hidden
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -51,7 +141,7 @@ namespace SM.Web.UserEmails
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "14.0.0.0")]
-    public class ForgotPasswordTemplateBase
+    public class AuthConfirmationResultBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

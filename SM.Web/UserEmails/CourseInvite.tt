@@ -68,7 +68,7 @@
 							<ul>
 								<# foreach(var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant)){ #>
 									<li>
-										<a href="MAILTO:<#= o.Email #>"><#= o.FullName #></a> <#= o.PhoneNumber #>
+										<a href="mailto:<#= o.Email #>"><#= o.FullName #></a> Tel: <#= o.PhoneNumber #>
 									</li>
 								<# } #>
 									

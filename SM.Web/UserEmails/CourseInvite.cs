@@ -139,7 +139,7 @@ namespace SM.Web.UserEmails
             
             #line default
             #line hidden
-            this.Write("\t\t\t\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t\t\t\t<a href=\"MAILTO:");
+            this.Write("\t\t\t\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t\t\t\t<a href=\"mailto:");
             
             #line 71 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(o.Email));
@@ -153,7 +153,7 @@ namespace SM.Web.UserEmails
             
             #line default
             #line hidden
-            this.Write("</a> ");
+            this.Write("</a> Tel: ");
             
             #line 71 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimManager\SM.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(o.PhoneNumber));
