@@ -1,10 +1,10 @@
-# SimManager 
+# SimPlanner
 ####Medical Simulation Course Planning, Participant Confirmation and Reporting
 A web based application to coordinate running a hospital simulation program - development phase
 uses BreezeJs & Angular, based on John Papa's Hot-Towel template
 
 ##About
-Simulation Manager is a tool originally designed by and for the Starship Hospital Simulation Program to simplify
+Simulation Planner is a tool originally designed by and for the Starship Hospital Simulation Program to simplify
 organising medical simulation courses and keeping track of institution wide data, including:
 * Faculty and participants attending a course
   * (including auto-notification and tracking reply confirmation by email ± text message)
