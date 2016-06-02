@@ -1,0 +1,43 @@
+﻿<section class="mainbar" ng-controller="courseTypes as vm">
+    <section class="matter">
+        <div class="container">
+            <a class="btn-link" href="#/courseType/new"><i class="fa fa-plus"></i> New Course Type</a>
+            <ul>
+                <li ng-repeat="ct in vm.courseTypes track by ct.id">
+                    <h3>{{ct.description}}</h3>
+                    <ul>
+                        <li ng-repeat="cf in ct.courseFormats track by cf.id">
+                            {{cf.courseType.description + ' ' + cf.description}} <a class="btn-link" ng-href="#/courseType/{{cf.courseType.id}}?formatId={{cf.id}}"><i class="fa fa-edit"></i></a>
+                        </li>
+                        <li>
+                            <h4>Scenarios</h4> <a class="btn-link" ng-href="#/scenario/new?courseTypeId={{cf.id}}"><i class="fa fa-plus"></i> New Scenario</a>
+                            <ul>
+                                <li ng-repeat="ctd in ct.courseTypeDepartments" >
+                                    {{ctd.department.name}} 
+                                    <ul>
+                                        <li ng-repeat="s in ctd.department.scenarios track by s.id" title="{{s.fullDescription}}">
+                                            {{s.briefDescription}} <a class="btn-link" ng-href="#/scenario/{{s.id}}"><i class="fa fa-edit"></i></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <h4>
+                                Faculty Roles
+                                <a class="btn-link" ng-href="#/scenarioRoles/{{ct.id}}"><i class="fa fa-edit"></i></a>
+                            </h4> 
+                            
+                            <ul >
+                                <li ng-repeat="fr in ct.courseTypeScenarioRoles">
+                                    {{fr.facultyScenarioRole.description}}
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+</section>

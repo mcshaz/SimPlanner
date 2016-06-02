@@ -1,0 +1,49 @@
+﻿<section id="course-view" class="mainbar" data-ng-controller="scenarioRoles as vm">
+    <section class="matter">
+        <div class="container">
+            <form ng-submit="vm.save($event)" name="scenarioRolesForm" novalidate>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <h3>
+                                        Scenario Roles For {{vm.courseType.description}}
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <ul class="list-group faculty" ui-sortable="vm.sortableOptions" ng-model="vm.used">
+                                    <li class="list-group-item" ng-repeat="u in vm.used track by u.id">
+                                        {{u.description}}
+                                    </li>
+                                </ul>
+                                <hr/>
+                                <h6><strong>un</strong>used roles</h6>
+                                <ul class="list-group faculty" ui-sortable="vm.sortableOptions" ng-model="vm.unused" >
+                                    <li class="list-group-item" ng-repeat="uu in vm.unused track by uu.id">
+                                        {{uu.description}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="newRoleName" ng-model="vm.newRoleName"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary" ng-click="vm.addRole()">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div class="error" ng-show="courseFormatForm.newRoleName.$invalid">
+                                    <p class="error" ng-show="courseFormatForm.newRoleName.$error.repeat">descriptions cannot be repeated</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success" ng-disabled="vm.disableSave()">Save</button>
+            </form>
+        </div>
+    </section>
+</section>

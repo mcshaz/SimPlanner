@@ -1,0 +1,150 @@
+﻿<section id="course-view" class="mainbar" data-ng-controller="courseRoles as vm">
+    <section class="matter">
+        <div class="container col-md-12">
+            <form ng-submit="vm.save($event)" id="courseForm" class="form-horizontal">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            {{vm.course.department.name}}
+                            {{vm.course.courseFormat.typeFormatDescriptor}}
+                            {{vm.course.startTime | amDateFormat:'LL'}}
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-group" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
+                            <div class="panel panel-default" ng-repeat="m in vm.map track by m.id">
+                                <div class="panel-heading" role="tab" bs-collapse-toggle>
+                                    <h4 class="panel-title">
+                                        <a>
+                                            {{m.startTime | amDateFormat:'hh:mm a'}}
+                                            <span class="label" ng-class="m.isSim?'label-success':'label-info'">
+                                                {{m.name}}
+                                            </span>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                    <div class="panel-body">
+                                        <div class="row col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-1" for="resource">
+                                                    {{m.isSim?'Scenario':'Resource'}}
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <select id="resource" class="form-control" ng-model="m.selectedChoice" ng-options="s as s.description for s in m.choices" ng-if="m.choices.length && !m.isSim">
+                                                        <option disabled selected hidden value="">
+                                                            Please Select...
+                                                        </option>
+                                                    </select>
+
+                                                    <select id="resource" class="form-control" ng-model="m.scenario" ng-options="s as s.briefDescription for s in vm.scenarios" ng-change="vm.changeScenario(m)" ng-if="m.isSim">
+                                                        <option disabled selected hidden value="">
+                                                            Please Select...
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <aside ng-if="m.isSim" class="col-md-6">
+                                                    {{m.scenario.fullDescription}}
+                                                </aside>
+
+                                            </div>
+                                            <div class="form-group" ng-if="m.isSim">
+                                                <label class="control-label col-md-1" for="manequin">
+                                                    Manequin(s)
+                                                </label>
+                                                <div class="col-md-5">
+
+                                                    <div isteven-multi-select
+                                                         input-model="m.manequins" helper-elements="filter"
+                                                         output-model="m.selectedManequins" tick-property="checked"
+                                                         button-label="description" group-property="isGroup"
+                                                         item-label="description">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <span class="label" ng-class="m.isSim?'label-info':'label-default'">
+                                                    Faculty
+                                                </span>
+
+                                                <ul class="col-md-12 faculty" ng-if="!m.isSim" ng-model="m.assignedFaculty" ui-sortable="m.sortableOptions"
+                                                    ng-class="m.groupClass">
+                                                    <li class="list-group-item col-SP-6 clearfix" ng-repeat="r in m.assignedFaculty track by r.participantId"
+                                                        ng-class="{unavailableParticipant: r.isConfirmed===false}">
+                                                        <i ng-class="r.icon"></i> {{r.fullName}} <small class="small">({{r.departmentName}})</small>
+                                                        <span class="pull-right">
+                                                            <span class="badge badge-info">
+                                                                {{r.slotCount}}
+                                                            </span>
+                                                            <span class="badge badge-important">
+                                                                {{r.scenarioCount}}
+                                                            </span>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                                <div ng-repeat="r in m.roles track by r.id" ng-if="m.isSim" class="dl-horizontal">
+                                                    <div class="simRoleDescription col-md-3 control-label">
+                                                        {{r.description}}
+                                                    </div>
+                                                    <ul class="col-md-9 faculty" ng-model="r.assignedFaculty" ui-sortable="r.sortableOptions" ng-class="m.groupClass">
+                                                        <li class="list-group-item col-SP-6 clearfix" ng-repeat="p in r.assignedFaculty track by p.participantId"
+                                                            ng-class="{unavailableParticipant: p.isConfirmed===false}">
+                                                            <i ng-class="p.icon"></i> 
+                                                            {{p.fullName}} 
+                                                            <small class="small">
+                                                                ({{p.departmentName}})
+                                                            </small>
+                                                            <span class="col-SP-2">
+                                                                <span class="badge badge-info">
+                                                                    {{p.slotCount}}
+                                                                </span>
+                                                                <span class="badge badge-important">
+                                                                    {{p.scenarioCount}}
+                                                                </span>
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="label label-info" bs-enabled="m.isSim" bs-tooltip data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Ctrl + drag to assign faculty member to multiple roles">
+                                                    Available Faculty
+                                                </div>
+                                                <ul class="list-group faculty" ng-model="m.availableFaculty" ui-sortable="m.availableFacultyOptions" ng-class="m.groupClass">
+                                                    <li ng-repeat="cp in m.availableFaculty track by cp.participantId" class="list-group-item clearfix"
+                                                        ng-class="{unavailableParticipant: cp.isConfirmed===false}">
+                                                        <i ng-class="cp.icon"></i> {{cp.fullName}} <small class="small">({{cp.departmentName}})</small>
+                                                        <span class="pull-right">
+                                                            <span class="badge badge-info">
+                                                                {{cp.slotCount}}
+                                                            </span>
+                                                            <span class="badge badge-important">
+                                                                {{cp.scenarioCount}}
+                                                            </span>
+                                                        </span>
+</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-6 col-md-6">
+                                <button type="submit" data-ng-disabled="vm.disableSave()" class="btn btn-success">Save</button>
+                                <a class="btn btn-info" ng-href="#course/{{vm.course.id}}">
+                                    <i class="fa fa-arrow-left"></i>course planner
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</section>

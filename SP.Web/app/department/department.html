@@ -1,0 +1,60 @@
+﻿<section id="course-view" class="mainbar" data-ng-controller="department as vm">
+    <section class="matter">
+        <div class="container col-md-12">
+            <form class="form-horizontal" ng-submit="vm.save()" id="courseForm">
+                <div class="validationSummary"></div>
+                <fieldset>
+                    <legend>Required</legend>
+                    <div class="form-group">
+                        <label for="institutionId" class="col-md-2 control-label">Institution</label>
+                        <div class="col-md-10">
+                            <select id="institutionId" class="form-control" data-z-validate data-ng-model="vm.department.institutionId" data-ng-options="i.id as i.name for i in vm.institutions">
+                                <option disabled selected hidden value="">
+                                    Select Institution...
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name" class="col-md-2 control-label">Name</label>
+                        <div class="col-md-10">
+                            <input type="text" id="name" class="form-control" ng-model="vm.department.name" z-validate/>
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset>
+                    <legend><small class="small">Optional</small></legend>
+
+                    <div class="form-group">
+                        <label for="abbreviation" class="col-md-2 control-label">Abbreviation</label>
+                        <div class="col-md-10">
+                            <input type="text" id="abbreviation" class="form-control" ng-model="vm.department.abbreviation" z-validate />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="invitationLetterFilename" class="col-md-2 control-label">InvitationLetterFilename</label>
+                        <div class="col-md-10">
+                            <input type="text" id="invitationLetterFilename" class="form-control" ng-model="vm.department.invitationLetterFilename" z-validate/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="certificateFilename" class="col-md-2 control-label">CertificateFilename</label>
+                        <div class="col-md-10">
+                            <input type="text" id="certificateFilename" class="form-control" ng-model="vm.department.certificateFilename" z-validate/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" value="Create" class="btn btn-success" ng-disabled="vm.disableSave()">Save</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </section>
+</section>
