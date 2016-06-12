@@ -70,7 +70,13 @@
             if (!validateSaveParticipant()) { return; }
             var forSave;
             if (vm.isNew) {
-                forSave = $scope.course.addParticipant(vm.participant, { isFaculty: vm.isFaculty });
+                forSave = datacontext.courseParticipants.create({
+                    participant: vm.participant,
+                    isFaculty: vm.isFaculty,
+                    course: $scope.course,
+                    professionalRoleId: vm.participant.defaultProfessionalRoleId,
+                    departmentId: vm.participant.defaultDepartmentId
+                });
                 vm.save([forSave, forSave.participant]).then(function () {
                     vm.log.success(vm.participant.fullName + ' added to course ' + (vm.isFaculty ? 'faculty' : 'participants'));
                     afterSave();

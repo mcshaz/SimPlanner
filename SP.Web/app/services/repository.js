@@ -63,6 +63,7 @@
                     var initialVals;
                     var entityState;
                     var newIds = {};
+                    var returnVar;
                     switch (arguments.length) {
                         case 0:
                             break;
@@ -93,7 +94,9 @@
                         initialVals.id = breeze.core.getUuid();
                     }
 
-                    return manager.createEntity(entityType, initialVals, entityState);
+                    returnVar = manager.createEntity(entityType, initialVals, entityState);
+                    returnVar.entityAspect.instantiationValues = initialVals;
+                    return returnVar;
                 }
 
                 function keyPropsToArray(key) {
