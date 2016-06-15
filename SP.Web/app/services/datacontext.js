@@ -32,6 +32,9 @@
             }
             return self.provider.saveChanges(entititiesToSave)
                 .then(function (saveResult) {
+                    saveResult.entities.forEach(function (el) {
+                        if (el.entityAspect.instantiationValues) { delete el.entityAspect.instantiationValues; }
+                    });
                     $rootScope.$broadcast('saved', saveResult.entities);
                     log.success({ msg: 'Saved changes', data: saveResult, showToast: true });
                     return saveResult;
