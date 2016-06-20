@@ -161,7 +161,7 @@
                     vm.notifyViewModelLoaded();
                 }), datacontext.manequins.all().then(function (data) {
                     var departmentName;
-                    data.sort(common.sortOnChildPropertyName('deparment', 'name'));
+                    data.sort(common.sortOnChildPropertyName('department', 'name'));
                     data.forEach(function (el) {
                         if (departmentName !== el.department.name) {
                             manequins.push({

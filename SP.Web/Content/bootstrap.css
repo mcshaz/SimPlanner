@@ -1613,7 +1613,7 @@ pre code {
   margin-right: -15px;
   margin-left: -15px;
 }
-.col-xs-1, .col-SP-1, .col-md-1, .col-lg-1, .col-xs-2, .col-SP-2, .col-md-2, .col-lg-2, .col-xs-3, .col-SP-3, .col-md-3, .col-lg-3, .col-xs-4, .col-SP-4, .col-md-4, .col-lg-4, .col-xs-5, .col-SP-5, .col-md-5, .col-lg-5, .col-xs-6, .col-SP-6, .col-md-6, .col-lg-6, .col-xs-7, .col-SP-7, .col-md-7, .col-lg-7, .col-xs-8, .col-SP-8, .col-md-8, .col-lg-8, .col-xs-9, .col-SP-9, .col-md-9, .col-lg-9, .col-xs-10, .col-SP-10, .col-md-10, .col-lg-10, .col-xs-11, .col-SP-11, .col-md-11, .col-lg-11, .col-xs-12, .col-SP-12, .col-md-12, .col-lg-12 {
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
   position: relative;
   min-height: 1px;
   padding-right: 15px;
@@ -1776,160 +1776,160 @@ pre code {
   margin-left: 0;
 }
 @media (min-width: 768px) {
-  .col-SP-1, .col-SP-2, .col-SP-3, .col-SP-4, .col-SP-5, .col-SP-6, .col-SP-7, .col-SP-8, .col-SP-9, .col-SP-10, .col-SP-11, .col-SP-12 {
+  .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
     float: left;
   }
-  .col-SP-12 {
+  .col-sm-12 {
     width: 100%;
   }
-  .col-SP-11 {
+  .col-sm-11 {
     width: 91.66666667%;
   }
-  .col-SP-10 {
+  .col-sm-10 {
     width: 83.33333333%;
   }
-  .col-SP-9 {
+  .col-sm-9 {
     width: 75%;
   }
-  .col-SP-8 {
+  .col-sm-8 {
     width: 66.66666667%;
   }
-  .col-SP-7 {
+  .col-sm-7 {
     width: 58.33333333%;
   }
-  .col-SP-6 {
+  .col-sm-6 {
     width: 50%;
   }
-  .col-SP-5 {
+  .col-sm-5 {
     width: 41.66666667%;
   }
-  .col-SP-4 {
+  .col-sm-4 {
     width: 33.33333333%;
   }
-  .col-SP-3 {
+  .col-sm-3 {
     width: 25%;
   }
-  .col-SP-2 {
+  .col-sm-2 {
     width: 16.66666667%;
   }
-  .col-SP-1 {
+  .col-sm-1 {
     width: 8.33333333%;
   }
-  .col-SP-pull-12 {
+  .col-sm-pull-12 {
     right: 100%;
   }
-  .col-SP-pull-11 {
+  .col-sm-pull-11 {
     right: 91.66666667%;
   }
-  .col-SP-pull-10 {
+  .col-sm-pull-10 {
     right: 83.33333333%;
   }
-  .col-SP-pull-9 {
+  .col-sm-pull-9 {
     right: 75%;
   }
-  .col-SP-pull-8 {
+  .col-sm-pull-8 {
     right: 66.66666667%;
   }
-  .col-SP-pull-7 {
+  .col-sm-pull-7 {
     right: 58.33333333%;
   }
-  .col-SP-pull-6 {
+  .col-sm-pull-6 {
     right: 50%;
   }
-  .col-SP-pull-5 {
+  .col-sm-pull-5 {
     right: 41.66666667%;
   }
-  .col-SP-pull-4 {
+  .col-sm-pull-4 {
     right: 33.33333333%;
   }
-  .col-SP-pull-3 {
+  .col-sm-pull-3 {
     right: 25%;
   }
-  .col-SP-pull-2 {
+  .col-sm-pull-2 {
     right: 16.66666667%;
   }
-  .col-SP-pull-1 {
+  .col-sm-pull-1 {
     right: 8.33333333%;
   }
-  .col-SP-pull-0 {
+  .col-sm-pull-0 {
     right: auto;
   }
-  .col-SP-push-12 {
+  .col-sm-push-12 {
     left: 100%;
   }
-  .col-SP-push-11 {
+  .col-sm-push-11 {
     left: 91.66666667%;
   }
-  .col-SP-push-10 {
+  .col-sm-push-10 {
     left: 83.33333333%;
   }
-  .col-SP-push-9 {
+  .col-sm-push-9 {
     left: 75%;
   }
-  .col-SP-push-8 {
+  .col-sm-push-8 {
     left: 66.66666667%;
   }
-  .col-SP-push-7 {
+  .col-sm-push-7 {
     left: 58.33333333%;
   }
-  .col-SP-push-6 {
+  .col-sm-push-6 {
     left: 50%;
   }
-  .col-SP-push-5 {
+  .col-sm-push-5 {
     left: 41.66666667%;
   }
-  .col-SP-push-4 {
+  .col-sm-push-4 {
     left: 33.33333333%;
   }
-  .col-SP-push-3 {
+  .col-sm-push-3 {
     left: 25%;
   }
-  .col-SP-push-2 {
+  .col-sm-push-2 {
     left: 16.66666667%;
   }
-  .col-SP-push-1 {
+  .col-sm-push-1 {
     left: 8.33333333%;
   }
-  .col-SP-push-0 {
+  .col-sm-push-0 {
     left: auto;
   }
-  .col-SP-offset-12 {
+  .col-sm-offset-12 {
     margin-left: 100%;
   }
-  .col-SP-offset-11 {
+  .col-sm-offset-11 {
     margin-left: 91.66666667%;
   }
-  .col-SP-offset-10 {
+  .col-sm-offset-10 {
     margin-left: 83.33333333%;
   }
-  .col-SP-offset-9 {
+  .col-sm-offset-9 {
     margin-left: 75%;
   }
-  .col-SP-offset-8 {
+  .col-sm-offset-8 {
     margin-left: 66.66666667%;
   }
-  .col-SP-offset-7 {
+  .col-sm-offset-7 {
     margin-left: 58.33333333%;
   }
-  .col-SP-offset-6 {
+  .col-sm-offset-6 {
     margin-left: 50%;
   }
-  .col-SP-offset-5 {
+  .col-sm-offset-5 {
     margin-left: 41.66666667%;
   }
-  .col-SP-offset-4 {
+  .col-sm-offset-4 {
     margin-left: 33.33333333%;
   }
-  .col-SP-offset-3 {
+  .col-sm-offset-3 {
     margin-left: 25%;
   }
-  .col-SP-offset-2 {
+  .col-sm-offset-2 {
     margin-left: 16.66666667%;
   }
-  .col-SP-offset-1 {
+  .col-sm-offset-1 {
     margin-left: 8.33333333%;
   }
-  .col-SP-offset-0 {
+  .col-sm-offset-0 {
     margin-left: 0;
   }
 }
@@ -2609,14 +2609,14 @@ input[type="search"] {
   input[type="month"].form-control {
     line-height: 34px;
   }
-  input[type="date"].input-SP,
-  input[type="time"].input-SP,
-  input[type="datetime-local"].input-SP,
-  input[type="month"].input-SP,
-  .input-group-SP input[type="date"],
-  .input-group-SP input[type="time"],
-  .input-group-SP input[type="datetime-local"],
-  .input-group-SP input[type="month"] {
+  input[type="date"].input-sm,
+  input[type="time"].input-sm,
+  input[type="datetime-local"].input-sm,
+  input[type="month"].input-sm,
+  .input-group-sm input[type="date"],
+  .input-group-sm input[type="time"],
+  .input-group-sm input[type="datetime-local"],
+  .input-group-sm input[type="month"] {
     line-height: 30px;
   }
   input[type="date"].input-lg,
@@ -2702,41 +2702,41 @@ fieldset[disabled] .checkbox label {
   margin-bottom: 0;
 }
 .form-control-static.input-lg,
-.form-control-static.input-SP {
+.form-control-static.input-sm {
   padding-right: 0;
   padding-left: 0;
 }
-.input-SP {
+.input-sm {
   height: 30px;
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
 }
-select.input-SP {
+select.input-sm {
   height: 30px;
   line-height: 30px;
 }
-textarea.input-SP,
-select[multiple].input-SP {
+textarea.input-sm,
+select[multiple].input-sm {
   height: auto;
 }
-.form-group-SP .form-control {
+.form-group-sm .form-control {
   height: 30px;
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
 }
-.form-group-SP select.form-control {
+.form-group-sm select.form-control {
   height: 30px;
   line-height: 30px;
 }
-.form-group-SP textarea.form-control,
-.form-group-SP select[multiple].form-control {
+.form-group-sm textarea.form-control,
+.form-group-sm select[multiple].form-control {
   height: auto;
 }
-.form-group-SP .form-control-static {
+.form-group-sm .form-control-static {
   height: 30px;
   min-height: 32px;
   padding: 6px 10px;
@@ -2805,9 +2805,9 @@ select[multiple].input-lg {
   height: 46px;
   line-height: 46px;
 }
-.input-SP + .form-control-feedback,
-.input-group-SP + .form-control-feedback,
-.form-group-SP .form-control + .form-control-feedback {
+.input-sm + .form-control-feedback,
+.input-group-sm + .form-control-feedback,
+.form-group-sm .form-control + .form-control-feedback {
   width: 30px;
   height: 30px;
   line-height: 30px;
@@ -2997,7 +2997,7 @@ select[multiple].input-lg {
   }
 }
 @media (min-width: 768px) {
-  .form-horizontal .form-group-SP .control-label {
+  .form-horizontal .form-group-sm .control-label {
     padding-top: 6px;
     font-size: 12px;
   }
@@ -3441,8 +3441,8 @@ fieldset[disabled] .btn-link:focus {
   line-height: 1.3333333;
   border-radius: 6px;
 }
-.btn-SP,
-.btn-group-SP > .btn {
+.btn-sm,
+.btn-group-sm > .btn {
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
@@ -3859,27 +3859,27 @@ select[multiple].input-group-lg > .input-group-addon,
 select[multiple].input-group-lg > .input-group-btn > .btn {
   height: auto;
 }
-.input-group-SP > .form-control,
-.input-group-SP > .input-group-addon,
-.input-group-SP > .input-group-btn > .btn {
+.input-group-sm > .form-control,
+.input-group-sm > .input-group-addon,
+.input-group-sm > .input-group-btn > .btn {
   height: 30px;
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
 }
-select.input-group-SP > .form-control,
-select.input-group-SP > .input-group-addon,
-select.input-group-SP > .input-group-btn > .btn {
+select.input-group-sm > .form-control,
+select.input-group-sm > .input-group-addon,
+select.input-group-sm > .input-group-btn > .btn {
   height: 30px;
   line-height: 30px;
 }
-textarea.input-group-SP > .form-control,
-textarea.input-group-SP > .input-group-addon,
-textarea.input-group-SP > .input-group-btn > .btn,
-select[multiple].input-group-SP > .form-control,
-select[multiple].input-group-SP > .input-group-addon,
-select[multiple].input-group-SP > .input-group-btn > .btn {
+textarea.input-group-sm > .form-control,
+textarea.input-group-sm > .input-group-addon,
+textarea.input-group-sm > .input-group-btn > .btn,
+select[multiple].input-group-sm > .form-control,
+select[multiple].input-group-sm > .input-group-addon,
+select[multiple].input-group-sm > .input-group-btn > .btn {
   height: auto;
 }
 .input-group-addon,
@@ -3909,7 +3909,7 @@ select[multiple].input-group-SP > .input-group-btn > .btn {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-.input-group-addon.input-SP {
+.input-group-addon.input-sm {
   padding: 5px 10px;
   font-size: 12px;
   border-radius: 3px;
@@ -4464,7 +4464,7 @@ select[multiple].input-group-SP > .input-group-btn > .btn {
   margin-top: 8px;
   margin-bottom: 8px;
 }
-.navbar-btn.btn-SP {
+.navbar-btn.btn-sm {
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -4791,19 +4791,19 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
 }
-.pagination-SP > li > a,
-.pagination-SP > li > span {
+.pagination-sm > li > a,
+.pagination-sm > li > span {
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
 }
-.pagination-SP > li:first-child > a,
-.pagination-SP > li:first-child > span {
+.pagination-sm > li:first-child > a,
+.pagination-sm > li:first-child > span {
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.pagination-SP > li:last-child > a,
-.pagination-SP > li:last-child > span {
+.pagination-sm > li:last-child > a,
+.pagination-sm > li:last-child > span {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
@@ -5837,7 +5837,7 @@ button.list-group-item-danger.active:focus {
   padding: 24px;
   border-radius: 6px;
 }
-.well-SP {
+.well-sm {
   padding: 9px;
   border-radius: 3px;
 }
@@ -5980,7 +5980,7 @@ button.close {
     -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
             box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
   }
-  .modal-SP {
+  .modal-sm {
     width: 300px;
   }
 }
@@ -6551,7 +6551,7 @@ button.close {
   width: device-width;
 }
 .visible-xs,
-.visible-SP,
+.visible-sm,
 .visible-md,
 .visible-lg {
   display: none !important;
@@ -6559,9 +6559,9 @@ button.close {
 .visible-xs-block,
 .visible-xs-inline,
 .visible-xs-inline-block,
-.visible-SP-block,
-.visible-SP-inline,
-.visible-SP-inline-block,
+.visible-sm-block,
+.visible-sm-inline,
+.visible-sm-inline-block,
 .visible-md-block,
 .visible-md-inline,
 .visible-md-inline-block,
@@ -6601,32 +6601,32 @@ button.close {
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  .visible-SP {
+  .visible-sm {
     display: block !important;
   }
-  table.visible-SP {
+  table.visible-sm {
     display: table !important;
   }
-  tr.visible-SP {
+  tr.visible-sm {
     display: table-row !important;
   }
-  th.visible-SP,
-  td.visible-SP {
+  th.visible-sm,
+  td.visible-sm {
     display: table-cell !important;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  .visible-SP-block {
+  .visible-sm-block {
     display: block !important;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  .visible-SP-inline {
+  .visible-sm-inline {
     display: inline !important;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  .visible-SP-inline-block {
+  .visible-sm-inline-block {
     display: inline-block !important;
   }
 }
@@ -6696,7 +6696,7 @@ button.close {
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  .hidden-SP {
+  .hidden-sm {
     display: none !important;
   }
 }

@@ -15681,7 +15681,7 @@ module.filter('px', function() {
            *  @name editModelField
            *  @propertyOf  ui.grid.edit.api:ColumnDef
            *  @description a bindable string value that is used when binding to edit controls instead of colDef.field
-           *  <br/> example: You have a complex property on and object like state:{abbreviation:'MS',name:'Mississippi'}.  The
+           *  <br/> example: You have a complex property on and object like state:{abbrev:'MS',name:'Mississippi'}.  The
            *  grid should display state.name in the cell and sort/filter based on the state.name property but the editor
            *  requires the full state object.
            *  <br/>colDef.field = 'state.name'
