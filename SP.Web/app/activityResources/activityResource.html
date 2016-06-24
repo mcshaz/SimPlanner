@@ -14,7 +14,7 @@
                             Create new choice
                         </button>
                         <ul class="list-unstyled">
-                            <li ng-repeat="ac in ar.courseActivity.activityChoices track by ac.id" class="clearfix">
+                            <li ng-repeat="ac in ar.courseActivity.activityChoices track by ac.id" class="clearfix" ng-class="ac===ar.selectedActivityResource?'warning':''">
                                 {{ac.description}} 
                                 <span class="pull-right">
                                     <button type="button" class="btn-link" ng-click="ar.selectActivityResource(ac)" ng-disabled="ar.selectedActivityResource.entityAspect.hasValidationErrors" 
