@@ -17,7 +17,6 @@
         })
         var id = $routeParams.id;
         var isNew = id == 'new';
-        var courseLength = null;
         var saveBase = vm.save;
 
         vm.course = {};
@@ -141,9 +140,11 @@
         }
 
         function setFinish() {
-            vm.course.finishTime = (courseLength === null || !vm.course.startTime)
-                ?null
-                :new Date(vm.course.startTime.getTime() + courseLength);
+            getCourseLengthPromise.then(function (courseLength) {
+                vm.course.finishTime = (courseLength === null || !vm.course.startTime)
+                    ? null
+                    : new Date(vm.course.startTime.getTime() + courseLength);
+            });
         }
 
         function deleteCourseParticipant(participantId) {
@@ -154,25 +155,36 @@
                 function (error) { log.error({ msg: 'failed to remove ' + name + ' from course' }) })
         }
 
-        function formatChanged() {
+        var _courseLength = null;
+        function getCourseLengthPromise() {
             if (!vm.course.courseFormat) {
-                courseLength = null;
-                setFinish();
-                return;
-            }
-
-            if (!vm.course.courseFormat.entityAspect.isNavigationPropertyLoaded('courseSlots')) {
-                vm.course.courseFormat.entityAspect.loadNavigationProperty('courseSlots').then(getSlotDuration);
+                return $q.resolve(null);
+            } else if (_courseLength === null) {
+                if (!vm.course.courseFormat.entityAspect.isNavigationPropertyLoaded('courseSlots')) {
+                    vm.course.courseFormat.entityAspect.loadNavigationProperty('courseSlots').then(getSlotDuration);
+                } else {
+                    return $q.resolve(getSlotDuration());
+                }
             } else {
-                getSlotDuration();
+                return $q.resolve(_courseLength);
             }
 
             function getSlotDuration() {
-                courseLength = 0;
-                vm.course.courseFormat.courseSlots.forEach(function (el) { courseLength += el.minutesDuration; });
-                courseLength *= 60000;
-                setFinish();
+                _courseLength = 0;
+                vm.course.courseFormat.courseSlots.forEach(function (el) { _courseLength += el.minutesDuration; });
+                _courseLength *= 60000;
+                return _courseLength;
             }
+        }
+
+        function formatChanged() {
+            if (!vm.course.courseFormat) {
+                //_courseLength = null;
+                vm.course.finishTime = null;
+                return;
+            }
+
+            setFinish();
         }
 
         function getCourseParticipant(participantId) {
