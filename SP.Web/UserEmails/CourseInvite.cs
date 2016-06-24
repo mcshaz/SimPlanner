@@ -108,19 +108,32 @@ namespace SP.Web.UserEmails
 							<p>");
             
             #line 55 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Course.Room.FullDescription));
+            this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Course.Room.FullDescription ?? CourseParticipant.Course.Room.ShortDescription));
             
             #line default
             #line hidden
-            this.Write("</p>\r\n\t\t\t\t\t\t\t<small>(");
+            this.Write("</p>\r\n\t\t\t\t\t\t\t");
             
             #line 56 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+ if (CourseParticipant.Course.Room.Directions != null) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t\t\t\t\t\t\t\t<small>(");
+            
+            #line 57 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Course.Room.Directions));
             
             #line default
             #line hidden
-            this.Write(@")</small>
-						</th>
+            this.Write(")</small>\r\n\t\t\t\t\t\t\t");
+            
+            #line 58 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+  } 
+            
+            #line default
+            #line hidden
+            this.Write(@"						</th>
 					</tr>
 				</table>
 			</th>
@@ -134,35 +147,35 @@ namespace SP.Web.UserEmails
 							<ul>
 								");
             
-            #line 69 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 71 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
  foreach(var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant)){ 
             
             #line default
             #line hidden
             this.Write("\t\t\t\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t\t\t\t<a href=\"mailto:");
             
-            #line 71 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 73 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(o.Email));
             
             #line default
             #line hidden
             this.Write("\">");
             
-            #line 71 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 73 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(o.FullName));
             
             #line default
             #line hidden
             this.Write("</a> Tel: ");
             
-            #line 71 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 73 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(o.PhoneNumber));
             
             #line default
             #line hidden
             this.Write("\r\n\t\t\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t\t");
             
-            #line 73 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 75 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
  } 
             
             #line default
@@ -185,7 +198,7 @@ namespace SP.Web.UserEmails
 								<center data-parsed="""">
 									<table class=""button success float-center""><tr><td><table><tr><td><a href=""");
             
-            #line 90 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 92 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GetNotificationUrl(true)));
             
             #line default
@@ -203,7 +216,7 @@ namespace SP.Web.UserEmails
 								<center data-parsed="""">
 									<table class=""button alert float-center""><tr><td><table><tr><td><a href=""");
             
-            #line 101 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 103 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GetNotificationUrl(false)));
             
             #line default
@@ -212,7 +225,7 @@ namespace SP.Web.UserEmails
                     "n=\"center\" class=\"float-center\" data-parsed=\"\">\t\t\r\n\t\t\t\t\t\t\t\t\t</center></center></" +
                     "th>\r\n\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t</table>\r\n\t\t\t\t</th>\r\n\t\t\t</tr></tbody></table>\r\n\t\t");
             
-            #line 108 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 110 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
  if(CourseParticipant.IsFaculty && CourseParticipant.Course.FacultyMeetingTime.HasValue) { 
             
             #line default
@@ -221,7 +234,7 @@ namespace SP.Web.UserEmails
                     "rge-offset-1 small-11 large-11 columns first last\">\r\n\t\t\t\t\t\t\t<table>\r\n\t\t\t\t\t\t\t\t<tr" +
                     ">\r\n\t\t\t\t\t\t\t\t\t<th>\r\n\t\t\t\t\t\t\t\t\t\t<h5>Planning Meeting:</h5>\r\n\t\t\t\t\t\t\t\t\t\t<p>");
             
-            #line 117 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 119 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(FormattedDate(CourseParticipant.Course.FacultyMeetingTime.Value)));
             
             #line default
@@ -241,28 +254,28 @@ namespace SP.Web.UserEmails
 										<h5>Planning Meeting Location:</h5>
 										<p>");
             
-            #line 130 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 132 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Course.FacultyMeetingRoom.FullDescription));
             
             #line default
             #line hidden
             this.Write("</p>\r\n\t\t\t\t\t\t\t\t\t\t");
             
-            #line 131 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 133 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
  if(CourseParticipant.Course.FacultyMeetingRoom != CourseParticipant.Course.Room) { 
             
             #line default
             #line hidden
             this.Write("\t\t\t\t\t\t\t\t\t\t\t<small>(");
             
-            #line 132 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 134 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(CourseParticipant.Course.FacultyMeetingRoom.Directions));
             
             #line default
             #line hidden
             this.Write(")</small>\r\n\t\t\t\t\t\t\t\t\t\t");
             
-            #line 133 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 135 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
  } 
             
             #line default
@@ -270,7 +283,7 @@ namespace SP.Web.UserEmails
             this.Write("\t\t\t\t\t\t\t\t\t</th>\r\n\t\t\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t\t\t</table>\r\n\t\t\t\t\t\t</th>\r\n\t\t\t\t\t</tr></tbody></" +
                     "table>\r\n\t\t\t");
             
-            #line 139 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
+            #line 141 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
  } 
             
             #line default

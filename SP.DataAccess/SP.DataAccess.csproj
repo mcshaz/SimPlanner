@@ -174,6 +174,10 @@
     <Compile Include="Migrations\201605300136311_FacultyMeetingRoom.Designer.cs">
       <DependentUpon>201605300136311_FacultyMeetingRoom.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606202153357_RequireRoomShortDesc.cs" />
+    <Compile Include="Migrations\201606202153357_RequireRoomShortDesc.Designer.cs">
+      <DependentUpon>201606202153357_RequireRoomShortDesc.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SanitizeStringProperties.cs" />
@@ -200,6 +204,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605300136311_FacultyMeetingRoom.resx">
       <DependentUpon>201605300136311_FacultyMeetingRoom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606202153357_RequireRoomShortDesc.resx">
+      <DependentUpon>201606202153357_RequireRoomShortDesc.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

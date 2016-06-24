@@ -20,6 +20,7 @@
 
         vm.courseActivity = $scope.courseActivity;
         vm.createActivityResource = createActivityResource;
+        vm.deleteResource = deleteResource;
         vm.selectedActivityResource = null;
 
         vm.selectActivityResource = selectActivityResource;
@@ -55,6 +56,13 @@
         function saveOverride() {
             baseSave();
             vm.selectedActivityResource = null;
+        }
+
+        function deleteResource(activityResource) {
+            activityResource.entityAspect.setDeleted();
+            if (vm.selectedActivityResource === activityResource) {
+                vm.selectedActivityResource = null;
+            }
         }
     }
 })();

@@ -52,8 +52,10 @@
 					<tr>
 						<th>
 							<h5>Where:</h5>
-							<p><#= CourseParticipant.Course.Room.FullDescription #></p>
-							<small>(<#= CourseParticipant.Course.Room.Directions #>)</small>
+							<p><#= CourseParticipant.Course.Room.FullDescription ?? CourseParticipant.Course.Room.ShortDescription #></p>
+							<# if (CourseParticipant.Course.Room.Directions != null) { #>
+								<small>(<#= CourseParticipant.Course.Room.Directions #>)</small>
+							<#  } #>
 						</th>
 					</tr>
 				</table>

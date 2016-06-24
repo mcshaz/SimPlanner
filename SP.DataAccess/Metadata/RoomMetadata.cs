@@ -7,7 +7,7 @@ namespace SP.Metadata
     {
         [Key]
         public Guid Id { get; set; }
-        [StringLength(32)]
+        [StringLength(32), Required]
         public string ShortDescription { get; set; }
         [StringLength(64)]
         public string FullDescription { get; set; }
