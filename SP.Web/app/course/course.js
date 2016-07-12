@@ -12,11 +12,11 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: ['course','course.courseParticipants'],
+            watchedEntityNames: ['course', 'course.courseParticipants'],
             $scope: $scope
-        })
+        });
         var id = $routeParams.id;
-        var isNew = id == 'new';
+        var isNew = id === 'new';
         var saveBase = vm.save;
 
         vm.course = {};
@@ -119,7 +119,7 @@
                     controllerAs: 'cp'
                 });
                 modalScope.course = vm.course;
-                $scope.$on('$destroy', function () { _modalInstance.destroy(); })
+                $scope.$on('$destroy', function () { _modalInstance.destroy(); });
             }
             return _modalInstance;
         }
@@ -151,8 +151,8 @@
             var cp = getCourseParticipant(participantId);
             var name = cp.participant.fullName;
             cp.entityAspect.setDeleted();
-            datacontext.save(cp).then(function (data) { vm.log('removed ' + name + ' from course');},
-                function (error) { log.error({ msg: 'failed to remove ' + name + ' from course' }) })
+            datacontext.save(cp).then(function (data) { vm.log('removed ' + name + ' from course'); },
+                function (error) { log.error({ msg: 'failed to remove ' + name + ' from course' }); });
         }
 
         var _courseLength = null;
@@ -190,7 +190,7 @@
         function getCourseParticipant(participantId) {
             return vm.course.courseParticipants.find(function (cp) {
                 return cp.participantId === participantId;
-            })
+            });
         }
 
         function save() {
@@ -206,7 +206,7 @@
             $http({
                 method: 'POST',
                 url: 'api/CoursePlanning/EmailAll/',
-                data: { CourseId: vm.course.id },
+                data: { CourseId: vm.course.id }
             }).then(function (response) {
                 alert(response.data || 'emails sent');
             });

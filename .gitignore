@@ -233,3 +233,5 @@ _Pvt_Extensions
 .fake/
 SM.Web/Web.config
 /TestEmails
+
+SP.Web/bower_components/
