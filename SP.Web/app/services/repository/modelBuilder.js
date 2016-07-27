@@ -14,6 +14,7 @@
         function extendMetadata(metadataStore) {
             extendCourse(metadataStore);
             extendCourseFormat(metadataStore);
+            extendDepartment(metadataStore);
             extendValidators(metadataStore);
         }
 
@@ -73,9 +74,7 @@
 
         function extendCourseFormat(metadataStore) {
 
-            var CourseFormatCtor = function () {
-                //
-            };
+            var CourseFormatCtor = function () {};
 
             var courseFormatInitializer = function (courseFormat) {
                 Object.defineProperty(CourseFormatCtor.prototype, 'typeFormatDescriptor', {
@@ -90,6 +89,22 @@
             metadataStore.registerEntityTypeCtor('CourseFormatDto', CourseFormatCtor, courseFormatInitializer);
         }
 
+        function extendDepartment(metadataStore) {
+            var DptCtor = function(){};
+
+            Object.defineProperty(DptCtor.prototype, 'colourHtml', {
+                    enumerable: true,
+                    configurable: true,
+                    get: function () {
+                        return this.colour?('#' + this.colour):null;
+                    },
+                    set: function (value) {
+                        this.colour = value.substr(1);
+                    }
+                });
+
+            metadataStore.registerEntityTypeCtor('DepartmentDto', DptCtor);
+        }
 
         function ensureEntityType(obj, entityTypeName) {
             if (!obj.entityType || obj.entityType.shortName !== entityTypeName) {

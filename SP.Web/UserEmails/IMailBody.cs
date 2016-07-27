@@ -7,7 +7,7 @@ namespace SP.Web.UserEmails
         string TransformText();
         string Title { get; }
         string BaseUrl { set; }
-        IFormatProvider ToStringFormatProvider { set; }
+        IFormatProvider ToStringFormatProvider { get; set; }
     }
 
 }

@@ -64,6 +64,7 @@ namespace SP.Dto
             var daNamespace = typeof(Participant).Namespace;
             const string entityAspectName = "entityAspect";
             const string entityTypeName = "entityTypeName";
+            const string unmappedName = "__unmapped";
             const string namespaceSep = ":#";
 
             foreach (JToken ent in savebundle["entities"])
@@ -77,6 +78,7 @@ namespace SP.Dto
                     .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty)
                     .Select(pi => pi.Name).ToList();
                 props.Add(entityAspectName);
+                props.Add(unmappedName);
                 var unknownProps = ent.Select(e => ((JProperty)e).Name).Except(props);
                 if (unknownProps.Any())
                 {

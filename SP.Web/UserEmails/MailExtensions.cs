@@ -6,7 +6,6 @@
     using System.IO;
     using System.Web;
     using System.Net.Mime;
-    using System.Text.RegularExpressions;
     public static class MailExtensions
     {
         internal static void CreateHtmlBody(this MailMessage message, IMailBody template)

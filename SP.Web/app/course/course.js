@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$location', '$http'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$location', '$http', '$q', 'commonConfig'];
 
-    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $location, $http) {
+    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $location, $http, $q, commonConfig) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -140,7 +140,7 @@
         }
 
         function setFinish() {
-            getCourseLengthPromise.then(function (courseLength) {
+            getCourseLengthPromise().then(function (courseLength) {
                 vm.course.finishTime = (courseLength === null || !vm.course.startTime)
                     ? null
                     : new Date(vm.course.startTime.getTime() + courseLength);
@@ -161,7 +161,7 @@
                 return $q.resolve(null);
             } else if (_courseLength === null) {
                 if (!vm.course.courseFormat.entityAspect.isNavigationPropertyLoaded('courseSlots')) {
-                    vm.course.courseFormat.entityAspect.loadNavigationProperty('courseSlots').then(getSlotDuration);
+                    return vm.course.courseFormat.entityAspect.loadNavigationProperty('courseSlots').then(getSlotDuration);
                 } else {
                     return $q.resolve(getSlotDuration());
                 }
@@ -171,7 +171,9 @@
 
             function getSlotDuration() {
                 _courseLength = 0;
-                vm.course.courseFormat.courseSlots.forEach(function (el) { _courseLength += el.minutesDuration; });
+                vm.course.courseFormat.courseSlots.forEach(function (el) {
+                    _courseLength += el.minutesDuration;
+                });
                 _courseLength *= 60000;
                 return _courseLength;
             }
@@ -196,7 +198,7 @@
         function save() {
             saveBase().then(function () {
                 if (isNew) {
-                    $location.updatePath('course/' + vm.course.id,false);
+                    $location.update_path('course/' + vm.course.id, false);
                     isNew = false;
                 }
             });

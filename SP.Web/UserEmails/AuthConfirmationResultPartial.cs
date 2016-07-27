@@ -6,8 +6,17 @@ namespace SP.Web.UserEmails
 {
     public partial class AuthConfirmationResult : IMailBody
     {
-        public string Title { get { return "request to alter confirmation for simulation on " + FormattedDate(CourseParticipant.Course.StartTime); } }
-        public CourseParticipant CourseParticipant { get; set; }
+        public string Title { get { return "request to alter confirmation for simulation on " + FormattedDate(CourseParticipant.Course.StartTimeUtc); } }
+        private CourseParticipant _courseParticipant;
+        public CourseParticipant CourseParticipant
+        {
+            get { return _courseParticipant; }
+            set
+            {
+                _courseParticipant = value;
+                ToStringFormatProvider = _courseParticipant.Course.Department.Institution.Culture.GetCultureInfo();
+            }
+        }
         public Participant Auth { get; set; }
         public bool IsChanged { get; set; }
         public string BaseUrl { get; set; }
@@ -30,6 +39,10 @@ namespace SP.Web.UserEmails
 
         public IFormatProvider ToStringFormatProvider
         {
+            get
+            {
+                return ToStringHelper.FormatProvider;
+            }
             set
             {
                 ToStringHelper.FormatProvider = value;

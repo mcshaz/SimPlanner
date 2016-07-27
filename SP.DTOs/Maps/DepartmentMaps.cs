@@ -15,7 +15,8 @@ namespace SP.Dto.Maps
                 InstitutionId = m.InstitutionId,
                 InvitationLetterFilename = m.InvitationLetterFilename,
                 CertificateFilename = m.CertificateFilename,
-                Abbreviation = m.Abbreviation
+                Abbreviation = m.Abbreviation,
+                Colour = m.Colour
             };
         }
 
@@ -29,7 +30,8 @@ namespace SP.Dto.Maps
                 InstitutionId = m.InstitutionId,
                 InvitationLetterFilename = m.InvitationLetterFilename,
                 CertificateFilename = m.CertificateFilename,
-                Abbreviation = m.Abbreviation
+                Abbreviation = m.Abbreviation,
+                Colour = m.Colour 
                 //CourseTypes = null,
                 //Institution = m.Institution,
                 //Manequins = m.Manequins,

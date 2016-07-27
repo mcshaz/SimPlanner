@@ -6,8 +6,17 @@ namespace SP.Web.UserEmails
 {
     public partial class CourseInvite : IMailBody
     {
-        public string Title { get { return "Please Confirm - simulation Course " + FormattedDate(CourseParticipant.Course.StartTime); } }
-        public CourseParticipant CourseParticipant { get; set; }
+        public string Title { get { return "Please Confirm - simulation Course " + FormattedDate(CourseParticipant.Course.StartTimeUtc); } }
+        private CourseParticipant _courseParticipant;
+        public CourseParticipant CourseParticipant
+        {
+            get { return _courseParticipant; }
+            set
+            {
+                _courseParticipant = value;
+                ToStringFormatProvider = _courseParticipant.Course.Department.Institution.Culture.GetCultureInfo();
+            }
+        }
         public string BaseUrl { get; set; }
         TimeZoneInfo _tzi;
         TimeZoneInfo Tzi
@@ -40,6 +49,10 @@ namespace SP.Web.UserEmails
 
         public IFormatProvider ToStringFormatProvider
         {
+            get
+            {
+                return ToStringHelper.FormatProvider;
+            }
             set
             {
                 ToStringHelper.FormatProvider = value;
@@ -62,7 +75,7 @@ namespace SP.Web.UserEmails
         {
             get
             {
-                return string.Format(ToStringHelper.FormatProvider, "{0:D} at {0:t}", LocalTime(CourseParticipant.Course.StartTime));
+                return string.Format(ToStringHelper.FormatProvider, "{0:D} at {0:t}", LocalTime(CourseParticipant.Course.StartTimeUtc));
             }
         }
 

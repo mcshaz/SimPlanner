@@ -12,8 +12,8 @@ namespace SP.Dto.Maps
             return m => new Course
             {
                 Id = m.Id,
-                StartTime = m.StartTime,
-                FinishTime = m.FinishTime,
+                StartTimeUtc = m.StartTime,
+                FinishTimeUtc = m.FinishTime,
                 DepartmentId = m.DepartmentId,
                 EmailSequence = m.EmailSequence,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
@@ -24,7 +24,7 @@ namespace SP.Dto.Maps
                 RoomId = m.RoomId,
                 FacultyMeetingRoomId = m.FacultyMeetingRoomId,
                 FacultyMeetingDuration = m.FacultyMeetingDuration,
-                FacultyMeetingTime = m.FacultyMeetingTime
+                FacultyMeetingTimeUtc = m.FacultyMeetingTime
             };
         }
         /*
@@ -38,8 +38,8 @@ namespace SP.Dto.Maps
             return m => new CourseDto
             {
                 Id = m.Id,
-                StartTime = m.StartTime,
-                FinishTime = m.FinishTime,
+                StartTime = m.StartTimeUtc,
+                FinishTime = m.FinishTimeUtc,
                 DepartmentId = m.DepartmentId,
                 EmailSequence = m.EmailSequence,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
@@ -50,7 +50,7 @@ namespace SP.Dto.Maps
                 RoomId = m.RoomId,
                 FacultyMeetingRoomId = m.FacultyMeetingRoomId,
                 FacultyMeetingDuration = m.FacultyMeetingDuration,
-                FacultyMeetingTime = m.FacultyMeetingTime
+                FacultyMeetingTime = m.FacultyMeetingTimeUtc
             };
             //Department = m.Department,
 

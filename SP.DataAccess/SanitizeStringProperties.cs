@@ -35,10 +35,10 @@ namespace SP.DataAccess
                     {
                         var course = (Course)e.Entity;
                         var now = DateTime.UtcNow;
-                        course.LastModified = now;
+                        course.LastModifiedUtc = now;
                         if (e.State == EntityState.Added)
                         {
-                            course.Created = now;
+                            course.CreatedUtc = now;
                         }
                     }
                 }

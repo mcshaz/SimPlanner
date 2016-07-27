@@ -68,7 +68,7 @@ namespace SP.Web.UserEmails
             this.Write(" on the ");
             
             #line 16 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\ReverseConfirmation.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(FormattedDate(CourseParticipant.Course.StartTime)));
+            this.Write(this.ToStringHelper.ToStringWithCulture(FormattedDate(CourseParticipant.Course.StartTimeUtc)));
             
             #line default
             #line hidden

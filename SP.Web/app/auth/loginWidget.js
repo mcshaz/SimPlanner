@@ -20,7 +20,7 @@ var controllerId = 'loginWidget';
             common.$broadcast(commonConfig.config.controllerActivateSuccessEvent); //switch the spinner off
             var modal = getModalInstance();
             modal.$promise.then(modal.show);
-        };
+        }
 
         var _modalInstance;
         function getModalInstance() {
@@ -50,7 +50,7 @@ var controllerId = 'loginWidget';
                 } else {
                     $location.path('/');
                 }
-            })
+            });
         }
-    };
+    }
 })();

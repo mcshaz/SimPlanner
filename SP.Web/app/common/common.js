@@ -137,9 +137,9 @@
 
         function fetchCultureFormats() {
             return $http({ method: 'GET', url: 'api/utilities/cultureFormats' }).then(function (response) {
-                response.data.forEach((function (el) {
+                response.data.forEach(function (el) {
                     el.flagUrl = getFlagUrlFromLocaleCode(el.Key);
-                }));
+                });
 
                 return response.data;
             });
@@ -179,7 +179,7 @@
                 }
                 // a must be equal to b
                 return 0;
-            }
+            };
         }
 
         function sortOnChildPropertyName(propName, childPropName) {
@@ -192,7 +192,7 @@
                 }
                 // a must be equal to b
                 return 0;
-            }
+            };
         }
 
         var _roleIcons;
@@ -205,7 +205,7 @@
                     Other: 'question',
                     Paramedic: 'ambulance',
                     Nursing: 'heartbeat'
-                }
+                };
                 _roleIcons = {};
                 angular.forEach(symbols, function (val,key) {
                     _roleIcons[key] = "fa fa-" + val;

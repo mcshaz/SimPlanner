@@ -1,6 +1,4 @@
-﻿using DDay.iCal;
-using DDay.iCal.Serialization.iCalendar;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using SP.DataAccess;
 using System;
 using System.Collections.Generic;
@@ -10,7 +8,10 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Security.Principal;
 using System.Text;
-using System.Text.RegularExpressions;
+using Ical.Net;
+using Ical.Net.DataTypes;
+using Ical.Net.Serialization.iCalendar.Serializers;
+using Ical.Net.General;
 
 namespace SP.Web.UserEmails
 {
@@ -19,39 +20,40 @@ namespace SP.Web.UserEmails
         const string mailto = "MAILTO:";
         static public AppointmentStream CreateiCalendar(Course course, IIdentity currentUser)
         {
-            iCalendar iCal = new iCalendar {
-                Method = CalendarMethods.Request, 
+            var currentCal = new Calendar {
+                Method = CalendarMethods.Publish,
                 Version = "2.0",
-                ProductID = "SimPlanner",
+                ProductId = "SimPlanner",
             };
-
             var tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
-            iCalTimeZone timezone = iCalTimeZone.FromSystemTimeZone(tzi);
-            iCal.AddTimeZone(timezone);
+            var timezone = VTimeZone.FromSystemTimeZone(tzi);
+            currentCal.AddTimeZone(timezone);
 
             // Create the event, and add it to the iCalendar
-            Event courseEvt = iCal.Create<Event>();
+            Event courseEvt = new Event
+            {
+                Class = "PRIVATE",
+                Created = new CalDateTime(course.CreatedUtc),
+                LastModified = new CalDateTime(course.LastModifiedUtc),
+                Sequence = course.EmailSequence,
+                Transparency = TransparencyType.Opaque,
+                Status = EventStatus.Confirmed,
+                Uid = "course" + course.Id.ToString(),
+                Priority = 5,
+                Location = course.Room.ShortDescription
+            };
 
-            courseEvt.Class = "PUBLIC";
+            currentCal.Events.Add(courseEvt);
 
-            courseEvt.Created = new iCalDateTime(course.Created);
-            courseEvt.DTStamp = new iCalDateTime(DateTime.UtcNow);
-            courseEvt.LastModified = new iCalDateTime(course.LastModified);
-            courseEvt.Sequence = course.EmailSequence;
-            courseEvt.Transparency = TransparencyType.Opaque;
-            courseEvt.Status = EventStatus.Confirmed;
-            courseEvt.UID = "course" + course.Id.ToString();
-            courseEvt.Priority = 5;
-
-            var start = TimeZoneInfo.ConvertTimeFromUtc(course.StartTime, tzi);
+            var start = TimeZoneInfo.ConvertTimeFromUtc(course.StartTimeUtc, tzi);
 
             // Set information about the event
-            courseEvt.DTStart = new iCalDateTime(start, course.Department.Institution.StandardTimeZone);
-            courseEvt.DTEnd = new iCalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FinishTime, tzi), course.Department.Institution.StandardTimeZone); // This also sets the duration
+            courseEvt.DtStart = new CalDateTime(start, course.Department.Institution.StandardTimeZone);
+            courseEvt.DtEnd = new CalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FinishTimeUtc, tzi), course.Department.Institution.StandardTimeZone); // This also sets the duration
             //evt.IsAllDay = false;
             //evt.Name = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation;
             //evt.Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description;
-            courseEvt.Location = course.Room.ShortDescription;
+
             courseEvt.Summary = course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + start.ToString("g");
 
             if (course.Department.Institution.Latitude.HasValue && course.Department.Institution.Longitude.HasValue)
@@ -59,71 +61,76 @@ namespace SP.Web.UserEmails
                 courseEvt.GeographicLocation = new GeographicLocation(course.Department.Institution.Latitude.Value, course.Department.Institution.Longitude.Value);
             }
 
-            var org = course.CourseParticipants.Where(cp => cp.IsOrganiser).FirstOrDefault(cp => cp.Participant.UserName == currentUser.Name)
-                ?? course.CourseParticipants.FirstOrDefault();
 
-            
-            if (org == null)
+            const string SimPlannerInfo = mailto + "info@SimPlanner.org"; //ToDo read from web.config mail settings
+            courseEvt.Organizer = new Organizer(SimPlannerInfo) { CommonName = "SimPlanner" };
+
+            foreach (var cp in course.CourseParticipants)
             {
-                const string SimPlannerInfo = mailto + "info@SimPlanner.org"; //ToDo read from web.config mail settings
-                courseEvt.Organizer = new Organizer(SimPlannerInfo) { CommonName = "SimPlanner" };
+                var at = new Attendee(mailto + cp.Participant.Email)
+                {
+                    CommonName = cp.Participant.FullName,
+                    Role = "REQ-PARTICIPANT",
+                    Rsvp = false,
+                    ParticipationStatus = cp.IsConfirmed.HasValue
+                                        ? cp.IsConfirmed.Value
+                                            ? ParticipationStatus.Accepted
+                                            : ParticipationStatus.Declined
+                                        : ParticipationStatus.Tentative
+                };
+                courseEvt.Attendees.Add(at);
+                if (!string.IsNullOrEmpty(cp.Participant.AlternateEmail))
+                {
+                    courseEvt.Attendees.Add(new Attendee(mailto + cp.Participant.AlternateEmail)
+                    {
+                        CommonName = at.CommonName,
+                        Role = at.Role,
+                        Rsvp = at.Rsvp,
+                        ParticipationStatus = at.ParticipationStatus
+                    });
+                }
             }
-            else
-            {
-                courseEvt.Organizer = new Organizer(mailto + org.Participant.Email) { CommonName = org.Participant.FullName };
-            }
-            courseEvt.Attendees.AddRange(from cp in course.CourseParticipants
-                             where cp != org
-                             select (IAttendee)new Attendee(mailto + cp.Participant.Email) {
-                                CommonName = cp.Participant.FullName,
-                                Role = "REQ-PARTICIPANT",
-                                RSVP = false,
-                                ParticipationStatus = cp.IsConfirmed.HasValue
-                                    ?cp.IsConfirmed.Value
-                                        ? ParticipationStatus.Accepted
-                                        : ParticipationStatus.Declined
-                                    :ParticipationStatus.Tentative
-                            });
+                                    
             // Create a serialization context and serializer factory.
             // These will be used to build the serializer for our object.
 
             //set alarm
             Alarm alarm = new Alarm();
             alarm.Action = AlarmAction.Display;
-            alarm.Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation;
+            alarm.Summary = course.Department.Abbreviation + ' ' + course.CourseFormat.CourseType.Abbreviation;
             alarm.Trigger = new Trigger(TimeSpan.FromHours(-1));
             
             // Add the alarm to the event
             courseEvt.Alarms.Add(alarm);
 
-            return new AppointmentStream(iCal);
+            return new AppointmentStream(currentCal);
         }
 
-        public static void AddFacultyMeeting(iCalendar iCal, Course course)
+        public static void AddFacultyMeeting(Calendar cal, Course course)
         {
-            iCal.Method = CalendarMethods.Publish; //if more than 1 event, this is required
+            cal.Method = CalendarMethods.Publish; //if more than 1 event, this is required
 
             var tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
-            var courseEvent = iCal.Events.First();
-            Event meeting = iCal.Create<Event>();
+            var courseEvent = cal.Events.First();
+            Event meeting = cal.Create<Event>();
 
-            meeting.Class = "PUBLIC";
+            meeting.Class = "PRIVATE";
 
-            meeting.Created = new iCalDateTime(course.Created);
-            meeting.DTStamp = courseEvent.DTStamp;
-            meeting.LastModified = new iCalDateTime(course.LastModified);
+            meeting.Created = new CalDateTime(course.CreatedUtc);
+            meeting.DtStamp = courseEvent.DtStamp;
+            meeting.LastModified = new CalDateTime(course.LastModifiedUtc);
             meeting.Sequence = course.EmailSequence;
             //evt.Transparency = TransparencyType.Opaque;
             //evt.Status = EventStatus.Confirmed;
-            meeting.UID = "planning" + course.Id.ToString();
+            meeting.Uid = "planning" + course.Id.ToString();
             meeting.Priority = 5;
 
             meeting.Transparency = TransparencyType.Opaque;
             meeting.Status = EventStatus.Confirmed;
 
             // Set information about the event
-            if (course.FacultyMeetingTime.HasValue)
-                meeting.Start = new iCalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FacultyMeetingTime.Value, tzi), course.Department.Institution.StandardTimeZone);
+            if (course.FacultyMeetingTimeUtc.HasValue)
+                meeting.Start = new CalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FacultyMeetingTimeUtc.Value, tzi), course.Department.Institution.StandardTimeZone);
             if (course.FacultyMeetingDuration.HasValue)
                 meeting.Duration = TimeSpan.FromMinutes(course.FacultyMeetingDuration.Value);
             //evt.Name = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation;
@@ -135,9 +142,26 @@ namespace SP.Web.UserEmails
 
             meeting.Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting - " + course.LocalStart().ToString("d");
 
-            var fac = new HashSet<string>(from cp in course.CourseParticipants where cp.IsFaculty select mailto + cp.Participant.Email);
+            var fac = new HashSet<string>();
+            foreach (var cp in course.CourseParticipants)
+            {
+                if (cp.IsFaculty)
+                {
+                    fac.Add(mailto + cp.Participant.Email);
+                    if (!string.IsNullOrEmpty(cp.Participant.AlternateEmail))
+                    {
+                        fac.Add(mailto + cp.Participant.Email);
+                    }
+                }
+            }
 
-            meeting.Attendees.AddRange(courseEvent.Attendees.Where(a=>fac.Contains(a.Value.OriginalString)));
+            foreach (var a in courseEvent.Attendees)
+            {
+                if (fac.Contains(a.Value.OriginalString))
+                {
+                    meeting.Attendees.Add(a);
+                }
+            }
 
             meeting.Organizer = courseEvent.Organizer;
 
@@ -153,14 +177,14 @@ namespace SP.Web.UserEmails
 
     public sealed class AppointmentStream : IDisposable
     {
-        public AppointmentStream(iCalendar iCal)
+        public AppointmentStream(Calendar cal)
         {
-            Ical = iCal;
-            _serializer = new iCalendarSerializer();
+            Cal = cal;
+            _serializer = new CalendarSerializer();
             
 
         }
-        public readonly iCalendar Ical;
+        public readonly Calendar Cal;
         readonly SerializerBase _serializer;
 
         ContentType _calType;
@@ -173,7 +197,7 @@ namespace SP.Web.UserEmails
                     _calType = new ContentType("text/calendar");
                     _calType.CharSet = Encoding.UTF8.HeaderName;
                     _calType.Name = "appointment.ics";
-                    _calType.Parameters.Add("method", Ical.Method);
+                    _calType.Parameters.Add("method", Cal.Method);
                 }
                 return _calType;
             }
@@ -181,7 +205,7 @@ namespace SP.Web.UserEmails
         public void AddAppointment(MailMessage msg)
         {
 
-            var evt = (Event)Ical.Events.First();
+            var evt = (Event)Cal.Events.First();
 
             evt.Description = msg.Body;
             
@@ -214,7 +238,7 @@ namespace SP.Web.UserEmails
             prop.SetValue(html);
             //end add HTML to ical
 
-            string calString = _serializer.SerializeToString(Ical);
+            string calString = _serializer.SerializeToString(Cal);
 
             //writeOutlookFormat
 
@@ -227,7 +251,7 @@ namespace SP.Web.UserEmails
             */
             //end writeOutlookFormat
 
-            //File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "calendar.ics", calString);
+            File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "calendar.ics", calString);
             var attach = System.Net.Mail.Attachment.CreateAttachmentFromString(calString, CalType);
 
             msg.Attachments.Add(attach);
@@ -267,7 +291,7 @@ namespace SP.Web.UserEmails
             }
             if (!_isDisposed)
             {
-                Ical.Dispose();
+                Cal.Dispose();
                 _isDisposed = true;
             }
             

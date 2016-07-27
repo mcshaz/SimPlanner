@@ -12,6 +12,10 @@ namespace SP.Web.UserEmails
         public Guid UserId { get; set; }
         public IFormatProvider ToStringFormatProvider
         {
+            get
+            {
+                return ToStringHelper.FormatProvider;
+            }
             set
             {
                 ToStringHelper.FormatProvider = value;

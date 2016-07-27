@@ -226,7 +226,7 @@ namespace SP.Web.UserEmails
                     "th>\r\n\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t</table>\r\n\t\t\t\t</th>\r\n\t\t\t</tr></tbody></table>\r\n\t\t");
             
             #line 110 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
- if(CourseParticipant.IsFaculty && CourseParticipant.Course.FacultyMeetingTime.HasValue) { 
+ if(CourseParticipant.IsFaculty && CourseParticipant.Course.FacultyMeetingTimeUtc.HasValue) { 
             
             #line default
             #line hidden
@@ -235,7 +235,7 @@ namespace SP.Web.UserEmails
                     ">\r\n\t\t\t\t\t\t\t\t\t<th>\r\n\t\t\t\t\t\t\t\t\t\t<h5>Planning Meeting:</h5>\r\n\t\t\t\t\t\t\t\t\t\t<p>");
             
             #line 119 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(FormattedDate(CourseParticipant.Course.FacultyMeetingTime.Value)));
+            this.Write(this.ToStringHelper.ToStringWithCulture(FormattedDate(CourseParticipant.Course.FacultyMeetingTimeUtc.Value)));
             
             #line default
             #line hidden

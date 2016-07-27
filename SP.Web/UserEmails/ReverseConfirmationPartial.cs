@@ -14,8 +14,17 @@ namespace SP.Web.UserEmails
         public string Title { get {
                 return string.Format(ToStringHelper.FormatProvider, "participant request to alter confirmation for {0} on {1:d}",
                     CourseParticipant.Course.CourseFormat.CourseType.Abbreviation,
-                    LocalTime(CourseParticipant.Course.StartTime)); } }
-        public CourseParticipant CourseParticipant { get; set; }
+                    LocalTime(CourseParticipant.Course.StartTimeUtc)); } }
+        private CourseParticipant _courseParticipant;
+        public CourseParticipant CourseParticipant
+        {
+            get { return _courseParticipant; }
+            set
+            {
+                _courseParticipant = value;
+                ToStringFormatProvider = _courseParticipant.Course.Department.Institution.Culture.GetCultureInfo();
+            }
+        }
         readonly string AuthorizationToken;
         public string BaseUrl { get; set; }
         TimeZoneInfo _tzi;
@@ -55,6 +64,10 @@ namespace SP.Web.UserEmails
 
         public IFormatProvider ToStringFormatProvider
         {
+            get
+            {
+                return ToStringHelper.FormatProvider;
+            }
             set
             {
                 ToStringHelper.FormatProvider = value;

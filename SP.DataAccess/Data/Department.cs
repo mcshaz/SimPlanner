@@ -3,6 +3,7 @@ namespace SP.DataAccess
     using SP.Metadata;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     [MetadataType(typeof(DepartmentMetadata))]
@@ -19,6 +20,9 @@ namespace SP.DataAccess
         public string InvitationLetterFilename { get; set; }
 
         public string CertificateFilename { get; set; }
+
+        [FixedLength(Length = 6), RegularExpression(@"\d+"), Required, DefaultValue("000000")]
+        public string Colour { get; set; }
 
 
         public virtual Institution Institution { get; set; }

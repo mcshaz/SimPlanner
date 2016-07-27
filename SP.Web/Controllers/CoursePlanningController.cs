@@ -32,7 +32,7 @@ namespace SP.Web.Controllers
 
             var now = DateTime.UtcNow;
             if (course==null) { return NotFound(); }
-            if (course.StartTime < now)
+            if (course.StartTimeUtc < now)
             {
                 return Ok("The course start must be after now");
             }
@@ -61,9 +61,9 @@ namespace SP.Web.Controllers
                     {
                         sendMail(cp);
                     }
-                    if (course.FacultyMeetingTime.HasValue && course.FacultyMeetingTime > now)
+                    if (course.FacultyMeetingTimeUtc.HasValue && course.FacultyMeetingTimeUtc > now)
                     {
-                        Appointment.AddFacultyMeeting(cal.Ical, course);
+                        Appointment.AddFacultyMeeting(cal.Cal, course);
                     }
                     foreach (var cp in faculty[true])
                     {
@@ -91,7 +91,7 @@ namespace SP.Web.Controllers
                 auth = cps.First(cp => cp.ParticipantId == model.Auth && cp.IsOrganiser);
             }
 
-            if (part.Course.StartTime < DateTime.UtcNow)
+            if (part.Course.StartTimeUtc < DateTime.UtcNow)
             {
                 return Ok("Confirmation status cannot be changed after the course has commenced.");
             }
