@@ -13,7 +13,7 @@ namespace SP.Dto.Maps
             {
                 Id = m.Id,
                 StartTimeUtc = m.StartTime,
-                FinishTimeUtc = m.FinishTime,
+                Duration = m.Duration,
                 DepartmentId = m.DepartmentId,
                 EmailSequence = m.EmailSequence,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
@@ -39,7 +39,7 @@ namespace SP.Dto.Maps
             {
                 Id = m.Id,
                 StartTime = m.StartTimeUtc,
-                FinishTime = m.FinishTimeUtc,
+                Duration = m.Duration,
                 DepartmentId = m.DepartmentId,
                 EmailSequence = m.EmailSequence,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,

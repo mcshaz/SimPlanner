@@ -28,7 +28,7 @@ namespace SP.Web.Controllers
         {
             var course = Repo.Courses.Include("CourseParticipants.Participant").Include("CourseFormat.CourseType").Include("Department.Institution").Include("Room").Include("FacultyMeetingRoom")
                 .FirstOrDefault(cp => cp.Id == model.CourseId);
-            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(course.Department.Institution.LocaleCode);
+            //Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(course.Department.Institution.LocaleCode);
 
             var now = DateTime.UtcNow;
             if (course==null) { return NotFound(); }

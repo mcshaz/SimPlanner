@@ -13,7 +13,7 @@
 										<p> <#= CourseParticipant.Participant.FullName #> 
 											<small><#= CourseParticipant.Participant.ProfessionalRole.Description #> </small>
 											had been confirmed as <#= CourseParticipant.IsConfirmed.Value?"attending":"unable to attend" #> as a <#= CourseParticipant.IsFaculty?"faculty member":"participant" #> in the 
-											<#= CourseName #> on the <#= FormattedDate(CourseParticipant.Course.StartTime) #>.</p>
+											<#= CourseName #> on the <#= FormattedDate(CourseParticipant.Course.StartTimeUtc) #>.</p>
 										<p>However, he/she would like to <strong>change this response</strong> to being <#= CourseParticipant.IsConfirmed.Value?"unable":"able" #> to attend.</p>
 									</th>
 									<th class="expander"></th>

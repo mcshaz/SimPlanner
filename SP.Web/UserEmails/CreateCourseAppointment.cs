@@ -12,6 +12,7 @@ using Ical.Net;
 using Ical.Net.DataTypes;
 using Ical.Net.Serialization.iCalendar.Serializers;
 using Ical.Net.General;
+using Ical.Net.Interfaces.DataTypes;
 
 namespace SP.Web.UserEmails
 {
@@ -22,14 +23,15 @@ namespace SP.Web.UserEmails
         {
             var currentCal = new Calendar {
                 Method = CalendarMethods.Publish,
-                Version = "2.0",
-                ProductId = "SimPlanner",
             };
             var tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
             var timezone = VTimeZone.FromSystemTimeZone(tzi);
             currentCal.AddTimeZone(timezone);
 
             // Create the event, and add it to the iCalendar
+            var start = TimeZoneInfo.ConvertTimeFromUtc(course.StartTimeUtc, tzi);
+            const string SimPlannerInfo = mailto + "info@SimPlanner.org"; //ToDo read from web.config mail settings
+
             Event courseEvt = new Event
             {
                 Class = "PRIVATE",
@@ -40,65 +42,34 @@ namespace SP.Web.UserEmails
                 Status = EventStatus.Confirmed,
                 Uid = "course" + course.Id.ToString(),
                 Priority = 5,
-                Location = course.Room.ShortDescription
+                Location = course.Room.ShortDescription,
+                Start = new CalDateTime(start, course.Department.Institution.StandardTimeZone),
+                Summary = course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + start.ToString("g"),
+                Duration = course.Duration,
+                Organizer = new Organizer(SimPlannerInfo) { CommonName = "SimPlanner" },
+                Attendees = course.CourseParticipants.Select(MapCourseParticipantToAttendee).ToList()
+                //evt.IsAllDay = false;
+                //evt.Name = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation;
+                //evt.Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description;
             };
 
             currentCal.Events.Add(courseEvt);
-
-            var start = TimeZoneInfo.ConvertTimeFromUtc(course.StartTimeUtc, tzi);
-
-            // Set information about the event
-            courseEvt.DtStart = new CalDateTime(start, course.Department.Institution.StandardTimeZone);
-            courseEvt.DtEnd = new CalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FinishTimeUtc, tzi), course.Department.Institution.StandardTimeZone); // This also sets the duration
-            //evt.IsAllDay = false;
-            //evt.Name = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation;
-            //evt.Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description;
-
-            courseEvt.Summary = course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + start.ToString("g");
 
             if (course.Department.Institution.Latitude.HasValue && course.Department.Institution.Longitude.HasValue)
             {
                 courseEvt.GeographicLocation = new GeographicLocation(course.Department.Institution.Latitude.Value, course.Department.Institution.Longitude.Value);
             }
 
-
-            const string SimPlannerInfo = mailto + "info@SimPlanner.org"; //ToDo read from web.config mail settings
-            courseEvt.Organizer = new Organizer(SimPlannerInfo) { CommonName = "SimPlanner" };
-
-            foreach (var cp in course.CourseParticipants)
-            {
-                var at = new Attendee(mailto + cp.Participant.Email)
-                {
-                    CommonName = cp.Participant.FullName,
-                    Role = "REQ-PARTICIPANT",
-                    Rsvp = false,
-                    ParticipationStatus = cp.IsConfirmed.HasValue
-                                        ? cp.IsConfirmed.Value
-                                            ? ParticipationStatus.Accepted
-                                            : ParticipationStatus.Declined
-                                        : ParticipationStatus.Tentative
-                };
-                courseEvt.Attendees.Add(at);
-                if (!string.IsNullOrEmpty(cp.Participant.AlternateEmail))
-                {
-                    courseEvt.Attendees.Add(new Attendee(mailto + cp.Participant.AlternateEmail)
-                    {
-                        CommonName = at.CommonName,
-                        Role = at.Role,
-                        Rsvp = at.Rsvp,
-                        ParticipationStatus = at.ParticipationStatus
-                    });
-                }
-            }
-                                    
             // Create a serialization context and serializer factory.
             // These will be used to build the serializer for our object.
 
             //set alarm
-            Alarm alarm = new Alarm();
-            alarm.Action = AlarmAction.Display;
-            alarm.Summary = course.Department.Abbreviation + ' ' + course.CourseFormat.CourseType.Abbreviation;
-            alarm.Trigger = new Trigger(TimeSpan.FromHours(-1));
+            Alarm alarm = new Alarm
+            {
+                Action = AlarmAction.Display,
+                Summary = course.Department.Abbreviation + ' ' + course.CourseFormat.CourseType.Abbreviation,
+                Trigger = new Trigger(TimeSpan.FromHours(-1))
+            };
             
             // Add the alarm to the event
             courseEvt.Alarms.Add(alarm);
@@ -106,31 +77,51 @@ namespace SP.Web.UserEmails
             return new AppointmentStream(currentCal);
         }
 
+        private static IAttendee MapCourseParticipantToAttendee(CourseParticipant cp)
+        {
+            string email = cp.Participant.Email;
+            if (!string.IsNullOrEmpty(cp.Participant.AlternateEmail))
+            {
+                email += ',' + cp.Participant.AlternateEmail;
+            }
+            return new Attendee(mailto + email)
+            {
+                CommonName = cp.Participant.FullName,
+                Role = "REQ-PARTICIPANT",
+                Rsvp = false,
+                ParticipationStatus = cp.IsConfirmed.HasValue
+                        ? cp.IsConfirmed.Value
+                            ? ParticipationStatus.Accepted
+                            : ParticipationStatus.Declined
+                        : ParticipationStatus.Tentative
+            };
+        }
+
         public static void AddFacultyMeeting(Calendar cal, Course course)
         {
+            if (!course.FacultyMeetingTimeUtc.HasValue) { return; }
             cal.Method = CalendarMethods.Publish; //if more than 1 event, this is required
 
             var tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
             var courseEvent = cal.Events.First();
-            Event meeting = cal.Create<Event>();
-
-            meeting.Class = "PRIVATE";
-
-            meeting.Created = new CalDateTime(course.CreatedUtc);
-            meeting.DtStamp = courseEvent.DtStamp;
-            meeting.LastModified = new CalDateTime(course.LastModifiedUtc);
-            meeting.Sequence = course.EmailSequence;
-            //evt.Transparency = TransparencyType.Opaque;
-            //evt.Status = EventStatus.Confirmed;
-            meeting.Uid = "planning" + course.Id.ToString();
-            meeting.Priority = 5;
-
-            meeting.Transparency = TransparencyType.Opaque;
-            meeting.Status = EventStatus.Confirmed;
+            Event meeting = new Event
+            {
+                Class = "Private",
+                Created = new CalDateTime(course.CreatedUtc),
+                LastModified = new CalDateTime(course.LastModifiedUtc),
+                Sequence = course.EmailSequence,
+                Uid = "planning" + course.Id.ToString(),
+                Priority = 5,
+                Transparency = TransparencyType.Opaque,
+                Status = EventStatus.Confirmed,
+                Description = "planning meeting for " + course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + course.LocalStart().ToString("g"),
+                Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting - " + course.LocalStart().ToString("d"),
+                Organizer = courseEvent.Organizer,
+                Attendees = course.CourseParticipants.Where(cp => cp.IsFaculty).Select(MapCourseParticipantToAttendee).ToList(),
+                Start = new CalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FacultyMeetingTimeUtc.Value, tzi), tzi.Id)
+            };
 
             // Set information about the event
-            if (course.FacultyMeetingTimeUtc.HasValue)
-                meeting.Start = new CalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FacultyMeetingTimeUtc.Value, tzi), course.Department.Institution.StandardTimeZone);
             if (course.FacultyMeetingDuration.HasValue)
                 meeting.Duration = TimeSpan.FromMinutes(course.FacultyMeetingDuration.Value);
             //evt.Name = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation;
@@ -138,40 +129,17 @@ namespace SP.Web.UserEmails
             if (course.FacultyMeetingRoom != null)
                 meeting.Location = course.FacultyMeetingRoom.ShortDescription;
 
-            meeting.Description = "planning meeting for " + course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + course.LocalStart().ToString("g");
-
-            meeting.Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting - " + course.LocalStart().ToString("d");
-
-            var fac = new HashSet<string>();
-            foreach (var cp in course.CourseParticipants)
+            Alarm alarm = new Alarm
             {
-                if (cp.IsFaculty)
-                {
-                    fac.Add(mailto + cp.Participant.Email);
-                    if (!string.IsNullOrEmpty(cp.Participant.AlternateEmail))
-                    {
-                        fac.Add(mailto + cp.Participant.Email);
-                    }
-                }
-            }
-
-            foreach (var a in courseEvent.Attendees)
-            {
-                if (fac.Contains(a.Value.OriginalString))
-                {
-                    meeting.Attendees.Add(a);
-                }
-            }
-
-            meeting.Organizer = courseEvent.Organizer;
-
-            Alarm alarm = new Alarm();
-            alarm.Action = AlarmAction.Display;
-            alarm.Summary = meeting.Summary;
-            alarm.Trigger = new Trigger(TimeSpan.FromHours(-1));
+                Action = AlarmAction.Display,
+                Summary = meeting.Summary,
+                Trigger = new Trigger(TimeSpan.FromHours(-1))
+            };
 
             // Add the alarm to the event
             meeting.Alarms.Add(alarm);
+
+            cal.Events.Add(meeting);
         }
     }
 

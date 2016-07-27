@@ -14,7 +14,7 @@ namespace SP.Web.UserEmails
             set
             {
                 _courseParticipant = value;
-                ToStringFormatProvider = _courseParticipant.Course.Department.Institution.Culture.GetCultureInfo();
+                ToStringFormatProvider = _courseParticipant.Department.Institution.Culture.GetCultureInfo();
             }
         }
         public string BaseUrl { get; set; }
@@ -70,12 +70,23 @@ namespace SP.Web.UserEmails
                 return returnVar;
             } 
         }
-
-        public string StartTime
+        private DateTime _startTime;
+        private DateTime StartTime
         {
             get
             {
-                return string.Format(ToStringHelper.FormatProvider, "{0:D} at {0:t}", LocalTime(CourseParticipant.Course.StartTimeUtc));
+                if (_startTime == default(DateTime))
+                {
+                    _startTime = LocalTime(CourseParticipant.Course.StartTimeUtc);
+                }
+                return _startTime;
+            }
+        }
+        public string StartTimeText
+        {
+            get
+            {
+                return string.Format(ToStringHelper.FormatProvider, "{0:D} at {0:t}", StartTime);
             }
         }
 
@@ -83,7 +94,15 @@ namespace SP.Web.UserEmails
         {
             get
             {
-                return CourseParticipant.Course.LocalFinish().ToString("g", ToStringHelper.FormatProvider);
+                return (StartTime + CourseParticipant.Course.Duration).ToString("g", ToStringHelper.FormatProvider);
+            }
+        }
+
+        public string FacultyMeetingTime
+        {
+            get
+            {
+                return CourseParticipant.Course.FacultyMeetingTimeUtc.Value.ToString("g", ToStringHelper.FormatProvider);
             }
         }
 

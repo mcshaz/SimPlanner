@@ -168,7 +168,7 @@ namespace SP.Web.UserEmails
             
             #line default
             #line hidden
-            this.Write("\t\t\t<table class=\"row\"><tbody><tr>\r\n\t\t\t<th class=\"small-offset-1 large-offset-1 SP" +
+            this.Write("\t\t\t<table class=\"row\"><tbody><tr>\r\n\t\t\t<th class=\"small-offset-1 large-offset-1 sm" +
                     "all-11 large-11 columns first last\">\r\n\t\t\t\t<table>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<th>\r\n\t\t\t\t\t\t" +
                     "\t<h5>Email:</h5>\r\n\t\t\t\t\t\t\t<p><a href=\"mailto:");
             

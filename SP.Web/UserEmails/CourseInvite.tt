@@ -27,7 +27,7 @@
 					<tr>
 						<th>
 							<h5>When:</h5>
-							<p><#= StartTime #></p>
+							<p><#= StartTimeText #></p>
 							<small>(finishing <#= FinishTime #>)</small>
 						</th>
 					</tr>
@@ -107,7 +107,7 @@
 					</table>
 				</th>
 			</tr></tbody></table>
-		<# if(CourseParticipant.IsFaculty && CourseParticipant.Course.FacultyMeetingTime.HasValue) { #>
+		<# if(CourseParticipant.IsFaculty && CourseParticipant.Course.FacultyMeetingTimeUtc.HasValue) { #>
 			<hr/>
 
 			<table class="row"><tbody><tr>
@@ -116,7 +116,7 @@
 								<tr>
 									<th>
 										<h5>Planning Meeting:</h5>
-										<p><#= FormattedDate(CourseParticipant.Course.FacultyMeetingTime.Value) #></p>
+										<p><#= FacultyMeetingTime #></p>
 									</th>
 								</tr>
 							</table>

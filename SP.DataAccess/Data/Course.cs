@@ -23,11 +23,7 @@ namespace SP.DataAccess
             }
         }
 
-        private DateTime _finishTimeUtc;
-        public DateTime FinishTimeUtc
-        {
-            get {return _finishTimeUtc;} set{ _finishTimeUtc = AsUtc(value); }
-        }
+        public TimeSpan Duration { get; set; }
 
         private DateTime? _facultyMeetingTimeUtc;
         public DateTime? FacultyMeetingTimeUtc
@@ -125,7 +121,7 @@ namespace SP.DataAccess
         {
 
             //todo account for multiday courses
-            course.FinishTimeUtc = course.StartTimeUtc + TimeSpan.FromMinutes(course.CourseFormat.CourseSlots.Sum(cs => cs.MinutesDuration));
+            course.Duration = TimeSpan.FromMinutes(course.CourseFormat.CourseSlots.Sum(cs => cs.MinutesDuration));
         }
 
         public static DateTime LocalStart(this Course course)
@@ -133,9 +129,5 @@ namespace SP.DataAccess
             return TimeZoneInfo.ConvertTimeFromUtc(course.StartTimeUtc, TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone));
         }
 
-        public static DateTime LocalFinish(this Course course)
-        {
-            return TimeZoneInfo.ConvertTimeFromUtc(course.FinishTimeUtc, TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone));
-        }
     }
 }

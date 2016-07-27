@@ -25,7 +25,8 @@
         'ui.grid',
         'ui.grid.pagination',
         'isteven-multi-select',
-        'ngLocationUpdate'
+        'ngLocationUpdate',
+        'mwl.calendar'
     ]);
 
     /*Constants regarding user login defined here*/

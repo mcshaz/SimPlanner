@@ -63,7 +63,7 @@ namespace SP.Web.UserEmails
 							<p>");
             
             #line 30 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(StartTime));
+            this.Write(this.ToStringHelper.ToStringWithCulture(StartTimeText));
             
             #line default
             #line hidden
@@ -235,7 +235,7 @@ namespace SP.Web.UserEmails
                     ">\r\n\t\t\t\t\t\t\t\t\t<th>\r\n\t\t\t\t\t\t\t\t\t\t<h5>Planning Meeting:</h5>\r\n\t\t\t\t\t\t\t\t\t\t<p>");
             
             #line 119 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(FormattedDate(CourseParticipant.Course.FacultyMeetingTimeUtc.Value)));
+            this.Write(this.ToStringHelper.ToStringWithCulture(FacultyMeetingTime));
             
             #line default
             #line hidden
