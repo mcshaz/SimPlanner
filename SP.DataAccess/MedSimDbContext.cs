@@ -127,7 +127,13 @@ namespace SP.DataAccess
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);
 
-        modelBuilder.Entity<CourseActivity>()
+            modelBuilder.Entity<Course>()
+                .HasMany(e => e.CourseDays)
+                .WithRequired(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseActivity>()
                 .HasMany(e => e.CourseSlots)
                 .WithOptional(e => e.Activity)
                 .HasForeignKey(e=>e.ActivityId)

@@ -6,7 +6,7 @@ namespace SP.Web.UserEmails
 {
     public partial class AuthConfirmationResult : IMailBody
     {
-        public string Title { get { return "request to alter confirmation for simulation on " + FormattedDate(CourseParticipant.Course.StartTimeUtc); } }
+        public string Title { get { return "request to alter confirmation for simulation on " + FormattedDate(CourseParticipant.Course.StartUtc); } }
         private CourseParticipant _courseParticipant;
         public CourseParticipant CourseParticipant
         {

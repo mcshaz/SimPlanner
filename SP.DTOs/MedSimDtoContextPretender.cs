@@ -95,6 +95,12 @@ namespace SP.Dto
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<CourseDto>()
+                .HasMany(e => e.CourseDays)
+                .WithRequired(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<CourseActivityDto>()
                     .HasMany(e => e.CourseSlots)
                     .WithOptional(e => e.Activity)

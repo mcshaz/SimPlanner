@@ -9,7 +9,7 @@ namespace SP.Dto
     public class CourseDto
     {
         public Guid Id { get; set; }
-        public DateTime StartTime { get; set; }
+        public DateTime Start { get; set; }
         public TimeSpan Duration { get; set; }
         public DateTime? FacultyMeetingTime { get; set; }
         public Guid DepartmentId { get; set; }
@@ -36,5 +36,6 @@ namespace SP.Dto
         public virtual ICollection<CourseSlotManequinDto> CourseSlotManequins { get; set; }
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresenters { get; set; }
         public virtual ICollection<ChosenTeachingResourceDto> ChosenTeachingResources { get; set; }
+        public virtual ICollection<CourseDayDto> CourseDays { get; set; }
     }
 }

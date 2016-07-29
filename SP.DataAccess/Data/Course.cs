@@ -1,26 +1,24 @@
 namespace SP.DataAccess
 {
+    using Data.Interfaces;
+    using Helpers;
     using SP.Metadata;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+
     [MetadataType(typeof(CourseMetadata))]
-    public class Course
+    public class Course : ICourseDay
     {
         public Guid Id { get; set; }
 
-        private DateTime _startTimeUtc;
-        public DateTime StartTimeUtc
+        private DateTime _startUtc;
+        public DateTime StartUtc
         {
-            get
-            {
-                return _startTimeUtc;
-            }
-            set
-            {
-                _startTimeUtc = AsUtc(value);
-            }
+            get { return _startUtc; }
+            set { _startUtc = value.AsUtc(); }
         }
 
         public TimeSpan Duration { get; set; }
@@ -34,7 +32,7 @@ namespace SP.DataAccess
             }
             set
             {
-                _facultyMeetingTimeUtc = value.HasValue?AsUtc(value.Value):(DateTime?)null;
+                _facultyMeetingTimeUtc = value.HasValue? value.Value.AsUtc(): (DateTime?)null;
             }
         }
 
@@ -54,14 +52,14 @@ namespace SP.DataAccess
         public DateTime CreatedUtc
         {
             get {return _createdUtc;}
-            set { _createdUtc = AsUtc(value); }
+            set { _createdUtc = value.AsUtc(); }
         }
 
         private DateTime _lastModifiedUtc;
         public DateTime LastModifiedUtc
         {
             get {return _lastModifiedUtc;}
-            set { _lastModifiedUtc = AsUtc(value); }
+            set { _lastModifiedUtc = value.AsUtc(); }
         }
 
         public byte FacultyNoRequired { get; set; }
@@ -100,34 +98,33 @@ namespace SP.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChosenTeachingResource> ChosenTeachingResources { get; set; }
 
-        private static DateTime AsUtc(DateTime inptDate)
-        {
-            switch (inptDate.Kind)
-            {
-                case DateTimeKind.Local:
-                    throw new ArgumentException("DateTime MUST NOT be of kind local");
-                case DateTimeKind.Utc:
-                    return inptDate;
-                default:
-                    return DateTime.SpecifyKind(inptDate, DateTimeKind.Utc);
-            }
-        }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CourseDay> CourseDays { get; set; }
 
+        //ICourseDay implementation
+        [NotMapped]
+        public int Day
+        {
+            get { return 1; }
+        }
     }
 
     public static class CourseExtensions
     {
-        public static void CalculateFinishTime(this Course course)
-        {
 
-            //todo account for multiday courses
-            course.Duration = TimeSpan.FromMinutes(course.CourseFormat.CourseSlots.Sum(cs => cs.MinutesDuration));
+        public static ICourseDay LastDay(this Course course)
+        {
+            var days = course.CourseFormat.DaysDuration;
+            return days > 1
+                ?course.CourseDays.First(cd => cd.Day == days)
+                :(ICourseDay)course;
         }
 
-        public static DateTime LocalStart(this Course course)
+        public static DateTime FinishTimeUtc(this Course course)
         {
-            return TimeZoneInfo.ConvertTimeFromUtc(course.StartTimeUtc, TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone));
+            var lastDay = course.LastDay();
+            return lastDay.StartUtc + lastDay.Duration;
         }
-
     }
+
 }

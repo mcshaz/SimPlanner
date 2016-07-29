@@ -5,26 +5,16 @@ using System.Linq;
 using System.Linq.Expressions;
 namespace SP.Dto.Maps
 {
-    internal static class CourseMaps
+    internal static class CourseDayMaps
     {
-        internal static Func<CourseDto, Course> mapToRepo()
+        internal static Func<CourseDayDto, CourseDay> mapToRepo()
         {
-            return m => new Course
+            return m => new CourseDay
             {
-                Id = m.Id,
-                StartUtc = m.Start,
-                Duration = m.Duration,
-                DepartmentId = m.DepartmentId,
-                EmailSequence = m.EmailSequence,
-                OutreachingDepartmentId = m.OutreachingDepartmentId,
-                FacultyNoRequired = m.FacultyNoRequired,
-                ParticipantVideoFilename = m.ParticipantVideoFilename,
-                FeedbackSummaryFilename = m.FeedbackSummaryFilename,
-                CourseFormatId = m.CourseFormatId,
-                RoomId = m.RoomId,
-                FacultyMeetingRoomId = m.FacultyMeetingRoomId,
-                FacultyMeetingDuration = m.FacultyMeetingDuration,
-                FacultyMeetingTimeUtc = m.FacultyMeetingTime
+                CourseId = m.CourseId,
+                Day = m.Day,
+                Duration =m.Duration,
+                StartUtc = m.Start
             };
         }
         /*
@@ -33,24 +23,14 @@ namespace SP.Dto.Maps
             {
 
             } */
-        internal static Expression<Func<Course, CourseDto>> mapFromRepo()
+        internal static Expression<Func<CourseDay, CourseDayDto>> mapFromRepo()
         {
-            return m => new CourseDto
+            return m => new CourseDayDto
             {
-                Id = m.Id,
-                Start = m.StartUtc,
+                CourseId = m.CourseId,
+                Day = m.Day,
                 Duration = m.Duration,
-                DepartmentId = m.DepartmentId,
-                EmailSequence = m.EmailSequence,
-                OutreachingDepartmentId = m.OutreachingDepartmentId,
-                FacultyNoRequired = m.FacultyNoRequired,
-                ParticipantVideoFilename = m.ParticipantVideoFilename,
-                FeedbackSummaryFilename = m.FeedbackSummaryFilename,
-                CourseFormatId = m.CourseFormatId,
-                RoomId = m.RoomId,
-                FacultyMeetingRoomId = m.FacultyMeetingRoomId,
-                FacultyMeetingDuration = m.FacultyMeetingDuration,
-                FacultyMeetingTime = m.FacultyMeetingTimeUtc
+                Start = m.StartUtc
             };
             //Department = m.Department,
 

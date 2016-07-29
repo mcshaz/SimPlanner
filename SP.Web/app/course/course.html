@@ -31,35 +31,37 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="startDate" class="col-md-2 control-label">Course Start</label>
-                            <div class="col-md-5" id="startTimeGroup">
-                                <div class="input-group" >
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </span>
-                                    <input id="startDate" class="form-control" ng-model="vm.course.startTime" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
-                                           data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" ng-change="vm.dateChanged('startTime')"/>
+                        <div ng-repeat="cd in vm.courseDays">
+
+                            <div class="form-group">
+                                <label for="startDate" class="col-md-2 control-label">Course Start</label>
+                                <span ng-if="vm.course.courseFormat.daysDuration > 1" class="dayNo">(day {{cd.day || 1}})</span>
+                                <div class="col-md-5" id="startTimeGroup">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                        <input id="startDate" class="form-control" ng-model="cd.start" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
+                                               data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" ng-change="vm.dateChanged('startTime',cd)" />
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </span>
+                                        <input class="form-control" ng-model="cd.start" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" ng-change="vm.setFinish(cd)" />
+                                    </div>
 
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-clock-o"></i>
-                                    </span>
-                                    <input class="form-control" ng-model="vm.course.startTime" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" ng-change="vm.setFinish()"/>
+
+                            <div class="form-group">
+                                <small class="col-md-2 text-right small">(finishing)</small>
+                                <div class="col-md-10">
+                                    {{cd.startTime + cd.duration | amDateFormat:'LLL'}}
                                 </div>
-
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <small class="col-md-2 text-right small">(finishing)</small>
-                            <div class="col-md-10" >
-                                {{vm.course.finishTime | amDateFormat:'LLL'}}
-                            </div>
-  
                         </div>
 
                         <div class="form-group">

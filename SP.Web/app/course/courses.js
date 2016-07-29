@@ -12,7 +12,7 @@
         /* jshint validthis:true */
         var vm = this;
         var filterPredicate = null;
-        var orderBy = 'startTime desc';
+        var orderBy = 'start desc';
         vm.gridOptions = {
             paginationPageSizes: [10, 25, 100],
             paginationPageSize: 10,
@@ -22,11 +22,11 @@
             useExternalSorting: true,
             columnDefs: [
               {
-                  name: 'Date/Time', field: 'startTime', cellFilter: "date:'short'", type: 'date',
+                  name: 'Date/Time', field: 'start', cellFilter: "date:'short'", type: 'date',
                   filterHeaderTemplate: '<div class="ui-grid-filter-container">' +
                     '<input  class="ui-grid-filter-input" bs-datepicker type="text" ng-model="col.filters[0].term" placeholder="from" container="body"/>' +
                     '<input class="ui-grid-filter-input" bs-datepicker type="text" ng-model="col.filters[1].term" placeholder="to" container="body"/></div>',
-                  filters: [{}, {}],
+                  filters: [{}, {}]
                   /*sort: {
                       direction: uiGridConstants.DESC,
                       priority: 0
@@ -34,11 +34,11 @@
               },
               {
                   name: 'Department', field: 'department.abbreviation',
-                  filter: { type: uiGridConstants.filter.SELECT },
+                  filter: { type: uiGridConstants.filter.SELECT }
               },
               {
                   name: 'Outreaching Department', field: 'outreachingDepartment.abbreviation',
-                  filter: { type: uiGridConstants.filter.SELECT },
+                  filter: { type: uiGridConstants.filter.SELECT }
               },
               {
                   name: 'Course Type', field: 'courseFormat.typeFormatDescriptor',
@@ -65,17 +65,17 @@
                     updateData(),
                     datacontext.departments.all().then(function (data) {
                         var opts = data.map(function (el) {
-                            return { value: el.id, label: el.abbreviation }
+                            return { value: el.id, label: el.abbreviation };
                         });
                         vm.gridOptions.columnDefs[1].filter.selectOptions = opts;
                         vm.gridOptions.columnDefs[2].filter.selectOptions = opts;
                     }),
                     datacontext.courseFormats.all().then(function (data) {
                         var opts = data.map(function (el) {
-                            return { value: el.id, label: el.typeFormatDescriptor }
+                            return { value: el.id, label: el.typeFormatDescriptor };
                         });
                         vm.gridOptions.columnDefs[3].filter.selectOptions = opts;
-                    })], controllerId)
+                    })], controllerId);
             });
         }
 
@@ -86,14 +86,14 @@
                 if (id) {
                     predicates.push(breeze.Predicate.create(propName, '==', id));
                 }
-            }
+            };
             var term = grid.columns[0].filters[0].term;
             if (term) {
-                predicates.push(breeze.Predicate.create('startTime', '>=', term));
+                predicates.push(breeze.Predicate.create('start', '>=', term));
             }
             term = grid.columns[0].filters[1].term;
             if (term) {
-                predicates.push(breeze.Predicate.create('startTime', '<=', term));
+                predicates.push(breeze.Predicate.create('start', '<=', term));
             }
             createIdPredicate('departmentId', grid.columns[1].filters[0].term);
             createIdPredicate('outreachingDepartmentId', grid.columns[2].filters[0].term);
@@ -105,7 +105,7 @@
         }
 
         function sortChanged(grid, sortColumns) {
-            if (sortColumns.length == 0) {
+            if (sortColumns.length === 0) {
                 orderBy = null;
             } else {
                 orderBy = sortColumns.map(function (el) {

@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\CourseDay.cs" />
     <Compile Include="Data\CourseActivity.cs" />
     <Compile Include="Data\ChosenTeachingResource.cs" />
     <Compile Include="Data\Authentication\AspNetRole.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Data\Authentication\AspNetUserRole.cs" />
     <Compile Include="Data\CourseSlotManequin.cs" />
     <Compile Include="Data\CourseType.cs" />
+    <Compile Include="Data\Interfaces\ICourseDay.cs" />
     <Compile Include="Data\ProfessionalRoleInstitution.cs" />
     <Compile Include="Data\Culture.cs" />
     <Compile Include="Data\CourseScenarioFacultyRole.cs" />
@@ -119,11 +121,13 @@
     <Compile Include="Data\CourseFormat.cs" />
     <Compile Include="Data\Participant.cs" />
     <Compile Include="Data\CourseSlot.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
     <Compile Include="Metadata\ActivityChoiceMetadata.cs" />
     <Compile Include="Metadata\ChosenTeachingResourceMetadata.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
     <Compile Include="Metadata\CourseSlotManequinMetadata.cs" />
+    <Compile Include="Metadata\CourseDayMetadata.cs" />
     <Compile Include="Metadata\CourseTypeScenarioRoleMetadata.cs" />
     <Compile Include="Metadata\ProfessionalRoleInstitutionMetadata.cs" />
     <Compile Include="Metadata\CultureMetadata.cs" />
@@ -186,6 +190,10 @@
     <Compile Include="Migrations\201607260150212_SpecifyUtcTimes.Designer.cs">
       <DependentUpon>201607260150212_SpecifyUtcTimes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607280339510_CourseDays.cs" />
+    <Compile Include="Migrations\201607280339510_CourseDays.Designer.cs">
+      <DependentUpon>201607280339510_CourseDays.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SanitizeStringProperties.cs" />
@@ -221,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607260150212_SpecifyUtcTimes.resx">
       <DependentUpon>201607260150212_SpecifyUtcTimes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607280339510_CourseDays.resx">
+      <DependentUpon>201607280339510_CourseDays.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

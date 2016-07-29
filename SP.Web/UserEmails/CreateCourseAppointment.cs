@@ -29,7 +29,7 @@ namespace SP.Web.UserEmails
             currentCal.AddTimeZone(timezone);
 
             // Create the event, and add it to the iCalendar
-            var start = TimeZoneInfo.ConvertTimeFromUtc(course.StartTimeUtc, tzi);
+            //
             const string SimPlannerInfo = mailto + "info@SimPlanner.org"; //ToDo read from web.config mail settings
 
             Event courseEvt = new Event
@@ -43,17 +43,30 @@ namespace SP.Web.UserEmails
                 Uid = "course" + course.Id.ToString(),
                 Priority = 5,
                 Location = course.Room.ShortDescription,
-                Start = new CalDateTime(start, course.Department.Institution.StandardTimeZone),
-                Summary = course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + start.ToString("g"),
-                Duration = course.Duration,
                 Organizer = new Organizer(SimPlannerInfo) { CommonName = "SimPlanner" },
-                Attendees = course.CourseParticipants.Select(MapCourseParticipantToAttendee).ToList()
-                //evt.IsAllDay = false;
-                //evt.Name = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation;
-                //evt.Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description;
+                Attendees = course.CourseParticipants.Select(MapCourseParticipantToAttendee).ToList(),
+                Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation,
+                IsAllDay = false,
+                Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description
             };
+            foreach (var cd in course.CourseDays.Take(course.CourseFormat.DaysDuration).OrderBy(cd=>cd.Day))
+            {
+                var start = TimeZoneInfo.ConvertTimeFromUtc(cd.StartUtc, tzi);
+                var dayEvt = courseEvt.Copy<Event>();
+                dayEvt.Start = new CalDateTime(start, course.Department.Institution.StandardTimeZone);
+                dayEvt.Description += " - " + start.ToString("g");
+                dayEvt.Duration = cd.Duration;
+                if (course.CourseFormat.DaysDuration > 1)
+                {
+                    string dayNo = $" (day {cd.Day})";
+                    dayEvt.Summary += dayNo;
+                    dayEvt.Description += dayNo;
+                }
+                currentCal.Events.Add(dayEvt);
+            }
 
-            currentCal.Events.Add(courseEvt);
+
+            
 
             if (course.Department.Institution.Latitude.HasValue && course.Department.Institution.Longitude.HasValue)
             {
@@ -91,9 +104,9 @@ namespace SP.Web.UserEmails
                 Rsvp = false,
                 ParticipationStatus = cp.IsConfirmed.HasValue
                         ? cp.IsConfirmed.Value
-                            ? ParticipationStatus.Accepted
-                            : ParticipationStatus.Declined
-                        : ParticipationStatus.Tentative
+                            ? EventParticipationStatus.Accepted
+                            : EventParticipationStatus.Declined
+                        : EventParticipationStatus.Tentative
             };
         }
 
@@ -104,6 +117,7 @@ namespace SP.Web.UserEmails
 
             var tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
             var courseEvent = cal.Events.First();
+            var start = TimeZoneInfo.ConvertTimeFromUtc(course.StartUtc, tzi);
             Event meeting = new Event
             {
                 Class = "Private",
@@ -114,8 +128,8 @@ namespace SP.Web.UserEmails
                 Priority = 5,
                 Transparency = TransparencyType.Opaque,
                 Status = EventStatus.Confirmed,
-                Description = "planning meeting for " + course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + course.LocalStart().ToString("g"),
-                Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting - " + course.LocalStart().ToString("d"),
+                Description = "planning meeting for " + course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + start.ToString("g"),
+                Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting - " + start.ToString("d"),
                 Organizer = courseEvent.Organizer,
                 Attendees = course.CourseParticipants.Where(cp => cp.IsFaculty).Select(MapCourseParticipantToAttendee).ToList(),
                 Start = new CalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FacultyMeetingTimeUtc.Value, tzi), tzi.Id)

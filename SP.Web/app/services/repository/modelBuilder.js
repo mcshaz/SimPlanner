@@ -38,7 +38,7 @@
             };
 
             CourseCtor.prototype.removeParticipant = function (courseParticipant) {
-                ensureEntityType(courseParticipant, 'CourseParticipant')
+                ensureEntityType(courseParticipant, 'CourseParticipant');
                 this.throwIfNotOwnerOf(courseParticipant);
                 return this.entityAspect.setDeleted(courseParticipant);
             };
@@ -51,9 +51,22 @@
 
             CourseCtor.prototype.includesUser = function (userId) {
                 return this.courseParticipants.some(function (cp) {
-                    return cp.participantId == userId;
+                    return cp.participantId === userId;
                 });
-            }
+            };
+
+            CourseCtor.prototype.lastDay = function () {
+                var days = course.courseFormat.daysDuration;
+                var course = this;
+                return days > 1
+                    ? course.courseDays.find(cd => cd.day === days)
+                    : course;
+            };
+
+            CourseCtor.prototype.finishTime = function () {
+                var lastDay = this.lastDay();
+                return new Date(lastDay.start + lastDay.duration);
+            };
 
             /*
             var courseInitializer = function (course) {
@@ -96,7 +109,9 @@
                     enumerable: true,
                     configurable: true,
                     get: function () {
-                        return this.colour?('#' + this.colour):null;
+                        return this.colour
+                            ? '#' + this.colour
+                            : null;
                     },
                     set: function (value) {
                         this.colour = value.substr(1);

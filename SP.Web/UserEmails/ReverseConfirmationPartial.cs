@@ -14,7 +14,7 @@ namespace SP.Web.UserEmails
         public string Title { get {
                 return string.Format(ToStringHelper.FormatProvider, "participant request to alter confirmation for {0} on {1:d}",
                     CourseParticipant.Course.CourseFormat.CourseType.Abbreviation,
-                    LocalTime(CourseParticipant.Course.StartTimeUtc)); } }
+                    LocalTime(CourseParticipant.Course.StartUtc)); } }
         private CourseParticipant _courseParticipant;
         public CourseParticipant CourseParticipant
         {
@@ -33,6 +33,13 @@ namespace SP.Web.UserEmails
             get
             {
                 return _tzi ?? (_tzi = TimeZoneInfo.FindSystemTimeZoneById(CourseParticipant.Course.Department.Institution.StandardTimeZone));
+            }
+        }
+        DateTime StartTimeUtc
+        {
+            get
+            {
+                return CourseParticipant.Course.StartUtc;
             }
         }
         DateTime LocalTime(DateTime date)

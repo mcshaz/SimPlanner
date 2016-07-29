@@ -13,7 +13,7 @@
         abstractController.constructor.call(this, {
             controllerId: controllerId,
             $scope: $scope
-        })
+        });
         var id = $routeParams.id;
         
         vm.changeScenario = changeScenario;
@@ -36,7 +36,7 @@
                         'courseScenarioFacultyRoles',
                         'chosenTeachingResources',
                         'department.scenarios',
-                        'courseFormat.courseType.courseTypeScenarioRoles.facultyScenarioRole'],
+                        'courseFormat.courseType.courseTypeScenarioRoles.facultyScenarioRole']
                 }).then(function (data) {
                     if (!data) {
                         vm.log.warning('Could not find course id = ' +id);
@@ -76,15 +76,15 @@
                             id: cs.id,
                             startTime: startTime,
                             groupClass: 'grp' + count++,
-                            availableFaculty: faculty.slice(),
+                            availableFaculty: faculty.slice()
                         };
                         var sortableOptions = {
-                            connectWith: '.' + returnVar.groupClass,
+                            connectWith: '.' + returnVar.groupClass
                         };
                         returnVar.availableFacultyOptions = angular.extend({
                             update: updateSortable
                         },sortableOptions);
-                        var isThisSlot = function (el) { return el.courseSlotId === cs.id; }
+                        var isThisSlot = function (el) { return el.courseSlotId === cs.id; };
                         slotTime = new Date(startTime.getTime() + cs.minutesDuration * 60000);
                         if (cs.activity) {
                             var assignedFaculty = [];
@@ -146,13 +146,13 @@
                                     assignedFaculty: assignedFaculty,
                                     sortableOptions: angular.extend({
                                         update: updateSortableRepo.bind(null, {
-                                                courseSlotId: cs.id,
-                                                courseId: data.id,
-                                                facultyScenarioRoleId: ctsr.facultyScenarioRoleId
-                                            }, datacontext.courseScenarioFacultyRoles),
+                                            courseSlotId: cs.id,
+                                            courseId: data.id,
+                                            facultyScenarioRoleId: ctsr.facultyScenarioRoleId
+                                        }, datacontext.courseScenarioFacultyRoles),
                                         start: startSortable
                                     }, sortableOptions)
-                                }
+                                };
                             })
                         });
                         returnVar.oldScenario = returnVar.scenario;
@@ -185,9 +185,9 @@
                                         id: m.id
                                     };
                             });
-                            el.selectedManequins = el.manequins.filter(function (m) { return m.checked; })
+                            el.selectedManequins = el.manequins.filter(function (m) { return m.checked; });
                             $scope.$watchCollection(function () {
-                                return el.selectedManequins 
+                                return el.selectedManequins;
                             }, common.manageCollectionChange(datacontext.courseSlotManequins, 'id',
                                 function (member) {
                                     return {
@@ -246,7 +246,7 @@
             } //sender has a value only when the receiving table. in order to cancel both sending and receiving events, cancel must be called from the sending table;
             var participantId = sortable.model.participantId;
             if (sortable.droptargetModel.some(function (el) {
-                    return el.participantId === participantId
+                    return el.participantId === participantId;
             })) { //if the sender, ui.sender will be null - only cancel if the sender
                 sortable.cancel();
                 return;
@@ -268,9 +268,9 @@
             }
 
             key.participantId = sortable.model.participantId;
-
+            var ent;
             if (ui.sender && !cancelled) { //receiving = adding 
-                var ent = repo.getByKey(key)
+                ent = repo.getByKey(key);
                 if (ent) {
                     if (ent.entityAspect.entityState.isDeleted()) {
                         ent.entityAspect.setUnchanged();
@@ -282,7 +282,7 @@
                 }
                 
             } else if (!ui.item.sortable.isCopy && (!cancelled || removingDuplicate)) { //sending = deleting
-                var ent = repo.getByKey(key);
+                ent = repo.getByKey(key);
                 ent.entityAspect.setDeleted();
             }
 

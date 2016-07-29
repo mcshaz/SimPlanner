@@ -32,9 +32,9 @@ namespace SP.Web.Controllers
 
             var now = DateTime.UtcNow;
             if (course==null) { return NotFound(); }
-            if (course.StartTimeUtc < now)
+            if (course.LastDay().StartUtc < now)
             {
-                return Ok("The course start must be after now");
+                return Ok("The course finish must be after now");
             }
 
             course.EmailSequence++;
@@ -91,7 +91,7 @@ namespace SP.Web.Controllers
                 auth = cps.First(cp => cp.ParticipantId == model.Auth && cp.IsOrganiser);
             }
 
-            if (part.Course.StartTimeUtc < DateTime.UtcNow)
+            if (part.Course.StartUtc < DateTime.UtcNow)
             {
                 return Ok("Confirmation status cannot be changed after the course has commenced.");
             }

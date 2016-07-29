@@ -43,10 +43,10 @@
             return $q.all([
                 datacontext.ready(),
                 datacontext.courses.find({
-                    where: breeze.Predicate.create('startTime', '>', now),
-                    orderBy: 'startTime',
+                    where: breeze.Predicate.create('start', '>', now),
+                    orderBy: 'start',
                     take: 5,
-                    expand: 'courseParticipants',
+                    expand: 'courseParticipants'
                     //select: 'id,startTime,courseParticipants,roomId'
                 }).then(function (data) { vm.upcomingCourses = data; })])
            .then(function () {
@@ -56,7 +56,7 @@
                         vm.nextUserCourse = course;
                     }
                 });
-                vm.loginState = (vm.nextUserCourse ? 'active' : 'inactive');
+                vm.loginState = vm.nextUserCourse ? 'active' : 'inactive';
             });
         }
 

@@ -55,7 +55,7 @@
                 title: '<i class="glyphicon glyphicon-asterisk"></i> <span class="text-primary">Another event</span>, with a <i>html</i> title',
                 type: course.department.abbrev,
                 startsAt: course.startTime,
-                endsAt: course.finishTimeUtc,
+                endsAt: new Date(course.startTime + course.duration),
                 draggable: true,
                 resizable: true
             };

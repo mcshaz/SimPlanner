@@ -1,12 +1,13 @@
 ﻿using SP.DataAccess;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SP.Web.UserEmails
 {
     public partial class CourseInvite : IMailBody
     {
-        public string Title { get { return "Please Confirm - simulation Course " + FormattedDate(CourseParticipant.Course.StartTimeUtc); } }
+        public string Title { get { return "Please Confirm - simulation Course " + FormattedDate(StartTime); } }
         private CourseParticipant _courseParticipant;
         public CourseParticipant CourseParticipant
         {
@@ -77,7 +78,7 @@ namespace SP.Web.UserEmails
             {
                 if (_startTime == default(DateTime))
                 {
-                    _startTime = LocalTime(CourseParticipant.Course.StartTimeUtc);
+                    _startTime = LocalTime(CourseParticipant.Course.StartUtc);
                 }
                 return _startTime;
             }
@@ -94,7 +95,7 @@ namespace SP.Web.UserEmails
         {
             get
             {
-                return (StartTime + CourseParticipant.Course.Duration).ToString("g", ToStringHelper.FormatProvider);
+                return (LocalTime(CourseParticipant.Course.FinishTimeUtc())).ToString("g", ToStringHelper.FormatProvider);
             }
         }
 

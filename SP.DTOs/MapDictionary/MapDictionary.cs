@@ -22,6 +22,7 @@ namespace SP.Dto.Maps
                         new DtoMap(typeof(Culture),CultureMaps.mapFromRepo()),
                         new DtoMap(typeof(Course),  CourseMaps.mapFromRepo(), true, "OutreachCourses"),
                         new DtoMap(typeof(CourseActivity),  CourseActivityMaps.mapFromRepo(), false, "CourseActivities", "Activity"),
+                        new DtoMap(typeof(CourseDay),  CourseDayMaps.mapFromRepo()),
                         new DtoMap(typeof(CourseFormat),  CourseFormatMaps.mapFromRepo()),
                         new DtoMap(typeof(CourseParticipant),  CourseParticipantMaps.mapFromRepo()),
                         new DtoMap(typeof(CourseScenarioFacultyRole),  CourseScenarioFacultyRoleMaps.mapFromRepo()),
