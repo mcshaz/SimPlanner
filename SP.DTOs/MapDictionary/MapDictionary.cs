@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace SP.Dto.Maps
 {
@@ -48,22 +49,32 @@ namespace SP.Dto.Maps
                 new ScenarioResourceMaps(),
             };
             _toDtoMaps = new ReadOnlyDictionary<Type, IDomainDtoMap>(
-                maps.ToDictionary(kv=>kv.TypeofDomainObject));
-            _fromDtoMaps = new ReadOnlyDictionary<Type, IDomainDtoMap>(
                 maps.ToDictionary(kv=>kv.TypeofDto));
+            _fromDtoMaps = new ReadOnlyDictionary<Type, IDomainDtoMap>(
+                maps.ToDictionary(kv=>kv.TypeofDomainObject));
         }
 
-        public static IQueryable<TMap> ProjectToDto<T, TMap>(this IQueryable<T> queryable, string[] includes = null, string[] selects=null, char sepChar='.')
+        public static object MapFromDto(object obj)
+        {
+            return MapFromDto(obj.GetType(), obj);
+        }
+
+        public static object MapFromDto(Type type, object obj)
+        {
+            return _fromDtoMaps[type].MapFromDto(obj);
+        }
+        const char defaultSepChar = '.';
+        public static IQueryable<TMap> ProjectToDto<T, TMap>(this IQueryable<T> queryable, string[] includes = null, string[] selects=null, char sepChar= defaultSepChar)
         {
             return queryable.Select(GetToDtoLambda<T, TMap>(includes, selects, sepChar));
         }
 
-        public static Expression<Func<T,TMap>> GetToDtoLambda<T,TMap>(string[] includes = null, string[] selects = null, char sepChar = '.')
+        public static Expression<Func<T,TMap>> GetToDtoLambda<T,TMap>(string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
         {
-            return (Expression<Func<T, TMap>>)GeToDtoLambda(typeof(T), includes, selects, sepChar);
+            return (Expression<Func<T, TMap>>)GetToDtoLambda(typeof(TMap), includes, selects, sepChar);
         }
 
-        internal static LambdaExpression GeToDtoLambda(Type type, string[] includes, string[] selects, char sepChar)
+        public static LambdaExpression GetToDtoLambda(Type type, string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
         {
             var includeSelects = new IncludeSelectOptions(type, includes, selects, sepChar);
             VisitNodes(includeSelects.RequiredMappings);
@@ -80,7 +91,7 @@ namespace SP.Dto.Maps
                 {
                     VisitNodes(n);
                 }
-                includeTree.Lambda = includeTree.Lambda.MapNavProperty(includeTree.Children.Select(c => new KeyValuePair<string, LambdaExpression>(c.PropertyName, c.Lambda)));  
+                includeTree.Lambda = includeTree.Lambda.MapNavProperty(includeTree.Children.Select(c => new KeyValuePair<PropertyInfo, LambdaExpression>(c.PropertyInfo, c.Lambda)));  
             }
         }
 
@@ -114,7 +125,7 @@ namespace SP.Dto.Maps
             }
             private static Node GetRequiredMappings(Type type, IList<string[]> includeList, IList<string[]> selectList )
             {
-                Node node = new Node(type);
+                Node node = new Node(type) { Lambda = _toDtoMaps[type].MapToDto };
                 GetRequiredMappings(node, includeList, true);
                 GetRequiredMappings(node, selectList, false); 
                 return node;
@@ -129,22 +140,25 @@ namespace SP.Dto.Maps
                     for (j=0; j < mapList[i].Length; j++)
                     {
                         string propertyName = mapList[i][j];
-                        var matchingChild = match.Children.FirstOrDefault(n => n.PropertyName == propertyName);
+                        var matchingChild = match.Children.FirstOrDefault(n => n.PropertyInfo.Name == propertyName);
                         if (matchingChild == null)
                         {
-                            Type includeType = match.DtoType.GetProperty(propertyName).PropertyType;
+                            PropertyInfo includeInfo = match.Type.GetProperty(propertyName);
+                            Type baseType = includeInfo.PropertyType.IsGenericType && includeInfo.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>)
+                                ?includeInfo.PropertyType.GenericTypeArguments[0]
+                                :includeInfo.PropertyType;
                             IDomainDtoMap map;
-                            if (_toDtoMaps.TryGetValue(includeType, out map))
+                            if (_toDtoMaps.TryGetValue(baseType, out map))
                             {
-                                matchingChild = new Node(includeType) {
-                                    PropertyName = propertyName,
-                                    Lambda = map.MapFromDomain
+                                matchingChild = new Node(baseType) {
+                                    Lambda = map.MapToDto,
+                                    PropertyInfo = includeInfo
                                 };
                                 match.Children.Add(matchingChild);
                             }
                             else if (throwIfLastNotFound || j+1<mapList[i].Length)
                             {
-                                throw new KeyNotFoundException($"Could not find map for property {propertyName} [{includeType.Name}]");
+                                throw new KeyNotFoundException($"Could not find map for property {propertyName} [{baseType.Name}]");
                             }
                         }
                         match = matchingChild;
@@ -156,12 +170,12 @@ namespace SP.Dto.Maps
             internal class Node
             {
                 public readonly List<Node> Children;
-                public Type DtoType { get; set; }
-                public string PropertyName { get; set;}
+                public Type Type { get; set; }
+                public PropertyInfo PropertyInfo { get; set;}
                 public LambdaExpression Lambda { get; set; }
                 public Node(Type type)
                 {
-                    DtoType = type;
+                    Type = type;
                     Children = new List<Node>();
                 }
                 public void PrintPretty(string indent, bool last=false)
@@ -177,7 +191,7 @@ namespace SP.Dto.Maps
                         Debug.Write("|-");
                         indent += "| ";
                     }
-                    Debug.WriteLine(DtoType.Name);
+                    Debug.WriteLine(Type.Name);
 
                     for (int i = 0; i < Children.Count; i++)
                     {

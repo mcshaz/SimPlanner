@@ -31,6 +31,7 @@ namespace SP.Dto.Maps
             foreach (var nav in navs)
             {
                 var target = nav.Key;
+                var source = Expression.Property(parentParam, target.Name); //This is a weakness - assuming collection properties share the same name
 
                 if (target.PropertyType.IsGenericType &&
                    target.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>))
