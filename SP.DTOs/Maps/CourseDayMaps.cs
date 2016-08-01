@@ -1,53 +1,36 @@
 using SP.DataAccess;
-
+using System;
 using System.Linq;namespace SP.Dto.Maps
 {
     internal class CourseDayMaps: DomainDtoMap<CourseDay, CourseDayDto>
+    {
+        public CourseDayMaps() : base(
+        m => new CourseDay
         {
-            return m => new CourseDay
-            {
-                CourseId = m.CourseId,
-                Day = m.Day,
-                Duration =m.Duration,
-                StartUtc = m.Start
-            };
-        }
-        /*
-        internal static Expression<Func<Course, CourseDto>> MapFromDomain(string[] includes) {
-            if (["Scenarios", "CourseType", "CourseParticipants", "ScenarioFacultyRoles"])
-            {
-
-            } */
-        internal static Expression<Func<CourseDay, CourseDayDto>> MapFromDomain()
+            CourseId = m.CourseId,
+            Day = m.Day,
+            Duration =m.Duration,
+            StartUtc = m.Start
+        },
+        m => new CourseDayDto
         {
-            return m => new CourseDayDto
-            {
-                CourseId = m.CourseId,
-                Day = m.Day,
-                Duration = m.Duration,
-                Start = m.StartUtc
-            };
-            //Department = m.Department,
+            CourseId = m.CourseId,
+            Day = m.Day,
+            Duration = m.Duration,
+            Start = m.StartUtc
+        })
+        { }
 
-            //OutreachingDepartment = m.OutreachingDepartment,
-
-            //CourseType = m.CourseType,
-
-            //CourseParticipants = m.CourseParticipants,
-
-            //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-        }
-
-        static void IsAllowed(string[] includes,params string[] allowed)
+    static void IsAllowed(string[] includes,params string[] allowed)
+    {
+        var disallowed = includes.Except(includes);
+        if (disallowed.Any())
         {
-            var disallowed = includes.Except(includes);
-            if (disallowed.Any())
-            {
-                throw new ArgumentException(
-                    string.Format("the include parameter(s){0} are not allowed: allowed parameters include ({1})",
-                    string.Join(",", disallowed), string.Join(",", allowed)));
-            }
+            throw new ArgumentException(
+                string.Format("the include parameter(s){0} are not allowed: allowed parameters include ({1})",
+                string.Join(",", disallowed), string.Join(",", allowed)));
         }
+    }
 
         /*
         internal static Expression<Func<Course, CourseDto>> mapBriefFromRepo = m => new CourseDto

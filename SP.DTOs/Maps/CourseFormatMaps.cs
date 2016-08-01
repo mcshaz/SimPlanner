@@ -17,7 +17,7 @@ using SP.DataAccess;
                 DaysDuration = m.DaysDuration,
                 Description = m.Description,
                 CourseTypeId = m.CourseTypeId
-            };
-        }
+            })
+        { }
     }
 }

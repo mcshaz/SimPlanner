@@ -1,5 +1,5 @@
 using SP.DataAccess;
-
+using System;
 using System.Linq;namespace SP.Dto.Maps
 {
     internal class CourseMaps: DomainDtoMap<Course, CourseDto>
@@ -22,17 +22,8 @@ using System.Linq;namespace SP.Dto.Maps
                 FacultyMeetingUtc = m.FacultyMeeting,
                 CreatedUtc = m.Created,
                 LastModifiedUtc = m.LastModified
-            };
-        }
-        /*
-        internal static Expression<Func<Course, CourseDto>> MapFromDomain(string[] includes) {
-            if (["Scenarios", "CourseType", "CourseParticipants", "ScenarioFacultyRoles"])
-            {
-
-            } */
-        internal static Expression<Func<Course, CourseDto>> MapFromDomain()
-        {
-            return m => new CourseDto
+            },
+            m => new CourseDto
             {
                 Id = m.Id,
                 Start = m.StartUtc,
@@ -50,17 +41,8 @@ using System.Linq;namespace SP.Dto.Maps
                 FacultyMeeting = m.FacultyMeetingUtc,
                 Created = m.CreatedUtc,
                 LastModified = m.LastModifiedUtc
-            };
-            //Department = m.Department,
-
-            //OutreachingDepartment = m.OutreachingDepartment,
-
-            //CourseType = m.CourseType,
-
-            //CourseParticipants = m.CourseParticipants,
-
-            //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-        }
+            })
+        { }
 
         static void IsAllowed(string[] includes,params string[] allowed)
         {
@@ -72,37 +54,6 @@ using System.Linq;namespace SP.Dto.Maps
                     string.Join(",", disallowed), string.Join(",", allowed)));
             }
         }
-
-        /*
-        internal static Expression<Func<Course, CourseDto>> mapBriefFromRepo = m => new CourseDto
-        {
-            Id = m.Id,
-            StartTime = m.StartTime,
-            DepartmentId = m.DepartmentId,
-            OutreachingDepartmentId = m.OutreachingDepartmentId,
-            FacultyNoRequired = m.FacultyNoRequired,
-            CourseTypeId = m.CourseTypeId,
-
-            CourseParticipants = m.CourseParticipants.Select(cp=>new CourseParticipantDto
-            {
-                ParticipantId = cp.ParticipantId,
-                CourseId = cp.CourseId,
-                IsConfirmed = cp.IsConfirmed,
-                IsFaculty = cp.IsFaculty,
-                DepartmentId = cp.DepartmentId,
-                ProfessionalRoleId = cp.ProfessionalRoleId
-            }).ToList()
-
-            //Department = m.Department,
-
-            //OutreachingDepartment = m.OutreachingDepartment,
-
-            //CourseType = m.CourseType,
-
-
-            //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-        };
-        */
 
     }
 }

@@ -10,24 +10,27 @@ namespace SP.Dto.Maps
 {
     public static class ExpressionTreeExtensions
     {
-        public static Expression<Func<T, TMap>> MapNavProperty<T, TMap>(this Expression<Func<T, TMap>> parent, string propName, LambdaExpression nav)
+        public static Expression<Func<T, TMap>> MapNavProperty<T, TMap>(this Expression<Func<T, TMap>> parent, PropertyInfo propInfo, LambdaExpression nav)
         {
-            return MapNavProperty(parent, new[] { new KeyValuePair<string, LambdaExpression>(propName, nav) });
+            return MapNavProperty(parent, new[] { new KeyValuePair<PropertyInfo, LambdaExpression>(propInfo, nav) });
         }
         public static Expression<Func<T, TMap>> MapNavProperty<T, TMap>(this Expression<Func<T, TMap>> parent, IEnumerable<KeyValuePair<string, LambdaExpression>> navs)
+        {
+            return (Expression<Func<T, TMap>>)MapNavProperty((LambdaExpression)parent, navs.Select(n=>new KeyValuePair<PropertyInfo, LambdaExpression>(typeof(TMap).GetProperty(n.Key), n.Value)));
+        }
+        public static Expression<Func<T, TMap>> MapNavProperty<T, TMap>(this Expression<Func<T, TMap>> parent, IEnumerable<KeyValuePair<PropertyInfo, LambdaExpression>> navs)
         {
             return (Expression<Func<T, TMap>>)MapNavProperty((LambdaExpression)parent, navs);
         }
         static ConstantExpression nullExpression = Expression.Constant(null, typeof(object));
-        public static LambdaExpression MapNavProperty(this LambdaExpression parent, IEnumerable<KeyValuePair<string, LambdaExpression>> navs)
+        public static LambdaExpression MapNavProperty(this LambdaExpression parent, IEnumerable<KeyValuePair<PropertyInfo, LambdaExpression>> navs)
         {
             var parentParam = parent.Parameters[0];
             var bindings = new List<MemberBinding>();
             var tMapType = parent.Type.GenericTypeArguments[1];
             foreach (var nav in navs)
             {
-                var source = Expression.Property(parentParam, nav.Key);
-                var target = tMapType.GetProperty(nav.Key);
+                var target = nav.Key;
 
                 if (target.PropertyType.IsGenericType &&
                    target.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>))

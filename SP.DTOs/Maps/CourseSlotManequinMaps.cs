@@ -24,7 +24,7 @@ using SP.DataAccess;
                 //Scenario = m.Scenario,
                 //Role = m.Role,
                 //FacultyMember = m.FacultyMember
-            };
-        }
+            })
+        { }
     }
 }

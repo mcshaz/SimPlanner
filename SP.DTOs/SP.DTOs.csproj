@@ -182,7 +182,6 @@
     <Compile Include="Maps\ScenarioResourceMaps.cs" />
     <Compile Include="Maps\FacultyScenarioRoleMapsMaps.cs" />
     <Compile Include="Maps\ScenarioSlotMaps.cs" />
-    <Compile Include="MedSimBreezeContextProvider.cs" />
     <Compile Include="MedSimDtoContextPretender.cs" />
     <Compile Include="MedSimDtoRepository.cs" />
     <Compile Include="MedSimDtoMetadata.cs" />

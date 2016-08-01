@@ -7,12 +7,11 @@ using SP.DataAccess;namespace SP.Dto.Maps
             InstitutionId = m.InstitutionId,
             ProfessionalRoleId = m.ProfessionalRoleId
         },
-            m => new ProfessionalRoleInstitutionDto
-            {
-                InstitutionId = m.InstitutionId,
-                ProfessionalRoleId = m.ProfessionalRoleId
-            })
+        m => new ProfessionalRoleInstitutionDto
+        {
+            InstitutionId = m.InstitutionId,
+            ProfessionalRoleId = m.ProfessionalRoleId
+        })
         { }
-        }
     }
 }

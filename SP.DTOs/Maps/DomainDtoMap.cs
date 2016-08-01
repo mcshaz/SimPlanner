@@ -14,8 +14,8 @@ namespace SP.Dto.Maps
         public Func<TDto, TDomain> TypedMapToDomain { get; private set; }
         public Expression<Func<TDomain, TDto>> TypedMapFromDomain { get; private set; }
 
-        public LambdaExpression MapFromDomain { get { return TypedMapFromDomain; } }
-        public object MapToDomain(object dto)
+        public LambdaExpression MapToDto { get { return TypedMapFromDomain; } }
+        public object MapFromDto(object dto)
         {
             return TypedMapToDomain((TDto)dto);
         }

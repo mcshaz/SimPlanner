@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using SP.Dto.Maps;
 using SP.Dto;
+using System.Reflection;
 
 namespace SimPlanner.Tests
 {
@@ -70,7 +71,7 @@ namespace SimPlanner.Tests
                 { "Bars",MapBar},
                 { "B", MapBar}
             };
-            int count = 1000000;
+            int count = 100; // add 0s as appropriate
             var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < count; i++)
@@ -95,7 +96,7 @@ namespace SimPlanner.Tests
             using (MedSimDbContext db = new MedSimDbContext())
             {
 
-                var mapNavEx = ParticipantMaps.mapFromRepo().MapNavProperty(propName, DepartmentMaps.mapFromRepo());
+                var mapNavEx = MapperConfig.GetToDtoLambda<Participant, ParticipantDto>(new[] { propName });
                 Console.WriteLine(mapNavEx.ToString());
                 var part = db.Users.Include(propName).AsNoTracking().First(p => p.UserName == testUserName);
 
@@ -115,7 +116,7 @@ namespace SimPlanner.Tests
             using (MedSimDbContext db = new MedSimDbContext())
             {
 
-                var mapNavEx = ParticipantMaps.mapFromRepo().MapNavProperty(collectionPropName, CourseParticipantMaps.mapFromRepo());
+                var mapNavEx = MapperConfig.GetToDtoLambda<Participant, ParticipantDto>(new[] { collectionPropName });
                 Console.WriteLine(mapNavEx.ToString());
                 var part = db.Users.Include(collectionPropName).AsNoTracking().First(p => p.UserName == testUserName);
 

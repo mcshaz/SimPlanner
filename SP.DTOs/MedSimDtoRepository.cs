@@ -27,7 +27,7 @@ namespace SP.Dto
         public MedSimDtoRepository(IPrincipal user)
         {
 
-            _contextProvider = new MedSimBreezeContextProvider(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
+            _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
             _validationHelper = new ValidateMedSim(user);
             _contextProvider.BeforeSaveEntitiesDelegate += _validationHelper.Process;
             _user = user;
@@ -54,7 +54,7 @@ namespace SP.Dto
 
         static void Remap(SaveResult result)
         {
-            result.Entities = result.Entities.Select(o=> MapperConfig.GetLambda(o.GetType().Name, null,null,'.').Compile().DynamicInvoke(o)).ToList();
+            result.Entities = result.Entities.Select(o=> MapperConfig.GetToDtoLambda(o.GetType()).Compile().DynamicInvoke(o)).ToList();
         }
 
         public IQueryable<CourseFormatDto> GetCourseFormats(string[] includes, string[] selects, char sepChar)

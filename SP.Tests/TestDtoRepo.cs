@@ -81,8 +81,8 @@ namespace SimPlanner.Tests
         [TestMethod]
         public void TestCourses()
         {
-            var courses = (from c in _repo.GetCourses(new[] { "CourseParticipants" })
-                           let firstDay = c.CourseDays.First(cd => cd.Day == 1)
+            var courses = (from c in _repo.GetCourses(new[] { "CourseParticipants", "CourseDays" })
+                           let firstDay = c.CourseDays.FirstOrDefault(cd => cd.Day == 2)
                            where firstDay.Start > DateTime.UtcNow
                            orderby firstDay.Start
                            select new { firstDay.Start, c.CourseParticipants }).ToList();

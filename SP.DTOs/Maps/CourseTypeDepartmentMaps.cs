@@ -11,7 +11,7 @@ using SP.DataAccess;namespace SP.Dto.Maps
             {
                 CourseTypeId = m.CourseTypeId,
                 DepartmentId = m.DepartmentId
-            };
-        }
+            })
+        { }
     }
 }
