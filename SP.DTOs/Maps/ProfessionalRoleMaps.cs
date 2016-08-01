@@ -1,14 +1,18 @@
 using SP.DataAccess;
-using SP.Dto;
-using System;
-using System.Linq.Expressions;
-namespace SP.Dto.Maps
+namespace SP.Dto.Maps
 {
-    internal static class ProfessionalRoleMaps
+    internal class ProfessionalRoleMaps : DomainDtoMap<ProfessionalRole, ProfessionalRoleDto>
     {
-        internal static Func<ProfessionalRoleDto, ProfessionalRole> MapToDomain()
+        public ProfessionalRoleMaps() : base(m => new ProfessionalRole
         {
-            return m => new ProfessionalRole
+                Id = m.Id,
+                Description = m.Description,
+                Category = m.Category,
+                Order = m.Order
+                //Participants = m.Participants,
+                //cultures = m.cultures
+            },
+            m => new ProfessionalRoleDto
             {
                 Id = m.Id,
                 Description = m.Description,
@@ -16,20 +20,7 @@ namespace SP.Dto.Maps
                 Order = m.Order
                 //Participants = m.Participants,
                 //cultures = m.cultures
-            };
-        }
-
-        internal static Expression<Func<ProfessionalRole, ProfessionalRoleDto>> MapFromDomain()
-        {
-            return m => new ProfessionalRoleDto
-            {
-                Id = m.Id,
-                Description = m.Description,
-                Category = m.Category,
-                Order = m.Order
-                //Participants = m.Participants,
-                //cultures = m.cultures
-            };
-        }
+            })
+        { }
     }
 }

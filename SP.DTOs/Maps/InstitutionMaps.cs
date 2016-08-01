@@ -1,13 +1,9 @@
 using SP.DataAccess;
-using SP.Dto;
-using System;
-using System.Linq.Expressions;
-namespace SP.Dto.Maps
+namespace SP.Dto.Maps
 {
-    internal static class InstitutionMaps
-    {        internal static Func<InstitutionDto, Institution> MapToDomain()
-        {
-            return m => new Institution
+    internal class InstitutionMaps: DomainDtoMap<Institution, InstitutionDto>
+    {
+        public InstitutionMaps() : base(m => new Institution
             {
                 Id = m.Id,
                 Name = m.Name,
@@ -16,13 +12,8 @@ namespace SP.Dto.Maps
                 StandardTimeZone = m.StandardTimeZone,
                 Latitude = m.Latitude,
                 Longitude = m.Longitude
-            };
-        }
-
-
-        internal static Expression<Func<Institution, InstitutionDto>> MapFromDomain()
-        {
-            return m => new InstitutionDto
+            },
+            m => new InstitutionDto
             {
                 Id = m.Id,
                 Name = m.Name,
@@ -31,7 +22,7 @@ namespace SP.Dto.Maps
                 StandardTimeZone = m.StandardTimeZone,
                 Latitude = m.Latitude,
                 Longitude = m.Longitude
-            };
-        }
+            })
+        { }
     }
 }

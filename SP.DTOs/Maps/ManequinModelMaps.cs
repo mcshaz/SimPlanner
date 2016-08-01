@@ -1,29 +1,20 @@
 using SP.DataAccess;
-using SP.Dto;
-using System;
-using System.Linq.Expressions;
-namespace SP.Dto.Maps
+namespace SP.Dto.Maps
 {
-    internal static class ManequinModelMaps
+    internal class ManequinModelMaps: DomainDtoMap<ManequinModel, ManequinModelDto>
     {
-        internal static Func<ManequinModelDto, ManequinModel> MapToDomain()
-        {
-            return m => new ManequinModel
+        public ManequinModelMaps() : base(m => new ManequinModel
             {
                 Id = m.Id,
                 Description = m.Description,
                 ManufacturerId = m.ManufacturerId
-            };
-        }
-
-        internal static Expression<Func<ManequinModel, ManequinModelDto>> MapFromDomain()
-        {
-            return m => new ManequinModelDto
+            },
+            m => new ManequinModelDto
             {
                 Id = m.Id,
                 Description = m.Description,
                 ManufacturerId = m.ManufacturerId
-            };
-        }
+            })
+        { }
     }
 }

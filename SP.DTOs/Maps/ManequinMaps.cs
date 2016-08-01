@@ -1,14 +1,9 @@
 using SP.DataAccess;
-using SP.Dto;
-using System;
-using System.Linq.Expressions;
-namespace SP.Dto.Maps
+namespace SP.Dto.Maps
 {
-    internal static class ManequinMaps
+    internal class ManequinMaps: DomainDtoMap<Manequin, ManequinDto>
     {
-        internal static Func<ManequinDto, Manequin> MapToDomain()
-        {
-            return m => new Manequin
+        public ManequinMaps() : base(m => new Manequin
             {
                 Id = m.Id,
                 Description = m.Description,
@@ -19,12 +14,8 @@ namespace SP.Dto.Maps
                 PurchaseDate = m.PurchaseDate,
                 PurchasedNew = m.PurchasedNew,
                 LocalCurrencyPurchasePrice = m.LocalCurrencyPurchasePrice
-            };
-        }
-
-        internal static Expression<Func<Manequin, ManequinDto>> MapFromDomain()
-        {
-            return m => new ManequinDto
+            },
+            m => new ManequinDto
             {
                 Id = m.Id,
                 Description = m.Description,
@@ -37,7 +28,7 @@ namespace SP.Dto.Maps
                 //Department = m.Department,
                 //Scenarios = m.Scenarios,
                 //Manufacturer = m.Manufacturer
-            };
-        }
+            })
+        { }
     }
 }

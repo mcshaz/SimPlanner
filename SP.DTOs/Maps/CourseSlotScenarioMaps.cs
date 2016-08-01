@@ -1,14 +1,9 @@
 using SP.DataAccess;
-using SP.Dto;
-using System;
-using System.Linq.Expressions;
-namespace SP.Dto.Maps
+namespace SP.Dto.Maps
 {
-    internal static class CourseSlotScenarioMaps
+    internal class CourseSlotScenarioMaps: DomainDtoMap<CourseSlotScenario, CourseSlotScenarioDto>
     {
-        internal static Func<CourseSlotScenarioDto, CourseSlotScenario> MapToDomain()
-        { 
-            return m => new CourseSlotScenario
+        public CourseSlotScenarioMaps() : base(m => new CourseSlotScenario
             {
                 CourseId = m.CourseId,
                 CourseSlotId = m.CourseSlotId,
@@ -18,12 +13,8 @@ namespace SP.Dto.Maps
                 //Scenario = m.Scenario,
                 //Role = m.Role,
                 //FacultyMember = m.FacultyMember
-            };
-        }
-
-        internal static Expression<Func<CourseSlotScenario, CourseSlotScenarioDto>> MapFromDomain()
-        {
-            return m => new CourseSlotScenarioDto
+            },
+            m => new CourseSlotScenarioDto
             {
                 CourseId = m.CourseId,
                 CourseSlotId = m.CourseSlotId,

@@ -40,7 +40,7 @@ namespace SP.Dto
 
         public IQueryable<ActivityTeachingResourceDto> ActivityTeachingResources(string[] includes, string[] selects, char sepChar)
         {
-            return Context.ActivityTeachingResources.Project<ActivityTeachingResource, ActivityTeachingResourceDto>(includes, selects, sepChar);
+            return Context.ActivityTeachingResources.ProjectToDto<ActivityTeachingResource, ActivityTeachingResourceDto>(includes, selects, sepChar);
         }
 
         public SaveResult SaveChanges(JObject saveBundle)
@@ -59,12 +59,12 @@ namespace SP.Dto
 
         public IQueryable<CourseFormatDto> GetCourseFormats(string[] includes, string[] selects, char sepChar)
         {
-            return Context.CourseFormats.Project<CourseFormat, CourseFormatDto>(includes, selects, sepChar);
+            return Context.CourseFormats.ProjectToDto<CourseFormat, CourseFormatDto>(includes, selects, sepChar);
         }
 
         public IQueryable<CourseSlotDto> GetCourseSlots(string[] includes, string[] selects, char sepChar)
         {
-            return Context.CourseSlots.Project<CourseSlot, CourseSlotDto>(includes, selects, sepChar);
+            return Context.CourseSlots.ProjectToDto<CourseSlot, CourseSlotDto>(includes, selects, sepChar);
         }
 
         [Serializable]
@@ -83,12 +83,12 @@ namespace SP.Dto
                 returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
             }
             //currently allowing users to view all departmetns within their institution - but only edit thseir department
-            return returnVar.Project<Institution,InstitutionDto>(includes, selects,sepChar);
+            return returnVar.ProjectToDto<Institution,InstitutionDto>(includes, selects,sepChar);
         }
 
         public IQueryable<ParticipantDto> GetParticipants(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
-            return Context.Users.Project<Participant, ParticipantDto>(includes, selects, sepChar);
+            return Context.Users.ProjectToDto<Participant, ParticipantDto>(includes, selects, sepChar);
             /*
             if (include.Length > 0)
             {
@@ -101,68 +101,68 @@ namespace SP.Dto
 
         public IQueryable<CultureDto> GetCultures(string[] includes, string[] selects, char sepChar)
         {
-            return Context.Cultures.Project<Culture, CultureDto>(includes, selects, sepChar);
+            return Context.Cultures.ProjectToDto<Culture, CultureDto>(includes, selects, sepChar);
         }
 
-        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.Project<Department,DepartmentDto>(); } }
+        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.ProjectToDto<Department,DepartmentDto>(); } }
 
         public IQueryable<CourseTypeDto> GetCourseTypes(string[] includes, string[] selects, char sepChar)
         {
-            return Context.CourseTypes.Project<CourseType, CourseTypeDto>(includes, selects, sepChar);
+            return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(includes, selects, sepChar);
         }
 
-        public IQueryable<FacultyScenarioRoleDto> SenarioRoles { get { return Context.FacultyScenarioRoles.Project<FacultyScenarioRole,FacultyScenarioRoleDto>(); } }
+        public IQueryable<FacultyScenarioRoleDto> SenarioRoles { get { return Context.FacultyScenarioRoles.ProjectToDto<FacultyScenarioRole,FacultyScenarioRoleDto>(); } }
 
-        public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.Project<Institution,InstitutionDto>(); } }
+        public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.ProjectToDto<Institution,InstitutionDto>(); } }
 
         public IQueryable<ManequinDto> Manequins
         {
             get
             {
                 IQueryable<Manequin> returnVar = Context.Manequins.Where(m => m.Department.Institution.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
-                return returnVar.Project<Manequin, ManequinDto>();
+                return returnVar.ProjectToDto<Manequin, ManequinDto>();
             }
         }
 
-        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.Project<ProfessionalRole,ProfessionalRoleDto>(); } }
+        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.ProjectToDto<ProfessionalRole,ProfessionalRoleDto>(); } }
 
-        public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.Project<Scenario,ScenarioDto>(); } }
+        public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.ProjectToDto<Scenario,ScenarioDto>(); } }
 
-        public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.Project<ScenarioResource,ScenarioResourceDto>(); } }
+        public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.ProjectToDto<ScenarioResource,ScenarioResourceDto>(); } }
 
         public IQueryable<ManequinManufacturerDto> ManequinManufacturers
         {
             get
             {
-                return Context.ManequinManufacturers.Project<ManequinManufacturer, ManequinManufacturerDto>(includes: new[] { "ManequinModels" });
+                return Context.ManequinManufacturers.ProjectToDto<ManequinManufacturer, ManequinManufacturerDto>(includes: new[] { "ManequinModels" });
             }
         }
 
-        public IQueryable<ManequinModelDto> ManequinModels { get { return Context.ManequinModels.Project<ManequinModel, ManequinModelDto>(); } }
+        public IQueryable<ManequinModelDto> ManequinModels { get { return Context.ManequinModels.ProjectToDto<ManequinModel, ManequinModelDto>(); } }
 
-        public IQueryable<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get { return Context.ProfessionalRoleInstitutions.Project<ProfessionalRoleInstitution, ProfessionalRoleInstitutionDto>(); } }
+        public IQueryable<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get { return Context.ProfessionalRoleInstitutions.ProjectToDto<ProfessionalRoleInstitution, ProfessionalRoleInstitutionDto>(); } }
 
         public IQueryable<FacultyScenarioRoleDto> FacultyScenarioRoles { get {
-                return Context.FacultyScenarioRoles.Project<FacultyScenarioRole, FacultyScenarioRoleDto>();
+                return Context.FacultyScenarioRoles.ProjectToDto<FacultyScenarioRole, FacultyScenarioRoleDto>();
         } }
 
         public IQueryable<CourseTypeScenarioRoleDto> CourseTypeScenarioRoles
         {
             get
             {
-                return Context.CourseTypeScenarioRoles.Project<CourseTypeScenarioRole, CourseTypeScenarioRoleDto>();
+                return Context.CourseTypeScenarioRoles.ProjectToDto<CourseTypeScenarioRole, CourseTypeScenarioRoleDto>();
             }
         }
 
         public IQueryable<CourseActivityDto> GetCourseActivities(string[] includes = null, string[] selects = null, char sepChar = '.') {
-            return Context.CourseActivities.Project<CourseActivity, CourseActivityDto>(includes, selects, sepChar);
+            return Context.CourseActivities.ProjectToDto<CourseActivity, CourseActivityDto>(includes, selects, sepChar);
         }
 
 
         //might eventually run the visitor like so: http://stackoverflow.com/questions/18879779/select-and-expand-break-odataqueryoptions-how-to-fix
         public IQueryable<CourseDto> GetCourses(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
-            return Context.Courses.Project<Course,CourseDto>(includes, selects, sepChar);
+            return Context.Courses.ProjectToDto<Course,CourseDto>(includes, selects, sepChar);
             /*
             if (include.Length > 0)
             {
@@ -175,7 +175,7 @@ namespace SP.Dto
 
         public IQueryable<CourseTypeDto> GetCourseTypes()
         {
-            return Context.CourseTypes.Project<CourseType, CourseTypeDto>(includes: new[] { "CourseFormats" });
+            return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(includes: new[] { "CourseFormats" });
         }
 
 

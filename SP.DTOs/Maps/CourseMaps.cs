@@ -1,15 +1,10 @@
 using SP.DataAccess;
-using SP.Dto;
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-namespace SP.Dto.Maps
+
+using System.Linq;namespace SP.Dto.Maps
 {
-    internal static class CourseMaps
+    internal class CourseMaps: DomainDtoMap<Course, CourseDto>
     {
-        internal static Func<CourseDto, Course> MapToDomain()
-        {
-            return m => new Course
+        public CourseMaps() : base(m => new Course
             {
                 Id = m.Id,
                 StartUtc = m.Start,

@@ -3,8 +3,7 @@ namespace SP.Dto.Maps
 {
     internal class ChosenTeachingResourceMaps : DomainDtoMap<ChosenTeachingResource, ChosenTeachingResourceDto>
     {
-        public ChosenTeachingResourceMaps() : base(
-                    m => new ChosenTeachingResource
+        public ChosenTeachingResourceMaps() : base(m => new ChosenTeachingResource
                     {
                         CourseId = m.CourseId,
                         CourseSlotId = m.CourseSlotId,

@@ -3,20 +3,33 @@ using System.Linq.Expressions;
 
 namespace SP.Dto.Maps
 {
-    abstract class DomainDtoMap<TDomain, TDto> : IDomainDtoMap<TDomain, TDto>
+    abstract class DomainDtoMap<TDomain, TDto> : IDomainDtoMap
     {
         protected DomainDtoMap(Func<TDto, TDomain> mapToDomain, Expression<Func<TDomain, TDto>> mapFromDomain)
         {
-            MapToDomain = mapToDomain;
-            MapFromDomain = mapFromDomain;
+            TypedMapToDomain = mapToDomain;
+            TypedMapFromDomain = mapFromDomain;
         }
 
-        public Func<TDto, TDomain> MapToDomain { get; private set; }
-        public Expression<Func<TDomain, TDto>> MapFromDomain { get; private set; }
+        public Func<TDto, TDomain> TypedMapToDomain { get; private set; }
+        public Expression<Func<TDomain, TDto>> TypedMapFromDomain { get; private set; }
 
-        public Type TypeofDtoPropertyName(string propertyName)
+        public LambdaExpression MapFromDomain { get { return TypedMapFromDomain; } }
+        public object MapToDomain(object dto)
         {
-            return typeof(TDto).GetProperty(propertyName).PropertyType;
+            return TypedMapToDomain((TDto)dto);
+        }
+
+        public Type TypeofDto
+        {
+            get { return typeof(TDto); }
+            //return typeof(TDto).GetProperty(propertyName).PropertyType;
+        }
+
+        public Type TypeofDomainObject
+        {
+            get { return typeof(TDomain); }
+            //return typeof(TDto).GetProperty(propertyName).PropertyType;
         }
     }
 }

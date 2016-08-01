@@ -136,7 +136,7 @@ namespace SimPlanner.Tests
             //var test = MapperConfig.GetLambda<Participant, ParticipantDto>(new[] { "Department", "Department.Institution", "Department.Manequins", "Department.Manequins.CourseSlotScenarios", "ProfessionalRole.CourseParticipants" });
             //Console.WriteLine(test);
 
-            var test2 = MapperConfig.GetLambda<Course, CourseDto>(new[] {
+            var test2 = MapperConfig.GetToDtoLambda<Course, CourseDto>(new[] {
                         "CourseParticipants",
                         "CourseFormat.CourseSlots.Activity.ActivityChoices",
                         "CourseSlotScenarios",

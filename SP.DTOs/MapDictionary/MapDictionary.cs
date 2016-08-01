@@ -1,4 +1,4 @@
-﻿using SP.DataAccess;
+﻿using SP.Dto.Maps;
 using SP.Dto.Utilities;
 using System;
 using System.Collections.Generic;
@@ -11,86 +11,68 @@ namespace SP.Dto.Maps
 {
     public static class MapperConfig
     {
-        private static IReadOnlyDictionary<string, LambdaExpression> _maps;
+        private static readonly IReadOnlyDictionary<Type, IDomainDtoMap> _toDtoMaps;
+        private static readonly IReadOnlyDictionary<Type, IDomainDtoMap> _fromDtoMaps;
         static MapperConfig()
         {
-            _maps = new ReadOnlyDictionary<string, LambdaExpression>(
-                CreateMapDictionary(
-                    new[] {
-                        new DtoMap(typeof(ActivityTeachingResource),  ActivityTeachingResourceMaps.MapFromDomain(),false,"ActivityChoices"),
-                        new DtoMap(typeof(ChosenTeachingResource),ChosenTeachingResourceMaps.MapFromDomain()),
-                        new DtoMap(typeof(Culture),CultureMaps.MapFromDomain()),
-                        new DtoMap(typeof(Course),  CourseMaps.MapFromDomain(), true, "OutreachCourses"),
-                        new DtoMap(typeof(CourseActivity),  CourseActivityMaps.MapFromDomain(), false, "CourseActivities", "Activity"),
-                        new DtoMap(typeof(CourseDay),  CourseDayMaps.MapFromDomain()),
-                        new DtoMap(typeof(CourseFormat),  CourseFormatMaps.MapFromDomain()),
-                        new DtoMap(typeof(CourseParticipant),  CourseParticipantMaps.MapFromDomain()),
-                        new DtoMap(typeof(CourseScenarioFacultyRole),  CourseScenarioFacultyRoleMaps.MapFromDomain()),
-                        new DtoMap(typeof(CourseSlot),  CourseSlotMaps.MapFromDomain()),
-                        new DtoMap(typeof(CourseSlotManequin),  CourseSlotManequinMaps.MapFromDomain()),
-                        new DtoMap(typeof(CourseSlotPresenter),  CourseSlotPresenterMaps.MapFromDomain()),
-                        new DtoMap(typeof(CourseSlotScenario),  CourseSlotScenarioMaps.MapFromDomain()),
-                        new DtoMap(typeof(CourseType),  CourseTypeMaps.MapFromDomain()),
-                        new DtoMap(typeof(CourseTypeDepartment),  CourseTypeDepartmentMaps.MapFromDomain()),
-                        new DtoMap(typeof(CourseTypeScenarioRole),  CourseTypeScenarioRoleMaps.MapFromDomain()),
-                        new DtoMap(typeof(Department),  DepartmentMaps.MapFromDomain(), true,"OutreachingDepartment"),
-                        new DtoMap(typeof(FacultyScenarioRole),  FacultyScenarioRoleMaps.MapFromDomain()),
-                        new DtoMap(typeof(Institution),  InstitutionMaps.MapFromDomain()),
-                        new DtoMap(typeof(Manequin),  ManequinMaps.MapFromDomain()),
-                        new DtoMap(typeof(ManequinModel),  ManequinModelMaps.MapFromDomain(),true,"Model", "Models"),
-                        new DtoMap(typeof(ManequinManufacturer),  ManequinManufacturerMaps.MapFromDomain()),
-                        new DtoMap(typeof(ManequinService),  ManequinServiceMaps.MapFromDomain()),
-                        new DtoMap(typeof(Participant),  ParticipantMaps.MapFromDomain()),
-                        new DtoMap(typeof(ProfessionalRole),  ProfessionalRoleMaps.MapFromDomain()),
-                        new DtoMap(typeof(ProfessionalRoleInstitution),  ProfessionalRoleInstitutionMaps.MapFromDomain()),
-                        new DtoMap(typeof(Room),  RoomMaps.MapFromDomain()),
-                        new DtoMap(typeof(Scenario),  ScenarioMaps.MapFromDomain()),
-                        new DtoMap(typeof(ScenarioResource),  ScenarioResourceMaps.MapFromDomain()),
-                    }).ToDictionary(kv=>kv.Key, kv=>kv.Value));
-        }
-
-        static IEnumerable<KeyValuePair<string, LambdaExpression>> CreateMapDictionary(IEnumerable<DtoMap> maps)
-        {
-            foreach (var m in maps)
+            var maps = new IDomainDtoMap[]
             {
-                foreach (var t in m.PropertyNames)
-                {
-                    yield return new KeyValuePair<string, LambdaExpression>(t, m.Map);
-                }
-            }
-        }
-        public static IQueryable<TMap> Project<T, TMap>(this IQueryable<T> queryable, string[] includes = null, string[] selects=null, char sepChar='.')
-        {
-            return queryable.Select(GetLambda<T, TMap>(includes, selects, sepChar));
+                new ActivityTeachingResourceMaps(),
+                new ChosenTeachingResourceMaps(),
+                new CultureMaps(),
+                new CourseMaps(),
+                new CourseActivityMaps(),
+                new CourseDayMaps(),
+                new CourseFormatMaps(),
+                new CourseParticipantMaps(),
+                new CourseScenarioFacultyRoleMaps(),
+                new CourseSlotMaps(),
+                new CourseSlotManequinMaps(),
+                new CourseSlotPresenterMaps(),
+                new CourseSlotScenarioMaps(),
+                new CourseTypeMaps(),
+                new CourseTypeDepartmentMaps(),
+                new CourseTypeScenarioRoleMaps(),
+                new DepartmentMaps(),
+                new FacultyScenarioRoleMaps(),
+                new InstitutionMaps(),
+                new ManequinMaps(),
+                new ManequinModelMaps(),
+                new ManequinManufacturerMaps(),
+                new ManequinServiceMaps(),
+                new ParticipantMaps(),
+                new ProfessionalRoleMaps(),
+                new ProfessionalRoleInstitutionMaps(),
+                new RoomMaps(),
+                new ScenarioMaps(),
+                new ScenarioResourceMaps(),
+            };
+            _toDtoMaps = new ReadOnlyDictionary<Type, IDomainDtoMap>(
+                maps.ToDictionary(kv=>kv.TypeofDomainObject));
+            _fromDtoMaps = new ReadOnlyDictionary<Type, IDomainDtoMap>(
+                maps.ToDictionary(kv=>kv.TypeofDto));
         }
 
-        public static Expression<Func<T,TMap>> GetLambda<T,TMap>(string[] includes = null, string[] selects = null, char sepChar = '.')
+        public static IQueryable<TMap> ProjectToDto<T, TMap>(this IQueryable<T> queryable, string[] includes = null, string[] selects=null, char sepChar='.')
         {
-            return (Expression<Func<T, TMap>>)GetLambda(typeof(T).Name, includes, selects, sepChar);
+            return queryable.Select(GetToDtoLambda<T, TMap>(includes, selects, sepChar));
         }
 
-        internal static LambdaExpression GetLambda(string typeName, string[] includes, string[] selects, char sepChar)
+        public static Expression<Func<T,TMap>> GetToDtoLambda<T,TMap>(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
-            var includeSelects = new IncludeSelectOptions(typeName, includes, selects, sepChar);
+            return (Expression<Func<T, TMap>>)GeToDtoLambda(typeof(T), includes, selects, sepChar);
+        }
+
+        internal static LambdaExpression GeToDtoLambda(Type type, string[] includes, string[] selects, char sepChar)
+        {
+            var includeSelects = new IncludeSelectOptions(type, includes, selects, sepChar);
             VisitNodes(includeSelects.RequiredMappings);
             return includeSelects.RequiredMappings.Lambda;
         }
 
-        private class DtoMap
-        {
-            public DtoMap(Type t, LambdaExpression map, bool simple_s_pleuralisation = true, params string[] aliases)
-            {
-                PropertyNames = aliases.Concat(new[] { t.Name });
-                if (simple_s_pleuralisation) { PropertyNames = PropertyNames.Concat(new[] { t.Name + 's' }); }
-                Map = map;
-            }
-            public readonly IEnumerable<string> PropertyNames;
-            public readonly LambdaExpression Map;
-        }
-
         private static void VisitNodes(IncludeSelectOptions.Node includeTree)
         {
-            if (includeTree == null) { throw new ArgumentNullException("includes"); }
+            if (includeTree == null) { throw new ArgumentNullException("includeTree"); }
             
             if (includeTree.Children.Any())
             {
@@ -98,11 +80,7 @@ namespace SP.Dto.Maps
                 {
                     VisitNodes(n);
                 }
-                includeTree.Lambda = _maps[includeTree.Name].MapNavProperty(includeTree.Children.Select(c => new KeyValuePair<string, LambdaExpression>(c.Name, c.Lambda)));  
-            }
-            else
-            {
-                includeTree.Lambda = _maps[includeTree.Name];
+                includeTree.Lambda = includeTree.Lambda.MapNavProperty(includeTree.Children.Select(c => new KeyValuePair<string, LambdaExpression>(c.PropertyName, c.Lambda)));  
             }
         }
 
@@ -111,38 +89,17 @@ namespace SP.Dto.Maps
             readonly char _sepChar;
             internal readonly Node RequiredMappings;
 
-            public IncludeSelectOptions(string typeName, IList<string> includes = null, IList<string> selects = null, char sepChar = '.')
+            public IncludeSelectOptions(Type type, IList<string> includes = null, IList<string> selects = null, char sepChar = '.')
             {
                 ValidateNoRepeats(includes, "includes");
                 ValidateNoRepeats(selects, "selects");
                 _sepChar = sepChar;
-                List<string[]> mappings = (includes == null) ? new List<string[]>() : new List<string[]>(includes.Select(i => i.Split(sepChar)));
+                List<string[]> includeList = (includes == null) ? new List<string[]>() : new List<string[]>(includes.Select(i => i.Split(sepChar)));
+                List<string[]> selectList = (selects == null) ? new List<string[]>() : new List<string[]>(selects.Select(i => i.Split(sepChar)));
 
-                if (selects != null)
-                {
-                    mappings.AddRange(SelectNavProperties(selects.Select(s => s.Split(sepChar))));
-                }
-
-                RequiredMappings = GetRequiredIncludes(typeName, mappings);
+                RequiredMappings = GetRequiredMappings(type, includeList, selectList);
 
                 //RequiredMappings.PrintPretty("  ");
-            }
-
-            static IEnumerable<string[]> SelectNavProperties(IEnumerable<string[]> selects)
-            {
-                foreach (var s in selects)
-                {
-                    if (_maps.ContainsKey(s[s.Length - 1]))
-                    {
-                        yield return s;
-                    }
-                    else
-                    {
-                        var returnVar = new string[s.Length - 1];
-                        Array.Copy(s, returnVar, returnVar.Length);
-                        yield return returnVar;
-                    }
-                }
             }
 
             [Conditional("DEBUG")]
@@ -155,41 +112,56 @@ namespace SP.Dto.Maps
                     throw new ArgumentException("property [" + string.Join(",", repeats) + "] is repeated", paramName);
                 }
             }
-
-            static Node GetRequiredIncludes(string typeName, IList<string[]> includeList)
+            private static Node GetRequiredMappings(Type type, IList<string[]> includeList, IList<string[]> selectList )
+            {
+                Node node = new Node(type);
+                GetRequiredMappings(node, includeList, true);
+                GetRequiredMappings(node, selectList, false); 
+                return node;
+            }
+            private static Node GetRequiredMappings(Node node, IList<string[]> mapList, bool throwIfLastNotFound)
             {
                 //build tree
-                Node returnVar = new Node(typeName);
-                for(int i=0;i< includeList.Count;i++)
+                for(int i=0;i< mapList.Count;i++)
                 {
-                    Node match = returnVar;
+                    Node match = node;
                     int j;
-                    for (j=0; j < includeList[i].Length; j++)
+                    for (j=0; j < mapList[i].Length; j++)
                     {
-                        var matchingChild = match.Children.FirstOrDefault(n => n.Name == includeList[i][j]);
+                        string propertyName = mapList[i][j];
+                        var matchingChild = match.Children.FirstOrDefault(n => n.PropertyName == propertyName);
                         if (matchingChild == null)
                         {
-                            break;
+                            Type includeType = match.DtoType.GetProperty(propertyName).PropertyType;
+                            IDomainDtoMap map;
+                            if (_toDtoMaps.TryGetValue(includeType, out map))
+                            {
+                                matchingChild = new Node(includeType) {
+                                    PropertyName = propertyName,
+                                    Lambda = map.MapFromDomain
+                                };
+                                match.Children.Add(matchingChild);
+                            }
+                            else if (throwIfLastNotFound || j+1<mapList[i].Length)
+                            {
+                                throw new KeyNotFoundException($"Could not find map for property {propertyName} [{includeType.Name}]");
+                            }
                         }
                         match = matchingChild;
                     }
-                    for (; j < includeList[i].Length; j++)
-                    {
-                        match.Children.Add(new Node(includeList[i][j]));
-                        match = match.Children[match.Children.Count-1];
-                    }
                 }
-                return returnVar;
+                return node;
             }
 
             internal class Node
             {
                 public readonly List<Node> Children;
-                public readonly string Name;
+                public Type DtoType { get; set; }
+                public string PropertyName { get; set;}
                 public LambdaExpression Lambda { get; set; }
-                public Node(string name)
+                public Node(Type type)
                 {
-                    Name = name;
+                    DtoType = type;
                     Children = new List<Node>();
                 }
                 public void PrintPretty(string indent, bool last=false)
@@ -205,7 +177,7 @@ namespace SP.Dto.Maps
                         Debug.Write("|-");
                         indent += "| ";
                     }
-                    Debug.WriteLine(Name);
+                    Debug.WriteLine(DtoType.Name);
 
                     for (int i = 0; i < Children.Count; i++)
                     {

@@ -1,12 +1,8 @@
-using SP.DataAccess;
-using System;
-using System.Linq.Expressions;
-namespace SP.Dto.Maps
+using SP.DataAccess;namespace SP.Dto.Maps
 {
-    internal static class CourseSlotMaps
-    {        internal static Func<CourseSlotDto, CourseSlot> MapToDomain()
-        {
-            return m => new CourseSlot
+    internal class CourseSlotMaps: DomainDtoMap<CourseSlot, CourseSlotDto> 
+    {
+        public CourseSlotMaps() : base(m => new CourseSlot
             {
                 Id = m.Id,
                 MinutesDuration = m.MinutesDuration,
@@ -16,12 +12,8 @@ namespace SP.Dto.Maps
                 CourseFormatId = m.CourseFormatId,
                 Order = m.Order,
                 SimultaneousStreams = m.SimultaneousStreams
-            };
-        }
-
-        internal static Expression<Func<CourseSlot, CourseSlotDto>> MapFromDomain()
-        {
-            return m => new CourseSlotDto
+            },
+            m => new CourseSlotDto
             {
                 Id = m.Id,
                 MinutesDuration = m.MinutesDuration,
@@ -31,7 +23,7 @@ namespace SP.Dto.Maps
                 CourseFormatId = m.CourseFormatId,
                 Order = m.Order,
                 SimultaneousStreams = m.SimultaneousStreams
-            };
-        }
+            })
+        { }
     }
 }

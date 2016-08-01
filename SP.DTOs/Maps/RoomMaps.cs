@@ -1,42 +1,26 @@
 using SP.DataAccess;
-using SP.Dto;
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-namespace SP.Dto.Maps
-{
-    internal static class RoomMaps
-    {
-        internal static Func<RoomDto, Room> MapToDomain()
-        {
-            return m => new Room
-            {
-                Id = m.Id,
-                DepartmentId = m.DepartmentId,
-                ShortDescription = m.ShortDescription,
-                FullDescription = m.FullDescription,
-                Directions = m.Directions
-            };
-        }
-        /*
-        internal static Expression<Func<Course, CourseDto>> MapFromDomain(string[] includes) {
-            if (["Scenarios", "CourseType", "CourseParticipants", "ScenarioFacultyRoles"])
-            {
 
-            } */
-        internal static Expression<Func<Room, RoomDto>> MapFromDomain()
-        {
-            return m => new RoomDto
+using System.Linq;namespace SP.Dto.Maps
+{
+    internal class RoomMaps: DomainDtoMap<Room, RoomDto>
+    {
+        public RoomMaps() : base(m => new Room
             {
                 Id = m.Id,
                 DepartmentId = m.DepartmentId,
                 ShortDescription = m.ShortDescription,
                 FullDescription = m.FullDescription,
                 Directions = m.Directions
-            };
-            //Courses
-            //Department
-        }
+            },
+            m => new RoomDto
+            {
+                Id = m.Id,
+                DepartmentId = m.DepartmentId,
+                ShortDescription = m.ShortDescription,
+                FullDescription = m.FullDescription,
+                Directions = m.Directions
+            })
+        { }
 
         /*
         internal static Expression<Func<Course, CourseDto>> mapBriefFromRepo = m => new CourseDto

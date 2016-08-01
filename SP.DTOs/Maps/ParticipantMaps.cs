@@ -1,15 +1,10 @@
 ﻿using SP.DataAccess;
-using SP.Dto;
-using System;
-using System.Linq.Expressions;
-
+
 namespace SP.Dto.Maps
 {
-    public static class ParticipantMaps
+    internal class ParticipantMaps: DomainDtoMap<Participant, ParticipantDto>
     {
-        public static Func<ParticipantDto, Participant> MapToDomain()
-        {
-            return m => new Participant
+        public ParticipantMaps() : base(m => new Participant
             {
                 Id = m.Id,
                 PhoneNumber = m.PhoneNumber,
@@ -26,12 +21,7 @@ namespace SP.Dto.Maps
                 //CourseParticipants = m.CourseParticipants,
 
                 //ScenarioFacultyRoles = m.ScenarioFacultyRoles
-            };
-        }
-
-        public static Expression<Func<Participant, ParticipantDto>> MapFromDomain()
-        {
-            return m => new ParticipantDto
+            }, m => new ParticipantDto
             {
                 Id = m.Id,
                 PhoneNumber = m.PhoneNumber,
@@ -49,7 +39,7 @@ namespace SP.Dto.Maps
                 //CourseParticipants = null,
 
                 //ScenarioFacultyRoles = null
-            };
-        }
+            })
+        { }
     }
 }

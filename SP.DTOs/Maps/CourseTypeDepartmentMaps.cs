@@ -1,23 +1,13 @@
-using SP.DataAccess;
-using System;
-using System.Linq.Expressions;
-namespace SP.Dto.Maps
+using SP.DataAccess;namespace SP.Dto.Maps
 {
-    internal static class CourseTypeDepartmentMaps
+    internal class CourseTypeDepartmentMaps: DomainDtoMap<CourseTypeDepartment, CourseTypeDepartmentDto>
     {
-        internal static Func<CourseTypeDepartmentDto, CourseTypeDepartment> MapToDomain()
-        {
-            return m => new CourseTypeDepartment
+        public CourseTypeDepartmentMaps() : base(m => new CourseTypeDepartment
             {
                 CourseTypeId = m.CourseTypeId,
                 DepartmentId = m.DepartmentId
-            };
-        }
-
-
-        internal static Expression<Func<CourseTypeDepartment, CourseTypeDepartmentDto>> MapFromDomain()
-        {
-            return m => new CourseTypeDepartmentDto
+            },
+            m => new CourseTypeDepartmentDto
             {
                 CourseTypeId = m.CourseTypeId,
                 DepartmentId = m.DepartmentId

@@ -1,14 +1,9 @@
 using SP.DataAccess;
-using SP.Dto;
-using System;
-using System.Linq.Expressions;
-namespace SP.Dto.Maps
+namespace SP.Dto.Maps
 {
-    public static class DepartmentMaps
+    internal class DepartmentMaps : DomainDtoMap<Department, DepartmentDto>
     {
-        public static Func<DepartmentDto, Department> MapToDomain()
-        {
-            return m => new Department
+        public DepartmentMaps() : base(m => new Department
             {
                 Id = m.Id,
                 Name = m.Name,
@@ -17,13 +12,8 @@ namespace SP.Dto.Maps
                 CertificateFilename = m.CertificateFilename,
                 Abbreviation = m.Abbreviation,
                 Colour = m.Colour
-            };
-        }
-
-
-        public static Expression<Func<Department, DepartmentDto>> MapFromDomain()
-        {
-            return m => new DepartmentDto
+            },
+            m => new DepartmentDto
             {
                 Id = m.Id,
                 Name = m.Name,
@@ -38,7 +28,7 @@ namespace SP.Dto.Maps
                 //Courses = m.Courses,
                 //Scenarios = m.Scenarios,
                 //Departments = null
-            };
-        }
+            })
+        { }
     }
 }

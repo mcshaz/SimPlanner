@@ -3,11 +3,16 @@ using System.Linq.Expressions;
 
 namespace SP.Dto.Maps
 {
-    interface IDomainDtoMap<TDomain, TDto>
+    interface IDomainDtoMap
     {
-        Func<TDto, TDomain> MapToDomain { get; }
-        Expression<Func<TDomain, TDto>> MapFromDomain { get; }
+        Type TypeofDto { get; }
+        Type TypeofDomainObject { get; }
+        LambdaExpression MapFromDomain { get; }
+        object MapToDomain(object dto);
+    }
 
-        Type TypeofDtoPropertyName(string propertyName);
+    interface IDomainDtoMap<TDomain, TDto> : IDomainDtoMap
+    {
+
     }
 }
