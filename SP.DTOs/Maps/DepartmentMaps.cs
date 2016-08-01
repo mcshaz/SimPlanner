@@ -6,7 +6,7 @@ namespace SP.Dto.Maps
 {
     public static class DepartmentMaps
     {
-        public static Func<DepartmentDto, Department> mapToRepo()
+        public static Func<DepartmentDto, Department> MapToDomain()
         {
             return m => new Department
             {
@@ -21,7 +21,7 @@ namespace SP.Dto.Maps
         }
 
 
-        public static Expression<Func<Department, DepartmentDto>> mapFromRepo()
+        public static Expression<Func<Department, DepartmentDto>> MapFromDomain()
         {
             return m => new DepartmentDto
             {

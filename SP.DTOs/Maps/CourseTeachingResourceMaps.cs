@@ -1,23 +1,21 @@
 using SP.DataAccess;
-using SP.Dto;
 using System;
 using System.Linq.Expressions;
 namespace SP.Dto.Maps
 {
     internal static class ActivityTeachingResourceMaps
     {
-        internal static Func<ActivityTeachingResourceDto, DataAccess.ActivityTeachingResource> mapToRepo()
+        internal static Func<ActivityTeachingResourceDto, ActivityTeachingResource> MapToDomain()
         { 
-            return m => new DataAccess.ActivityTeachingResource {
+            return m => new ActivityTeachingResource {
                 Id = m.Id,
                 Description = m.Description,
                 ResourceFilename = m.ResourceFilename,
-                CourseActivityId = m.CourseActivityId,
-                //CourseSlot = m.CourseSlot
+                CourseActivityId = m.CourseActivityId
             };
         }
 
-        internal static Expression<Func<DataAccess.ActivityTeachingResource, ActivityTeachingResourceDto>> mapFromRepo()
+        internal static Expression<Func<ActivityTeachingResource, ActivityTeachingResourceDto>> MapFromDomain()
         {
             return m => new ActivityTeachingResourceDto
             {
@@ -25,7 +23,6 @@ namespace SP.Dto.Maps
                 Description = m.Description,
                 ResourceFilename = m.ResourceFilename,
                 CourseActivityId = m.CourseActivityId,
-                //CourseSlot = m.CourseSlot
             };
         }
     }

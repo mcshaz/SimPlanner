@@ -112,7 +112,7 @@ namespace SP.Web.UserEmails
 
         public static void AddFacultyMeeting(Calendar cal, Course course)
         {
-            if (!course.FacultyMeetingTimeUtc.HasValue) { return; }
+            if (!course.FacultyMeetingUtc.HasValue) { return; }
             cal.Method = CalendarMethods.Publish; //if more than 1 event, this is required
 
             var tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
@@ -132,7 +132,7 @@ namespace SP.Web.UserEmails
                 Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting - " + start.ToString("d"),
                 Organizer = courseEvent.Organizer,
                 Attendees = course.CourseParticipants.Where(cp => cp.IsFaculty).Select(MapCourseParticipantToAttendee).ToList(),
-                Start = new CalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FacultyMeetingTimeUtc.Value, tzi), tzi.Id)
+                Start = new CalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FacultyMeetingUtc.Value, tzi), tzi.Id)
             };
 
             // Set information about the event

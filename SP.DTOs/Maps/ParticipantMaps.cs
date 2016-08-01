@@ -7,7 +7,7 @@ namespace SP.Dto.Maps
 {
     public static class ParticipantMaps
     {
-        public static Func<ParticipantDto, Participant> mapToRepo()
+        public static Func<ParticipantDto, Participant> MapToDomain()
         {
             return m => new Participant
             {
@@ -29,7 +29,7 @@ namespace SP.Dto.Maps
             };
         }
 
-        public static Expression<Func<Participant, ParticipantDto>> mapFromRepo()
+        public static Expression<Func<Participant, ParticipantDto>> MapFromDomain()
         {
             return m => new ParticipantDto
             {

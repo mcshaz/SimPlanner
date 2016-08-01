@@ -6,7 +6,7 @@ namespace SP.Dto.Maps
 {
     internal static class ManequinModelMaps
     {
-        internal static Func<ManequinModelDto, ManequinModel> mapToRepo()
+        internal static Func<ManequinModelDto, ManequinModel> MapToDomain()
         {
             return m => new ManequinModel
             {
@@ -16,7 +16,7 @@ namespace SP.Dto.Maps
             };
         }
 
-        internal static Expression<Func<ManequinModel, ManequinModelDto>> mapFromRepo()
+        internal static Expression<Func<ManequinModel, ManequinModelDto>> MapFromDomain()
         {
             return m => new ManequinModelDto
             {

@@ -7,7 +7,7 @@ namespace SP.Dto.Maps
 {
     internal static class CourseMaps
     {
-        internal static Func<CourseDto, Course> mapToRepo()
+        internal static Func<CourseDto, Course> MapToDomain()
         {
             return m => new Course
             {
@@ -24,16 +24,18 @@ namespace SP.Dto.Maps
                 RoomId = m.RoomId,
                 FacultyMeetingRoomId = m.FacultyMeetingRoomId,
                 FacultyMeetingDuration = m.FacultyMeetingDuration,
-                FacultyMeetingTimeUtc = m.FacultyMeetingTime
+                FacultyMeetingUtc = m.FacultyMeeting,
+                CreatedUtc = m.Created,
+                LastModifiedUtc = m.LastModified
             };
         }
         /*
-        internal static Expression<Func<Course, CourseDto>> mapFromRepo(string[] includes) {
+        internal static Expression<Func<Course, CourseDto>> MapFromDomain(string[] includes) {
             if (["Scenarios", "CourseType", "CourseParticipants", "ScenarioFacultyRoles"])
             {
 
             } */
-        internal static Expression<Func<Course, CourseDto>> mapFromRepo()
+        internal static Expression<Func<Course, CourseDto>> MapFromDomain()
         {
             return m => new CourseDto
             {
@@ -50,7 +52,9 @@ namespace SP.Dto.Maps
                 RoomId = m.RoomId,
                 FacultyMeetingRoomId = m.FacultyMeetingRoomId,
                 FacultyMeetingDuration = m.FacultyMeetingDuration,
-                FacultyMeetingTime = m.FacultyMeetingTimeUtc
+                FacultyMeeting = m.FacultyMeetingUtc,
+                Created = m.CreatedUtc,
+                LastModified = m.LastModifiedUtc
             };
             //Department = m.Department,
 

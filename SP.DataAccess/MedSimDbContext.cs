@@ -1,11 +1,13 @@
 namespace SP.DataAccess
 {
+    using Data.Interfaces;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Migrations;
     using SP.Metadata;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
+    using System.Linq;
     public partial class MedSimDbContext : IdentityDbContext<Participant, AspNetRole,
         Guid, AspNetUserLogin,AspNetUserRole, AspNetUserClaim>
     {
@@ -425,10 +427,25 @@ namespace SP.DataAccess
         public override int SaveChanges()
         {
             SanitizeHtml.ForEntities(ChangeTracker);
-
+            SetTimeTracking();
             return base.SaveChanges();
         }
 
+        private void SetTimeTracking()
+        {
+            DateTime? currentTime = null;
+            foreach (var ent in ChangeTracker.Entries().Where(e=>
+                               e.State == EntityState.Added || e.State == EntityState.Modified
+                                   && typeof(ITimeTracking).IsAssignableFrom(e.Entity.GetType())))
+            {
+                var tt = (ITimeTracking)ent.Entity;
+                if (ent.State == EntityState.Added)
+                {
+                    tt.CreatedUtc = currentTime ?? (currentTime = DateTime.UtcNow).Value;
+                }
 
+                tt.LastModifiedUtc = currentTime ?? (currentTime = DateTime.UtcNow).Value;
+            }
+        }
     }
 }

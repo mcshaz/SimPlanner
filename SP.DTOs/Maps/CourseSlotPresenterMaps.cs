@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 namespace SP.Dto.Maps
 {
     internal static class CourseSlotPresenterMaps
-    {        internal static Func<CourseSlotPresenterDto, CourseSlotPresenter> mapToRepo()
+    {        internal static Func<CourseSlotPresenterDto, CourseSlotPresenter> MapToDomain()
         {
             return m => new CourseSlotPresenter
             {
@@ -18,7 +18,7 @@ namespace SP.Dto.Maps
         }
 
 
-        internal static Expression<Func<CourseSlotPresenter, CourseSlotPresenterDto>> mapFromRepo()
+        internal static Expression<Func<CourseSlotPresenter, CourseSlotPresenterDto>> MapFromDomain()
         {
             return m => new CourseSlotPresenterDto
             {

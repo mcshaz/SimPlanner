@@ -39,7 +39,6 @@
         vm.rooms = [];
         vm.save = save;
         vm.sendEmails = sendEmails;
-        vm.setDuration = setDuration;
         vm.title = 'course';
 
         activate();
@@ -67,7 +66,7 @@
                         }
                         vm.course = data;
                         vm.notifyViewModelLoaded();
-                        setCourseDays();
+                        concatCourseDays();
                     }));
                 }
                 common.activateController(promises, controllerId)
@@ -133,28 +132,21 @@
             if (dateInst.getHours() === 0 && dateInst.getMinutes() === 0) { //bad luck if you want your course to start at midnight, but this would be an extreme edge case!
                 dateInst.setHours(8);
             }
-            if (propName === 'startTime') {
-                setDuration();
-                if (courseDay === vm.courseDays[0] && vm.courseDays.all(function(cd,indx){return indx===1 || !cd.start;})){
+            if (propName === 'start') {
+                if (courseDay === vm.courseDays[0] && vm.courseDays.every(function(cd,indx){return indx===1 || !cd.start;})){
                     var date = vm.courseDays[0].start;
-                    for (var i=1;i<vm.courseDays.length;i++){
+                    for (var i=1; i<vm.courseDays.length; i++){
                         vm.courseDays[i].start = new Date(date).setDate(date.getDate() + i);
                     }
                 }
-            } else if (propName === 'facultyMeetingTime') {
+            } else if (propName === 'facultyMeeting') {
                 if (!vm.course.facultyMeetingDuration) {
                     vm.course.facultyMeetingDuration = 30;
                 }
             }
         }
 
-        function setDuration(cd) {
-            getCourseLengthPromise().then(function (courseLengthByDay) {
-                cd.duration = courseLengthByDay[cd.day];
-            });
-        }
-
-        function setCourseDays() {
+        function concatCourseDays() {
             vm.course.courseDays.sort(common.sortOnPropertyName('day'));
             vm.courseDays = [vm.course].concat(vm.course.courseDays);
         }
@@ -167,29 +159,6 @@
                 function (error) { log.error({ msg: 'failed to remove ' + name + ' from course' }); });
         }
 
-        var _courseLength = null;
-        function getCourseLengthPromise() {
-            if (!vm.course.courseFormat) {
-                return $q.resolve(null);
-            } else if (_courseLength === null) {
-                if (!vm.course.courseFormat.entityAspect.isNavigationPropertyLoaded('courseSlots')) {
-                    return vm.course.courseFormat.entityAspect.loadNavigationProperty('courseSlots').then(getSlotDuration);
-                } else {
-                    return $q.resolve(getSlotDuration());
-                }
-            } else {
-                return $q.resolve(_courseLength);
-            }
-
-            function getSlotDuration() {
-                _courseLength = [];
-                _courseLength = vm.course.courseFormat.courseSlots.foreach(function (cs) {
-                    returnVar[cs.day] = (returnVar[cs.day] || 0) + cs.durationMinutes * 60000;
-                },0);
-                return _courseLength;
-            }
-        }
-
         function formatChanged() {
             if (!vm.course.courseFormat) {
                 //_courseLength = null;
@@ -200,29 +169,62 @@
                 });
                 return;
             }
-
-            setDuration();
-            setCourseDays();
+            adjustCourseDays();
         }
 
         function adjustCourseDays() {
-            var maxDays = vm.course.courseFormat
-                ? vm.course.courseFormat.daysDuration
-                : 0;
-            var courseDay;
-            var j;
-            for (var i = 1; i <= maxDays; i++) {
-                courseDay = vm.course.courseDays.filter(function (cd) { return cd.day === i; });
-                if (courseDay.length === 0) {
-                    dataContext.courseDays.create({courseId: vm.course.id, day:i});
-                } else {
-                    for (j = 2; j < courseDay.length; j++) {
-                        courseDay[j].entityAspect.setDeleted();
+            getCourseLengthPromise().then(function (courseLength) {
+                var maxDays = vm.course.courseFormat
+                    ? vm.course.courseFormat.daysDuration
+                    : 1;
+                var courseDay, key;
+                concatCourseDays();
+                for (var i = 2; i <= maxDays; i++) {
+                    courseDay = vm.courseDays.find(function (cd) { return cd.day === i; });
+                    if (!courseDay) {
+                        key = { courseId: vm.course.id, day: i };
+                        courseDay = datacontext.courseDays.getByKey(key, true);
+                        if (courseDay) {
+                            if (courseDay.entityAspect.entityState.isDeleted()) {
+                                courseDay.entityAspect.setUnchanged();
+                            } else {
+                                vm.log.debug({ msg: 'courseDay found in cache & to be added but in state other than deleted', data: courseDay });
+                            }
+                        } else {
+                            courseDay = dataContext.courseDays.create(key);
+                        }
+                    }
+                    courseDay.duration = courseLength[i];
+                }
+                for (; i <= vm.course.courseDays.length; i++) {
+                    courseDay = vm.courseDays.find(function (cd) { return cd.day === i; });
+                    if (courseDay) {
+                        courseDay.entityAspect.setDeleted();
                     }
                 }
-            }
-            for (; i < vm.course.courseDays.length; i++) {
-                courseDay[i].entityAspect.setDeleted();
+            });
+
+            var _courseLength = null;
+            function getCourseLengthPromise() {
+                if (!vm.course.courseFormat) {
+                    return $q.resolve(null);
+                } else if (_courseLength === null) {
+                    if (!vm.course.courseFormat.entityAspect.isNavigationPropertyLoaded('courseSlots')) {
+                        return vm.course.courseFormat.entityAspect.loadNavigationProperty('courseSlots').then(getSlotDuration);
+                    } else {
+                        return $q.resolve(getSlotDuration());
+                    }
+                } else {
+                    return $q.resolve(_courseLength);
+                }
+
+                function getSlotDuration() {
+                    _courseLength = [];
+                    vm.course.courseFormat.courseSlots.foreach(function (cs) {
+                        _courseLength[cs.day] = (_courseLength[cs.day] || 0) + cs.durationMinutes * 60000;
+                    }, 0);
+                    return _courseLength;
+                }
             }
         }
 

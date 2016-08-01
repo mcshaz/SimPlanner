@@ -19,20 +19,23 @@ namespace SP.DataAccess.Migrations
                 .PrimaryKey(t => new { t.CourseId, t.Day })
                 .ForeignKey("dbo.Courses", t => t.CourseId)
                 .Index(t => t.CourseId);
-            
+
             RenameColumn("dbo.Courses", "StartTimeUtc", "StartUtc");
-            AddColumn("dbo.Courses", "Duration", c => c.Time(nullable: false, precision: 7));
+            RenameColumn("dbo.Courses", "FacultyMeetingTimeUtc", "FacultyMeetingUtc");
             DropColumn("dbo.Courses", "FinishTimeUtc");
+            AddColumn("dbo.Courses", "Duration", c => c.Time(nullable: false, precision: 7));
         }
         
         public override void Down()
         {
-            AddColumn("dbo.Courses", "FinishTimeUtc", c => c.DateTime(nullable: false));
-            RenameColumn("dbo.Courses", "StartUtc", "StartTimeUtc");
+
+            RenameColumn("dbo.Courses",  "StartUtc", "StartTimeUtc");
+            RenameColumn("dbo.Courses", "FacultyMeetingUtc", "FacultyMeetingTimeUtc");
+            AddColumn("dbo.Courses", "FinishTimeUtc", c=>c.DateTime(nullable:false));
+            DropColumn("dbo.Courses", "Duration");
+
             DropForeignKey("dbo.CourseDays", "CourseId", "dbo.Courses");
             DropIndex("dbo.CourseDays", new[] { "CourseId" });
-            DropColumn("dbo.Courses", "Duration");
-            DropColumn("dbo.Courses", "StartUtc");
             DropTable("dbo.CourseDays");
         }
     }

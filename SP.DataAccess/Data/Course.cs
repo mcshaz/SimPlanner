@@ -10,7 +10,7 @@ namespace SP.DataAccess
     using System.Linq;
 
     [MetadataType(typeof(CourseMetadata))]
-    public class Course : ICourseDay
+    public class Course : ICourseDay, ITimeTracking
     {
         public Guid Id { get; set; }
 
@@ -23,16 +23,16 @@ namespace SP.DataAccess
 
         public TimeSpan Duration { get; set; }
 
-        private DateTime? _facultyMeetingTimeUtc;
-        public DateTime? FacultyMeetingTimeUtc
+        private DateTime? _facultyMeetingUtc;
+        public DateTime? FacultyMeetingUtc
         {
             get
             {
-                return _facultyMeetingTimeUtc;
+                return _facultyMeetingUtc;
             }
             set
             {
-                _facultyMeetingTimeUtc = value.HasValue? value.Value.AsUtc(): (DateTime?)null;
+                _facultyMeetingUtc = value.HasValue? value.Value.AsUtc(): (DateTime?)null;
             }
         }
 
@@ -51,15 +51,23 @@ namespace SP.DataAccess
         private DateTime _createdUtc;
         public DateTime CreatedUtc
         {
-            get {return _createdUtc;}
-            set { _createdUtc = value.AsUtc(); }
+            get {
+                return _createdUtc;
+            }
+            set {
+                _createdUtc = value.AsUtc();
+            }
         }
 
         private DateTime _lastModifiedUtc;
         public DateTime LastModifiedUtc
         {
-            get {return _lastModifiedUtc;}
-            set { _lastModifiedUtc = value.AsUtc(); }
+            get {
+                return _lastModifiedUtc;
+            }
+            set {
+                _lastModifiedUtc = value.AsUtc();
+            }
         }
 
         public byte FacultyNoRequired { get; set; }

@@ -42,7 +42,7 @@
                                             <i class="fa fa-calendar"></i>
                                         </span>
                                         <input id="startDate" class="form-control" ng-model="cd.start" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
-                                               data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" ng-change="vm.dateChanged('startTime',cd)" />
+                                               data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" ng-change="vm.dateChanged('start',cd)" />
                                     </div>
                                 </div>
                                 <div class="col-md-5">
@@ -87,8 +87,8 @@
                                     <span class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </span>
-                                    <input id="planningDate" class="form-control" ng-model="vm.course.facultyMeetingTime" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
-                                           data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate ng-change="vm.dateChanged('facultyMeetingTime')" />
+                                    <input id="planningDate" class="form-control" ng-model="vm.course.facultyMeeting" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
+                                           data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate ng-change="vm.dateChanged('facultyMeeting')" />
 
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                                     <span class="input-group-addon">
                                         <i class="fa fa-clock-o"></i>
                                     </span>
-                                    <input class="form-control" ng-model="vm.course.facultyMeetingTime" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" />
+                                    <input class="form-control" ng-model="vm.course.facultyMeeting" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" />
                                 </div>
 
                             </div>

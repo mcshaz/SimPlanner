@@ -61,7 +61,7 @@ namespace SP.Web.Controllers
                     {
                         sendMail(cp);
                     }
-                    if (course.FacultyMeetingTimeUtc.HasValue && course.FacultyMeetingTimeUtc > now)
+                    if (course.FacultyMeetingUtc.HasValue && course.FacultyMeetingUtc > now)
                     {
                         Appointment.AddFacultyMeeting(cal.Cal, course);
                     }

@@ -7,7 +7,7 @@ namespace SP.Dto.Maps
 {
     internal static class CourseDayMaps
     {
-        internal static Func<CourseDayDto, CourseDay> mapToRepo()
+        internal static Func<CourseDayDto, CourseDay> MapToDomain()
         {
             return m => new CourseDay
             {
@@ -18,12 +18,12 @@ namespace SP.Dto.Maps
             };
         }
         /*
-        internal static Expression<Func<Course, CourseDto>> mapFromRepo(string[] includes) {
+        internal static Expression<Func<Course, CourseDto>> MapFromDomain(string[] includes) {
             if (["Scenarios", "CourseType", "CourseParticipants", "ScenarioFacultyRoles"])
             {
 
             } */
-        internal static Expression<Func<CourseDay, CourseDayDto>> mapFromRepo()
+        internal static Expression<Func<CourseDay, CourseDayDto>> MapFromDomain()
         {
             return m => new CourseDayDto
             {

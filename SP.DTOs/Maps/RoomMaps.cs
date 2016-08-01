@@ -7,7 +7,7 @@ namespace SP.Dto.Maps
 {
     internal static class RoomMaps
     {
-        internal static Func<RoomDto, Room> mapToRepo()
+        internal static Func<RoomDto, Room> MapToDomain()
         {
             return m => new Room
             {
@@ -19,12 +19,12 @@ namespace SP.Dto.Maps
             };
         }
         /*
-        internal static Expression<Func<Course, CourseDto>> mapFromRepo(string[] includes) {
+        internal static Expression<Func<Course, CourseDto>> MapFromDomain(string[] includes) {
             if (["Scenarios", "CourseType", "CourseParticipants", "ScenarioFacultyRoles"])
             {
 
             } */
-        internal static Expression<Func<Room, RoomDto>> mapFromRepo()
+        internal static Expression<Func<Room, RoomDto>> MapFromDomain()
         {
             return m => new RoomDto
             {

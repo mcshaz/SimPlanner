@@ -95,6 +95,7 @@
     <Compile Include="Data\CourseSlotManequin.cs" />
     <Compile Include="Data\CourseType.cs" />
     <Compile Include="Data\Interfaces\ICourseDay.cs" />
+    <Compile Include="Data\Interfaces\ITimeTracking.cs" />
     <Compile Include="Data\ProfessionalRoleInstitution.cs" />
     <Compile Include="Data\Culture.cs" />
     <Compile Include="Data\CourseScenarioFacultyRole.cs" />

@@ -11,7 +11,7 @@ namespace SP.Dto
         public Guid Id { get; set; }
         public DateTime Start { get; set; }
         public TimeSpan Duration { get; set; }
-        public DateTime? FacultyMeetingTime { get; set; }
+        public DateTime? FacultyMeeting { get; set; }
         public Guid DepartmentId { get; set; }
         public Guid? OutreachingDepartmentId { get; set; }
         public Guid RoomId { get; set; }
@@ -22,6 +22,8 @@ namespace SP.Dto
         public Guid CourseFormatId { get; set; }
         public string ParticipantVideoFilename { get; set; }
         public string FeedbackSummaryFilename { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime LastModified { get; set; }
 
         public DepartmentDto Department { get; set; }
         public DepartmentDto OutreachingDepartment { get; set; }

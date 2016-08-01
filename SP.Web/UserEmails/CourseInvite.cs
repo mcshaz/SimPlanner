@@ -226,7 +226,7 @@ namespace SP.Web.UserEmails
                     "th>\r\n\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t</table>\r\n\t\t\t\t</th>\r\n\t\t\t</tr></tbody></table>\r\n\t\t");
             
             #line 110 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\CourseInvite.tt"
- if(CourseParticipant.IsFaculty && CourseParticipant.Course.FacultyMeetingTimeUtc.HasValue) { 
+ if(CourseParticipant.IsFaculty && CourseParticipant.Course.FacultyMeetingUtc.HasValue) { 
             
             #line default
             #line hidden

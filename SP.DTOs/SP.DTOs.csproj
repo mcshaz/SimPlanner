@@ -156,6 +156,8 @@
     <Compile Include="Maps\CourseDayMaps.cs" />
     <Compile Include="Maps\CourseSlotManequinMaps.cs" />
     <Compile Include="Maps\CourseTypeScenarioRoleMaps.cs" />
+    <Compile Include="Maps\DomainDtoMap.cs" />
+    <Compile Include="Maps\IDomainDtoMap.cs" />
     <Compile Include="Maps\ProfessionalRoleInstitutionMaps.cs" />
     <Compile Include="Maps\CultureMaps.cs" />
     <Compile Include="Maps\CourseTypeDepartmentMaps.cs" />
@@ -180,6 +182,7 @@
     <Compile Include="Maps\ScenarioResourceMaps.cs" />
     <Compile Include="Maps\FacultyScenarioRoleMapsMaps.cs" />
     <Compile Include="Maps\ScenarioSlotMaps.cs" />
+    <Compile Include="MedSimBreezeContextProvider.cs" />
     <Compile Include="MedSimDtoContextPretender.cs" />
     <Compile Include="MedSimDtoRepository.cs" />
     <Compile Include="MedSimDtoMetadata.cs" />

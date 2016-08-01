@@ -1,12 +1,11 @@
 using SP.DataAccess;
-using SP.Dto;
 using System;
 using System.Linq.Expressions;
 namespace SP.Dto.Maps
 {
     internal static class CourseActivityMaps
     {
-        internal static Func<CourseActivityDto, CourseActivity> mapToRepo()
+        internal static Func<CourseActivityDto, CourseActivity> MapToDomain()
         {
             return m => new CourseActivity
             {
@@ -16,7 +15,7 @@ namespace SP.Dto.Maps
             };
         }
 
-        internal static Expression<Func<CourseActivity, CourseActivityDto>> mapFromRepo()
+        internal static Expression<Func<CourseActivity, CourseActivityDto>> MapFromDomain()
         {
             return m => new CourseActivityDto
             {

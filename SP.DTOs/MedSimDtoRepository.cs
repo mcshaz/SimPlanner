@@ -1,5 +1,6 @@
 ﻿using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SP.DataAccess;
 using SP.Dto.Maps;
@@ -26,7 +27,7 @@ namespace SP.Dto
         public MedSimDtoRepository(IPrincipal user)
         {
 
-            _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
+            _contextProvider = new MedSimBreezeContextProvider(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
             _validationHelper = new ValidateMedSim(user);
             _contextProvider.BeforeSaveEntitiesDelegate += _validationHelper.Process;
             _user = user;
@@ -45,7 +46,6 @@ namespace SP.Dto
         public SaveResult SaveChanges(JObject saveBundle)
         {
             // save with server model's "real" contextProvider
-            MapFromDto(saveBundle);
 
             var returnVar = _contextProvider.SaveChanges(saveBundle);
             Remap(returnVar);
@@ -55,38 +55,6 @@ namespace SP.Dto
         static void Remap(SaveResult result)
         {
             result.Entities = result.Entities.Select(o=> MapperConfig.GetLambda(o.GetType().Name, null,null,'.').Compile().DynamicInvoke(o)).ToList();
-        }
-
-        static void MapFromDto(JObject savebundle)
-        {
-            var dtoAssembly = typeof(ParticipantDto).Assembly;
-            //da for data access
-            var daNamespace = typeof(Participant).Namespace;
-            const string entityAspectName = "entityAspect";
-            const string entityTypeName = "entityTypeName";
-            const string unmappedName = "__unmapped";
-            const string namespaceSep = ":#";
-
-            foreach (JToken ent in savebundle["entities"])
-            {
-                JToken entityAspect = ent[entityAspectName];
-                string dtoTypeString = (string)entityAspect[entityTypeName];
-                int hashIdx = dtoTypeString.IndexOf(namespaceSep);
-                string typeName = dtoTypeString.Remove(hashIdx);
-                Type dtoType = dtoAssembly.GetType(dtoTypeString.Substring(hashIdx + namespaceSep.Length) + '.' + typeName);
-                List<string> props = dtoType
-                    .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty)
-                    .Select(pi => pi.Name).ToList();
-                props.Add(entityAspectName);
-                props.Add(unmappedName);
-                var unknownProps = ent.Select(e => ((JProperty)e).Name).Except(props);
-                if (unknownProps.Any())
-                {
-                    throw new UnknownPropertyException(string.Join(";", unknownProps));
-                }
-                string daTypeName = typeName.Remove(typeName.Length - 3); //very application specific - remove Dto from the end of the type name
-                entityAspect[entityTypeName] = JToken.FromObject(daTypeName + namespaceSep + daNamespace);
-            }
         }
 
         public IQueryable<CourseFormatDto> GetCourseFormats(string[] includes, string[] selects, char sepChar)
@@ -128,7 +96,7 @@ namespace SP.Dto
             }
             */
             //return Context.Courses.Include("")
-            //filteredQuery.Select(CourseMaps.mapFromRepo).ToList().AsQueryable();
+            //filteredQuery.Select(CourseMaps.MapFromDomain).ToList().AsQueryable();
         }
 
         public IQueryable<CultureDto> GetCultures(string[] includes, string[] selects, char sepChar)
@@ -202,7 +170,7 @@ namespace SP.Dto
             }
             */
             //return Context.Courses.Include("")
-            //filteredQuery.Select(CourseMaps.mapFromRepo).ToList().AsQueryable();
+            //filteredQuery.Select(CourseMaps.MapFromDomain).ToList().AsQueryable();
         }
 
         public IQueryable<CourseTypeDto> GetCourseTypes()

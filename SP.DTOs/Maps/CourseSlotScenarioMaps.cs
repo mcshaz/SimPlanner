@@ -6,7 +6,7 @@ namespace SP.Dto.Maps
 {
     internal static class CourseSlotScenarioMaps
     {
-        internal static Func<CourseSlotScenarioDto, CourseSlotScenario> mapToRepo()
+        internal static Func<CourseSlotScenarioDto, CourseSlotScenario> MapToDomain()
         { 
             return m => new CourseSlotScenario
             {
@@ -21,7 +21,7 @@ namespace SP.Dto.Maps
             };
         }
 
-        internal static Expression<Func<CourseSlotScenario, CourseSlotScenarioDto>> mapFromRepo()
+        internal static Expression<Func<CourseSlotScenario, CourseSlotScenarioDto>> MapFromDomain()
         {
             return m => new CourseSlotScenarioDto
             {

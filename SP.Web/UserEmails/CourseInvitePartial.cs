@@ -103,7 +103,7 @@ namespace SP.Web.UserEmails
         {
             get
             {
-                return CourseParticipant.Course.FacultyMeetingTimeUtc.Value.ToString("g", ToStringHelper.FormatProvider);
+                return CourseParticipant.Course.FacultyMeetingUtc.Value.ToString("g", ToStringHelper.FormatProvider);
             }
         }
 

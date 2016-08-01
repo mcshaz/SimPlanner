@@ -6,7 +6,7 @@ namespace SP.Dto.Maps
 {
     internal static class CourseFormatMaps
     {
-        internal static Func<CourseFormatDto, CourseFormat> mapToRepo()
+        internal static Func<CourseFormatDto, CourseFormat> MapToDomain()
         {
             return m => new CourseFormat
             {
@@ -18,7 +18,7 @@ namespace SP.Dto.Maps
             };
         }
 
-        internal static Expression<Func<CourseFormat, CourseFormatDto>> mapFromRepo()
+        internal static Expression<Func<CourseFormat, CourseFormatDto>> MapFromDomain()
         {
             return m => new CourseFormatDto
             {

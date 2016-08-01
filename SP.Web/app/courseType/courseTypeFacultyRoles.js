@@ -14,8 +14,8 @@
             controllerId: controllerId,
             watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseSlots', 'courseType.courseFormats.courseSlots.activity', 'courseType.courseTypeDepartments'],
             $scope: $scope,
-            $watchers: [$scope.$on('$destroy',removeSelectedSlots)]
-        })
+            $watchers: [$scope.$on('$destroy', removeSelectedSlots)]
+        });
         var id = $routeParams.id;
         var isNew = id === 'new';
 
@@ -95,7 +95,7 @@
                             var checked = ctds.some(function(c){return c.departmentId === d.id;});
                             vm.departments.push({ name: d.name, abbreviation: d.abbreviation, dptId:d.id, checked:checked });
                         }
-                        $scope.$watchCollection(function () { return vm.selectedDepartments }, selectedDepartmentsChanged);
+                        $scope.$watchCollection(function () { return vm.selectedDepartments; }, selectedDepartmentsChanged);
                         vm.log('Activated Course Format View');
                         vm.notifyViewModelLoaded();
                     });
@@ -175,7 +175,7 @@
         }
 
         function removeActivity(slot) {
-            var ca = slot.activity
+            var ca = slot.activity;
             if (ca && ca.entityAspect.entityState.isAdded()) {
                 ca.entityAspect.setDeleted();
             }
@@ -244,7 +244,7 @@
                 return;
             }
             var emptyScenarioSlot = courseFormat.courseSlots.some(function (el) {
-                return !el.isActive && el !== selectedSlot && el.activity === selectedSlot.activity
+                return !el.isActive && el !== selectedSlot && el.activity === selectedSlot.activity;
             });
             if (emptyScenarioSlot) { 
                 selectedSlot.setDeleted();

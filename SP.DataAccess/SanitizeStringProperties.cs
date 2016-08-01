@@ -2,6 +2,8 @@
 using System.Data.Entity;
 using Ganss.XSS;
 using System;
+using System.Reflection;
+using System.Linq;
 
 namespace SP.DataAccess
 {
@@ -15,30 +17,23 @@ namespace SP.DataAccess
 
         public void ForEntities(DbChangeTracker tracker)
         {
-            foreach (var e in tracker.Entries())
+            foreach (var e in tracker.Entries().Where(te => te.State == EntityState.Added || te.State == EntityState.Modified).ToLookup(te=>te.Entity.GetType()))
             {
-                if (e.State == EntityState.Added || e.State == EntityState.Modified)
+                foreach (var p in e.Key.GetProperties(BindingFlags.DeclaredOnly |
+                                        BindingFlags.Public |
+                                        BindingFlags.Instance).Where(p=>p.PropertyType == typeof(string)))
                 {
-                    Type t = e.Entity.GetType();
-                    foreach (var p in t.GetProperties())
+                    foreach (var ent in e)
                     {
-                        if (p.PropertyType == typeof(string))
+                        string val = ent.CurrentValues.GetValue<string>(p.Name);
+                        if (val != null)
                         {
-                            string val = (string)p.GetValue(e.Entity);
-                            if (!string.IsNullOrWhiteSpace(val))
+                            val = val.Trim();
+                            if (val != string.Empty)
                             {
-                                p.SetValue(e.Entity, Sanitizer.Sanitize(val));
+                                val = Sanitizer.Sanitize(val);
                             }
-                        }
-                    }
-                    if(t == typeof(Course))
-                    {
-                        var course = (Course)e.Entity;
-                        var now = DateTime.UtcNow;
-                        course.LastModifiedUtc = now;
-                        if (e.State == EntityState.Added)
-                        {
-                            course.CreatedUtc = now;
+                            ent.CurrentValues[p.Name] = val;
                         }
                     }
                 }
