@@ -12,8 +12,8 @@ namespace SP.Dto.Maps
 {
     public static class MapperConfig
     {
-        private static readonly IReadOnlyDictionary<Type, IDomainDtoMap> _toDtoMaps;
-        private static readonly IReadOnlyDictionary<Type, IDomainDtoMap> _fromDtoMaps;
+        private static readonly IReadOnlyDictionary<Type, IDomainDtoMap> _dtoMapDictionary;
+        private static readonly IReadOnlyDictionary<Type, Type> _serverDtoDictionary;
         static MapperConfig()
         {
             var maps = new IDomainDtoMap[]
@@ -48,10 +48,20 @@ namespace SP.Dto.Maps
                 new ScenarioMaps(),
                 new ScenarioResourceMaps(),
             };
-            _toDtoMaps = new ReadOnlyDictionary<Type, IDomainDtoMap>(
+            _dtoMapDictionary = new ReadOnlyDictionary<Type, IDomainDtoMap>(
                 maps.ToDictionary(kv=>kv.TypeofDto));
-            _fromDtoMaps = new ReadOnlyDictionary<Type, IDomainDtoMap>(
-                maps.ToDictionary(kv=>kv.TypeofDomainObject));
+            _serverDtoDictionary = new ReadOnlyDictionary<Type, Type>(
+                maps.ToDictionary(kv => kv.TypeofServerObject, kv => kv.TypeofDto));
+        }
+
+        public static Type GetServerModelType(Type dtoType)
+        {
+            return _dtoMapDictionary[dtoType].TypeofServerObject;
+        }
+
+        public static Type GetDtoType(Type serverModelType)
+        {
+            return _serverDtoDictionary[serverModelType];
         }
 
         public static object MapFromDto(object obj)
@@ -59,9 +69,9 @@ namespace SP.Dto.Maps
             return MapFromDto(obj.GetType(), obj);
         }
 
-        public static object MapFromDto(Type type, object obj)
+        public static object MapFromDto(Type dtoType, object obj)
         {
-            return _fromDtoMaps[type].MapFromDto(obj);
+            return _dtoMapDictionary[dtoType].MapFromDto(obj);
         }
         const char defaultSepChar = '.';
         public static IQueryable<TMap> ProjectToDto<T, TMap>(this IQueryable<T> queryable, string[] includes = null, string[] selects=null, char sepChar= defaultSepChar)
@@ -74,9 +84,9 @@ namespace SP.Dto.Maps
             return (Expression<Func<T, TMap>>)GetToDtoLambda(typeof(TMap), includes, selects, sepChar);
         }
 
-        public static LambdaExpression GetToDtoLambda(Type type, string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
+        public static LambdaExpression GetToDtoLambda(Type dtoType, string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
         {
-            var includeSelects = new IncludeSelectOptions(type, includes, selects, sepChar);
+            var includeSelects = new IncludeSelectOptions(dtoType, includes, selects, sepChar);
             VisitNodes(includeSelects.RequiredMappings);
             return includeSelects.RequiredMappings.Lambda;
         }
@@ -100,7 +110,7 @@ namespace SP.Dto.Maps
             readonly char _sepChar;
             internal readonly Node RequiredMappings;
 
-            public IncludeSelectOptions(Type type, IList<string> includes = null, IList<string> selects = null, char sepChar = '.')
+            public IncludeSelectOptions(Type dtoType, IList<string> includes = null, IList<string> selects = null, char sepChar = '.')
             {
                 ValidateNoRepeats(includes, "includes");
                 ValidateNoRepeats(selects, "selects");
@@ -108,7 +118,7 @@ namespace SP.Dto.Maps
                 List<string[]> includeList = (includes == null) ? new List<string[]>() : new List<string[]>(includes.Select(i => i.Split(sepChar)));
                 List<string[]> selectList = (selects == null) ? new List<string[]>() : new List<string[]>(selects.Select(i => i.Split(sepChar)));
 
-                RequiredMappings = GetRequiredMappings(type, includeList, selectList);
+                RequiredMappings = GetRequiredMappings(dtoType, includeList, selectList);
 
                 //RequiredMappings.PrintPretty("  ");
             }
@@ -123,9 +133,9 @@ namespace SP.Dto.Maps
                     throw new ArgumentException("property [" + string.Join(",", repeats) + "] is repeated", paramName);
                 }
             }
-            private static Node GetRequiredMappings(Type type, IList<string[]> includeList, IList<string[]> selectList )
+            private static Node GetRequiredMappings(Type dtoType, IList<string[]> includeList, IList<string[]> selectList )
             {
-                Node node = new Node(type) { Lambda = _toDtoMaps[type].MapToDto };
+                Node node = new Node(dtoType) { Lambda = _dtoMapDictionary[dtoType].MapToDto };
                 GetRequiredMappings(node, includeList, true);
                 GetRequiredMappings(node, selectList, false); 
                 return node;
@@ -148,7 +158,7 @@ namespace SP.Dto.Maps
                                 ?includeInfo.PropertyType.GenericTypeArguments[0]
                                 :includeInfo.PropertyType;
                             IDomainDtoMap map;
-                            if (_toDtoMaps.TryGetValue(baseType, out map))
+                            if (_dtoMapDictionary.TryGetValue(baseType, out map))
                             {
                                 matchingChild = new Node(baseType) {
                                     Lambda = map.MapToDto,

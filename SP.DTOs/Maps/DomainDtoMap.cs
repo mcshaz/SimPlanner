@@ -26,7 +26,7 @@ namespace SP.Dto.Maps
             //return typeof(TDto).GetProperty(propertyName).PropertyType;
         }
 
-        public Type TypeofDomainObject
+        public Type TypeofServerObject
         {
             get { return typeof(TDomain); }
             //return typeof(TDto).GetProperty(propertyName).PropertyType;

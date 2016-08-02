@@ -6,7 +6,7 @@ namespace SP.Dto.Maps
     interface IDomainDtoMap
     {
         Type TypeofDto { get; }
-        Type TypeofDomainObject { get; }
+        Type TypeofServerObject { get; }
         LambdaExpression MapToDto { get; }
         object MapFromDto(object dto);
     }
