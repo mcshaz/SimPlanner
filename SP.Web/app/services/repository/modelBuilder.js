@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('app')
-        .factory('modelBuilder', ['breeze', factory]);
+        .factory('modelBuilder', ['breeze', 'moment', factory]);
 
-    function factory(breeze) {
+    function factory(breeze, moment) {
         var self = {
             extendMetadata: extendMetadata
         };
@@ -63,26 +63,24 @@
                     : course;
             };
 
-            CourseCtor.prototype.finishTime = function () {
+            CourseCtor.prototype.courseFinish = function () {
                 var lastDay = this.lastDay();
                 return new Date(lastDay.start + lastDay.duration);
             };
 
-            /*
-            var courseInitializer = function (course) {
-                Object.defineProperty(courseCtor.prototype, 'includesUser', {
+            CourseCtor.prototype.finish = function () {
+                return new Date(lastDay.start + lastDay.duration);
+            };
+
+            var courseInitializer = function (courseFormat) {
+                Object.defineProperty(CourseCtor.prototype, 'finish', {
                     enumerable: true,
                     configurable: true,
-                    get: function(userId) {
-                        return this.courseParticipants.some(function (p) {
-                            return p.id == userId;
-                        });
-                    }
+                    get: getFinish
                 });
             };
-            */
 
-            metadataStore.registerEntityTypeCtor('CourseDto', CourseCtor /*, courseInitializer */);
+            metadataStore.registerEntityTypeCtor('CourseDto', CourseCtor, courseInitializer);
         }
 
         function extendCourseFormat(metadataStore) {
@@ -102,23 +100,52 @@
             metadataStore.registerEntityTypeCtor('CourseFormatDto', CourseFormatCtor, courseFormatInitializer);
         }
 
-        function extendDepartment(metadataStore) {
-            var DptCtor = function(){};
+        function extendCourseDay(metadataStore) {
 
-            Object.defineProperty(DptCtor.prototype, 'colourHtml', {
+            var CourseDayCtor = function () { };
+
+            var courseDayInitializer = function (courseFormat) {
+                Object.defineProperty(CourseDayCtor.prototype, 'finish', {
+                    enumerable: true,
+                    configurable: true,
+                    get: getFinish
+                });
+            };
+
+            metadataStore.registerEntityTypeCtor('CourseFormatDto', CourseFormatCtor, courseFormatInitializer);
+        }
+
+        function extendDepartment(metadataStore) {
+            var dptCtor = function(){};
+
+            var dptInitializer = function (department) {
+                Object.defineProperty(dptCtor.prototype, 'primaryColourHtml', {
                     enumerable: true,
                     configurable: true,
                     get: function () {
-                        return this.colour
-                            ? '#' + this.colour
+                        return this.primaryColour
+                            ? '#' + this.primaryColour
                             : null;
                     },
                     set: function (value) {
-                        this.colour = value.substr(1);
+                        this.primaryColour = value.substr(1);
                     }
                 });
+                Object.defineProperty(dptCtor.prototype, 'secondaryColourHtml', {
+                    enumerable: true,
+                    configurable: true,
+                    get: function () {
+                        return this.secondaryColour
+                            ? '#' + this.secondaryColour
+                            : null;
+                    },
+                    set: function (value) {
+                        this.secondaryColour = value.substr(1);
+                    }
+                });
+            };
 
-            metadataStore.registerEntityTypeCtor('DepartmentDto', DptCtor);
+            metadataStore.registerEntityTypeCtor('DepartmentDto', dptCtor, dptInitializer);
         }
 
         function ensureEntityType(obj, entityTypeName) {
@@ -139,6 +166,12 @@
                     });
                 }
             }
+        }
+
+        function getFinish() {
+            var self = this;
+            var isoDuration = moment.duration(self.duration);
+            return moment(self.start).add(isoDuration).toDate();
         }
 
     }

@@ -163,7 +163,6 @@
             if (!vm.course.courseFormat) {
                 //_courseLength = null;
                 vm.course.duration = null;
-                vm.finishTime = null;
                 vm.course.courseDays.forEach(function (cd) {
                     cd.entityAspect.setDeleted();
                 });

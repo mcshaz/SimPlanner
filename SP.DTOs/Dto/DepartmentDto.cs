@@ -14,8 +14,8 @@ namespace SP.Dto
         public Guid InstitutionId { get; set; }
         public string InvitationLetterFilename { get; set; }
         public string CertificateFilename { get; set; }
-        [FixedLength(Length = 7), RegularExpression(@"#\d{6}"), Required, DefaultValue("000000")]
-        public string Colour { get; set; }
+        public string PrimaryColour { get; set; }
+        public string SecondaryColour { get; set; }
         public InstitutionDto Institution { get; set; }
         public virtual ICollection<CourseTypeDepartmentDto> CourseTypeDepartments { get; set; }
         public virtual ICollection<ManequinDto> Manequins { get; set; }

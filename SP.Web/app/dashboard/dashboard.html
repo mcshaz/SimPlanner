@@ -13,7 +13,7 @@
                                     <li>
                                         <span class="fa fa-calendar-check-o" data-ng-switch="vm.loginState"> 
                                             <span data-ng-switch-when="active">
-                                                {{vm.nextUsercourse.startTime | amDateFormat:'LLLL'}}
+                                                {{vm.nextUsercourse.start | amDateFormat:'LLLL'}}
                                             </span>
                                             <span data-ng-switch-when="inactive">
                                                 no upcoming courses
@@ -126,7 +126,7 @@
                                 </thead>
                                 <tbody>
                                     <tr data-ng-repeat="c in vm.upcomingCourses track by c.id">
-                                        <td>{{c.startTime | amDateFormat:'L'}}</td>
+                                        <td>{{c.start | amDateFormat:'L'}}</td>
                                         <td>{{c.department.abbreviation}}</td>
                                         <td>
                                             <a data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="{{c.room.directions}}" bs-tooltip >

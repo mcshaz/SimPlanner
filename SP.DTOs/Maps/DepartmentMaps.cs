@@ -1,5 +1,6 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
     internal class DepartmentMaps : DomainDtoMap<Department, DepartmentDto>
     {
@@ -11,7 +12,8 @@ using SP.DataAccess;
                 InvitationLetterFilename = m.InvitationLetterFilename,
                 CertificateFilename = m.CertificateFilename,
                 Abbreviation = m.Abbreviation,
-                Colour = m.Colour
+                PrimaryColour = m.PrimaryColour,
+                SecondaryColour = m.SecondaryColour
             },
             m => new DepartmentDto
             {
@@ -21,7 +23,8 @@ using SP.DataAccess;
                 InvitationLetterFilename = m.InvitationLetterFilename,
                 CertificateFilename = m.CertificateFilename,
                 Abbreviation = m.Abbreviation,
-                Colour = m.Colour 
+                PrimaryColour = m.PrimaryColour,
+                SecondaryColour = m.SecondaryColour
                 //CourseTypes = null,
                 //Institution = m.Institution,
                 //Manequins = m.Manequins,

@@ -2,14 +2,13 @@ using System.Linq;
 using System.Web.Http;
 using Breeze.WebApi2;
 using Newtonsoft.Json.Linq;
-using Microsoft.AspNet.Identity;
-using System.Security.Claims;
 using System;
 using SP.Dto;
 using Breeze.ContextProvider;
 using System.Web.Http.OData.Query;
 using SP.Web.Controllers.Helpers;
 using Microsoft.Data.OData.Query.SemanticAst;
+using SP.Dto.Utilities;
 
 namespace SP.Web.Controllers
 {
@@ -154,12 +153,12 @@ namespace SP.Web.Controllers
                     var anyAlls = FindAnyAllFilterOptions.GetPaths(options.Filter, Seperator.ToString());
                     if (anyAlls.Any())
                     {
-                        Includes = (Includes ?? new string[0]).Concat(anyAlls).ToArray();
+                        Includes = (Includes ?? new string[0]).Union(anyAlls).ToArray();
                     }
                 }
                 if (options.OrderBy != null)
                 {
-                    Selects = (Selects ?? new string[0]).Union(options.OrderBy.RawValue.Split(splitter)).ToArray();
+                    Includes = (Includes ?? new string[0]).Union(options.OrderBy.RawValue.Split(splitter).AllButLast()).ToArray();
                 }
             }
             public readonly string[] Includes;
@@ -180,7 +179,7 @@ namespace SP.Web.Controllers
             return new LookupBundle
             {
                 Institutions = Repo.GetInstitutions(includes: new[] { "Departments.Rooms", "ProfessionalRoleInstitutions.ProfessionalRole", "Culture", "Departments.Manequins" }).ToList(),
-                CourseTypes = Repo.GetCourseTypes().ToList(),
+                CourseTypes = Repo.GetCourseTypes(includes: new[] { "CourseFormats" }).ToList(),
                 ProfessionalRoles = Repo.ProfessionalRoles.ToList(),
                 ManequinManufacturers = Repo.ManequinManufacturers.ToList(),
                 Manequins = Repo.Manequins.ToList()

@@ -17,7 +17,7 @@
         self.getUserName = getUserName;
         self.getUserRoles = getUserRoles;
         self.getUserId = getUserId;
-        self.getUserLocales = getUserLocales;
+        self.getUserLocale = getUserLocale;
         self.isLoggedIn = isLoggedIn;
         self.isAuthorized = isAuthorized;
         self.notifyLogin = notifyLogin;
@@ -55,8 +55,8 @@
             return currentUser.roles.slice(0);
         }
 
-        function getUserLocales() {
-            return currentUser.locales;
+        function getUserLocale() {
+            return currentUser.locale;
         }
 
         //check if the user is authorized to access the next route
@@ -105,7 +105,7 @@
 
                 //set locale once logged in 
                 //not sure this is enough separation of concers
-                moment.locale(currentUser.locale);
+                moment.locale([currentUser.locale, "en-gb"]); //fallback on british format
                 tmhDynamicLocale.set(currentUser.locale.toLowerCase())
                     .then(null, function (data) {
                         log.error({ msg:'unable to set user locale',data:data });
@@ -114,7 +114,6 @@
                         //only broadcast after the appropriate locale for the user is loaded
                         authService.loginConfirmed({ recredentialled: false }, replaceToken);
                     }); //moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
-                
             }
         }
 

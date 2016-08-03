@@ -24,22 +24,32 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="colour" class="col-md-2 control-label">Colour</label>
-                        <div class="col-md-10">
-                            <input type="color" id="colour" class="form-control" ng-model="vm.department.colourHtml" z-validate />
-                        </div>
-                    </div>
-
-                </fieldset>
-                <fieldset>
-                    <legend><small class="small">Optional</small></legend>
-
-                    <div class="form-group">
                         <label for="abbreviation" class="col-md-2 control-label">Abbreviation</label>
                         <div class="col-md-10">
                             <input type="text" id="abbreviation" class="form-control" ng-model="vm.department.abbreviation" z-validate />
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="primaryColour" class="col-md-2 control-label">Primary Colour</label>
+                        <div class="col-md-10">
+                            <input type="color" id="primaryColour" class="form-control" ng-model="vm.department.primaryColourHtml" z-validate />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="secondaryColour" class="col-md-2 control-label">Secondary Colour</label>
+                        <div class="col-md-10">
+                            <input type="color" id="secondaryColour" class="form-control" ng-model="vm.department.secondaryColourHtml" z-validate />
+                        </div>
+                        <aside class="col-md-12">
+                            (should be lighter than primary)
+                        </aside>
+                    </div>
+
+                </fieldset>
+                <fieldset>
+                    <legend><small class="small">Optional</small></legend>
 
                     <div class="form-group">
                         <label for="invitationLetterFilename" class="col-md-2 control-label">InvitationLetterFilename</label>

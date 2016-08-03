@@ -285,8 +285,7 @@ small {
 }
 
 
-.progress,
-.page-progress-bar {
+.progress {
     margin: 30px 10% !important;
 }
 

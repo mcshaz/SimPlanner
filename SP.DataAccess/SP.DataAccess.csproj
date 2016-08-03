@@ -195,6 +195,10 @@
     <Compile Include="Migrations\201607280339510_CourseDays.Designer.cs">
       <DependentUpon>201607280339510_CourseDays.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608030911250_requiredDepartmentAbbrev.cs" />
+    <Compile Include="Migrations\201608030911250_requiredDepartmentAbbrev.Designer.cs">
+      <DependentUpon>201608030911250_requiredDepartmentAbbrev.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SanitizeStringProperties.cs" />
@@ -233,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607280339510_CourseDays.resx">
       <DependentUpon>201607280339510_CourseDays.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608030911250_requiredDepartmentAbbrev.resx">
+      <DependentUpon>201608030911250_requiredDepartmentAbbrev.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

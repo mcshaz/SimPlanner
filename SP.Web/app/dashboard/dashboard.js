@@ -21,7 +21,7 @@
                 $rootScope.$on(AUTH_EVENTS.loginConfirmed, updateDash);
             }
 
-            common.activateController( getPromises(), controllerId) //notification of login after dashboard activated
+            common.activateController(getPromises(), controllerId) //notification of login after dashboard activated
                 .then(function () {
                     log('Activated Dashboard View');
                 });

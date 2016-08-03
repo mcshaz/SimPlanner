@@ -3,7 +3,6 @@ namespace SP.DataAccess
     using SP.Metadata;
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     [MetadataType(typeof(DepartmentMetadata))]
@@ -21,12 +20,12 @@ namespace SP.DataAccess
 
         public string CertificateFilename { get; set; }
 
-        [FixedLength(Length = 6), RegularExpression(@"\d+"), Required, DefaultValue("000000")]
-        public string Colour { get; set; }
+        public string PrimaryColour { get; set; }
 
+        public string SecondaryColour { get; set; }
 
         public virtual Institution Institution { get; set; }
-
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseTypeDepartment> CourseTypeDepartments
 		{

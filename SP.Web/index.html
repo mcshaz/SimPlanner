@@ -45,14 +45,16 @@
                 <div class="page-splash-message">
                     Sim Planner
                 </div>
-                <div class="progress progress-striped active page-progress-bar">
-                    <div class="bar"></div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-warning active" style="width:0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <span data-cc-scroll-to-top></span>
+    <!-- update notification MUST BE before other updates -->
+    <script src="Scripts/update-progress/update-progress.js"></script>
 
     <!-- Vendor Scripts -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -62,7 +64,7 @@
     <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
     <script src="bower_components/angular-messages/angular-messages.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
     <script src="bower_components/toastr/toastr.js"></script>
     <script src="bower_components/moment/min/moment-with-locales.min.js"></script>
     <script src="bower_components/angular-moment/angular-moment.min.js"></script>
@@ -75,6 +77,9 @@
     <script src="bower_components/angular-dynamic-locale/dist/tmhDynamicLocale.min.js"></script>
     <script src="bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
     <script src="bower_components/angular-location-update/angular-location-update.min.js"></script>
+
+    <!-- update notification 25% -->
+    <script src="Scripts/update-progress/update-progress-to-25.js"></script>
 
     <!--Bootstrap-UI-->
     <!--typeahead-->
@@ -97,6 +102,9 @@
     <script src="bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar.min.js"></script>
     <script src="bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js"></script>
 
+    <!-- update notification 50% -->
+    <script src="Scripts/update-progress/update-progress-to-50.js"></script>
+
     <!--Breeze-->
     <script src="scripts/breeze.debug.js"></script>
     <script src="app/services/customValidators.js"></script>
@@ -109,22 +117,15 @@
     <script src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
     <script src="bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
 
-    <!--
-        <script src="Scripts/angular-strap/compiler.js"></script>
-        <script src="Scripts/angular-strap/date-formatter.js"></script>
-        <script src="Scripts/angular-strap/date-parser.js"></script>
-        <script src="Scripts/angular-strap/debounce.js"></script>
-        <script src="Scripts/angular-strap/dimensions.js"></script>
-        <script src="Scripts/angular-strap/parse-options.js"></script>
-        <script src="Scripts/angular-strap/raf.js"></script>
-    -->
-
     <!-- Bootstrapping -->
     <script src="app/app.js"></script>
     <script src="app/metadata.js"></script>
     <script src="app/config.js"></script>
     <script src="app/config.exceptionHandler.js"></script>
     <script src="app/config.route.js"></script>
+
+    <!-- update notification 75% -->
+    <script src="Scripts/update-progress/update-progress-to-75.js"></script>
 
     <!-- common Modules -->
     <script src="app/common/common.js"></script>
@@ -177,5 +178,9 @@
     <script src="app/auth/tokenStorageService.js"></script>
     <script src="app/services/directives.js"></script>
     <script src="app/auth/loginFactory.js"></script>
+
+    <!-- update notification 95% -->
+    <script src="Scripts/update-progress/update-progress-to-95.js"></script>
+
 </body>
 </html>

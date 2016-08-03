@@ -30,7 +30,20 @@ namespace SP.Dto
             _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
             _validationHelper = new ValidateMedSim(user);
             _contextProvider.BeforeSaveEntitiesDelegate += _validationHelper.Process;
+            _contextProvider.BeforeSaveEntitiesDelegate += MapToServerTypes;
             _user = user;
+        }
+
+        static Dictionary<Type, List<EntityInfo>> MapToServerTypes(Dictionary<Type, List<EntityInfo>> dtos)
+        {
+            var returnVar = new Dictionary<Type, List<EntityInfo>>();
+            foreach (var kv in dtos)
+            {
+                Type serverType = MapperConfig.GetServerModelType(kv.Key);
+                kv.Value.ForEach(d => d.Entity = MapperConfig.MapFromDto(kv.Key, d.Entity));
+                returnVar.Add(serverType, kv.Value);
+            }
+            return returnVar;
         }
 
         public static string GetEdmxMetadata()
@@ -54,7 +67,7 @@ namespace SP.Dto
 
         static void Remap(SaveResult result)
         {
-            result.Entities = result.Entities.Select(o=> MapperConfig.GetToDtoLambda(o.GetType()).Compile().DynamicInvoke(o)).ToList();
+            result.Entities = result.Entities.Select(o=> MapperConfig.GetToDtoLambda(MapperConfig.GetDtoType(o.GetType())).Compile().DynamicInvoke(o)).ToList();
         }
 
         public IQueryable<CourseFormatDto> GetCourseFormats(string[] includes, string[] selects, char sepChar)
@@ -106,7 +119,7 @@ namespace SP.Dto
 
         public IQueryable<DepartmentDto> Departments { get { return Context.Departments.ProjectToDto<Department,DepartmentDto>(); } }
 
-        public IQueryable<CourseTypeDto> GetCourseTypes(string[] includes, string[] selects, char sepChar)
+        public IQueryable<CourseTypeDto> GetCourseTypes(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
             return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(includes, selects, sepChar);
         }

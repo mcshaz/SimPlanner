@@ -55,7 +55,7 @@ namespace SP.DTOs.ProcessBreezeRequests
             var cfs = TypedEntityinfo<CourseFormat>.GetTyped(currentInfos);
 
             //multiple individual queries may be the way to go here
-            var pred = cfs.Aggregate(PredicateBuilder.False<CourseFormat>(), (prev, cur) => prev.Or(
+            var pred = cfs.Aggregate(PredicateBuilder.New<CourseFormat>(), (prev, cur) => prev.Or(
                 c => cur.Entity.Id == c.Id && 
                     c.CourseTypeId != cur.Entity.CourseTypeId));
             if (Context.CourseFormats.Any(pred.Compile()))
