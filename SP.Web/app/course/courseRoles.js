@@ -43,7 +43,7 @@
                         return;
                         //gotoCourses();
                     }
-                    var slotTime = data.startTime;
+                    var slotTime = data.start;
                     var count = 0;
 
                     vm.course = data;
@@ -71,10 +71,10 @@
                     //end region map faculty
 
                     vm.map = data.courseFormat.courseSlots.map(function(cs){
-                        var startTime = slotTime;
+                        var start = slotTime;
                         var returnVar = {
                             id: cs.id,
-                            startTime: startTime,
+                            start: start,
                             groupClass: 'grp' + count++,
                             availableFaculty: faculty.slice()
                         };
@@ -85,7 +85,7 @@
                             update: updateSortable
                         },sortableOptions);
                         var isThisSlot = function (el) { return el.courseSlotId === cs.id; };
-                        slotTime = new Date(startTime.getTime() + cs.minutesDuration * 60000);
+                        slotTime = new Date(start.getTime() + cs.minutesDuration * 60000);
                         if (cs.activity) {
                             var assignedFaculty = [];
                             data.courseSlotPresenters.forEach(function (csp) {
@@ -104,7 +104,7 @@
 
                             return angular.extend(returnVar, {
                                 name: cs.activity.name,
-                                startTime: startTime,
+                                start: start,
                                 choices: cs.activity.activityChoices,
                                 selectedChoice: (data.chosenTeachingResources.find(isThisSlot) || {}).activityTeachingResource,
                                 isSim: false,

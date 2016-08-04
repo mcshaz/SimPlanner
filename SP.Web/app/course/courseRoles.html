@@ -7,7 +7,7 @@
                         <div class="panel-title">
                             {{vm.course.department.name}}
                             {{vm.course.courseFormat.typeFormatDescriptor}}
-                            {{vm.course.startTime | amDateFormat:'LL'}}
+                            {{vm.course.start | amDateFormat:'LL'}}
                         </div>
                     </div>
                     <div class="panel-body">
@@ -16,7 +16,7 @@
                                 <div class="panel-heading" role="tab" bs-collapse-toggle>
                                     <h4 class="panel-title">
                                         <a>
-                                            {{m.startTime | amDateFormat:'hh:mm a'}}
+                                            {{m.start | amDateFormat:'hh:mm a'}}
                                             <span class="label" ng-class="m.isSim?'label-success':'label-info'">
                                                 {{m.name}}
                                             </span>

@@ -1,45 +1,61 @@
-﻿/// <binding Clean='clean' />
-"use strict";
+﻿var useref = require('gulp-useref');
+var uglify = require('gulp-uglify');
+var gulpIf = require('gulp-if');
+var cssnano = require('gulp-cssnano');
+var imagemin = require('gulp-imagemin');
+var cache = require('gulp-cache');
+var del = require('del');
+var runSequence = require('run-sequence');
+var rev = require('gulp-rev');
+var revReplace = require('gulp-rev-replace');
+var htmlmin = require('gulp-htmlmin');
+var uncss = require('gulp-uncss');
 
-var gulp = require("gulp"),
-    rimraf = require("rimraf"),
-    concat = require("gulp-concat"),
-    cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify");
-
-var webroot = "./wwwroot/";
-
-var paths = {
-    js: webroot + "js/**/*.js",
-    minJs: webroot + "js/**/*.min.js",
-    css: webroot + "css/**/*.css",
-    minCss: webroot + "css/**/*.min.css",
-    concatJsDest: webroot + "js/site.min.js",
-    concatCssDest: webroot + "css/site.min.css"
-};
-
-gulp.task("clean:js", function (cb) {
-    rimraf(paths.concatJsDest, cb);
+gulp.task('html', ['styles'], () => {
+    var mainFile = 'index.html';
+    return gulp.src(mainFile)
+        .pipe(useref())
+        .pipe(gulpIf('*.js', uglify()))
+        .pipe(gulpIf('*.css', cssnano({ safe: true, autoprefixer: false })))
+        .pipe(gulpIf('*.css', uncss({ html: mainFile })))
+        .pipe(gulpIf('*.js', rev()))
+        .pipe(gulpIf('*.css', rev()))
+        .pipe(revReplace())
+        .pipe(gulpIf('*.html', htmlmin({ collapseWhitespace: true })))
+        .pipe(gulp.dest('dist'));
 });
 
-gulp.task("clean:css", function (cb) {
-    rimraf(paths.concatCssDest, cb);
+// Optimizing Images 
+gulp.task('images', function () {
+    return gulp.src('app/images/**/*.+(png|jpg|jpeg|gif|svg)')
+      // Caching images that ran through imagemin
+      .pipe(cache(imagemin({
+          interlaced: true,
+      })))
+      .pipe(gulp.dest('dist/images'))
 });
 
-gulp.task("clean", ["clean:js", "clean:css"]);
+// Copying fonts 
+gulp.task('fonts', function () {
+    return gulp.src('app/fonts/**/*')
+      .pipe(gulp.dest('dist/fonts'))
+})
 
-gulp.task("min:js", function () {
-    return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
-        .pipe(concat(paths.concatJsDest))
-        .pipe(uglify())
-        .pipe(gulp.dest("."));
+// Cleaning 
+gulp.task('clean', function () {
+    return del.sync('dist').then(function (cb) {
+        return cache.clearAll(cb);
+    });
+})
+
+gulp.task('clean:dist', function () {
+    return del.sync(['dist/**/*', '!dist/images', '!dist/images/**/*']);
 });
 
-gulp.task("min:css", function () {
-    return gulp.src([paths.css, "!" + paths.minCss])
-        .pipe(concat(paths.concatCssDest))
-        .pipe(cssmin())
-        .pipe(gulp.dest("."));
+gulp.task('build', function (callback) {
+    runSequence(
+      'clean:dist',
+      ['html', 'images', 'fonts'],
+      callback
+  )
 });
-
-gulp.task("min", ["min:js", "min:css"]);

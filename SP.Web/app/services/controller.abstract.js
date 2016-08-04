@@ -197,7 +197,7 @@
                         removeListeners({});//remove before performing next step
 
                         getWatched().forEach(function (ent) {
-                            if (ent.entityAspect.entityState.isAddedModifiedOrDeleted()) {
+                            if (ent.entityAspect.entityState.isAddedModifiedOrDeleted() && !ent.entityAspect.isBeingSaved) {
                                 ent.entityAspect.rejectChanges();
                             }
                         });
