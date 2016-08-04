@@ -56,17 +56,17 @@
             var toastType = logType;
             var msg = argOpts.message || argOpts.msg;
             var src = argOpts.source || argOpts.src;
-            var data = argOpts.data;
-            if (data) data = JSON.prune(data, {
-                arrayMaxLength: 5,
-                depthDecr:3,
-                //inheritedProperties:true,
-                replacer:function(value, defaultValue, circular){
-                    if (value === undefined) return '"-undefined-"';
-                    if (Array.isArray(value)) return '"-array('+value.length+')-"';
-                    return defaultValue;
-                }
-            });
+            var data = prune(argOpts.data);
+                    /*
+                    arrayMaxLength: 5,
+                    depthDecr: 3,
+                    //inheritedProperties:true,
+                    replacer: function (value, defaultValue, circular) {
+                        if (value === undefined) return '"-undefined-"';
+                        if (Array.isArray(value)) return '"-array(' + value.length + ')-"';
+                        return defaultValue;
+                    }
+                    */
 
             switch(logType){
                 case 'success':
@@ -87,8 +87,25 @@
                 toastr[toastType](msg);
             }
         }
-
-
-
+    }
+    function prune(data) {
+        var type = typeof (data);
+        if (type === 'object' && data !== null) {
+            var returnVar = {};
+            for (var p in data) {
+                if (p) {
+                    var v = data[p];
+                    if (Array.isArray(v)) {
+                        returnVar[p] = 'Array[length:' + v.length + ']'
+                    } else {
+                        type = typeof (v);
+                        if (type === 'boolean' || type === 'number' || type === 'string' || v instanceof RegExp) {
+                            returnVar[p] = v;
+                        } 
+                    }
+                }
+            }
+        }
+        return data;
     }
 })();

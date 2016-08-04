@@ -1,4 +1,4 @@
-(function() {
+(function(undefined) {
     'use strict';
 
     var serviceId = 'controller.abstract';
@@ -66,8 +66,14 @@
                             ent.forEach(function (el) {
                                 var child = el[wen[i]];
                                 if (child === undefined) {
-                                    throw new Error('watched entity child is undefined - ' + wen[i] + ' (' + wen.join(',') + ') entity ' +
-                                        el.entityType.shortName + ' [available options =(' + el.entityType.navigationProperties.map(function (dp) { return dp.name }).join(',') + ')]');
+                                    var errorMsg = 'watched entity child is undefined - ' + wen[i] + ' (' + wen.join(',') + ') entity ';
+                                    if (el.entityType){
+                                        errorMsg += typeName + ' [available options =(' + el.entityType.navigationProperties.map(function (dp) { return dp.name }).join(',') + ')]';
+                                    } else {
+                                        errorMsg += ' el.entityType is also undefined';
+                                    }
+                                    vm.log.error({msg:errorMsg, data:el});
+                                         
                                 }
                                 if (Array.isArray(child)) {
                                     currentLevel = currentLevel.concat(child);

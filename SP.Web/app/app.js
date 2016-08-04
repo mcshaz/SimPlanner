@@ -16,7 +16,7 @@
 
         // 3rd Party Modules
         'mgcrea.ngStrap',
-        'ui.bootstrap',
+        'ui.bootstrap', //put specific ui modules here if using limited size package
         'angularMoment',
         'breeze.angular',
         'breeze.directives',

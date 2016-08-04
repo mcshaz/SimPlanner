@@ -1,17 +1,18 @@
 ﻿(function (undefined) {
     'use strict';
     var controllerId = 'calendar';
-    angular.module('app').controller(controllerId, ['common', 'moment', '$q', 'breeze', 'datacontext','$scope',calendar]);
+    angular.module('app').controller(controllerId, ['common', 'moment', '$q', 'breeze', 'datacontext','$scope', '$location',calendar]);
 
-    function calendar(common, moment, $q, breeze, datacontext,$scope) {
+    function calendar(common, moment, $q, breeze, datacontext,$scope, $location) {
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
         var _retrieved = []; //a sparse array - relying on javascript engine making htis a dictionary 
 
         vm.calendarView = 'month';
-        vm.viewDate = new Date();
         vm.events = [];
+        vm.eventClicked = eventClicked;
         vm.isCellOpen = true;
+        vm.viewDate = new Date();
 
         activate();
 
@@ -26,6 +27,10 @@
                     log('Activated calendar View');
                 });
         };
+
+        function eventClicked(calendarEvent) {
+            $location.path('course/' + calendarEvent.id);
+        }
 
         function viewDateChanged() {
             if (vm.calendarView === 'year') {

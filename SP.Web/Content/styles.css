@@ -406,7 +406,7 @@ a {
 .faculty li{
     cursor:move;
 }
-.btn-google-plus,.btn-facebook,.btn-linkedin,.btn-twitter {
+.btn-social {
     margin-bottom:4px;
 }
 .login-widget, .login-widget .btn-link {
@@ -436,6 +436,12 @@ a {
     cursor: pointer;
 }
 
+.invisible {
+    visibility:hidden!important;
+}
+#sign-in:hover,#sign-out:hover{
+    color:yellow;
+}
 .time-accompany {
     margin-top:41px;
 }

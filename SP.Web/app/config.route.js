@@ -16,13 +16,16 @@
         .constant('routes', getRoutes());
     
     // Configure the routes and route resolvers
-    app.config(['$routeProvider', 'routes', routeConfigurator]);
-    function routeConfigurator($routeProvider, routes) {
+    app.config(['$routeProvider', 'routes' /*, '$locationProvider' */, routeConfigurator]);
+    function routeConfigurator($routeProvider, routes /*, $locationProvider */) {
 
         routes.forEach(function (r) {
             $routeProvider.when(r.url, r.config);
         });
         $routeProvider.otherwise({ redirectTo: '/' });
+
+        // use the HTML5 History API
+        //$locationProvider.html5Mode(true);
     }
 
     // Define the routes 

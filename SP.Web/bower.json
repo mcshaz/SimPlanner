@@ -1,18 +1,19 @@
 {
-  "name": "SP.Web",
+  "name": "sim-planner",
   "homepage": "https://github.com/mcshaz/SimPlanner",
   "authors": [
     "Brent McSharry <brentm@adhb.govt.nz>"
   ],
-  "description": "",
-  "main": "",
+  "description": "web based medical simulation course planner",
+  "main": "index.html",
   "license": "GNU GPL V3",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "wwwroot/lib"
   ],
   "dependencies": {
     "toastr": "^2.1.2",
@@ -38,12 +39,17 @@
     "bootswatch-dist": "^3.3.1+2-lumen",
     "components-font-awesome": "^4.6.3",
     "jquery-ui": "^1.12.0",
-    "jquery-ui-touch-punch": "*",
-    "spin.js": "^2.3.2"
+    "spin.js": "^2.3.2",
+    "bootstrap-social": "^5.0.0",
+    "angular-bootstrap": "^2.0.1"
   },
   "resolutions": {
-    "moment": "^2.10.0",
-    "angular-bootstrap-calendar": "^0.22.0",
-    "bootswatch-dist": "^3.3.1+2-lumen"
-  }
+    "moment": "^2.10.0"
+  },
+  "keywords": [
+    "timetable",
+    "medical",
+    "simulation"
+  ],
+  "private": true
 }

@@ -231,7 +231,8 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-SM.Web/Web.config
+SP.Web/Web.config
 /TestEmails
 
 SP.Web/bower_components/
+SP.Web/wwwroot

@@ -7,12 +7,12 @@
                     <h4 class="aside-title">
                         {{cp.isNew?'Add':'Update'}} Course &nbsp;
                     </h4>
-                    <div class="btn-group" >
-                        <label class="btn btn-primary">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary" >
                             <input class="btn btn-default" value="true" type="radio" ng-disabled="!cp.isNew" ng-model="cp.isFaculty" bs-radio/>
                             Faculty
                         </label>
-                        <label class="btn btn-primary">
+                        <label class="btn btn-primary" >
                             <input class="btn btn-default" value="false" type="radio" ng-disabled="!cp.isNew" ng-model="cp.isFaculty" bs-radio/>
                             Participant
                         </label>
