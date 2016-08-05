@@ -2,6 +2,8 @@
 using Breeze.ContextProvider.EF6;
 using LinqKit;
 using SP.DataAccess;
+using SP.DataAccess.Data.Interfaces;
+using SP.Dto;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,17 +30,17 @@ namespace SP.DTOs.ProcessBreezeRequests
             }
         }
 
-        public Dictionary<Type, List<EntityInfo>> Process(Dictionary<Type, List<EntityInfo>> saveMap)
+        public Dictionary<Type, List<EntityInfo>> Validate(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             IEnumerable<EFEntityError> errors = new EFEntityError[0];
 
             List<EntityInfo> currentInfos;
-            if (saveMap.TryGetValue(typeof(CourseFormat), out currentInfos))
+            if (saveMap.TryGetValue(typeof(CourseFormatDto), out currentInfos))
             {
                 errors = errors.Concat(GetCourseFormatErrors(currentInfos));
             }
 
-            if (saveMap.TryGetValue(typeof(Institution), out currentInfos))
+            if (saveMap.TryGetValue(typeof(InstitutionDto), out currentInfos))
             {
                 errors = errors.Concat(GetInstitutionErrors(currentInfos));
             }
@@ -50,9 +52,18 @@ namespace SP.DTOs.ProcessBreezeRequests
             return saveMap;
         }
 
+        public void PostValidation(Dictionary<Type, List<EntityInfo>> saveMap, List<KeyMapping> maps)
+        {
+            List<EntityInfo> ei;
+            if (saveMap.TryGetValue(typeof(CourseSlot), out ei))
+            {
+                UpdateICourseDays(ei.Select(e=> (CourseSlot)e.Entity));
+            }
+        }
+
         IEnumerable<EFEntityError> GetCourseFormatErrors(List<EntityInfo> currentInfos)
         {
-            var cfs = TypedEntityinfo<CourseFormat>.GetTyped(currentInfos);
+            var cfs = TypedEntityinfo<CourseFormatDto>.GetTyped(currentInfos);
 
             //multiple individual queries may be the way to go here
             var pred = cfs.Aggregate(PredicateBuilder.New<CourseFormat>(), (prev, cur) => prev.Or(
@@ -85,7 +96,7 @@ namespace SP.DTOs.ProcessBreezeRequests
 
         IEnumerable<EFEntityError> GetParticipantErrors(List<EntityInfo> currentInfos)
         {
-            var ps = TypedEntityinfo<Participant>.GetTyped(currentInfos);
+            var ps = TypedEntityinfo<ParticipantDto>.GetTyped(currentInfos);
 
             /* too dificult, and there are exceptions - had been trying to keep drs as drs etc
             var pred = PredicateBuilder.False<ProfessionalRole>();
@@ -126,7 +137,7 @@ namespace SP.DTOs.ProcessBreezeRequests
 
         IEnumerable<EFEntityError> GetInstitutionErrors(List<EntityInfo> currentInfos)
         {
-            var insts = TypedEntityinfo<Institution>.GetTyped(currentInfos);
+            var insts = TypedEntityinfo<InstitutionDto>.GetTyped(currentInfos);
             List<EFEntityError> returnVar = new List<EFEntityError>();
 
             foreach (var i in insts)
@@ -163,6 +174,39 @@ namespace SP.DTOs.ProcessBreezeRequests
                 }
             }
             return returnVar;
+        }
+
+        //if corseslots altered, need to update upcoming courses
+        void UpdateICourseDays(IEnumerable<CourseSlot> alteredSlots)
+        {
+            var courseFormatIds = alteredSlots.Select(c => c.CourseFormatId).Distinct().ToList();
+            var slotDays = (from cs in Context.CourseSlots
+                            where courseFormatIds.Contains(cs.CourseFormatId)
+                            group cs by cs.Day into g
+                            select new { day = g.Key, minutes = g.Sum(m => m.MinutesDuration) })
+                            .ToDictionary(d=>d.day,d=>d.minutes);
+
+            foreach (var course in Context.Courses.Include("CourseDays").Include("CourseFormat")
+                    .Where(c=>c.StartUtc > DateTime.UtcNow && courseFormatIds.Contains(c.CourseFormatId)))
+            {
+                var days = course.CourseDays.Cast<ICourseDay>().ToDictionary(k=>k.Day);
+                days.Add(1, course);
+                for (var i = 1; i <= course.CourseFormat.DaysDuration; i++)
+                {
+                    ICourseDay icd;
+                    if (!days.TryGetValue(i,out icd)){
+                        icd = new CourseDay {
+                            Day=i,
+                            Course = course,
+                            StartUtc = days[i-1].StartUtc
+                        };
+                    }
+                    int duration;
+                    slotDays.TryGetValue((byte)i,out duration);
+                    icd.Duration = TimeSpan.FromMinutes(duration);
+                }
+            }
+            Context.SaveChanges();
         }
         //not great separation of concerns here- this is not a buisness logic problem 
         /*

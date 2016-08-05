@@ -29,8 +29,9 @@ namespace SP.Dto
 
             _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
             _validationHelper = new ValidateMedSim(user);
-            _contextProvider.BeforeSaveEntitiesDelegate += _validationHelper.Process;
+            _contextProvider.BeforeSaveEntitiesDelegate += _validationHelper.Validate;
             _contextProvider.BeforeSaveEntitiesDelegate += MapToServerTypes;
+            _contextProvider.AfterSaveEntitiesDelegate += _validationHelper.PostValidation;
             _user = user;
         }
 
