@@ -34,6 +34,7 @@
         vm.instructorCourses = [];
         vm.isScenarioChanged = isScenarioChanged;
         vm.removeSlot = removeSlot;
+        vm.resetExampleTime = resetExampleTime;
 
         vm.selectedDepartments = [];
         vm.title = 'Course Format';
@@ -42,11 +43,13 @@
             handle: '.handle',
             stop: function (e, ui) {
                 // this callback has the changed model
-                vm.courseFormat.courseSlots.forEach(function (el,indx) {
+                var format = vm.courseType.courseFormats[vm.activeFormatIndex];
+                format.courseSlots.forEach(function (el, indx) {
                     if (el.order !== indx) {
                         el.order = indx;
                     }
                 });
+                resetExampleTime(format);
             }
         };
 
@@ -76,6 +79,7 @@
                         vm.courseType = data;
                         vm.courseType.courseFormats.forEach(function (el) {
                             el.courseSlots.sort(common.sortOnPropertyName('order'));
+                            resetExampleTime(el);
                         });
                         vm.activeFormatIndex = vm.courseType.courseFormats.findIndex(function (el) {
                             return el.id === $routeParams.formatId;
@@ -252,6 +256,23 @@
                 el.entityAspect.setDeleted();
             });
             cf.entityAspect.setDeleted();
+        }
+
+        function resetExampleTime(cf){
+            if (!cf.exampleStart) {
+                cf.exampleStart = new Date(0).setHours(8);
+            }
+            
+            var currentDay;
+            var startIndx;
+            cf.courseSlots.forEach(function (el) {
+                if (el.day !== currentDay) {
+                    startIndx = cf.exampleStart;
+                    currentDay = el.day;
+                }
+                startIndx += el.minutesDuration * 60000;
+                el.exampleFinish = startIndx;
+            });
         }
     }
 })();

@@ -75,6 +75,11 @@ namespace SP.Dto
             return Context.CourseFormats.ProjectToDto<CourseFormat, CourseFormatDto>(includes, selects, sepChar);
         }
 
+        public IQueryable<CourseDayDto> GetCourseDays(string[] includes, string[] selects, char sepChar)
+        {
+            return Context.CourseDays.ProjectToDto<CourseDay, CourseDayDto>(includes, selects, sepChar);
+        }
+
         public IQueryable<CourseSlotDto> GetCourseSlots(string[] includes, string[] selects, char sepChar)
         {
             return Context.CourseSlots.ProjectToDto<CourseSlot, CourseSlotDto>(includes, selects, sepChar);

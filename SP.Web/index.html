@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
 
     <base href="/index.html">
-    <script>
+    <script src="">
         // Must be first. IE10 mobile viewport fix
         if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
             var msViewportStyle = document.createElement("style");
@@ -51,13 +51,19 @@
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-warning active" style="width:0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
+                <noscript>
+                    You <em>must</em> have JavaScript enabled for this site to work! Here are the 
+                    <a href="http://www.enable-javascript.com/" target="_blank">instructions on how to enable JavaScript in your web browser
+                    </a>.
+                </noscript>
             </div>
         </div>
     </div>
 
     <span data-cc-scroll-to-top></span>
-    <!-- update notification MUST BE before other updates -->
-    <script src="Scripts/update-progress/update-progress.js"></script>
+    <!-- update notification -->
+    <script src="Scripts/update-progress.js" inline></script>
+    <script src="Scripts/updatebrowser.js" inline></script>
 
     <!--build:js js/main.min.js -->
 

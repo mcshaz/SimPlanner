@@ -74,7 +74,7 @@
                         <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                             <div class="panel-body">
                                 <div class="row col-md-12">
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="cfDescription" class="col-md-3 control-label">
                                                 Course Format
@@ -93,8 +93,24 @@
                                             </div>
 
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="startTime" class="col-md-3 control-label">
+                                                <small>(Example Start Time)</small>
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </span>
+                                                    <input id="startTime" class="form-control" ng-model="cf.exampleStart" data-time-format="shortTime" data-autoclose="1" 
+                                                           placeholder="Time" bs-timepicker type="text" ng-change="resetExampleTime(cf)" />
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                    <fieldset>
+                                    <fieldset class="col-md-8">
                                         <!--ng-disabled="!cf.selectedSlot"-->
                                         <table class="table table-bordered table-striped">
                                             <thead>
@@ -105,11 +121,12 @@
                                                         </button>)
                                                     </th>
                                                     <th>Minutes</th>
+                                                    <td><small>example finish</small></td>
                                                     <th>Streams</th>
                                                     <td></td>
                                                 </tr>
                                             </thead>
-                                            <tbody ui-sortable="cf.sortableOptions" ng-model="cf.courseSlots">
+                                            <tbody ui-sortable="vm.sortableOptions" ng-model="cf.courseSlots">
                                                 <tr ng-repeat="cs in cf.courseSlots | filter: {isActive: true} track by cs.id" ng-class="cs===cf.selectedSlot?'warning':''">
                                                     <td class="handle">
                                                         :::
@@ -120,6 +137,9 @@
                                                     </td>
                                                     <td>
                                                         {{cs.minutesDuration}}
+                                                    </td>
+                                                    <td>
+                                                        {{cs.exampleFinish | amDateFormat:'LT'}}
                                                     </td>
                                                     <td>
                                                         {{cs.simultaneousStreams}}
@@ -164,7 +184,7 @@
                                                         </div>
                                                     </td>
                                                     <td class="form-group col-md-1">
-                                                        <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.minutesDuration" ng-disabled="!cf.selectedSlot">
+                                                        <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.minutesDuration" ng-disabled="!cf.selectedSlot" ng-change="resetExampleTime(cf)">
                                                     </td>
                                                     <td class="form-group  col-md-1">
                                                         <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.simultaneousStreams" ng-disabled="!cf.selectedSlot">

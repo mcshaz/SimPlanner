@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$location', '$http', '$q', 'commonConfig'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$location', '$http', '$q', 'commonConfig', 'moment'];
 
-    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $location, $http, $q, commonConfig) {
+    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $location, $http, $q, commonConfig, moment) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -66,7 +66,7 @@
                         }
                         vm.course = data;
                         vm.notifyViewModelLoaded();
-                        concatCourseDays();
+                        vm.courseDays = concatCourseDays();
                     }));
                 }
                 common.activateController(promises, controllerId)
@@ -148,7 +148,7 @@
 
         function concatCourseDays() {
             vm.course.courseDays.sort(common.sortOnPropertyName('day'));
-            vm.courseDays = [vm.course].concat(vm.course.courseDays);
+            return [vm.course].concat(vm.course.courseDays);
         }
 
         function deleteCourseParticipant(participantId) {
@@ -177,7 +177,7 @@
                     ? vm.course.courseFormat.daysDuration
                     : 1;
                 var courseDay, key;
-                concatCourseDays();
+                vm.courseDays = concatCourseDays();
                 for (var i = 2; i <= maxDays; i++) {
                     courseDay = vm.courseDays.find(function (cd) { return cd.day === i; });
                     if (!courseDay) {
@@ -193,7 +193,6 @@
                             courseDay = dataContext.courseDays.create(key);
                         }
                     }
-                    courseDay.duration = courseLength[i];
                 }
                 for (; i <= vm.course.courseDays.length; i++) {
                     courseDay = vm.courseDays.find(function (cd) { return cd.day === i; });
@@ -201,13 +200,20 @@
                         courseDay.entityAspect.setDeleted();
                     }
                 }
+                vm.courseDays = concatCourseDays();
+                vm.courseDays.forEach(function (cd) {
+                    cd.duration = moment.duration(courseLength[cd.day], 'm').toJSON()
+                });
+
             });
 
             var _courseLength = null;
+            var _lastFormat;
             function getCourseLengthPromise() {
                 if (!vm.course.courseFormat) {
                     return $q.resolve(null);
-                } else if (_courseLength === null) {
+                } else if (!_courseLength || _lastFormat !== vm.course.courseFormat) {
+                    _lastFormat = vm.course.courseFormat
                     if (!vm.course.courseFormat.entityAspect.isNavigationPropertyLoaded('courseSlots')) {
                         return vm.course.courseFormat.entityAspect.loadNavigationProperty('courseSlots').then(getSlotDuration);
                     } else {
@@ -219,9 +225,9 @@
 
                 function getSlotDuration() {
                     _courseLength = [];
-                    vm.course.courseFormat.courseSlots.foreach(function (cs) {
-                        _courseLength[cs.day] = (_courseLength[cs.day] || 0) + cs.durationMinutes * 60000;
-                    }, 0);
+                    vm.course.courseFormat.courseSlots.forEach(function (cs) {
+                        _courseLength[cs.day] = (_courseLength[cs.day] || 0) + cs.minutesDuration;
+                    });
                     return _courseLength;
                 }
             }

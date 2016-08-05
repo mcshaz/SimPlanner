@@ -1,7 +1,8 @@
-﻿var useref = require('gulp-useref');
+﻿var gulp = require('gulp');
+var useref = require('gulp-useref');
 var uglify = require('gulp-uglify');
-var gulpIf = require('gulp-if');
-var cssnano = require('gulp-cssnano');
+var filter = require('gulp-filter');
+var cssmin = require('gulp-csso');
 var imagemin = require('gulp-imagemin');
 var cache = require('gulp-cache');
 var del = require('del');
@@ -9,20 +10,36 @@ var runSequence = require('run-sequence');
 var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
 var htmlmin = require('gulp-htmlmin');
-var uncss = require('gulp-uncss');
+//var uncss = require('gulp-uncss');
+var pump = require('pump');
+var inline = require('gulp-inline-source');
 
-gulp.task('html', ['styles'], () => {
+gulp.task('html', function(cb){
     var mainFile = 'index.html';
-    return gulp.src(mainFile)
-        .pipe(useref())
-        .pipe(gulpIf('*.js', uglify()))
-        .pipe(gulpIf('*.css', cssnano({ safe: true, autoprefixer: false })))
-        .pipe(gulpIf('*.css', uncss({ html: mainFile })))
-        .pipe(gulpIf('*.js', rev()))
-        .pipe(gulpIf('*.css', rev()))
-        .pipe(revReplace())
-        .pipe(gulpIf('*.html', htmlmin({ collapseWhitespace: true })))
-        .pipe(gulp.dest('dist'));
+    //var glob primer - https://www.npmjs.com/package/glob
+    var jsFilter = filter("**/*.js", { restore: true });
+    var cssFilter = filter("**/*.css", { restore: true });
+
+    pump([gulp.src(mainFile),
+        inline({ /* compress: false */ }),
+        useref(),
+        //uncss({ html: [mainFile, 'app/**/*.html'] }), //needs to have access to css, jss and html
+        jsFilter,
+        uglify(),
+        rev(),
+        jsFilter.restore,
+        cssFilter,
+        cssmin(),
+        rev(),
+        cssFilter.restore,
+        revReplace(/*{modifyReved: replaceJsIfMap}*/),
+        gulp.dest('dist'),
+    ], cb);
+
+    function replaceJsIfMap() {
+        console.log(JSON.stringify(arguments));
+        return arguments[0];
+    }
 });
 
 // Optimizing Images 

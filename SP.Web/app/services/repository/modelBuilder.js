@@ -59,7 +59,7 @@
                 var days = course.courseFormat.daysDuration;
                 var course = this;
                 return days > 1
-                    ? course.courseDays.find(cd => cd.day === days)
+                    ? course.courseDays.find(function (cd) { return cd.day === days; })
                     : course;
             };
 
@@ -77,6 +77,13 @@
                     enumerable: true,
                     configurable: true,
                     get: getFinish
+                });
+
+                Object.defineProperty(CourseCtor.prototype, 'day', { //to implement ICourseDay interface
+                    value: 1,
+                    writable: false,
+                    enumerable: true,
+                    configurable: true
                 });
             };
 

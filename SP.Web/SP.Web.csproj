@@ -767,10 +767,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\styles.css" />
+    <Content Include="dist\index.html" />
     <Content Include="gulpfile.js" />
     <Content Include="Scripts\breeze.debug.js" />
     <Content Include="Scripts\breeze.min.js" />
-    <Content Include="Scripts\update-progress\update-progress.js" />
+    <Content Include="Scripts\update-progress.js" />
+    <Content Include="Scripts\updatebrowser.js" />
     <Content Include="UserEmails\app.css" />
     <Content Include="UserEmails\AuthConfirmationResult.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
@@ -886,6 +888,8 @@
   <ItemGroup>
     <Folder Include="app\tutorial\" />
     <Folder Include="App_Data\" />
+    <Folder Include="dist\css\" />
+    <Folder Include="dist\js\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />

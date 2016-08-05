@@ -94,6 +94,13 @@ namespace SP.Web.Controllers
             return Repo.GetCourseFormats(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
 
+        [HttpGet, EnableBreezeQuery]
+        public IQueryable<CourseDayDto> CourseDays(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetCourseDays(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
+
         [HttpGet]
 		public IQueryable<ScenarioResourceDto> ScenarioResources()
         {

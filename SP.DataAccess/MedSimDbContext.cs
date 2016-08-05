@@ -25,6 +25,7 @@ namespace SP.DataAccess
         public virtual DbSet<Culture> Cultures { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<CourseActivity> CourseActivities { get; set; }
+        public virtual DbSet<CourseDay> CourseDays { get; set; }
         public virtual DbSet<CourseFormat> CourseFormats { get; set; }
         public virtual DbSet<CourseParticipant> CourseParticipants { get; set; } 
         public virtual DbSet<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
