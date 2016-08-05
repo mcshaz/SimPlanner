@@ -35,7 +35,7 @@
         vm.instructorCourses = [];
         vm.isScenarioChanged = isScenarioChanged;
         vm.removeSlot = removeSlot;
-        vm.resetExampleTime = resetExampleTime;
+        vm.resetExampleTimes = resetExampleTimes;
 
         vm.selectedDepartments = [];
         vm.title = 'Course Format';
@@ -46,13 +46,13 @@
                 // this callback has the changed model
                 var format = vm.courseType.courseFormats[vm.activeFormatIndex];
                 var nextSlot = -1;
-                format.sortableSlots.forEach(function (el, indx) {
-                    if (!el.isDayMarker && el.order !== ++nextSlot) {
-                        el.order = nextSlot;
+                console.log(format.sortableSlots.map(el=> ({ day:el.day, activity:el.activity?el.activity.name:el.isDayMarker?'day':'sim' })));
+                format.sortableSlots.forEach(function (cs) {
+                    if (!cs.isDayMarker && cs.order !== ++nextSlot) {
+                        cs.order = nextSlot;
                     }
                 });
-                el.courseSlots.sort(common.sortOnPropertyName('order'));
-                resetExampleTime(format);
+                alterDayMarkers(format);
             },
             items: 'tr:not(.not-sortable)'
         };
@@ -60,9 +60,9 @@
         activate();
 
         function activate() {
-            datacontext.ready().then(function () {
-                var departments;
-                var promises = [
+            var departments;
+            var promises = [
+                    datacontext.ready(),
                     datacontext.courseTypes.find({where: breeze.Predicate.create('instructorCourseId','==',null).and('id','!=',id)}).then(function (data) {
                         vm.instructorCourses = data;
                     }),
@@ -70,55 +70,52 @@
                         departments = data;
                     })
                 ];
-                if (isNew) {
-                    vm.courseType = datacontext.courseTypes.create();
-                    datacontext.courseFormats.create({ courseType: vm.courseType });
-                    vm.notifyViewModelLoaded();
-                } else {
-                    //promises.push(datacontext.courseTypes.fetchByKey(id, { expand: 'courseFormats.courseSlots' }).then(function (data) { - if the courseFormats were not already loaded from the server
-                    promises.push(datacontext.courseTypes.fetchByKey(id,
-                    {
-                        expand: ["courseFormats.courseSlots.activity", "courseTypeDepartments"]
-                    }).then(function (data) {
-                        vm.courseType = data;
-                        vm.courseType.courseFormats.forEach(function (cf) {
-                            cf.courseSlots.sort(common.sortOnPropertyName('order'));
-                            resetExampleTime(cf);
-                            cf.sortableSlots = createCourseSlotSortableArray(cf.courseSlots);
-                        });
-                        vm.activeFormatIndex = vm.courseType.courseFormats.findIndex(function (cf) {
-                            return cf.id === $routeParams.formatId;
-                        });
-                    }));
-                }
-                common.activateController(promises, controllerId)
-                    .then(function () {
-                        var ctds = vm.courseType.courseTypeDepartments;
-                        departments.forEach(function (el) {
-                            vm.departments.push({ name: '<strong>' + el.name + '</strong>', dptGroup: true });
-                            el.departments.forEach(iterateDpt);
-                            vm.departments.push({ dptGroup: false });
-                        });
-                        function iterateDpt(d) {
-                            var checked = ctds.some(function(c){return c.departmentId === d.id;});
-                            vm.departments.push({ name: d.name, abbreviation: d.abbreviation, dptId:d.id, checked:checked });
-                        }
-                        $scope.$watchCollection(function () { return vm.selectedDepartments; }, common.manageCollectionChange(datacontext.courseTypeDepartments, 'dptId',
-                            function (member) {
-                                return {
-                                    departmentId: member.dptId,
-                                    courseTypeId: vm.courseType.id
-                                };
-                            }));
-                        if (vm.courseType.courseFormats.length === 1) {
-                            vm.activeFormatIndex = 0;
-                        }
-                        vm.log('Activated Course Format View');
-                        vm.notifyViewModelLoaded();
+            if (isNew) {
+                vm.courseType = datacontext.courseTypes.create();
+                datacontext.courseFormats.create({ courseType: vm.courseType });
+            } else {
+                //promises.push(datacontext.courseTypes.fetchByKey(id, { expand: 'courseFormats.courseSlots' }).then(function (data) { - if the courseFormats were not already loaded from the server
+                promises.push(datacontext.courseTypes.fetchByKey(id,
+                {
+                    expand: ["courseFormats.courseSlots.activity", "courseTypeDepartments"]
+                }).then(function (data) {
+                    vm.courseType = data;
+                    vm.courseType.courseFormats.forEach(function (cf) {
+                        resetExampleTimes(cf);
+                        cf.sortableSlots = createCourseSlotSortableArray(cf.courseSlots);
                     });
+                    vm.activeFormatIndex = vm.courseType.courseFormats.findIndex(function (cf) {
+                        return cf.id === $routeParams.formatId;
+                    });
+                }));
+            }
+            common.activateController(promises, controllerId)
+                .then(function () {
+                    vm.notifyViewModelLoaded();
+                    var ctds = vm.courseType.courseTypeDepartments;
+                    departments.forEach(function (el) {
+                        vm.departments.push({ name: '<strong>' + el.name + '</strong>', dptGroup: true });
+                        el.departments.forEach(iterateDpt);
+                        vm.departments.push({ dptGroup: false });
+                    });
+                    function iterateDpt(d) {
+                        var checked = ctds.some(function(c){return c.departmentId === d.id;});
+                        vm.departments.push({ name: d.name, abbreviation: d.abbreviation, dptId:d.id, checked:checked });
+                    }
+                    $scope.$watchCollection(function () { return vm.selectedDepartments; }, common.manageCollectionChange(datacontext.courseTypeDepartments, 'dptId',
+                        function (member) {
+                            return {
+                                departmentId: member.dptId,
+                                courseTypeId: vm.courseType.id
+                            };
+                        }));
+                    if (vm.courseType.courseFormats.length === 1) {
+                        vm.activeFormatIndex = 0;
+                    }
+                    vm.log('Activated Course Format View');
             });
         }
-
+        
         //logic is - can't delete slots after course has been run, as they may have associated tables such as participants
         //-altering the name of a slot - don't allow reassignment of activity, as course participants etc will be all mucked up
         //-only show typeahead if a new slot (otherwise simple input)
@@ -200,7 +197,7 @@
             } else {
                 courseSlot.isActive = false;
             }
-            resetExampleTime(courseSlot.courseFormat);
+            resetExampleTimes(courseSlot.courseFormat);
         }
 
         function editChoices(slot) {
@@ -276,14 +273,14 @@
             cf.entityAspect.setDeleted();
         }
 
-        function resetExampleTime(cf){
+        function resetExampleTimes(cf) {
+            var currentDay;
+            var startIndx;
             if (!cf.exampleStart) {
                 cf.exampleStart = new Date(0);
                 cf.exampleStart.setHours(8);
             }
-            
-            var currentDay;
-            var startIndx;
+            cf.courseSlots.sort(common.sortOnPropertyName('order'));
             cf.courseSlots.forEach(function (cs) {
                 if (cs.isActive) {
                     if (cs.day !== currentDay) {
@@ -299,34 +296,36 @@
         function createCourseSlotSortableArray(slots) {
             var returnVar = [];
             var currentDay = -1;
+
             slots.forEach(function (cs) {
-                if (currentDay !== cs.day) {
-                    returnVar.push({ isDayMarker: true, day: cs.day, locked: cs.day === 1, isActive:true });
-                    currentDay = cs.day;
+                if (cs.isActive) {
+                    if (currentDay !== cs.day) {
+                        returnVar.push({ isDayMarker: true, day: cs.day, locked: cs.day === 1, isActive: true });
+                        currentDay = cs.day;
+                    }
+                    returnVar.push(cs);
                 }
-                returnVar.push(cs);
             });
             return returnVar;
         }
 
-        function alterDayMarkers(courseFormat) {
+        function alterDayMarkers(cf) {
+            if (cf.daysDuration <= 0) { return; }
             var currentDay = 0;
             var i;
-            for (i = 0; i < courseFormat.sortableSlots.length; i++) {
-                var el = courseFormat.sortableSlots[i];
-                if (el.isDayMarker) {
-                    if (++currentDay > courseFormat.daysDuration) {
-                        courseFormat.sortableSlots.splice(i, 1);
-                    } else {
-                        el.day = currentDay;
-                    }
+            for (i = 0; i < cf.sortableSlots.length; i++) {
+                if (cf.sortableSlots[i].isDayMarker && ++currentDay > cf.daysDuration) {
+                    cf.sortableSlots.splice(i, 1);
+                    --currentDay;
+                    --i;
                 } else {
-                    el.day = currentDay;
+                    cf.sortableSlots[i].day = currentDay;
                 }
             }
-            for (i = currentDay; i < courseFormat.daysDuration; i++) {
-                courseFormat.sortableSlots.push({ isDayMarker: true, day: i, locked: false, isActive:true });
+            for (i = currentDay; i < cf.daysDuration; i++) {
+                cf.sortableSlots.push({ isDayMarker: true, day: i+1, locked: false, isActive:true });
             }
+            resetExampleTimes(cf);
         }
     }
 })();

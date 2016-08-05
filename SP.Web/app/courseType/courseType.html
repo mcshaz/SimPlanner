@@ -89,7 +89,7 @@
                                                 Days Duration
                                             </label>
                                             <div class="col-md-9">
-                                                <input id="daysDuration" class="form-control" type="number" z-validate step="1" ng-model="cf.daysDuration" />
+                                                <input id="daysDuration" class="form-control" type="number" min="1" z-validate step="1" ng-model="cf.daysDuration" ng-change="vm.alterDayMarkers(cf)"/>
                                             </div>
 
                                         </div>
@@ -104,7 +104,7 @@
                                                         <i class="fa fa-clock-o"></i>
                                                     </span>
                                                     <input id="startTime" class="form-control" ng-model="cf.exampleStart" data-time-format="shortTime" data-autoclose="1" 
-                                                           placeholder="Time" bs-timepicker type="text" ng-change="resetExampleTime(cf)" />
+                                                           placeholder="Time" bs-timepicker type="text" ng-change="vm.resetExampleTimes(cf)" />
                                                 </div>
                                             </div>
 
@@ -122,16 +122,22 @@
                                                     </th>
                                                     <th>Minutes</th>
                                                     <td><small>example finish</small></td>
+                                                     <!--
+                                                    simultaneousStreams functionality not implemented yet
                                                     <th>Streams</th>
+                                                    -->
                                                     <td></td>
                                                 </tr>
                                             </thead>
-                                            <tbody ui-sortable="vm.sortableOptions" ng-model="cf.courseSlots">
-                                                <tr ng-repeat="cs in cf.courseSlots | filter: {isActive: true} track by cs.id" ng-class="cs===cf.selectedSlot?'warning':''">
-                                                    <td class="handle">
+                                            <tbody ui-sortable="vm.sortableOptions" ng-model="cf.sortableSlots">
+                                                <tr ng-repeat="cs in cf.sortableSlots | filter: {isActive: true}" ng-class="{'info':cs===cf.selectedSlot, 'not-sortable': cs.locked}">
+                                                    <td class="handle" ng-if="!cs.locked">
                                                         :::
                                                     </td>
-                                                    <td>
+                                                    <td ng-if="cs.isDayMarker" colspan="{{cs.locked?6:5}}" class="day-marker text-center warning">
+                                                        Day {{cs.day}}
+                                                    </td>
+                                                    <td ng-if-start="!cs.isDayMarker">
                                                         <span ng-hide="cs.activity" class="simulation">Simulation</span>
                                                         <span ng-show="cs.activity" class="activity">{{cs.activity.name}}</span>
                                                     </td>
@@ -141,11 +147,13 @@
                                                     <td>
                                                         {{cs.exampleFinish | amDateFormat:'LT'}}
                                                     </td>
+                                                    <!--
+                                                    simultaneousStreams functionality not implemented yet
                                                     <td>
                                                         {{cs.simultaneousStreams}}
                                                     </td>
-
-                                                    <td>
+                                                    -->
+                                                    <td ng-if-end>
                                                         <button type="button" class="btn-link" ng-click="vm.editSlot(cs)">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
@@ -184,11 +192,14 @@
                                                         </div>
                                                     </td>
                                                     <td class="form-group col-md-1">
-                                                        <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.minutesDuration" ng-disabled="!cf.selectedSlot" ng-change="resetExampleTime(cf)">
+                                                        <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.minutesDuration" ng-disabled="!cf.selectedSlot" ng-change="vm.resetExampleTimes(cf)">
                                                     </td>
+                                                    <!--
+                                                    simultaneousStreams functionality not implemented yet
                                                     <td class="form-group  col-md-1">
                                                         <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.simultaneousStreams" ng-disabled="!cf.selectedSlot">
                                                     </td>
+                                                    -->
                                                     <td>
                                                         <button class="btn btn-link" type="button" ng-click="vm.editChoices(cf.selectedSlot)" ng-disabled="!cf.selectedSlot || cf.selectedSlot.isScenario || cf.selectedSlot.entityAspect.entityState.isAdded()"
                                                                 data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save first" bs-tooltip bs-enabled="!!(cf.selectedSlot && cf.selectedSlot.entityAspect.entityState.isAdded())">

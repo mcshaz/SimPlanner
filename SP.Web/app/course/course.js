@@ -44,37 +44,36 @@
         activate();
 
         function activate() {
-            datacontext.ready().then(function () {
-                var promises = [ datacontext.courseFormats.all().then(function (data) {
+            var promises = [ datacontext.ready(),
+                datacontext.courseFormats.all().then(function (data) {
                     vm.courseFormats = data;
                 }),datacontext.departments.all().then(function (data) {
                     vm.departments = data;
                 }), datacontext.rooms.all().then(function (data) {
                     vm.rooms = data;
                 }) ];
-                if (isNew) {
-                    vm.course = datacontext.courses.create();
-                    vm.course.entityAspect.markNavigationPropertyAsLoaded('courseParticipants');
-                    vm.course.entityAspect.markNavigationPropertyAsLoaded('courseDays');
+            if (isNew) {
+                vm.course = datacontext.courses.create();
+                vm.course.entityAspect.markNavigationPropertyAsLoaded('courseParticipants');
+                vm.course.entityAspect.markNavigationPropertyAsLoaded('courseDays');
+            }else{
+                promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant,courseDays'}).then(function (data) {
+                    if (!data) {
+                        vm.log.warning('Could not find course id = ' + id);
+                        return;
+                        //gotoCourses();
+                    }
+                    vm.course = data;
+                    vm.courseDays = concatCourseDays();
+                }));
+            }
+            common.activateController(promises, controllerId)
+                .then(function () {
                     vm.notifyViewModelLoaded();
-                }else{
-                    promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant,courseDays'}).then(function (data) {
-                        if (!data) {
-                            vm.log.warning('Could not find course id = ' + id);
-                            return;
-                            //gotoCourses();
-                        }
-                        vm.course = data;
-                        vm.notifyViewModelLoaded();
-                        vm.courseDays = concatCourseDays();
-                    }));
-                }
-                common.activateController(promises, controllerId)
-                    .then(function () {
-                        vm.log('Activated Course View');
-                    });
-            });
-        }
+                    vm.log('Activated Course View');
+                });
+        };
+
 
         function cycleConfirmed(cp) {
             switch (cp.isConfirmed) {
