@@ -202,7 +202,7 @@
                 }
                 vm.courseDays = concatCourseDays();
                 vm.courseDays.forEach(function (cd) {
-                    cd.duration = moment.duration(courseLength[cd.day], 'm').toJSON()
+                    cd.duration = moment.duration(courseLength[cd.day], 'm').toJSON();
                 });
 
             });
@@ -213,7 +213,7 @@
                 if (!vm.course.courseFormat) {
                     return $q.resolve(null);
                 } else if (!_courseLength || _lastFormat !== vm.course.courseFormat) {
-                    _lastFormat = vm.course.courseFormat
+                    _lastFormat = vm.course.courseFormat;
                     if (!vm.course.courseFormat.entityAspect.isNavigationPropertyLoaded('courseSlots')) {
                         return vm.course.courseFormat.entityAspect.loadNavigationProperty('courseSlots').then(getSlotDuration);
                     } else {

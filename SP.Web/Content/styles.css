@@ -468,7 +468,15 @@ div.time-accompany{
 .unavailableParticipant{
     text-decoration:line-through;
     color:orangered;
-}    
+}
+
+.panel-collapse.in {
+    overflow: visible;
+}
+
+.btn.btn-link{
+    pointer-events:all;
+}
 /*#region overide breeze directives*/
         .z-decorator {
             display: block;

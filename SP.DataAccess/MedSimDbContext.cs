@@ -436,7 +436,7 @@ namespace SP.DataAccess
         {
             DateTime? currentTime = null;
             foreach (var ent in ChangeTracker.Entries().Where(e=>
-                               e.State == EntityState.Added || e.State == EntityState.Modified
+                               (e.State == EntityState.Added || e.State == EntityState.Modified)
                                    && typeof(ITimeTracking).IsAssignableFrom(e.Entity.GetType())))
             {
                 var tt = (ITimeTracking)ent.Entity;

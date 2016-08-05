@@ -14,13 +14,14 @@
             controllerId: controllerId,
             watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseSlots', 'courseType.courseFormats.courseSlots.activity', 'courseType.courseTypeDepartments'],
             $scope: $scope,
-            $watchers: [$scope.$on('$destroy', removeSelectedSlots)]
+            $watchers: [$scope.$on('$destroy', destroy)]
         });
         var id = $routeParams.id;
         var isNew = id === 'new';
 
         vm.activeFormatIndex = -1;
         vm.activitySelected = activitySelected;
+        vm.alterDayMarkers = alterDayMarkers;
         vm.clone = clone;
         vm.courseType = {};
         vm.createSlot = createSlot;
@@ -44,13 +45,16 @@
             stop: function (e, ui) {
                 // this callback has the changed model
                 var format = vm.courseType.courseFormats[vm.activeFormatIndex];
-                format.courseSlots.forEach(function (el, indx) {
-                    if (el.order !== indx) {
-                        el.order = indx;
+                var nextSlot = -1;
+                format.sortableSlots.forEach(function (el, indx) {
+                    if (!el.isDayMarker && el.order !== ++nextSlot) {
+                        el.order = nextSlot;
                     }
                 });
+                el.courseSlots.sort(common.sortOnPropertyName('order'));
                 resetExampleTime(format);
-            }
+            },
+            items: 'tr:not(.not-sortable)'
         };
 
         activate();
@@ -77,12 +81,13 @@
                         expand: ["courseFormats.courseSlots.activity", "courseTypeDepartments"]
                     }).then(function (data) {
                         vm.courseType = data;
-                        vm.courseType.courseFormats.forEach(function (el) {
-                            el.courseSlots.sort(common.sortOnPropertyName('order'));
-                            resetExampleTime(el);
+                        vm.courseType.courseFormats.forEach(function (cf) {
+                            cf.courseSlots.sort(common.sortOnPropertyName('order'));
+                            resetExampleTime(cf);
+                            cf.sortableSlots = createCourseSlotSortableArray(cf.courseSlots);
                         });
-                        vm.activeFormatIndex = vm.courseType.courseFormats.findIndex(function (el) {
-                            return el.id === $routeParams.formatId;
+                        vm.activeFormatIndex = vm.courseType.courseFormats.findIndex(function (cf) {
+                            return cf.id === $routeParams.formatId;
                         });
                     }));
                 }
@@ -133,10 +138,16 @@
             });
         }
 
-        function removeSelectedSlots() {
+        //we have fiddled with the entity model rather than create a view model (naughty/lazy) - tear down those mods here
+        function destroy() {
             if (vm.courseType) {
-                vm.courseType.courseFormats.forEach(function (el) {
-                    delete el.selectedSlot;
+                vm.courseType.courseFormats.forEach(function (cf) {
+                    delete cf.selectedSlot;
+                    delete cf.sortableSlots;
+                    delete cf.exampleStart;
+                    cf.courseSlots.forEach(function (cs) {
+                        delete cs.exampleFinish;
+                    });
                 });
             }
         }
@@ -165,7 +176,7 @@
         /*
         function saveOverride() {
             //vm.log.debug($event);
-            baseSave().then(removeSelectedSlots);
+            baseSave().then(destroy);
         }//;
         */
 
@@ -174,17 +185,22 @@
                 courseFormatId: courseFormat.id,
                 order: (courseFormat.courseSlots || []).length
             });
+            courseFormat.sortableSlots.push(courseFormat.selectedSlot);
             createActivity(courseFormat.selectedSlot);
         }
 
         function removeSlot(courseSlot) {
             removeActivity(courseSlot);
-            delete courseSlot.courseFormat.selectedSlot;
+            var sortableSlots = courseSlot.courseFormat.sortableSlots;
+            var indx = sortableSlots.indexOf(courseSlot);
+            sortableSlots.splice(indx, 1);
+            //delete courseSlot.courseFormat.selectedSlot; - not necessarily selected
             if (courseSlot.entityAspect.entityState.isAdded()) {
                 courseSlot.entityAspect.setDeleted();
             } else {
                 courseSlot.isActive = false;
             }
+            resetExampleTime(courseSlot.courseFormat);
         }
 
         function editChoices(slot) {
@@ -243,11 +259,13 @@
         function clone(cf) {
             var newFormat = datacontext.cloneItem(cf, ['courseSlots']);
             newFormat.description += " - copy";
+            newFormat.sortableSlots = createCourseSlotSortableArray(newFormat.courseSlots);
             vm.activeFormatIndex = vm.courseType.courseFormats.length -1;
         }
 
         function createNewFormat() {
-            datacontext.courseFormats.create({ courseTypeId: vm.courseType.id });
+            var cf = datacontext.courseFormats.create({ courseTypeId: vm.courseType.id });
+            cf.sortableSlots = createCourseSlotSortableArray(cf.courseSlots);
             vm.activeFormatIndex = vm.courseType.courseFormats.length - 1;
         }
 
@@ -260,19 +278,55 @@
 
         function resetExampleTime(cf){
             if (!cf.exampleStart) {
-                cf.exampleStart = new Date(0).setHours(8);
+                cf.exampleStart = new Date(0);
+                cf.exampleStart.setHours(8);
             }
             
             var currentDay;
             var startIndx;
-            cf.courseSlots.forEach(function (el) {
-                if (el.day !== currentDay) {
-                    startIndx = cf.exampleStart;
-                    currentDay = el.day;
+            cf.courseSlots.forEach(function (cs) {
+                if (cs.isActive) {
+                    if (cs.day !== currentDay) {
+                        startIndx = cf.exampleStart.getTime();
+                        currentDay = cs.day;
+                    }
+                    startIndx += cs.minutesDuration * 60000;
+                    cs.exampleFinish = new Date(startIndx);
                 }
-                startIndx += el.minutesDuration * 60000;
-                el.exampleFinish = startIndx;
             });
+        }
+
+        function createCourseSlotSortableArray(slots) {
+            var returnVar = [];
+            var currentDay = -1;
+            slots.forEach(function (cs) {
+                if (currentDay !== cs.day) {
+                    returnVar.push({ isDayMarker: true, day: cs.day, locked: cs.day === 1, isActive:true });
+                    currentDay = cs.day;
+                }
+                returnVar.push(cs);
+            });
+            return returnVar;
+        }
+
+        function alterDayMarkers(courseFormat) {
+            var currentDay = 0;
+            var i;
+            for (i = 0; i < courseFormat.sortableSlots.length; i++) {
+                var el = courseFormat.sortableSlots[i];
+                if (el.isDayMarker) {
+                    if (++currentDay > courseFormat.daysDuration) {
+                        courseFormat.sortableSlots.splice(i, 1);
+                    } else {
+                        el.day = currentDay;
+                    }
+                } else {
+                    el.day = currentDay;
+                }
+            }
+            for (i = currentDay; i < courseFormat.daysDuration; i++) {
+                courseFormat.sortableSlots.push({ isDayMarker: true, day: i, locked: false, isActive:true });
+            }
         }
     }
 })();
