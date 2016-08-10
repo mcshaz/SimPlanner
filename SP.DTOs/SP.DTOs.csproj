@@ -185,6 +185,11 @@
     <Compile Include="MedSimDtoContextPretender.cs" />
     <Compile Include="MedSimDtoRepository.cs" />
     <Compile Include="MedSimDtoMetadata.cs" />
+    <Compile Include="ParticipantSummary\FacultyPresentationRoleSummary.cs" />
+    <Compile Include="ParticipantSummary\ParticipantCourseSummary.cs" />
+    <Compile Include="ParticipantSummary\FacultySimRoleSummary.cs" />
+    <Compile Include="ParticipantSummary\ParticipantSummary.cs" />
+    <Compile Include="ParticipantSummary\ParticipantSummaryServices.cs" />
     <Compile Include="ProcessBreezeRequests\ISO3166.cs" />
     <Compile Include="ProcessBreezeRequests\ValidateMedSim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
