@@ -1,13 +1,14 @@
 ﻿(function () {
     'use strict';
     var controllerId = 'dashboard';
-    angular.module('app').controller(controllerId, ['common', 'errorhandler', 'datacontext','breeze', 'tokenStorageService','$rootScope','AUTH_EVENTS','$q','$location',dashboard]);
+    angular.module('app').controller(controllerId, ['common', 'errorhandler', 'datacontext','breeze', 'tokenStorageService','$rootScope','AUTH_EVENTS','$q','$location', '$http' ,dashboard]);
 
-    function dashboard(common, errorhandler, datacontext, breeze, tokenStorageService, $rootScope, AUTH_EVENTS,$q,$location) {
+    function dashboard(common, errorhandler, datacontext, breeze, tokenStorageService, $rootScope, AUTH_EVENTS,$q,$location,$http) {
         var log = common.logger.getLogFn(controllerId);
         var FilterQueryOp = breeze.FilterQueryOp;
         var vm = this;
         vm.currentUserId = null;
+        vm.summaryData = {};
         vm.userCourses = [];
         vm.upcomingCourses = [];
         vm.userSummaryData = {};
@@ -31,7 +32,7 @@
             if (tokenStorageService.isLoggedIn()) {
                 vm.currentUserId = tokenStorageService.getUserId();
                 //todo uow.ready promise - nested
-                return [getCourses() /*, getUserSummaryData(), getUserSummaryData */];
+                return [getCourses() , getUserSummaryData()];
             }
             vm.loginState = 'notLoggedIn';
             vm.currentUserId = null;
@@ -61,9 +62,9 @@
         }
 
         function getUserSummaryData() {
-            return datacontext.getUserCourses().then(function (data) {
-                return vm.userSummaryData = data;
-            });
+            return $http({ method: 'GET', url: '/api/ActivitySummary/UserInfo' }).then(function (response) {
+                vm.summaryData = common.mapToCamelCase(response.data);
+            }, log.error);
         }
 
         function getUpcomingCourses() {

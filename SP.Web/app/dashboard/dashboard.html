@@ -99,7 +99,70 @@
                             <h4 class="panel-title"><span class="fa fa-bar-chart"></span>Your Summary Data<span class="chevron"></span></h4>
                         </div>
                         <div id="priorCourses" class="panel-body panel-collapse collapse in">
-
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Course Name
+                                        </th>
+                                        <th>
+                                            Faculty
+                                        </th>
+                                        <th>
+                                            Participant
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="c in vm.summaryData.courseSummary">
+                                        <td>{{c.courseName}}</td>
+                                        <td>{{c.facultyCount}}</td>
+                                        <td>{{c.atendeeCount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h6>
+                                Simulation Roles
+                            </h6>
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Role Name
+                                        </th>
+                                        <th>
+                                            No.
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="c in vm.summaryData.simRoleSummary">
+                                        <td>{{c.roleName}}</td>
+                                        <td>{{c.count}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h6>
+                                Other Roles
+                            </h6>
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Description
+                                        </th>
+                                        <th>
+                                            No.
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="c in vm.summaryData.presentationSummary">
+                                        <td>{{c.description}}</td>
+                                        <td>{{c.count}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="panel-footer">
                             <div class="clearfix"></div>

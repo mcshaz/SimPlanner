@@ -46,6 +46,7 @@
             isNumber: isNumber,
             logger: logger, // for accessibility
             manageCollectionChange: collectionManager.manageCollectionChange,  // for accessibility
+            mapToCamelCase: mapToCamelCase,
             collectionChange: collectionManager.collectionChange,
             sortOnPropertyName: sortOnPropertyName,
             sortOnChildPropertyName: sortOnChildPropertyName,
@@ -193,6 +194,22 @@
                 // a must be equal to b
                 return 0;
             };
+        }
+
+        function mapToCamelCase(obj) {
+            var returnVar = {};
+            var val;
+            for (var p in obj) {
+                if (p.length) {
+                    val = obj[p];
+                    returnVar[p[0].toLowerCase() + p.substr(1)] = typeof(val) === 'object'
+                        ? Array.isArray(val)
+                            ?val.map(mapToCamelCase)
+                            :mapToCamelCase(val)
+                        :val;
+                }
+            }
+            return returnVar;
         }
 
         var _roleIcons;

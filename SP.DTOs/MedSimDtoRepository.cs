@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SP.DataAccess;
 using SP.Dto.Maps;
+using SP.DTOs.ParticipantSummary;
 using SP.DTOs.ProcessBreezeRequests;
 using System;
 using System.Collections.Generic;
@@ -196,7 +197,6 @@ namespace SP.Dto
         {
             return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(includes: new[] { "CourseFormats" });
         }
-
 
         #region IDisposable
 

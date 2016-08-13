@@ -7,12 +7,10 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using SP.Web.Providers;
 using SP.Web.Models;
-using Owin.Security.Providers.LinkedIn;
+//using Owin.Security.Providers.LinkedIn;
 using Microsoft.Owin.Security.Facebook;
 using System.Threading.Tasks;
 using SP.DataAccess;
-using System.Collections.Generic;
-using System.Web;
 
 namespace SP.Web
 {

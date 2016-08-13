@@ -1,10 +1,11 @@
-﻿using SP.DataAccess;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using SP.DataAccess;
+using SP.DTOs.ParticipantSummary;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace SP.Web.Controllers
@@ -14,15 +15,12 @@ namespace SP.Web.Controllers
     public class SummaryDataController : ApiController
     {
         [Route("UserInfo")]
-        public IHttpActionResult GetUserInfo(DateTime? from=null)
+        public IHttpActionResult GetUserInfo(DateTime? after=null)
         {
 
-            var userName =User.Identity.Name;
-            using (var db = new MedSimDbContext())//to do - get from 1 per owin context
-            {
-
-            }
-            throw new NotImplementedException();
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var owinContext = HttpContext.Current.GetOwinContext().Get<MedSimDbContext>();
+            return Json(ParticipantSummaryServices.GetParticipantSummary(owinContext, userId, after));
         }
     }
     public class ActivitySummary
