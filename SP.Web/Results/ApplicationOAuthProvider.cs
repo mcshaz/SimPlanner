@@ -105,7 +105,8 @@ namespace SP.Web.Providers
                 { "userId", user.Id.ToString() },
                 { "fullName", user.FullName },
                 { "userRoles", string.Join(",",roles) },
-                { "locale", user.Department.Institution.LocaleCode }
+                { "locale", user.Department.Institution.LocaleCode },
+                { "departmentId", user.DefaultDepartmentId.ToString() }
             };
             return new AuthenticationProperties(data);
         }

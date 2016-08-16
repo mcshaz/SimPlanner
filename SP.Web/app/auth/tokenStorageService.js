@@ -9,7 +9,8 @@
         var unAuthUser = {
             name: '',
             roles: [],
-            id:null
+            id: null,
+            departmentId:null
         };
         var self = this;
         var log = common.logger.getLogFn(serviceId);
@@ -17,6 +18,7 @@
         self.getUserName = getUserName;
         self.getUserRoles = getUserRoles;
         self.getUserId = getUserId;
+        self.getUserDepartmentId = getUserDepartmentId;
         self.getUserLocale = getUserLocale;
         self.isLoggedIn = isLoggedIn;
         self.isAuthorized = isAuthorized;
@@ -59,6 +61,10 @@
             return currentUser.locale;
         }
 
+        function getUserDepartmentId() {
+            return currentUser.departmentId;
+        }
+
         //check if the user is authorized to access the next route
         //this function can be also used on element level
         //e.g. <p ng-if="isAuthorized(authorizedRoles)">show this only to admins</p>
@@ -98,7 +104,8 @@
                     name: data.fullName,
                     roles: data.userRoles.split(','),
                     id: data.userId,
-                    locale: data.locale
+                    locale: data.locale,
+                    departmentId: data.departmentId
                 }
                 localStorage.set('currentUser', currentUser);
                 //now broadcast

@@ -5,22 +5,25 @@
         .module('app')
         .controller(controllerId, courseTypesCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope', 'uiGridConstants', 'uiGridGroupingConstants'];
+    courseTypesCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope', 'uiGridConstants', 'uiGridGroupingConstants', 'tokenStorageService'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, breeze, $scope, uiGridConstants, uiGridGroupingConstants) {
+    function courseTypesCtrl(common, datacontext, breeze, $scope, uiGridConstants, uiGridGroupingConstants, tokenStorageService) {
         /* jshint validthis:true */
         var vm = this;
         var filterPredicate = null;
         //var orderBy = 'start desc';
-        var filterHeaderGrpTemplate = "<div class=\"ui-grid-filter-container\">" + "" +
-                                        "<select class=\"ui-grid-filter ui-grid-filter-select\" ng-model=\"col.filter.term\" ng-attr-placeholder=\"{{colFilter.placeholder || aria.defaultFilterLabel}}\" aria-label=\"{{colFilter.ariaLabel || ''}}\" ng-options=\"option.value as option.label group by option.group for option in col.filter.selectOptions track by option.value\">" +
+        var filterHeaderGrpTemplate = "<div class=\"ui-grid-filter-container\">" + 
+                                        "<select class=\"ui-grid-filter ui-grid-filter-select\" ng-model=\"col.filters[0].term\" ng-attr-placeholder=\"{{colFilter.placeholder || aria.defaultFilterLabel}}\" aria-label=\"{{colFilter.ariaLabel || ''}}\" ng-options=\"option.value as option.label group by options.group for option in col.filter.selectOptions\">" +
                                         "		<option value=\"\"></option>" +
                                         "</select></div>";
                                         //"	<div role=\"button\" class=\"ui-grid-filter-button-select\" ng-click=\"removeFilter(colFilter, $index)\" ng-if=\"!colFilter.disableCancelFilterButton\" ng-disabled=\"colFilter.term === undefined || colFilter.term === null || colFilter.term === ''\" ng-show=\"colFilter.term !== undefined && colFilter.term != null\">" +
                                         //"		<i class=\"ui-grid-icon-cancel\" ui-grid-one-bind-aria-label=\"aria.removeFilter\">&nbsp;</i>" +
                                         //"	</div>";
-
+        var today = new Date();
+        var startDate = new Date(today);
+        var gridApi;
+        startDate.setFullYear(today.getFullYear() -1);
         vm.gridOptions = {
             paginationPageSizes: [10, 25, 100],
             paginationPageSize: 10,
@@ -34,15 +37,13 @@
                     name: 'Department', field: 'department',
                     filterHeaderTemplate: filterHeaderGrpTemplate,
                     filter: { /* type: uiGridConstants.filter.SELECT */ },
-                    sort: { priority: 0, direction: 'asc' },
-
                     grouping: { groupPriority: 0 }
                 },
             {
                 name: 'Course', field: 'course',
                 filterHeaderTemplate: filterHeaderGrpTemplate,
                 filter: { /* type: uiGridConstants.filter.SELECT */ },
-                sort: { priority: 1, direction: 'asc' },
+                sort: { priority: 0, direction: 'asc' },
                 grouping: { groupPriority: 1 }
             },
             {
@@ -73,7 +74,7 @@
                 filterHeaderTemplate: '<div class="ui-grid-filter-container">' +
                     '<input  class="ui-grid-filter-input" bs-datepicker type="text" ng-model="col.filters[0].term" placeholder="from" container="body"/>' +
                     '<input class="ui-grid-filter-input" bs-datepicker type="text" ng-model="col.filters[1].term" placeholder="to" container="body"/></div>',
-                filters: [{}, {}]
+                filters: [{term: startDate}, {term:today}]
                 /*sort: {
                     direction: uiGridConstants.DESC,
                     priority: 0
@@ -86,7 +87,8 @@
                   enableSorting:false
               }
             ],
-            onRegisterApi: function (gridApi) {
+            onRegisterApi: function (gApi) {
+                gridApi = gApi;
                 //gridApi.core.on.sortChanged($scope, sortChanged);
                 gridApi.core.on.filterChanged($scope, filterChanged);
                 //gridApi.pagination.on.paginationChanged($scope, updateData);
@@ -97,7 +99,6 @@
         function activate() {
             datacontext.ready().then(function () {
                 common.activateController([
-                    updateData(),
                     datacontext.institutions.all().then(function (data) {
                         var opts = [];
                         data.forEach(function (i) {
@@ -106,8 +107,10 @@
                                 opts.push({ value: 'd:' + d.id, label: d.abbreviation, group:i.name });
                             });
                         });
-                        vm.gridOptions.columnDefs[0].filter.selectOptions = opts;
-                        vm.gridOptions.columnDefs[2].filter.selectOptions = opts;
+                        gridApi.grid.columns[1].filters[0].term = 'd:' + tokenStorageService.getUserDepartmentId();
+                        gridApi.grid.columns[1].filters[0].selectOptions = opts,
+                        //gridApi.grid.refresh();
+                        gridApi.grid.columns[3].filters[0].selectOptions = opts;
                     }),
                     datacontext.courseTypes.all().then(function (data) {
                         var opts = [];
@@ -119,13 +122,13 @@
                                 }
                             });
                         });
-                        vm.gridOptions.columnDefs[1].filter.selectOptions = opts;
+                        gridApi.grid.columns[2].filters[0].selectOptions = opts;
                     })]);
             });
         }
 
         function filterChanged() {
-            var grid = this.grid;
+            var grid = gridApi.grid;
             var predicates = [];
             var createIdPredicate = function (propNames, id) {
                 if (id) {
@@ -148,7 +151,7 @@
 
             filterPredicate = predicates.length ? breeze.Predicate.and(predicates) : null;
                     
-            updateData();
+            return updateData();
         }
         /*
         function sortChanged(grid, sortColumns) {
@@ -180,9 +183,9 @@
         */
         function updateData() {
             var options = {
-                take: vm.gridOptions.paginationPageSize,
+                //take: vm.gridOptions.paginationPageSize,
                 inlineCount: true,
-                skip: (vm.gridOptions.paginationCurrentPage || 1)-1
+                //skip: (vm.gridOptions.paginationCurrentPage || 1)-1
             };
             if (filterPredicate) { options.where = filterPredicate; }
             //if (orderBy) { options.orderBy = orderBy;}
