@@ -14,7 +14,7 @@
         var filterPredicate = null;
         //var orderBy = 'start desc';
         var filterHeaderGrpTemplate = "<div class=\"ui-grid-filter-container\">" + 
-                                        "<select class=\"ui-grid-filter ui-grid-filter-select\" ng-model=\"col.filters[0].term\" ng-attr-placeholder=\"{{colFilter.placeholder || aria.defaultFilterLabel}}\" aria-label=\"{{colFilter.ariaLabel || ''}}\" ng-options=\"option.value as option.label group by options.group for option in col.filter.selectOptions\">" +
+                                        "<select class=\"ui-grid-filter ui-grid-filter-select\" ng-model=\"col.filters[0].term\" ng-attr-placeholder=\"{{colFilter.placeholder || aria.defaultFilterLabel}}\" aria-label=\"{{colFilter.ariaLabel || ''}}\" ng-options=\"option.value as option.label group by option.group for option in col.filter.selectOptions\">" +
                                         "		<option value=\"\"></option>" +
                                         "</select></div>";
                                         //"	<div role=\"button\" class=\"ui-grid-filter-button-select\" ng-click=\"removeFilter(colFilter, $index)\" ng-if=\"!colFilter.disableCancelFilterButton\" ng-disabled=\"colFilter.term === undefined || colFilter.term === null || colFilter.term === ''\" ng-show=\"colFilter.term !== undefined && colFilter.term != null\">" +
@@ -23,7 +23,12 @@
         var today = new Date();
         var startDate = new Date(today);
         var gridApi;
-        startDate.setFullYear(today.getFullYear() -1);
+        var aggregateColumns;
+        startDate.setFullYear(today.getFullYear() - 1);
+
+        vm.aggregateChange = aggregateChange;
+        vm.aggregateTypes = uiGridGroupingConstants.aggregation;
+        vm.aggregateType = vm.aggregateTypes.SUM;
         vm.gridOptions = {
             paginationPageSizes: [10, 25, 100],
             paginationPageSize: 10,
@@ -53,19 +58,19 @@
             },
             {
                 name: 'Hours', field: 'totalDurationMins', 
-                treeAggregationType: uiGridGroupingConstants.aggregation.SUM,
+                treeAggregationType: vm.aggregateType,
                 enableFiltering: false,
                 enableSorting: false
             },
             {
                 name: 'Participant No.', field: 'participantCount',
-                treeAggregationType: uiGridGroupingConstants.aggregation.SUM,
+                treeAggregationType: vm.aggregateType,
                 enableFiltering: false,
                 enableSorting: false
             },
             {
                 name: 'Faculty No.', field: 'facultyCount',
-                treeAggregationType: uiGridGroupingConstants.aggregation.SUM,
+                treeAggregationType: vm.aggregateType,
                 enableFiltering: false,
                 enableSorting: false
             },
@@ -94,6 +99,7 @@
                 //gridApi.pagination.on.paginationChanged($scope, updateData);
             }
         };
+        aggregateColumns = [3, 4, 5].map(function (i) { return vm.gridOptions.columnDefs[i].name; });
         activate();
 
         function activate() {
@@ -107,10 +113,10 @@
                                 opts.push({ value: 'd:' + d.id, label: d.abbreviation, group:i.name });
                             });
                         });
-                        gridApi.grid.columns[1].filters[0].term = 'd:' + tokenStorageService.getUserDepartmentId();
-                        gridApi.grid.columns[1].filters[0].selectOptions = opts,
+                        vm.gridOptions.columnDefs[0].filter.term = 'd:' + tokenStorageService.getUserDepartmentId();
+                        vm.gridOptions.columnDefs[0].filter.selectOptions = opts,
                         //gridApi.grid.refresh();
-                        gridApi.grid.columns[3].filters[0].selectOptions = opts;
+                        vm.gridOptions.columnDefs[2].filter.selectOptions = opts;
                     }),
                     datacontext.courseTypes.all().then(function (data) {
                         var opts = [];
@@ -122,13 +128,20 @@
                                 }
                             });
                         });
-                        gridApi.grid.columns[2].filters[0].selectOptions = opts;
+                        vm.gridOptions.columnDefs[1].filter.selectOptions = opts;
                     })]);
             });
         }
 
+
+        function aggregateChange() {
+            aggregateColumns.forEach(function (name) {
+                gridApi.grouping.aggregateColumn(name, vm.aggregateType);
+            });
+        }
+
         function filterChanged() {
-            var grid = gridApi.grid;
+            var grid = this.grid;
             var predicates = [];
             var createIdPredicate = function (propNames, id) {
                 if (id) {

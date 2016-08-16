@@ -1,7 +1,14 @@
 ﻿<section id="dashboard-view" class="mainbar" ng-controller="courses as vm">
     <section class="matter">
         <div class="container">
-            <p><strong>All courses</strong></p>
+            <h3>All courses</h3>
+            <form class="form-inline" role="form">
+                <div class="control-group">
+                    <label for="aggregateType" class="control-label">Summary Data</label>
+                    <select id="aggregateType" ng-change="vm.aggregateChange()" class="form-control" ng-model="vm.aggregateType" ng-options="v as k for (k, v) in vm.aggregateTypes" />
+                </div>
+                
+            </form>
             <div ui-grid="vm.gridOptions" ui-grid-grouping></div>
         </div>
     </section>
