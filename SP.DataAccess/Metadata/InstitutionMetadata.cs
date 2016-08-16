@@ -12,6 +12,9 @@ namespace SP.Metadata
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string Abbreviation { get; set; }
         //[AllowHtml]
         //public string About { get; set; }
         [FixedLength(Length=5)]

@@ -24,6 +24,7 @@
         'ui.sortable',
         'ui.grid',
         'ui.grid.pagination',
+        'ui.grid.grouping',
         'isteven-multi-select',
         'ngLocationUpdate',
         'mwl.calendar'
@@ -52,7 +53,13 @@
         function (tmhDynamicLocaleProvider) {
         tmhDynamicLocaleProvider.useStorage('$cookies');
         tmhDynamicLocaleProvider.localeLocationPattern("https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.2/angular-locale_{{locale}}.min.js");
-    }]);
+        }])
+    .filter('minuteFilter', function () {
+        return function (value, scope) {
+            var hrs = Math.floor(value/60);
+            return hrs + ':' + ('0' + (value - hrs * 60)).slice(-2);
+        }
+    });
 
     // Include $route to kick start the router.
     app.run(['tokenStorageService', 'entityManagerFactory', 'modelBuilder', '$rootScope', 'AUTH_EVENTS','$route',

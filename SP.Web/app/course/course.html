@@ -34,8 +34,11 @@
                         <div ng-repeat="cd in vm.courseDays">
 
                             <div class="form-group">
-                                <label for="startDate" class="col-md-2 control-label">Course Start</label>
-                                <span ng-if="vm.course.courseFormat.daysDuration > 1" class="dayNo">(day {{cd.day || 1}})</span>
+                                <label for="startDate" class="col-md-2 control-label">Course Start
+                                    <br/>
+                                    <small class="small dayNo" ng-if="vm.course.courseFormat.daysDuration > 1" >(day {{cd.day || 1}})</small>
+                                </label>
+                                
                                 <div class="col-md-5" id="startTimeGroup">
                                     <div class="input-group">
                                         <span class="input-group-addon">

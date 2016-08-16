@@ -18,7 +18,7 @@ organising medical simulation courses and keeping track of institution wide data
 **It is free to use for institutions such as hospitals and universities** (a small fee may be charged per text messaging reminder if you choose to use the text messaging service)
 
 ###To Do
-- [ ] Come up with appropriate icon for site (currently using hot towel icon!)
+- [ ] allow Save after updating course time [bug]
 - [ ] Sim Team to give current version a full test
 - [ ] Add Contact us page
 - [ ] Add How To Use This Site page
@@ -27,7 +27,6 @@ organising medical simulation courses and keeping track of institution wide data
 - [ ] Add Manequin service dates/cost table
 - [ ] Add list of all participants, filerable by course participation
 - [ ] ?Add ISO currency field to culture record (on create) until supported in Angular localisation
-- [ ] Enable bower as per [this SO post](http://stackoverflow.com/questions/31872622/using-grunt-bower-gulp-npm-with-visual-studio-2015-for-a-asp-net-4-5-project)
 - [ ] Pretty up draggable interaction 1) css class for colour change on receiving element 2)giving and receiving elements to have the same width
 - [ ] Apply for/grant different levels of administrator priveleges
 - [ ] Print format of course roles page &/or use migradoc to allow user to edit RTF file

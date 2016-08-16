@@ -55,7 +55,7 @@ namespace SP.Web.UserEmails
                 var dayEvt = courseEvt.Copy<Event>();
                 dayEvt.Start = new CalDateTime(start, course.Department.Institution.StandardTimeZone);
                 dayEvt.Description += " - " + start.ToString("g");
-                dayEvt.Duration = cd.Duration;
+                dayEvt.Duration = TimeSpan.FromMinutes(cd.DurationMins);
                 if (course.CourseFormat.DaysDuration > 1)
                 {
                     string dayNo = $" (day {cd.Day})";

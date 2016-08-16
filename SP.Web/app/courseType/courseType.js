@@ -180,7 +180,8 @@
         function createSlot(courseFormat) {
             courseFormat.selectedSlot = datacontext.courseSlots.create({
                 courseFormatId: courseFormat.id,
-                order: (courseFormat.courseSlots || []).length
+                order: (courseFormat.courseSlots || []).length,
+                day: courseFormat.daysDuration
             });
             courseFormat.sortableSlots.push(courseFormat.selectedSlot);
             createActivity(courseFormat.selectedSlot);

@@ -1,5 +1,6 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
     internal class InstitutionMaps: DomainDtoMap<Institution, InstitutionDto>
     {
@@ -8,6 +9,7 @@ using SP.DataAccess;
                 Id = m.Id,
                 Name = m.Name,
                 About = m.About,
+                Abbreviation = m.Abbreviation,
                 LocaleCode = m.LocaleCode,
                 StandardTimeZone = m.StandardTimeZone,
                 Latitude = m.Latitude,
@@ -18,6 +20,7 @@ using SP.DataAccess;
                 Id = m.Id,
                 Name = m.Name,
                 About = m.About,
+                Abbreviation = m.Abbreviation,
                 LocaleCode = m.LocaleCode,
                 StandardTimeZone = m.StandardTimeZone,
                 Latitude = m.Latitude,

@@ -5,45 +5,80 @@
         .module('app')
         .controller(controllerId, courseTypesCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope', 'uiGridConstants'];
+    courseTypesCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope', 'uiGridConstants', 'uiGridGroupingConstants'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, breeze, $scope, uiGridConstants) {
+    function courseTypesCtrl(common, datacontext, breeze, $scope, uiGridConstants, uiGridGroupingConstants) {
         /* jshint validthis:true */
         var vm = this;
         var filterPredicate = null;
-        var orderBy = 'start desc';
+        //var orderBy = 'start desc';
+        var filterHeaderGrpTemplate = "<div class=\"ui-grid-filter-container\">" + "" +
+                                        "<select class=\"ui-grid-filter ui-grid-filter-select\" ng-model=\"col.filter.term\" ng-attr-placeholder=\"{{colFilter.placeholder || aria.defaultFilterLabel}}\" aria-label=\"{{colFilter.ariaLabel || ''}}\" ng-options=\"option.value as option.label group by option.group for option in col.filter.selectOptions track by option.value\">" +
+                                        "		<option value=\"\"></option>" +
+                                        "</select></div>";
+                                        //"	<div role=\"button\" class=\"ui-grid-filter-button-select\" ng-click=\"removeFilter(colFilter, $index)\" ng-if=\"!colFilter.disableCancelFilterButton\" ng-disabled=\"colFilter.term === undefined || colFilter.term === null || colFilter.term === ''\" ng-show=\"colFilter.term !== undefined && colFilter.term != null\">" +
+                                        //"		<i class=\"ui-grid-icon-cancel\" ui-grid-one-bind-aria-label=\"aria.removeFilter\">&nbsp;</i>" +
+                                        //"	</div>";
+
         vm.gridOptions = {
             paginationPageSizes: [10, 25, 100],
             paginationPageSize: 10,
             enableFiltering: true,
             useExternalFiltering: true,
-            useExternalPagination: true,
-            useExternalSorting: true,
+            //useExternalPagination: true,
+            //useExternalSorting: true,
+            treeRowHeaderAlwaysVisible: false,
             columnDefs: [
-              {
-                  name: 'Date/Time', field: 'start', cellFilter: "date:'short'", type: 'date',
-                  filterHeaderTemplate: '<div class="ui-grid-filter-container">' +
+                {
+                    name: 'Department', field: 'department',
+                    filterHeaderTemplate: filterHeaderGrpTemplate,
+                    filter: { /* type: uiGridConstants.filter.SELECT */ },
+                    sort: { priority: 0, direction: 'asc' },
+
+                    grouping: { groupPriority: 0 }
+                },
+            {
+                name: 'Course', field: 'course',
+                filterHeaderTemplate: filterHeaderGrpTemplate,
+                filter: { /* type: uiGridConstants.filter.SELECT */ },
+                sort: { priority: 1, direction: 'asc' },
+                grouping: { groupPriority: 1 }
+            },
+            {
+                name: 'Outreaching Dpt', field: 'outreachingDepartment',
+                filterHeaderTemplate: filterHeaderGrpTemplate,
+                filter: { /* type: uiGridConstants.filter.SELECT */ },
+            },
+            {
+                name: 'Hours', field: 'totalDurationMins', 
+                treeAggregationType: uiGridGroupingConstants.aggregation.SUM,
+                enableFiltering: false,
+                enableSorting: false
+            },
+            {
+                name: 'Participant No.', field: 'participantCount',
+                treeAggregationType: uiGridGroupingConstants.aggregation.SUM,
+                enableFiltering: false,
+                enableSorting: false
+            },
+            {
+                name: 'Faculty No.', field: 'facultyCount',
+                treeAggregationType: uiGridGroupingConstants.aggregation.SUM,
+                enableFiltering: false,
+                enableSorting: false
+            },
+            {
+                name: 'Date/Time', field: 'start', cellFilter: "date:'short'", type: 'date',
+                filterHeaderTemplate: '<div class="ui-grid-filter-container">' +
                     '<input  class="ui-grid-filter-input" bs-datepicker type="text" ng-model="col.filters[0].term" placeholder="from" container="body"/>' +
                     '<input class="ui-grid-filter-input" bs-datepicker type="text" ng-model="col.filters[1].term" placeholder="to" container="body"/></div>',
-                  filters: [{}, {}]
-                  /*sort: {
-                      direction: uiGridConstants.DESC,
-                      priority: 0
-                  }*/
-              },
-              {
-                  name: 'Department', field: 'department.abbreviation',
-                  filter: { type: uiGridConstants.filter.SELECT }
-              },
-              {
-                  name: 'Outreaching Department', field: 'outreachingDepartment.abbreviation',
-                  filter: { type: uiGridConstants.filter.SELECT }
-              },
-              {
-                  name: 'Course Type', field: 'courseFormat.typeFormatDescriptor',
-                  filter: { type: uiGridConstants.filter.SELECT }
-              },
+                filters: [{}, {}]
+                /*sort: {
+                    direction: uiGridConstants.DESC,
+                    priority: 0
+                }*/
+            },
               {
                   name: 'Edit', field:'id',
                   cellTemplate: '<div class="ui-grid-cell-contents"><a href="#course/{{COL_FIELD}}" class="btn-link"><i class="fa fa-edit"></i><a></div>',
@@ -52,9 +87,9 @@
               }
             ],
             onRegisterApi: function (gridApi) {
-                gridApi.core.on.sortChanged($scope, sortChanged);
+                //gridApi.core.on.sortChanged($scope, sortChanged);
                 gridApi.core.on.filterChanged($scope, filterChanged);
-                gridApi.pagination.on.paginationChanged($scope, updateData);
+                //gridApi.pagination.on.paginationChanged($scope, updateData);
             }
         };
         activate();
@@ -63,64 +98,86 @@
             datacontext.ready().then(function () {
                 common.activateController([
                     updateData(),
-                    datacontext.departments.all().then(function (data) {
-                        var opts = data.map(function (el) {
-                            return { value: el.id, label: el.abbreviation };
+                    datacontext.institutions.all().then(function (data) {
+                        var opts = [];
+                        data.forEach(function (i) {
+                            opts.push({ value: 'i:' + i.id, label: 'All ' + i.abbreviation, group: i.name });
+                            i.departments.forEach(function (d) {
+                                opts.push({ value: 'd:' + d.id, label: d.abbreviation, group:i.name });
+                            });
                         });
-                        vm.gridOptions.columnDefs[1].filter.selectOptions = opts;
+                        vm.gridOptions.columnDefs[0].filter.selectOptions = opts;
                         vm.gridOptions.columnDefs[2].filter.selectOptions = opts;
                     }),
-                    datacontext.courseFormats.all().then(function (data) {
-                        var opts = data.map(function (el) {
-                            return { value: el.id, label: el.typeFormatDescriptor };
+                    datacontext.courseTypes.all().then(function (data) {
+                        var opts = [];
+                        data.forEach(function (t) {
+                            opts.push({ value: 't:' + t.id, label: 'ALL ' + t.abbreviation, group:t.description });
+                            t.courseFormats.forEach(function (f) {
+                                if (f.description) {
+                                    opts.push({ value: 'f:' + f.id, label: f.description, group:t.description });
+                                }
+                            });
                         });
-                        vm.gridOptions.columnDefs[3].filter.selectOptions = opts;
-                    })], controllerId);
+                        vm.gridOptions.columnDefs[1].filter.selectOptions = opts;
+                    })]);
             });
         }
 
         function filterChanged() {
             var grid = this.grid;
             var predicates = [];
-            var createIdPredicate = function (propName, id) {
+            var createIdPredicate = function (propNames, id) {
                 if (id) {
-                    predicates.push(breeze.Predicate.create(propName, '==', id));
+                    var propName = propNames[id[0]];
+                    predicates.push(breeze.Predicate.create(propName, '==', id.substring(2)));
                 }
             };
-            var term = grid.columns[0].filters[0].term;
+            var term = grid.columns[7].filters[0].term;
             if (term) {
                 predicates.push(breeze.Predicate.create('start', '>=', term));
             }
-            term = grid.columns[0].filters[1].term;
+            term = grid.columns[7].filters[1].term;
             if (term) {
                 predicates.push(breeze.Predicate.create('start', '<=', term));
             }
-            createIdPredicate('departmentId', grid.columns[1].filters[0].term);
-            createIdPredicate('outreachingDepartmentId', grid.columns[2].filters[0].term);
-            createIdPredicate('courseFormatId', grid.columns[3].filters[0].term);
+            var dptHash = { d: 'departmentId', i: 'department.institutionId' };
+            createIdPredicate(dptHash, grid.columns[1].filters[0].term);
+            createIdPredicate(dptHash, grid.columns[3].filters[0].term);
+            createIdPredicate({f: 'courseFormatId', t:'courseFormat.courseTypeId'}, grid.columns[2].filters[0].term);
 
             filterPredicate = predicates.length ? breeze.Predicate.and(predicates) : null;
                     
             updateData();
         }
-
+        /*
         function sortChanged(grid, sortColumns) {
             if (sortColumns.length === 0) {
                 orderBy = null;
             } else {
                 orderBy = sortColumns.map(function (el) {
                     var dir = el.sort.direction === "desc" ? " desc" : "";
-                    if (el.colDef.field === "courseFormat.typeFormatDescriptor") {
-                        return "courseFormat.courseType.abbreviation" + dir + "," +
-                            "courseFormat.description" + dir;
+                    switch (el.colDef.field) {
+                        case "course":
+                            return "courseFormat.courseType.abbreviation" + dir + "," +
+                                "courseFormat.description" + dir;
+                        case "department":
+                            return "department.institution.abbreviation" + dir + "," +
+                                "deparment.abbreviation" + dir;
+                        case "outreachingDepartment":
+                            return "outreachingDepartment.institution.abbreviation" + dir + "," +
+                                "outreachingDeparment.abbreviation" + dir;
+                        default:
+                            throw new Error("sort on property not accounted for: " + el.colDef.field);
+                            return el.colDef.field + dir;
                     }
-                    return el.colDef.field + dir;
+                    
                 }).join(',');
 
             }
             updateData();
         }
-
+        */
         function updateData() {
             var options = {
                 take: vm.gridOptions.paginationPageSize,
@@ -128,9 +185,21 @@
                 skip: (vm.gridOptions.paginationCurrentPage || 1)-1
             };
             if (filterPredicate) { options.where = filterPredicate; }
-            if (orderBy) { options.orderBy = orderBy;}
+            //if (orderBy) { options.orderBy = orderBy;}
             return datacontext.courses.find(options).then(function (data) {
-                vm.gridOptions.data = data;
+                vm.gridOptions.data = data.map(function (el) {
+                    return {
+                        department: el.department.institutionDptDescriptor,
+                        course: el.courseFormat.typeFormatDescriptor,
+                        outreachingDepartment: el.outreachingDepartment 
+                            ?el.outreachingDepartment.institutionDptDescriptor
+                            :'',
+                        totalDurationMins: el.totalDurationMins,
+                        participantCount: el.participantCount,
+                        facultyCount: el.facultyCount,
+                        start: el.start
+                    };
+                });
                 vm.gridOptions.totalItems = data.inlineCount;
             });
         }

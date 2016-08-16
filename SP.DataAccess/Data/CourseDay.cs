@@ -25,7 +25,7 @@ namespace SP.DataAccess
             }
         }
 
-        public TimeSpan Duration { get; set; }
+        public int DurationMins { get; set; }
 
         public virtual Course Course {get; set;}
 

@@ -21,7 +21,10 @@ namespace SP.DataAccess
             set { _startUtc = value.AsUtc(); }
         }
 
-        public TimeSpan Duration { get; set; }
+        /// <summary>
+        /// To implement ICourseDay - refers to duration in minutes for day 1.
+        /// </summary>
+        public int DurationMins { get; set; }
 
         private DateTime? _facultyMeetingUtc;
         public DateTime? FacultyMeetingUtc
@@ -131,7 +134,7 @@ namespace SP.DataAccess
         public static DateTime FinishTimeUtc(this Course course)
         {
             var lastDay = course.LastDay();
-            return lastDay.StartUtc + lastDay.Duration;
+            return lastDay.StartUtc + TimeSpan.FromMinutes(lastDay.DurationMins);
         }
     }
 

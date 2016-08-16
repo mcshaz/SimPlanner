@@ -63,20 +63,35 @@
                     : course;
             };
 
-            CourseCtor.prototype.courseFinish = function () {
-                var lastDay = this.lastDay();
-                return new Date(lastDay.start + lastDay.duration);
-            };
-
-            CourseCtor.prototype.finish = function () {
-                return new Date(lastDay.start + lastDay.duration);
-            };
-
             var courseInitializer = function (courseFormat) {
                 Object.defineProperty(CourseCtor.prototype, 'finish', {
                     enumerable: true,
                     configurable: true,
                     get: getFinish
+                });
+
+                Object.defineProperty(CourseCtor.prototype, 'facultyCount', {
+                    enumerable: true,
+                    configurable: true,
+                    get: function () {
+                        return this.courseParticipants.filter(function (el) { return el.isFaculty; }).length;
+                    }
+                });
+
+                Object.defineProperty(CourseCtor.prototype, 'participantCount', {
+                    enumerable: true,
+                    configurable: true,
+                    get: function () {
+                        return this.courseParticipants.filter(function (el) { return !el.isFaculty; }).length;
+                    }
+                });
+
+                Object.defineProperty(CourseCtor.prototype, 'totalDurationMins', {
+                    enumerable: true,
+                    configurable: true,
+                    get: function () {
+                        return this.courseDays.reduce(function (a, b) { return a + b.durationMins; }, this.durationMins);
+                    }
                 });
 
                 Object.defineProperty(CourseCtor.prototype, 'day', { //to implement ICourseDay interface
@@ -150,6 +165,13 @@
                         this.secondaryColour = value.substr(1);
                     }
                 });
+                Object.defineProperty(dptCtor.prototype, 'institutionDptDescriptor', {
+                    enumerable: true,
+                    configurable: true,
+                    get: function () {
+                        return this.institution.abbreviation + ' ' + this.abbreviation;
+                    }
+                });
             };
 
             metadataStore.registerEntityTypeCtor('DepartmentDto', dptCtor, dptInitializer);
@@ -177,8 +199,7 @@
 
         function getFinish() {
             var self = this;
-            var isoDuration = moment.duration(self.duration);
-            return moment(self.start).add(isoDuration).toDate();
+            return new Date(self.start + self.durationMins * 60000);
         }
 
     }

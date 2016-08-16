@@ -14,6 +14,8 @@ namespace SP.DataAccess
 
         public string About { get; set; }
 
+        public string Abbreviation { get; set; }
+
         public string LocaleCode { get; set; }
 
         public string StandardTimeZone { get; set; }

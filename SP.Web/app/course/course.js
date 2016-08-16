@@ -12,7 +12,7 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: ['course', 'course.courseParticipants'],
+            watchedEntityNames: ['course', 'course.courseParticipants', 'course.courseDays'],
             $scope: $scope
         });
         var id = $routeParams.id;
@@ -44,14 +44,15 @@
         activate();
 
         function activate() {
-            var promises = [ datacontext.ready(),
+            var promises = [ datacontext.ready().then(function(){
                 datacontext.courseFormats.all().then(function (data) {
                     vm.courseFormats = data;
-                }),datacontext.departments.all().then(function (data) {
+                }), datacontext.departments.all().then(function (data) {
                     vm.departments = data;
                 }), datacontext.rooms.all().then(function (data) {
                     vm.rooms = data;
-                }) ];
+                })
+            })];
             if (isNew) {
                 vm.course = datacontext.courses.create();
                 vm.course.entityAspect.markNavigationPropertyAsLoaded('courseParticipants');
@@ -63,6 +64,7 @@
                         return;
                         //gotoCourses();
                     }
+                    vm.log.debug({ msg:'got course',data:data });
                     vm.course = data;
                     vm.courseDays = concatCourseDays();
                 }));
@@ -161,7 +163,7 @@
         function formatChanged() {
             if (!vm.course.courseFormat) {
                 //_courseLength = null;
-                vm.course.duration = null;
+                vm.course.durationMins = null;
                 vm.course.courseDays.forEach(function (cd) {
                     cd.entityAspect.setDeleted();
                 });
@@ -201,7 +203,7 @@
                 }
                 vm.courseDays = concatCourseDays();
                 vm.courseDays.forEach(function (cd) {
-                    cd.duration = moment.duration(courseLength[cd.day], 'm').toJSON();
+                    cd.durationMins = courseLength[cd.day];
                 });
 
             });

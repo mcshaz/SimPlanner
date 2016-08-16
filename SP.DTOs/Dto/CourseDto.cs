@@ -10,7 +10,7 @@ namespace SP.Dto
     {
         public Guid Id { get; set; }
         public DateTime Start { get; set; }
-        public TimeSpan Duration { get; set; }
+        public int DurationMins { get; set; }
         public DateTime? FacultyMeeting { get; set; }
         public Guid DepartmentId { get; set; }
         public Guid? OutreachingDepartmentId { get; set; }

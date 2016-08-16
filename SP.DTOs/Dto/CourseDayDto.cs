@@ -13,7 +13,7 @@ namespace SP.Dto
 
         public DateTime Start { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public int DurationMins { get; set; }
 
         public virtual CourseDto Course {get; set;}
 

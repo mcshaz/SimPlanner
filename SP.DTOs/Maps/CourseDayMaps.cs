@@ -1,6 +1,7 @@
 using SP.DataAccess;
 using System;
-using System.Linq;namespace SP.Dto.Maps
+using System.Linq;
+namespace SP.Dto.Maps
 {
     internal class CourseDayMaps: DomainDtoMap<CourseDay, CourseDayDto>
     {
@@ -9,14 +10,14 @@ using System.Linq;namespace SP.Dto.Maps
         {
             CourseId = m.CourseId,
             Day = m.Day,
-            Duration =m.Duration,
+            DurationMins =m.DurationMins,
             StartUtc = m.Start
         },
         m => new CourseDayDto
         {
             CourseId = m.CourseId,
             Day = m.Day,
-            Duration = m.Duration,
+            DurationMins = m.DurationMins,
             Start = m.StartUtc
         })
         { }

@@ -191,6 +191,7 @@ namespace SP.DTOs.ProcessBreezeRequests
             {
                 var days = course.CourseDays.Cast<ICourseDay>().ToDictionary(k=>k.Day);
                 days.Add(1, course);
+
                 for (var i = 1; i <= course.CourseFormat.DaysDuration; i++)
                 {
                     ICourseDay icd;
@@ -200,10 +201,16 @@ namespace SP.DTOs.ProcessBreezeRequests
                             Course = course,
                             StartUtc = days[i-1].StartUtc
                         };
+                        Context.CourseDays.Add((CourseDay)icd);
+                        days.Add(i, icd);
                     }
                     int duration;
                     slotDays.TryGetValue((byte)i,out duration);
-                    icd.Duration = TimeSpan.FromMinutes(duration);
+                    icd.DurationMins = duration;
+                }
+                foreach (var i in days.Keys.Where(d=>d> course.CourseFormat.DaysDuration))
+                {
+                    days[i].DurationMins = 0;
                 }
             }
             Context.SaveChanges();
