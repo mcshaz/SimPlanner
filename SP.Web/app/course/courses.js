@@ -87,7 +87,7 @@
             },
               {
                   name: 'Edit', field:'id',
-                  cellTemplate: '<div class="ui-grid-cell-contents"><a href="#course/{{COL_FIELD}}" class="btn-link"><i class="fa fa-edit"></i><a></div>',
+                  cellTemplate: '<div class="ui-grid-cell-contents" ng-if="!row.groupHeader"><a href="#course/{{COL_FIELD}}" class="btn-link"><i class="fa fa-edit"></i><a></div>',
                   enableFiltering: false,
                   enableSorting:false
               }
@@ -213,7 +213,8 @@
                         totalDurationMins: el.totalDurationMins,
                         participantCount: el.participantCount,
                         facultyCount: el.facultyCount,
-                        start: el.start
+                        start: el.start,
+                        id: el.id
                     };
                 });
                 vm.gridOptions.totalItems = data.inlineCount;
