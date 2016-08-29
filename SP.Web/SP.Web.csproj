@@ -52,16 +52,13 @@
       <HintPath>..\packages\Ical.Net.2.2.10\lib\net46\antlr.runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Breeze.ContextProvider, Version=1.5.6.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\GitHub\breeze.server.net\Breeze.ContextProvider\bin\Release\Breeze.ContextProvider.dll</HintPath>
+    <Reference Include="Breeze.ContextProvider, Version=1.5.5.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Breeze.Server.ContextProvider.1.5.5\lib\Breeze.ContextProvider.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Breeze.ContextProvider.EF6, Version=1.5.6.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\GitHub\breeze.server.net\Breeze.ContextProvider.EF6\bin\Release\Breeze.ContextProvider.EF6.dll</HintPath>
-    </Reference>
-    <Reference Include="Breeze.WebApi2">
-      <HintPath>..\..\..\..\GitHub\breeze.server.net\Breeze.WebApi2\bin\Release\Breeze.WebApi2.dll</HintPath>
+    <Reference Include="Breeze.WebApi2, Version=1.5.5.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Breeze.Server.WebApi2.1.5.5\lib\Breeze.WebApi2.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -766,7 +763,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\styles.css" />
-    <Content Include="dist\index.html" />
+    <Content Include="dist\**\*.*" />
     <Content Include="gulpfile.js" />
     <Content Include="Scripts\update-progress.js" />
     <Content Include="Scripts\updatebrowser.js" />
@@ -795,9 +792,6 @@
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="app\auth\authComplete.js" />
-    <Content Include="Scripts\breeze.directives.js" />
-    <Content Include="Scripts\breeze.saveErrorExtensions.js" />
-    <Content Include="Scripts\breeze.savequeuing.js" />
     <Content Include="app\department\department.html" />
     <Content Include="app\institution\institution.html" />
     <Content Include="app\manequin\manequin.html" />
@@ -875,9 +869,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="bower.json" />
+    <None Include="Properties\PublishProfiles\OpenHost.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.openhost.config" />
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -885,9 +881,6 @@
   <ItemGroup>
     <Folder Include="app\tutorial\" />
     <Folder Include="App_Data\" />
-    <Folder Include="dist\css\" />
-    <Folder Include="dist\fonts\" />
-    <Folder Include="dist\js\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
@@ -938,10 +931,12 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
+    <ItemGroup>
+      <Content Include="dist\**\*.*" />
+    </ItemGroup>
   </Target>
+  <!--
   <Target Name="AfterBuild">
   </Target>
   -->

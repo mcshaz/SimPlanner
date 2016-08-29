@@ -36,14 +36,15 @@ namespace SP.Dto
             _user = user;
         }
 
-        static Dictionary<Type, List<EntityInfo>> MapToServerTypes(Dictionary<Type, List<EntityInfo>> dtos)
+        Dictionary<Type, List<EntityInfo>> MapToServerTypes(Dictionary<Type, List<EntityInfo>> dtos)
         {
             var returnVar = new Dictionary<Type, List<EntityInfo>>();
             foreach (var kv in dtos)
             {
                 Type serverType = MapperConfig.GetServerModelType(kv.Key);
-                kv.Value.ForEach(d => d.Entity = MapperConfig.MapFromDto(kv.Key, d.Entity));
-                returnVar.Add(serverType, kv.Value);
+                var mapper = MapperConfig.GetFromDtoMapper(kv.Key);
+                var vals = kv.Value.Select(d => _contextProvider.CreateEntityInfo(mapper(d.Entity), d.EntityState)).ToList();
+                returnVar.Add(serverType, vals);
             }
             return returnVar;
         }

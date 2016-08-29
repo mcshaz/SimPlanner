@@ -236,3 +236,4 @@ SP.Web/Web.config
 
 SP.Web/bower_components/
 SP.Web/wwwroot
+SP.Web/Web.openhost.config

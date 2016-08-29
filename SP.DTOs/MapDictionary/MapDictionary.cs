@@ -59,6 +59,11 @@ namespace SP.Dto.Maps
             return _dtoMapDictionary[dtoType].TypeofServerObject;
         }
 
+        public static Func<object, object> GetFromDtoMapper(Type dtoType)
+        {
+            return _dtoMapDictionary[dtoType].MapFromDto;
+        }
+
         public static Type GetDtoType(Type serverModelType)
         {
             return _serverDtoDictionary[serverModelType];
