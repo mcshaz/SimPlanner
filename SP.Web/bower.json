@@ -36,14 +36,14 @@
     "angular-location-update": "^0.0.2",
     "angular-motion": "^0.4.4",
     "bootstrap-additions": "^0.3.1",
-    "bootswatch-dist": "^3.3.1+2-lumen",
     "components-font-awesome": "^4.6.3",
     "jquery-ui": "^1.12.0",
     "spin.js": "^2.3.2",
     "bootstrap-social": "^5.0.0",
     "angular-bootstrap": "^2.0.1",
     "breeze-client": "^1.5.11",
-    "breeze-client-labs": "^1.5.11"
+    "breeze-client-labs": "^1.5.11",
+    "bootswatch-dist": "^3.3.1+2-lumen"
   },
   "resolutions": {
     "moment": "^2.10.0"

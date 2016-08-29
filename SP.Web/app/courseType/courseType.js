@@ -46,7 +46,7 @@
                 // this callback has the changed model
                 var format = vm.courseType.courseFormats[vm.activeFormatIndex];
                 var nextSlot = -1;
-                console.log(format.sortableSlots.map(el=> ({ day:el.day, activity:el.activity?el.activity.name:el.isDayMarker?'day':'sim' })));
+                //console.log(format.sortableSlots.map(el=> ({ day:el.day, activity:el.activity?el.activity.name:el.isDayMarker?'day':'sim' })));
                 format.sortableSlots.forEach(function (cs) {
                     if (!cs.isDayMarker && cs.order !== ++nextSlot) {
                         cs.order = nextSlot;

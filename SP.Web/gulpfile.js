@@ -13,18 +13,20 @@ var htmlmin = require('gulp-htmlmin');
 //var uncss = require('gulp-uncss');
 var pump = require('pump');
 var inline = require('gulp-inline-source');
+var rename = require('gulp-rename');
 
 gulp.task('html', function(cb){
     var mainFile = 'index.html';
     //var glob primer - https://www.npmjs.com/package/glob
     var jsFilter = filter("**/*.js", { restore: true });
     var cssFilter = filter("**/*.css", { restore: true });
+    var fontFilesToMove = ["./wwwroot/lib/*/fonts/*.*"]
 
     pump([gulp.src(mainFile),
         inline({ /* compress: false */ }),
         useref(),
         //uncss({ html: [mainFile, 'app/**/*.html'] }), //needs to have access to css, jss and html
-        jsFilter,
+        jsFilter ,
         uglify(),
         rev(),
         jsFilter.restore,
@@ -33,8 +35,12 @@ gulp.task('html', function(cb){
         rev(),
         cssFilter.restore,
         revReplace(/*{modifyReved: replaceJsIfMap}*/),
-        gulp.dest('dist')
+        gulp.dest('dist') 
     ], cb);
+
+    gulp.src(fontFilesToMove)
+        .pipe(rename({ dirname: '' }))
+        .pipe(gulp.dest('./dist/fonts'));
 
     function replaceJsIfMap() {
         console.log(JSON.stringify(arguments));

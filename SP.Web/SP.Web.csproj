@@ -874,6 +874,7 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="bower.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -885,6 +886,7 @@
     <Folder Include="app\tutorial\" />
     <Folder Include="App_Data\" />
     <Folder Include="dist\css\" />
+    <Folder Include="dist\fonts\" />
     <Folder Include="dist\js\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
