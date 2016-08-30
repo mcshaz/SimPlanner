@@ -30,7 +30,7 @@ namespace SP.Dto
             var breezeJsPath = AppDomain.CurrentDomain.BaseDirectory;
             int indx = breezeJsPath.IndexOf(@"\SP.Web\");
             if (indx == -1) { indx = breezeJsPath.IndexOf(@"\SP.Tests\"); }
-            breezeJsPath = breezeJsPath.Substring(0, indx) + @"\SP.Web\Scripts\breeze.min.js";
+            breezeJsPath = breezeJsPath.Substring(0, indx) + @"\SP.Web\wwwroot\lib\breeze-client\build\breeze.min.js";
             var engine = new Engine().Execute("var setInterval;var setTimeout = setInterval = function(){};"); //if using an engine like V8.NET, would not be required - not part of DOM spec
             engine.Execute(File.ReadAllText(breezeJsPath));
             engine.Execute("breeze.NamingConvention.camelCase.setAsDefault();" + //mirror here what you are doing in the client side code

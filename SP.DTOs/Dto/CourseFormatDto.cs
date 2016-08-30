@@ -12,6 +12,7 @@ namespace SP.Dto
         public string Description { get; set; }
         public byte DaysDuration { get; set; }
         public Guid CourseTypeId { get; set; }
+        public bool Obsolete { get; set; }
 
         public virtual CourseTypeDto CourseType { get; set; }
         public ICollection<CourseDto> Courses { get; set; }

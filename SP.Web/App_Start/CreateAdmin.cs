@@ -13,7 +13,7 @@ namespace SP.Web.Models
         internal static void Create(MedSimDbContext context)
         {
 #if !DEBUG
-            throw new NotImplementedException("this should not be being used in a production environment - security changes required");
+            throw new NotImplementedException("CreateAdmin.Create should not be being used in a production environment - security changes required");
             
 #endif
             if (!context.Roles.Any())

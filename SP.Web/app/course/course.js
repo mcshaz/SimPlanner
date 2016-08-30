@@ -45,7 +45,9 @@
 
         function activate() {
             var promises = [ datacontext.ready().then(function(){
-                datacontext.courseFormats.all().then(function (data) {
+                datacontext.courseFormats.find({
+                    where: breeze.Predicate.create('obsolete', '==', false)
+                }).then(function (data) {
                     vm.courseFormats = data;
                 }), datacontext.departments.all().then(function (data) {
                     vm.departments = data;

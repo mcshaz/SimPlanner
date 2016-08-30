@@ -20,10 +20,11 @@ gulp.task('html', function(cb){
     //var glob primer - https://www.npmjs.com/package/glob
     var jsFilter = filter("**/*.js", { restore: true });
     var cssFilter = filter("**/*.css", { restore: true });
-    var fontFilesToMove = ["./wwwroot/lib/*/fonts/*.*"]
+    var fontFoldersToMove = ["./wwwroot/lib/*/fonts/*.*"];
+    var fontFilesToMove = ["./wwwroot/lib/*/*.{eot,svg,ttf,woff,woff2}"];
 
     pump([gulp.src(mainFile),
-        inline({ /* compress: false */ }),
+        inline({ compress: true }),
         useref(),
         //uncss({ html: [mainFile, 'app/**/*.html'] }), //needs to have access to css, jss and html
         jsFilter ,
@@ -38,9 +39,13 @@ gulp.task('html', function(cb){
         gulp.dest('dist') 
     ], cb);
 
+    gulp.src(fontFoldersToMove)
+        .pipe(rename({ dirname: '' }))
+        .pipe(gulp.dest('dist/fonts'));
+
     gulp.src(fontFilesToMove)
         .pipe(rename({ dirname: '' }))
-        .pipe(gulp.dest('./dist/fonts'));
+        .pipe(gulp.dest('dist/css'));
 
     function replaceJsIfMap() {
         console.log(JSON.stringify(arguments));
@@ -65,11 +70,6 @@ gulp.task('fonts', function () {
 });
 
 // Cleaning 
-gulp.task('clean', function () {
-    return del.sync('dist').then(function (cb) {
-        return cache.clearAll(cb);
-    });
-});
 
 gulp.task('clean:dist', function () {
     return del.sync(['dist/**/*', '!dist/images', '!dist/images/**/*']);

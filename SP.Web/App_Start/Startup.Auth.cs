@@ -24,11 +24,8 @@ namespace SP.Web
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context and user manager to use a single instance per request
-            app.CreatePerOwinContext(()=> {
-                var newDb = MedSimDbContext.Create();
-                CreateAdmin.Create(newDb);
-                return newDb;
-            });
+            app.CreatePerOwinContext(() => MedSimDbContext.Create());//CreateAdmin.Create(newDb);
+
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
 
             // Enable the application to use a cookie to store information for the signed in user

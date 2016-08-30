@@ -207,6 +207,10 @@
     <Compile Include="Migrations\201608150457515_institutionAbbreviation.Designer.cs">
       <DependentUpon>201608150457515_institutionAbbreviation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608292228524_FormatObsoleteField.cs" />
+    <Compile Include="Migrations\201608292228524_FormatObsoleteField.Designer.cs">
+      <DependentUpon>201608292228524_FormatObsoleteField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SanitizeStringProperties.cs" />
@@ -254,6 +258,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608150457515_institutionAbbreviation.resx">
       <DependentUpon>201608150457515_institutionAbbreviation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608292228524_FormatObsoleteField.resx">
+      <DependentUpon>201608292228524_FormatObsoleteField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

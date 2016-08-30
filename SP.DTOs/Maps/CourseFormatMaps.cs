@@ -1,5 +1,6 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
     internal class CourseFormatMaps: DomainDtoMap<CourseFormat, CourseFormatDto>
     {
@@ -8,15 +9,16 @@ using SP.DataAccess;
                 Id = m.Id,
                 DaysDuration = m.DaysDuration,
                 Description = m.Description,
-                CourseTypeId = m.CourseTypeId
-                
+                CourseTypeId = m.CourseTypeId,
+                Obsolete = m.Obsolete                
             },
             m => new CourseFormatDto
             {
                 Id = m.Id,
                 DaysDuration = m.DaysDuration,
                 Description = m.Description,
-                CourseTypeId = m.CourseTypeId
+                CourseTypeId = m.CourseTypeId,
+                Obsolete = m.Obsolete
             })
         { }
     }

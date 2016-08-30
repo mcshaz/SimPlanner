@@ -881,6 +881,7 @@
   <ItemGroup>
     <Folder Include="app\tutorial\" />
     <Folder Include="App_Data\" />
+    <Folder Include="dist\js\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
