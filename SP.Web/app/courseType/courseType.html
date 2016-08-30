@@ -64,11 +64,11 @@
                         <button class="btn-link" ng-click="vm.createNewFormat()" type="button"><i class="fa fa-plus"></i> New Format</button>
                     </fieldset>
                 </div>
-                <div class="panel-group" ng-model="vm.activeFormatIndex" role="tablist" aria-multiselectable="true" bs-collapse>
+                <div class="panel-group" ng-model="vm.activeFormatIndex" role="tablist" aria-multiselectable="true" bs-collapse data-allow-multiple="true">
                     <div class="panel panel-default" ng-repeat="cf in vm.courseType.courseFormats track by cf.id">
-                        <div class="panel-heading" role="tab" bs-collapse-toggle>
+                        <div class="panel-heading" role="tab">
                             <h4 class="panel-title">
-                                {{cf.description}}
+                                <a bs-collapse-toggle>{{cf.description || '[Default Course Format]'}}</a>
                             </h4>
                         </div>
                         <div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -90,6 +90,16 @@
                                             </label>
                                             <div class="col-md-9">
                                                 <input id="daysDuration" class="form-control" type="number" min="1" z-validate step="1" ng-model="cf.daysDuration" ng-change="vm.alterDayMarkers(cf)"/>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="obsolete" class="col-md-3 control-label">
+                                                Obsolete/Inactive
+                                            </label>
+                                            <div class="col-md-9">
+                                                <input id="obsolete" class="checkbox-inline" type="checkbox" z-validate ng-model="cf.obsolete" ng-change="vm.alterObsolete(cf)" />
                                             </div>
 
                                         </div>
@@ -215,7 +225,6 @@
                         </div>
                         <div class="panel-footer">
                             <button type="button" class="btn btn-info" ng-click="vm.clone(cf)" ng-disabled="!vm.disableSave()">Clone This Format</button>
-                            <button type="button" class="btn btn-danger" ng-click="vm.deleteFormat(cf)">Delete!</button>
                         </div>
                     </div>
                 </div>

@@ -799,7 +799,9 @@
     <Content Include="Content\images\flags\gif\.DS_Store" />
     <Content Include="sink.html" />
     <Content Include="app\services\controller.abstract.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BreezeWebApiConfig.cs" />
@@ -869,6 +871,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="bower.json" />
+    <Content Include="package.json" />
     <None Include="Properties\PublishProfiles\OpenHost.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -881,7 +884,6 @@
   <ItemGroup>
     <Folder Include="app\tutorial\" />
     <Folder Include="App_Data\" />
-    <Folder Include="dist\js\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
@@ -932,7 +934,7 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
   </Target>
-  <Target Name="BeforeBuild">
+  <Target Name="AfterBuild">
     <ItemGroup>
       <Content Include="dist\**\*.*" />
     </ItemGroup>

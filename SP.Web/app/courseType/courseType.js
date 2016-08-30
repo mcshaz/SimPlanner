@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside','$q'];
 
-    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside) {
+    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside, $q) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -22,6 +22,7 @@
         vm.activeFormatIndex = -1;
         vm.activitySelected = activitySelected;
         vm.alterDayMarkers = alterDayMarkers;
+        vm.alterObsolete = alterObsolete;
         vm.clone = clone;
         vm.courseType = {};
         vm.createSlot = createSlot;
@@ -327,6 +328,39 @@
                 cf.sortableSlots.push({ isDayMarker: true, day: i+1, locked: false, isActive:true });
             }
             resetExampleTimes(cf);
+        }
+
+        function alterObsolete(cf) {
+            if (cf.obsolete) {
+                deleteAble(cf).then(function (forDelete) {
+                    if (forDelete.length && confirm('this course appears to have never been run - would you like to delete it')) {
+                        forDelete.forEach(function (el) { el.entityAspect.setDeleted() });
+                    }
+                });
+            }
+        }
+
+        function deleteAble(cf) {
+            return cf.entityAspect.loadNavigationProperty('courses').then(function (data) {
+                if (data.results.length) {
+                    return [];
+                } else {
+                    var returnVar = [cf].concat(cf.courseSlots);
+                    //assuming course slots are loaded as they are an integral part of the page
+                    //to be ultra safe I guess could do a $q.all datacontext.ready 
+                    cf.courseSlots.forEach(function (cs) {
+                        returnVar.push(cs.activity);
+                        returnVar = returnVar.concat(
+                            cs.activity.activityChoices.filter(function (ac) {
+                                return !ac.courseActivity.courseSlots.some(function (e) {
+                                    return e.courseFormat !== cf;
+                                })
+                            }));
+                    });
+
+                    return returnVar;
+                }
+            });
         }
     }
 })();

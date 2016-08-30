@@ -56,12 +56,12 @@
                 </div>
                 <div class="col-md-8">
                     <div class="panel panel-success">
-                        <div class="panel-heading clickable collapsed" data-toggle="collapse" data-target="#about">
+                        <div class="panel-heading clickable" ng-class="{collapsed:vm.isAboutCollapsed}" ng-click="vm.isAboutCollapsed = !vm.isAboutCollapsed">
                             <h4 class="panel-title">
                                 About Simulation Planner<span class="chevron"></span>
                             </h4>
                         </div>
-                        <div id="about" class="panel-body panel-collapse collapse">
+                        <div id="about" class="panel-body panel-collapse collapse" uib-collapse="vm.isAboutCollapsed">
                             Simulation Planner is a tool originally designed by and for the Starship Hospital Simulation Program to simplify
                             organising medical simulation courses and keeping track of institution wide data, including:
                             <ul>
@@ -82,10 +82,10 @@
                         <div class="panel-footer">
                             <ul>
                                 <li>
-                                    Any ideas or comments? Please <a href="#" class="fa fa-link"> let us know</a> so we can make SimPlanner better
+                                    Any ideas or comments? Please <a href="mailto:info@sim-planner.com" class="fa fa-link"> let us know</a> so we can make SimPlanner better
                                 </li>
                                 <li>
-                                    <a class="fa fa-graduation-cap" href="#">Click here</a> to learn how to use SimPlanner
+                                    <a class="fa fa-graduation-cap" href="#">Click here</a> to learn how to use Sim-Planner
                                 </li>
                             </ul>
                         </div>
@@ -95,10 +95,10 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="panel panel-info">
-                        <div class="panel-heading clickable"  data-toggle="collapse" data-target="#priorCourses">
+                        <div class="panel-heading clickable"  ng-class="{collapsed:vm.isSummaryCollapsed}" ng-click="vm.isSummaryCollapsed = !vm.isSummaryCollapsed">
                             <h4 class="panel-title"><span class="fa fa-bar-chart"></span>Your Summary Data<span class="chevron"></span></h4>
                         </div>
-                        <div id="priorCourses" class="panel-body panel-collapse collapse in">
+                        <div id="priorCourses" class="panel-body panel-collapse collapse in" uib-collapse="vm.isSummaryCollapsed">
                             <table class="table table-condensed table-striped">
                                 <thead>
                                     <tr>
@@ -171,12 +171,12 @@
                 </div>
                 <div class="col-md-6">
                     <div class="panel panel-warning">
-                        <div class="panel-heading clickable" data-toggle="collapse" data-target="#upcomingCourses">
+                        <div class="panel-heading clickable" ng-class="{collapsed:vm.isCoursesCollapsed}" ng-click="vm.isCoursesCollapsed = !vm.isCoursesCollapsed">
                             <h4 class="panel-title">
                                 Upcoming Courses @ Your Institution<span class="chevron"></span>
                             </h4>
                         </div>
-                        <div id="upcomingCourses" class="panel-body panel-collapse collapse in">
+                        <div id="upcomingCourses" class="panel-body panel-collapse collapse in" uib-collapse="vm.isCoursesCollapsed">
                             <table class="table table-condensed table-striped">
                                 <thead>
                                     <tr>
