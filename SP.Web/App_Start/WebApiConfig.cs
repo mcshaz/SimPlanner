@@ -1,6 +1,8 @@
 ﻿using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using SP.Web.App_Start;
+using System.Web.Http.ExceptionHandling;
+//using Elmah.Contrib.WebApi;
 
 namespace SP.Web
 {
@@ -13,6 +15,8 @@ namespace SP.Web
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
             MetadataScriptWriter.Write();
+
+            //config.Services.Add(typeof(IExceptionLogger), new ElmahExceptionLogger());
 
             // Web API routes
             config.MapHttpAttributeRoutes();

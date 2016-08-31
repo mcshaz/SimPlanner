@@ -81,7 +81,7 @@ gulp.task('fonts', function () {
 // Cleaning 
 
 gulp.task('clean:dist', function () {
-    return del.sync(['dist/**/*', '!dist/images', '!dist/images/**/*']);
+    return del.sync(['dist/index*.html','dist/**/*.js', 'dist/**/*.css', '!dist/images', '!dist/images/**/*']);
 });
 
 gulp.task('build', function (callback) {

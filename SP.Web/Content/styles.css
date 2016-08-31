@@ -203,8 +203,8 @@ small {
 }
 
 .navbar .navbar-brand {
-    background: url(/content/images/icon.png) no-repeat left center !important;
-    margin: 0 1em;
+    background: url(/images/sim-planner-icon-50x75.png) no-repeat left center !important;
+    margin: 4px 0 0 0;
 }
 
 .navbar .brand-title {
@@ -424,19 +424,19 @@ a {
 .panel-heading .chevron:after {
     /* symbol for "opening" panels */
     font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    content: "\e113";    /* adjust as needed, taken from bootstrap.css */
     float: right;        /* adjust as needed */
     color:inherit;
 }
 .panel-heading.collapsed .chevron:after {
     /* symbol for "collapsed" panels */
-    content:"\e113";     /* adjust as needed, taken from bootstrap.css */
+    content:"\e114";     /* adjust as needed, taken from bootstrap.css */
 }
 .clickable:hover {
     cursor: pointer;
 }
 
-.invisible {
+.invisible span  {
     visibility:hidden!important;
 }
 #sign-in:hover,#sign-out:hover{
