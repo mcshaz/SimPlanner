@@ -10,7 +10,7 @@ namespace SP.Web.App_Start
     {
         
         [System.Diagnostics.Conditional("DEBUG")]
-        public static void Write()
+        public static void Write(bool force=false)
         {
             const string metadataPath = "~/app/metadata.js";
             // construct the filename and runtime file location
@@ -18,9 +18,11 @@ namespace SP.Web.App_Start
                 ?? @"C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web" + metadataPath.Substring(1).Replace('/', '\\');
 
             var migrationId = "//" + GetMigrationId();
-            if (File.ReadLines(fileName).First() == migrationId) {
+            if (!force && File.ReadLines(fileName).First() == migrationId)
+            {
                 return;
             }
+
             //const string category = "MetadataScriptWriter";
             // get the metadata the same way we get it for the controller
             var metadata = MedSimDtoMetadata.GetAllMetadata();

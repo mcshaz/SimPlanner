@@ -1,6 +1,7 @@
 using SP.DataAccess;
 
-using System.Linq;namespace SP.Dto.Maps
+using System.Linq;
+namespace SP.Dto.Maps
 {
     internal class RoomMaps: DomainDtoMap<Room, RoomDto>
     {

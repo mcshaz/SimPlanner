@@ -44,9 +44,11 @@ namespace SP.Dto.Maps
                 new ParticipantMaps(),
                 new ProfessionalRoleMaps(),
                 new ProfessionalRoleInstitutionMaps(),
+                //new RoleMaps(),
                 new RoomMaps(),
                 new ScenarioMaps(),
                 new ScenarioResourceMaps(),
+                new UserRoleMaps()
             };
             _dtoMapDictionary = new ReadOnlyDictionary<Type, IDomainDtoMap>(
                 maps.ToDictionary(kv=>kv.TypeofDto));

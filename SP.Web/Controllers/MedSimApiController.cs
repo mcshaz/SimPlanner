@@ -2,13 +2,11 @@ using System.Linq;
 using System.Web.Http;
 using Breeze.WebApi2;
 using Newtonsoft.Json.Linq;
-using System;
 using SP.Dto;
 using Breeze.ContextProvider;
 using System.Web.Http.OData.Query;
 using SP.Web.Controllers.Helpers;
-using Microsoft.Data.OData.Query.SemanticAst;
-using SP.Dto.Utilities;
+using System.Collections.Generic;
 
 namespace SP.Web.Controllers
 {
@@ -32,25 +30,25 @@ namespace SP.Web.Controllers
         {
             return Repo.SaveChanges(saveBundle);
         }
-        [HttpGet, EnableBreezeQuery]
+        [HttpGet, EnableMappedBreezeQuery]
 		public IQueryable<ActivityTeachingResourceDto> ActivityTeachingResources(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
             return Repo.ActivityTeachingResources(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
-        [HttpGet, EnableBreezeQuery]
+        [HttpGet, EnableMappedBreezeQuery]
 		public IQueryable<ParticipantDto> Participants(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
             return Repo.GetParticipants(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
-        [HttpGet, EnableBreezeQuery(MaxExpansionDepth = 3)]
+        [HttpGet, EnableMappedBreezeQuery(MaxExpansionDepth = 3)]
         public IQueryable<CultureDto> Cultures(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
             return Repo.GetCultures(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator); ;
         }
-        [HttpGet, EnableBreezeQuery]
+        [HttpGet, EnableMappedBreezeQuery]
         public IQueryable<CourseActivityDto> CourseActivities(ODataQueryOptions options) {
             var iso = new IncludeSelectOptions(options);
             return Repo.GetCourseActivities(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
@@ -58,7 +56,7 @@ namespace SP.Web.Controllers
         [HttpGet]
 		public IQueryable<DepartmentDto> Departments(){ return Repo.Departments; }
 
-        [HttpGet, EnableBreezeQuery(MaxExpansionDepth = 4)]
+        [HttpGet, EnableMappedBreezeQuery(MaxExpansionDepth = 4)]
         public IQueryable<InstitutionDto> Institutions(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
@@ -80,21 +78,21 @@ namespace SP.Web.Controllers
             return Repo.Scenarios;
         }
 
-        [HttpGet, EnableBreezeQuery]
+        [HttpGet, EnableMappedBreezeQuery]
         public IQueryable<CourseSlotDto> CourseSlots(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
             return Repo.GetCourseSlots(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
 
-        [HttpGet, EnableBreezeQuery]
+        [HttpGet, EnableMappedBreezeQuery]
         public IQueryable<CourseFormatDto> CourseFormats(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
             return Repo.GetCourseFormats(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
 
-        [HttpGet, EnableBreezeQuery]
+        [HttpGet, EnableMappedBreezeQuery]
         public IQueryable<CourseDayDto> CourseDays(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
@@ -119,14 +117,16 @@ namespace SP.Web.Controllers
             return Repo.FacultyScenarioRoles;
         }
 
-        [HttpGet, EnableBreezeQuery(MaxExpansionDepth = 4)]
+        [HttpGet, EnableMappedBreezeQuery(MaxExpansionDepth = 4)]
 		public IQueryable<CourseDto> Courses(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
             var returnVar = Repo.GetCourses(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+            //???working now with EnableMappedBreezeQuery????
             //hack alert - currently options.applyto does not handle includes which are deeper than a null parent
             //the following hack works around this for a very specific use scenario
             //this is about as ugly as hacks get, so steel yourself before reading ahead
+            /*
             if (iso.Includes != null && iso.Includes.Any(i=>i.Contains("Activity/")))
             {
                 var exp = (BinaryOperatorNode)options.Filter.FilterClause.Expression;
@@ -136,6 +136,7 @@ namespace SP.Web.Controllers
                 //todo fix this method up so that the query isn't being applied twice
                 return returnVar.Where(c=>c.Id==id).ToList().AsQueryable();
             }
+            */
             return returnVar;
         }
 
@@ -150,22 +151,30 @@ namespace SP.Web.Controllers
                     {
                         Includes =  se.RawExpand.Split(splitter);
                     }
-                     if (se.RawSelect != null)
+                    if (se.RawSelect != null)
                     {
                         Selects = se.RawSelect.Split(splitter);
                     }
                 }
                 if (options.Filter != null)
                 {
-                    var anyAlls = FindAnyAllFilterOptions.GetPaths(options.Filter, Seperator.ToString());
-                    if (anyAlls.Any())
+                    var navs = FindNavigationFilterOptions.GetPaths(options.Filter, Seperator.ToString());
+                    if (navs.Any())
                     {
-                        Includes = (Includes ?? new string[0]).Union(anyAlls).ToArray();
+                        Includes = (Includes ?? new string[0]).Union(navs).ToArray();
                     }
                 }
                 if (options.OrderBy != null)
                 {
-                    Includes = (Includes ?? new string[0]).Union(options.OrderBy.RawValue.Split(splitter).AllButLast()).ToArray();
+                    var orderProps = new HashSet<string>(Includes ?? new string[0]);
+                    foreach (var n in options.OrderBy.RawValue.Split(splitter))
+                    {
+                        int i = n.LastIndexOf(Seperator);
+                        if (i>-1) {
+                            orderProps.Add(n.Substring(0,i));
+                        }
+                    }
+                    Includes = orderProps.ToArray();
                 }
             }
             public readonly string[] Includes;
@@ -173,7 +182,7 @@ namespace SP.Web.Controllers
             public const char Seperator = '/';
             const char splitter = ',';
         }
-        [HttpGet, EnableBreezeQuery(MaxExpansionDepth = 3)]
+        [HttpGet, EnableMappedBreezeQuery(MaxExpansionDepth = 3)]
         public IQueryable<CourseTypeDto> CourseTypes(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);

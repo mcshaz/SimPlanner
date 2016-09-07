@@ -1,0 +1,71 @@
+﻿<section id="course-view" class="mainbar" data-ng-controller="updateUser as vm">
+    <section class="matter">
+        <div class="container col-md-12">
+            <h2>Update User Details</h2>
+            <div>
+                <a href="#/changePassword">Click here</a> to change password
+            </div>
+            <form ng-submit="vm.submit()" name="updateDetailsForm" class="form-horizontal col-md-9">
+                
+                <fieldset>
+                    <legend>Details</legend>
+                    <div ng-include="'app/user/userDetails.html'"></div>
+
+                    <div class="form-group">
+                        <label for="institution" class="control-label col-md-2">Institution</label>
+                        <div class="col-md-10">
+                            <select id="institution" class="form-control" data-ng-model="vm.institution" 
+                                    ng-options="i as i.name group by i.culture.name for i in vm.institutions"></select>
+                            <span class="text-danger" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cpDepartment" class="control-label col-md-2">Department</label>
+                        <div class="col-md-10">
+                            <select id="cpDepartment" class="form-control" data-z-validate data-ng-options="d as d.name for d in vm.institution.departments"
+                                    data-ng-model="vm.participant.department" >
+                                <option value="" disabled="disabled">
+                                    Select Department...
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <fieldset>
+                    <legend>
+                        Permissions
+                    </legend>
+
+                    <div class="form-group">
+                        <label for="fullName" class="control-label col-md-2">Site Administrator</label>
+                        <div class="col-md-10">
+                            <button type="button" class="btn btn-default" bs-checkbox ng-model="vm.permissions.siteAdmin" ng-disabled="vm.canAter('SiteAdmin')"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="control-label col-md-2">Access</label>
+                        <div class="col-md-10">
+                            <div class="btn-group" ng-model="vm.permissions.access" bs-radio-group>
+                                <label class="btn btn-default"><input class="btn btn-default" value="AccessAllData" type="radio" ng-disabled="!vm.canAter('AccessAllData')" > All Data</label>
+                                <label class="btn btn-default"><input class="btn btn-default" value="AccessInstitution" type="radio" ng-disabled="!vm.canAter('AccessInstitution')"> Institution</label>
+                                <label class="btn btn-default"><input class="btn btn-default" value="AccessDepartment" type="radio" ng-disabled="!vm.canAter('AccessDepartment')" > Department</label>
+                                <label class="btn btn-default"><input class="btn btn-default" value="" type="radio"> Participating Courses Only</label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" ng-disabled="vm.disableSave()" class="btn btn-success">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</section>

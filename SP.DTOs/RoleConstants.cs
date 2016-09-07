@@ -5,6 +5,7 @@
         public const string SiteAdmin = "SiteAdmin";
         public const string AccessAllData = "AccessAllData";
         public const string AccessInstitution = "AccessInstitution";
-        //default = access department only
+        public const string AccessDepartment = "AccessDepartment";
+        //default = access courses you participate in only
     }
 }

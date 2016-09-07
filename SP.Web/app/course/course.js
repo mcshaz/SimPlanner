@@ -53,7 +53,7 @@
                     vm.departments = data;
                 }), datacontext.rooms.all().then(function (data) {
                     vm.rooms = data;
-                })
+                });
             })];
             if (isNew) {
                 vm.course = datacontext.courses.create();
@@ -76,7 +76,7 @@
                     vm.notifyViewModelLoaded();
                     vm.log('Activated Course View');
                 });
-        };
+        }
 
 
         function cycleConfirmed(cp) {

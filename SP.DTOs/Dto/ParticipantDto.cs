@@ -20,5 +20,6 @@ namespace SP.Dto
         public virtual ICollection<CourseParticipantDto> CourseParticipants { get; set; }
         public virtual ICollection<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresentations { get; set; }
+        public virtual ICollection<UserRoleDto> Roles { get; set; }
     }
 }

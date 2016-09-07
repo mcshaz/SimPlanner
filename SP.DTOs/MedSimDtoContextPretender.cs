@@ -33,9 +33,11 @@ namespace SP.Dto
         public virtual DbSet<ManequinManufacturerDto> ManequinManufacturers { get; set; }
         public virtual DbSet<ProfessionalRoleDto> ProfessionalRoles { get; set; }
         public virtual DbSet<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get; set; }
+        public virtual DbSet<RoleDto> Roles { get; set; }
         public virtual DbSet<RoomDto> Rooms { get; set; }
         public virtual DbSet<ScenarioDto> Scenarios { get; set; }
         public virtual DbSet<ScenarioResourceDto> ScenarioResources { get; set; }
+        public virtual DbSet<UserRoleDto> UserRoles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -309,6 +311,12 @@ namespace SP.Dto
                 .HasForeignKey(e => e.ParticipantId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<ParticipantDto>()
+                .HasMany(e => e.Roles)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ProfessionalRoleDto>()
                 .HasMany(e => e.Participants)
                 .WithRequired(e => e.ProfessionalRole)
@@ -325,6 +333,12 @@ namespace SP.Dto
                 .HasMany(e => e.ProfessionalRoleInstitutions)
                 .WithRequired(e => e.ProfessionalRole)
                 .HasForeignKey(e => e.ProfessionalRoleId);
+
+            modelBuilder.Entity<RoleDto>()
+                .HasMany(e => e.UserRoles)
+                .WithRequired(e => e.Role)
+                .HasForeignKey(e => e.RoleId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<RoomDto>()
                 .HasMany(e => e.Courses)

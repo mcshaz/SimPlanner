@@ -1,0 +1,51 @@
+﻿<div class="form-group">
+    <label for="fullName" class="control-label col-md-2">Full Name</label>
+    <div class="col-md-10">
+        <input class="form-control" id="fullName" type="text" ng-model="vm.participant.fullName" data-z-validate />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fullName" class="control-label col-md-2">Username</label>
+    <div class="col-md-10">
+        <input class="form-control" id="username" type="text" ng-model="vm.participant.userName" data-z-validate />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="email" class="control-label col-md-2">Work Email</label>
+    <div class="col-md-10">
+        <input class="form-control" type="text" id="email" data-z-validate ng-model="vm.participant.email" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="alternateEmail" class="control-label col-md-2">Personal Email</label>
+    <div class="col-md-10">
+        <input class="form-control" id="alternateEmail" type="text" data-z-validate ng-model="vm.participant.alternateEmail" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="phoneNumber" class="control-label col-md-2">Mobile</label>
+    <div class="col-md-10">
+        <div class="input-group">
+            <span class="input-group-addon">(+{{vm.institution.culture.countryCode}})</span>
+            <input class="form-control" type="text" id="phoneNumber" data-z-validate ng-model="vm.participant.phoneNumber" />
+        </div>
+    </div>
+</div>
+
+<!--note eventually above 3 inputs might be type = email & tel -->
+
+<div class="form-group">
+    <label for="professionalRole" class="control-label col-md-2">Professional Role</label>
+    <div class="col-md-10">
+        <select id="professionalRole" class="form-control" data-z-validate data-ng-options="pr as pr.description group by pr.category for pr in vm.professionalRoles"
+                data-ng-model="vm.participant.professionalRole">
+            <option value="" disabled="disabled">
+                Select Professional Role...
+            </option>
+        </select>
+    </div>
+</div>

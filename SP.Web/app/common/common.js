@@ -47,6 +47,14 @@
             logger: logger, // for accessibility
             manageCollectionChange: collectionManager.manageCollectionChange,  // for accessibility
             mapToCamelCase: mapToCamelCase,
+            roleSymbols: {
+                Medical: 'stethoscope',
+                Tech: 'wrench',
+                Perfusionist: 'cog',
+                Other: 'question',
+                Paramedic: 'ambulance',
+                Nursing: 'heartbeat'
+            },
             collectionChange: collectionManager.collectionChange,
             sortOnPropertyName: sortOnPropertyName,
             sortOnChildPropertyName: sortOnChildPropertyName,
@@ -202,7 +210,7 @@
             for (var p in obj) {
                 if (p.length) {
                     val = obj[p];
-                    returnVar[p[0].toLowerCase() + p.substr(1)] = typeof(val) === 'object'
+                    returnVar[p[0].toLowerCase() + p.substr(1)] = typeof val === 'object'
                         ? Array.isArray(val)
                             ?val.map(mapToCamelCase)
                             :mapToCamelCase(val)
@@ -215,16 +223,8 @@
         var _roleIcons;
         function getRoleIcon(roleName) {
             if (!_roleIcons) {
-                var symbols = {
-                    Medical: 'stethoscope',
-                    Tech: 'wrench',
-                    Perfusionist: 'cog',
-                    Other: 'question',
-                    Paramedic: 'ambulance',
-                    Nursing: 'heartbeat'
-                };
                 _roleIcons = {};
-                angular.forEach(symbols, function (val,key) {
+                angular.forEach(service.roleSymbols, function (val,key) {
                     _roleIcons[key] = "fa fa-" + val;
                 });
             }

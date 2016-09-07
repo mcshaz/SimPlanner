@@ -42,7 +42,7 @@
         });
         
         function isLoggedIn() {
-            return(!!token);
+            return !!token;
         }
 
         function getUserName() {
@@ -70,22 +70,22 @@
         //e.g. <p ng-if="isAuthorized(authorizedRoles)">show this only to admins</p>
         function isAuthorized(authorizedRoles) {
             if (!isLoggedIn()) {return false;}
-            if (typeof(authorizedRoles) === 'string') {
+            if (typeof authorizedRoles === 'string') {
                 authorizedRoles = authorizedRoles.split(',');
             }
             if (authorizedRoles.length === 1 && authorizedRoles[0] === '*') {
                 return true;
             }
             return authorizedRoles.some(function (el) {
-                currentUser.roles.indexOf(el) !== -1
+                currentUser.roles.indexOf(el) !== -1;
             });
-        };
+        }
 
         function notifyLogin(data) {
             //2 scenarios - logged in or recredentialled
             var recredentialled; 
             if (currentUser.name) {
-                if (currentUser.name != data.fullName) {
+                if (currentUser.name !== data.fullName) {
                     recredentialled = false;
                     notifyLogout();
                 } else {
@@ -106,7 +106,7 @@
                     id: data.userId,
                     locale: data.locale,
                     departmentId: data.departmentId
-                }
+                };
                 localStorage.set('currentUser', currentUser);
                 //now broadcast
 
@@ -145,7 +145,7 @@
                 delete $http.defaults.headers.common.authorization;
             }
 
-        };
+        }
 
         function replaceToken(request) { //to be used on a 401 if the token has expired
             request.headers.authorization = 'Bearer ' + token;

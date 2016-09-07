@@ -56,9 +56,9 @@
         }])
     .filter('minuteFilter', function () {
         return function (value, scope) {
-            var hrs = Math.floor(value/60);
+            var hrs = Math.floor(value / 60);
             return hrs + ':' + ('0' + (value - hrs * 60)).slice(-2);
-        }
+        };
     });
 
     // Include $route to kick start the router.

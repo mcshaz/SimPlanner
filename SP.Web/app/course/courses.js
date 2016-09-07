@@ -129,7 +129,8 @@
                             });
                         });
                         vm.gridOptions.columnDefs[1].filter.selectOptions = opts;
-                    })]);
+                    }),
+                    updateData()]);
             });
         }
 
