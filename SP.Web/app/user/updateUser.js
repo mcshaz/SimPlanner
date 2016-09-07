@@ -5,13 +5,15 @@
         .module('app')
         .controller(controllerId, updateDetails);
 
-    updateDetails.$inject = ['common', 'datacontext', '$scope', 'controller.abstract', 'tokenStorageService', '$routeParams'];
+    updateDetails.$inject = ['common', 'datacontext', '$scope', 'controller.abstract', 'tokenStorageService', '$routeParams', 'USER_ROLES'];
     //changed $uibModalInstance to $scope to get the events
 
-    function updateDetails(common, datacontext, $scope, abstractController, tokenStorageService, $routeParams) {
+    function updateDetails(common, datacontext, $scope, abstractController, tokenStorageService, $routeParams, USER_ROLES) {
         /* jshint validthis:true */
         var vm = this;
-        var principal = {};
+        var principal = { roles:[] };
+        var isSiteAdmin;
+        var currentRole;
 
         abstractController.constructor.call(this, {
             controllerId: controllerId,
@@ -19,10 +21,18 @@
             $scope: $scope
         });
 
+        var baseSave = this.save;
+        this.save = save;
+
         vm.canAlter = canAlter;
+        vm.changed = changed;
         vm.institution = {};
         vm.institutions = [];
         vm.participant = {};
+        vm.permissions = {
+            access: null,
+            siteAdmin: false
+        };
         vm.professionalRoles = [];
 
         activate();
@@ -30,8 +40,17 @@
         function activate() {
             datacontext.ready().then(function () {
                 var promises = [
-                    datacontext.participants.fetchByKey($routeParams.id).then(function (data) {
+                    datacontext.participants.fetchByKey($routeParams.id, {expand:'roles'}).then(function (data) {
                         vm.participant = data;
+                        var ur = data.roles.find(function (ur) { return ur.roleId !== USER_ROLES.siteAdmin; });
+                        isSiteAdmin = data.roles.some(function (ur) { return ur.roleId === USER_ROLES.siteAdmin; });
+                        currentRole = ur
+                                ? getRoleName(ur.roleId)
+                                : ''
+                        vm.permissions = {
+                            access: currentRole,
+                            siteAdmin: isSiteAdmin
+                        };
                     }),
                     datacontext.institutions.all({ expand: 'culture' }).then(function (data) {
                         vm.institutions = data;
@@ -62,6 +81,43 @@
                 default:
                     throw new Error('Unknown role name:' + roleName);
             }
+            return false;
+        }
+
+        function changed() {
+            this.isEntityStateChanged = true;
+        }
+
+        function getRoleName(id) {
+            for (var key in USER_ROLES) {
+                if (USER_ROLES[key]===id) {
+                    return key;
+                }
+            }
+        }
+
+        function save() {
+            if (vm.permissions.siteAdmin !== isSiteAdmin) {
+                if (isSiteAdmin) {
+                    data.roles.find(function (ur) { return ur.roleId === USER_ROLES.siteAdmin; }).entityAspect.setDeleted();
+                } else {
+                    datacontext.userRoles.create({ 
+                        userId: vm.participant.id,
+                        roleId: USER_ROLES.siteAdmin
+                    });
+                }
+            }
+            if (vm.permissions.access !== currentRole) {
+                if (vm.permissions.access === '') {
+                    data.roles.find(function (ur) { return ur.roleId !== USER_ROLES.siteAdmin; }).entityAspect.setDeleted();
+                } else {
+                    datacontext.userRoles.create({
+                        userId: vm.participant.id,
+                        roleId: USER_ROLES[vm.permissions.access]
+                    });
+                }
+            }
+            baseSave();
         }
     }
 })();

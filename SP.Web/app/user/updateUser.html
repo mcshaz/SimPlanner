@@ -41,18 +41,19 @@
                     <div class="form-group">
                         <label for="fullName" class="control-label col-md-2">Site Administrator</label>
                         <div class="col-md-10">
-                            <button type="button" class="btn btn-default" bs-checkbox ng-model="vm.permissions.siteAdmin" ng-disabled="vm.canAter('SiteAdmin')"/>
+                            <button type="button" class="btn btn-default" bs-checkbox ng-model="vm.permissions.siteAdmin" ng-disabled="vm.canAter('SiteAdmin')" ng-change="vm.changed()">
+                                Administrator
+                            </button>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label for="email" class="control-label col-md-2">Access</label>
                         <div class="col-md-10">
                             <div class="btn-group" ng-model="vm.permissions.access" bs-radio-group>
-                                <label class="btn btn-default"><input class="btn btn-default" value="AccessAllData" type="radio" ng-disabled="!vm.canAter('AccessAllData')" > All Data</label>
-                                <label class="btn btn-default"><input class="btn btn-default" value="AccessInstitution" type="radio" ng-disabled="!vm.canAter('AccessInstitution')"> Institution</label>
-                                <label class="btn btn-default"><input class="btn btn-default" value="AccessDepartment" type="radio" ng-disabled="!vm.canAter('AccessDepartment')" > Department</label>
-                                <label class="btn btn-default"><input class="btn btn-default" value="" type="radio"> Participating Courses Only</label>
+                                <label class="btn btn-default"><input class="btn btn-default" value="accessAllData" type="radio" ng-disabled="!vm.canAlter('AccessAllData')" ng-change="vm.changed()"> All Data</label>
+                                <label class="btn btn-default"><input class="btn btn-default" value="accessInstitution" type="radio" ng-disabled="!vm.canAlter('AccessInstitution')" ng-change="vm.changed()"> Institution</label>
+                                <label class="btn btn-default"><input class="btn btn-default" value="accessDepartment" type="radio" ng-disabled="!vm.canAlter('AccessDepartment')" ng-change="vm.changed()"> Department</label>
+                                <label class="btn btn-default"><input class="btn btn-default" value="" type="radio" ng-change="vm.changed()"> Participating Courses Only</label>
                             </div>
                         </div>
                     </div>

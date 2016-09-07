@@ -246,8 +246,6 @@
                 });
             }
 
-            
-
             function modalClose() {
                 var evtArg = {
                     defaultPrevented: false,
