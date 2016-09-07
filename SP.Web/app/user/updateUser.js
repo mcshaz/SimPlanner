@@ -46,7 +46,7 @@
                         isSiteAdmin = data.roles.some(function (ur) { return ur.roleId === USER_ROLES.siteAdmin; });
                         currentRole = ur
                                 ? getRoleName(ur.roleId)
-                                : ''
+                                : '';
                         vm.permissions = {
                             access: currentRole,
                             siteAdmin: isSiteAdmin

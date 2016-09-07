@@ -68,7 +68,7 @@
                                 if (child === undefined) {
                                     var errorMsg = 'watched entity child is undefined - ' + wen[i] + ' (' + wen.join(',') + ') entity ';
                                     if (el.entityType){
-                                        errorMsg += typeName + ' [available options =(' + el.entityType.navigationProperties.map(function (dp) { return dp.name }).join(',') + ')]';
+                                        errorMsg += typeName + ' [available options =(' + el.entityType.navigationProperties.map(function (dp) { return dp.name; }).join(',') + ')]';
                                     } else {
                                         errorMsg += ' el.entityType is also undefined';
                                     }
@@ -115,6 +115,7 @@
 
             function entityChanged(changeArgs) {
                 var ent = changeArgs.entity;
+                var indx;
                 //note, when creating entities, this will be called before the entity has been assigned to the viewmodel property.
                 //this can probaby be used to advantage
                 //console.log(changeArgs.entityAction.name + '\t-\t' + ent.entityType.shortName + '\t-\t' + ent.entityAspect.entityState.name);
@@ -125,7 +126,7 @@
                                 vm.isEntityStateChanged = isUserChanged(ent);
                             }
                             if (ent.entityAspect.entityState === breeze.EntityState.Deleted) {
-                                var indx = errorEntities.indexOf(ent);
+                                indx = errorEntities.indexOf(ent);
                                 if (indx !== -1) {
                                     errorEntities.splice(indx, 1);
                                 }
@@ -139,7 +140,7 @@
                         if (getWatched().indexOf(ent) === -1) {
                             return;
                         }
-                        var indx = errorEntities.indexOf(ent);
+                        indx = errorEntities.indexOf(ent);
                         if (ent.entityAspect.entityState !== breeze.EntityState.Deleted  && ent.entityAspect.hasValidationErrors) { //?detached
                             if (indx === -1) {
                                 errorEntities.push(ent);
@@ -238,7 +239,7 @@
                         ?getWatched()
                         :[];
                 }
-                toSave = toSave.filter(function (el) { return !!(el && el.entityAspect && el.entityAspect.entityState.isAddedModifiedOrDeleted()); })
+                toSave = toSave.filter(function (el) { return !!(el && el.entityAspect && el.entityAspect.entityState.isAddedModifiedOrDeleted()); });
                 return datacontext.save.apply(null, toSave).then(function () {
                     vm.isEntityStateChanged = false;
                 }).finally(function() {
@@ -263,7 +264,7 @@
 
         //no point instantiating above (as true factory method) as will only extend other methods
         Ctor /* .prototype */ = { 
-            constructor: Ctor,
+            constructor: Ctor
         };
 
         return Ctor;
