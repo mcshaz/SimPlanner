@@ -20,7 +20,7 @@
 
                 self.hasChanges = function () {
                     return manager.hasChanges(entityTypeName);
-                }
+                };
 
                 self.fetchByKey = function (keyObj, argObj) {
                     return executeKeyQuery(keyPropsToArray(keyObj), argObj);
@@ -38,7 +38,7 @@
                     } else {
                         return manager.getEntityByKey(key);
                     }
-                }
+                };
 
                 self.find = function () {
                     var query = createQuery.apply(null, arguments);
@@ -69,7 +69,7 @@
                             break;
                         case 1:
                             var arg = arguments[0];
-                            if (arg && arg.parentEnum && arg.parentEnum.name=="EntityState") {
+                            if (arg && arg.parentEnum && arg.parentEnum.name === "EntityState") {
                                 entityState = arg;
                             } else {
                                 initialVals = arg;
@@ -97,33 +97,33 @@
                     returnVar = manager.createEntity(entityType, initialVals, entityState);
                     returnVar.entityAspect.instantiationValues = initialVals;
                     return returnVar;
-                }
+                };
 
                 function keyPropsToArray(key) {
                     if (Array.isArray(key)) { return key; }
-                    switch (typeof (key)) {
+                    switch (typeof key) {
                         case 'string':
                         case 'number':
                             return [key];
                         case 'object':
                             return entityType.keyProperties.map(function (el) {
                                 var returnVar = key[el.name];
-                                if ((returnVar) === undefined) {
+                                if (returnVar === undefined) {
                                     throw new TypeError('entity key object is missing required key ' + el.name);
                                 }
                                 return returnVar;
                             });
                         default:
-                            throw new TypeError('entity key of type - ' + typeof(key));
+                            throw new TypeError('entity key of type - ' + typeof key);
                     }
 
                 }
 
                 function createQuery(argObj) {
                     var query = breeze.EntityQuery.from(resourceName);
-                    switch (typeof argObj){
+                    switch (typeof argObj) {
                         case 'undefined':
-                            return query
+                            return query;
                         case 'string':
                             return query.where.apply(query, arguments);
                     }
@@ -132,10 +132,24 @@
                         return query.where(argObj);
                     }
                     //['where', 'withParameters', 'select', 'orderBy', 'skip', 'take', 'expand', 'inlineCount']
-                    for(var propName in argObj) {
+                    for (var propName in argObj) {
                         query = query[propName](argObj[propName]);
-                    };
+                    }
                     return query;
+                    /*
+                    to take advantage of the Json format - a breaking change
+                    var type = typeof argObj;
+                    if (type === 'object' && !argObj instanceof breeze.Predicate) {
+                        return new breeze.EntityQuery(angular.extend({ from: resourceName }, arguments));
+                    }
+                    var query = breeze.EntityQuery.from(resourceName);
+                    if (type==='string' || type==='object'){
+                        return query.where.apply(query, arguments);
+                    }
+                    throw new TypeError('query arguments incorrect type');
+                    //default
+                    */
+                    
                 }
 
                 function executeKeyQuery(key, argObj) {
@@ -143,7 +157,7 @@
                     var entities = executeCacheQuery(query);
                     return loadNavs(entities, query).then(function (data) {
                         return data[0];
-                    })
+                    });
                 }
 
                 function loadNavs(ent, query) {
@@ -171,13 +185,13 @@
                     var entities = executeCacheQuery(query);
                     entities = filterWithParameters(entities, query.parameters);
                     return loadNavs(entities, query);
-                }
+                };
 
                 function filterWithParameters(entities, withParameters) {
                     if (!withParameters || common.isEmptyObject(withParameters)) { return entities; }
                     var propName;
                     for (propName in withParameters) {
-                        if (entityType.dataProperties.every(function (el) { return el.name !== propName})) {
+                        if (entityType.dataProperties.every(function (el) { return el.name !== propName;})) {
                             throw new Error('undefined property ' + propName + ' on entity type ' + entityType.shortName);
                         }
                     }
@@ -235,7 +249,7 @@
                         }
                     });
                     return returnVar;
-                };
+                }
 
                 function executeKeyQueryLocally(key, argObj) {
                     return executeCacheQuery(getKeyQuery(key, argObj))[0];
@@ -248,7 +262,7 @@
                         //['select', 'expand'].forEach(function (el) {
                         for (var propName in argObj) {
                             query = query[propName](argObj[propName]);
-                        };
+                        }
                     }
                     return query;
                 }
