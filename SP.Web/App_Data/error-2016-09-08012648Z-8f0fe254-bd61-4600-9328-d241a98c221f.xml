@@ -1,0 +1,183 @@
+﻿<error errorId="8f0fe254-bd61-4600-9328-d241a98c221f" application="/LM/W3SVC/2/ROOT" host="OEM-VAIO" type="System.Web.HttpException" message="404 Not Found: /whatever" detail="System.Web.HttpException (0x80004005): 404 Not Found: /whatever" time="2016-09-08T01:26:48.8933017Z" statusCode="404">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_ACCEPT:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate, br&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-US,en;q=0.5&#xD;&#xA;HTTP_COOKIE:ward=12; report=list; _ga=GA1.1.257570983.1468958155; __hstc=181257784.d48fcb1888cd25e1a05d50c7186dd5d8.1468958155293.1468958155293.1468958155293.1; hsfirstvisit=http%3A%2F%2Flocalhost%3A2012%2F||1468958155290; hubspotutk=d48fcb1888cd25e1a05d50c7186dd5d8; .AspNet.Cookies=1Vhua5F2O0Ax0Uw2qC5-cAfnS1lkD7TOiR9rhvqJg3qvc5BgKCS4F_hpEujMWvI6THkf67q8NgwLyF7WJqxCF6qHqHjD14JW530L4oRjEpuOtJGHU-H_zsoAH1zyp-Qh1RgC3wIaymSvJUcr1ICf2Jsd_SA5ZS6IWoGbkGK7rEHCZc1jSV0gqMBcRO-M1D7_VLel5XlIPOmFhrfflilelxxVHUYoBHoEqh9PM4_dmk8pZZQdMQRrdbqkJD02uFUWtxoCrZN20nsPXFtD703MlciNZ81VNOX0WR39YnPesyYUMqRIH-wBwZTQNsZWF6TVg6JrbxKm_JfKMYri-M6EkxuEgPIaxfuWTortXyEYZtqLu2tTaMCi_cElXVmkWgLwmmipTvETFpjgqIUGj-RfSFYLhk-AAzcreHdWdKiY06b2mvSEU_wgWUUKuApfkZfg0O3SbLRwgijs1E1UUohIYzMAFN4RL1xuwZgSj-rDQLxgAzOMWbQyCxvOQ3q4B1w_A1rS2aWW5u5k8JiFqevKs2y2AWnrnq9gtkLy4g6mkns; tmhDynamicLocale.locale=en-nz&#xD;&#xA;HTTP_HOST:localhost:44300&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0&#xD;&#xA;HTTP_UPGRADE_INSECURE_REQUESTS:1&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Connection: keep-alive&#xD;&#xA;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#xD;&#xA;Accept-Encoding: gzip, deflate, br&#xD;&#xA;Accept-Language: en-US,en;q=0.5&#xD;&#xA;Cookie: ward=12; report=list; _ga=GA1.1.257570983.1468958155; __hstc=181257784.d48fcb1888cd25e1a05d50c7186dd5d8.1468958155293.1468958155293.1468958155293.1; hsfirstvisit=http%3A%2F%2Flocalhost%3A2012%2F||1468958155290; hubspotutk=d48fcb1888cd25e1a05d50c7186dd5d8; .AspNet.Cookies=1Vhua5F2O0Ax0Uw2qC5-cAfnS1lkD7TOiR9rhvqJg3qvc5BgKCS4F_hpEujMWvI6THkf67q8NgwLyF7WJqxCF6qHqHjD14JW530L4oRjEpuOtJGHU-H_zsoAH1zyp-Qh1RgC3wIaymSvJUcr1ICf2Jsd_SA5ZS6IWoGbkGK7rEHCZc1jSV0gqMBcRO-M1D7_VLel5XlIPOmFhrfflilelxxVHUYoBHoEqh9PM4_dmk8pZZQdMQRrdbqkJD02uFUWtxoCrZN20nsPXFtD703MlciNZ81VNOX0WR39YnPesyYUMqRIH-wBwZTQNsZWF6TVg6JrbxKm_JfKMYri-M6EkxuEgPIaxfuWTortXyEYZtqLu2tTaMCi_cElXVmkWgLwmmipTvETFpjgqIUGj-RfSFYLhk-AAzcreHdWdKiY06b2mvSEU_wgWUUKuApfkZfg0O3SbLRwgijs1E1UUohIYzMAFN4RL1xuwZgSj-rDQLxgAzOMWbQyCxvOQ3q4B1w_A1rS2aWW5u5k8JiFqevKs2y2AWnrnq9gtkLy4g6mkns; tmhDynamicLocale.locale=en-nz&#xD;&#xA;Host: localhost:44300&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0&#xD;&#xA;Upgrade-Insecure-Requests: 1&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/2/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="*****" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="256" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="2048" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="CN=localhost" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="CN=localhost" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="0" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="on" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="256" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="2048" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="CN=localhost" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="CN=localhost" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="2" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/2" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/whatever" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\whatever" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="50650" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="GET" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/whatever" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="44300" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="1" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/whatever" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate, br" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-US,en;q=0.5" />
+    </item>
+    <item name="HTTP_COOKIE">
+      <value string="ward=12; report=list; _ga=GA1.1.257570983.1468958155; __hstc=181257784.d48fcb1888cd25e1a05d50c7186dd5d8.1468958155293.1468958155293.1468958155293.1; hsfirstvisit=http%3A%2F%2Flocalhost%3A2012%2F||1468958155290; hubspotutk=d48fcb1888cd25e1a05d50c7186dd5d8; .AspNet.Cookies=1Vhua5F2O0Ax0Uw2qC5-cAfnS1lkD7TOiR9rhvqJg3qvc5BgKCS4F_hpEujMWvI6THkf67q8NgwLyF7WJqxCF6qHqHjD14JW530L4oRjEpuOtJGHU-H_zsoAH1zyp-Qh1RgC3wIaymSvJUcr1ICf2Jsd_SA5ZS6IWoGbkGK7rEHCZc1jSV0gqMBcRO-M1D7_VLel5XlIPOmFhrfflilelxxVHUYoBHoEqh9PM4_dmk8pZZQdMQRrdbqkJD02uFUWtxoCrZN20nsPXFtD703MlciNZ81VNOX0WR39YnPesyYUMqRIH-wBwZTQNsZWF6TVg6JrbxKm_JfKMYri-M6EkxuEgPIaxfuWTortXyEYZtqLu2tTaMCi_cElXVmkWgLwmmipTvETFpjgqIUGj-RfSFYLhk-AAzcreHdWdKiY06b2mvSEU_wgWUUKuApfkZfg0O3SbLRwgijs1E1UUohIYzMAFN4RL1xuwZgSj-rDQLxgAzOMWbQyCxvOQ3q4B1w_A1rS2aWW5u5k8JiFqevKs2y2AWnrnq9gtkLy4g6mkns; tmhDynamicLocale.locale=en-nz" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:44300" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0" />
+    </item>
+    <item name="HTTP_UPGRADE_INSECURE_REQUESTS">
+      <value string="1" />
+    </item>
+  </serverVariables>
+  <cookies>
+    <item name="ward">
+      <value string="12" />
+    </item>
+    <item name="report">
+      <value string="list" />
+    </item>
+    <item name="_ga">
+      <value string="GA1.1.257570983.1468958155" />
+    </item>
+    <item name="__hstc">
+      <value string="181257784.d48fcb1888cd25e1a05d50c7186dd5d8.1468958155293.1468958155293.1468958155293.1" />
+    </item>
+    <item name="hsfirstvisit">
+      <value string="http%3A%2F%2Flocalhost%3A2012%2F||1468958155290" />
+    </item>
+    <item name="hubspotutk">
+      <value string="d48fcb1888cd25e1a05d50c7186dd5d8" />
+    </item>
+    <item name=".AspNet.Cookies">
+      <value string="1Vhua5F2O0Ax0Uw2qC5-cAfnS1lkD7TOiR9rhvqJg3qvc5BgKCS4F_hpEujMWvI6THkf67q8NgwLyF7WJqxCF6qHqHjD14JW530L4oRjEpuOtJGHU-H_zsoAH1zyp-Qh1RgC3wIaymSvJUcr1ICf2Jsd_SA5ZS6IWoGbkGK7rEHCZc1jSV0gqMBcRO-M1D7_VLel5XlIPOmFhrfflilelxxVHUYoBHoEqh9PM4_dmk8pZZQdMQRrdbqkJD02uFUWtxoCrZN20nsPXFtD703MlciNZ81VNOX0WR39YnPesyYUMqRIH-wBwZTQNsZWF6TVg6JrbxKm_JfKMYri-M6EkxuEgPIaxfuWTortXyEYZtqLu2tTaMCi_cElXVmkWgLwmmipTvETFpjgqIUGj-RfSFYLhk-AAzcreHdWdKiY06b2mvSEU_wgWUUKuApfkZfg0O3SbLRwgijs1E1UUohIYzMAFN4RL1xuwZgSj-rDQLxgAzOMWbQyCxvOQ3q4B1w_A1rS2aWW5u5k8JiFqevKs2y2AWnrnq9gtkLy4g6mkns" />
+    </item>
+    <item name="tmhDynamicLocale.locale">
+      <value string="en-nz" />
+    </item>
+  </cookies>
+</error>

@@ -2,6 +2,7 @@
 using Microsoft.Owin.Security.OAuth;
 using SP.Web.App_Start;
 using System.Web.Http.ExceptionHandling;
+using Elmah.Contrib.WebApi;
 //using Elmah.Contrib.WebApi;
 
 namespace SP.Web
@@ -16,7 +17,7 @@ namespace SP.Web
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
             MetadataScriptWriter.Write();
 
-            //config.Services.Add(typeof(IExceptionLogger), new ElmahExceptionLogger());
+            config.Services.Add(typeof(IExceptionLogger), new ElmahExceptionLogger());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
@@ -25,6 +26,12 @@ namespace SP.Web
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "NotFound",
+                routeTemplate: "{*path}",
+                defaults: new { controller = "Error", action = "NotFound" }
             );
         }
 

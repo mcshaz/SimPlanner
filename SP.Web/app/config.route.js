@@ -242,7 +242,7 @@
                     url: '/updateDetails',
                     config: {
                         title: 'Update My Details',
-                        templateUrl: 'app/account/updateDetails.html',
+                        templateUrl: 'app/account/updateMyDetails.html',
                         access: {
                             allowedRoles: userRoles.all
                         }

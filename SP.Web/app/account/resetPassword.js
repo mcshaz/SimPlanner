@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    var controllerId = 'changePassword';
+    var controllerId = 'resetPassword';
     angular.module('app')
             .controller(controllerId, ['$http', 'common', '$routeParams',controller]);
 
