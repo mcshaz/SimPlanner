@@ -3,6 +3,7 @@ using System.Web.Http;
 using System.Collections.Generic;
 using System.Globalization;
 using NodaTime.TimeZones;
+using SP.Web.Controllers.Helpers;
 
 namespace SP.Web.Controllers
 {
@@ -58,6 +59,12 @@ namespace SP.Web.Controllers
             var ri = new RegionInfo(id);
 
             return ri.ISOCurrencySymbol;
+        }
+
+        [HttpGet, AllowAnonymous]
+        public IEnumerable<SmtpAttempt> TestEmail()
+        {
+            return EmailHelpers.SendTestEmails(Request);
         }
     }
 }
