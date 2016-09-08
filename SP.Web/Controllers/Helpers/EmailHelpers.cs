@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
-using System.Linq;
 using System.Net;
 using System.Net.Configuration;
 using System.Net.Http;
@@ -17,16 +16,10 @@ namespace SP.Web.Controllers.Helpers
         public static async Task<List<SmtpAttempt>> SendTestEmails(HttpRequestMessage request, string to = "brent@focused-light.net")
         {
             var host = request.RequestUri.Host;
-            List<string> list = new List<string>();
 
             host = "mail." + host;
 
-            try
-            {
-                list.Add(host);
-                //list.AddRange(Dns.GetHostEntry(host).AddressList.Select(a => a.ToString()));
-            }
-            catch (Exception) { }
+            ServicePointManager.ServerCertificateValidationCallback = CertificateValidationCallBack;
 
             var smtpSection = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
 
@@ -36,43 +29,44 @@ namespace SP.Web.Controllers.Helpers
 
             var ssl = new[] { true, false };
 
-            var capacity = list.Count * ports.Length * ssl.Length;
+            var capacity =  ports.Length * ssl.Length;
 
             var returnVar = new List<SmtpAttempt>(capacity);
             var taskList = new List<Task>(capacity);
             var smtpClientList = new List<SmtpClient>(capacity);
 
-            foreach (var h in list)
+            foreach (var p in ports)
             {
-                foreach (var p in ports)
+                foreach (var s in ssl)
                 {
-                    foreach (var s in ssl)
+                    var a = new SmtpAttempt
                     {
-                        var a = new SmtpAttempt
-                        {
-                            Host = h,
-                            Port = p,
-                            SSL = s
-                        };
+                        Host = host,
+                        Port = p,
+                        SSL = s
+                    };
 
-                        SmtpClient mailer = new SmtpClient(h, p);
+                    SmtpClient mailer = new SmtpClient(host, p);
 
-                        mailer.UseDefaultCredentials = false;
-                        mailer.Credentials = credentials;
-                        mailer.EnableSsl = s;
-                        try
-                        {
-                            taskList.Add(mailer.SendMailAsync(smtpSection.From, to, "test email", "testing server settings\r\n" + a.ToString()));
-                            returnVar.Add(a);
-                            smtpClientList.Add(mailer);
-                        }
-                        catch
-                        {
-                            mailer.Dispose();
-                        }
+                    mailer.UseDefaultCredentials = false;
+                    mailer.Credentials = credentials;
+                    mailer.EnableSsl = s;
+                    try
+                    {
+                        returnVar.Add(a);
+                        mailer.Send(smtpSection.From, to, "test email", "testing server settings\r\n" + a.ToString());
+                        //var sm = mailer.SendMailAsync(smtpSection.From, to, "test email", "testing server settings\r\n" + a.ToString());
+                        //taskList.Add(sm);
+
+                        smtpClientList.Add(mailer);
+                    }
+                    catch(Exception e)
+                    {
+                        a.ExceptionMsg = e.Message;
+                        LogErrorManually(e);
+                        mailer.Dispose();
                     }
                 }
-
             }
             try
             {
@@ -122,6 +116,55 @@ namespace SP.Web.Controllers.Helpers
             {
                 var elmahCon = Elmah.ErrorLog.GetDefault(null);
                 elmahCon.Log(new Elmah.Error(ex));
+            }
+        }
+
+        private static bool CertificateValidationCallBack(
+               object sender,
+               System.Security.Cryptography.X509Certificates.X509Certificate certificate,
+               System.Security.Cryptography.X509Certificates.X509Chain chain,
+               System.Net.Security.SslPolicyErrors sslPolicyErrors)
+        {
+            // If the certificate is a valid, signed certificate, return true.
+            if (sslPolicyErrors == System.Net.Security.SslPolicyErrors.None)
+            {
+                return true;
+            }
+
+            // If there are errors in the certificate chain, look at each error to determine the cause.
+            if ((sslPolicyErrors & System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors) != 0)
+            {
+                if (chain != null && chain.ChainStatus != null)
+                {
+                    foreach (System.Security.Cryptography.X509Certificates.X509ChainStatus status in chain.ChainStatus)
+                    {
+                        if ((certificate.Subject == certificate.Issuer) &&
+                           (status.Status == System.Security.Cryptography.X509Certificates.X509ChainStatusFlags.UntrustedRoot))
+                        {
+                            // Self-signed certificates with an untrusted root are valid. 
+                            continue;
+                        }
+                        else
+                        {
+                            if (status.Status != System.Security.Cryptography.X509Certificates.X509ChainStatusFlags.NoError)
+                            {
+                                // If there are any other errors in the certificate chain, the certificate is invalid,
+                                // so the method returns false.
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+                // When processing reaches this line, the only errors in the certificate chain are 
+                // untrusted root errors for self-signed certificates. These certificates are valid
+                // for default Exchange server installations, so return true.
+                return true;
+            }
+            else
+            {
+                // In all other cases, return false.
+                return false;
             }
         }
     }
