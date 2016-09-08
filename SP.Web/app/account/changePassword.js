@@ -36,7 +36,7 @@
                 log.error({ msg: 'change password error', data: data });
                 vm.errors = ''; //todo here
             });
-        };
+        }
 
         function mapObjectToPascalCase(obj) {
             var returnVar = {};

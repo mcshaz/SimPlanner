@@ -1,32 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Configuration;
 using System.Net.Http;
 using System.Net.Mail;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace SP.Web.Controllers.Helpers
 {
     public static class EmailHelpers
     {
-        public static List<SmtpAttempt> SendTestEmails(HttpRequestMessage request, string to = "brent@focused-light.net")
+        public static async Task<List<SmtpAttempt>> SendTestEmails(HttpRequestMessage request, string to = "brent@focused-light.net")
         {
             var host = request.RequestUri.Host;
             List<string> list = new List<string>();
-            try
-            {
-                list.AddRange(Dns.GetHostEntry(host).AddressList.Select(a => a.ToString()).ToList());
-            }
-            catch(Exception) { }
 
             host = "mail." + host;
 
             try
             {
                 list.Add(host);
-                list.AddRange(Dns.GetHostEntry(host).AddressList.Select(a => a.ToString()));
+                //list.AddRange(Dns.GetHostEntry(host).AddressList.Select(a => a.ToString()));
             }
             catch (Exception) { }
 
@@ -38,7 +36,11 @@ namespace SP.Web.Controllers.Helpers
 
             var ssl = new[] { true, false };
 
-            var returnVar = new List<SmtpAttempt>(list.Count * ports.Length* ssl.Length);
+            var capacity = list.Count * ports.Length * ssl.Length;
+
+            var returnVar = new List<SmtpAttempt>(capacity);
+            var taskList = new List<Task>(capacity);
+            var smtpClientList = new List<SmtpClient>(capacity);
 
             foreach (var h in list)
             {
@@ -52,29 +54,78 @@ namespace SP.Web.Controllers.Helpers
                             Port = p,
                             SSL = s
                         };
-                        returnVar.Add(a);
+
+                        SmtpClient mailer = new SmtpClient(h, p);
+
+                        mailer.UseDefaultCredentials = false;
+                        mailer.Credentials = credentials;
+                        mailer.EnableSsl = s;
                         try
                         {
-                            using (SmtpClient mailer = new SmtpClient(h, p))
-                            { 
-                                mailer.Credentials = credentials;
-                                mailer.EnableSsl = s;
-
-                                mailer.Send(smtpSection.From, to, "test email", "testing server settings\r\n" + a.ToString());
-                            }
+                            taskList.Add(mailer.SendMailAsync(smtpSection.From, to, "test email", "testing server settings\r\n" + a.ToString()));
+                            returnVar.Add(a);
+                            smtpClientList.Add(mailer);
                         }
-                        catch (Exception e)
+                        catch
                         {
-                            a.ExceptionMsg = e.Message;
+                            mailer.Dispose();
                         }
                     }
-
                 }
 
             }
+            try
+            {
+                // wait for all of them to complete
+                await Task.WhenAll(taskList); 
+            }
+            catch (Exception)
+            {
+                for (int i = 0; i< taskList.Count;i++)
+                {
+                    if (taskList[i].Exception != null)
+                    {
+                        var sa = returnVar[i];
+                        sa.ExceptionMsg = taskList[i].Exception.Message;
+                        LogErrorManually(taskList[i].Exception);
+                    }
+                }
+            }
+            smtpClientList.ForEach(s => s.Dispose());
             return returnVar;
         }
+
+        private static void SmtpClientSendCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            var smtpClient = (SmtpClient)sender;
+            var userAsyncState = (SmtpAttempt)e.UserState;
+            smtpClient.SendCompleted -= SmtpClientSendCompleted;
+
+            if (e.Error != null)
+            {
+                e.Error.Data.Add("Host", userAsyncState.Host);
+                e.Error.Data.Add("Port", userAsyncState.Port);
+                e.Error.Data.Add("SSL", userAsyncState.SSL);
+                LogErrorManually(e.Error);
+            }
+            smtpClient.Dispose();
+        }
+
+        public static void LogErrorManually(Exception ex)
+        {
+            if (HttpContext.Current != null)//website is logging the error
+            {
+                var elmahCon = Elmah.ErrorSignal.FromCurrentContext();
+                elmahCon.Raise(ex);
+            }
+            else//non website, probably an agent
+            {
+                var elmahCon = Elmah.ErrorLog.GetDefault(null);
+                elmahCon.Log(new Elmah.Error(ex));
+            }
+        }
     }
+
     public class SmtpAttempt
     {
         public string Host { get; set; }
@@ -83,7 +134,7 @@ namespace SP.Web.Controllers.Helpers
         public string ExceptionMsg { get; set; }
         public override string ToString()
         {
-            return $"{Host}:{Port} SSL:{SSL} Exception:{ExceptionMsg}";
+            return $"{Host}:{Port} SSL:{SSL}";
         }
     }
 }

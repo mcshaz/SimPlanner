@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using NodaTime.TimeZones;
 using SP.Web.Controllers.Helpers;
+using System.Threading.Tasks;
 
 namespace SP.Web.Controllers
 {
@@ -62,9 +63,9 @@ namespace SP.Web.Controllers
         }
 
         [HttpGet, AllowAnonymous]
-        public IEnumerable<SmtpAttempt> TestEmail()
+        public async Task<IEnumerable<SmtpAttempt>> TestEmail()
         {
-            return EmailHelpers.SendTestEmails(Request);
+            return await EmailHelpers.SendTestEmails(Request);
         }
     }
 }
