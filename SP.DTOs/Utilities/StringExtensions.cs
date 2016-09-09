@@ -13,5 +13,10 @@
             if (string.IsNullOrEmpty(instr)) { return instr; }
             return char.ToUpperInvariant(instr[0]) + instr.Substring(1);
         }
+
+        public static string ToSeperateWords(this string instr)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(instr, "[a-z][A-Z]", m => $"{m.Value[0]} {m.Value[1]}");
+        }
     }
 }

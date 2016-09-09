@@ -40,7 +40,7 @@ namespace SP.Web.App_Start
                     "		getBreezeMetadata: getBreezeMetadata,\r\n" +
                     "		getBreezeValidators: getBreezeValidators,\r\n" +
                     "       getEnums: getEnums\r\n" +
-                    "	}\r\n" +
+                    "	};\r\n" +
                     "	function getBreezeMetadata(){\r\n" +
                     "		return JSON.stringify("+ metadata.Breeze + ");\r\n" +
                     "	}\r\n" +

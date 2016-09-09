@@ -77,6 +77,7 @@ namespace SP.Dto
                     if (propInfo == null)
                     {
                         Debug.WriteLine("No metadata property attributes available for " + breezePropertyInfo["dataType"] + " "+ shortEntityName +'.' + propName);
+                        breezePropertyInfo["displayName"] = propName.ToSeperateWords();
                         continue;
                     }
 
@@ -86,40 +87,44 @@ namespace SP.Dto
                     //if metadataType not found, or in reality search the entity framework entity
                     //for properties with the same name (that is certainly how I am mapping)
 
-
+                    string displayName = null;
                     foreach (Attribute attr in propInfo.GetCustomAttributes())
                     {
                         Type t = attr.GetType();
-                        if (t.Namespace == "System.ComponentModel.DataAnnotations.Schema") {
-                            continue;
-                        } else if (t == typeof(DefaultValueAttribute))
+                        if (t == typeof(DefaultValueAttribute))
                         {
                             var def = (DefaultValueAttribute)attr;
                             breezePropertyInfo["defaultValue"] = JToken.FromObject(def.Value);
                         }
-                        Func<Attribute, Dictionary<string,object>> getVal;
-                        if (attrValDict.TryGetValue(t, out getVal))
+                        else if (t == typeof(DisplayNameAttribute))
                         {
-                            var validatorsFromAttr = getVal(attr);
-                            if (validatorsFromAttr != null)
+                            displayName = ((DisplayNameAttribute)attr).DisplayName;
+                        }
+                        else if(t.Namespace != "System.ComponentModel.DataAnnotations.Schema")
+                        {
+                            Func<Attribute, Dictionary<string, object>> getVal;
+                            if (attrValDict.TryGetValue(t, out getVal))
                             {
-                                string jsValidatorName = (string)validatorsFromAttr["name"];
-                                Dictionary<string, object> existingVals;
-                                if (validators.TryGetValue(jsValidatorName, out existingVals))
+                                var validatorsFromAttr = getVal(attr);
+                                if (validatorsFromAttr != null)
                                 {
-                                    existingVals.AddOrOverwrite(validatorsFromAttr);
-                                }
-                                else
-                                {
-                                    validators.Add(jsValidatorName, validatorsFromAttr);
+                                    string jsValidatorName = (string)validatorsFromAttr["name"];
+                                    Dictionary<string, object> existingVals;
+                                    if (validators.TryGetValue(jsValidatorName, out existingVals))
+                                    {
+                                        existingVals.AddOrOverwrite(validatorsFromAttr);
+                                    }
+                                    else
+                                    {
+                                        validators.Add(jsValidatorName, validatorsFromAttr);
+                                    }
                                 }
                             }
+                            else
+                            {
+                                unaccountedVals.Add(t.FullName);
+                            }
                         }
-                        else
-                        {
-                            unaccountedVals.Add(t.FullName);
-                        }
-
                     }
                     if (validators.ContainsKey("stringLength") )
                     {
@@ -131,6 +136,16 @@ namespace SP.Dto
                         validators.Remove(propInfo.PropertyType.Name.PascalToCamelCase());
                     }
                     breezePropertyInfo["validators"] = JToken.FromObject(validators.Values);
+                    breezePropertyInfo["displayName"] = displayName ?? propName.ToSeperateWords();
+                }
+                foreach (var breezeNavPropertyInfo in breezeEntityType["navigationProperties"])
+                {
+                    var navPropName = breezeNavPropertyInfo["name"].ToString();
+                    //todo search for DisplayNameAttribute
+                    if (navPropName.Length >= 2)
+                    {
+                        breezeNavPropertyInfo["displayName"] = char.ToUpper(navPropName[0]) + navPropName.Substring(1).ToSeperateWords();
+                    }
                 }
             }
             foreach (var u in unaccountedVals)

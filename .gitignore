@@ -234,6 +234,6 @@ _Pvt_Extensions
 SP.Web/Web.config
 /TestEmails
 
-SP.Web/bower_components/
 SP.Web/wwwroot
 SP.Web/Web.openhost.config
+SP.Web/App_Data
