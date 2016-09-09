@@ -144,9 +144,11 @@
                     <div class="form-group">
                         <div class="col-md-offset-6 col-md-6">
                             <button type="submit" data-ng-disabled="vm.disableSave()" class="btn btn-success">Save</button>
-                            <a class="btn btn-info" ng-href="#/courseRoles/{{vm.course.id}}">
-                                <i class="fa fa-arrow-right"></i>Assign Roles
-                            </a>
+                            <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()">
+                                <button type="button" class="btn btn-info" ng-click="goAssignRoles()" ng-disabled="vm.course.entityAspect.entityState.isAdded()">
+                                    <i class="fa fa-arrow-right"></i>Assign Roles
+                                </button>
+                            </div>
                         </div>
                     </div>
                </div>
@@ -199,10 +201,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
-                                data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()" >
-                            <i class="fa fa-plus"></i> Faculty Member
-                        </button>
+                        <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()">
+                            <button class="btn-link btn" type="button" ng-click="vm.openCourseParticipant('newFaculty')" ng-disabled="vm.course.entityAspect.entityState.isAdded()">
+                                <i class="fa fa-plus"></i> Faculty Member
+                            </button>
+                        </div>
                     </fieldset>
                 </div>
                 <div class="form-group">
@@ -252,17 +255,18 @@
                                 </tbody>
                             </table>
                         </div>
-                        <button class="btn-link" type="button" ng-click="vm.openCourseParticipant('newParticipant')" ng-disabled="vm.course.entityAspect.entityState.isAdded()"
-                               data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()" >
-                            <i class="fa fa-plus"></i> Participant
-                        </button>
+                        <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()" >
+                            <button class="btn-link btn" type="button" ng-click="vm.openCourseParticipant('newParticipant')" ng-disabled="vm.course.entityAspect.entityState.isAdded()" >
+                                <i class="fa fa-plus"></i> Participant
+                            </button>
+                        </div>
                     </fieldset>
                 </div>
-                <button class="btn btn-default" ng-disabled="vm.isEntityStateChanged" ng-click="vm.sendEmails()" type="button"
-                        data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.isEntityStateChanged">
-                    Send Confirmation Emails
-                </button> 
-
+                <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course & add people first" bs-tooltip bs-enabled="vm.isEntityStateChanged  || !vm.course.courseParticipants.length">
+                    <button class="btn btn-default" ng-disabled="vm.isEntityStateChanged || !vm.course.courseParticipants.length" ng-click="vm.sendEmails()" type="button">
+                        Send Confirmation Emails
+                    </button> 
+                </div>
             </div>
         </div>
     </section>

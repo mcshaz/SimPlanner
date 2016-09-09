@@ -62,11 +62,5 @@ namespace SP.Web.Controllers
 
             return ri.ISOCurrencySymbol;
         }
-
-        [HttpGet, AllowAnonymous]
-        public async Task<IEnumerable<SmtpAttempt>> TestEmail()
-        {
-            return await EmailHelpers.SendTestEmails(Request);
-        }
     }
 }

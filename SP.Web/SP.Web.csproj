@@ -870,7 +870,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
-    <Compile Include="Controllers\Helpers\EmailHelpers.cs" />
     <Compile Include="Controllers\Helpers\EnableMappedBreezeQueryAttribute.cs" />
     <Compile Include="Controllers\Helpers\FindAnyAllFilterOptions.cs" />
     <Compile Include="Controllers\LookupBundles.cs" />

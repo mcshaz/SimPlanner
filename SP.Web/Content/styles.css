@@ -393,6 +393,13 @@ a {
 
 /*#endregion*/
 /*#region mystyles*/
+.disable-workaround [disabled] {
+  pointer-events: none!important;
+}
+.disable-workaround {
+  display:inline-block;
+}
+
 #userName {
     display: inline;
     text-decoration:underline

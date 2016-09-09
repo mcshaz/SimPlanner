@@ -211,10 +211,11 @@
                                                     </td>
                                                     -->
                                                     <td>
-                                                        <button class="btn btn-link" type="button" ng-click="vm.editChoices(cf.selectedSlot)" ng-disabled="!cf.selectedSlot || cf.selectedSlot.isScenario || cf.selectedSlot.entityAspect.entityState.isAdded()"
-                                                                data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save first" bs-tooltip bs-enabled="!!(cf.selectedSlot && cf.selectedSlot.entityAspect.entityState.isAdded())">
-                                                            choices
-                                                        </button>
+                                                        <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save first" bs-tooltip bs-enabled="!!(cf.selectedSlot && cf.selectedSlot.entityAspect.entityState.isAdded())">
+                                                            <button class="btn btn-link" type="button" ng-click="vm.editChoices(cf.selectedSlot)" ng-disabled="!cf.selectedSlot || cf.selectedSlot.isScenario || cf.selectedSlot.entityAspect.entityState.isAdded()">
+                                                                choices
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </tfoot>

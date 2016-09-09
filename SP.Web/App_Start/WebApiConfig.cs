@@ -33,7 +33,18 @@ namespace SP.Web
                 routeTemplate: "{*path}",
                 defaults: new { controller = "Error", action = "NotFound" }
             );
-        }
 
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = CertificateValidationCallBack;
+        }
+        private static bool CertificateValidationCallBack(
+            object sender,
+            System.Security.Cryptography.X509Certificates.X509Certificate certificate,
+            System.Security.Cryptography.X509Certificates.X509Chain chain,
+            System.Net.Security.SslPolicyErrors sslPolicyErrors)
+        {
+            return (sslPolicyErrors == System.Net.Security.SslPolicyErrors.None
+                || (sslPolicyErrors == System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch
+                    && certificate.Subject.Contains("CN=*.openhost.net.nz")));
+        }
     }
 }

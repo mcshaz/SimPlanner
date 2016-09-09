@@ -29,7 +29,7 @@
         vm.dpPopup = { isOpen: false };
         vm.departments = [];
         vm.formatChanged = formatChanged;
-        
+        vm.goAssignRoles = goAssignRoles;
         vm.hasChanges = false;
         vm.maxDate = new Date();
         vm.maxDate.setFullYear(vm.maxDate.getFullYear() + 1);
@@ -56,9 +56,11 @@
                 });
             })];
             if (isNew) {
-                vm.course = datacontext.courses.create();
+                var now = new Date();
+                vm.course = datacontext.courses.create({created:now, lastModified:now});
                 vm.course.entityAspect.markNavigationPropertyAsLoaded('courseParticipants');
                 vm.course.entityAspect.markNavigationPropertyAsLoaded('courseDays');
+                vm.courseDays = [vm.course];
             }else{
                 promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant,courseDays'}).then(function (data) {
                     if (!data) {
@@ -240,6 +242,10 @@
             return vm.course.courseParticipants.find(function (cp) {
                 return cp.participantId === participantId;
             });
+        }
+
+        function goAssignRoles() {
+            $location.path('courseRoles/' + vm.course.id);
         }
 
         function save() {

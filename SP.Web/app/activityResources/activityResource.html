@@ -9,18 +9,20 @@
                 </div>
                 <div class="aside-body">
                     <form id="courseParticipantForm" ng-submit="ar.save()">
-                        <button type="button" class="btn-link" ng-click="ar.createActivityResource()" ng-disabled="ar.selectedActivityResource.entityAspect.hasValidationErrors" 
-                                data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please fix current errors first" bs-tooltip bs-enabled="ar.selectedActivityResource?ar.selectedActivityResource.entityAspect.hasValidationErrors:false">
-                            Create new choice
-                        </button>
+                        <span class="disabeWorkaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please fix current errors first" bs-tooltip bs-enabled="ar.selectedActivityResource?ar.selectedActivityResource.entityAspect.hasValidationErrors:false">
+                            <button type="button" class="btn-link" ng-click="ar.createActivityResource()" ng-disabled="ar.selectedActivityResource.entityAspect.hasValidationErrors" >
+                                Create new choice
+                            </button>
+                        </span>
                         <ul class="list-unstyled">
                             <li ng-repeat="ac in ar.courseActivity.activityChoices track by ac.id" class="clearfix" ng-class="ac===ar.selectedActivityResource?'warning':''">
                                 {{ac.description}} 
                                 <span class="pull-right">
-                                    <button type="button" class="btn-link" ng-click="ar.selectActivityResource(ac)" ng-disabled="ar.selectedActivityResource.entityAspect.hasValidationErrors" 
-                                            data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please fix current errors first" bs-tooltip bs-enabled="ar.selectedActivityResource?ar.selectedActivityResource.entityAspect.hasValidationErrors:false">
-                                        <i class="fa fa-edit"></i>
-                                    </button> |
+                                    <span class="disabeWorkaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please fix current errors first" bs-tooltip bs-enabled="ar.selectedActivityResource?ar.selectedActivityResource.entityAspect.hasValidationErrors:false">
+                                        <button type="button" class="btn-link" ng-click="ar.selectActivityResource(ac)" ng-disabled="ar.selectedActivityResource.entityAspect.hasValidationErrors" >
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </span> |
                                     <button type="button" class="btn-link" ng-click="ar.deleteResource(ac)"><i class="fa fa-trash-o"></i></button>
                                 </span>
                             </li>

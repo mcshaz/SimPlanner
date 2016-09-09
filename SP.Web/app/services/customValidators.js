@@ -66,7 +66,7 @@
                 names[names.length - 1].length >= context.minNameLength);
         };
     };
-
+    //http://stackoverflow.com/questions/16733251/breezejs-overriding-displayname
     function createRequireReferenceValidator() {
         var name = 'requireReferenceEntity';
         // isRequired = true so zValidate directive displays required indicator
