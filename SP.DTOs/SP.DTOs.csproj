@@ -122,6 +122,7 @@
     <Compile Include="Dto\CourseSlotManequinDto.cs" />
     <Compile Include="Dto\CourseTypeScenarioRoleDto.cs" />
     <Compile Include="Dto\FacultyScenarioRoleDto.cs" />
+    <Compile Include="Dto\HotDrinkDto.cs" />
     <Compile Include="Dto\Metadata\RoleDtoMetadata.cs" />
     <Compile Include="Dto\Metadata\UserRoleDtoMetadata.cs" />
     <Compile Include="Dto\Metadata\ParticipantDtoMetadata.cs" />

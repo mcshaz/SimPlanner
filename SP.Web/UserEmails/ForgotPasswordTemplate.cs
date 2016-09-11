@@ -30,16 +30,17 @@ namespace SP.Web.UserEmails
         {
             this.Write("\r\n<p class=\"text-center\">Click the link below to reset your password.</p>\r\n<table" +
                     " class=\"button large expand\">\r\n    <tr>\r\n        <td>\r\n        <table>\r\n        " +
-                    "    <tr>\r\n            <td>\r\n                <center data-parsed=\"\"><a href=\"");
+                    "    <tr>\r\n            <td>\r\n                <center data-parsed=\"\">\r\n\t\t\t\t\t<a hre" +
+                    "f=\"");
             
-            #line 15 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\ForgotPasswordTemplate.tt"
+            #line 16 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\ForgotPasswordTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(AsQueryString()));
             
             #line default
             #line hidden
-            this.Write("\" align=\"center\" class=\"float-center\">Reset Password</a></center>\r\n            </" +
-                    "td>\r\n            </tr>\r\n        </table>\r\n        </td>\r\n        <td class=\"expa" +
-                    "nder\"></td>\r\n    </tr>\r\n</table>");
+            this.Write("\" align=\"center\" class=\"float-center\">Reset Password</a>\r\n\t\t\t\t</center>\r\n        " +
+                    "    </td>\r\n            </tr>\r\n        </table>\r\n        </td>\r\n        <td class" +
+                    "=\"expander\"></td>\r\n    </tr>\r\n</table>");
             return this.GenerationEnvironment.ToString();
         }
     }

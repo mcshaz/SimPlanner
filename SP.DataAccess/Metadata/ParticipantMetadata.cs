@@ -19,5 +19,7 @@ namespace SP.Metadata
         [StringLength(256)]
         [PersonFullName]
         public string FullName { get; set; }
+        [StringLength(256)]
+        public string DietNotes { get; set; }
     }
 }

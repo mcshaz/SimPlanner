@@ -94,6 +94,8 @@
     <Compile Include="Data\Authentication\AspNetUserRole.cs" />
     <Compile Include="Data\CourseSlotManequin.cs" />
     <Compile Include="Data\CourseType.cs" />
+    <Compile Include="Data\Enum\SharingLevel.cs" />
+    <Compile Include="Data\HotDrink.cs" />
     <Compile Include="Data\Interfaces\ICourseDay.cs" />
     <Compile Include="Data\Interfaces\ITimeTracking.cs" />
     <Compile Include="Data\ProfessionalRoleInstitution.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="Metadata\CourseSlotManequinMetadata.cs" />
     <Compile Include="Metadata\CourseDayMetadata.cs" />
     <Compile Include="Metadata\CourseTypeScenarioRoleMetadata.cs" />
+    <Compile Include="Metadata\HotDrinkMetadata.cs" />
     <Compile Include="Metadata\ProfessionalRoleInstitutionMetadata.cs" />
     <Compile Include="Metadata\CultureMetadata.cs" />
     <Compile Include="Metadata\CourseActivityMetadata.cs" />
@@ -211,7 +214,16 @@
     <Compile Include="Migrations\201608292228524_FormatObsoleteField.Designer.cs">
       <DependentUpon>201608292228524_FormatObsoleteField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609110940083_MealDrink.cs" />
+    <Compile Include="Migrations\201609110940083_MealDrink.Designer.cs">
+      <DependentUpon>201609110940083_MealDrink.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609112039029_ScenarioAccess.cs" />
+    <Compile Include="Migrations\201609112039029_ScenarioAccess.Designer.cs">
+      <DependentUpon>201609112039029_ScenarioAccess.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\DropConstraintHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SanitizeStringProperties.cs" />
   </ItemGroup>
@@ -261,6 +273,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608292228524_FormatObsoleteField.resx">
       <DependentUpon>201608292228524_FormatObsoleteField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609110940083_MealDrink.resx">
+      <DependentUpon>201609110940083_MealDrink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609112039029_ScenarioAccess.resx">
+      <DependentUpon>201609112039029_ScenarioAccess.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -39,9 +39,15 @@ namespace SP.DataAccess
 
         public Guid DefaultProfessionalRoleId { get; set; }
 
+        public Guid? DrinkPreferenceId { get; set; }
+
+        public string DietNotes { get; set; }
+
         public virtual Department Department { get; set; }
 
         public virtual ProfessionalRole ProfessionalRole { get; set; }
+
+        public virtual HotDrink DrinkPreference { get; set; }
 
 		ICollection<CourseParticipant> _courseParticipants; 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

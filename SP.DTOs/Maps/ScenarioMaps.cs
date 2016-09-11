@@ -1,5 +1,6 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
     internal class ScenarioMaps: DomainDtoMap<Scenario, ScenarioDto>
     {
@@ -13,6 +14,7 @@ using SP.DataAccess;
                 EmersionCategory = m.EmersionCategory,
                 TemplateFilename = m.TemplateFilename,
                 CourseTypeId = m.CourseTypeId,
+                Access = m.Access
                 //Manequin = m.Manequin,
                 //CourseType = m.CourseType,
                 //Department = m.Department,
@@ -30,6 +32,7 @@ using SP.DataAccess;
                 EmersionCategory = m.EmersionCategory,
                 TemplateFilename = m.TemplateFilename,
                 CourseTypeId = m.CourseTypeId,
+                Access = m.Access
                 //Manequin = m.Manequin,
                 //CourseType = m.CourseType,
                 //Department = m.Department,

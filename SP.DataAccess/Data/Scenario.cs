@@ -22,6 +22,8 @@ namespace SP.DataAccess
 
         public Emersion? EmersionCategory { get; set; }
 
+        public SharingLevel Access { get; set; }
+
         public string TemplateFilename { get; set; }
 
         public Guid CourseTypeId { get; set; }

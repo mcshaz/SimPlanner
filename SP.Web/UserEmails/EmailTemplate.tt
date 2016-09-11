@@ -22,7 +22,7 @@
       <table>
         <tr>
 		  <th width="75">
-				<img src="<#= BaseUrl #>Content/images/icon.png" alt="sim-manager logo" height="50"/>
+				<img src="<#= BaseUrl #>images/sim-planner-icon-50x75.png" alt="sim-manager logo" height="50"/>
 		  </th>
           <th align="center">
 				<h1 class="text-center">Simulation Planner</h1>

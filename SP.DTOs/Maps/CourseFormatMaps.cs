@@ -10,7 +10,9 @@ namespace SP.Dto.Maps
                 DaysDuration = m.DaysDuration,
                 Description = m.Description,
                 CourseTypeId = m.CourseTypeId,
-                Obsolete = m.Obsolete                
+                Obsolete = m.Obsolete,
+                HotDrinkProvided = m.HotDrinkProvided,
+                MealProvided = m.MealProvided
             },
             m => new CourseFormatDto
             {

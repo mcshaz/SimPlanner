@@ -37,6 +37,7 @@ namespace SP.DataAccess
         public virtual DbSet<CourseTypeScenarioRole> CourseTypeScenarioRoles { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<FacultyScenarioRole> FacultyScenarioRoles { get; set; }
+        public virtual DbSet<HotDrink> HotDrinks { get; set; }
         public virtual DbSet<Institution> Institutions { get; set; }
         public virtual DbSet<Manequin> Manequins { get; set; }
         public virtual DbSet<ManequinManufacturer> ManequinManufacturers { get; set; }
@@ -285,6 +286,12 @@ namespace SP.DataAccess
                 .HasMany(e => e.CourseTypeScenarioRoles)
                 .WithRequired(e => e.FacultyScenarioRole)
                 .HasForeignKey(e => e.FacultyScenarioRoleId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<HotDrink>()
+                .HasMany(e => e.Participants)
+                .WithOptional(e => e.DrinkPreference)
+                .HasForeignKey(e => e.DrinkPreferenceId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Institution>()

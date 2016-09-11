@@ -17,6 +17,7 @@ namespace SP.Dto.Maps
                 ParticipantVideoFilename = m.ParticipantVideoFilename,
                 FeedbackSummaryFilename = m.FeedbackSummaryFilename,
                 CourseFormatId = m.CourseFormatId,
+                Cancelled = m.Cancelled,
                 RoomId = m.RoomId,
                 FacultyMeetingRoomId = m.FacultyMeetingRoomId,
                 FacultyMeetingDuration = m.FacultyMeetingDuration,

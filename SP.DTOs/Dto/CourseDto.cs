@@ -24,6 +24,7 @@ namespace SP.Dto
         public string FeedbackSummaryFilename { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastModified { get; set; }
+        public bool Cancelled { get; set; }
 
         public DepartmentDto Department { get; set; }
         public DepartmentDto OutreachingDepartment { get; set; }

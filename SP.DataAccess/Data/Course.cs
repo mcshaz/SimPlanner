@@ -79,6 +79,8 @@ namespace SP.DataAccess
 
         public string FeedbackSummaryFilename { get; set; }
 
+        public bool Cancelled { get; set; }
+
         public Guid CourseFormatId { get; set; }
 
         public virtual Department Department { get; set; }

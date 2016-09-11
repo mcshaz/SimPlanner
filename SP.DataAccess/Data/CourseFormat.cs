@@ -13,6 +13,8 @@ namespace SP.DataAccess
         public byte DaysDuration { get; set; }
         public Guid CourseTypeId { get; set; }
         public bool Obsolete { get; set; }
+        public bool HotDrinkProvided { get; set; }
+        public bool MealProvided { get; set; }
 
         public virtual CourseType CourseType { get; set; }
 

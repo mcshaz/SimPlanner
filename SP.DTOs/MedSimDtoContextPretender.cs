@@ -28,6 +28,7 @@ namespace SP.Dto
         public virtual DbSet<CourseTypeScenarioRoleDto> CourseTypeScenarioRoles { get; set; }
         public virtual DbSet<DepartmentDto> Departments { get; set; }
         public virtual DbSet<FacultyScenarioRoleDto> FacultyScenarioRoles { get; set; }
+        public virtual DbSet<HotDrinkDto> HotDrinks { get; set; }
         public virtual DbSet<InstitutionDto> Institutions { get; set; }
         public virtual DbSet<ManequinDto> Manequins { get; set; }
         public virtual DbSet<ManequinManufacturerDto> ManequinManufacturers { get; set; }
@@ -252,6 +253,12 @@ namespace SP.Dto
                 .HasMany(e => e.CourseTypeScenarioRoles)
                 .WithRequired(e => e.FacultyScenarioRole)
                 .HasForeignKey(e => e.FacultyScenarioRoleId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<HotDrinkDto>()
+                .HasMany(e => e.Participants)
+                .WithOptional(e => e.DrinkPreference)
+                .HasForeignKey(e => e.DrinkPreferenceId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<InstitutionDto>()

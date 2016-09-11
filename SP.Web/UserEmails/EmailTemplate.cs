@@ -53,9 +53,9 @@ namespace SP.Web.UserEmails
             
             #line default
             #line hidden
-            this.Write("Content/images/icon.png\" alt=\"sim-manager logo\" height=\"50\"/>\r\n\t\t  </th>\r\n       " +
-                    "   <th align=\"center\">\r\n\t\t\t\t<h1 class=\"text-center\">Simulation Planner</h1>\r\n\t\t " +
-                    " </th>\r\n\t\t  <th width=\"93\">\r\n\t\t\t\t<img src=\"");
+            this.Write("images/sim-planner-icon-50x75.png\" alt=\"sim-manager logo\" height=\"50\"/>\r\n\t\t  </th" +
+                    ">\r\n          <th align=\"center\">\r\n\t\t\t\t<h1 class=\"text-center\">Simulation Planner" +
+                    "</h1>\r\n\t\t  </th>\r\n\t\t  <th width=\"93\">\r\n\t\t\t\t<img src=\"");
             
             #line 31 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(BaseUrl));

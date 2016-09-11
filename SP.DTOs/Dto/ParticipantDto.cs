@@ -13,10 +13,13 @@ namespace SP.Dto
         public string AlternateEmail { get; set; }
         public string FullName { get; set; }
         public string UserName { get; set; }
+        public string DietNotes { get; set; }
         public Guid DefaultDepartmentId { get; set; }
         public Guid DefaultProfessionalRoleId { get; set; }
-        public DepartmentDto Department { get; set; }
-        public ProfessionalRoleDto ProfessionalRole { get; set; }
+        public Guid? DrinkPreferenceId { get; set; }
+        public virtual DepartmentDto Department { get; set; }
+        public virtual ProfessionalRoleDto ProfessionalRole { get; set; }
+        public virtual HotDrinkDto DrinkPreference { get; set; }
         public virtual ICollection<CourseParticipantDto> CourseParticipants { get; set; }
         public virtual ICollection<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresentations { get; set; }
