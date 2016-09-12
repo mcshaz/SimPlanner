@@ -49,3 +49,22 @@
         </select>
     </div>
 </div>
+
+<div class="form-group">
+    <label for="dietNeeds" class="control-label col-md-2">Dietary Needs</label>
+    <div class="col-md-10">
+        <textarea class="form-control" id="dietNotes" type="text" data-z-validate ng-model="vm.participant.dietNotes" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="hotDrink" class="control-label col-md-2">Hot Drink</label>
+    <div class="col-md-10">
+        <select id="hotDrink" class="form-control" data-z-validate data-ng-options="hd as hd.description for hd in vm.hotDrinks"
+                data-ng-model="vm.participant.drinkPreference">
+            <option value="">
+                Select Hot Drink...
+            </option>
+        </select>
+    </div>
+</div>

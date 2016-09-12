@@ -26,6 +26,7 @@
 
         vm.canAlter = canAlter;
         vm.changed = changed;
+        vm.hotDrinks = [];
         vm.institution = {};
         vm.institutions = [];
         vm.participant = {};
@@ -57,7 +58,11 @@
                     }),
                     datacontext.professionalRoles.all().then(function (data) {
                         vm.professionalRoles = data;
-                    })];
+                    }),
+                    datacontext.hotDrinks.findServerIfCacheEmpty().then(function (data) {
+                        vm.hotDrinks = data;
+                    })
+                ];
                 common.activateController(promises, controllerId)
                     .then(function () {
                         vm.institution = vm.participant.department.institution;
@@ -81,7 +86,7 @@
                 default:
                     throw new Error('Unknown role name:' + roleName);
             }
-            return false;
+            //return false;
         }
 
         function changed() {

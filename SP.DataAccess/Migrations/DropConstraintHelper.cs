@@ -25,7 +25,7 @@ namespace SP.DataAccess.Migrations
                     break;
             }
             return $"IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.{constraintSchema} WHERE CONSTRAINT_NAME = '{constraintName}') "
-                + $" ALTER TABLE {tableName} DROP CONSTRAINT {constraintName}";
+                + $" ALTER TABLE {tableName} DROP CONSTRAINT [{constraintName}]";
         }
     }
 }

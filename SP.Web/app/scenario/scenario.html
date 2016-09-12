@@ -35,15 +35,22 @@
                     </div>
 			
 					<div class="form-group">
-						<label for="departmentId" class="col-md-2 control-label">Department</label>
+						<label for="department" class="col-md-2 control-label">Department</label>
 						<div class="col-md-10">
-							<select id="departmentId" class="form-control" data-z-validate data-ng-model="vm.scenario.departmentId" data-ng-options="d.id as d.name group by d.institution.name  for d in vm.departments">
+							<select id="department" class="form-control" data-z-validate data-ng-model="vm.scenario.department" data-ng-options="d as d.name group by d.institution.name for d in vm.departments">
                                 <option disabled selected hidden value="">
                                     Select Department...
                                 </option>
                             </select>
 						</div>
 					</div>
+
+                    <div class="form-group">
+                        <label for="access" class="col-md-2 control-label">Access</label>
+                        <div class="col-md-10">
+                            <select id="access" class="form-control" data-z-validate data-ng-model="vm.scenario.access" data-ng-options="c.value as c.display for c in vm.sharingLevels"></select>
+                        </div>
+                    </div>
 
                     </fieldset>
                     <fieldset>

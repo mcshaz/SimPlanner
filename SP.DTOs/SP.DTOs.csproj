@@ -159,6 +159,7 @@
     <Compile Include="Maps\CourseActivityMaps.cs" />
     <Compile Include="Maps\CourseFormatMaps.cs" />
     <Compile Include="Maps\CourseDayMaps.cs" />
+    <Compile Include="Maps\HotDrinkMaps.cs" />
     <Compile Include="Maps\CourseSlotManequinMaps.cs" />
     <Compile Include="Maps\CourseTypeScenarioRoleMaps.cs" />
     <Compile Include="Maps\DomainDtoMap.cs" />

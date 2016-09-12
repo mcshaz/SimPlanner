@@ -127,6 +127,8 @@ namespace SP.Dto
 
         public IQueryable<DepartmentDto> Departments { get { return Context.Departments.ProjectToDto<Department,DepartmentDto>(); } }
 
+        public IQueryable<HotDrinkDto> HotDrinks { get { return Context.HotDrinks.ProjectToDto<HotDrink, HotDrinkDto>(); } }
+
         public IQueryable<CourseTypeDto> GetCourseTypes(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
             return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(includes, selects, sepChar);

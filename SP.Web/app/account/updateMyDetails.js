@@ -18,6 +18,7 @@
             $scope: $scope
         });
 
+        vm.hotDrinks = [];
         vm.institution = {};
         vm.institutions = [];
         vm.participant = {};
@@ -36,6 +37,9 @@
                     }),
                     datacontext.professionalRoles.all().then(function (data) {
                         vm.professionalRoles = data;
+                    }),
+                    datacontext.hotDrinks.findServerIfCacheEmpty().then(function (data) {
+                        vm.hotDrinks = data;
                     })];
                 common.activateController(promises, controllerId)
                     .then(function () {

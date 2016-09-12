@@ -55,7 +55,6 @@
                                         </span>
                                         <input class="form-control" ng-model="cd.start" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" ng-change="vm.setFinish(cd)" />
                                     </div>
-
                                 </div>
                             </div>
 
@@ -75,6 +74,16 @@
                                         Select Room...
                                     </option>
                                 </select>
+                                <span class="text-danger" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cancel" class="col-md-2 control-label">Status</label>
+                            <div class="col-md-10">
+                                <button type="button" class="btn btn-default" bs-checkbox id="cancel" data-z-validate data-ng-model="vm.course.cancel" >
+                                    Cancelled
+                                </button>
                                 <span class="text-danger" />
                             </div>
                         </div>

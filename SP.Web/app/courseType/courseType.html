@@ -96,12 +96,35 @@
 
                                         <div class="form-group">
                                             <label for="obsolete" class="col-md-3 control-label">
-                                                Obsolete/Inactive
+                                                Course Status
                                             </label>
                                             <div class="col-md-9">
-                                                <input id="obsolete" class="checkbox-inline" type="checkbox" z-validate ng-model="cf.obsolete" ng-change="vm.alterObsolete(cf)" />
+                                                <button type="button" class="btn btn-default" bs-checkbox id="obsolete" ng-model="cf.obsolete" ng-change="vm.alterObsolete(cf)" >
+                                                    Marked Inactive
+                                                </button>
                                             </div>
+                                        </div>
 
+                                        <div class="form-group">
+                                            <label for="hotDrink" class="col-md-3 control-label">
+                                                Hot Drink
+                                            </label>
+                                            <div class="col-md-9">
+                                                <button type="button" class="btn btn-default" bs-checkbox id="hotDrink" ng-model="cf.hotDrinkProvided" >
+                                                    Take Orders
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="diet" class="col-md-3 control-label">
+                                                Dietary Needs
+                                            </label>
+                                            <div class="col-md-9">
+                                                <button type="button" class="btn btn-default" bs-checkbox id="diet" ng-model="cf.mealProvided" >
+                                                    Note Requirements
+                                                </button>
+                                            </div>
                                         </div>
 
                                         <div class="form-group">

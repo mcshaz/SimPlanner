@@ -15,9 +15,9 @@
             controllerId: controllerId,
             watchedEntityNames: 'department',
             $scope: $scope
-        })
+        });
         var id = $routeParams.id;
-        var isNew = id == 'new';
+        var isNew = id === 'new';
         var enums = common.getEnumValues();
 
         vm.scenario = {};
@@ -25,6 +25,7 @@
         vm.courseTypes = [];
         vm.complexities = enums.difficulty;
         vm.emersionCategories = enums.emersion;
+        vm.sharingLevels = enums.sharingLevel.map(function (el) { return { value:el, display: common.toSeparateWords(el) }; });
 
         activate();
 

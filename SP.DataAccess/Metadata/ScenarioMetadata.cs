@@ -1,9 +1,11 @@
+using SP.DataAccess.Enums;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SP.Metadata
-{    
+{
     public class ScenarioMetadata
     {
         [Key]
@@ -16,5 +18,7 @@ namespace SP.Metadata
         public string FullDescription { get; set; }
         [StringLength(256)]
         public string TemplateFilename { get; set; }
+        [DefaultValue((int)SharingLevel.DepartmentOnly)]
+        public SharingLevel Access { get; set; }
     }
 }

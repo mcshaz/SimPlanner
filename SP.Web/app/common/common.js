@@ -60,7 +60,7 @@
             sortOnChildPropertyName: sortOnChildPropertyName,
             
             textContains: textContains,
-            toSeperateWords: toSeperateWords,
+            toSeparateWords: toSeparateWords,
             alphaNumericEqual: alphaNumericEqual
         };
 
@@ -174,8 +174,8 @@
             return text && -1 !== text.toLowerCase().indexOf(searchText.toLowerCase());
         }
 
-        function toSeperateWords(text) {
-            return text.replace(/([A-Z])/g,"  $1").trimLeft();
+        function toSeparateWords(text) {
+            return text.replace(/[a-z][A-Z]/g, function (match) { return match[0] + ' ' + match[1]; });
         }
 
         function sortOnPropertyName(propName) {

@@ -155,12 +155,12 @@
             var roles=[];
             var skip = ['all', 'siteAdmin'];
             var _access = /^access/i;
-            var _seperate = /(\B[A-Z])/g;
+            var _Separate = /(\B[A-Z])/g;
             
             for (var key in USER_ROLES){
                 if (key && skip.indexOf(key) === -1) {
                     roles.push({
-                        label: key.replace(_access, '').replace(_seperate, ' $1'),
+                        label: key.replace(_access, '').replace(_Separate, ' $1'),
                         value: USER_ROLES[key]
                     });
                 }

@@ -33,6 +33,8 @@ namespace SP.Dto.Maps
                 FullName = m.FullName,
                 DefaultDepartmentId = m.DefaultDepartmentId,
                 DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
+                DrinkPreferenceId = m.DrinkPreferenceId,
+                DietNotes = m.DietNotes,
                 UserName = m.UserName
                 //CourseSlotPresentations = null,
                 //Department = null,

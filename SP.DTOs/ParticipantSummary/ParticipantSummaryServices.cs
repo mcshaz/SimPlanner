@@ -12,8 +12,9 @@ namespace SP.DTOs.ParticipantSummary
             var returnVar = new ParticipantSummary();
             if (!after.HasValue) { after = SqlDateTime.MinValue.Value; }
             returnVar.CourseSummary = (from cp in context.CourseParticipants
-                                       where cp.ParticipantId == userId && cp.Course.StartUtc >= after
-                                       group cp by cp.Course.CourseFormat into cf
+                                       let course = cp.Course
+                                       where cp.ParticipantId == userId && !course.Cancelled && course.StartUtc >= after
+                                       group cp by course.CourseFormat into cf
                                        select new ParticipantCourseSummary
                                        {
                                            CourseName = cf.Key.CourseType.Abbreviation + " " + cf.Key.Description,
@@ -22,7 +23,8 @@ namespace SP.DTOs.ParticipantSummary
                                        }).ToList();
 
             returnVar.PresentationSummary = (from csp in context.CourseSlotPresenters
-                                             where csp.ParticipantId == userId && csp.Course.StartUtc >= after
+                                             let course = csp.Course
+                                             where csp.ParticipantId == userId && !course.Cancelled && course.StartUtc >= after
                                              group csp by csp.CourseSlot.Activity into a
                                              select new FacultyPresentationRoleSummary
                                              {
@@ -31,7 +33,8 @@ namespace SP.DTOs.ParticipantSummary
                                              }).ToList();
 
             returnVar.SimRoleSummary = ( from csfr in context.CourseScenarioFacultyRoles
-                                         where csfr.ParticipantId == userId && csfr.Course.StartUtc >= after
+                                         let course = csfr.Course
+                                         where csfr.ParticipantId == userId && !course.Cancelled && course.StartUtc >= after
                                          group csfr by csfr.FacultyScenarioRole into fsr
                                          select new FacultySimRoleSummary
                                          {

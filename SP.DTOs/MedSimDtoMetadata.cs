@@ -77,7 +77,7 @@ namespace SP.Dto
                     if (propInfo == null)
                     {
                         Debug.WriteLine("No metadata property attributes available for " + breezePropertyInfo["dataType"] + " "+ shortEntityName +'.' + propName);
-                        breezePropertyInfo["displayName"] = propName.ToSeperateWords();
+                        breezePropertyInfo["displayName"] = propName.ToSeparateWords();
                         continue;
                     }
 
@@ -94,7 +94,10 @@ namespace SP.Dto
                         if (t == typeof(DefaultValueAttribute))
                         {
                             var def = (DefaultValueAttribute)attr;
-                            breezePropertyInfo["defaultValue"] = JToken.FromObject(def.Value);
+                            //to do handle nullable enum default values
+                            breezePropertyInfo["defaultValue"] = JToken.FromObject(propInfo.PropertyType.IsEnum
+                                ? Enum.ToObject(propInfo.PropertyType, def.Value).ToString()
+                                : def.Value);
                         }
                         else if (t == typeof(DisplayNameAttribute))
                         {
@@ -136,7 +139,7 @@ namespace SP.Dto
                         validators.Remove(propInfo.PropertyType.Name.PascalToCamelCase());
                     }
                     breezePropertyInfo["validators"] = JToken.FromObject(validators.Values);
-                    breezePropertyInfo["displayName"] = displayName ?? propName.ToSeperateWords();
+                    breezePropertyInfo["displayName"] = displayName ?? propName.ToSeparateWords();
                 }
                 foreach (var breezeNavPropertyInfo in breezeEntityType["navigationProperties"])
                 {
@@ -144,7 +147,7 @@ namespace SP.Dto
                     //todo search for DisplayNameAttribute
                     if (navPropName.Length >= 2)
                     {
-                        breezeNavPropertyInfo["displayName"] = char.ToUpper(navPropName[0]) + navPropName.Substring(1).ToSeperateWords();
+                        breezeNavPropertyInfo["displayName"] = char.ToUpper(navPropName[0]) + navPropName.Substring(1).ToSeparateWords();
                     }
                 }
             }
@@ -259,9 +262,9 @@ namespace SP.Dto
         public static string GetEnums()
         {
             var returnVar = new Dictionary<string, IEnumerable<string>>();
-            foreach (var t in new[] { typeof(Emersion), typeof(Difficulty), typeof(ProfessionalCategory)}){
+            foreach (var t in new[] { typeof(Emersion), typeof(Difficulty), typeof(ProfessionalCategory), typeof(SharingLevel)}){
                 returnVar.Add(char.ToLower(t.Name[0]) + t.Name.Substring(1), Enum.GetNames(t));
-            }
+            } // displayName (Separate camel case words) handled client side
             return JsonConvert.SerializeObject(returnVar);
         }
         /*

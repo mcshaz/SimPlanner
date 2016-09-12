@@ -56,6 +56,10 @@ namespace SP.Web.Controllers
         [HttpGet]
 		public IQueryable<DepartmentDto> Departments(){ return Repo.Departments; }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IQueryable<HotDrinkDto> HotDrinks() { return Repo.HotDrinks; }
+
         [HttpGet, EnableMappedBreezeQuery(MaxExpansionDepth = 4)]
         public IQueryable<InstitutionDto> Institutions(ODataQueryOptions options)
         {
