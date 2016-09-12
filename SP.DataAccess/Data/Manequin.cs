@@ -12,7 +12,7 @@ namespace SP.DataAccess
 
         public string Description { get; set; }
 
-        public Guid? DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
         public Guid ModelId { get; set; }
 

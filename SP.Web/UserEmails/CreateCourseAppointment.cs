@@ -22,7 +22,7 @@ namespace SP.Web.UserEmails
         static public AppointmentStream CreateiCalendar(Course course, IIdentity currentUser)
         {
             var currentCal = new Calendar {
-                Method = CalendarMethods.Publish,
+                Method = course.Cancelled ? CalendarMethods.Cancel: CalendarMethods.Publish,
             };
             var tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
             var timezone = VTimeZone.FromSystemTimeZone(tzi);
@@ -39,7 +39,7 @@ namespace SP.Web.UserEmails
                 LastModified = new CalDateTime(course.LastModifiedUtc),
                 Sequence = course.EmailSequence,
                 Transparency = TransparencyType.Opaque,
-                Status = EventStatus.Confirmed,
+                Status = course.Cancelled? EventStatus.Cancelled:EventStatus.Confirmed,
                 Uid = "course" + course.Id.ToString(),
                 Priority = 5,
                 Location = course.Room.ShortDescription,
@@ -113,7 +113,8 @@ namespace SP.Web.UserEmails
         public static void AddFacultyMeeting(Calendar cal, Course course)
         {
             if (!course.FacultyMeetingUtc.HasValue) { return; }
-            cal.Method = CalendarMethods.Publish; //if more than 1 event, this is required
+            //CalendarMethods.Request is only valid for single event per calendar
+            cal.Method = course.Cancelled ? CalendarMethods.Cancel : CalendarMethods.Publish; 
 
             var tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
             var courseEvent = cal.Events.First();
@@ -127,7 +128,7 @@ namespace SP.Web.UserEmails
                 Uid = "planning" + course.Id.ToString(),
                 Priority = 5,
                 Transparency = TransparencyType.Opaque,
-                Status = EventStatus.Confirmed,
+                Status = course.Cancelled ? EventStatus.Cancelled : EventStatus.Confirmed,
                 Description = "planning meeting for " + course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + start.ToString("g"),
                 Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting - " + start.ToString("d"),
                 Organizer = courseEvent.Organizer,

@@ -1,6 +1,7 @@
 ﻿<section id="course-view" class="mainbar" data-ng-controller="scenario as vm">
     <section class="matter">
         <div class="container col-md-12">
+            <h2>Scenario</h2>
             <form class="form-horizontal" ng-submit="vm.save($event)" id="courseForm">
                 <div class="validationSummary"></div>
                 <fieldset>
@@ -26,13 +27,6 @@
 						</div>
 
 					</div>
-
-                    <div class="form-group">
-                        <label for="description" class="col-md-2 control-label">Full Description</label>
-                        <div class="col-md-10">
-                            <textarea id="description" class="form-control" ng-model="vm.scenario.fullDescription" z-validate />
-                        </div>
-                    </div>
 			
 					<div class="form-group">
 						<label for="department" class="col-md-2 control-label">Department</label>
@@ -55,6 +49,13 @@
                     </fieldset>
                     <fieldset>
                         <legend><small>Optional</small></legend>
+
+                        <div class="form-group">
+                            <label for="description" class="col-md-2 control-label">Full Description</label>
+                            <div class="col-md-10">
+                                <textarea id="description" class="form-control" ng-model="vm.scenario.fullDescription" z-validate />
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="emersionCategory" class="col-md-2 control-label">Emersion Category</label>

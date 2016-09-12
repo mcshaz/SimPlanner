@@ -223,7 +223,7 @@
       <DependentUpon>201609112039029_ScenarioAccess.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Migrations\DropConstraintHelper.cs" />
+    <Compile Include="Migrations\SqlHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SanitizeStringProperties.cs" />
   </ItemGroup>
