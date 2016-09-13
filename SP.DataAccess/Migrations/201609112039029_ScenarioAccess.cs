@@ -1,31 +1,33 @@
 namespace SP.DataAccess.Migrations
 {
-    using Enums;
+    using System;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
     public partial class ScenarioAccess : DbMigration
     {
         public override void Up()
         {
-            AddColumn("dbo.Scenarios", "Access", c => c.Int(nullable: false, defaultValue: (int)SharingLevel.DepartmentOnly));
-            Sql(SqlHelpers.DropConstraintIfExists("ProfessionalRoles", "Unique_RoleDescription"), true);
-            Sql(SqlHelpers.CreateUniqueConstraint<ProfessionalRole>("ProfessionalRoles", e => e.Category, e=>e.Description),true);
-            Sql(SqlHelpers.CreateUniqueConstraint<HotDrink>("HotDrinks", e=>e.Description), true);
-
-            Sql(SqlHelpers.CreateUniqueConstraint<Institution>("Institutions", e => e.LocaleCode, e => e.Name), true);
-            Sql(SqlHelpers.CreateUniqueConstraint<Department>("Departments", e => e.InstitutionId, e => e.Name), true);
-            Sql(SqlHelpers.CreateUniqueConstraint<Department>("Departments", e => e.InstitutionId, e => e.Abbreviation), true);
-            Sql(SqlHelpers.CreateUniqueConstraint<Scenario>("Scenarios", e => e.DepartmentId, e => e.BriefDescription), true);
-            Sql(SqlHelpers.CreateUniqueConstraint<Manequin>("Manequins", e => e.DepartmentId, e => e.Description), true);
-
-            Sql(SqlHelpers.CreateUniqueConstraint<ScenarioResource>("ScenarioResources", e => e.ScenarioId, e => e.ResourceFilename), true);
+            AddColumn("dbo.Scenarios", "Access", c => c.Int(nullable: false));
+            AlterColumn("dbo.ActivityTeachingResources", "Description", c => c.String(nullable: false, maxLength: 128));
+            AlterColumn("dbo.ActivityTeachingResources", "ResourceFilename", c => c.String(maxLength: 256));
+            AlterColumn("dbo.HotDrinks", "Description", c => c.String(nullable: false, maxLength: 64));
+            AlterColumn("dbo.ScenarioResources", "Description", c => c.String(nullable: false, maxLength: 128));
+            AlterColumn("dbo.ScenarioResources", "ResourceFilename", c => c.String(maxLength: 256));
+            foreach (var s in AddConstraints.GetConstraints().Concat(AddConstraints.GetCousinConstraint()))
+            {
+                Sql(s, true);
+            }
         }
         
         public override void Down()
         {
+            AlterColumn("dbo.ScenarioResources", "ResourceFilename", c => c.String());
+            AlterColumn("dbo.ScenarioResources", "Description", c => c.String());
+            AlterColumn("dbo.HotDrinks", "Description", c => c.String(maxLength: 64));
+            AlterColumn("dbo.ActivityTeachingResources", "ResourceFilename", c => c.String());
+            AlterColumn("dbo.ActivityTeachingResources", "Description", c => c.String());
             DropColumn("dbo.Scenarios", "Access");
-            Sql(SqlHelpers.DropConstraintIfExists("ProfessionalRoles", "Unique_RoleDescription"), true);
-            Sql(SqlHelpers.DropConstraintIfExists("HotDrinks", "Unique_HotDrinkDescription"), true);
         }
     }
 }

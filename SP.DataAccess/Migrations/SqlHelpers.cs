@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SP.Metadata;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
@@ -30,7 +31,7 @@ namespace SP.DataAccess.Migrations
                     break;
             }
             return $"IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.{constraintSchema} WHERE CONSTRAINT_NAME = '{constraintName}') "
-                + $" ALTER TABLE {tableName} DROP CONSTRAINT [{constraintName}]";
+                + $" ALTER TABLE {tableName} DROP CONSTRAINT [{constraintName}];";
         }
 
         public static string CreateUniqueConstraint<T>(string tableName, params Expression<Func<T,object>>[] expressions)
@@ -59,13 +60,23 @@ namespace SP.DataAccess.Migrations
                     else
                     {
                         var metaAttr = typeof(T).GetCustomAttributes(typeof(MetadataTypeAttribute), true).Cast<MetadataTypeAttribute>().FirstOrDefault();
-                        if (metaAttr!=null && Attribute.IsDefined(metaAttr.MetadataClassType.GetProperty(pi.Name), typeof(RequiredAttribute)))
+                        if (metaAttr==null)
                         {
-                            notNullPropNames.Add(pi.Name);
+                            nullPropNames.Add(pi.Name);
                         }
                         else
                         {
-                            nullPropNames.Add(pi.Name);
+                            var metaPi = metaAttr.MetadataClassType.GetProperty(pi.Name);
+                            if (metaPi != null
+                                && (Attribute.IsDefined(metaPi, typeof(RequiredAttribute))
+                                    || Attribute.IsDefined(metaPi, typeof(FixedLengthAttribute))))
+                            {
+                                notNullPropNames.Add(pi.Name);
+                            }
+                            else
+                            {
+                                nullPropNames.Add(pi.Name);
+                            }
                         }
                     }
                 }

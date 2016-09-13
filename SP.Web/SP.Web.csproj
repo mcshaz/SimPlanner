@@ -811,7 +811,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-618507b127.min.js" />
+    <Content Include="dist\js\main-be83268dba.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -861,7 +861,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BreezeWebApiConfig.cs" />
-    <Compile Include="App_Start\CreateAdmin.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\MetadataScriptWriter.cs" />

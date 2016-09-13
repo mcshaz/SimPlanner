@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SP.DataAccess
 {
+    [MetadataType(typeof(ResourceMetadata))]
     public abstract class Resource
     {
         public Guid Id { get; set; }

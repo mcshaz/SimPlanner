@@ -126,7 +126,6 @@
     <Compile Include="Data\CourseSlot.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
-    <Compile Include="Metadata\ActivityChoiceMetadata.cs" />
     <Compile Include="Metadata\ChosenTeachingResourceMetadata.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
     <Compile Include="Metadata\CourseSlotManequinMetadata.cs" />
@@ -222,6 +221,7 @@
     <Compile Include="Migrations\201609112039029_ScenarioAccess.Designer.cs">
       <DependentUpon>201609112039029_ScenarioAccess.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\AddConstraints.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SqlHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
