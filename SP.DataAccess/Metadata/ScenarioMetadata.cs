@@ -16,8 +16,6 @@ namespace SP.Metadata
         public string BriefDescription { get; set; }
         [StringLength(256)]
         public string FullDescription { get; set; }
-        [StringLength(256)]
-        public string TemplateFilename { get; set; }
         [DefaultValue((int)SharingLevel.DepartmentOnly)]
         public SharingLevel Access { get; set; }
     }

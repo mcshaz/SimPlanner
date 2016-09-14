@@ -87,7 +87,7 @@ namespace SP.DataAccess.Migrations
 
                 var didactic = new CourseActivity { Id = Guid.NewGuid(), Name = "Didactic Lecture", CourseType = crm };
                 context.CourseActivities.Add(didactic);
-                var slides = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "PICU 2016 version", ResourceFilename = @"C:\whatever\Slides.ppt", CourseActivity = didactic };
+                var slides = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "PICU 2016 version", FileName = @"C:\whatever\Slides.ppt", CourseActivity = didactic };
                 context.ActivityTeachingResources.Add(slides);
                 var didacticSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = didactic, Order = 0, CourseFormat = crm2, IsActive = true, SimultaneousStreams = 1 };
                 didactic.ActivityChoices.Add(slides);

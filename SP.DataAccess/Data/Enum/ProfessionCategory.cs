@@ -2,7 +2,7 @@
 {
     public enum ProfessionalCategory
     {
-        Nursing = 1, Medical = 2, Tech = 10,  Perfusionist = 20, Paramedic =30 ,Other = 40
+        Nursing = 1, Medical = 2, Tech = 10,  Perfusionist = 20, Paramedic = 30 , Actor = 40, Other = 100
     }
 
 }

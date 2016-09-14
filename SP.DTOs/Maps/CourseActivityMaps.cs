@@ -1,4 +1,6 @@
-using SP.DataAccess;namespace SP.Dto.Maps
+using SP.DataAccess;
+
+namespace SP.Dto.Maps
 {
     internal class CourseActivityMaps: DomainDtoMap<CourseActivity, CourseActivityDto>
     {

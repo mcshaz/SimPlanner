@@ -11,21 +11,16 @@ namespace SP.DataAccess
     public class Participant : IdentityUser<Guid,AspNetUserLogin,AspNetUserRole,AspNetUserClaim>
     {
         #region overrides 
-
+        //specifying overide allows required attribute from metadata
         public override string Email
         {
             get
             {
                 return base.Email;
             }
-
             set
             {
                 base.Email = value;
-                if (string.IsNullOrEmpty(base.UserName))
-                {
-                    base.UserName = value;
-                }
             }
         }
         #endregion //overrides

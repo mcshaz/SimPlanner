@@ -4,9 +4,11 @@ using LinqKit;
 using SP.DataAccess;
 using SP.DataAccess.Data.Interfaces;
 using SP.Dto;
+using SP.DTOs.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Principal;
 
@@ -49,6 +51,17 @@ namespace SP.DTOs.ProcessBreezeRequests
             {
                 throw new EntityErrorsException(errors);
             }
+
+            if (saveMap.TryGetValue(typeof(ScenarioResourceDto), out currentInfos))
+            {
+                SaveScenarioFileToFileSystem(currentInfos);
+            }
+
+            if (saveMap.TryGetValue(typeof(ActivityTeachingResourceDto), out currentInfos))
+            {
+                SaveActivityFileToFileSystem(currentInfos);
+            }
+
             return saveMap;
         }
 
@@ -58,6 +71,16 @@ namespace SP.DTOs.ProcessBreezeRequests
             if (saveMap.TryGetValue(typeof(CourseSlot), out ei))
             {
                 UpdateICourseDays(ei.Select(e=> (CourseSlot)e.Entity));
+            }
+
+            if (saveMap.TryGetValue(typeof(ScenarioResource), out ei))
+            {
+                DeleteScenarioFromFileSystem(ei);
+            }
+
+            if (saveMap.TryGetValue(typeof(ActivityTeachingResource), out ei))
+            {
+                DeleteActivityFromFileSystem(ei);
             }
         }
 
@@ -174,6 +197,60 @@ namespace SP.DTOs.ProcessBreezeRequests
                 }
             }
             return returnVar;
+        }
+
+        void SaveScenarioFileToFileSystem(IEnumerable<EntityInfo> scenarioResources)
+        {
+            foreach (var sr in (from ei in scenarioResources
+                                 let sr = (ScenarioResourceDto)ei.Entity
+                                 where ei.EntityState == EntityState.Added || ei.EntityState == EntityState.Modified
+                                    && sr.File != null
+                                 select sr))
+            {
+                sr.CreateFile((from s in Context.Scenarios
+                               where s.Id == sr.ScenarioId
+                               select s.CourseTypeId).First());
+            }
+        }
+
+        void DeleteScenarioFromFileSystem(IEnumerable<EntityInfo> scenarioResources)
+        {
+            foreach (var sr in (from ei in scenarioResources
+                                let sr = (ScenarioResource)ei.Entity
+                                where ei.EntityState == EntityState.Deleted || sr.FileName == null
+                                select sr))
+            {
+                sr.DeleteFile((from s in Context.Scenarios
+                               where s.Id == sr.ScenarioId
+                               select s.CourseTypeId).First());
+            }
+        }
+
+        void SaveActivityFileToFileSystem(IEnumerable<EntityInfo> activityResources)
+        {
+            foreach (var atr in (from ei in activityResources
+                                let atr = (ActivityTeachingResourceDto)ei.Entity
+                                where ei.EntityState == EntityState.Added || ei.EntityState == EntityState.Modified
+                                   && atr.File != null
+                                select atr))
+            {
+                atr.CreateFile((from ca in Context.CourseActivities
+                               where ca.Id == atr.CourseActivityId
+                               select ca.CourseTypeId).First());
+            }
+        }
+
+        void DeleteActivityFromFileSystem(IEnumerable<EntityInfo> activityResources)
+        {
+            foreach (var atr in (from ei in activityResources
+                                let atr = (ActivityTeachingResource)ei.Entity
+                                 where ei.EntityState == EntityState.Deleted || atr.FileName == null
+                                 select atr))
+            {
+                atr.DeleteFile((from ca in Context.CourseActivities
+                               where ca.Id == atr.CourseActivityId
+                               select ca.CourseTypeId).First());
+            }
         }
 
         //if corseslots altered, need to update upcoming courses

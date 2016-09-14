@@ -76,10 +76,11 @@ namespace SP.Web.Controllers
 		public IQueryable<ProfessionalRoleDto> ProfessionalRoles(){ return Repo.ProfessionalRoles; }
         [HttpGet]
         public IQueryable<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions() { return Repo.ProfessionalRoleInstitutions; }
-        [HttpGet]
-		public IQueryable<ScenarioDto> Scenarios()
+        [HttpGet, EnableMappedBreezeQuery]
+        public IQueryable<ScenarioDto> Scenarios(ODataQueryOptions options)
         {
-            return Repo.Scenarios;
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetScenarios(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
 
         [HttpGet, EnableMappedBreezeQuery]

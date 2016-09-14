@@ -134,6 +134,11 @@ namespace SP.Dto
             return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(includes, selects, sepChar);
         }
 
+        public IQueryable<ScenarioDto> GetScenarios(string[] includes, string[] selects, char sepChar)
+        {
+            return Context.Scenarios.ProjectToDto<Scenario, ScenarioDto>(includes, selects, sepChar);
+        }
+
         public IQueryable<FacultyScenarioRoleDto> SenarioRoles { get { return Context.FacultyScenarioRoles.ProjectToDto<FacultyScenarioRole,FacultyScenarioRoleDto>(); } }
 
         public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.ProjectToDto<Institution,InstitutionDto>(); } }
@@ -148,8 +153,6 @@ namespace SP.Dto
         }
 
         public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.ProjectToDto<ProfessionalRole,ProfessionalRoleDto>(); } }
-
-        public IQueryable<ScenarioDto> Scenarios { get { return Context.Scenarios.ProjectToDto<Scenario,ScenarioDto>(); } }
 
         public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.ProjectToDto<ScenarioResource,ScenarioResourceDto>(); } }
 

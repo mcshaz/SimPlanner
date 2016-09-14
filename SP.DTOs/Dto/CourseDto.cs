@@ -33,7 +33,6 @@ namespace SP.Dto
         public RoomDto FacultyMeetingRoom { get; set; }
 
         public virtual ICollection<CourseParticipantDto> CourseParticipants { get; set; }
-        public virtual ICollection<ScenarioDto> Scenarios { get; set; }
         public virtual ICollection<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
         public virtual ICollection<CourseSlotScenarioDto> CourseSlotScenarios { get; set; }
         public virtual ICollection<CourseSlotManequinDto> CourseSlotManequins { get; set; }

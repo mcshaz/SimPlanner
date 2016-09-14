@@ -46,53 +46,80 @@
                         </div>
                     </div>
 
-                    </fieldset>
-                    <fieldset>
-                        <legend><small>Optional</small></legend>
+                </fieldset>
+                <fieldset>
+                    <legend><small>Optional</small></legend>
 
-                        <div class="form-group">
-                            <label for="description" class="col-md-2 control-label">Full Description</label>
-                            <div class="col-md-10">
-                                <textarea id="description" class="form-control" ng-model="vm.scenario.fullDescription" z-validate />
-                            </div>
+                    <div class="form-group">
+                        <label for="description" class="col-md-2 control-label">Full Description</label>
+                        <div class="col-md-10">
+                            <textarea id="description" class="form-control" ng-model="vm.scenario.fullDescription" z-validate />
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="emersionCategory" class="col-md-2 control-label">Emersion Category</label>
-                            <div class="col-md-10">
-                                <select id="emersionCategory" class="form-control" data-z-validate data-ng-model="vm.scenario.emersionCategory" data-ng-options="e for e in vm.emersionCategories">
-                                    <option disabled selected hidden value="">
-                                        Select Emersion Category...
-                                    </option>
-                                </select>
-                            </div>
+                    <div class="form-group">
+                        <label for="emersionCategory" class="col-md-2 control-label">Emersion Category</label>
+                        <div class="col-md-10">
+                            <select id="emersionCategory" class="form-control" data-z-validate data-ng-model="vm.scenario.emersionCategory" data-ng-options="e for e in vm.emersionCategories">
+                                <option disabled selected hidden value="">
+                                    Select Emersion Category...
+                                </option>
+                            </select>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="complexity" class="col-md-2 control-label">Complexity</label>
-                            <div class="col-md-10">
-                                <select id="complexity" class="form-control" data-z-validate data-ng-model="vm.scenario.complexity" data-ng-options="c for c in vm.complexities">
-                                    <option disabled selected hidden value="">
-                                        Select Complexity...
-                                    </option>
-                                </select>
-                            </div>
+                    <div class="form-group">
+                        <label for="complexity" class="col-md-2 control-label">Complexity</label>
+                        <div class="col-md-10">
+                            <select id="complexity" class="form-control" data-z-validate data-ng-model="vm.scenario.complexity" data-ng-options="c for c in vm.complexities">
+                                <option disabled selected hidden value="">
+                                    Select Complexity...
+                                </option>
+                            </select>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="templateFilename" class="col-md-2 control-label">Template Filename</label>
-                            <div class="col-md-10">
-                                <input type="text" id="templateFilename" class="form-control" ng-model="vm.scenario.templateFilename" z-validate />
-                            </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-default" ng-disabled="vm.isDisabled()">Save</button>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <button type="submit" class="btn btn-default" ng-disabled="vm.isDisabled()">Save</button>
-                            </div>
-                        </div>
-                    </fieldset>
-</form>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>File</th>
+                                <th>Description</th>
+                                <th>Modified</th>
+                                <th>Size</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="sr in vm.scenario.scenarioResources">
+                                <td>
+                                    <div class="input-group">
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-primary">
+                                                Browse&hellip; 
+                                                <input type="file" ng-model="sr.file" app-filereader ng-file-size="sr.fileSize" ng-file-name="sr.fileName" ng-last-modified="sr.fileModified" style="display:none!important;" />
+                                            </span>
+                                        </label>
+                                        <input type="text" class="form-control" readonly ng-model="sr.fileName" z-validate>
+                                    </div>
+                                </td>
+                                <td><input class="form-control" type="text" ng-model="sr.description" z-validate/></td>
+                                <td>{{sr.fileModified | amDateFormat:'LLL'}}</td>
+                                <td>{{(sr.fileSize/1024).toFixed(1)}} kb</td>
+                                <td>
+                                    <button type="button" class="btn btn-link" ng-click="sr.entityAspect.setDeleted()"><i class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" ng-click="vm.addResource()" class="btn btn-link"><i class="fa fa-plus-square"></i>Add Resource</button>
+                </fieldset>
+            </form>
         </div>
     </section>
 </section>

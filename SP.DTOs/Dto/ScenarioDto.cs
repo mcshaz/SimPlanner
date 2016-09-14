@@ -16,7 +16,6 @@ namespace SP.Dto
         public Difficulty? Complexity { get; set; }
         public Emersion? EmersionCategory { get; set; }
         public SharingLevel Access { get; set; }
-        public string TemplateFilename { get; set; }
         public Guid CourseTypeId { get; set; }
 
         public virtual CourseTypeDto CourseType { get; set; }

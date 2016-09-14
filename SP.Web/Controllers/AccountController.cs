@@ -149,6 +149,14 @@ namespace SP.Web.Controllers
 
             if (participant != null)
             {
+                if (participant.SecurityStamp == null)
+                {
+                    var ir = await UserManager.UpdateSecurityStampAsync(participant.Id);
+                    if (!ir.Succeeded)
+                    {
+                        throw new FieldAccessException("Could not UpdateSecurityStampAsync - following errors:" + string.Join("\r\n",ir.Errors));
+                    }
+                }
                 var resetEmail = new ForgotPasswordTemplate
                 {
                     Token = await UserManager.GeneratePasswordResetTokenAsync(participant.Id),

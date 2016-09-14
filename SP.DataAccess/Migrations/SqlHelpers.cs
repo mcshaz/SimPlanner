@@ -95,7 +95,7 @@ namespace SP.DataAccess.Migrations
             string columns = '[' + string.Join("],[", propertyNames) + ']';
             if (nullPropertyNames.Any())
             {
-                string nullClause = string.Join(" AND ",nullPropertyNames.Select(p => p + " IS NOT NULL"));
+                string nullClause = string.Join(" AND ", nullPropertyNames.Select(p => $"[{p}] IS NOT NULL"));
                 return $"CREATE UNIQUE NONCLUSTERED INDEX {constraintName} ON dbo.[{tableName}]({columns}) WHERE { nullClause };";
             }
             return $"ALTER TABLE dbo.[{tableName}] ADD CONSTRAINT {constraintName} UNIQUE({columns});";

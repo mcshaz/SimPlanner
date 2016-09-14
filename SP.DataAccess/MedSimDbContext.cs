@@ -7,6 +7,7 @@ namespace SP.DataAccess
     using System;
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
+    using System.Data.Entity.Validation;
     using System.Linq;
     public partial class MedSimDbContext : IdentityDbContext<Participant, AspNetRole,
         Guid, AspNetUserLogin,AspNetUserRole, AspNetUserClaim>
@@ -436,7 +437,15 @@ namespace SP.DataAccess
         {
             SanitizeHtml.ForEntities(ChangeTracker);
             SetTimeTracking();
-            return base.SaveChanges();
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                var de = new DetailedEntityValidationException(e);
+                throw de;
+            }
         }
 
         private void SetTimeTracking()
@@ -455,5 +464,11 @@ namespace SP.DataAccess
                 tt.LastModifiedUtc = currentTime ?? (currentTime = DateTime.UtcNow).Value;
             }
         }
+    }
+    public class DetailedEntityValidationException : Exception
+    {
+        public DetailedEntityValidationException(DbEntityValidationException ve)
+            : base(ve.Message + ":\r\n\t-" + string.Join(new string('-',20) + "\r\n\t-", ve.EntityValidationErrors.Select(ev=>string.Join("\r\n\t-",ev.ValidationErrors.Select(e=>e.ErrorMessage)))))
+        {}
     }
 }

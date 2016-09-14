@@ -16,7 +16,7 @@ namespace SP.Dto.Maps
                 DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
                 DrinkPreferenceId = m.DrinkPreferenceId,
                 DietNotes = m.DietNotes,
-                UserName = m.UserName
+                UserName = m.UserName ?? m.Email
                 //Department = m.Department,
 
                 //ProfessionalRole = m.ProfessionalRole,

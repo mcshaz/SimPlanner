@@ -17,7 +17,7 @@ namespace SP.DataAccess.Migrations
                 SqlHelpers.CreateUniqueConstraint<Scenario>("Scenarios", e => e.DepartmentId, e => e.BriefDescription),
                 SqlHelpers.CreateUniqueConstraint<Manequin>("Manequins", e => e.DepartmentId, e => e.Description),
 
-                SqlHelpers.CreateUniqueConstraint<ScenarioResource>("ScenarioResources", e => e.ScenarioId, e => e.ResourceFilename)
+                SqlHelpers.CreateUniqueConstraint<ScenarioResource>("ScenarioResources", e => e.ScenarioId, e => e.FileName)
             };
         }
         internal static string[] GetCousinConstraint()

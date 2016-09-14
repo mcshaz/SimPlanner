@@ -1,4 +1,6 @@
-using SP.DataAccess;namespace SP.Dto.Maps
+using SP.DataAccess;
+
+namespace SP.Dto.Maps
 {
     internal class ActivityTeachingResourceMaps: DomainDtoMap<ActivityTeachingResource, ActivityTeachingResourceDto>
     { 
@@ -6,15 +8,19 @@ using SP.DataAccess;namespace SP.Dto.Maps
         m => new ActivityTeachingResource {
             Id = m.Id,
             Description = m.Description,
-            ResourceFilename = m.ResourceFilename,
-            CourseActivityId = m.CourseActivityId
+            FileName = m.FileName,
+            CourseActivityId = m.CourseActivityId,
+            FileModified = m.FileModified,
+            FileSize = m.FileSize
         },
         m => new ActivityTeachingResourceDto
         {
             Id = m.Id,
             Description = m.Description,
-            ResourceFilename = m.ResourceFilename,
+            FileName = m.FileName,
             CourseActivityId = m.CourseActivityId,
+            FileModified = m.FileModified,
+            FileSize = m.FileSize
         })
         { }
     }

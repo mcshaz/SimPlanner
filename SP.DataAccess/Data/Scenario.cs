@@ -24,8 +24,6 @@ namespace SP.DataAccess
 
         public SharingLevel Access { get; set; }
 
-        public string TemplateFilename { get; set; }
-
         public Guid CourseTypeId { get; set; }
         public Guid DepartmentId { get; set; }
 

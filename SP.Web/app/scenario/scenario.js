@@ -13,7 +13,7 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: 'department',
+            watchedEntityNames: ['scenario','scenario.scenarioResources'],
             $scope: $scope
         });
         var id = $routeParams.id;
@@ -21,6 +21,7 @@
         var enums = common.getEnumValues();
 
         vm.scenario = {};
+        vm.addResource = addResource;
         vm.departments = [];
         vm.courseTypes = [];
         vm.complexities = enums.difficulty;
@@ -41,7 +42,7 @@
             if (isNew) {
                 vm.scenario = datacontext.scenarios.create();
             } else {
-                promises.push(datacontext.scenarios.fetchByKey(id).then(function(data){
+                promises.push(datacontext.scenarios.fetchByKey(id, { expand: 'scenarioResources' }).then(function (data) {
                     vm.scenario = data;
                 }));
             }
@@ -51,6 +52,9 @@
                     vm.log('Activated Department View');
                 });
         }
-    }
 
+        function addResource() {
+            datacontext.scenarioResources.create({ scenarioId: vm.scenario.id });
+        }
+    }
 })();

@@ -399,7 +399,9 @@ a {
 .disable-workaround {
   display:inline-block;
 }
-
+.aside{
+    width:30%;
+}
 #userName {
     display: inline;
     text-decoration:underline

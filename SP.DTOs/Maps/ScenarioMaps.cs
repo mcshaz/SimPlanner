@@ -12,7 +12,6 @@ namespace SP.Dto.Maps
                 DepartmentId = m.DepartmentId,
                 Complexity = m.Complexity,
                 EmersionCategory = m.EmersionCategory,
-                TemplateFilename = m.TemplateFilename,
                 CourseTypeId = m.CourseTypeId,
                 Access = m.Access
                 //Manequin = m.Manequin,
@@ -30,7 +29,6 @@ namespace SP.Dto.Maps
                 DepartmentId = m.DepartmentId,
                 Complexity = m.Complexity,
                 EmersionCategory = m.EmersionCategory,
-                TemplateFilename = m.TemplateFilename,
                 CourseTypeId = m.CourseTypeId,
                 Access = m.Access
                 //Manequin = m.Manequin,

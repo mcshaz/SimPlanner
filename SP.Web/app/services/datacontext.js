@@ -68,6 +68,7 @@
         self.professionalRoles = repository.create(self.provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);
         self.rooms = repository.create(self.provider, 'RoomDto', 'Rooms', breeze.FetchStrategy.FromLocalCache);
         self.scenarios = repository.create(self.provider, 'ScenarioDto', 'Scenarios');
+        self.scenarioResources = repository.create(self.provider, 'ScenarioResourceDto', 'ScenarioResources');
         self.userRoles = repository.create(self.provider, 'UserRoleDto', 'UserRoles');
 
         function saveFailed(error) {

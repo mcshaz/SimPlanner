@@ -8,16 +8,20 @@ namespace SP.Dto.Maps
             {
                 Id = m.Id,
                 Description = m.Description,
-                ResourceFilename = m.ResourceFilename,
+                FileName = m.FileName,
                 ScenarioId = m.ScenarioId,
+                FileModified = m.FileModified,
+                FileSize = m.FileSize
                 //Scenario = m.Scenario
             },
             m => new ScenarioResourceDto
             {
                 Id = m.Id,
                 Description = m.Description,
-                ResourceFilename = m.ResourceFilename,
+                FileName = m.FileName,
                 ScenarioId = m.ScenarioId,
+                FileModified = m.FileModified,
+                FileSize = m.FileSize
                 //Scenario = m.Scenario
             })
         { }

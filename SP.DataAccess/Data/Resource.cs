@@ -2,7 +2,6 @@ using SP.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SP.DataAccess
 {
@@ -10,10 +9,10 @@ namespace SP.DataAccess
     public abstract class Resource
     {
         public Guid Id { get; set; }
-
         public string Description { get; set; }
-
-        public string ResourceFilename { get; set; }
+        public string FileName { get; set; }
+        public DateTime? FileModified { get; set; }
+        public long? FileSize { get; set; }
     }
     [MetadataType(typeof(ResourceMetadata))]
     public class ActivityTeachingResource : Resource

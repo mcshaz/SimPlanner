@@ -1,10 +1,11 @@
 ﻿using SP.DataAccess;
+using SP.DTOs.Utilities;
 using SP.Web.Models;
 using SP.Web.UserEmails;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
-using System.Threading;
 using System.Web.Http;
 
 namespace SP.Web.Controllers
@@ -43,6 +44,7 @@ namespace SP.Web.Controllers
             using (var cal = Appointment.CreateiCalendar(course, User.Identity))
             {
                 var faculty = course.CourseParticipants.Where(cp=>!cp.IsConfirmed.HasValue || cp.IsOrganiser).ToLookup(cp => cp.IsFaculty);
+                IEnumerable<Attachment> attachments = new Attachment[0];
                 using (var client = new SmtpClient())
                 {
                     
@@ -53,6 +55,11 @@ namespace SP.Web.Controllers
                             var confirmEmail = new CourseInvite { CourseParticipant = cp };
                             mail.CreateHtmlBody(confirmEmail);
                             cal.AddAppointment(mail);
+                            foreach (var a in attachments)
+                            {
+                                mail.Attachments.Add(a);
+                            }
+                            
                             client.Send(mail);
                         }
                     });
@@ -61,13 +68,17 @@ namespace SP.Web.Controllers
                     {
                         sendMail(cp);
                     }
-                    if (course.FacultyMeetingUtc.HasValue && course.FacultyMeetingUtc > now)
+                    if (faculty[true].Any())
                     {
-                        Appointment.AddFacultyMeeting(cal.Cal, course);
-                    }
-                    foreach (var cp in faculty[true])
-                    {
-                        sendMail(cp);
+                        if (course.FacultyMeetingUtc.HasValue && course.FacultyMeetingUtc > now)
+                        {
+                            Appointment.AddFacultyMeeting(cal.Cal, course);
+                        }
+                        attachments = course.GetFilePaths().Select(fp => new Attachment(fp.Value, "application/zip") { Name = fp.Key });
+                        foreach (var cp in faculty[true])
+                        {
+                            sendMail(cp);
+                        }
                     }
                 }
             }

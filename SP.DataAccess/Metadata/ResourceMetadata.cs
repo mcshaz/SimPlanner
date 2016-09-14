@@ -13,6 +13,8 @@ namespace SP.Metadata
         [StringLength(128)]
         public string Description { get; set; }
         [StringLength(256)]
-        public string ResourceFilename { get; set; }
+        public string FileName { get; set; }
+        [Range(0,250 * 1024)]
+        public long? FileSize { get; set; }
 	}
 }
