@@ -11,7 +11,7 @@ namespace SP.DataAccess
     public class Participant : IdentityUser<Guid,AspNetUserLogin,AspNetUserRole,AspNetUserClaim>
     {
         #region overrides 
-        //specifying overide allows required attribute from metadata
+        //specifying override allows required attribute from metadata
         public override string Email
         {
             get
@@ -24,7 +24,6 @@ namespace SP.DataAccess
             }
         }
         #endregion //overrides
-
 
         public string AlternateEmail { get; set; }
 

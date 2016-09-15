@@ -209,7 +209,7 @@ namespace SP.DTOs.ProcessBreezeRequests
             {
                 sr.CreateFile((from s in Context.Scenarios
                                where s.Id == sr.ScenarioId
-                               select s.CourseTypeId).First());
+                               select s.DepartmentId).First());
             }
         }
 
@@ -222,7 +222,7 @@ namespace SP.DTOs.ProcessBreezeRequests
             {
                 sr.DeleteFile((from s in Context.Scenarios
                                where s.Id == sr.ScenarioId
-                               select s.CourseTypeId).First());
+                               select s.DepartmentId).First());
             }
         }
 

@@ -17,11 +17,11 @@ namespace SP.DTOs.Utilities
         //TeachingResources under App_Data/TeachingResources/CourseTypeGuid/file.zip
         private static string _appDomainPath = HostingEnvironment.MapPath("~/App_Data");
 
-        private static string ScenarioResourceToPath(Guid departmentId, Guid scenarioId)
+        public static string ScenarioResourceToPath(Guid departmentId, Guid scenarioId)
         {
             return Path.Combine(_appDomainPath, "Scenarios", departmentId.ToString(), scenarioId.ToString() + _zipExt);
         }
-        private static string TeachingResourceToPath(Guid courseTypeId, string resourceFileName)
+        public static string TeachingResourceToPath(Guid courseTypeId, string resourceFileName)
         {
             return Path.Combine(_appDomainPath, "TeachingResources", courseTypeId.ToString(), resourceFileName + _zipExt);
         }
@@ -40,7 +40,7 @@ namespace SP.DTOs.Utilities
 
         public static void CreateFile(this ScenarioResourceDto resource, Guid departmentId)
         {
-            string path = ScenarioResourceToPath(departmentId, resource.Id);
+            string path = ScenarioResourceToPath(departmentId, resource.ScenarioId);
             CreateFile(resource, path);
         }
 
@@ -70,7 +70,7 @@ namespace SP.DTOs.Utilities
         }
         public static void DeleteFile(this ScenarioResource resource, Guid departmentId)
         {
-            string path = ScenarioResourceToPath(departmentId, resource.Id);
+            string path = ScenarioResourceToPath(departmentId, resource.ScenarioId);
             FileInfo fi = new FileInfo(path);
             if (!fi.Exists) { return; }
             using (ZipArchive archive = ZipFile.Open(path, ZipArchiveMode.Read))

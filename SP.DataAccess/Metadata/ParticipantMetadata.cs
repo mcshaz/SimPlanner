@@ -1,4 +1,5 @@
 using SP.Metadata.CustomValidators;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SP.Metadata
@@ -11,9 +12,11 @@ namespace SP.Metadata
         [Required]
         [EmailAddress]
         [StringLength(256)]
+        [DisplayName("Work Email")]
         public string Email { get; set; }
         [EmailAddress]
         [StringLength(256)]
+        [DisplayName("Personal Email")]
         public string AlternateEmail { get; set; }
         [Required]
         [StringLength(256)]

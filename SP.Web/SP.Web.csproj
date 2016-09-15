@@ -872,14 +872,17 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\Helpers\RequestOnlyPrincipal.cs" />
     <Compile Include="Controllers\Helpers\EnableMappedBreezeQueryAttribute.cs" />
     <Compile Include="Controllers\Helpers\FindAnyAllFilterOptions.cs" />
+    <Compile Include="Controllers\Helpers\TimeSpanTokenExtensions.cs" />
     <Compile Include="Controllers\LookupBundles.cs" />
     <Compile Include="Controllers\CoursePlanningController.cs" />
     <Compile Include="Controllers\UtilitiesController.cs" />
     <Compile Include="Controllers\MedSimApiController.cs" />
     <Compile Include="Controllers\SummaryDataController.cs" />
     <Compile Include="Models\CoursePlanningBindingModel.cs" />
+    <Compile Include="Models\DowloadFileSetModel.cs" />
     <Compile Include="UserEmails\AuthConfirmationResult.cs">
       <DependentUpon>AuthConfirmationResult.tt</DependentUpon>
       <AutoGen>True</AutoGen>

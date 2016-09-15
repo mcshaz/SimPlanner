@@ -79,12 +79,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <button type="submit" class="btn btn-default" ng-disabled="vm.isDisabled()">Save</button>
-                        </div>
-                    </div>
-
                     <table class="table">
                         <thead>
                             <tr>
@@ -110,15 +104,29 @@
                                 </td>
                                 <td><input class="form-control" type="text" ng-model="sr.description" z-validate/></td>
                                 <td>{{sr.fileModified | amDateFormat:'LLL'}}</td>
-                                <td>{{(sr.fileSize/1024).toFixed(1)}} kb</td>
+                                <!--TO DO check validates on big files-->
+                                <td><input type="text" ng-model="sr.fileSize" style="display:none!important;" z-validate/>{{(sr.fileSize/1024).toFixed(1)}} kb</td>
                                 <td>
                                     <button type="button" class="btn btn-link" ng-click="sr.entityAspect.setDeleted()"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" ng-click="vm.addResource()" class="btn btn-link"><i class="fa fa-plus-square"></i>Add Resource</button>
+                    <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the scenario first" bs-tooltip bs-enabled="vm.scenario.entityAspect.entityState.isAdded()">
+                        <button type="button" ng-click="vm.addResource()" class="btn btn-link" ng-disabled="vm.scenario.entityAspect.entityState.isAdded()"><i class="fa fa-plus-square"></i>Add Resource</button>
+                    </div>
+                    <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="No files on server to download" bs-tooltip bs-enabled="!vm.isResourceFilesOnServer()">
+                        <button type="button" ng-click="vm.downloadResources()" class="btn btn-link" ng-disabled="!vm.isResourceFilesOnServer()"><i class="fa fa-download"></i>Download Resources</button>
+                    </div>
                 </fieldset>
+
+                <iframe style="display:none;" ng-src="{{vm.downloadFileUrl}}"></iframe>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-default" ng-disabled="vm.disableSave()">Save</button>
+                    </div>
+                </div>
             </form>
         </div>
     </section>

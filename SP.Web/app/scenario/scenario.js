@@ -5,10 +5,10 @@
         .module('app')
         .controller(controllerId, courseTypesCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http'];
+    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', 'loginFactory'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http) {
+    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, loginFactory) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -19,9 +19,12 @@
         var id = $routeParams.id;
         var isNew = id === 'new';
         var enums = common.getEnumValues();
+        var added = breeze.EntityState.Added;
 
-        vm.scenario = {};
+        vm.scenario = { scenarioResources:[] };
         vm.addResource = addResource;
+        vm.downloadResources = downloadResources;
+        vm.isResourceFilesOnServer = isResourceFilesOnServer
         vm.departments = [];
         vm.courseTypes = [];
         vm.complexities = enums.difficulty;
@@ -55,6 +58,19 @@
 
         function addResource() {
             datacontext.scenarioResources.create({ scenarioId: vm.scenario.id });
+        }
+
+        function downloadResources() {
+            loginFactory.downloadFileLink('ScenarioResources', vm.scenario.id)
+                .then(function (url) {
+                    vm.downloadFileUrl = url;
+                });
+        };
+
+        function isResourceFilesOnServer() {
+            return vm.scenario.scenarioResources.some(function (sr) {
+                return sr.entityAspect.entityState !== added;
+            });
         }
     }
 })();

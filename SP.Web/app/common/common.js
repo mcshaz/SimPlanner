@@ -25,7 +25,7 @@
     });
 
     commonModule.factory('common',
-        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger','$http', 'collectionManager' /* 'dateUtilities', */, common]);
+        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', '$http', 'collectionManager' /* 'dateUtilities', */, common]);
 
     function common($q, $rootScope, $timeout, commonConfig, logger, $http, collectionManager /*, dateUtilities */) {
         var throttles = {};

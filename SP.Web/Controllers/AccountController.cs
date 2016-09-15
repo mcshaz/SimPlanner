@@ -25,6 +25,7 @@ namespace SP.Web.Controllers
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
+        
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
@@ -52,6 +53,8 @@ namespace SP.Web.Controllers
         }
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
+
+        internal const string DownloadPurpose ="FileDownload";
 
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
@@ -177,6 +180,15 @@ namespace SP.Web.Controllers
             //return GetErrorResult(result);
 
             return Ok();
+        }
+
+        [Route("GenerateDownloadToken")]
+        public async Task<IHttpActionResult> GenerateDownloadToken()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var t = await UserManager.GenerateUserTokenAsync(DownloadPurpose, userId);
+
+            return Ok(t);
         }
 
         // POST api/Account/SetPassword

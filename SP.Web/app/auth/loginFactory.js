@@ -2,13 +2,14 @@
     'use strict';
     var serviceId = 'loginFactory';
     angular.module('app')
-        .factory(serviceId, ['$http', '$httpParamSerializerJQLike', 'tokenStorageService', 'common','$q',loginFactory]);
+        .factory(serviceId, ['$http', '$httpParamSerializerJQLike', 'tokenStorageService', 'common', '$q', '$sce', loginFactory]);
 
-    function loginFactory($http, $httpParamSerializerJQLike, tokenStorageService, common,$q) {
+    function loginFactory($http, $httpParamSerializerJQLike, tokenStorageService, common,$q,$sce) {
         var log = common.logger.getLogFn(serviceId);
         var service = {
             login : login, 
             logout: logout,
+            downloadFileLink: downloadFileLink,
             registerExternal: tokenStorageService.notifyLogin
         }
 	
@@ -30,7 +31,7 @@
             }).then(function (response) {
                 tokenStorageService.notifyLogin(response.data);
                 return response.data;
-            });
+            }, log.error);
         }
 
         function logout() {
@@ -50,6 +51,23 @@
                 return $q.when();
             }
         };
+
+        function downloadFileLink(actionName, entitySetId) {
+            return $http({
+                method: 'POST', //specify post so as not to cache etc
+                url: 'api/Account/GenerateDownloadToken'
+                //data: JSON.stringify(entitySetId)
+            }).then(function (response) {
+                var params = {
+                    EntitySetId: entitySetId,
+                    Token: response.data,
+                    UserId: tokenStorageService.getUserId()
+                };
+                var location = window.location.origin + '/api/utilities/' + actionName 
+                    + '?' + $httpParamSerializerJQLike(params);
+                return $sce.trustAsResourceUrl(location);
+            }, log.error);
+        }
 
     };
 })();

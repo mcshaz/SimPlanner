@@ -134,7 +134,7 @@ namespace SP.Dto
             return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(includes, selects, sepChar);
         }
 
-        public IQueryable<ScenarioDto> GetScenarios(string[] includes, string[] selects, char sepChar)
+        public IQueryable<ScenarioDto> GetScenarios(string[] includes, string[] selects, char sepChar = '.')
         {
             return Context.Scenarios.ProjectToDto<Scenario, ScenarioDto>(includes, selects, sepChar);
         }

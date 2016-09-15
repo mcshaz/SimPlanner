@@ -14,14 +14,25 @@ namespace SP.Web.Controllers
     [RoutePrefix("api/ActivitySummary")]
     public class SummaryDataController : ApiController
     {
+        public SummaryDataController() {
+        }
+        public SummaryDataController(MedSimDbContext context)
+        {
+            _context = context;
+        }
+        MedSimDbContext _context;
+        private MedSimDbContext Context
+        {
+            get { return _context ?? (_context = HttpContext.Current.GetOwinContext().Get<MedSimDbContext>());  }
+        } 
         [Route("UserInfo")]
+        [HttpGet]
         public IHttpActionResult GetUserInfo(DateTime? after=null)
         {
-
             var userId = Guid.Parse(User.Identity.GetUserId());
-            var owinContext = HttpContext.Current.GetOwinContext().Get<MedSimDbContext>();
-            return Json(ParticipantSummaryServices.GetParticipantSummary(owinContext, userId, after));
+            return Json(ParticipantSummaryServices.GetParticipantSummary(Context, userId, after));
         }
+
     }
     public class ActivitySummary
     {

@@ -3,17 +3,58 @@ using System.Web.Http;
 using System.Collections.Generic;
 using System.Globalization;
 using NodaTime.TimeZones;
-using SP.Web.Controllers.Helpers;
-using System.Threading.Tasks;
 using System.Net.Http;
+using System;
+using SP.DTOs.Utilities;
+using System.IO;
+using System.Net;
+using System.Net.Http.Headers;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
+using SP.Web.Models;
+using System.Web;
+using SP.Web.Controllers.Helpers;
+using SP.Dto;
 
 namespace SP.Web.Controllers
 {
-    [Authorize]
     [RoutePrefix("api/utilities")]
     public class UtilitiesController : ApiController
     {
-        // Todo: inject via an interface rather than "new" the concrete class
+        private List<Stream> _streamsToDispose = new List<Stream>();
+
+        private ApplicationUserManager _userManager;
+        private ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            set
+            {
+                _userManager = value;
+            }
+        }
+
+        MedSimDtoRepository _context;
+        private MedSimDtoRepository Context
+        {
+            get { return _context ?? (_context = new MedSimDtoRepository(User)); }
+            set { _context = value; }
+        }
+
+        private async Task<bool> VerifyUserTokenAsync(string token, Guid userId)
+        {
+            var returnVar = await UserManager.VerifyUserTokenAsync(userId, AccountController.DownloadPurpose, token, TimeSpan.FromMinutes(1));
+            if (returnVar && !User.Identity.IsAuthenticated)
+            {
+                //for using the logic to restrict access within our Dto layer
+                var appUser = await UserManager.FindByIdAsync(userId);
+                //hopefully changing this will not cause problems downstream - we do not want cookies going back and forward
+                User = new RequestOnlyPrincipal(appUser.UserName, await UserManager.GetRolesAsync(userId));
+            }
+            return returnVar;
+        }
 
         [HttpGet]
         public IEnumerable<KeyValuePair<string, string>> CultureFormats() {
@@ -61,6 +102,56 @@ namespace SP.Web.Controllers
             var ri = new RegionInfo(id);
 
             return ri.ISOCurrencySymbol;
+        }
+
+        [Route("ScenarioResources")]
+        [HttpGet]
+        public async Task<HttpResponseMessage> GetResourcesForScenario([FromUri]DowloadFileSetModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+            }
+
+            if (!await VerifyUserTokenAsync(model.Token, model.UserId))
+            {
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+            }
+
+            var emptyString = new string[0];
+
+            var scenario = Context.GetScenarios(emptyString, emptyString).First(s=>s.Id == model.EntitySetId);
+
+            var path = ResourceDtoExtensions.ScenarioResourceToPath(scenario.DepartmentId, scenario.Id);
+
+            FileStream stream = new FileStream(path, FileMode.Open);
+            _streamsToDispose.Add(stream);
+
+            var result = new HttpResponseMessage()
+            {
+                Content = new StreamContent(stream)
+            };
+            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                //?urlencode
+                FileName = scenario.BriefDescription + ".zip"
+            };
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            result.Content.Headers.ContentLength = stream.Length;
+            return result;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_context != null)
+                {
+                    _context.Dispose();
+                }
+                _streamsToDispose.ForEach(s=>s.Dispose());
+            }
+            base.Dispose(disposing);
         }
     }
 }
