@@ -15,6 +15,9 @@ using SP.Web.Models;
 using System.Web;
 using SP.Web.Controllers.Helpers;
 using SP.Dto;
+using System.Security.Claims;
+using Microsoft.Owin.Security.OAuth;
+using Microsoft.Owin.Security.Cookies;
 
 namespace SP.Web.Controllers
 {
@@ -42,6 +45,21 @@ namespace SP.Web.Controllers
             get { return _context ?? (_context = new MedSimDtoRepository(User)); }
             set { _context = value; }
         }
+
+        /*
+        private async Task<bool> VerifyAccessTokenAsync(string access_token, Guid userId)
+        {
+            var user = UserManager.FindByIdAsync(userId);
+
+            ClaimsIdentity oAuthIdentity = UserManager.;
+            ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                CookieAuthenticationDefaults.AuthenticationType);
+
+            //at preesent creating the properties has no effect on the fragment provided in the redirect response
+            AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user, await UserManager.GetRolesAsync(user.Id));
+            Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
+        }
+        */
 
         private async Task<bool> VerifyUserTokenAsync(string token, Guid userId)
         {

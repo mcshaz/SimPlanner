@@ -7,11 +7,11 @@
     function loginFactory($http, $httpParamSerializerJQLike, tokenStorageService, common,$q,$sce) {
         var log = common.logger.getLogFn(serviceId);
         var service = {
-            login : login, 
+            login: login,
             logout: logout,
             downloadFileLink: downloadFileLink,
             registerExternal: tokenStorageService.notifyLogin
-        }
+        };
 	
         return service;
 	
@@ -50,7 +50,7 @@
                 log.debug({ msg: 'logout called - Not logged in' });
                 return $q.when();
             }
-        };
+        }
 
         function downloadFileLink(actionName, entitySetId) {
             return $http({
@@ -69,5 +69,5 @@
             }, log.error);
         }
 
-    };
+    }
 })();

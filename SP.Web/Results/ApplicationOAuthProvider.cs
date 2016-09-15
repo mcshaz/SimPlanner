@@ -8,7 +8,6 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using SP.Web.Models;
 using SP.DataAccess;
-using System.Linq;
 
 namespace SP.Web.Providers
 {
@@ -69,6 +68,19 @@ namespace SP.Web.Providers
 
             return Task.FromResult<object>(null);
         }
+
+        /*
+        public override Task RequestToken(OAuthRequestTokenContext context)
+        {
+            var value = context.Request.Query.Get("access_token");
+            var value = context.Request.Headers.Get(_name);
+            if (!string.IsNullOrEmpty(value))
+            {
+                context.Token = value;
+            }
+            return Task.FromResult<object>(null);
+        }
+        */
 
         public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
         {

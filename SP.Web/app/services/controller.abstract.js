@@ -263,11 +263,9 @@
         }
 
         //no point instantiating above (as true factory method) as will only extend other methods
-        Ctor /* .prototype */ = { 
+        return { 
             constructor: Ctor
         };
-
-        return Ctor;
 
         /* Implementation */
         /*

@@ -24,7 +24,7 @@
         vm.scenario = { scenarioResources:[] };
         vm.addResource = addResource;
         vm.downloadResources = downloadResources;
-        vm.isResourceFilesOnServer = isResourceFilesOnServer
+        vm.isResourceFilesOnServer = isResourceFilesOnServer;
         vm.departments = [];
         vm.courseTypes = [];
         vm.complexities = enums.difficulty;
