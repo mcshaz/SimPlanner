@@ -47,8 +47,10 @@ namespace SP.Web
             };
 
             // Enable the application to use bearer tokens to authenticate users
-            //app.UseOAuthBearerTokens(OAuthOptions);
+            app.UseOAuthBearerTokens(OAuthOptions);
 
+            /*
+             * below allows access token in url
             app.UseOAuthAuthorizationServer(OAuthOptions); // Added this line
 
             // Enable the application to retrieve tokens from query string to authenticate users
@@ -56,6 +58,7 @@ namespace SP.Web
             {
                 Provider = new HeaderOrQueryStringOAuthBearerProvider()
             });
+            */
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(

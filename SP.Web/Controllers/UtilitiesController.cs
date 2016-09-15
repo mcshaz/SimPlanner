@@ -15,9 +15,6 @@ using SP.Web.Models;
 using System.Web;
 using SP.Web.Controllers.Helpers;
 using SP.Dto;
-using System.Security.Claims;
-using Microsoft.Owin.Security.OAuth;
-using Microsoft.Owin.Security.Cookies;
 
 namespace SP.Web.Controllers
 {
@@ -63,7 +60,13 @@ namespace SP.Web.Controllers
 
         private async Task<bool> VerifyUserTokenAsync(string token, Guid userId)
         {
-            var returnVar = await UserManager.VerifyUserTokenAsync(userId, AccountController.DownloadPurpose, token, TimeSpan.FromMinutes(1));
+            var cookie = Request.Headers.GetCookies(AccountController.DownloadPurpose).FirstOrDefault();
+            if (cookie == null)
+            {
+                return false;
+            }
+            string key = cookie[AccountController.DownloadPurpose].Value;
+            var returnVar = await UserManager.VerifyUserTokenAsync(userId, key, token, TimeSpan.FromMinutes(1));
             if (returnVar && !User.Identity.IsAuthenticated)
             {
                 //for using the logic to restrict access within our Dto layer

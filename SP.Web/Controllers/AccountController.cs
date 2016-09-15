@@ -18,6 +18,7 @@ using Facebook;
 using SP.DataAccess;
 using SP.Web.UserEmails;
 using System.Net.Mail;
+using System.Net.Http.Headers;
 
 namespace SP.Web.Controllers
 {
@@ -183,12 +184,35 @@ namespace SP.Web.Controllers
         }
 
         [Route("GenerateDownloadToken")]
-        public async Task<IHttpActionResult> GenerateDownloadToken()
+        public async Task<HttpResponseMessage> GenerateDownloadToken()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
-            var t = await UserManager.GenerateUserTokenAsync(DownloadPurpose, userId);
+            string key;
+            using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())
+            {
+                byte[] tokenData = new byte[16]; //128 bits - same as a Guid
+                rng.GetBytes(tokenData);
+                key = Convert.ToBase64String(tokenData);
+            }
+            var t = await UserManager.GenerateUserTokenAsync(key, userId);
 
-            return Ok(t);
+            var resp = Request.CreateResponse(
+                System.Net.HttpStatusCode.OK,
+                t
+            );
+
+            //create and set cookie in response
+            var cookie = new CookieHeaderValue(DownloadPurpose, key)
+            {
+                Expires = DateTimeOffset.Now.AddMinutes(1),
+                Domain = Request.RequestUri.Host,
+                Path = "/",
+                HttpOnly = true,
+                Secure = true
+            };
+            resp.Headers.AddCookies(new CookieHeaderValue[] { cookie });
+
+            return resp;
         }
 
         // POST api/Account/SetPassword
