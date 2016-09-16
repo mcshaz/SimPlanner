@@ -5,18 +5,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SP.DataAccess
 {
-    [MetadataType(typeof(ResourceMetadata))]
-    public abstract class Resource
+    [MetadataType(typeof(ActivityResourceMetadata))]
+    public class ActivityTeachingResource 
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
         public string FileName { get; set; }
         public DateTime? FileModified { get; set; }
         public long? FileSize { get; set; }
-    }
-    [MetadataType(typeof(ResourceMetadata))]
-    public class ActivityTeachingResource : Resource
-    {
+
         public Guid CourseActivityId { get; set; }
         public virtual CourseActivity CourseActivity { get; set; }
 
@@ -24,9 +21,15 @@ namespace SP.DataAccess
         public virtual ICollection<ChosenTeachingResource> ChosenTeachingResources { get; set; }
     }
 
-    [MetadataType(typeof(ResourceMetadata))]
-    public class ScenarioResource : Resource
+    [MetadataType(typeof(ScenarioResourceMetadata))]
+    public class ScenarioResource 
     {
+        public Guid Id { get; set; }
+        public string Description { get; set; }
+        public string FileName { get; set; }
+        public DateTime? FileModified { get; set; }
+        public long? FileSize { get; set; }
+
         public Guid ScenarioId { get; set; }
         public virtual Scenario Scenario { get; set; }
     }

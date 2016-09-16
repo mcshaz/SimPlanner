@@ -24,6 +24,8 @@ namespace SP.DataAccess
 
         public double? Longitude { get; set; }
 
+        public bool AdminApproved { get; set; }
+
         public virtual Culture Culture { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

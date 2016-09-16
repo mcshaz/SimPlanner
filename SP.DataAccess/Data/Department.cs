@@ -24,6 +24,8 @@ namespace SP.DataAccess
 
         public string SecondaryColour { get; set; }
 
+        public bool AdminApproved { get; set; }
+
         public virtual Institution Institution { get; set; }
         
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

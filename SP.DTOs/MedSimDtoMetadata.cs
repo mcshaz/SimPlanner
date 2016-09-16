@@ -111,6 +111,11 @@ namespace SP.Dto
                                 var validatorsFromAttr = getVal(attr);
                                 if (validatorsFromAttr != null)
                                 {
+                                    ValidationAttribute va = attr as ValidationAttribute;
+                                    if (va != null && va.ErrorMessage != null)
+                                    {
+                                        validatorsFromAttr.Add("messageTemplate", va.ErrorMessage);
+                                    }
                                     string jsValidatorName = (string)validatorsFromAttr["name"];
                                     Dictionary<string, object> existingVals;
                                     if (validators.TryGetValue(jsValidatorName, out existingVals))

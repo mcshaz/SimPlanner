@@ -99,13 +99,21 @@
                                                 <input type="file" ng-model="sr.file" app-filereader ng-file-size="sr.fileSize" ng-file-name="sr.fileName" ng-last-modified="sr.fileModified" style="display:none!important;" />
                                             </span>
                                         </label>
-                                        <input type="text" class="form-control" readonly ng-model="sr.fileName" z-validate>
+                                        <input type="text" class="form-control" readonly ng-model="sr.fileName" z-validate z-append-to="td">
                                     </div>
                                 </td>
                                 <td><input class="form-control" type="text" ng-model="sr.description" z-validate/></td>
-                                <td>{{sr.fileModified | amDateFormat:'LLL'}}</td>
+                                <td>
+                                    <input class="form-control" disabled type="text" ng-value="vm.getFormattedDate(sr.fileModified)" />
+                                </td>
                                 <!--TO DO check validates on big files-->
-                                <td><input type="text" ng-model="sr.fileSize" style="display:none!important;" z-validate/>{{(sr.fileSize/1024).toFixed(1)}} kb</td>
+                                <td>
+                                    <input type="hidden" ng-model="sr.fileSize" z-validate z-append-to="td" />
+                                    <div class="input-group">
+                                        <input class="form-control" disabled type="text" ng-value="vm.getSizeInKb(sr.fileSize)" />
+                                        <span class="input-group-addon">KB</span>
+                                    </div>
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-link" ng-click="sr.entityAspect.setDeleted()"><i class="fa fa-trash"></i></button>
                                 </td>

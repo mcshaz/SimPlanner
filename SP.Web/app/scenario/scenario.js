@@ -5,10 +5,10 @@
         .module('app')
         .controller(controllerId, courseTypesCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', 'loginFactory'];
+    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', 'loginFactory', 'moment', '$filter'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, loginFactory) {
+    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, loginFactory, moment, $filter) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -29,6 +29,8 @@
         vm.courseTypes = [];
         vm.complexities = enums.difficulty;
         vm.emersionCategories = enums.emersion;
+        vm.getFormattedDate = getFormattedDate;
+        vm.getSizeInKb = getSizeInKb;
         vm.sharingLevels = enums.sharingLevel.map(function (el) { return { value:el, display: common.toSeparateWords(el) }; });
 
         activate();
@@ -66,6 +68,15 @@
                     vm.downloadFileUrl = url;
                 });
         };
+
+        function getFormattedDate(date) {
+            var dt = moment(date);
+            return dt.format('L') + ' ' + dt.format('LT');
+        }
+
+        function getSizeInKb(bytes) {
+            return $filter('number')(bytes/1024, 1);
+        }
 
         function isResourceFilesOnServer() {
             return vm.scenario.scenarioResources.some(function (sr) {

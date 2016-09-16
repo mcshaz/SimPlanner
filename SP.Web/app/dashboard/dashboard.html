@@ -13,7 +13,7 @@
                                     <li>
                                         <span class="fa fa-calendar-check-o" data-ng-switch="vm.loginState"> 
                                             <span data-ng-switch-when="active">
-                                                {{vm.nextUsercourse.start | amDateFormat:'LLLL'}}
+                                                {{vm.nextUserCourse.start | amDateFormat:'LL'}}
                                             </span>
                                             <span data-ng-switch-when="inactive">
                                                 no upcoming courses
@@ -27,7 +27,7 @@
                                         <span class="fa fa-clock-o"> 
                                             <small data-ng-switch="vm.loginState">
                                                 <span data-ng-switch-when="active" am-time-ago="vm.nextUsercourse.startTime">
-                                                    
+                                                    {{vm.nextUserCourse.start | amDateFormat:'LT'}}
                                                 </span>
                                                 <span data-ng-switch-when="inactive">
                                                     create a new course?
@@ -41,10 +41,21 @@
                                     <li>
                                         <span class="fa fa-university" data-ng-switch="vm.loginState"> 
                                             <span data-ng-switch-when="notLoggedIn">
-                                                [your institution &amp; department]
+                                                [institution]
                                             </span>
-                                            <span data-ng-switch-default>
-                                                {{vm.nextUserCourse.department.institution.name}} {{vm.nextUserCourse.department.name}}
+                                            <span data-ng-switch-when="active">
+                                                {{vm.nextUserCourse.department.institution.name}}
+                                            </span>
+
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="fa fa-cubes" data-ng-switch="vm.loginState">
+                                            <span data-ng-switch-when="notLoggedIn">
+                                                [department]
+                                            </span>
+                                            <span data-ng-switch-when="active">
+                                                {{vm.nextUserCourse.department.name}}
                                             </span>
 
                                         </span>

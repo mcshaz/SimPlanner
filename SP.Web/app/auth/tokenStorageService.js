@@ -35,7 +35,7 @@
 
         var unwatchWidget = $rootScope.$on(AUTH_EVENTS.loginWidgetReady, function () {
             if (isLoggedIn()) {
-                authService.loginConfirmed();
+                setLocaleThenConfirmLogin();
             }
             unwatchWidget();
             unwatchWidget = null;
@@ -109,19 +109,24 @@
                 };
                 localStorage.set('currentUser', currentUser);
                 //now broadcast
-
-                //set locale once logged in 
-                //not sure this is enough separation of concers
-                moment.locale([currentUser.locale, "en-gb"]); //fallback on british format
-                tmhDynamicLocale.set(currentUser.locale.toLowerCase())
-                    .then(null, function (data) {
-                        log.error({ msg:'unable to set user locale',data:data });
-                    })
-                    .finally(function () {
-                        //only broadcast after the appropriate locale for the user is loaded
-                        authService.loginConfirmed({ recredentialled: false }, replaceToken);
-                    }); //moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
+                setLocaleThenConfirmLogin();
             }
+        }
+
+        function setLocaleThenConfirmLogin(){
+            //set locale once logged in 
+            //not sure if having this function in the tokenStorageService is enough separation of concerns
+            //however it does ensure user local is set before notifying login
+            //which is important if any subscribers need to present locale specific information
+            //although could have a userLocaleReady function
+            moment.locale([currentUser.locale, "en-gb"]); //fallback on british format
+            return tmhDynamicLocale.set(currentUser.locale.toLowerCase())
+                .then(null, function (data) {
+                    log.error({ msg:'unable to set user locale',data:data });
+                }).finally(function () {
+                    //only broadcast after the appropriate locale for the user is loaded
+                    authService.loginConfirmed({ recredentialled: false }, replaceToken);
+                }); //moment().localeData().longDateFormat('L').replace(/D/g, "d").replace(/Y/g, "y");
         }
 
         function notifyLogout() {

@@ -225,6 +225,10 @@
     <Compile Include="Migrations\201609132141254_ResourceFileDetails.Designer.cs">
       <DependentUpon>201609132141254_ResourceFileDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609152131312_fileRequiredActivityResource.cs" />
+    <Compile Include="Migrations\201609152131312_fileRequiredActivityResource.Designer.cs">
+      <DependentUpon>201609152131312_fileRequiredActivityResource.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AddConstraints.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SqlHelpers.cs" />
@@ -286,6 +290,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609132141254_ResourceFileDetails.resx">
       <DependentUpon>201609132141254_ResourceFileDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609152131312_fileRequiredActivityResource.resx">
+      <DependentUpon>201609152131312_fileRequiredActivityResource.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

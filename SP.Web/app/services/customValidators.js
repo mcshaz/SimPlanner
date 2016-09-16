@@ -27,9 +27,9 @@
     }
 
     function createRangeValidator(context) {
-        var template = breeze.core.formatString(
-        "'%displayName%' must be a number between the values of %1 and %2",
-        context.min, context.max);
+        var template = context.messageTemplate || breeze.core.formatString(
+            "'%displayName%' must be a number between the values of %1 and %2",
+            context.min, context.max);
         // The last parameter below is the 'context' object that will be passed into the 'ctx' parameter above
         // when this validator executes. Several other properties, such as displayName will get added to this object as well.
         return new validator("numericRange", valFn, {
