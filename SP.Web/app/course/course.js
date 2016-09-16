@@ -245,7 +245,7 @@
         }
 
         function goAssignRoles() {
-            $location.path('/courseRoles/' + vm.course.id);
+            $location.path('courseRoles/' + vm.course.id);
         }
 
         function save() {

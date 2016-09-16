@@ -31,19 +31,17 @@
                         function dptItemsSort(d) {
                             d.manequins.sort(common.sortOnPropertyName('description'));
                             d.scenarios.sort(common.sortOnPropertyName('briefDescription'));
-                            console.log(d.rooms.map(r=>r.shortDescription));
                             d.rooms.sort(common.sortOnPropertyName('shortDescription'));
-                            console.log(d.rooms.map(r=>r.shortDescription));
                         }
                         function dptSort(i) {
                             i.departments.sort(sortNameFn);
-                            i.departments.forEach(dptItemsSort)
-                        };
+                            i.departments.forEach(dptItemsSort);
+                        }
                         function institutionSort(c) {
                             c.flagUrl = common.getFlagUrlFromLocaleCode(c.localeCode);
                             c.institutions.sort(sortNameFn);
                             c.institutions.forEach(dptSort);
-                        };
+                        }
                 })], controllerId);
         }
     }

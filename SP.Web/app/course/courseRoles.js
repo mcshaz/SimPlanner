@@ -204,7 +204,7 @@
         }
 
         function changeScenario(m) {
-            console.log(m.scenario.briefDescription);
+            //console.log(m.scenario.briefDescription);
             common.collectionChange(datacontext.courseSlotScenarios, 'id', function (ent) {
                 return { 
                     courseSlotId:m.id,

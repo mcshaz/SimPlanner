@@ -73,6 +73,7 @@ namespace SP.DTOs.Utilities
             string path = ScenarioResourceToPath(departmentId, resource.ScenarioId);
             FileInfo fi = new FileInfo(path);
             if (!fi.Exists) { return; }
+            bool deleteFile = false;
             using (ZipArchive archive = ZipFile.Open(path, ZipArchiveMode.Read))
             {
                 ZipArchiveEntry entry = archive.Entries.FirstOrDefault(e => e.Name == resource.FileName);
@@ -82,13 +83,16 @@ namespace SP.DTOs.Utilities
                 }
                 if (archive.Entries.Count == 1)
                 {
-                    archive.Dispose();
-                    fi.Delete();
+                    deleteFile = true;
                 }
                 else
                 {
                     entry.Delete();
                 }
+            }
+            if (deleteFile)
+            {
+                fi.Delete();
             }
         }
 

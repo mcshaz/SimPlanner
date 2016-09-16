@@ -21,9 +21,6 @@
             $scope: $scope
         });
 
-        var baseSave = this.save;
-        this.save = save;
-
         vm.canAlter = canAlter;
         vm.changed = changed;
         vm.hotDrinks = [];
@@ -35,6 +32,7 @@
             siteAdmin: false
         };
         vm.professionalRoles = [];
+        vm.submit = submit;
 
         activate();
 
@@ -101,7 +99,7 @@
             }
         }
 
-        function save() {
+        function submit() {
             if (vm.permissions.siteAdmin !== isSiteAdmin) {
                 if (isSiteAdmin) {
                     data.roles.find(function (ur) { return ur.roleId === USER_ROLES.siteAdmin; }).entityAspect.setDeleted();
@@ -122,7 +120,7 @@
                     });
                 }
             }
-            baseSave();
+            vm.save();
         }
     }
 })();

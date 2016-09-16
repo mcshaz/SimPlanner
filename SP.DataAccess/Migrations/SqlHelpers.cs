@@ -14,24 +14,12 @@ namespace SP.DataAccess.Migrations
 {
     public static class SqlHelpers
     {
-        internal enum ConstraintType { ForeignKey, Check, CheckUniqueFkPK }
-        internal static string DropConstraintIfExists(string tableName, string constraintName, ConstraintType constraint = ConstraintType.CheckUniqueFkPK)
+        internal static string DropConstraintIfExists(string tableName, string constraintName )
         {
-            string constraintSchema;
-            switch (constraint)
-            {
-                case ConstraintType.Check:
-                    constraintSchema = "CHECK_CONSTRAINTS";
-                    break;
-                case ConstraintType.ForeignKey:
-                    constraintSchema = "REFERENTIAL_CONSTRAINTS";
-                    break;
-                default:
-                    constraintSchema = "TABLE_CONSTRAINTS";
-                    break;
-            }
-            return $"IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.{constraintSchema} WHERE CONSTRAINT_NAME = '{constraintName}') "
-                + $" ALTER TABLE {tableName} DROP CONSTRAINT [{constraintName}];";
+            return $"IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_NAME = '{constraintName}') "
+                + $"ALTER TABLE {tableName} DROP CONSTRAINT [{constraintName}];\r\n"
+                + $"IF EXISTS (SELECT 1 FROM sys.indexes WHERE name='{constraintName}' AND object_id = OBJECT_ID('[dbo].[{constraintName}]')) "
+                + $"DROP INDEX [{constraintName}] ON [dbo].[{tableName}];";
         }
 
         public static string CreateUniqueConstraint<T>(string tableName, params Expression<Func<T,object>>[] expressions)

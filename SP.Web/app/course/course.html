@@ -154,7 +154,7 @@
                         <div class="col-md-offset-6 col-md-6">
                             <button type="submit" data-ng-disabled="vm.disableSave()" class="btn btn-success">Save</button>
                             <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course first" bs-tooltip bs-enabled="vm.course.entityAspect.entityState.isAdded()">
-                                <button type="button" class="btn btn-info" ng-click="goAssignRoles()" ng-disabled="vm.course.entityAspect.entityState.isAdded()">
+                                <button type="button" class="btn btn-info" ng-click="vm.goAssignRoles()" ng-disabled="vm.course.entityAspect.entityState.isAdded()">
                                     <i class="fa fa-arrow-right"></i>Assign Roles
                                 </button>
                             </div>

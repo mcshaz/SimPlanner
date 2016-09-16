@@ -19,6 +19,8 @@
         var id = $routeParams.id;
         var isNew = id === 'new';
 
+        //if multiselect=true, vm.activeFormatIndex will become an array, and will
+        //note also this variable is used in the functions below to identify which object is updated 
         vm.activeFormatIndex = -1;
         vm.activitySelected = activitySelected;
         vm.alterDayMarkers = alterDayMarkers;
@@ -334,7 +336,7 @@
             if (cf.obsolete) {
                 deleteAble(cf).then(function (forDelete) {
                     if (forDelete.length && confirm('this course appears to have never been run - would you like to delete it')) {
-                        forDelete.forEach(function (el) { el.entityAspect.setDeleted() });
+                        forDelete.forEach(function (el) { el.entityAspect.setDeleted(); });
                     }
                 });
             }
@@ -354,7 +356,7 @@
                             cs.activity.activityChoices.filter(function (ac) {
                                 return !ac.courseActivity.courseSlots.some(function (e) {
                                     return e.courseFormat !== cf;
-                                })
+                                });
                             }));
                     });
 

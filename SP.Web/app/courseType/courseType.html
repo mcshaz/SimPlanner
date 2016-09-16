@@ -60,11 +60,11 @@
                                 </select>
                             </div>
                         </div>
-
+                        {{vm.activeFormatIndex | json}}
                         <button class="btn-link" ng-click="vm.createNewFormat()" type="button"><i class="fa fa-plus"></i> New Format</button>
                     </fieldset>
                 </div>
-                <div class="panel-group" ng-model="vm.activeFormatIndex" role="tablist" aria-multiselectable="true" bs-collapse data-allow-multiple="true">
+                <div class="panel-group" ng-model="vm.activeFormatIndex" role="tablist" aria-multiselectable="true" bs-collapse data-allow-multiple="false">
                     <div class="panel panel-default" ng-repeat="cf in vm.courseType.courseFormats track by cf.id">
                         <div class="panel-heading" role="tab">
                             <h4 class="panel-title">

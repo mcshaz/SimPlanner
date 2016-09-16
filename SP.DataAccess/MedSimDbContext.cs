@@ -465,6 +465,7 @@ namespace SP.DataAccess
             }
         }
     }
+    [Serializable]
     public class DetailedEntityValidationException : Exception
     {
         public DetailedEntityValidationException(DbEntityValidationException ve)
