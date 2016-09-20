@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SP.Dto
 {
-    [MetadataType(typeof(CourseSlotManequinMetadata))]
-    public class CourseSlotManequinDto
+    [MetadataType(typeof(CourseSlotManikinMetadata))]
+    public class CourseSlotManikinDto
     {
         public Guid CourseId { get; set; }
 
         public Guid CourseSlotId { get; set; }
 
-        public Guid ManequinId { get; set; }
+        public Guid ManikinId { get; set; }
 
         public byte StreamNumber { get; set; }
 
@@ -19,7 +19,7 @@ namespace SP.Dto
 
         public virtual CourseSlotDto CourseSlot { get; set; }
 
-        public virtual ManequinDto Manequin { get; set; }
+        public virtual ManikinDto Manikin { get; set; }
     }
 
     /*

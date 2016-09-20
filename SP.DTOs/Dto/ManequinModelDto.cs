@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SP.Dto
 {
-    [MetadataType(typeof(ManequinModelMetadata))]
-    public class ManequinModelDto
+    [MetadataType(typeof(ManikinModelMetadata))]
+    public class ManikinModelDto
     {
         public Guid Id { get; set; }
 
@@ -14,8 +14,8 @@ namespace SP.Dto
 
         public Guid ManufacturerId { get; set; }
 
-        public virtual ManequinManufacturerDto Manufacturer { get; set; }
+        public virtual ManikinManufacturerDto Manufacturer { get; set; }
 
-        public virtual ICollection<ManequinDto> Manequins { get; set; }
+        public virtual ICollection<ManikinDto> Manikins { get; set; }
     }
 }

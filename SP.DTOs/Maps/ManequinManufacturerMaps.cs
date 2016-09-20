@@ -1,14 +1,14 @@
 using SP.DataAccess;
 namespace SP.Dto.Maps
 {
-    internal class ManequinManufacturerMaps: DomainDtoMap<ManequinManufacturer, ManequinManufacturerDto>
+    internal class ManikinManufacturerMaps: DomainDtoMap<ManikinManufacturer, ManikinManufacturerDto>
     {
-        public ManequinManufacturerMaps() : base(m => new ManequinManufacturer
+        public ManikinManufacturerMaps() : base(m => new ManikinManufacturer
             {
                 Id = m.Id,
                 Name = m.Name
             },
-            m => new ManequinManufacturerDto
+            m => new ManikinManufacturerDto
             {
                 Id = m.Id,
                 Name = m.Name

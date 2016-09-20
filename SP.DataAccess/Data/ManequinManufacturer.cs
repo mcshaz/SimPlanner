@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SP.DataAccess
 {
-    [MetadataType(typeof(ManequinManufacturerMetadata))]
-    public class ManequinManufacturer
+    [MetadataType(typeof(ManikinManufacturerMetadata))]
+    public class ManikinManufacturer
     {
         public Guid Id { get; set; }
 
         public string Name {get; set;}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ManequinModel> ManequinModels { get; set; }
+        public virtual ICollection<ManikinModel> ManikinModels { get; set; }
     }
 }

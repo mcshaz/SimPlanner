@@ -1,15 +1,12 @@
 ﻿using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SP.DataAccess;
 using SP.Dto.Maps;
-using SP.DTOs.ParticipantSummary;
 using SP.DTOs.ProcessBreezeRequests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Security.Principal;
 
 namespace SP.Dto
@@ -143,12 +140,12 @@ namespace SP.Dto
 
         public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.ProjectToDto<Institution,InstitutionDto>(); } }
 
-        public IQueryable<ManequinDto> Manequins
+        public IQueryable<ManikinDto> Manikins
         {
             get
             {
-                IQueryable<Manequin> returnVar = Context.Manequins.Where(m => m.Department.Institution.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
-                return returnVar.ProjectToDto<Manequin, ManequinDto>();
+                IQueryable<Manikin> returnVar = Context.Manikins.Where(m => m.Department.Institution.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
+                return returnVar.ProjectToDto<Manikin, ManikinDto>();
             }
         }
 
@@ -156,15 +153,15 @@ namespace SP.Dto
 
         public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.ProjectToDto<ScenarioResource,ScenarioResourceDto>(); } }
 
-        public IQueryable<ManequinManufacturerDto> ManequinManufacturers
+        public IQueryable<ManikinManufacturerDto> ManikinManufacturers
         {
             get
             {
-                return Context.ManequinManufacturers.ProjectToDto<ManequinManufacturer, ManequinManufacturerDto>(includes: new[] { "ManequinModels" });
+                return Context.ManikinManufacturers.ProjectToDto<ManikinManufacturer, ManikinManufacturerDto>(includes: new[] { "ManikinModels" });
             }
         }
 
-        public IQueryable<ManequinModelDto> ManequinModels { get { return Context.ManequinModels.ProjectToDto<ManequinModel, ManequinModelDto>(); } }
+        public IQueryable<ManikinModelDto> ManikinModels { get { return Context.ManikinModels.ProjectToDto<ManikinModel, ManikinModelDto>(); } }
 
         public IQueryable<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get { return Context.ProfessionalRoleInstitutions.ProjectToDto<ProfessionalRoleInstitution, ProfessionalRoleInstitutionDto>(); } }
 

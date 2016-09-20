@@ -1,6 +1,6 @@
 ﻿(function () {
     'use strict';
-    var controllerId = 'manequinManufacturer';
+    var controllerId = 'manikinManufacturer';
     angular
         .module('app')
         .controller(controllerId, controller);
@@ -28,7 +28,7 @@
                 common.activateController([], controllerId)
                     .then(function () {
                         vm.notifyViewModelLoaded();
-                        vm.log('Activated Manequin Manufacturer Dialog');
+                        vm.log('Activated Manikin Manufacturer Dialog');
                     });
         }
 

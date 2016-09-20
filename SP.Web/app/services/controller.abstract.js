@@ -201,6 +201,12 @@
                             if (ent.entityAspect.entityState.isAddedModifiedOrDeleted() && !ent.entityAspect.isBeingSaved) {
                                 ent.entityAspect.rejectChanges();
                             }
+                            for (var p in ent) {
+                                //to do check here - assuming these will be properties added as part of the view
+                                if (ent.hasOwnProperty(p)) {
+                                    delete ent[p];
+                                }
+                            }
                         });
                     }
                 }

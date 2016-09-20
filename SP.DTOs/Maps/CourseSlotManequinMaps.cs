@@ -1,24 +1,24 @@
 using SP.DataAccess;
 namespace SP.Dto.Maps
 {
-    internal class CourseSlotManequinMaps: DomainDtoMap<CourseSlotManequin, CourseSlotManequinDto>
+    internal class CourseSlotManikinMaps: DomainDtoMap<CourseSlotManikin, CourseSlotManikinDto>
     {
-        public CourseSlotManequinMaps() : base(m => new CourseSlotManequin
+        public CourseSlotManikinMaps() : base(m => new CourseSlotManikin
             {
                 CourseId = m.CourseId,
                 CourseSlotId = m.CourseSlotId,
-                ManequinId = m.ManequinId,
+                ManikinId = m.ManikinId,
                 StreamNumber = m.StreamNumber
                 //Course = m.Course,
                 //Scenario = m.Scenario,
                 //Role = m.Role,
                 //FacultyMember = m.FacultyMember
             },
-            m => new CourseSlotManequinDto
+            m => new CourseSlotManikinDto
             {
                 CourseId = m.CourseId,
                 CourseSlotId = m.CourseSlotId,
-                ManequinId = m.ManequinId,
+                ManikinId = m.ManikinId,
                 StreamNumber = m.StreamNumber
                 //Course = m.Course,
                 //Scenario = m.Scenario,

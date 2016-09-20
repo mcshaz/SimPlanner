@@ -134,7 +134,7 @@ namespace SimPlanner.Tests
         [TestMethod]
         public void TestComplexDtoTreeMapping()
         {
-            //var test = MapperConfig.GetLambda<Participant, ParticipantDto>(new[] { "Department", "Department.Institution", "Department.Manequins", "Department.Manequins.CourseSlotScenarios", "ProfessionalRole.CourseParticipants" });
+            //var test = MapperConfig.GetLambda<Participant, ParticipantDto>(new[] { "Department", "Department.Institution", "Department.Manikins", "Department.Manikins.CourseSlotScenarios", "ProfessionalRole.CourseParticipants" });
             //Console.WriteLine(test);
 
             var test2 = MapperConfig.GetToDtoLambda<Course, CourseDto>(new[] {

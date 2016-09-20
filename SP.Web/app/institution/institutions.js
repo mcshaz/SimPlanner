@@ -20,7 +20,7 @@
             var cultures;
             common.activateController([
                 $q.all([datacontext.ready(),
-                    datacontext.cultures.findServerIfCacheEmpty({ expand: ['institutions.departments.manequins', 'institutions.departments.scenarios'] }).then(function (data) {
+                    datacontext.cultures.findServerIfCacheEmpty({ expand: ['institutions.departments.manikins', 'institutions.departments.scenarios'] }).then(function (data) {
                         cultures = data;
                     })]).then(function(){
                         var sortNameFn = common.sortOnPropertyName('name');
@@ -29,7 +29,7 @@
                         vm.cultures = cultures;
 
                         function dptItemsSort(d) {
-                            d.manequins.sort(common.sortOnPropertyName('description'));
+                            d.manikins.sort(common.sortOnPropertyName('description'));
                             d.scenarios.sort(common.sortOnPropertyName('briefDescription'));
                             d.rooms.sort(common.sortOnPropertyName('shortDescription'));
                         }

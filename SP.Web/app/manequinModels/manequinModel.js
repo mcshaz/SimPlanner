@@ -1,6 +1,6 @@
 ﻿(function () {
     'use strict';
-    var controllerId = 'manequinModel';
+    var controllerId = 'manikinModel';
     angular
         .module('app')
         .controller(controllerId, controller);
@@ -27,13 +27,13 @@
 
         function activate() {
             datacontext.ready().then(function () {
-                var promises = [datacontext.manequinManufacturers.all().then(function (data) {
+                var promises = [datacontext.manikinManufacturers.all().then(function (data) {
                         vm.manufacturers = data;
                     })];
                 common.activateController(promises, controllerId)
                     .then(function () {
                         vm.notifyViewModelLoaded();
-                        vm.log('Activated Manequin Model Dialog');
+                        vm.log('Activated Manikin Model Dialog');
                     });
                 });
         }

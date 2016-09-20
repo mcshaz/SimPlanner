@@ -15,7 +15,7 @@ namespace SP.DataAccess.Migrations
                 SqlHelpers.CreateUniqueConstraint<Department>("Departments", e => e.InstitutionId, e => e.Name),
                 SqlHelpers.CreateUniqueConstraint<Department>("Departments", e => e.InstitutionId, e => e.Abbreviation),
                 SqlHelpers.CreateUniqueConstraint<Scenario>("Scenarios", e => e.DepartmentId, e => e.BriefDescription),
-                SqlHelpers.CreateUniqueConstraint<Manequin>("Manequins", e => e.DepartmentId, e => e.Description),
+                SqlHelpers.CreateUniqueConstraint<Manikin>("Manikins", e => e.DepartmentId, e => e.Description),
 
                 SqlHelpers.CreateUniqueConstraint<ScenarioResource>("ScenarioResources", e => e.ScenarioId, e => e.FileName)
             };

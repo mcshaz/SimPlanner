@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace SP.Dto
 {
-    [MetadataType(typeof(ManequinMetadata))]
-    public class ManequinDto
+    [MetadataType(typeof(ManikinMetadata))]
+    public class ManikinDto
 	{
         public Guid Id { get; set; }
 
@@ -27,10 +27,10 @@ namespace SP.Dto
 
         public virtual DepartmentDto Department { get; set; }
 
-        public virtual ManequinModelDto Model { get; set; }
+        public virtual ManikinModelDto Model { get; set; }
 
-        public virtual ICollection<ManequinServiceDto> ManequinServices { get; set; }
+        public virtual ICollection<ManikinServiceDto> ManikinServices { get; set; }
 
-        public virtual ICollection<CourseSlotManequinDto> CourseSlotManequins { get; set; }
+        public virtual ICollection<CourseSlotManikinDto> CourseSlotManikins { get; set; }
     }
 }

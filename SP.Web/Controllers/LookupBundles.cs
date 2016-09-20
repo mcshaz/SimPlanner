@@ -15,8 +15,8 @@ namespace SP.Web.Controllers
         public IEnumerable<CourseTypeDto> CourseTypes { get; set; }
         public IEnumerable<InstitutionDto> Institutions { get; set; }
         public IEnumerable<ProfessionalRoleDto> ProfessionalRoles { get; set; }
-        public IEnumerable<ManequinManufacturerDto> ManequinManufacturers {get; set;}
-        public IEnumerable<ManequinDto> Manequins { get; set; }
+        public IEnumerable<ManikinManufacturerDto> ManikinManufacturers {get; set;}
+        public IEnumerable<ManikinDto> Manikins { get; set; }
     }
 
 }

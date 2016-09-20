@@ -7,13 +7,13 @@ namespace SP.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class manequinDepartmentFK : IMigrationMetadata
+    public sealed partial class manikinDepartmentFK : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(manequinDepartmentFK));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(manikinDepartmentFK));
         
         string IMigrationMetadata.Id
         {
-            get { return "201605100331063_manequinDepartmentFK"; }
+            get { return "201605100331063_manikinDepartmentFK"; }
         }
         
         string IMigrationMetadata.Source

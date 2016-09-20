@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SP.Metadata
 {
-    public class ManequinServiceMetadata
+    public class ManikinServiceMetadata
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

@@ -18,7 +18,7 @@ namespace SP.Dto.Utilities
                         .Include("CourseFormat.CourseSlots.Activity.ActivityChoices")
                         .Include("CourseSlotScenarios")
                         .Include("CourseSlotPresenters")
-                        .Include("CourseSlotManequins")
+                        .Include("CourseSlotManikins")
                         .Include("CourseScenarioFacultyRoles")
                         .First(c=>c.Id == courseId);
         }
@@ -318,32 +318,34 @@ namespace SP.Dto.Utilities
         private static void InsertMergeFieldText(OpenXmlElement field, IList<string> listMembers)
         {
             var runs = new List<Run>(listMembers.Count);
-            OpenXmlLeafElement withNext = null;
+            var withNext = new List<OpenXmlLeafElement>();
             foreach (var m in listMembers)
             {
                 switch (m)
                 {
                     case "\n":
-                        withNext = new Break();
+                        withNext.Add(new Break());
                         break;
                     case "\t":
-                        withNext = new TabChar();
+                        withNext.Add(new TabChar());
                         break;
                     default:
                         var run = CreateSimpleTextRun(m);
-                        if (withNext!=null)
+                        if (withNext.Any())
                         {
-                            run.PrependChild(withNext);
-                            withNext = null;
+                            var t = run.ChildElements;
+                            run.RemoveAllChildren();
+                            run.Append(withNext.Concat(t));
+                            withNext.Clear();
                         }
                         runs.Add(run);
                         break;
                 }
             }
             //for now
-            if (withNext != null && runs.Count > 0)
+            if (withNext.Any() && runs.Count > 0)
             {
-                runs[runs.Count - 1].AppendChild(withNext);
+                runs[runs.Count - 1].Append(withNext);
             }
             var sf = field as SimpleField;
             if (sf != null)

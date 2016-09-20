@@ -18,7 +18,7 @@ namespace SP.Dto
         public string SecondaryColour { get; set; }
         public InstitutionDto Institution { get; set; }
         public virtual ICollection<CourseTypeDepartmentDto> CourseTypeDepartments { get; set; }
-        public virtual ICollection<ManequinDto> Manequins { get; set; }
+        public virtual ICollection<ManikinDto> Manikins { get; set; }
         public virtual ICollection<CourseDto> Courses { get; set; }
         public virtual ICollection<CourseDto> OutreachCourses { get; set; }
         public virtual ICollection<ScenarioDto> Scenarios { get; set; }

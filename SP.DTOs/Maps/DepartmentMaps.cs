@@ -27,7 +27,7 @@ namespace SP.Dto.Maps
                 SecondaryColour = m.SecondaryColour
                 //CourseTypes = null,
                 //Institution = m.Institution,
-                //Manequins = m.Manequins,
+                //Manikins = m.Manikins,
                 //Courses = m.Courses,
                 //Scenarios = m.Scenarios,
                 //Departments = null

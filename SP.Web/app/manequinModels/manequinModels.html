@@ -1,4 +1,4 @@
-﻿<section class="mainbar" ng-controller="manequinModels as vm">
+﻿<section class="mainbar" ng-controller="manikinModels as vm">
     <section class="matter">
         <div class="container">
             <button class="btn-link" ng-click="vm.editManufacturer('new')"><i class="fa fa-plus"></i> New Manufacturer</button>
@@ -7,7 +7,7 @@
                 <li ng-repeat="man in vm.manufacturers track by man.id">
                     <h3>{{man.name}} <button class="btn-link" ng-click="vm.editManufacturer(man)"><i class="fa fa-edit"></i></button></h3> 
                     <ul>
-                        <li ng-repeat="model in man.manequinModels track by model.id">
+                        <li ng-repeat="model in man.manikinModels track by model.id">
                             {{model.description}} 
                             <button class="btn-link" ng-click="vm.editModel(model)"><i class="fa fa-edit"></i></button>
                             <!--

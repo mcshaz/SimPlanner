@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SP.Dto
 {
-    [MetadataType(typeof(ManequinServiceMetadata))]
-    public class ManequinServiceDto
+    [MetadataType(typeof(ManikinServiceMetadata))]
+    public class ManikinServiceDto
     {
         public Guid Id { get; set; }
 
@@ -21,8 +21,8 @@ namespace SP.Dto
 
         public decimal ServiceCost { get; set; }
 
-        public Guid ManequinId { get; set; }
+        public Guid ManikinId { get; set; }
 
-        public virtual ManequinDto Manequin { get; set; }
+        public virtual ManikinDto Manikin { get; set; }
     }
 }

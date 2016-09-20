@@ -1,6 +1,6 @@
 ﻿(function () {
     'use strict';
-    var controllerId = 'manequin';
+    var controllerId = 'manikin';
     angular
         .module('app')
         .controller(controllerId, courseTypesCtrl);
@@ -13,14 +13,14 @@
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: 'manequin',
+            watchedEntityNames: 'manikin',
             $scope: $scope
         })
         var id = $routeParams.id;
         var isNew = id == 'new';
 
         vm.departments = [];
-        vm.manequin = {};
+        vm.manikin = {};
         vm.minDate = new Date(1998, 0);
         vm.maxDate = new Date();
         vm.models = [];
@@ -35,21 +35,21 @@
                     vm.departments = data;
                 });
                 if (!isNew) {
-                    datacontext.manequins.fetchByKey(id).then(function (data) {
-                        vm.manequin = data;
-                        if (!vm.manequin) {
-                            vm.log.warning('Could not find manequin id = ' + id);
+                    datacontext.manikins.fetchByKey(id).then(function (data) {
+                        vm.manikin = data;
+                        if (!vm.manikin) {
+                            vm.log.warning('Could not find manikin id = ' + id);
                             return;
                             //gotoCourses();
                         }
                         getIsoCurrency()
                     });
                 }
-            }), datacontext.manequinModels.all().then(function(data){
+            }), datacontext.manikinModels.all().then(function(data){
                 vm.models = data;
             })];
             if (isNew) {
-                vm.manequin = datacontext.manequins.create();
+                vm.manikin = datacontext.manikins.create();
             } 
             common.activateController(promises, controllerId)
                 .then(function () {
@@ -59,7 +59,7 @@
         }
 
         function getIsoCurrency() {
-            var cultureCode = vm.manequin && vm.manequin.department.institution.localeCode;
+            var cultureCode = vm.manikin && vm.manikin.department.institution.localeCode;
             if (cultureCode) {
                 $http({ method: 'GET', url: 'api/utilities/currencyInfo/' + cultureCode }).then(function (response) {
                     vm.isoCurrency = response.data;

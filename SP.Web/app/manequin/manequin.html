@@ -1,4 +1,4 @@
-﻿<section id="course-view" class="mainbar" data-ng-controller="manequin as vm">
+﻿<section id="course-view" class="mainbar" data-ng-controller="manikin as vm">
     <section class="matter">
         <div class="container col-md-12">
             <form class="form-horizontal" ng-submit="vm.save($event)" id="courseForm">
@@ -8,14 +8,14 @@
 					<div class="form-group">
 						<label for="description" class="col-md-2 control-label">Description</label>
 						<div class="col-md-10">
-							<input type="text" id="description" class="form-control" ng-model="vm.manequin.description" z-validate/>
+							<input type="text" id="description" class="form-control" ng-model="vm.manikin.description" z-validate/>
 						</div>
 					</div>
 			
 					<div class="form-group">
 						<label for="departmentId" class="col-md-2 control-label">Owner</label>
 						<div class="col-md-10">
-							<select id="departmentId" class="form-control" data-z-validate data-ng-model="vm.manequin.department" data-ng-options="d as d.name for d in vm.departments">
+							<select id="departmentId" class="form-control" data-z-validate data-ng-model="vm.manikin.department" data-ng-options="d as d.name for d in vm.departments">
 								<option disabled selected hidden value="">
 									Select Department...
 								</option>
@@ -26,9 +26,9 @@
 					<div class="form-group">
 						<label for="modelId" class="col-md-2 control-label">Model</label>
 						<div class="col-md-10">
-							<select id="modelId" class="form-control" data-z-validate data-ng-model="vm.manequin.model" data-ng-options="m as m.description for m in vm.models">
+							<select id="modelId" class="form-control" data-z-validate data-ng-model="vm.manikin.model" data-ng-options="m as m.description for m in vm.models">
 								<option disabled selected hidden value="">
-									Select Manequin Model...
+									Select Manikin Model...
 								</option>
 							</select>
 						</div>
@@ -38,7 +38,7 @@
 						<label for="purchasedNew" class="col-md-2 control-label">Purchased New</label>
 						<div class="col-md-10">
 							<div class="checkbox">
-								<input type="checkbox" id="purchasedNew" ng-model="vm.manequin.purchasedNew" z-validate/>
+								<input type="checkbox" id="purchasedNew" ng-model="vm.manikin.purchasedNew" z-validate/>
 							</div>
 						</div>
 					</div>
@@ -53,7 +53,7 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </span>
-                                <input id="purchaseDate" class="form-control" ng-model="vm.manequin.purchaseDate" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
+                                <input id="purchaseDate" class="form-control" ng-model="vm.manikin.purchaseDate" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
                                         data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" />
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                                 <span class="input-group-addon">
                                     <strong>{{vm.currencySymbol}}</strong><small class="small">{{vm.isoCurrency}}</small>
                                 </span>
-                                <input type="text" id="localCurrencyPurchasePrice" class="form-control" ng-model="vm.manequin.localCurrencyPurchasePrice" z-validate />
+                                <input type="text" id="localCurrencyPurchasePrice" class="form-control" ng-model="vm.manikin.localCurrencyPurchasePrice" z-validate />
                             </div>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </span>
-                                <input id="decommissionDate" class="form-control" ng-model="vm.manequin.decommissionDate" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
+                                <input id="decommissionDate" class="form-control" ng-model="vm.manikin.decommissionDate" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
                                         data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" />
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                     <div class="form-group">
                         <label for="decommissionReason" class="col-md-2 control-label">Decommission Reason</label>
                         <div class="col-md-10">
-                            <textarea id="decommissionReason" class="form-control" ng-model="vm.manequin.decommissionReason" z-validate />
+                            <textarea id="decommissionReason" class="form-control" ng-model="vm.manikin.decommissionReason" z-validate />
                         </div>
                     </div>
 

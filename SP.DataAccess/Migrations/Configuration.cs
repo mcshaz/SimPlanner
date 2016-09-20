@@ -68,16 +68,16 @@ namespace SP.DataAccess.Migrations
                 }
 
                 context.SaveChanges();
-                var laerdal = new ManequinManufacturer { Id = Guid.NewGuid(), Name = "Laerdal" };
-                context.ManequinManufacturers.Add(laerdal);
-                var junior = new ManequinModel { Id = Guid.NewGuid(), Description = "Sim Junior", Manufacturer = laerdal };
-                var man = new ManequinModel { Id = Guid.NewGuid(), Description = "Sim Man", Manufacturer = laerdal };
-                var baby = new ManequinModel { Id = Guid.NewGuid(), Description = "Sim Baby", Manufacturer = laerdal };
-                var newbie = new ManequinModel { Id = Guid.NewGuid(), Description = "Sim Newborn", Manufacturer = laerdal };
-                context.ManequinModels.AddRange(new[] { junior, man, baby, newbie });
+                var laerdal = new ManikinManufacturer { Id = Guid.NewGuid(), Name = "Laerdal" };
+                context.ManikinManufacturers.Add(laerdal);
+                var junior = new ManikinModel { Id = Guid.NewGuid(), Description = "Sim Junior", Manufacturer = laerdal };
+                var man = new ManikinModel { Id = Guid.NewGuid(), Description = "Sim Man", Manufacturer = laerdal };
+                var baby = new ManikinModel { Id = Guid.NewGuid(), Description = "Sim Baby", Manufacturer = laerdal };
+                var newbie = new ManikinModel { Id = Guid.NewGuid(), Description = "Sim Newborn", Manufacturer = laerdal };
+                context.ManikinModels.AddRange(new[] { junior, man, baby, newbie });
 
-                var cedJunior = new Manequin { Id = Guid.NewGuid(), Department = ced, Description = "'burnie'", Model = junior, PurchasedNew = true };
-                context.Manequins.Add(cedJunior);
+                var cedJunior = new Manikin { Id = Guid.NewGuid(), Department = ced, Description = "'burnie'", Model = junior, PurchasedNew = true };
+                context.Manikins.Add(cedJunior);
                 var crm = new CourseType { Id = Guid.NewGuid(), Abbreviation = "CRM", Description = "Crisis Resourse Managment", EmersionCategory = Emersion.Emersive, CourseTypeScenarioRoles = new List<CourseTypeScenarioRole>() };
                 context.CourseTypes.Add(crm);
 

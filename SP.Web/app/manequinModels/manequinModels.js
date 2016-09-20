@@ -1,6 +1,6 @@
 ﻿(function () {
     'use strict';
-    var controllerId = 'manequinModels';
+    var controllerId = 'manikinModels';
     angular
         .module('app')
         .controller(controllerId, controller);
@@ -22,11 +22,11 @@
         function activate() {
             datacontext.ready().then(function () {
                 common.activateController([
-                    datacontext.manequinManufacturers.all({ expand: ['manequinModels'] }).then(function (data) {
+                    datacontext.manikinManufacturers.all({ expand: ['manikinModels'] }).then(function (data) {
                         data.sort(common.sortOnPropertyName('name'));
                         vm.manufacturers = data;
                         data.forEach(function (el) {
-                            el.manequinModels.sort(common.sortOnPropertyName('description'));
+                            el.manikinModels.sort(common.sortOnPropertyName('description'));
                         });
                     })], controllerId).then(function () {
                         log('Activated Course Participant Dialog');
@@ -37,7 +37,7 @@
         function editManufacturer(man) {
             var modal = getManModalInstance();
             modal.$scope.manufacturer = man === 'new'
-                ? datacontext.manequinManufacturers.create()
+                ? datacontext.manikinManufacturers.create()
                 : man;
             modal.$promise.then(modal.show);
         };
@@ -45,7 +45,7 @@
         function editModel(model) {
             var modal = getModelModalInstance();
             modal.$scope.model = model === 'new'
-                ? datacontext.manequinModels.create()
+                ? datacontext.manikinModels.create()
                 : model;
             modal.$promise.then(modal.show);
         };
@@ -56,8 +56,8 @@
             if (!_manModalInstance) {
                 var modalScope = $scope.$new();
                 _manModalInstance = $modal({
-                    templateUrl: 'app/manequinModels/manequinManufacturer.html',
-                    controller: 'manequinManufacturer',
+                    templateUrl: 'app/manikinModels/manikinManufacturer.html',
+                    controller: 'manikinManufacturer',
                     show: false,
                     id: 'manufacturerModal',
                     scope: modalScope,
@@ -80,8 +80,8 @@
             if (!_modelModalInstance) {
                 var modalScope = $scope.$new();
                 _modelModalInstance = $modal({
-                    templateUrl: 'app/manequinModels/manequinModel.html',
-                    controller: 'manequinModel',
+                    templateUrl: 'app/manikinModels/manikinModel.html',
+                    controller: 'manikinModel',
                     show: false,
                     id: 'modelModal',
                     scope: modalScope,

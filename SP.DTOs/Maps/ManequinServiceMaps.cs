@@ -1,12 +1,13 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
-    internal class ManequinServiceMaps: DomainDtoMap<ManequinService, ManequinServiceDto>
+    internal class ManikinServiceMaps: DomainDtoMap<ManikinService, ManikinServiceDto>
     {
-        public ManequinServiceMaps() : base(m => new ManequinService
+        public ManikinServiceMaps() : base(m => new ManikinService
             {
                 Id = m.Id,
-                ManequinId = m.Id,
+                ManikinId = m.Id,
                 PriceEstimate =m.PriceEstimate,
                 ProblemDescription =m.ProblemDescription,
                 Sent =m.Sent,
@@ -14,10 +15,10 @@ using SP.DataAccess;
                 ServiceCost =m.ServiceCost,
                 ServicedInternally =m.ServicedInternally
             },
-            m => new ManequinServiceDto
+            m => new ManikinServiceDto
             {
                 Id = m.Id,
-                ManequinId = m.Id,
+                ManikinId = m.Id,
                 PriceEstimate = m.PriceEstimate,
                 ProblemDescription = m.ProblemDescription,
                 Sent = m.Sent,

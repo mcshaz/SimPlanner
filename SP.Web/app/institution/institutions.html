@@ -21,10 +21,10 @@
                                     <h5>{{d.name}} <a class="btn-link small" ng-href="#/department/{{d.id}}"><i class="fa fa-edit"></i></a></h5>
                                     <ul>
                                         <li class="list-unstyled">
-                                            <h6>Manequins <a class="btn-link small" ng-href="#/manequin/new?departmentId={{d.id}}">(<i class="fa fa-plus"></i> New Manequin)</a></h6>
+                                            <h6>Manikins <a class="btn-link small" ng-href="#/manikin/new?departmentId={{d.id}}">(<i class="fa fa-plus"></i> New Manikin)</a></h6>
                                             <ul>
-                                                <li ng-repeat="m in d.manequins track by m.id">
-                                                    {{m.description}} <a class="btn-link" ng-href="#/manequin/{{m.id}}"><i class="fa fa-edit"></i></a>
+                                                <li ng-repeat="m in d.manikins track by m.id">
+                                                    {{m.description}} <a class="btn-link" ng-href="#/manikin/{{m.id}}"><i class="fa fa-edit"></i></a>
                                                 </li>
                                             </ul>
                                         </li>

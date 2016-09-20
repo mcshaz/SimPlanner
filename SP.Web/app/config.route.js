@@ -159,13 +159,13 @@
                         }
                     }
                 }, {
-                    url: '/manequinModels',
+                    url: '/manikinModels',
                     config: {
-                        title: 'Manequin Models',
-                        templateUrl: 'app/manequinModels/manequinModels.html',
+                        title: 'Manikin Models',
+                        templateUrl: 'app/manikinModels/manikinModels.html',
                         settings: {
                             nav: 8,
-                            content: 'Manequin Models' //<i class="fa fa-"></i> 
+                            content: 'Manikin Models' //<i class="fa fa-"></i> 
                         },
                         access: {
                             allowedRoles: userRoles.all
@@ -181,10 +181,10 @@
                         }
                     }
                 }, {
-                    url: '/manequin/:id',
+                    url: '/manikin/:id',
                     config: {
-                        title: 'Manequin',
-                        templateUrl: 'app/manequin/manequin.html',
+                        title: 'Manikin',
+                        templateUrl: 'app/manikin/manikin.html',
                         access: {
                             allowedRoles: userRoles.all
                         }

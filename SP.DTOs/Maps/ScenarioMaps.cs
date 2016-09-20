@@ -14,7 +14,7 @@ namespace SP.Dto.Maps
                 EmersionCategory = m.EmersionCategory,
                 CourseTypeId = m.CourseTypeId,
                 Access = m.Access
-                //Manequin = m.Manequin,
+                //Manikin = m.Manikin,
                 //CourseType = m.CourseType,
                 //Department = m.Department,
                 //Courses = m.Courses,
@@ -31,7 +31,7 @@ namespace SP.Dto.Maps
                 EmersionCategory = m.EmersionCategory,
                 CourseTypeId = m.CourseTypeId,
                 Access = m.Access
-                //Manequin = m.Manequin,
+                //Manikin = m.Manikin,
                 //CourseType = m.CourseType,
                 //Department = m.Department,
                 //Courses = m.Courses,

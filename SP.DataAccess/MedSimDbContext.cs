@@ -31,7 +31,7 @@ namespace SP.DataAccess
         public virtual DbSet<CourseParticipant> CourseParticipants { get; set; } 
         public virtual DbSet<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
         public virtual DbSet<CourseSlot> CourseSlots { get; set; }
-        public virtual DbSet<CourseSlotManequin> CourseSlotManequins { get; set; }
+        public virtual DbSet<CourseSlotManikin> CourseSlotManikins { get; set; }
         public virtual DbSet<CourseSlotPresenter> CourseSlotPresenters { get; set; }
         public virtual DbSet<CourseSlotScenario> CourseSlotScenarios { get; set; }
         public virtual DbSet<CourseType> CourseTypes { get; set; }
@@ -40,10 +40,10 @@ namespace SP.DataAccess
         public virtual DbSet<FacultyScenarioRole> FacultyScenarioRoles { get; set; }
         public virtual DbSet<HotDrink> HotDrinks { get; set; }
         public virtual DbSet<Institution> Institutions { get; set; }
-        public virtual DbSet<Manequin> Manequins { get; set; }
-        public virtual DbSet<ManequinManufacturer> ManequinManufacturers { get; set; }
-        public virtual DbSet<ManequinModel> ManequinModels { get; set; }
-        public virtual DbSet<ManequinService> ManequinServices { get; set; }
+        public virtual DbSet<Manikin> Manikins { get; set; }
+        public virtual DbSet<ManikinManufacturer> ManikinManufacturers { get; set; }
+        public virtual DbSet<ManikinModel> ManikinModels { get; set; }
+        public virtual DbSet<ManikinService> ManikinServices { get; set; }
         public virtual DbSet<ProfessionalRole> ProfessionalRoles { get; set; }
         public virtual DbSet<ProfessionalRoleInstitution> ProfessionalRoleInstitutions { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
@@ -115,7 +115,7 @@ namespace SP.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Course>()
-                .HasMany(e => e.CourseSlotManequins)
+                .HasMany(e => e.CourseSlotManikins)
                 .WithRequired(e => e.Course)
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);
@@ -187,7 +187,7 @@ namespace SP.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseSlot>()
-                .HasMany(e => e.CourseSlotManequins)
+                .HasMany(e => e.CourseSlotManikins)
                 .WithRequired(e => e.CourseSlot)
                 .HasForeignKey(e => e.CourseSlotId)
                 .WillCascadeOnDelete(false);
@@ -272,7 +272,7 @@ namespace SP.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Department>()
-                .HasMany(e => e.Manequins)
+                .HasMany(e => e.Manikins)
                 .WithRequired(e => e.Department)
                 .HasForeignKey(e => e.DepartmentId)
                 .WillCascadeOnDelete(false);
@@ -310,26 +310,26 @@ namespace SP.DataAccess
                 .WithRequired(e => e.Institution)
                 .HasForeignKey(e => e.InstitutionId);
 
-            modelBuilder.Entity<Manequin>()
-                .HasMany(e => e.ManequinServices)
-                .WithRequired(e => e.Manequin)
-                .HasForeignKey(e => e.ManequinId)
+            modelBuilder.Entity<Manikin>()
+                .HasMany(e => e.ManikinServices)
+                .WithRequired(e => e.Manikin)
+                .HasForeignKey(e => e.ManikinId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Manequin>()
-                .HasMany(e => e.CourseSlotManequins)
-                .WithRequired(e => e.Manequin)
-                .HasForeignKey(e => e.ManequinId)
+            modelBuilder.Entity<Manikin>()
+                .HasMany(e => e.CourseSlotManikins)
+                .WithRequired(e => e.Manikin)
+                .HasForeignKey(e => e.ManikinId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<ManequinManufacturer>()
-                .HasMany(e => e.ManequinModels)
+            modelBuilder.Entity<ManikinManufacturer>()
+                .HasMany(e => e.ManikinModels)
                 .WithRequired(e => e.Manufacturer)
                 .HasForeignKey(e => e.ManufacturerId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<ManequinModel>()
-                .HasMany(e => e.Manequins)
+            modelBuilder.Entity<ManikinModel>()
+                .HasMany(e => e.Manikins)
                 .WithRequired(e => e.Model)
                 .HasForeignKey(e => e.ModelId)
                 .WillCascadeOnDelete(false);

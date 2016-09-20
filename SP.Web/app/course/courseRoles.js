@@ -25,14 +25,14 @@
         activate();
 
         function activate() {
-            var manequins = [];
+            var manikins = [];
             datacontext.ready().then(function () {
                 common.activateController([datacontext.courses.fetchByKey(id, {
                     expand: ['courseParticipants.participant',
                         'courseFormat.courseSlots.activity.activityChoices',
                         'courseSlotScenarios',
                         'courseSlotPresenters',
-                        'courseSlotManequins',
+                        'courseSlotManikins',
                         'courseScenarioFacultyRoles',
                         'chosenTeachingResources',
                         'department.scenarios',
@@ -122,7 +122,7 @@
                             name: 'Simulation',
                             scenario: (data.courseSlotScenarios.find(isThisSlot) || {}).scenario,
                             isSim: true,
-                            courseSlotManequins: data.courseSlotManequins,
+                            courseSlotManikins: data.courseSlotManikins,
                             roles: data.courseFormat.courseType.courseTypeScenarioRoles.map(function (ctsr) {
                                 var assignedFaculty = [];
                                 slotRoles.forEach(function (sr) {
@@ -159,39 +159,39 @@
                         return returnVar;
                     });
                     vm.notifyViewModelLoaded();
-                }), datacontext.manequins.all().then(function (data) {
+                }), datacontext.manikins.all().then(function (data) {
                     var departmentName;
                     data.sort(common.sortOnChildPropertyName('department', 'name'));
                     data.forEach(function (el) {
                         if (departmentName !== el.department.name) {
-                            manequins.push({
+                            manikins.push({
                                 description: departmentName = el.department.name,
                                 isGroup:true
                             });
                         }
-                        manequins.push(el);
+                        manikins.push(el);
                     });
                 })], controllerId).then(function () {
                     vm.map.forEach(function (el, indx) {
-                        if (el.courseSlotManequins) {
-                            el.manequins = manequins.map(function (m) {
+                        if (el.courseSlotManikins) {
+                            el.manikins = manikins.map(function (m) {
                                 return m.isGroup
                                     ? m
                                     : {
-                                        checked: el.courseSlotManequins.some(function (cs) {
-                                            return cs.manequinId === m.id;
+                                        checked: el.courseSlotManikins.some(function (cs) {
+                                            return cs.manikinId === m.id;
                                         }),
                                         description: m.description,
                                         id: m.id
                                     };
                             });
-                            el.selectedManequins = el.manequins.filter(function (m) { return m.checked; });
+                            el.selectedManikins = el.manikins.filter(function (m) { return m.checked; });
                             $scope.$watchCollection(function () {
-                                return el.selectedManequins;
-                            }, common.manageCollectionChange(datacontext.courseSlotManequins, 'id',
+                                return el.selectedManikins;
+                            }, common.manageCollectionChange(datacontext.courseSlotManikins, 'id',
                                 function (member) {
                                     return {
-                                        manequinId: member.id,
+                                        manikinId: member.id,
                                         courseSlotId: vm.map[indx].id,//slight hack because the collection is replaced by the isteven multiselect - not really sure why this works, but otherwise digest in progress error on change
                                         courseId: vm.course.id
                                     };

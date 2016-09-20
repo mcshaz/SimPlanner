@@ -5,8 +5,8 @@ namespace SP.DataAccess
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    [MetadataType(typeof(ManequinMetadata))]
-    public partial class Manequin
+    [MetadataType(typeof(ManikinMetadata))]
+    public partial class Manikin
     {
         public Guid Id { get; set; }
 
@@ -28,12 +28,12 @@ namespace SP.DataAccess
 
         public virtual Department Department { get; set; }
 
-        public virtual ManequinModel Model { get; set; }
+        public virtual ManikinModel Model { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ManequinService> ManequinServices { get; set; }
+        public virtual ICollection<ManikinService> ManikinServices { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseSlotManequin> CourseSlotManequins { get; set; }
+        public virtual ICollection<CourseSlotManikin> CourseSlotManikins { get; set; }
     }
 }

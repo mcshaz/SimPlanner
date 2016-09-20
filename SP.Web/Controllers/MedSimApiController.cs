@@ -69,9 +69,9 @@ namespace SP.Web.Controllers
         [HttpGet]
 		public IQueryable<FacultyScenarioRoleDto> SenarioRoles(){ return Repo.SenarioRoles; } 
         [HttpGet]
-		public IQueryable<ManequinDto> Manequins(){ return Repo.Manequins; }
+		public IQueryable<ManikinDto> Manikins(){ return Repo.Manikins; }
         [HttpGet]
-        public IQueryable<ManequinModelDto> ManequinModels() { return Repo.ManequinModels; }
+        public IQueryable<ManikinModelDto> ManikinModels() { return Repo.ManikinModels; }
         [HttpGet]
 		public IQueryable<ProfessionalRoleDto> ProfessionalRoles(){ return Repo.ProfessionalRoles; }
         [HttpGet]
@@ -199,11 +199,11 @@ namespace SP.Web.Controllers
         {
             return new LookupBundle
             {
-                Institutions = Repo.GetInstitutions(includes: new[] { "Departments.Rooms", "ProfessionalRoleInstitutions.ProfessionalRole", "Culture", "Departments.Manequins" }).ToList(),
+                Institutions = Repo.GetInstitutions(includes: new[] { "Departments.Rooms", "ProfessionalRoleInstitutions.ProfessionalRole", "Culture", "Departments.Manikins" }).ToList(),
                 CourseTypes = Repo.GetCourseTypes(includes: new[] { "CourseFormats" }).ToList(),
                 ProfessionalRoles = Repo.ProfessionalRoles.ToList(),
-                ManequinManufacturers = Repo.ManequinManufacturers.ToList(),
-                Manequins = Repo.Manequins.ToList()
+                ManikinManufacturers = Repo.ManikinManufacturers.ToList(),
+                Manikins = Repo.Manikins.ToList()
             };
         }
         

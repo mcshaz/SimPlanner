@@ -347,7 +347,7 @@ namespace SP.DataAccess.Migrations
                 .Index(t => t.RoleId);
             
             CreateTable(
-                "dbo.Manequins",
+                "dbo.Manikins",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
@@ -362,29 +362,29 @@ namespace SP.DataAccess.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Departments", t => t.DepartmentId)
-                .ForeignKey("dbo.ManequinModels", t => t.ModelId)
+                .ForeignKey("dbo.ManikinModels", t => t.ModelId)
                 .Index(t => t.DepartmentId)
                 .Index(t => t.ModelId);
             
             CreateTable(
-                "dbo.CourseSlotManequins",
+                "dbo.CourseSlotManikins",
                 c => new
                     {
                         CourseId = c.Guid(nullable: false),
                         CourseSlotId = c.Guid(nullable: false),
-                        ManequinId = c.Guid(nullable: false),
+                        ManikinId = c.Guid(nullable: false),
                         StreamNumber = c.Byte(nullable: false),
                     })
-                .PrimaryKey(t => new { t.CourseId, t.CourseSlotId, t.ManequinId })
-                .ForeignKey("dbo.Manequins", t => t.ManequinId)
+                .PrimaryKey(t => new { t.CourseId, t.CourseSlotId, t.ManikinId })
+                .ForeignKey("dbo.Manikins", t => t.ManikinId)
                 .ForeignKey("dbo.CourseSlots", t => t.CourseSlotId)
                 .ForeignKey("dbo.Courses", t => t.CourseId)
                 .Index(t => t.CourseId)
                 .Index(t => t.CourseSlotId)
-                .Index(t => t.ManequinId);
+                .Index(t => t.ManikinId);
             
             CreateTable(
-                "dbo.ManequinServices",
+                "dbo.ManikinServices",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
@@ -394,14 +394,14 @@ namespace SP.DataAccess.Migrations
                         Returned = c.DateTime(storeType: "date"),
                         PriceEstimate = c.Decimal(storeType: "money"),
                         ServiceCost = c.Decimal(nullable: false, storeType: "money"),
-                        ManequinId = c.Guid(nullable: false),
+                        ManikinId = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Manequins", t => t.ManequinId)
-                .Index(t => t.ManequinId);
+                .ForeignKey("dbo.Manikins", t => t.ManikinId)
+                .Index(t => t.ManikinId);
             
             CreateTable(
-                "dbo.ManequinModels",
+                "dbo.ManikinModels",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
@@ -409,11 +409,11 @@ namespace SP.DataAccess.Migrations
                         ManufacturerId = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ManequinManufacturers", t => t.ManufacturerId)
+                .ForeignKey("dbo.ManikinManufacturers", t => t.ManufacturerId)
                 .Index(t => t.ManufacturerId);
             
             CreateTable(
-                "dbo.ManequinManufacturers",
+                "dbo.ManikinManufacturers",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
@@ -502,13 +502,13 @@ namespace SP.DataAccess.Migrations
             DropForeignKey("dbo.ChosenTeachingResources", "ActivityTeachingResourceId", "dbo.ActivityTeachingResources");
             DropForeignKey("dbo.CourseSlotScenarios", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.CourseSlotPresenters", "CourseId", "dbo.Courses");
-            DropForeignKey("dbo.CourseSlotManequins", "CourseId", "dbo.Courses");
+            DropForeignKey("dbo.CourseSlotManikins", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.CourseScenarioFacultyRoles", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.CourseParticipants", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.CourseSlots", "CourseFormatId", "dbo.CourseFormats");
             DropForeignKey("dbo.CourseSlotScenarios", "CourseSlotId", "dbo.CourseSlots");
             DropForeignKey("dbo.CourseSlotPresenters", "CourseSlotId", "dbo.CourseSlots");
-            DropForeignKey("dbo.CourseSlotManequins", "CourseSlotId", "dbo.CourseSlots");
+            DropForeignKey("dbo.CourseSlotManikins", "CourseSlotId", "dbo.CourseSlots");
             DropForeignKey("dbo.CourseScenarioFacultyRoles", "CourseSlotId", "dbo.CourseSlots");
             DropForeignKey("dbo.ChosenTeachingResources", "CourseSlotId", "dbo.CourseSlots");
             DropForeignKey("dbo.Scenarios", "CourseTypeId", "dbo.CourseTypes");
@@ -522,11 +522,11 @@ namespace SP.DataAccess.Migrations
             DropForeignKey("dbo.Courses", "RoomId", "dbo.Rooms");
             DropForeignKey("dbo.AspNetUsers", "DefaultDepartmentId", "dbo.Departments");
             DropForeignKey("dbo.Courses", "OutreachingDepartmentId", "dbo.Departments");
-            DropForeignKey("dbo.ManequinModels", "ManufacturerId", "dbo.ManequinManufacturers");
-            DropForeignKey("dbo.Manequins", "ModelId", "dbo.ManequinModels");
-            DropForeignKey("dbo.ManequinServices", "ManequinId", "dbo.Manequins");
-            DropForeignKey("dbo.Manequins", "DepartmentId", "dbo.Departments");
-            DropForeignKey("dbo.CourseSlotManequins", "ManequinId", "dbo.Manequins");
+            DropForeignKey("dbo.ManikinModels", "ManufacturerId", "dbo.ManikinManufacturers");
+            DropForeignKey("dbo.Manikins", "ModelId", "dbo.ManikinModels");
+            DropForeignKey("dbo.ManikinServices", "ManikinId", "dbo.Manikins");
+            DropForeignKey("dbo.Manikins", "DepartmentId", "dbo.Departments");
+            DropForeignKey("dbo.CourseSlotManikins", "ManikinId", "dbo.Manikins");
             DropForeignKey("dbo.CourseTypeDepartments", "DepartmentId", "dbo.Departments");
             DropForeignKey("dbo.Courses", "DepartmentId", "dbo.Departments");
             DropForeignKey("dbo.CourseParticipants", "DepartmentId", "dbo.Departments");
@@ -559,13 +559,13 @@ namespace SP.DataAccess.Migrations
             DropIndex("dbo.Scenarios", new[] { "DepartmentId" });
             DropIndex("dbo.Scenarios", new[] { "CourseTypeId" });
             DropIndex("dbo.Rooms", new[] { "DepartmentId" });
-            DropIndex("dbo.ManequinModels", new[] { "ManufacturerId" });
-            DropIndex("dbo.ManequinServices", new[] { "ManequinId" });
-            DropIndex("dbo.CourseSlotManequins", new[] { "ManequinId" });
-            DropIndex("dbo.CourseSlotManequins", new[] { "CourseSlotId" });
-            DropIndex("dbo.CourseSlotManequins", new[] { "CourseId" });
-            DropIndex("dbo.Manequins", new[] { "ModelId" });
-            DropIndex("dbo.Manequins", new[] { "DepartmentId" });
+            DropIndex("dbo.ManikinModels", new[] { "ManufacturerId" });
+            DropIndex("dbo.ManikinServices", new[] { "ManikinId" });
+            DropIndex("dbo.CourseSlotManikins", new[] { "ManikinId" });
+            DropIndex("dbo.CourseSlotManikins", new[] { "CourseSlotId" });
+            DropIndex("dbo.CourseSlotManikins", new[] { "CourseId" });
+            DropIndex("dbo.Manikins", new[] { "ModelId" });
+            DropIndex("dbo.Manikins", new[] { "DepartmentId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.Institutions", new[] { "LocaleCode" });
@@ -611,11 +611,11 @@ namespace SP.DataAccess.Migrations
             DropTable("dbo.CourseSlotScenarios");
             DropTable("dbo.Scenarios");
             DropTable("dbo.Rooms");
-            DropTable("dbo.ManequinManufacturers");
-            DropTable("dbo.ManequinModels");
-            DropTable("dbo.ManequinServices");
-            DropTable("dbo.CourseSlotManequins");
-            DropTable("dbo.Manequins");
+            DropTable("dbo.ManikinManufacturers");
+            DropTable("dbo.ManikinModels");
+            DropTable("dbo.ManikinServices");
+            DropTable("dbo.CourseSlotManikins");
+            DropTable("dbo.Manikins");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.Cultures");
             DropTable("dbo.Institutions");

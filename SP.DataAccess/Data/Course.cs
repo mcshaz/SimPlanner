@@ -100,7 +100,7 @@ namespace SP.DataAccess
         public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseSlotManequin> CourseSlotManequins { get; set; }
+        public virtual ICollection<CourseSlotManikin> CourseSlotManikins { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSlotScenario> CourseSlotScenarios { get; set; }

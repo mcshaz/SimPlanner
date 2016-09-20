@@ -1,9 +1,9 @@
 using SP.DataAccess;
 namespace SP.Dto.Maps
 {
-    internal class ManequinMaps: DomainDtoMap<Manequin, ManequinDto>
+    internal class ManikinMaps: DomainDtoMap<Manikin, ManikinDto>
     {
-        public ManequinMaps() : base(m => new Manequin
+        public ManikinMaps() : base(m => new Manikin
             {
                 Id = m.Id,
                 Description = m.Description,
@@ -15,7 +15,7 @@ using SP.DataAccess;
                 PurchasedNew = m.PurchasedNew,
                 LocalCurrencyPurchasePrice = m.LocalCurrencyPurchasePrice
             },
-            m => new ManequinDto
+            m => new ManikinDto
             {
                 Id = m.Id,
                 Description = m.Description,

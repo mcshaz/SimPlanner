@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SP.Metadata
 {
-    public class CourseSlotManequinMetadata
+    public class CourseSlotManikinMetadata
     {
         [Key]
         [Column(Order = 0)]
@@ -19,7 +19,7 @@ namespace SP.Metadata
         [Key]
         [Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid ManequinId { get; set; }
+        public Guid ManikinId { get; set; }
 
         [Range(0,CourseSlotMetadata.MaxStreams)]
         public byte StreamNumber { get; set; }

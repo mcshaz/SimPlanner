@@ -50,7 +50,7 @@
         self.courseParticipants = repository.create(self.provider, 'CourseParticipantDto', 'CourseParticipants'/* 'Courses' */);
         self.courseScenarioFacultyRoles = repository.create(self.provider, 'CourseScenarioFacultyRoleDto', 'CourseScenarioFacultyRoles'/* 'Courses' */);
         self.courseSlots = repository.create(self.provider, 'CourseSlotDto', 'CourseSlots'/* 'Courses' */);
-        self.courseSlotManequins = repository.create(self.provider, 'CourseSlotManequinDto', 'CourseSlotManequins'/* 'Courses' */);
+        self.courseSlotManikins = repository.create(self.provider, 'CourseSlotManikinDto', 'CourseSlotManikins'/* 'Courses' */);
         self.courseSlotScenarios = repository.create(self.provider, 'CourseSlotScenarioDto', 'CourseSlotScenarios'/* 'Courses' */);
         self.courseSlotPresenters = repository.create(self.provider, 'CourseSlotPresenterDto', 'CourseSlotPresenters'/* 'Courses' */);
         self.courseTypes = repository.create(self.provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);
@@ -60,9 +60,9 @@
         self.facultyScenarioRoles = repository.create(self.provider, 'FacultyScenarioRoleDto', 'FacultyScenarioRoles');
         self.hotDrinks = repository.create(self.provider, 'HotDrinkDto', 'HotDrinks');
         self.institutions = repository.create(self.provider, 'InstitutionDto', 'Institutions', breeze.FetchStrategy.FromLocalCache);
-        self.manequinManufacturers = repository.create(self.provider, 'ManequinManufacturerDto', 'ManequinManufacturers', breeze.FetchStrategy.FromLocalCache);
-        self.manequinModels = repository.create(self.provider, 'ManequinModelDto', 'ManequinModels');
-        self.manequins = repository.create(self.provider, 'ManequinDto', 'Manequins', breeze.FetchStrategy.FromLocalCache);
+        self.manikinManufacturers = repository.create(self.provider, 'ManikinManufacturerDto', 'ManikinManufacturers', breeze.FetchStrategy.FromLocalCache);
+        self.manikinModels = repository.create(self.provider, 'ManikinModelDto', 'ManikinModels');
+        self.manikins = repository.create(self.provider, 'ManikinDto', 'Manikins', breeze.FetchStrategy.FromLocalCache);
         self.participants = repository.create(self.provider, 'ParticipantDto', 'Participants');
         self.professionalRoleInstitutions = repository.create(self.provider, 'ProfessionalRoleInstitutionDto', 'ProfessionalRoleInstitutions');
         self.professionalRoles = repository.create(self.provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);
