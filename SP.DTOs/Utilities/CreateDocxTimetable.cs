@@ -115,108 +115,184 @@ namespace SP.Dto.Utilities
 
                 foreach (var mf in classifiedMergeFields[MergeClassification.General])
                 {
-                    IList<string> replaceVal;
+                    string replaceVal;
                     switch (mf.Key.Replace(".",string.Empty).Replace(" ", string.Empty))
                     {
                         case "CourseFormatDescription":
-                            replaceVal = new[] { course.CourseFormat.Description };
+                            replaceVal = course.CourseFormat.Description ;
                             break;
                         case "CourseStart":
-                            replaceVal = new[] { TimeZoneInfo.ConvertTimeFromUtc(course.StartUtc, tzi).ToString("D", prov) };
+                            replaceVal = TimeZoneInfo.ConvertTimeFromUtc(course.StartUtc, tzi).ToString("D", prov) ;
                             break;
                         case "CourseTypeAbbreviation":
-                            replaceVal = new[] { course.CourseFormat.CourseType.Abbreviation };
+                            replaceVal = course.CourseFormat.CourseType.Abbreviation ;
                             break;
                         case "CourseTypeDescription":
-                            replaceVal = new[] { course.CourseFormat.CourseType.Description };
+                            replaceVal = course.CourseFormat.CourseType.Description ;
+                            break;
+                        case "Version":
+                            replaceVal = course.EmailSequence.ToString() ;
                             break;
                         case "Department":
                         case "DepartmentAbbreviation":
-                            replaceVal = new[] { course.Department.Abbreviation };
+                            replaceVal = course.Department.Abbreviation ;
                             break;
                         case "DepartmentName":
-                            replaceVal = new[] { course.Department.Name };
+                            replaceVal = course.Department.Name ;
                             break;
                         case "Faculty":
-                            replaceVal = faculty[true].Select(cp => cp.Participant.FullName).ToList();
+                            replaceVal = string.Join("\t",faculty[true].Select(cp => cp.Participant.FullName));
                             break;
                         case "Institution":
                         case "InstitutionAbbreviation":
-                            replaceVal = new[] { course.Department.Institution.Abbreviation };
+                            replaceVal = course.Department.Institution.Abbreviation ;
                             break;
                         case "InstitutionName":
-                            replaceVal = new[] { course.Department.Institution.Name };
+                            replaceVal = course.Department.Institution.Name ;
                             break;
                         case "Participants":
-                            replaceVal = faculty[false].Select(cp => cp.Participant.FullName).ToList();
+                            replaceVal = string.Join("\t",faculty[false].Select(cp => cp.Participant.FullName));
                             break;
                         default:
-                            replaceVal = new[] { $"[Value Not Found - \'{ mf.Key }\']" };
+                            replaceVal = $"[Value Not Found - \'{ mf.Key }\']" ;
                             break;
                     }
                     foreach (var m in mf)
                     {
-                        if (replaceVal.Count == 1)
-                        {
-                            InsertMergeFieldText(m, replaceVal[0]);
-                        }
-                        else
-                        {
-                            InsertMergeFieldText(m, replaceVal);
-                        }
-                        
+                        InsertMergeFieldText(m, replaceVal);
                     }
                 }
 
                 //the first first() will be any of the elements starting with the name slot
                 //the second first is assuming each slot, eg slotStart only occurs once in the doc
                 //could at a later date come up with some fancy ancestors() to find matching subgroup
-                TableRow currentRow = classifiedMergeFields[MergeClassification.Slot].First().First().FindAncestor<TableRow>();
-                Table table = currentRow.FindAncestor<Table>();
-                TableRow rowClone = (TableRow)currentRow.CloneNode(true);
+                TableRow slotRow = classifiedMergeFields[MergeClassification.Slot].First().First().FindFirstAncestor<TableRow>();
                 var ttrs = GetTimeTableRows(course, tzi);
-                var lastRowIndx = ttrs.Count - 1;
 
-                for (int i = 0; i < ttrs.Count; i++)
+                CloneRows(slotRow, ttrs, (mergeFieldName, ttr) =>
                 {
-                    var ttr = ttrs[i];
-                    foreach (var sf in (new[] { currentRow }).GetMergeFieldDict())
+                    switch (mergeFieldName)
                     {
-                        string replaceVal;
-                        switch (sf.Key.Replace(" ",string.Empty).Replace(".",string.Empty))
-                        {
-                            case "SlotStart":
-                                replaceVal = ttr.LocalStart.ToString("t", prov);
-                                break;
-                            case "SlotActivity":
-                                replaceVal = ttr.SlotName;
-                                break;
-                            case "SlotFaculty":
-                                replaceVal = string.Join("\n", ttr.Faculty);
-                                break;
-                            default:
-                                replaceVal = $"[Value Not Found - \'{ sf.Key }\']";
-                                break;
-                        }
-                        foreach (var s in sf)
-                        {
-                            InsertMergeFieldText(s, replaceVal);
-                        }
+                        case "SlotStart":
+                            return ttr.LocalStart.ToString("t", prov);
+                        case "SlotActivity":
+                            return ttr.SlotName;
+                        case "SlotFaculty":
+                            return string.Join("\n", ttr.Faculty);
+                        default:
+                            return $"[Value Not Found - \'{ mergeFieldName }\']";
                     }
-                    if (i > 0)
-                    {
-                        table.AppendChild(currentRow);
-                    }
-                    if (i < lastRowIndx)
-                    {
-                        currentRow = (TableRow)rowClone.CloneNode(true);
-                    }
-                }
+                });
+
+                AddScenarios(mainPart, course);
+
                 return stream; 
             }
         }
 
-        private static T FindAncestor<T>(this OpenXmlElement element) where T : OpenXmlElement
+        private static void CloneRows<T>(TableRow row, IEnumerable<T> rowItemCollection, Func<string, T, string> withMergeField)
+        {
+            List<T> rowItemList = rowItemCollection as List<T>;
+            if (rowItemList == null)
+            {
+                rowItemList = rowItemCollection.ToList();
+            }
+            if (rowItemList.Count == 0)
+            {
+                row.Remove();
+                return;
+            }
+
+            Table table = row.FindFirstAncestor<Table>();
+
+            TableRow rowClone = (TableRow)row.CloneNode(true);
+
+            int lastRowIndex = rowItemList.Count - 1;
+            for (int i = 0; i < rowItemList.Count; i++)
+            {
+                foreach (var sf in (new[] { row }).GetMergeFieldDict())
+                {
+                    string replaceVal = withMergeField(sf.Key.Replace(" ", string.Empty).Replace(".", string.Empty), rowItemList[i]);
+                    foreach (var s in sf)
+                    {
+                        InsertMergeFieldText(s, replaceVal);
+                    }
+                }
+                if (i > 0)
+                {
+                    table.AppendChild(row);
+                }
+                if (i < lastRowIndex)
+                {
+                    row = (TableRow)rowClone.CloneNode(true);
+                }
+                else
+                {
+                    row = rowClone;
+                }
+            }
+        }
+
+        private static void AddScenarios(MainDocumentPart doc, Course course)
+        {
+            var firstParaWithSectionBreak = doc.RootElement.Descendants<Paragraph>()
+                .First(p => p.Descendants<SectionProperties>().Any());
+
+            var allScenarioEls = firstParaWithSectionBreak.Parent.ChildElements
+                .SkipWhile(c => c != firstParaWithSectionBreak)
+                .TakeWhile(c => c.GetType() != typeof(SectionProperties))
+                .ToList();
+
+            if (course.CourseSlotScenarios.Count == 0)
+            {
+                allScenarioEls.ForEach(e => e.Remove());
+                return;
+            }
+            var ScenarioElsClone = allScenarioEls.Select(e => e.CloneNode(true)).ToList();
+            var csss = course.CourseSlotScenarios.OrderBy(css => css.CourseSlot.Order).ToList();
+            var lastRowIndx = csss.Count - 1;
+
+            for (int i = 0; i < csss.Count; i++)
+            {
+                var css = csss[i];
+                var scenarioFields = allScenarioEls.GetMergeFieldDict();
+                foreach (var se in scenarioFields)
+                {
+                    string replaceVal;
+                    switch (se.Key.Replace(" ", string.Empty).Replace(".", string.Empty))
+                    {
+                        case "ScenarioNo":
+                            replaceVal = "Scenario " + (i + 1).ToString();
+                            break;
+                        case "ScenarioName":
+                        case "ScenarioBriefDescription":
+                            replaceVal = css.Scenario.BriefDescription;
+                            break;
+                        case "ScenarioFullDescription":
+                            replaceVal = css.Scenario.BriefDescription;
+                            break;
+                    }
+                }
+                TableRow scenarioRoleRow = scenarioFields.First(k => k.Key.StartsWith("ScenarioRole"))
+                    .First().FindFirstAncestor<TableRow>();
+
+                var roles = css.CourseSlot.CourseScenarioFacultyRoles.ToLookup(k=>k.FacultyScenarioRole);
+                CloneRows(scenarioRoleRow, roles, (mergeFieldName, role) =>
+                {
+                    switch (mergeFieldName)
+                    {
+                        case "ScenarioRole":
+                            return role.Key.Description;
+                        case "ScenarioRoleFaculty":
+                            return string.Join("\n", role.Select(r => r.Participant.FullName));
+                        default:
+                            return $"[Value Not Found - \'{ mergeFieldName }\']";
+                    }
+                });
+            }
+        }
+
+        private static T FindFirstAncestor<T>(this OpenXmlElement element) where T : OpenXmlElement
         {
             T found = null;
 
@@ -239,14 +315,37 @@ namespace SP.Dto.Utilities
             return returnVar;
         }
 
-        private static void InsertMergeFieldText(OpenXmlElement field, IEnumerable<string> listMembers)
+        private static void InsertMergeFieldText(OpenXmlElement field, IList<string> listMembers)
         {
-            var sf = field as SimpleField;
-            var runs = listMembers.Select(m => CreateSimpleTextRun(m)).ToList();
-            foreach (var r in runs.Skip(1))
+            var runs = new List<Run>(listMembers.Count);
+            OpenXmlLeafElement withNext = null;
+            foreach (var m in listMembers)
             {
-                r.InsertBefore(new TabChar(), r.GetFirstChild<Text>());
+                switch (m)
+                {
+                    case "\n":
+                        withNext = new Break();
+                        break;
+                    case "\t":
+                        withNext = new TabChar();
+                        break;
+                    default:
+                        var run = CreateSimpleTextRun(m);
+                        if (withNext!=null)
+                        {
+                            run.PrependChild(withNext);
+                            withNext = null;
+                        }
+                        runs.Add(run);
+                        break;
+                }
             }
+            //for now
+            if (withNext != null && runs.Count > 0)
+            {
+                runs[runs.Count - 1].AppendChild(withNext);
+            }
+            var sf = field as SimpleField;
             if (sf != null)
             {
                 sf.GetFirstChild<Run>().Remove();
@@ -274,29 +373,7 @@ namespace SP.Dto.Utilities
 
         private static void InsertMergeFieldText(OpenXmlElement field, string replacementText)
         {
-            var sf = field as SimpleField;
-            if (sf != null)
-            {
-                var textChildren = sf.Descendants<Text>();
-                textChildren.First().Text = replacementText;
-                foreach (var others in textChildren.Skip(1))
-                {
-                    others.Remove();
-                }
-            }
-            else
-            {
-                var runs = GetAssociatedRuns((FieldCode)field);
-                var rEnd = runs[runs.Count - 1];
-                foreach (var r in runs
-                    .SkipWhile(r => !r.ContainsCharType(FieldCharValues.Separate))
-                    .Skip(1)
-                    .TakeWhile(r=>r!= rEnd))
-                {
-                    r.Remove();
-                }
-                rEnd.InsertBeforeSelf(CreateSimpleTextRun(replacementText));
-            }
+            InsertMergeFieldText(field, replacementText.SplitAndInclude(new[] { '\t', '\n' }));
         }
 
         private static IList<Run> GetAssociatedRuns(FieldCode fieldCode)
