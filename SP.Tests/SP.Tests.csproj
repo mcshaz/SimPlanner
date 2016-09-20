@@ -157,6 +157,7 @@
     <Compile Include="MergingVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlHelperTests.cs" />
+    <Compile Include="TestDocxCreation.cs" />
     <Compile Include="TestSanitizer.cs" />
     <Compile Include="TestDtoRepo.cs" />
     <Compile Include="TestEntitities.cs" />

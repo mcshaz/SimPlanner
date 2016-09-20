@@ -125,5 +125,17 @@ namespace SP.Dto.Utilities
             }
             return i;
         }
+
+        public static int IndexWhere<T>(this IList<T> source, Func<T, bool> predicate)
+        {
+            for (int i=0; i<source.Count; i++)
+            {
+                if (predicate(source[i]))
+                {
+                    return i;
+                }
+            }
+            return - 1;
+        }
     }
 }
