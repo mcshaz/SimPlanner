@@ -40,7 +40,7 @@
                 ? datacontext.manikinManufacturers.create()
                 : man;
             modal.$promise.then(modal.show);
-        };
+        }
 
         function editModel(model) {
             var modal = getModelModalInstance();
@@ -48,7 +48,7 @@
                 ? datacontext.manikinModels.create()
                 : model;
             modal.$promise.then(modal.show);
-        };
+        }
 
 
         var _manModalInstance;
@@ -63,14 +63,14 @@
                     scope: modalScope,
                     controllerAs: 'man'
                 });
-                $scope.$on('$destroy', function () { _manModalInstance.destroy(); })
+                $scope.$on('$destroy', function () { _manModalInstance.destroy(); });
                 modalScope.$on('modal.hide', function () {
                     var man = arguments[1].$scope.manufacturer;
                     if (man.entityAspect.entityState !== breeze.EntityState.Deleted && man.entityAspect.entityState !== breeze.EntityState.Detached && vm.manufacturers.indexOf(man) === -1) {
                         vm.manufacturers.push(man);
                     }
                     arguments[1].$scope.manufacturer = null;
-                })
+                });
             }
             return _manModalInstance;
         }
@@ -87,7 +87,7 @@
                     scope: modalScope,
                     controllerAs: 'mm'
                 });
-                $scope.$on('$destroy', function () { _modelModalInstance.destroy(); })
+                $scope.$on('$destroy', function () { _modelModalInstance.destroy(); });
             }
             return _modelModalInstance;
         }

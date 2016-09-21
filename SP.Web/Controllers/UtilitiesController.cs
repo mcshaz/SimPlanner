@@ -5,7 +5,7 @@ using System.Globalization;
 using NodaTime.TimeZones;
 using System.Net.Http;
 using System;
-using SP.DTOs.Utilities;
+using SP.Dto.Utilities;
 using System.IO;
 using System.Net;
 using System.Net.Http.Headers;

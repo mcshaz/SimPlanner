@@ -15,9 +15,9 @@
             controllerId: controllerId,
             watchedEntityNames: 'manikin',
             $scope: $scope
-        })
+        });
         var id = $routeParams.id;
-        var isNew = id == 'new';
+        var isNew = id === 'new';
 
         vm.departments = [];
         vm.manikin = {};
@@ -25,7 +25,7 @@
         vm.maxDate = new Date();
         vm.models = [];
         vm.currencySymbol = $locale.NUMBER_FORMATS.CURRENCY_SYM;
-        vm.isoCurrency = ''
+        vm.isoCurrency = '';
         activate();
 
         function activate() {
@@ -42,7 +42,7 @@
                             return;
                             //gotoCourses();
                         }
-                        getIsoCurrency()
+                        getIsoCurrency();
                     });
                 }
             }), datacontext.manikinModels.all().then(function(data){

@@ -43,7 +43,7 @@ namespace SP.Dto.Utilities
         /// <summary>
         /// no different to .GroupBy(x=>x).Select(x=>x.Key)
         /// </summary>
-
+        /*
         public static IEnumerable<T> Distinct<T>(this IEnumerable<T> source)
         {
             HashSet<T> hash = new HashSet<T>();
@@ -55,6 +55,7 @@ namespace SP.Dto.Utilities
                 }
             }
         }
+        */
 
         // no different to .GroupBy(x=>x).Select(x=>x.Key)
         public static IEnumerable<T> Repeats<T>(this IEnumerable<T> source)

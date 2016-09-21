@@ -3,7 +3,7 @@ using Breeze.ContextProvider.EF6;
 using Newtonsoft.Json.Linq;
 using SP.DataAccess;
 using SP.Dto.Maps;
-using SP.DTOs.ProcessBreezeRequests;
+using SP.Dto.ProcessBreezeRequests;
 using System;
 using System.Collections.Generic;
 using System.Linq;

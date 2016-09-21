@@ -1,5 +1,5 @@
 ﻿using SP.DataAccess;
-using SP.DTOs.Utilities;
+using SP.Dto.Utilities;
 using SP.Web.Models;
 using SP.Web.UserEmails;
 using System;

@@ -3,7 +3,7 @@ using System;
 using System.Data.SqlTypes;
 using System.Linq;
 
-namespace SP.DTOs.ParticipantSummary
+namespace SP.Dto.ParticipantSummary
 {
     public static class ParticipantSummaryServices
     {

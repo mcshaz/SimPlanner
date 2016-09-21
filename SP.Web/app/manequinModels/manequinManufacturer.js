@@ -16,7 +16,7 @@
             controllerId: controllerId,
             watchedEntityNames: 'manufacturer',
             $scope: $scope
-        })
+        });
         
         vm.cancel = cancel;
         vm.manufacturer = $scope.manufacturer;
@@ -35,11 +35,11 @@
         function cancel() {
             vm.manufacturer.entityAspect.rejectChanges();
             vm.close();
-        };
+        }
 
         function save() {
             datacontext.save([vm.manufacturer]).then(vm.close);
-        };
+        }
 
     }
 })();

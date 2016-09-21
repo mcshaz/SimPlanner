@@ -1,5 +1,4 @@
 ﻿using SP.DataAccess;
-using SP.Dto;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Web.Hosting;
 
-namespace SP.DTOs.Utilities
+namespace SP.Dto.Utilities
 {
     public static class ResourceDtoExtensions
     {

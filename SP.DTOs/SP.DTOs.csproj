@@ -215,6 +215,7 @@
     <Compile Include="RoleConstants.cs" />
     <Compile Include="Utilities\CreateDocxTimetable.cs" />
     <Compile Include="Utilities\LinqExtensions.cs" />
+    <Compile Include="Utilities\OpenXmlExtensions.cs" />
     <Compile Include="Utilities\ResourceExtensions.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
   </ItemGroup>

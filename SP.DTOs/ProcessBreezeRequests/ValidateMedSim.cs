@@ -3,16 +3,14 @@ using Breeze.ContextProvider.EF6;
 using LinqKit;
 using SP.DataAccess;
 using SP.DataAccess.Data.Interfaces;
-using SP.Dto;
-using SP.DTOs.Utilities;
+using SP.Dto.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Security.Principal;
 
-namespace SP.DTOs.ProcessBreezeRequests
+namespace SP.Dto.ProcessBreezeRequests
 {
     internal sealed class ValidateMedSim : IDisposable
     {

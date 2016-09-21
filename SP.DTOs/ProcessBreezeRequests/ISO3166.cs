@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SP.DTOs.ProcessBreezeRequests
+namespace SP.Dto.ProcessBreezeRequests
 {
     public static class ISO3166
     {

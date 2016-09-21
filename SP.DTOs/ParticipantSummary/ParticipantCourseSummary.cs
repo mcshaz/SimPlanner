@@ -1,4 +1,4 @@
-﻿namespace SP.DTOs.ParticipantSummary
+﻿namespace SP.Dto.ParticipantSummary
 {
     public class ParticipantCourseSummary
     {

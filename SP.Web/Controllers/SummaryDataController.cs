@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using SP.DataAccess;
-using SP.DTOs.ParticipantSummary;
+using SP.Dto.ParticipantSummary;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
