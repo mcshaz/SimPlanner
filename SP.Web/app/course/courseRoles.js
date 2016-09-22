@@ -281,6 +281,9 @@
                     }
                 } else {
                     repo.create(key);
+                    //this is not user changed (Ids only) - probably could look at how this is implemented 
+                    //but for now just set manually
+                    vm.isEntityStateChanged = true;
                 }
                 
             } else if (!ui.item.sortable.isCopy && (!cancelled || removingDuplicate)) { //sending = deleting

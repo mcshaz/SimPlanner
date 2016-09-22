@@ -33,7 +33,6 @@
         vm.editSlot = editSlot;
         vm.editChoices = editChoices;
         vm.emersionCategories = common.getEnumValues().emersion;
-        vm.getCourseActivityNames = getCourseActivityNames;
         vm.instructorCourses = [];
         vm.isScenarioChanged = isScenarioChanged;
         vm.removeSlot = removeSlot;
@@ -421,18 +420,18 @@
         }
 
         function removeActivity(cs) {
-            if (cs.activity && (!cs.activity.courseSlots.some(function (slotsSharingActivity) {
+            if (cs.activity && !cs.activity.courseSlots.some(function (slotsSharingActivity) {
                 return slotsSharingActivity.id !== cs.id;
-            }))) {
+            })) {
                 cs.activity.entityAspect.setDeleted();
                 cs.activityId = cs.activity = null;
             }
         }
 
         function removeActivityAndSlots(cs) {
-            if (cs.activity && (cs.activity.courseSlots.every(function (slotsSharingActivity) {
+            if (cs.activity && cs.activity.courseSlots.every(function (slotsSharingActivity) {
                 return slotsSharingActivity.id === cs.id || !slotsSharingActivity.isActive;
-            }))) {
+            })) {
                 return $q.all(cs.activity.courseSlots.map(function (slotsSharingActivity) {
                     return deleteSlot(slotsSharingActivity); //should do an in here using Breeze Json notation
                 })).then(function () {

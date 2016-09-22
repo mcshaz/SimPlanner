@@ -54,7 +54,7 @@
             {
                 name: 'Outreaching Dpt', field: 'outreachingDepartment',
                 filterHeaderTemplate: filterHeaderGrpTemplate,
-                filter: { /* type: uiGridConstants.filter.SELECT */ },
+                filter: { /* type: uiGridConstants.filter.SELECT */ }
             },
             {
                 name: 'Hr:Min', field: 'totalDurationMins', 
