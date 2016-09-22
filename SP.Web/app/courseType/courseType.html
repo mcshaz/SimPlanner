@@ -268,5 +268,8 @@
             <button type="button" class="btn-link btn" ng-click="vm.removeSlot(cs)">
                 <i class="fa fa-trash-o"></i>
             </button>
+            <button type="button" class="btn-link btn" ng-disabled="cs.entityAspect.hasValidationErrors" ng-click="cf.selectedSlot = null">
+                <i class="fa fa-check"></i>
+            </button>
         </td>
 </script>
