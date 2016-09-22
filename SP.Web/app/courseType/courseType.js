@@ -13,8 +13,7 @@
         abstractController.constructor.call(this, {
             controllerId: controllerId,
             watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseSlots', 'courseType.courseFormats.courseSlots.activity', 'courseType.courseTypeDepartments'],
-            $scope: $scope,
-            $watchers: [$scope.$on('$destroy', destroy)]
+            $scope: $scope
         });
         var id = $routeParams.id;
         var isNew = id === 'new';
@@ -24,7 +23,7 @@
         vm.activeFormatIndex = -1;
         vm.activitySelected = activitySelected;
         vm.alterDayMarkers = alterDayMarkers;
-        vm.alterObsolete = alterObsolete;
+        vm.alterObsoleteFormat = alterObsoleteFormat;
         vm.clone = clone;
         vm.courseType = {};
         vm.createSlot = createSlot;
@@ -139,6 +138,7 @@
         }
 
         //we have fiddled with the entity model rather than create a view model (naughty/lazy) - tear down those mods here
+        /* now being handled (rightly or wrongly - quite specific for current BreezeJs implementation) by controller.abstract 
         function destroy() {
             if (vm.courseType) {
                 vm.courseType.courseFormats.forEach(function (cf) {
@@ -157,8 +157,9 @@
             if (ca && ca.entityAspect.entityState.isAdded()) {
                 ca.entityAspect.setDeleted();
             }
-            slot.activity = null;
+            slot.activityId = slot.activity = null;
         }
+        */
 
         function getCourseActivityNames(name) {
             name = name.toLowerCase();
@@ -191,17 +192,15 @@
         }
 
         function removeSlot(courseSlot) {
-            removeActivity(courseSlot);
-            var sortableSlots = courseSlot.courseFormat.sortableSlots;
+            var format = courseSlot.courseFormat;
+            var sortableSlots = format.sortableSlots;
             var indx = sortableSlots.indexOf(courseSlot);
+
+            removeActivity(courseSlot);
             sortableSlots.splice(indx, 1);
             //delete courseSlot.courseFormat.selectedSlot; - not necessarily selected
-            if (courseSlot.entityAspect.entityState.isAdded()) {
-                courseSlot.entityAspect.setDeleted();
-            } else {
-                courseSlot.isActive = false;
-            }
-            resetExampleTimes(courseSlot.courseFormat);
+            deleteSlot(courseSlot);
+            resetExampleTimes(format);
         }
 
         function editChoices(slot) {
@@ -212,7 +211,6 @@
 
         function editSlot(courseSlot) {
             courseSlot.courseFormat.selectedSlot = courseSlot;
-            courseSlot.isScenario = !courseSlot.activity;
         }
 
         function isScenarioChanged(slot) {
@@ -224,17 +222,30 @@
             }
         }
 
+        //if a courseSlot exists, but is marked inactive
+        //AND the courseSlot has the same courseActivity as the one just chosen
+        //(or in the case of a scenario the first scenario slot marked inactive)
+        //mark the existing (inactive) slot as active, make this the selected slot
+        //and delete the new slot before being persisted to the db
+        //this is so participants and faculty can be tracked more easily 
         function reinstateInactive(courseFormat) {
             var selectedSlot = courseFormat.selectedSlot;
             if (!selectedSlot.entityAspect.entityState.isAdded()) {
                 return;
             }
-            var emptyScenarioSlot = courseFormat.courseSlots.some(function (el) {
-                return !el.isActive && el !== selectedSlot && el.activity === selectedSlot.activity;
-            });
-            if (emptyScenarioSlot) { 
-                selectedSlot.setDeleted();
-                courseFormat.selectedSlot = emptyScenarioSlot;
+            var existingSlot;
+            if (selectedSlot.isScenario) {
+                existingSlot = courseFormat.courseSlots.find(function (el) {
+                    return !el.isActive && el !== selectedSlot && el.isScenario;
+                });
+            } else {
+                existingSlot = courseFormat.courseSlots.find(function (el) {
+                    return !el.isActive && el !== selectedSlot && el.activity === selectedSlot.activity;
+                });
+            }
+            if (existingSlot) { 
+                selectedSlot.entityAspect.setDeleted();
+                courseFormat.selectedSlot = existingSlot;
                 courseFormat.selectedSlot.isActive = true;
             }
         }
@@ -332,9 +343,11 @@
             resetExampleTimes(cf);
         }
 
-        function alterObsolete(cf) {
+        
+
+        function alterObsoleteFormat(cf) {
             if (cf.obsolete) {
-                deleteAble(cf).then(function (forDelete) {
+                deletableFormat(cf).then(function (forDelete) {
                     if (forDelete.length && confirm('this course appears to have never been run - would you like to delete it')) {
                         forDelete.forEach(function (el) { el.entityAspect.setDeleted(); });
                     }
@@ -342,7 +355,7 @@
             }
         }
 
-        function deleteAble(cf) {
+        function deletableFormat(cf) {
             return cf.entityAspect.loadNavigationProperty('courses').then(function (data) {
                 if (data.results.length) {
                     return [];
@@ -363,6 +376,61 @@
                     return returnVar;
                 }
             });
+        }
+
+        function deleteSlot(cs) {
+            if (cs.entityAspect.entityState.isAdded()){
+                deleteCsAndActivity();
+            }
+            var navPropsToCheck = cs.isScenario
+                ? [ "courseScenarioFacultyRoles", "courseSlotScenarios", "courseSlotManikins" ]
+                : ["courseSlotPresenters", "chosenTeachingResources"];
+            if (!forDeletion()) {
+                inactivateCsAndActivity();
+                return;
+            }
+            var navPropsToLoad = navPropsToCheck.filter(function (p) {
+                return !cs[p].isNavigationPropertyLoaded;
+            });
+            if (navPropsToLoad.length) {
+                datacontext.courseSlots.fetchByKey(cs.id, { expand: navPropsToLoad })
+                    .then(deleteOrInactivateCsAndActivity);
+            } else {
+                deleteOrInactivateCsAndActivity();
+            }
+
+            function deleteOrInactivateCsAndActivity() {
+                if (forDeletion()) {
+                    deleteCsAndActivity();
+                } else {
+                    inactivateCsAndActivity();
+                }
+            }
+
+            function deleteCsAndActivity() {
+                removeActivity(cs);
+                cs.entityAspect.setDeleted();
+            }
+
+            function inactivateCsAndActivity() {
+                removeActivity(cs);
+                cs.isActive = false;
+            }
+
+            function forDeletion(){
+                return navPropsToCheck.forEach(function (p) {
+                    return !cs[p].length;
+                });
+            }
+        }
+
+        function removeActivity(cs) {
+            if (cs.courseActivity && !cs.courseActivity.courseSlots.some(function (cacs) {
+                return cacs.id !== cs.id;
+            })) {
+                cs.courseActivity.entityAspect.setDeleted();
+                cs.activityId = cs.activity = null;
+            }
         }
     }
 })();

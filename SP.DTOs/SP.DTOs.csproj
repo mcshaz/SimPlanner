@@ -131,10 +131,14 @@
   <ItemGroup>
     <Compile Include="Dto\ChosenTeachingResourceDto.cs" />
     <Compile Include="Dto\CourseDayDto.cs" />
-    <Compile Include="Dto\CourseSlotManequinDto.cs" />
+    <Compile Include="Dto\CourseSlotManikinDto.cs" />
     <Compile Include="Dto\CourseTypeScenarioRoleDto.cs" />
     <Compile Include="Dto\FacultyScenarioRoleDto.cs" />
     <Compile Include="Dto\HotDrinkDto.cs" />
+    <Compile Include="Dto\ManikinDto.cs" />
+    <Compile Include="Dto\ManikinManufacturersDto.cs" />
+    <Compile Include="Dto\ManikinModelDto.cs" />
+    <Compile Include="Dto\ManikinServiceDto.cs" />
     <Compile Include="Dto\Metadata\RoleDtoMetadata.cs" />
     <Compile Include="Dto\Metadata\UserRoleDtoMetadata.cs" />
     <Compile Include="Dto\Metadata\ParticipantDtoMetadata.cs" />
@@ -151,10 +155,6 @@
     <Compile Include="Dto\CourseTypeDto.cs" />
     <Compile Include="Dto\DepartmentDto.cs" />
     <Compile Include="Dto\InstitutionDto.cs" />
-    <Compile Include="Dto\ManequinDto.cs" />
-    <Compile Include="Dto\ManequinManufacturersDto.cs" />
-    <Compile Include="Dto\ManequinModelDto.cs" />
-    <Compile Include="Dto\ManequinServiceDto.cs" />
     <Compile Include="Dto\ParticipantDto.cs" />
     <Compile Include="Dto\ProfessionalRoleDto.cs" />
     <Compile Include="Dto\ResourceDto.cs" />
@@ -171,16 +171,18 @@
     <Compile Include="Maps\CourseActivityMaps.cs" />
     <Compile Include="Maps\CourseFormatMaps.cs" />
     <Compile Include="Maps\CourseDayMaps.cs" />
+    <Compile Include="Maps\CourseSlotManikinMaps.cs" />
     <Compile Include="Maps\HotDrinkMaps.cs" />
-    <Compile Include="Maps\CourseSlotManequinMaps.cs" />
     <Compile Include="Maps\CourseTypeScenarioRoleMaps.cs" />
     <Compile Include="Maps\DomainDtoMap.cs" />
     <Compile Include="Maps\IDomainDtoMap.cs" />
+    <Compile Include="Maps\ManikinManufacturerMaps.cs" />
+    <Compile Include="Maps\ManikinMaps.cs" />
+    <Compile Include="Maps\ManikinModelMaps.cs" />
+    <Compile Include="Maps\ManikinServiceMaps.cs" />
     <Compile Include="Maps\ProfessionalRoleInstitutionMaps.cs" />
     <Compile Include="Maps\CultureMaps.cs" />
     <Compile Include="Maps\CourseTypeDepartmentMaps.cs" />
-    <Compile Include="Maps\ManequinServiceMaps.cs" />
-    <Compile Include="Maps\ManequinModelMaps.cs" />
     <Compile Include="Maps\RoomMaps.cs" />
     <Compile Include="Maps\CourseMaps.cs" />
     <Compile Include="Maps\CourseParticipantMaps.cs" />
@@ -190,8 +192,6 @@
     <Compile Include="Maps\CourseTypeMaps.cs" />
     <Compile Include="Maps\DepartmentMaps.cs" />
     <Compile Include="Maps\InstitutionMaps.cs" />
-    <Compile Include="Maps\ManequinManufacturerMaps.cs" />
-    <Compile Include="Maps\ManequinMaps.cs" />
     <Compile Include="Maps\ParticipantMaps.cs" />
     <Compile Include="Maps\ProfessionalRoleMaps.cs" />
     <Compile Include="Maps\CourseSlotScenarioMaps.cs" />

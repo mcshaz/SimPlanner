@@ -478,12 +478,14 @@
     <Content Include="app\course\course.html" />
     <Content Include="app\course\course.js" />
     <Content Include="app\fileread.directive.js" />
-    <Content Include="app\manequinModels\manequinManufacturer.js" />
-    <Content Include="app\manequinModels\manequinModel.js" />
-    <Content Include="app\manequinModels\manequinManufacturer.html" />
-    <Content Include="app\manequinModels\manequinModel.html" />
-    <Content Include="app\manequinModels\manequinModels.html" />
-    <Content Include="app\manequinModels\manequinModels.js" />
+    <Content Include="app\manikinModels\manikinManufacturer.html" />
+    <Content Include="app\manikinModels\manikinManufacturer.js" />
+    <Content Include="app\manikinModels\manikinModel.html" />
+    <Content Include="app\manikinModels\manikinModel.js" />
+    <Content Include="app\manikinModels\manikinModels.html" />
+    <Content Include="app\manikinModels\manikinModels.js" />
+    <Content Include="app\manikin\manikin.html" />
+    <Content Include="app\manikin\manikin.js" />
     <Content Include="app\professionalRoles\professionalRoles.html" />
     <Content Include="app\professionalRoles\professionalRoles.js" />
     <Content Include="app\dashboard\dashboard.html" />
@@ -497,7 +499,6 @@
     <Content Include="app\layout\sidebar.html" />
     <Content Include="app\layout\sidebar.js" />
     <Content Include="app\layout\topnav.html" />
-    <Content Include="app\manequin\manequin.js" />
     <Content Include="app\metadata.js" />
     <Content Include="app\room\room.html" />
     <Content Include="app\room\room.js" />
@@ -814,7 +815,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-1c2317643a.min.js" />
+    <Content Include="dist\js\main-d0acf9c664.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -851,7 +852,6 @@
     <Content Include="app\auth\authComplete.js" />
     <Content Include="app\department\department.html" />
     <Content Include="app\institution\institution.html" />
-    <Content Include="app\manequin\manequin.html" />
     <Content Include="app\scenario\scenario.html" />
     <Content Include="Content\images\flags\gif\.DS_Store" />
     <Content Include="sink.html" />

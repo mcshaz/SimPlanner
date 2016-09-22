@@ -57,10 +57,11 @@
                 filter: { /* type: uiGridConstants.filter.SELECT */ },
             },
             {
-                name: 'Hours', field: 'totalDurationMins', 
+                name: 'Hr:Min', field: 'totalDurationMins', 
                 treeAggregationType: vm.aggregateType,
                 enableFiltering: false,
-                enableSorting: false
+                enableSorting: false,
+                cellFilter: "timeFilter:'m':'h:mm'"
             },
             {
                 name: 'Participant No.', field: 'participantCount',

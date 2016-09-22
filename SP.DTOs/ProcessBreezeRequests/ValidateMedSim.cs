@@ -228,7 +228,7 @@ namespace SP.Dto.ProcessBreezeRequests
         {
             foreach (var atr in (from ei in activityResources
                                 let atr = (ActivityTeachingResourceDto)ei.Entity
-                                where ei.EntityState == EntityState.Added || ei.EntityState == EntityState.Modified
+                                where (ei.EntityState == EntityState.Added || ei.EntityState == EntityState.Modified)
                                    && atr.File != null
                                 select atr))
             {
@@ -256,7 +256,7 @@ namespace SP.Dto.ProcessBreezeRequests
         {
             var courseFormatIds = alteredSlots.Select(c => c.CourseFormatId).Distinct().ToList();
             var slotDays = (from cs in Context.CourseSlots
-                            where courseFormatIds.Contains(cs.CourseFormatId)
+                            where courseFormatIds.Contains(cs.CourseFormatId) && cs.IsActive
                             group cs by cs.Day into g
                             select new { day = g.Key, minutes = g.Sum(m => m.MinutesDuration) })
                             .ToDictionary(d=>d.day,d=>d.minutes);

@@ -70,7 +70,9 @@
                     });
                     //end region map faculty
 
-                    vm.map = data.courseFormat.courseSlots.map(function(cs){
+                    vm.map = data.courseFormat.courseSlots
+                        .filter(function (cs) { return cs.isActive;})
+                        .map(function (cs) {
                         var start = slotTime;
                         var returnVar = {
                             id: cs.id,

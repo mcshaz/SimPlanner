@@ -15,6 +15,7 @@
             extendCourse(metadataStore);
             extendCourseFormat(metadataStore);
             extendDepartment(metadataStore);
+            extendCourseSlot(metadataStore);
             extendValidators(metadataStore);
         }
 
@@ -135,6 +136,23 @@
             };
 
             metadataStore.registerEntityTypeCtor('CourseFormatDto', CourseFormatCtor, courseFormatInitializer);
+        }
+
+        function extendCourseSlot(metadataStore) {
+
+            var CourseSlotCtor = function () { };
+
+            var courseSlotInitializer = function (courseSlot) {
+                Object.defineProperty(CourseSlotCtor.prototype, 'isScenario', {
+                    enumerable: true,
+                    configurable: true,
+                    get: function () {
+                        return !this.activity;
+                    }
+                });
+            };
+
+            metadataStore.registerEntityTypeCtor('CourseSlotDto', CourseSlotCtor, courseSlotInitializer);
         }
 
         function extendDepartment(metadataStore) {

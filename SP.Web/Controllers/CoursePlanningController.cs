@@ -74,7 +74,8 @@ namespace SP.Web.Controllers
                         {
                             Appointment.AddFacultyMeeting(cal.Cal, course);
                         }
-                        attachments = course.GetFilePaths().Select(fp => new Attachment(fp.Value, "application/zip") { Name = fp.Key });
+                        attachments = course.GetFilePaths().Select(fp => new Attachment(fp.Value, "application/zip") { Name = fp.Key })
+                            .Concat(new[] { new Attachment(CreateDocxTimetable.CreateTimetableDocx(course, System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/CourseTimeTableTemplate.docx")), "application/vnd.openxmlformats-officedocument.wordprocessingml.document") { Name = $"Timetable for {course.CourseFormat.CourseType.Abbreviation}"} });
                         foreach (var cp in faculty[true])
                         {
                             sendMail(cp);

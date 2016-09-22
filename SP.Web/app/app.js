@@ -54,10 +54,46 @@
         tmhDynamicLocaleProvider.useStorage('$cookies');
         tmhDynamicLocaleProvider.localeLocationPattern("https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.2/angular-locale_{{locale}}.min.js");
         }])
-    .filter('minuteFilter', function () {
-        return function (value, scope) {
-            var hrs = Math.floor(value / 60);
-            return hrs + ':' + ('0' + (value - hrs * 60)).slice(-2);
+    //http://stackoverflow.com/questions/25470475/angular-js-format-minutes-in-template
+    //usage {65 | timeFilter:'m':'hh:mm'}
+    .filter('timeFilter', function () {
+        var conversions = {
+            's': angular.identity,
+            'm': function(value) { return value * 60; },
+            'h': function(value) { return value * 3600; }
+        };
+        var testUiGridAggregateVals = /^[\w\s]+:\s*/;
+
+        return function (value, unit, format) {
+            if (typeof value === 'string') {
+                value = value.replace(testUiGridAggregateVals, '');
+            }
+            value = parseFloat(value);
+            var totalSeconds = conversions[(unit || 's')[0]](value);
+            format = format || 'hh:mm:ss';
+
+            return format.replace(/hh?/, function(capture){
+                var h = Math.floor(totalSeconds / 3600);
+                return capture.length===1
+                    ?h
+                    :addPadding(h)
+            }).replace(/mm?/, function(capture){
+                var m = Math.floor((totalSeconds % 3600) / 60);
+                return capture.length===1
+                    ?m
+                    :addPadding(m)
+            }).replace(/ss?/, function(capture){
+                var s = totalSeconds % 60;
+                return capture.length===1
+                    ?s
+                    :addPadding(s)
+            });
+        };
+
+        function addPadding(value) {
+            return value < 10
+                ? '0' + value
+                : value;
         };
     });
 

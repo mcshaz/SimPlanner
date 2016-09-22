@@ -92,19 +92,21 @@
     <Compile Include="Data\Authentication\AspNetUserClaim.cs" />
     <Compile Include="Data\Authentication\AspNetUserLogin.cs" />
     <Compile Include="Data\Authentication\AspNetUserRole.cs" />
-    <Compile Include="Data\CourseSlotManequin.cs" />
+    <Compile Include="Data\CourseSlotManikin.cs" />
     <Compile Include="Data\CourseType.cs" />
     <Compile Include="Data\Enum\SharingLevel.cs" />
     <Compile Include="Data\HotDrink.cs" />
     <Compile Include="Data\Interfaces\ICourseDay.cs" />
     <Compile Include="Data\Interfaces\ITimeTracking.cs" />
+    <Compile Include="Data\Manikin.cs" />
+    <Compile Include="Data\ManikinManufacturer.cs" />
+    <Compile Include="Data\ManikinModel.cs" />
+    <Compile Include="Data\ManikinService.cs" />
     <Compile Include="Data\ProfessionalRoleInstitution.cs" />
     <Compile Include="Data\Culture.cs" />
     <Compile Include="Data\CourseScenarioFacultyRole.cs" />
     <Compile Include="Data\CourseTypeScenarioRole.cs" />
     <Compile Include="Data\CourseTypeDepartment.cs" />
-    <Compile Include="Data\ManequinService.cs" />
-    <Compile Include="Data\ManequinModel.cs" />
     <Compile Include="Data\Resource.cs" />
     <Compile Include="Data\Room.cs" />
     <Compile Include="Data\CourseSlotScenario.cs" />
@@ -114,8 +116,6 @@
     <Compile Include="Data\Enum\Emersion.cs" />
     <Compile Include="Data\Enum\ProfessionCategory.cs" />
     <Compile Include="Data\Institution.cs" />
-    <Compile Include="Data\Manequin.cs" />
-    <Compile Include="Data\ManequinManufacturer.cs" />
     <Compile Include="Data\ProfessionalRole.cs" />
     <Compile Include="Data\Scenario.cs" />
     <Compile Include="Data\FacultyScenarioRole.cs" />
@@ -128,10 +128,14 @@
     <Compile Include="MedSimDbContext.cs" />
     <Compile Include="Metadata\ChosenTeachingResourceMetadata.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
-    <Compile Include="Metadata\CourseSlotManequinMetadata.cs" />
     <Compile Include="Metadata\CourseDayMetadata.cs" />
+    <Compile Include="Metadata\CourseSlotManikinMetadata.cs" />
     <Compile Include="Metadata\CourseTypeScenarioRoleMetadata.cs" />
     <Compile Include="Metadata\HotDrinkMetadata.cs" />
+    <Compile Include="Metadata\ManikinManufacturerMetadata.cs" />
+    <Compile Include="Metadata\ManikinMetadata.cs" />
+    <Compile Include="Metadata\ManikinModelMetadata.cs" />
+    <Compile Include="Metadata\ManikinServiceMetadata.cs" />
     <Compile Include="Metadata\ProfessionalRoleInstitutionMetadata.cs" />
     <Compile Include="Metadata\CultureMetadata.cs" />
     <Compile Include="Metadata\CourseActivityMetadata.cs" />
@@ -146,10 +150,6 @@
     <Compile Include="Metadata\CustomValidators\PersonFullNameAttribute.cs" />
     <Compile Include="Metadata\DepartmentMetadata.cs" />
     <Compile Include="Metadata\InstitutionMetadata.cs" />
-    <Compile Include="Metadata\ManequinManufacturerMetadata.cs" />
-    <Compile Include="Metadata\ManequinModelMetadata.cs" />
-    <Compile Include="Metadata\ManequinMetadata.cs" />
-    <Compile Include="Metadata\ManequinServiceMetadata.cs" />
     <Compile Include="Metadata\ParticipantMetadata.cs" />
     <Compile Include="Metadata\ProfessionalRoleMetadata.cs" />
     <Compile Include="Metadata\ResourceMetadata.cs" />
@@ -160,10 +160,6 @@
     <Compile Include="Migrations\201604272323277_InitialCreate.cs" />
     <Compile Include="Migrations\201604272323277_InitialCreate.Designer.cs">
       <DependentUpon>201604272323277_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605100331063_manequinDepartmentFK.cs" />
-    <Compile Include="Migrations\201605100331063_manequinDepartmentFK.Designer.cs">
-      <DependentUpon>201605100331063_manequinDepartmentFK.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201605200243533_latlong.cs" />
     <Compile Include="Migrations\201605200243533_latlong.Designer.cs">
@@ -246,9 +242,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201604272323277_InitialCreate.resx">
       <DependentUpon>201604272323277_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605100331063_manequinDepartmentFK.resx">
-      <DependentUpon>201605100331063_manequinDepartmentFK.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605200243533_latlong.resx">
       <DependentUpon>201605200243533_latlong.cs</DependentUpon>

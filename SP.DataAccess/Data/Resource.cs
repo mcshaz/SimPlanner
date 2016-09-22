@@ -27,8 +27,8 @@ namespace SP.DataAccess
         public Guid Id { get; set; }
         public string Description { get; set; }
         public string FileName { get; set; }
-        public DateTime? FileModified { get; set; }
-        public long? FileSize { get; set; }
+        public DateTime FileModified { get; set; }
+        public long FileSize { get; set; }
 
         public Guid ScenarioId { get; set; }
         public virtual Scenario Scenario { get; set; }

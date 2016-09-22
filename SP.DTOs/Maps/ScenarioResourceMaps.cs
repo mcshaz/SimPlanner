@@ -10,8 +10,8 @@ namespace SP.Dto.Maps
                 Description = m.Description,
                 FileName = m.FileName,
                 ScenarioId = m.ScenarioId,
-                FileModified = m.FileModified,
-                FileSize = m.FileSize
+                FileModified = m.FileModified.Value,
+                FileSize = m.FileSize.Value
                 //Scenario = m.Scenario
             },
             m => new ScenarioResourceDto

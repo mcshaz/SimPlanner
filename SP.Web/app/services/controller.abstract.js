@@ -196,14 +196,15 @@
                         common.$broadcast(commonConfig.config.controllerActivateSuccessEvent); //switch the spinner off
                     } else {
                         removeListeners({});//remove before performing next step
-
+                        var breezeProps = ["entityAspect", "_backingStore", "$$hashKey"];
                         getWatched().forEach(function (ent) {
                             if (ent.entityAspect.entityState.isAddedModifiedOrDeleted() && !ent.entityAspect.isBeingSaved) {
                                 ent.entityAspect.rejectChanges();
                             }
                             for (var p in ent) {
                                 //to do check here - assuming these will be properties added as part of the view
-                                if (ent.hasOwnProperty(p)) {
+                                if (ent.hasOwnProperty(p) && breezeProps.indexOf(p) === -1) {
+                                    console.log("deleting " + p);
                                     delete ent[p];
                                 }
                             }

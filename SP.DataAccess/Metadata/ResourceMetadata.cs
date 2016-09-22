@@ -17,8 +17,7 @@ namespace SP.Metadata
         public string FileName { get; set; }
         internal const int _maxFileSize = 250 * 1024;
         [Range(0,_maxFileSize, ErrorMessage = "File Size must be less than 250 KB")]
-        [DefaultValue(0)]
-        public long FileSize { get; set; }
+        public long? FileSize { get; set; }
         public DateTime? FileModified { get; set; }
     }
 
@@ -38,6 +37,6 @@ namespace SP.Metadata
         [DefaultValue(0)]
         public long FileSize { get; set; }
         [Required]
-        public DateTime? FileModified { get; set; }
+        public DateTime FileModified { get; set; }
     }
 }
