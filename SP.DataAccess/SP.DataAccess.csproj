@@ -229,6 +229,10 @@
     <Compile Include="Migrations\201609201236272_RenameManikin.Designer.cs">
       <DependentUpon>201609201236272_RenameManikin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609220115177_courseVersion.cs" />
+    <Compile Include="Migrations\201609220115177_courseVersion.Designer.cs">
+      <DependentUpon>201609220115177_courseVersion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AddConstraints.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SqlHelpers.cs" />
@@ -293,6 +297,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609201236272_RenameManikin.resx">
       <DependentUpon>201609201236272_RenameManikin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609220115177_courseVersion.resx">
+      <DependentUpon>201609220115177_courseVersion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

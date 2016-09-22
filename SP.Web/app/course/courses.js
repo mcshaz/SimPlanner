@@ -105,6 +105,8 @@
 
         function activate() {
             datacontext.ready().then(function () {
+                var userDpt = tokenStorageService.getUserDepartmentId();
+                filterPredicate = breeze.Predicate.create('departmentId', '==', userDpt);
                 common.activateController([
                     datacontext.institutions.all().then(function (data) {
                         var opts = [];
@@ -114,7 +116,7 @@
                                 opts.push({ value: 'd:' + d.id, label: d.abbreviation, group:i.name });
                             });
                         });
-                        vm.gridOptions.columnDefs[0].filter.term = 'd:' + tokenStorageService.getUserDepartmentId();
+                        vm.gridOptions.columnDefs[0].filter.term = 'd:' + userDpt;
                         vm.gridOptions.columnDefs[0].filter.selectOptions = opts,
                         //gridApi.grid.refresh();
                         vm.gridOptions.columnDefs[2].filter.selectOptions = opts;
@@ -200,8 +202,10 @@
             var options = {
                 //take: vm.gridOptions.paginationPageSize,
                 inlineCount: true,
+                expand: 'courseParticipants'
                 //skip: (vm.gridOptions.paginationCurrentPage || 1)-1
             };
+            //potential optimisation - something like inlinecount take 0 where id in (), or do query serverside & return summary rows
             if (filterPredicate) { options.where = filterPredicate; }
             //if (orderBy) { options.orderBy = orderBy;}
             return datacontext.courses.find(options).then(function (data) {

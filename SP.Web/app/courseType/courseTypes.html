@@ -1,7 +1,7 @@
 ﻿<section class="mainbar" ng-controller="courseTypes as vm">
     <section class="matter">
         <div class="container">
-            <a class="btn-link" href="#/courseType/new"><i class="fa fa-plus"></i> New Course Type</a>
+            <a class="btn-link" href="#/courseType/new"><i class="fa fa-plus-circle"></i> New Course Type</a>
             <ul>
                 <li ng-repeat="ct in vm.courseTypes track by ct.id">
                     <h3>{{ct.description}}</h3>
@@ -10,7 +10,7 @@
                             {{cf.courseType.description + ' ' + cf.description}} <a class="btn-link" ng-href="#/courseType/{{cf.courseType.id}}?formatId={{cf.id}}"><i class="fa fa-edit"></i></a>
                         </li>
                         <li>
-                            <h4>Scenarios</h4> <a class="btn-link" ng-href="#/scenario/new?courseTypeId={{cf.id}}"><i class="fa fa-plus"></i> New Scenario</a>
+                            <h4>Scenarios</h4> <a class="btn-link" ng-href="#/scenario/new?courseTypeId={{cf.id}}"><i class="fa fa-plus-circle"></i> New Scenario</a>
                             <ul>
                                 <li ng-repeat="ctd in ct.courseTypeDepartments" >
                                     {{ctd.department.name}} 

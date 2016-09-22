@@ -122,7 +122,7 @@ namespace SP.Dto.Utilities
                             replaceVal = course.CourseFormat.CourseType.Description ;
                             break;
                         case "Version":
-                            replaceVal = course.EmailSequence.ToString() ;
+                            replaceVal = course.Version.ToString() ;
                             break;
                         case "Department":
                         case "DepartmentAbbreviation":

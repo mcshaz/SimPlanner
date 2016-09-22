@@ -196,10 +196,9 @@
             var sortableSlots = format.sortableSlots;
             var indx = sortableSlots.indexOf(courseSlot);
 
-            removeActivity(courseSlot);
+            removeActivityAndSlots(courseSlot);
             sortableSlots.splice(indx, 1);
             //delete courseSlot.courseFormat.selectedSlot; - not necessarily selected
-            deleteSlot(courseSlot);
             resetExampleTimes(format);
         }
 
@@ -228,6 +227,8 @@
         //mark the existing (inactive) slot as active, make this the selected slot
         //and delete the new slot before being persisted to the db
         //this is so participants and faculty can be tracked more easily 
+        //
+        //
         function reinstateInactive(courseFormat) {
             var selectedSlot = courseFormat.selectedSlot;
             if (!selectedSlot.entityAspect.entityState.isAdded()) {
@@ -246,7 +247,10 @@
             if (existingSlot) { 
                 selectedSlot.entityAspect.setDeleted();
                 courseFormat.selectedSlot = existingSlot;
-                courseFormat.selectedSlot.isActive = true;
+                existingSlot.isActive = true;
+                existingSlot.order = selectedSlot.order;
+                var indx = courseFormat.sortableSlots.indexOf(selectedSlot);
+                courseFormat.sortableSlots[indx] = existingSlot;
             }
         }
 
@@ -378,58 +382,62 @@
             });
         }
 
-        function deleteSlot(cs) {
-            if (cs.entityAspect.entityState.isAdded()){
-                deleteCsAndActivity();
+        function canDeleteSlot(cs) {
+            if (cs.entityAspect.entityState.isAdded()) {
+                return $q.when(true);
             }
             var navPropsToCheck = cs.isScenario
-                ? [ "courseScenarioFacultyRoles", "courseSlotScenarios", "courseSlotManikins" ]
+                ? ["courseScenarioFacultyRoles", "courseSlotScenarios", "courseSlotManikins"]
                 : ["courseSlotPresenters", "chosenTeachingResources"];
             if (!forDeletion()) {
-                inactivateCsAndActivity();
-                return;
+                return $q.when(false);
             }
             var navPropsToLoad = navPropsToCheck.filter(function (p) {
                 return !cs[p].isNavigationPropertyLoaded;
             });
             if (navPropsToLoad.length) {
-                datacontext.courseSlots.fetchByKey(cs.id, { expand: navPropsToLoad })
-                    .then(deleteOrInactivateCsAndActivity);
+                return datacontext.courseSlots.fetchByKey(cs.id, { expand: navPropsToLoad })
+                    .then(function () { return forDeletion(); });
             } else {
-                deleteOrInactivateCsAndActivity();
+                return $q.when(forDeletion());
             }
 
-            function deleteOrInactivateCsAndActivity() {
-                if (forDeletion()) {
-                    deleteCsAndActivity();
-                } else {
-                    inactivateCsAndActivity();
-                }
-            }
-
-            function deleteCsAndActivity() {
-                removeActivity(cs);
-                cs.entityAspect.setDeleted();
-            }
-
-            function inactivateCsAndActivity() {
-                removeActivity(cs);
-                cs.isActive = false;
-            }
-
-            function forDeletion(){
-                return navPropsToCheck.forEach(function (p) {
+            function forDeletion() {
+                return navPropsToCheck.every(function (p) {
                     return !cs[p].length;
                 });
             }
         }
 
+        function deleteSlot(cs) {
+            return canDeleteSlot(cs).then(function (canDel) {
+                if (canDel) {
+                    cs.entityAspect.setDeleted();
+                } else {
+                    cs.isActive = false;
+                }
+            });
+
+        }
+
         function removeActivity(cs) {
-            if (cs.courseActivity && !cs.courseActivity.courseSlots.some(function (cacs) {
-                return cacs.id !== cs.id;
-            })) {
-                cs.courseActivity.entityAspect.setDeleted();
+            if (cs.activity && (!cs.activity.courseSlots.some(function (slotsSharingActivity) {
+                return slotsSharingActivity.id !== cs.id;
+            }))) {
+                cs.activity.entityAspect.setDeleted();
                 cs.activityId = cs.activity = null;
+            }
+        }
+
+        function removeActivityAndSlots(cs) {
+            if (cs.activity && (cs.activity.courseSlots.every(function (slotsSharingActivity) {
+                return slotsSharingActivity.id === cs.id || !slotsSharingActivity.isActive;
+            }))) {
+                return $q.all(cs.activity.courseSlots.map(function (slotsSharingActivity) {
+                    return deleteSlot(slotsSharingActivity); //should do an in here using Breeze Json notation
+                })).then(function () {
+                    removeActivity(cs);
+                });
             }
         }
     }

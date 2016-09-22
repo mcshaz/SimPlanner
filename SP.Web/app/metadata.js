@@ -1,4 +1,4 @@
-//201609201236272_RenameManikin
+//201609220115177_courseVersion
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,

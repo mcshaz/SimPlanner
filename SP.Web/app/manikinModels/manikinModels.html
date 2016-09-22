@@ -1,8 +1,8 @@
 ﻿<section class="mainbar" ng-controller="manikinModels as vm">
     <section class="matter">
         <div class="container">
-            <button class="btn-link" ng-click="vm.editManufacturer('new')"><i class="fa fa-plus"></i> New Manufacturer</button>
-            <button class="btn-link" ng-click="vm.editModel('new')"><i class="fa fa-plus"></i> New Model</button>
+            <button class="btn-link" ng-click="vm.editManufacturer('new')"><i class="fa fa-plus-circle"></i> New Manufacturer</button>
+            <button class="btn-link" ng-click="vm.editModel('new')"><i class="fa fa-plus-circle"></i> New Model</button>
             <ul>
                 <li ng-repeat="man in vm.manufacturers track by man.id">
                     <h3>{{man.name}} <button class="btn-link" ng-click="vm.editManufacturer(man)"><i class="fa fa-edit"></i></button></h3> 

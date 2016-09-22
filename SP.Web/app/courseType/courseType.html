@@ -60,7 +60,7 @@
                                 </select>
                             </div>
                         </div>
-                        <button class="btn-link" ng-click="vm.createNewFormat()" type="button"><i class="fa fa-plus"></i> New Format</button>
+                        <button class="btn-link" ng-click="vm.createNewFormat()" type="button"><i class="fa fa-plus-circle"></i> New Format</button>
                     </fieldset>
                 </div>
                 <div class="panel-group" ng-model="vm.activeFormatIndex" role="tablist" aria-multiselectable="true" bs-collapse data-allow-multiple="false">
@@ -148,9 +148,8 @@
                                             <thead>
                                                 <tr>
                                                     <td class="small">(drag)</td>
-                                                    <th>Activities (<button type="button" class="btn-link" ng-click="vm.createSlot(cf)">
-                                                            <i class="fa fa-plus"></i> New Activity
-                                                        </button>)
+                                                    <th>
+                                                        Activities 
                                                     </th>
                                                     <th>Minutes</th>
                                                     <td><small>example finish</small></td>
@@ -196,7 +195,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr ng-if="!cf.courseSlots.length">
-                                                    <td colspan="5">please click the <i class="fa fa-plus"></i> Add Activity above to add an activity</td>
+                                                    <td colspan="5">please click the <i class="fa fa-plus-circle"></i> Add Activity above to add an activity</td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
@@ -216,7 +215,7 @@
                                                                     autocomplete="off" ng-disabled="!cf.selectedSlot"
                                                                     uib-typeahead="ca for ca in vm.getCourseActivityNames($viewValue)"
                                                                     typeahead-focus-first="false" typeahead-on-select="vm.activitySelected($item, cf.selectedSlot)"
-                                                                    typeahead-no-results="cf.noResults"
+                                                                    typeahead-no-results="cf.noResults" typeahead-select-on-exact="true"
                                                                     typeahead-select-on-blur="true" data-z-validate /> <!--typeahead-show-hint="true" is off for now as will have to fiddle with the left ?margin/padding ?tt-typeahed class? in the error state-->
                                                             <div ng-show="cf.selectedSlot.noResults">
                                                                 <i class="glyphicon glyphicon-remove"></i> No Existing Activities
@@ -234,10 +233,17 @@
                                                     -->
                                                     <td>
                                                         <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save first" bs-tooltip bs-enabled="!!(cf.selectedSlot && cf.selectedSlot.entityAspect.entityState.isAdded())">
-                                                            <button class="btn btn-link" type="button" ng-click="vm.editChoices(cf.selectedSlot)" ng-disabled="!cf.selectedSlot || cf.selectedSlot.isScenario || cf.selectedSlot.entityAspect.entityState.isAdded()">
-                                                                choices
+                                                            <button class="btn btn-link" type="button" ng-click="vm.editChoices(cf.selectedSlot)" ng-disabled="!cf.selectedSlot || cf.selectedSlot.isScenario || cf.selectedSlot.entityAspect.entityState.isAdded()" aria-label="edit list of options for this slot">
+                                                                <i class="glyphicon glyphicon-list" aria-hidden="true"></i>
                                                             </button>
                                                         </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" class="text-center">
+                                                        <button type="button" class="btn btn-link" ng-click="vm.createSlot(cf)">
+                                                            <i class="fa fa-plus-circle"></i> New Activity
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             </tfoot>

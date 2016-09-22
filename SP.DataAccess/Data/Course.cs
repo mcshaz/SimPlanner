@@ -51,6 +51,8 @@ namespace SP.DataAccess
 
         public byte EmailSequence { get; set; }
 
+        public int Version { get; internal set; }
+
         private DateTime _createdUtc;
         public DateTime CreatedUtc
         {

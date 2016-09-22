@@ -17,7 +17,8 @@ namespace SP.DataAccess
 
         public void ForEntities(DbChangeTracker tracker)
         {
-            foreach (var e in tracker.Entries().Where(te => te.State == EntityState.Added || te.State == EntityState.Modified).ToLookup(te=>te.Entity.GetType()))
+            var ents = tracker.Entries().Where(te => te.State == EntityState.Added || te.State == EntityState.Modified).ToLookup(te => te.Entity.GetType());
+            foreach (var e in ents)
             {
                 foreach (var p in e.Key.GetProperties(BindingFlags.DeclaredOnly |
                                         BindingFlags.Public |
@@ -36,6 +37,11 @@ namespace SP.DataAccess
                             ent.CurrentValues[p.Name] = val;
                         }
                     }
+                }
+                //hack having this here
+                foreach (var c in ents[typeof(Course)])
+                {
+                    ((Course)c.Entity).Version++;
                 }
 
             }
