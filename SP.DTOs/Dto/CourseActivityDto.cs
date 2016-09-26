@@ -18,6 +18,6 @@ namespace SP.Dto
 
         public ICollection<CourseSlotDto> CourseSlots { get; set; }
 
-        public ICollection<ActivityTeachingResourceDto> ActivityChoices { get; set; }
+        public ICollection<ActivityDto> ActivityChoices { get; set; }
     }
 }

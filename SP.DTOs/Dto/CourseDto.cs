@@ -34,10 +34,9 @@ namespace SP.Dto
 
         public virtual ICollection<CourseParticipantDto> CourseParticipants { get; set; }
         public virtual ICollection<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
-        public virtual ICollection<CourseSlotScenarioDto> CourseSlotScenarios { get; set; }
+        public virtual ICollection<CourseSlotActivityDto> CourseSlotActivities { get; set; }
         public virtual ICollection<CourseSlotManikinDto> CourseSlotManikins { get; set; }
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresenters { get; set; }
-        public virtual ICollection<ChosenTeachingResourceDto> ChosenTeachingResources { get; set; }
         public virtual ICollection<CourseDayDto> CourseDays { get; set; }
     }
 }

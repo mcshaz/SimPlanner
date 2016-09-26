@@ -31,10 +31,10 @@ namespace SP.Web.Controllers
             return Repo.SaveChanges(saveBundle);
         }
         [HttpGet, EnableMappedBreezeQuery]
-		public IQueryable<ActivityTeachingResourceDto> ActivityTeachingResources(ODataQueryOptions options)
+		public IQueryable<ActivityDto> Activities(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
-            return Repo.ActivityTeachingResources(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+            return Repo.Activities(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
         [HttpGet, EnableMappedBreezeQuery]
 		public IQueryable<ParticipantDto> Participants(ODataQueryOptions options)

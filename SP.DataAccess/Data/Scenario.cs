@@ -34,6 +34,6 @@ namespace SP.DataAccess
         public virtual ICollection<ScenarioResource> ScenarioResources{ get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseSlotScenario> CourseSlotScenarios{ get; set; }
+        public virtual ICollection<CourseSlotActivity> CourseSlotScenarios{ get; set; }
     }
 }

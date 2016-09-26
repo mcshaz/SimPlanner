@@ -105,13 +105,10 @@ namespace SP.DataAccess
         public virtual ICollection<CourseSlotManikin> CourseSlotManikins { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CourseSlotScenario> CourseSlotScenarios { get; set; }
+        public virtual ICollection<CourseSlotActivity> CourseSlotActivities { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseSlotPresenter> CourseSlotPresenters { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChosenTeachingResource> ChosenTeachingResources { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CourseDay> CourseDays { get; set; }

@@ -27,7 +27,7 @@ namespace SP.DataAccess.Migrations
 (
 	-- Add the parameters for the function here
 	@courseActivityId uniqueidentifier,
-	@activityTeachingResourceId uniqueidentifier,
+	@activityId uniqueidentifier,
 	@filename nvarchar
 )
 RETURNS bit
@@ -41,12 +41,12 @@ BEGIN
 		WHEN @filename IS NOT NULL AND EXISTS(
 			SELECT 1
 			FROM dbo.CourseActivities as allCa
-			INNER JOIN dbo.ActivityTeachingResources as atr ON atr.CourseActivityId = allCa.Id
+			INNER JOIN dbo.Activities as atr ON atr.CourseActivityId = allCa.Id
 			WHERE allCa.CourseTypeId IN 
 				(SELECT ca.CourseTypeId
 				 FROM dbo.CourseActivities as ca
 				 WHERE ca.Id = @CourseActivityId)
-			AND atr.ResourceFilename = @filename AND atr.Id <> @activityTeachingResourceId
+			AND atr.ResourceFilename = @filename AND atr.Id <> @activityId
 		)
 		THEN 1
 		ELSE 0
@@ -56,8 +56,8 @@ BEGIN
 	RETURN @ResultVar
 
 END;",
-                @"ALTER TABLE [dbo].[ActivityTeachingResources]  WITH CHECK ADD  CONSTRAINT [CheckCousinsFilenames] CHECK  (([dbo].[OtherTeachingResourcesWithSameFilename]([CourseActivityId],[Id],[ResourceFileName])=(0)));",
-                @"ALTER TABLE [dbo].[ActivityTeachingResources] CHECK CONSTRAINT [CheckCousinsFilenames];"
+                @"ALTER TABLE [dbo].[Activities]  WITH CHECK ADD  CONSTRAINT [CheckCousinsFilenames] CHECK  (([dbo].[OtherTeachingResourcesWithSameFilename]([CourseActivityId],[Id],[ResourceFileName])=(0)));",
+                @"ALTER TABLE [dbo].[Activities] CHECK CONSTRAINT [CheckCousinsFilenames];"
             };
         }
     }

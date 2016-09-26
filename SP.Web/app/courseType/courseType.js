@@ -33,6 +33,7 @@
         vm.editSlot = editSlot;
         vm.editChoices = editChoices;
         vm.emersionCategories = common.getEnumValues().emersion;
+        vm.getCourseActivityNames = getCourseActivityNames;
         vm.instructorCourses = [];
         vm.isScenarioChanged = isScenarioChanged;
         vm.removeSlot = removeSlot;
@@ -61,14 +62,14 @@
         activate();
 
         function activate() {
-            var departments;
+            var institutions;
             var promises = [
                     datacontext.ready(),
                     datacontext.courseTypes.find({where: breeze.Predicate.create('instructorCourseId','==',null).and('id','!=',id)}).then(function (data) {
                         vm.instructorCourses = data;
                     }),
                     datacontext.institutions.all({expand:'departments'}).then(function(data){
-                        departments = data;
+                        institutions = data;
                     })
                 ];
             if (isNew) {
@@ -94,9 +95,10 @@
                 .then(function () {
                     vm.notifyViewModelLoaded();
                     var ctds = vm.courseType.courseTypeDepartments;
-                    departments.forEach(function (el) {
-                        vm.departments.push({ name: '<strong>' + el.name + '</strong>', dptGroup: true });
-                        el.departments.forEach(iterateDpt);
+                    institutions.forEach(function (i) {
+                        i.departments.sort(common.sortOnPropertyName('name'));
+                        vm.departments.push({ name: '<strong>' + i.name + '</strong>', dptGroup: true });
+                        i.departments.forEach(iterateDpt);
                         vm.departments.push({ dptGroup: false });
                     });
                     function iterateDpt(d) {
@@ -163,13 +165,11 @@
         function getCourseActivityNames(name) {
             name = name.toLowerCase();
             var returnVar =[];
-            if (vm.courseType.courseActivities) {
-                vm.courseType.courseActivities.forEach(function (el) {
-                    if (el.name.toLowerCase().indexOf(name) !== -1) {
-                        returnVar.push(el.name);
+            vm.courseType.courseActivities.forEach(function (el) {
+                if (el.name.toLowerCase().indexOf(name) !== -1) {
+                    returnVar.push(el.name);
                 }
             });
-            }
             return returnVar;
         }
         
@@ -212,11 +212,12 @@
         }
 
         function isScenarioChanged(slot) {
+            //whatever it is (e.g. isScenario) we will change to the opposite by adding or removing activity
             if (slot.isScenario) {
+                createActivity(slot);
+            } else {
                 removeActivity(slot);
                 reinstateInactive(slot.courseFormat);
-            } else {
-                createActivity(slot);
             }
         }
 
@@ -386,8 +387,8 @@
                 return $q.when(true);
             }
             var navPropsToCheck = cs.isScenario
-                ? ["courseScenarioFacultyRoles", "courseSlotScenarios", "courseSlotManikins"]
-                : ["courseSlotPresenters", "chosenTeachingResources"];
+                ? ["courseScenarioFacultyRoles", "courseSlotActivities", "courseSlotManikins"]
+                : ["courseSlotPresenters", "courseSlotActivities"];
             if (!forDeletion()) {
                 return $q.when(false);
             }
@@ -429,7 +430,9 @@
         }
 
         function removeActivityAndSlots(cs) {
-            if (cs.activity && cs.activity.courseSlots.every(function (slotsSharingActivity) {
+            if (cs.isScenario) {
+                deleteSlot(cs);
+            } else if(cs.activity.courseSlots.every(function (slotsSharingActivity) {
                 return slotsSharingActivity.id === cs.id || !slotsSharingActivity.isActive;
             })) {
                 return $q.all(cs.activity.courseSlots.map(function (slotsSharingActivity) {

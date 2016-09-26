@@ -21,10 +21,9 @@ namespace SP.Dto
         public virtual CourseActivityDto Activity { get; set; }
         public virtual CourseFormatDto CourseFormat { get; set; }
 
-        public virtual ICollection<ChosenTeachingResourceDto> ChosenTeachingResources { get; set; }
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresenters { get; set; }
         public virtual ICollection<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
-        public virtual ICollection<CourseSlotScenarioDto> CourseSlotScenarios { get; set; }
+        public virtual ICollection<CourseSlotActivityDto> CourseSlotActivities { get; set; }
         public virtual ICollection<CourseSlotManikinDto> CourseSlotManikins { get; set; }
     }
 }

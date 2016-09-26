@@ -51,9 +51,9 @@ namespace SP.Dto
             return new EFContextProvider<MedSimDtoContextPretender>().Metadata();
         }
 
-        public IQueryable<ActivityTeachingResourceDto> ActivityTeachingResources(string[] includes, string[] selects, char sepChar)
+        public IQueryable<ActivityDto> Activities(string[] includes, string[] selects, char sepChar)
         {
-            return Context.ActivityTeachingResources.ProjectToDto<ActivityTeachingResource, ActivityTeachingResourceDto>(includes, selects, sepChar);
+            return Context.Activities.ProjectToDto<Activity, ActivityDto>(includes, selects, sepChar);
         }
 
         public SaveResult SaveChanges(JObject saveBundle)

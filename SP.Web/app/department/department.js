@@ -30,11 +30,9 @@
                     vm.institutions = data;
                 })];
                 if (isNew) {
-                    vm.department = datacontext.departments.create();
-
-                    if ($routeParams.institutionId) {
-                        vm.department.institutionId = $routeParams.institutionId;
-                    }
+                    vm.department = $routeParams.institutionId
+                        ? datacontext.departments.create({institutionId:$routeParams.institutionId})
+                        :datacontext.departments.create();
                 } else {
                     promises.push(datacontext.departments.fetchByKey(id).then(function(data){
                         vm.department = data;

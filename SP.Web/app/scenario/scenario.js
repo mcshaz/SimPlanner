@@ -43,10 +43,14 @@
                 datacontext.courseTypes.all().then(function (data) {
                     vm.courseTypes = data;
                 });
+                if (isNew) {
+                    vm.scenario = $routeParams.departmentId
+                        ? datacontext.scenarios.create({ departmentId: $routeParams.departmentId })
+                        : datacontext.scenarios.create();
+                }
+
             })];
-            if (isNew) {
-                vm.scenario = datacontext.scenarios.create();
-            } else {
+            if (!isNew) {
                 promises.push(datacontext.scenarios.fetchByKey(id, { expand: 'scenarioResources' }).then(function (data) {
                     vm.scenario = data;
                 }));

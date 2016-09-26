@@ -171,10 +171,14 @@
                     case breeze.EntityState.Deleted:
                         return true;
                     case breeze.EntityState.Added:
+                        var instantiationVal = ent.entityAspect.instantiationValues || {};
+                        var maxAutoGenKeyCount = 1;
                         return !ent.entityType.dataProperties.every(function (dp) {
-                            //if (dp.isPartOfKey) {return true;}
+                            if (dp.isPartOfKey) {
+                                return maxAutoGenKeyCount-- > 0; //if we have a combined key, the user has created it
+                            }
                             var propVal = ent[dp.name];
-                            return propVal === dp.defaultValue || propVal === ent.entityAspect.instantiationValues[dp.name];
+                            return propVal === dp.defaultValue || propVal === instantiationVal[dp.name];
                         });
                     default:
                         return false;

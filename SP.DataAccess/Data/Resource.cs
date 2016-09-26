@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace SP.DataAccess
 {
     [MetadataType(typeof(ActivityResourceMetadata))]
-    public class ActivityTeachingResource 
+    public class Activity 
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
@@ -18,7 +18,7 @@ namespace SP.DataAccess
         public virtual CourseActivity CourseActivity { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChosenTeachingResource> ChosenTeachingResources { get; set; }
+        public virtual ICollection<CourseSlotActivity> CourseSlotActivities { get; set; }
     }
 
     [MetadataType(typeof(ScenarioResourceMetadata))]

@@ -64,13 +64,15 @@
                 var query = breeze.EntityQuery.from('Lookups');
                 return masterManager.executeQuery(query).then(function () {
                     defer.resolve();
+                    if (unwatchImport) {
+                        unwatchImport(); //only run once - will be called on every recredential
+                        unwatchImport = null;
+                    }
                 }, function (arg) {
                     log.error(arg);
                     defer.reject(arg);
                 });
-                unwatchImport(); //only run once - will be called on every recredential
-                unwatchImport = null;
-            };
+            }
         }
 
         function logout() {

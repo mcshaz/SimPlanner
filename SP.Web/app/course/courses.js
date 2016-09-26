@@ -23,33 +23,37 @@
         var today = new Date();
         var startDate = new Date(today);
         var gridApi;
-        var aggregateColumns;
         startDate.setFullYear(today.getFullYear() - 1);
 
-        vm.aggregateChange = aggregateChange;
-        vm.aggregateTypes = uiGridGroupingConstants.aggregation;
-        vm.aggregateType = vm.aggregateTypes.SUM;
+        vm.aggregateType = uiGridGroupingConstants.aggregation.SUM;
+        vm.isExpanded = false;
+        vm.expandAll = expandAll;
+        vm.reverseGrouping = reverseGrouping;
         vm.gridOptions = {
-            paginationPageSizes: [10, 25, 100],
-            paginationPageSize: 10,
+            //paginationPageSizes: [10, 25, 100],
+            //paginationPageSize: 10,
             enableFiltering: true,
             useExternalFiltering: true,
             //useExternalPagination: true,
             //useExternalSorting: true,
-            treeRowHeaderAlwaysVisible: false,
+            //treeRowHeaderAlwaysVisible: false,
             columnDefs: [
-                {
-                    name: 'Department', field: 'department',
-                    filterHeaderTemplate: filterHeaderGrpTemplate,
-                    filter: { /* type: uiGridConstants.filter.SELECT */ },
-                    grouping: { groupPriority: 0 }
-                },
+            {
+                name: 'Department', field: 'department',
+                filterHeaderTemplate: filterHeaderGrpTemplate,
+                filter: { /* type: uiGridConstants.filter.SELECT */ },
+                //sort: { priority: 0, direction: 'asc' },
+                grouping: { groupPriority: 0 },
+                groupingShowAggregationMenu: false
+            },
             {
                 name: 'Course', field: 'course',
                 filterHeaderTemplate: filterHeaderGrpTemplate,
                 filter: { /* type: uiGridConstants.filter.SELECT */ },
-                sort: { priority: 0, direction: 'asc' },
-                grouping: { groupPriority: 1 }
+                //sort: { priority: 1, direction: 'asc' },
+                grouping: { groupPriority: 1 },
+                groupingShowAggregationMenu: false
+//                
             },
             {
                 name: 'Outreaching Dpt', field: 'outreachingDepartment',
@@ -61,19 +65,22 @@
                 treeAggregationType: vm.aggregateType,
                 enableFiltering: false,
                 enableSorting: false,
-                cellFilter: "timeFilter:'m':'h:mm'"
+                cellFilter: "timeFilter:'m':'h:mm'",
+                groupingShowGroupingMenu: false
             },
             {
                 name: 'Participant No.', field: 'participantCount',
                 treeAggregationType: vm.aggregateType,
                 enableFiltering: false,
-                enableSorting: false
+                enableSorting: false,
+                groupingShowGroupingMenu: false
             },
             {
                 name: 'Faculty No.', field: 'facultyCount',
                 treeAggregationType: vm.aggregateType,
                 enableFiltering: false,
-                enableSorting: false
+                enableSorting: false,
+                groupingShowGroupingMenu: false
             },
             {
                 name: 'Date/Time', field: 'start', cellFilter: "date:'short'", type: 'date',
@@ -100,13 +107,11 @@
                 //gridApi.pagination.on.paginationChanged($scope, updateData);
             }
         };
-        aggregateColumns = [3, 4, 5].map(function (i) { return vm.gridOptions.columnDefs[i].name; });
         activate();
 
         function activate() {
             datacontext.ready().then(function () {
                 var userDpt = tokenStorageService.getUserDepartmentId();
-                filterPredicate = breeze.Predicate.create('departmentId', '==', userDpt);
                 common.activateController([
                     datacontext.institutions.all().then(function (data) {
                         var opts = [];
@@ -132,15 +137,7 @@
                             });
                         });
                         vm.gridOptions.columnDefs[1].filter.selectOptions = opts;
-                    }),
-                    updateData()]);
-            });
-        }
-
-
-        function aggregateChange() {
-            aggregateColumns.forEach(function (name) {
-                gridApi.grouping.aggregateColumn(name, vm.aggregateType);
+                    })]);
             });
         }
 
@@ -198,10 +195,25 @@
             updateData();
         }
         */
+        function expandAll() {
+            gridApi.treeBase.expandAllRows();
+        };
+
+        function reverseGrouping() {
+            var grouping = gridApi.grouping;
+            var existingGroups = grouping.getGrouping();
+            var groupCount = existingGroups.grouping.length - 1;
+            existingGroups.grouping.forEach(function (el) {
+                el.groupPriority = groupCount - el.groupPriority;
+            });
+            existingGroups.grouping.reverse();
+            grouping.raise.groupingChanged();
+        }
+
         function updateData() {
             var options = {
                 //take: vm.gridOptions.paginationPageSize,
-                inlineCount: true,
+                //inlineCount: true,
                 expand: 'courseParticipants'
                 //skip: (vm.gridOptions.paginationCurrentPage || 1)-1
             };
@@ -223,7 +235,11 @@
                         id: el.id
                     };
                 });
-                vm.gridOptions.totalItems = data.inlineCount;
+                //not working at the moment
+                //vm.gridOptions.totalItems = data.inlineCount;
+
+                //gridApi.grouping.clearGrouping();
+                //gridApi.grouping.groupColumn(['Department','Course']);
             });
         }
     }

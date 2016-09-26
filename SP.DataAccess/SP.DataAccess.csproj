@@ -87,7 +87,6 @@
   <ItemGroup>
     <Compile Include="Data\CourseDay.cs" />
     <Compile Include="Data\CourseActivity.cs" />
-    <Compile Include="Data\ChosenTeachingResource.cs" />
     <Compile Include="Data\Authentication\AspNetRole.cs" />
     <Compile Include="Data\Authentication\AspNetUserClaim.cs" />
     <Compile Include="Data\Authentication\AspNetUserLogin.cs" />
@@ -109,7 +108,7 @@
     <Compile Include="Data\CourseTypeDepartment.cs" />
     <Compile Include="Data\Resource.cs" />
     <Compile Include="Data\Room.cs" />
-    <Compile Include="Data\CourseSlotScenario.cs" />
+    <Compile Include="Data\CourseSlotActivity.cs" />
     <Compile Include="Data\CourseSlotPresenter.cs" />
     <Compile Include="Data\Department.cs" />
     <Compile Include="Data\Enum\Complexity.cs" />
@@ -126,7 +125,6 @@
     <Compile Include="Data\CourseSlot.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
-    <Compile Include="Metadata\ChosenTeachingResourceMetadata.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
     <Compile Include="Metadata\CourseDayMetadata.cs" />
     <Compile Include="Metadata\CourseSlotManikinMetadata.cs" />
@@ -140,7 +138,7 @@
     <Compile Include="Metadata\CultureMetadata.cs" />
     <Compile Include="Metadata\CourseActivityMetadata.cs" />
     <Compile Include="Metadata\CourseTypeDepartmentMetadata.cs" />
-    <Compile Include="Metadata\CourseSlotScenarioMetadata.cs" />
+    <Compile Include="Metadata\CourseSlotActivityMetadata.cs" />
     <Compile Include="Metadata\CourseTypeMetadata.cs" />
     <Compile Include="Metadata\CourseMetadata.cs" />
     <Compile Include="Metadata\CourseParticipantMetadata.cs" />
@@ -233,6 +231,14 @@
     <Compile Include="Migrations\201609220115177_courseVersion.Designer.cs">
       <DependentUpon>201609220115177_courseVersion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609230851323_mergeCourseSlotActivityScenario.cs" />
+    <Compile Include="Migrations\201609230851323_mergeCourseSlotActivityScenario.Designer.cs">
+      <DependentUpon>201609230851323_mergeCourseSlotActivityScenario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609230926352_simplifyNameActivityId.cs" />
+    <Compile Include="Migrations\201609230926352_simplifyNameActivityId.Designer.cs">
+      <DependentUpon>201609230926352_simplifyNameActivityId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AddConstraints.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SqlHelpers.cs" />
@@ -300,6 +306,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609220115177_courseVersion.resx">
       <DependentUpon>201609220115177_courseVersion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609230851323_mergeCourseSlotActivityScenario.resx">
+      <DependentUpon>201609230851323_mergeCourseSlotActivityScenario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609230926352_simplifyNameActivityId.resx">
+      <DependentUpon>201609230926352_simplifyNameActivityId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

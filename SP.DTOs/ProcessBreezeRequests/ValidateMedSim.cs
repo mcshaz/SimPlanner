@@ -55,7 +55,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 SaveScenarioFileToFileSystem(currentInfos);
             }
 
-            if (saveMap.TryGetValue(typeof(ActivityTeachingResourceDto), out currentInfos))
+            if (saveMap.TryGetValue(typeof(ActivityDto), out currentInfos))
             {
                 SaveActivityFileToFileSystem(currentInfos);
             }
@@ -76,7 +76,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 DeleteScenarioFromFileSystem(ei);
             }
 
-            if (saveMap.TryGetValue(typeof(ActivityTeachingResource), out ei))
+            if (saveMap.TryGetValue(typeof(Activity), out ei))
             {
                 DeleteActivityFromFileSystem(ei);
             }
@@ -227,7 +227,7 @@ namespace SP.Dto.ProcessBreezeRequests
         void SaveActivityFileToFileSystem(IEnumerable<EntityInfo> activityResources)
         {
             foreach (var atr in (from ei in activityResources
-                                let atr = (ActivityTeachingResourceDto)ei.Entity
+                                let atr = (ActivityDto)ei.Entity
                                 where (ei.EntityState == EntityState.Added || ei.EntityState == EntityState.Modified)
                                    && atr.File != null
                                 select atr))
@@ -241,7 +241,7 @@ namespace SP.Dto.ProcessBreezeRequests
         void DeleteActivityFromFileSystem(IEnumerable<EntityInfo> activityResources)
         {
             foreach (var atr in (from ei in activityResources
-                                let atr = (ActivityTeachingResource)ei.Entity
+                                let atr = (Activity)ei.Entity
                                  where ei.EntityState == EntityState.Deleted || atr.FileName == null
                                  select atr))
             {

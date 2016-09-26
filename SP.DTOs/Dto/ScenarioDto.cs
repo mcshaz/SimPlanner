@@ -23,6 +23,6 @@ namespace SP.Dto
 
         public virtual ICollection<CourseDto> Courses { get; set; }
         public virtual ICollection<ScenarioResourceDto> ScenarioResources { get; set; }
-        public virtual ICollection<CourseSlotScenarioDto> CourseSlotScenarios { get; set; }
+        public virtual ICollection<CourseSlotActivityDto> CourseSlotScenarios { get; set; }
     }
 }

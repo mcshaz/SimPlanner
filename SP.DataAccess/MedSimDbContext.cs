@@ -21,8 +21,7 @@ namespace SP.DataAccess
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<MedSimDbContext, Configuration>());
         }
-        public virtual DbSet<ActivityTeachingResource> ActivityTeachingResources { get; set; }
-        public virtual DbSet<ChosenTeachingResource> ChosenTeachingResources { get; set; }
+        public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<Culture> Cultures { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<CourseActivity> CourseActivities { get; set; }
@@ -31,9 +30,9 @@ namespace SP.DataAccess
         public virtual DbSet<CourseParticipant> CourseParticipants { get; set; } 
         public virtual DbSet<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
         public virtual DbSet<CourseSlot> CourseSlots { get; set; }
+        public virtual DbSet<CourseSlotActivity> CourseSlotActivities { get; set; }
         public virtual DbSet<CourseSlotManikin> CourseSlotManikins { get; set; }
         public virtual DbSet<CourseSlotPresenter> CourseSlotPresenters { get; set; }
-        public virtual DbSet<CourseSlotScenario> CourseSlotScenarios { get; set; }
         public virtual DbSet<CourseType> CourseTypes { get; set; }
         public virtual DbSet<CourseTypeScenarioRole> CourseTypeScenarioRoles { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
@@ -79,16 +78,10 @@ namespace SP.DataAccess
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Add(new FixedLengthAttributeConvention());
 
-            modelBuilder.Entity<ActivityTeachingResource>()
-                .HasMany(e => e.ChosenTeachingResources)
-                .WithRequired(e => e.ActivityTeachingResource)
-                .HasForeignKey(e => e.ActivityTeachingResourceId);
-
-            modelBuilder.Entity<ActivityTeachingResource>()
-                .HasMany(e => e.ChosenTeachingResources)
-                .WithRequired(e => e.ActivityTeachingResource)
-                .HasForeignKey(e => e.ActivityTeachingResourceId)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Activity>()
+                .HasMany(e => e.CourseSlotActivities)
+                .WithOptional(e => e.Activity)
+                .HasForeignKey(e => e.ActivityId);
 
             modelBuilder.Entity<Culture>()
                 .HasMany(e => e.Institutions)
@@ -109,7 +102,7 @@ namespace SP.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Course>()
-                .HasMany(e => e.CourseSlotScenarios)
+                .HasMany(e => e.CourseSlotActivities)
                 .WithRequired(e => e.Course)
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);
@@ -122,12 +115,6 @@ namespace SP.DataAccess
 
             modelBuilder.Entity<Course>()
                 .HasMany(e => e.CourseSlotPresenters)
-                .WithRequired(e => e.Course)
-                .HasForeignKey(e => e.CourseId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Course>()
-                .HasMany(e => e.ChosenTeachingResources)
                 .WithRequired(e => e.Course)
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);
@@ -163,12 +150,6 @@ namespace SP.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseSlot>()
-                .HasMany(e => e.ChosenTeachingResources)
-                .WithRequired(e => e.CourseSlot)
-                .HasForeignKey(e => e.CourseSlotId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<CourseSlot>()
                 .HasMany(e => e.CourseSlotPresenters)
                 .WithRequired(e => e.CourseSlot)
                 .HasForeignKey(e => e.CourseSlotId)
@@ -181,19 +162,13 @@ namespace SP.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseSlot>()
-                .HasMany(e => e.CourseSlotScenarios)
+                .HasMany(e => e.CourseSlotActivities)
                 .WithRequired(e => e.CourseSlot)
                 .HasForeignKey(e => e.CourseSlotId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseSlot>()
                 .HasMany(e => e.CourseSlotManikins)
-                .WithRequired(e => e.CourseSlot)
-                .HasForeignKey(e => e.CourseSlotId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<CourseSlot>()
-                .HasMany(e => e.ChosenTeachingResources)
                 .WithRequired(e => e.CourseSlot)
                 .HasForeignKey(e => e.CourseSlotId)
                 .WillCascadeOnDelete(false);
@@ -383,7 +358,7 @@ namespace SP.DataAccess
 
             modelBuilder.Entity<Scenario>()
                 .HasMany(e => e.CourseSlotScenarios)
-                .WithRequired(e => e.Scenario)
+                .WithOptional(e => e.Scenario)
                 .HasForeignKey(e=>e.ScenarioId)
                 .WillCascadeOnDelete(false);
 

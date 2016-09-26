@@ -274,7 +274,7 @@
                     return manager
                         .executeQuery(query.using(fetch))
                         .then(function (data) {
-                            if (data.inlineCount) { data.results.inlineCount = data.inlineCount; }
+                            if (data.inlineCount !== angular.undefined) { data.results.inlineCount = data.inlineCount; }
                             return data.results;
                         }, log.error );
                 }

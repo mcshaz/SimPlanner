@@ -172,7 +172,7 @@ namespace SimPlanner.Tests
                             :new CourseActivityDto()
                             {
                                 Id = cs.Activity.Id,
-                                ActivityChoices = cs.Activity.ActivityChoices.Select(at => new ActivityTeachingResourceDto()
+                                ActivityChoices = cs.Activity.ActivityChoices.Select(at => new ActivityDto()
                                     {
                                         Id = m.Id,
                                     }).ToList() 

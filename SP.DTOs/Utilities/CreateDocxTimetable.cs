@@ -190,7 +190,7 @@ namespace SP.Dto.Utilities
                 .SkipWhile(c => c != firstParaWithSectionBreak)
                 .TakeWhile(c => c.GetType() != typeof(SectionProperties));
 
-            var csss = course.CourseSlotScenarios.OrderBy(css => css.CourseSlot.Order).ToList();
+            var csss = course.CourseSlotActivities.OrderBy(css => css.CourseSlot.Order).ToList();
             int i = 0;
             allScenarioEls.CloneElements(csss, (mergeFieldName, css, clonables) =>
             {

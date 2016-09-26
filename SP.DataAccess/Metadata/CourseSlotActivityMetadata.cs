@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SP.Metadata
 {
-    public class CourseSlotScenarioMetadata
+    public class CourseSlotActivityMetadata
     {
         [Key]
         [Column(Order = 0)]
@@ -16,7 +17,11 @@ namespace SP.Metadata
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid CourseSlotId { get; set; }
 
-        [Range(0,CourseSlotMetadata.MaxStreams)]
+        [Key]
+        [Column(Order = 2)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DefaultValue(1)]
+        [Range(1,CourseSlotMetadata.MaxStreams)]
         public byte StreamNumber { get; set; }
     }
 }

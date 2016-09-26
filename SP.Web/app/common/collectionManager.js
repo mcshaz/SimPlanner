@@ -6,13 +6,14 @@
     var serviceId = 'collectionManager';
 
     angular.module('common')
-        .factory(serviceId, [factoryMethod]);
+        .factory(serviceId, ['logger',factoryMethod]);
 
-    function factoryMethod() {
+    function factoryMethod(logger) {
         var service = {
             collectionChange: collectionChange,
             manageCollectionChange: manageCollectionChange
         };
+        var log = logger.getLogFn(serviceId);
 
         return service;
 
@@ -34,7 +35,7 @@
                             msg: 'collection member looks to be deleted in viewmodel, but cannot be found by key',
                             data: {
                                 oldVals: oldVals,
-                                newVals: newVals,
+                                newVals: newVals
                             }
                         });
                     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,7 +22,8 @@ namespace SP.Metadata
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid ParticipantId { get; set; }
 
-        [Range(0, CourseSlotMetadata.MaxStreams)]
+        [Range(1, CourseSlotMetadata.MaxStreams)]
+        [DefaultValue(1)]
         public byte StreamNumber { get; set; }
     }
 }

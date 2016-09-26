@@ -18,8 +18,7 @@ namespace SP.Dto.Maps
         {
             var maps = new IDomainDtoMap[]
             {
-                new ActivityTeachingResourceMaps(),
-                new ChosenTeachingResourceMaps(),
+                new ActivityMaps(),
                 new CultureMaps(),
                 new CourseMaps(),
                 new CourseActivityMaps(),

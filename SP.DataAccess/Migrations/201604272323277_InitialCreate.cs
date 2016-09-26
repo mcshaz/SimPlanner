@@ -8,7 +8,7 @@ namespace SP.DataAccess.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.ActivityTeachingResources",
+                "dbo.Activities",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
@@ -26,17 +26,17 @@ namespace SP.DataAccess.Migrations
                     {
                         CourseId = c.Guid(nullable: false),
                         CourseSlotId = c.Guid(nullable: false),
-                        ActivityTeachingResourceId = c.Guid(nullable: false),
+                        ActivityId = c.Guid(nullable: false),
                         Participant_Id = c.Guid(),
                     })
-                .PrimaryKey(t => new { t.CourseId, t.CourseSlotId, t.ActivityTeachingResourceId })
+                .PrimaryKey(t => new { t.CourseId, t.CourseSlotId, t.ActivityId })
                 .ForeignKey("dbo.Courses", t => t.CourseId)
                 .ForeignKey("dbo.AspNetUsers", t => t.Participant_Id)
                 .ForeignKey("dbo.CourseSlots", t => t.CourseSlotId)
-                .ForeignKey("dbo.ActivityTeachingResources", t => t.ActivityTeachingResourceId)
+                .ForeignKey("dbo.Activities", t => t.ActivityId)
                 .Index(t => t.CourseId)
                 .Index(t => t.CourseSlotId)
-                .Index(t => t.ActivityTeachingResourceId)
+                .Index(t => t.ActivityId)
                 .Index(t => t.Participant_Id);
             
             CreateTable(
@@ -499,7 +499,7 @@ namespace SP.DataAccess.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.ChosenTeachingResources", "ActivityTeachingResourceId", "dbo.ActivityTeachingResources");
+            DropForeignKey("dbo.ChosenTeachingResources", "ActivityId", "dbo.Activities");
             DropForeignKey("dbo.CourseSlotScenarios", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.CourseSlotPresenters", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.CourseSlotManikins", "CourseId", "dbo.Courses");
@@ -548,7 +548,7 @@ namespace SP.DataAccess.Migrations
             DropForeignKey("dbo.CourseFormats", "CourseTypeId", "dbo.CourseTypes");
             DropForeignKey("dbo.CourseActivities", "CourseTypeId", "dbo.CourseTypes");
             DropForeignKey("dbo.CourseSlots", "ActivityId", "dbo.CourseActivities");
-            DropForeignKey("dbo.ActivityTeachingResources", "CourseActivityId", "dbo.CourseActivities");
+            DropForeignKey("dbo.Activities", "CourseActivityId", "dbo.CourseActivities");
             DropForeignKey("dbo.Courses", "CourseFormatId", "dbo.CourseFormats");
             DropForeignKey("dbo.ChosenTeachingResources", "CourseId", "dbo.Courses");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
@@ -602,10 +602,10 @@ namespace SP.DataAccess.Migrations
             DropIndex("dbo.Courses", new[] { "OutreachingDepartmentId" });
             DropIndex("dbo.Courses", new[] { "DepartmentId" });
             DropIndex("dbo.ChosenTeachingResources", new[] { "Participant_Id" });
-            DropIndex("dbo.ChosenTeachingResources", new[] { "ActivityTeachingResourceId" });
+            DropIndex("dbo.ChosenTeachingResources", new[] { "ActivityId" });
             DropIndex("dbo.ChosenTeachingResources", new[] { "CourseSlotId" });
             DropIndex("dbo.ChosenTeachingResources", new[] { "CourseId" });
-            DropIndex("dbo.ActivityTeachingResources", new[] { "CourseActivityId" });
+            DropIndex("dbo.Activities", new[] { "CourseActivityId" });
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.ScenarioResources");
             DropTable("dbo.CourseSlotScenarios");
@@ -637,7 +637,7 @@ namespace SP.DataAccess.Migrations
             DropTable("dbo.CourseFormats");
             DropTable("dbo.Courses");
             DropTable("dbo.ChosenTeachingResources");
-            DropTable("dbo.ActivityTeachingResources");
+            DropTable("dbo.Activities");
         }
     }
 }

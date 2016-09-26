@@ -82,7 +82,7 @@
                             <label for="cancel" class="col-md-2 control-label">Status</label>
                             <div class="col-md-10">
                                 <button type="button" class="btn btn-default" bs-checkbox id="cancel" data-z-validate data-ng-model="vm.course.cancel" >
-                                    Cancelled
+                                    {{vm.course.cancel?'Cancelled':'Active'}}
                                 </button>
                                 <span class="text-danger" />
                             </div>

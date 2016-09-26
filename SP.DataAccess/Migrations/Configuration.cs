@@ -87,8 +87,8 @@ namespace SP.DataAccess.Migrations
 
                 var didactic = new CourseActivity { Id = Guid.NewGuid(), Name = "Didactic Lecture", CourseType = crm };
                 context.CourseActivities.Add(didactic);
-                var slides = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "PICU 2016 version", FileName = @"C:\whatever\Slides.ppt", CourseActivity = didactic };
-                context.ActivityTeachingResources.Add(slides);
+                var slides = new Activity { Id = Guid.NewGuid(), Description = "PICU 2016 version", FileName = @"C:\whatever\Slides.ppt", CourseActivity = didactic };
+                context.Activities.Add(slides);
                 var didacticSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = didactic, Order = 0, CourseFormat = crm2, IsActive = true, SimultaneousStreams = 1 };
                 didactic.ActivityChoices.Add(slides);
                 context.CourseSlots.Add(didacticSlot);
@@ -96,10 +96,10 @@ namespace SP.DataAccess.Migrations
                 var teamBuilder = new CourseActivity { Id = Guid.NewGuid(), Name = "Team Building", CourseType = crm };
                 context.CourseActivities.Add(teamBuilder);
 
-                var ballGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "Multi-sized balls", CourseActivity = teamBuilder };
-                var eggGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "Egg, plate, ribons", CourseActivity = teamBuilder };
-                var solarGame = new ActivityTeachingResource { Id = Guid.NewGuid(), Description = "Solar Blanket", CourseActivity = teamBuilder };
-                context.ActivityTeachingResources.AddRange(new[] { ballGame, eggGame, solarGame });
+                var ballGame = new Activity { Id = Guid.NewGuid(), Description = "Multi-sized balls", CourseActivity = teamBuilder };
+                var eggGame = new Activity { Id = Guid.NewGuid(), Description = "Egg, plate, ribons", CourseActivity = teamBuilder };
+                var solarGame = new Activity { Id = Guid.NewGuid(), Description = "Solar Blanket", CourseActivity = teamBuilder };
+                context.Activities.AddRange(new[] { ballGame, eggGame, solarGame });
 
                 var teamSlot = new CourseSlot { Id = Guid.NewGuid(), Day = 1, MinutesDuration = 20, Activity = teamBuilder, Order = 1, CourseFormat = crm2, IsActive = true, SimultaneousStreams = 1 };
                 context.CourseSlots.Add(teamSlot);

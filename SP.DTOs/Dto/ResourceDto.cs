@@ -15,12 +15,12 @@ namespace SP.Dto
         public byte[] File { get; set; }
 	}
     [MetadataType(typeof(ActivityResourceMetadata))]
-    public class ActivityTeachingResourceDto : ResourceDto
+    public class ActivityDto : ResourceDto
     {
         public Guid CourseActivityId { get; set; }
         public CourseActivityDto CourseActivity { get; set; }
 
-        public virtual ICollection<ChosenTeachingResourceDto> ChosenTeachingResources { get; set; }
+        public virtual ICollection<CourseSlotActivityDto> CourseSlotActivities { get; set; }
     }
     [MetadataType(typeof(ScenarioResourceMetadata))]
     public class ScenarioResourceDto : ResourceDto

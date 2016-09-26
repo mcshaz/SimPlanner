@@ -41,7 +41,7 @@
                 }, saveFailed);
         };
 
-        self.activityResources = repository.create(self.provider, 'ActivityTeachingResourceDto', 'ActivityTeachingResources');
+        self.activityResources = repository.create(self.provider, 'ActivityDto', 'Activities');
         self.courses = repository.create(self.provider, 'CourseDto', 'Courses');
         self.cultures = repository.create(self.provider, 'CultureDto', 'Cultures', breeze.FetchStrategy.FromLocalCache);
         self.courseActivities = repository.create(self.provider, 'CourseActivityDto', 'CourseActivities');
@@ -50,8 +50,9 @@
         self.courseParticipants = repository.create(self.provider, 'CourseParticipantDto', 'CourseParticipants'/* 'Courses' */);
         self.courseScenarioFacultyRoles = repository.create(self.provider, 'CourseScenarioFacultyRoleDto', 'CourseScenarioFacultyRoles'/* 'Courses' */);
         self.courseSlots = repository.create(self.provider, 'CourseSlotDto', 'CourseSlots'/* 'Courses' */);
+        self.courseSlotActivities = repository.create(self.provider, 'CourseSlotActivityDto', 'CourseSlotActivities'/* 'Courses' */);
         self.courseSlotManikins = repository.create(self.provider, 'CourseSlotManikinDto', 'CourseSlotManikins'/* 'Courses' */);
-        self.courseSlotScenarios = repository.create(self.provider, 'CourseSlotScenarioDto', 'CourseSlotScenarios'/* 'Courses' */);
+        
         self.courseSlotPresenters = repository.create(self.provider, 'CourseSlotPresenterDto', 'CourseSlotPresenters'/* 'Courses' */);
         self.courseTypes = repository.create(self.provider, 'CourseTypeDto', 'CourseTypes', breeze.FetchStrategy.FromLocalCache);
         self.courseTypeDepartments = repository.create(self.provider, 'CourseTypeDepartmentDto', 'CourseTypeDepartments');

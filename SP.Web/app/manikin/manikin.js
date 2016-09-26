@@ -34,23 +34,26 @@
                 datacontext.departments.all().then(function (data) {
                     vm.departments = data;
                 });
-                if (!isNew) {
-                    datacontext.manikins.fetchByKey(id).then(function (data) {
-                        vm.manikin = data;
-                        if (!vm.manikin) {
-                            vm.log.warning('Could not find manikin id = ' + id);
-                            return;
-                            //gotoCourses();
-                        }
-                        getIsoCurrency();
-                    });
+                if (isNew) {
+                    vm.manikin = $routeParams.departmentId
+                        ? datacontext.manikins.create({ departmentId: $routeParams.departmentId })
+                        : datacontext.manikins.create();
                 }
             }), datacontext.manikinModels.all().then(function(data){
                 vm.models = data;
             })];
-            if (isNew) {
-                vm.manikin = datacontext.manikins.create();
-            } 
+
+            if (!isNew) {
+                promises.push(datacontext.manikins.fetchByKey(id).then(function (data) {
+                    vm.manikin = data;
+                    if (!vm.manikin) {
+                        vm.log.warning('Could not find manikin id = ' + id);
+                        return;
+                        //gotoCourses();
+                    }
+                    getIsoCurrency();
+                }));
+            }
             common.activateController(promises, controllerId)
                 .then(function () {
                     vm.notifyViewModelLoaded();

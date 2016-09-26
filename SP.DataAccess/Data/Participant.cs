@@ -84,20 +84,6 @@ namespace SP.DataAccess
                 _courseSlotPresentations = value;
             }
         }
-
-        ICollection<ChosenTeachingResource> _activityFaculty;
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChosenTeachingResource> ActivityFaculty
-        {
-            get
-            {
-                return _activityFaculty ?? (_activityFaculty = new List<ChosenTeachingResource>());
-            }
-            set
-            {
-                _activityFaculty = value;
-            }
-        }
     }
 
     public static class ParticipantExtensions

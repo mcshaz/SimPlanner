@@ -27,12 +27,12 @@ namespace SP.Dto.Utilities
 
         public static IEnumerable<KeyValuePair<string, string>> GetFilePaths(this Course course)
         {
-            return (from s in course.CourseSlotScenarios
+            return (from s in course.CourseSlotActivities
                     let sr = s.Scenario.ScenarioResources.FirstOrDefault(ssr => ssr.FileName != null)
                     where sr != null
                     select new KeyValuePair<string, string>(s.Scenario.BriefDescription, ScenarioResourceToPath(sr.Scenario.DepartmentId, sr.ScenarioId)))
-                   .Concat(from ctr in course.ChosenTeachingResources
-                           let atr = ctr.ActivityTeachingResource
+                   .Concat(from ctr in course.CourseSlotActivities
+                           let atr = ctr.Activity
                            where atr.FileName != null
                            select new KeyValuePair<string, string>(atr.Description, TeachingResourceToPath(ctr.Course.CourseFormat.CourseTypeId, atr.FileName)));
         }
@@ -43,7 +43,7 @@ namespace SP.Dto.Utilities
             CreateFile(resource, path);
         }
 
-        public static void CreateFile(this ActivityTeachingResourceDto resource, Guid courseTypeId)
+        public static void CreateFile(this ActivityDto resource, Guid courseTypeId)
         {
             string path = TeachingResourceToPath(courseTypeId,resource.FileName);
             CreateFile(resource, path);
@@ -95,7 +95,7 @@ namespace SP.Dto.Utilities
             }
         }
 
-        public static void DeleteFile(this ActivityTeachingResource resource, Guid courseTypeId)
+        public static void DeleteFile(this Activity resource, Guid courseTypeId)
         {
             string path = TeachingResourceToPath(courseTypeId, resource.FileName);
             FileInfo fi = new FileInfo(path);

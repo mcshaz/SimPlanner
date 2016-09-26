@@ -30,20 +30,22 @@
                 datacontext.departments.all().then(function (data) {
                     vm.departments = data;
                 });
-                if (!isNew) {
-                    datacontext.rooms.fetchByKey(id).then(function (data) {
-                        vm.room = data;
-                        if (!vm.room) {
-                            vm.log.warning('Could not find room id = ' + id);
-                            return;
-                            //gotoCourses();
-                        }
-                    });
+                if (isNew) {
+                    vm.room = $routeParams.departmentId
+                        ? datacontext.rooms.create({ departmentId: $routeParams.departmentId })
+                        :datacontext.rooms.create();
                 }
             })];
-            if (isNew) {
-                vm.room = datacontext.rooms.create();
-            } 
+            if (!isNew) {
+                promises.push(datacontext.rooms.fetchByKey(id).then(function (data) {
+                    vm.room = data;
+                    if (!vm.room) {
+                        vm.log.warning('Could not find room id = ' + id);
+                        return;
+                        //gotoCourses();
+                    }
+                }));
+            }
             common.activateController(promises, controllerId)
                 .then(function () {
                     vm.notifyViewModelLoaded();

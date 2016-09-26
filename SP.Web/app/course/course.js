@@ -51,6 +51,7 @@
                     vm.courseFormats = data;
                 }), datacontext.departments.all().then(function (data) {
                     vm.departments = data;
+                    vm.departments.sort(sortDepartments);
                 }), datacontext.rooms.all().then(function (data) {
                     vm.rooms = data;
                 });
@@ -266,5 +267,19 @@
                 alert(response.data || 'emails sent');
             });
         }
+    }
+    function sortDepartments(dpt1, dpt2) {
+
+        if (dpt1.institution.name > dpt2.institution.name)
+            return 1;
+        if (dpt1.institution.name < dpt2.institution.name)
+            return -1;
+
+        if (dpt1.name > dpt2.name)
+            return 1;
+        if (dpt1.name < dpt2.name)
+            return -1;
+
+        return 0;
     }
 })();

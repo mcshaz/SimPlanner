@@ -4,14 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SP.Dto
 {
-    [MetadataType(typeof(CourseSlotScenarioMetadata))]
-    public class CourseSlotScenarioDto
+    [MetadataType(typeof(CourseSlotActivityMetadata))]
+    public class CourseSlotActivityDto
     {
         public Guid CourseId { get; set; }
 
         public Guid CourseSlotId { get; set; }
 
-        public Guid ScenarioId { get; set; }
+        public Guid? ScenarioId { get; set; }
+
+        public Guid? ActivityId { get; set; }
 
         public byte StreamNumber { get; set; }
 
@@ -20,6 +22,8 @@ namespace SP.Dto
         public virtual CourseSlotDto CourseSlot { get; set; }
 
         public virtual ScenarioDto Scenario{ get; set; }
+
+        public virtual ActivityDto Activity { get; set; }
     }
 
     /*

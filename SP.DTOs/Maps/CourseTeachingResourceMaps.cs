@@ -2,10 +2,10 @@ using SP.DataAccess;
 
 namespace SP.Dto.Maps
 {
-    internal class ActivityTeachingResourceMaps: DomainDtoMap<ActivityTeachingResource, ActivityTeachingResourceDto>
+    internal class ActivityMaps: DomainDtoMap<Activity, ActivityDto>
     { 
-        public ActivityTeachingResourceMaps() : base(
-        m => new ActivityTeachingResource {
+        public ActivityMaps() : base(
+        m => new Activity {
             Id = m.Id,
             Description = m.Description,
             FileName = m.FileName,
@@ -13,7 +13,7 @@ namespace SP.Dto.Maps
             FileModified = m.FileModified,
             FileSize = m.FileSize
         },
-        m => new ActivityTeachingResourceDto
+        m => new ActivityDto
         {
             Id = m.Id,
             Description = m.Description,
