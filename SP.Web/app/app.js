@@ -65,6 +65,7 @@
         var testUiGridAggregateVals = /^[\w\s]+:\s*/;
 
         return function (value, unit, format) {
+            if (value === angular.undefined) { return ''; }
             if (typeof value === 'string') {
                 value = value.replace(testUiGridAggregateVals, '');
             }
@@ -74,19 +75,19 @@
 
             return format.replace(/hh?/, function(capture){
                 var h = Math.floor(totalSeconds / 3600);
-                return capture.length===1
-                    ?h
-                    :addPadding(h)
+                return capture.length === 1
+                    ? h
+                    : addPadding(h);
             }).replace(/mm?/, function(capture){
-                var m = Math.floor((totalSeconds % 3600) / 60);
-                return capture.length===1
-                    ?m
-                    :addPadding(m)
+                var m = Math.floor(totalSeconds % 3600 / 60);
+                return capture.length === 1
+                    ? m
+                    : addPadding(m);
             }).replace(/ss?/, function(capture){
                 var s = totalSeconds % 60;
-                return capture.length===1
-                    ?s
-                    :addPadding(s)
+                return capture.length === 1
+                    ? s
+                    : addPadding(s);
             });
         };
 
@@ -94,7 +95,7 @@
             return value < 10
                 ? '0' + value
                 : value;
-        };
+        }
     });
 
     // Include $route to kick start the router.

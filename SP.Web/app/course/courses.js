@@ -197,17 +197,14 @@
         */
         function expandAll() {
             gridApi.treeBase.expandAllRows();
-        };
+        }
 
         function reverseGrouping() {
             var grouping = gridApi.grouping;
             var existingGroups = grouping.getGrouping();
-            var groupCount = existingGroups.grouping.length - 1;
-            existingGroups.grouping.forEach(function (el) {
-                el.groupPriority = groupCount - el.groupPriority;
-            });
-            existingGroups.grouping.reverse();
-            grouping.raise.groupingChanged();
+            grouping.clearGrouping();
+
+            grouping.groupColumn('Course');
         }
 
         function updateData() {

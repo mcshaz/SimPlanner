@@ -8,7 +8,7 @@ using System.Web.Hosting;
 
 namespace SP.Dto.Utilities
 {
-    public static class ResourceDtoExtensions
+    public static class ResourceExtensions
     {
         const string _zipExt = ".zip";
         //logic:
@@ -40,30 +40,30 @@ namespace SP.Dto.Utilities
         public static void CreateFile(this ScenarioResourceDto resource, Guid departmentId)
         {
             string path = ScenarioResourceToPath(departmentId, resource.ScenarioId);
-            CreateFile(resource, path);
+            CreateFile(resource.File, resource.FileName, resource.FileModified, path);
         }
 
         public static void CreateFile(this ActivityDto resource, Guid courseTypeId)
         {
             string path = TeachingResourceToPath(courseTypeId,resource.FileName);
-            CreateFile(resource, path);
+            CreateFile(resource.File, resource.FileName, resource.FileModified.Value, path);
         }
 
-        private static void CreateFile(ResourceDto resource, string path)
+        private static void CreateFile(byte[] file, string fileName, DateTime fileModified, string path)
         {
             FileInfo fi = new FileInfo(path);
             fi.Directory.Create(); // If the directory already exists, this method does nothing.
-            using (var stream = new MemoryStream(resource.File, false))
+            using (var stream = new MemoryStream(file, false))
             {
                 using (ZipArchive archive = ZipFile.Open(path, ZipArchiveMode.Update))
                 {
-                    ZipArchiveEntry entry = archive.Entries.FirstOrDefault(e => e.Name == resource.FileName)
-                        ?? archive.CreateEntry(resource.FileName, CompressionLevel.Optimal);
+                    ZipArchiveEntry entry = archive.Entries.FirstOrDefault(e => e.Name == fileName)
+                        ?? archive.CreateEntry(fileName, CompressionLevel.Optimal);
                     using (var arcEntryStream = entry.Open())
                     {
                         stream.CopyTo(arcEntryStream);
                     }
-                    entry.LastWriteTime = resource.FileModified.Value;
+                    entry.LastWriteTime = fileModified;
                 }
             }
         }

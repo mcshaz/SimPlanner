@@ -15,9 +15,9 @@
             controllerId: controllerId,
             watchedEntityNames: 'room',
             $scope: $scope
-        })
+        });
         var id = $routeParams.id;
-        var isNew = id == 'new';
+        var isNew = id === 'new';
 
         vm.departments = [];
         vm.room = {};

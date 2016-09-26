@@ -71,7 +71,7 @@
                 .then(function (url) {
                     vm.downloadFileUrl = url;
                 });
-        };
+        }
 
         function getFormattedDate(date) {
             var dt = moment(date);

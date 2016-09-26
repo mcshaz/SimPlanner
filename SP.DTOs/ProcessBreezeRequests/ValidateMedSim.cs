@@ -6,6 +6,8 @@ using SP.DataAccess.Data.Interfaces;
 using SP.Dto.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
@@ -32,7 +34,7 @@ namespace SP.Dto.ProcessBreezeRequests
 
         public Dictionary<Type, List<EntityInfo>> Validate(Dictionary<Type, List<EntityInfo>> saveMap)
         {
-            IEnumerable<EFEntityError> errors = new EFEntityError[0];
+            IEnumerable<EntityError> errors = new EntityError[0];
 
             List<EntityInfo> currentInfos;
             if (saveMap.TryGetValue(typeof(CourseFormatDto), out currentInfos))
@@ -52,11 +54,13 @@ namespace SP.Dto.ProcessBreezeRequests
 
             if (saveMap.TryGetValue(typeof(ScenarioResourceDto), out currentInfos))
             {
+                //if error function for scenario resource, place here and only proceed if no errors
                 SaveScenarioFileToFileSystem(currentInfos);
             }
 
             if (saveMap.TryGetValue(typeof(ActivityDto), out currentInfos))
             {
+                //if error function for scenario resource, place here and only proceed if no errors
                 SaveActivityFileToFileSystem(currentInfos);
             }
 
@@ -82,7 +86,7 @@ namespace SP.Dto.ProcessBreezeRequests
             }
         }
 
-        IEnumerable<EFEntityError> GetCourseFormatErrors(List<EntityInfo> currentInfos)
+        IEnumerable<EntityError> GetCourseFormatErrors(List<EntityInfo> currentInfos)
         {
             var cfs = TypedEntityinfo<CourseFormatDto>.GetTyped(currentInfos);
 
@@ -109,13 +113,13 @@ namespace SP.Dto.ProcessBreezeRequests
                     where cg.Count() > 1
                     select cg).SelectMany(i => i)
                     .Where(i => ids.Contains(i.Id))
-                    .Select(i => new EFEntityError(cfs.First(ci => ci.Entity.Id == i.Id).Info,
+                    .Select(i => MappedEFEntityError.Create(cfs.First(ci => ci.Entity.Id == i.Id).Entity,
                         "RepeatWithinGroup",
                         string.Format("Each course format description must be unique within course type. [{0}]", i.Description),
-                        "Description"));
+                        "Description")).ToList(); //tolist so it throws here if a problem
         }
 
-        IEnumerable<EFEntityError> GetParticipantErrors(List<EntityInfo> currentInfos)
+        IEnumerable<EntityError> GetParticipantErrors(List<EntityInfo> currentInfos)
         {
             var ps = TypedEntityinfo<ParticipantDto>.GetTyped(currentInfos);
 
@@ -130,7 +134,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 }
             }
             */
-            List<EFEntityError> returnVar = new List<EFEntityError>();
+            List<EntityError> returnVar = new List<EntityError>();
             foreach (var p in ps)
             {
                 var dup = (from u in Context.Users
@@ -145,7 +149,7 @@ namespace SP.Dto.ProcessBreezeRequests
                             group r by r.Description into c
                             select c).Count() == 1)))
                 { 
-                    returnVar.Add(new EFEntityError(p.Info,
+                    returnVar.Add(MappedEFEntityError.Create(p.Entity,
                         "DuplicateUser",
                         "2 users with the same name, department and profession",
                         "FullName"));
@@ -156,10 +160,10 @@ namespace SP.Dto.ProcessBreezeRequests
 
         }
 
-        IEnumerable<EFEntityError> GetInstitutionErrors(List<EntityInfo> currentInfos)
+        IEnumerable<EntityError> GetInstitutionErrors(List<EntityInfo> currentInfos)
         {
             var insts = TypedEntityinfo<InstitutionDto>.GetTyped(currentInfos);
-            List<EFEntityError> returnVar = new List<EFEntityError>();
+            List<EntityError> returnVar = new List<EntityError>();
 
             foreach (var i in insts)
             {
@@ -174,7 +178,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 }
                 catch (CultureNotFoundException)
                 {
-                    returnVar.Add(new EFEntityError(i.Info,
+                    returnVar.Add(MappedEFEntityError.Create(i.Entity,
                         "UnknownLocale",
                         "The Locale Code specified is not valid",
                         "LocaleCode"));
@@ -187,7 +191,7 @@ namespace SP.Dto.ProcessBreezeRequests
                     }
                     catch (TimeZoneNotFoundException)
                     {
-                        returnVar.Add(new EFEntityError(i.Info,
+                        returnVar.Add(MappedEFEntityError.Create(i.Entity,
                             "UnknownTimeZone",
                             "The Time Zone specified is not valid",
                             "StandardTimeZone"));
@@ -292,7 +296,7 @@ namespace SP.Dto.ProcessBreezeRequests
         }
         //not great separation of concerns here- this is not a buisness logic problem 
         /*
-        IEnumerable<EFEntityError> GetCourseSlotErrors(List<EntityInfo> currentInfos)
+        IEnumerable<MappedEFEntityError> GetCourseSlotErrors(List<EntityInfo> currentInfos)
         {
             var insts = TypedEntityinfo<CourseSlot>.GetTyped(currentInfos);
 
@@ -341,6 +345,49 @@ namespace SP.Dto.ProcessBreezeRequests
             internal static IEnumerable<TypedEntityinfo<T>> GetTyped(IEnumerable<EntityInfo> info)
             {
                 return info.Select(i => new TypedEntityinfo<T> { Info = i, Entity = (T)i.Entity }).ToList();
+            }
+        }
+
+        class MappedEFEntityError : EntityError
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="entityInfo"></param>
+            /// <param name="errorName"></param>
+            /// <param name="errorMessage"></param>
+            /// <param name="propertyName"></param>
+            /// <param name="dtoType">If not specified, the TypeName from</param>
+            internal MappedEFEntityError() { }
+            public static MappedEFEntityError Create<T>(T entity, string errorName, string errorMessage, string propertyName)
+            {
+                return new MappedEFEntityError
+                {
+                    EntityTypeName = typeof(T).FullName,
+                    KeyValues = GetKeyValues(entity),
+
+                    ErrorName = errorName,
+                    ErrorMessage = errorMessage,
+                    PropertyName = propertyName,
+                };
+            }
+
+            private static object[] GetKeyValues<T>(T entity)
+            {
+                //all primary key mapping is on the metadata type - could argue we should somehow be working on a version of the ContextPretender here!
+
+                Type metaTypeFromAttr = ((MetadataTypeAttribute)typeof(T).GetCustomAttributes(typeof(MetadataTypeAttribute), false).Single()).MetadataClassType;
+                var keyProps = metaTypeFromAttr.GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)))
+                    .Select(vp=>typeof(T).GetProperty(vp.Name)).ToList();
+                if (keyProps.Count == 1)
+                {
+                    return new[] { keyProps[0].GetValue(entity) };
+                }
+                return keyProps.Select(kp => new {
+                    value = kp.GetValue(entity),
+                    order = kp.GetCustomAttributes(typeof(ColumnAttribute), true).Cast<ColumnAttribute>().Select(ca => ca.Order)
+                }).OrderBy(a => a.order).Select(a => a.value).ToArray();
+
             }
         }
 

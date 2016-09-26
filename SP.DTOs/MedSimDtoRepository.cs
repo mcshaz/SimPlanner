@@ -27,14 +27,14 @@ namespace SP.Dto
 
             _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
             _validationHelper = new ValidateMedSim(user);
-            _contextProvider.BeforeSaveEntitiesDelegate += _validationHelper.Validate;
-            _contextProvider.BeforeSaveEntitiesDelegate += MapToServerTypes;
+            _contextProvider.BeforeSaveEntitiesDelegate += MapToServerTypes; 
             _contextProvider.AfterSaveEntitiesDelegate += _validationHelper.PostValidation;
             _user = user;
         }
 
         Dictionary<Type, List<EntityInfo>> MapToServerTypes(Dictionary<Type, List<EntityInfo>> dtos)
         {
+            _validationHelper.Validate(dtos);
             var returnVar = new Dictionary<Type, List<EntityInfo>>();
             foreach (var kv in dtos)
             {
@@ -59,7 +59,6 @@ namespace SP.Dto
         public SaveResult SaveChanges(JObject saveBundle)
         {
             // save with server model's "real" contextProvider
-
             var returnVar = _contextProvider.SaveChanges(saveBundle);
             Remap(returnVar);
             return returnVar;

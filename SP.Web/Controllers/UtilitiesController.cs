@@ -143,7 +143,7 @@ namespace SP.Web.Controllers
 
             var scenario = Context.GetScenarios(emptyString, emptyString).First(s=>s.Id == model.EntitySetId);
 
-            var path = ResourceDtoExtensions.ScenarioResourceToPath(scenario.DepartmentId, scenario.Id);
+            var path = ResourceExtensions.ScenarioResourceToPath(scenario.DepartmentId, scenario.Id);
 
             FileStream stream = new FileStream(path, FileMode.Open);
             _streamsToDispose.Add(stream);

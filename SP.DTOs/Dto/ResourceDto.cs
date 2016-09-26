@@ -10,8 +10,6 @@ namespace SP.Dto
         public Guid Id { get; set; }
         public string Description { get; set; }
         public string FileName { get; set; }
-        public DateTime? FileModified { get; set; }
-        public long? FileSize { get; set; }
         public byte[] File { get; set; }
 	}
     [MetadataType(typeof(ActivityResourceMetadata))]
@@ -19,6 +17,8 @@ namespace SP.Dto
     {
         public Guid CourseActivityId { get; set; }
         public CourseActivityDto CourseActivity { get; set; }
+        public DateTime? FileModified { get; set; }
+        public long? FileSize { get; set; }
 
         public virtual ICollection<CourseSlotActivityDto> CourseSlotActivities { get; set; }
     }
@@ -27,6 +27,8 @@ namespace SP.Dto
     {
         public Guid ScenarioId { get; set; }
         public ScenarioDto Scenario { get; set; }
+        public DateTime FileModified { get; set; }
+        public long FileSize { get; set; }
     }
 }
 

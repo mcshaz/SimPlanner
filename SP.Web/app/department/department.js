@@ -15,7 +15,7 @@
             controllerId: controllerId,
             watchedEntityNames: 'department',
             $scope: $scope
-        })
+        });
         var id = $routeParams.id;
         var isNew = id === 'new';
 

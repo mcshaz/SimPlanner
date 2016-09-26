@@ -2,6 +2,7 @@ using SP.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SP.DataAccess
 {
@@ -13,6 +14,8 @@ namespace SP.DataAccess
         public string FileName { get; set; }
         public DateTime? FileModified { get; set; }
         public long? FileSize { get; set; }
+        //[NotMapped]
+        //public byte[] File { get; set; }
 
         public Guid CourseActivityId { get; set; }
         public virtual CourseActivity CourseActivity { get; set; }
@@ -29,6 +32,8 @@ namespace SP.DataAccess
         public string FileName { get; set; }
         public DateTime FileModified { get; set; }
         public long FileSize { get; set; }
+        //[NotMapped]
+        //public byte[] File { get; set; }
 
         public Guid ScenarioId { get; set; }
         public virtual Scenario Scenario { get; set; }
