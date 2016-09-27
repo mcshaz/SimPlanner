@@ -1,4 +1,3 @@
-using SP.DataAccess.Enums;
 using SP.Metadata;
 using System;
 using System.Collections.Generic;
@@ -15,6 +14,7 @@ namespace SP.Dto
         public bool Obsolete { get; set; }
         public bool HotDrinkProvided { get; set; }
         public bool MealProvided { get; set; }
+        public TimeSpan DefaultStartTime { get; set; }
 
         public virtual CourseTypeDto CourseType { get; set; }
         public ICollection<CourseDto> Courses { get; set; }

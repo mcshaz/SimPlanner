@@ -108,14 +108,35 @@
 
         function extendCourseFormat(metadataStore) {
 
-            var CourseFormatCtor = function () {};
-
+            var CourseFormatCtor = function () { };
+            var utcOffset = new Date(0).getTimezoneOffset() * 60000;
+            var parseSimpleDuration = /PT(\d*H)?(\d*M)?/;
             var courseFormatInitializer = function (courseFormat) {
                 Object.defineProperty(CourseFormatCtor.prototype, 'typeFormatDescriptor', {
                     enumerable: true,
                     configurable: true,
                     get: function () {
                         return this.courseType.abbreviation + ' - ' + this.description;
+                    }
+                });
+
+                Object.defineProperty(CourseFormatCtor.prototype, 'defaultStartAsDate', {
+                    enumerable: true,
+                    configurable: true,
+                    get: function () {
+                        var duration = parseSimpleDuration.exec(this.defaultStartTime);
+
+                        return parseInt(duration[1] || 0)*3600000 + parseInt(duration[2] || 0)*60000 + utcOffset;
+                    },
+                    set: function (value) {
+                        value = value - utcOffset;
+                        var hrs = Math.floor(value/ 3600000);
+                        var mins = value % 3600000 / 60000;
+                        var newVal = "PT" + hrs + "H";
+                        if (mins !== 0) {
+                            newVal += mins + "M";
+                        }
+                        this.defaultStartTime = newVal;//not just setting the minutes as this would change the string
                     }
                 });
             };

@@ -135,8 +135,8 @@
         function dateChanged(propName,courseDay) {
             var dateInst = vm.course[propName];
             if (!dateInst instanceof Date) { return; }
-            if (dateInst.getHours() === 0 && dateInst.getMinutes() === 0) { //bad luck if you want your course to start at midnight, but this would be an extreme edge case!
-                dateInst.setHours(8);
+            if (dateInst.getHours() === 0 && dateInst.getMinutes() === 0) { //bad luck if you want your course to start at midnight local time, but this would be an extreme edge case!
+                dateInst.setTime(dateInst + vm.course.courseFormat.defaultStartAsDate);
             }
             if (propName === 'start') {
                 if (courseDay === vm.courseDays[0] && vm.courseDays.every(function(cd,indx){return indx===1 || !cd.start;})){
@@ -182,7 +182,8 @@
                 var maxDays = vm.course.courseFormat
                     ? vm.course.courseFormat.daysDuration
                     : 1;
-                var courseDay, key;
+                var courseDay;
+                var key;
                 vm.courseDays = concatCourseDays();
                 for (var i = 2; i <= maxDays; i++) {
                     courseDay = vm.courseDays.find(function (cd) { return cd.day === i; });
@@ -197,6 +198,7 @@
                             }
                         } else {
                             courseDay = dataContext.courseDays.create(key);
+
                         }
                     }
                 }

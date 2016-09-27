@@ -15,6 +15,7 @@ namespace SP.DataAccess
         public bool Obsolete { get; set; }
         public bool HotDrinkProvided { get; set; }
         public bool MealProvided { get; set; }
+        public TimeSpan DefaultStartTime { get; set; }
 
         public virtual CourseType CourseType { get; set; }
 

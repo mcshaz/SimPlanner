@@ -12,7 +12,8 @@ namespace SP.Dto.Maps
                 CourseTypeId = m.CourseTypeId,
                 Obsolete = m.Obsolete,
                 HotDrinkProvided = m.HotDrinkProvided,
-                MealProvided = m.MealProvided
+                MealProvided = m.MealProvided,
+                DefaultStartTime = m.DefaultStartTime
             },
             m => new CourseFormatDto
             {
@@ -22,7 +23,8 @@ namespace SP.Dto.Maps
                 CourseTypeId = m.CourseTypeId,
                 Obsolete = m.Obsolete,
                 HotDrinkProvided = m.HotDrinkProvided,
-                MealProvided = m.MealProvided
+                MealProvided = m.MealProvided,
+                DefaultStartTime = m.DefaultStartTime
             })
         { }
     }

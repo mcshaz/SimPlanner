@@ -42,7 +42,7 @@
                 name: 'Department', field: 'department',
                 filterHeaderTemplate: filterHeaderGrpTemplate,
                 filter: { /* type: uiGridConstants.filter.SELECT */ },
-                //sort: { priority: 0, direction: 'asc' },
+                sort: { priority: 0, direction: 'asc' },
                 grouping: { groupPriority: 0 },
                 groupingShowAggregationMenu: false
             },
@@ -50,7 +50,7 @@
                 name: 'Course', field: 'course',
                 filterHeaderTemplate: filterHeaderGrpTemplate,
                 filter: { /* type: uiGridConstants.filter.SELECT */ },
-                //sort: { priority: 1, direction: 'asc' },
+                sort: { priority: 1, direction: 'asc' },
                 grouping: { groupPriority: 1 },
                 groupingShowAggregationMenu: false
 //                
@@ -200,11 +200,11 @@
         }
 
         function reverseGrouping() {
+            //not working - 
             var grouping = gridApi.grouping;
-            var existingGroups = grouping.getGrouping();
             grouping.clearGrouping();
-
             grouping.groupColumn('Course');
+            grouping.groupColumn('Department');
         }
 
         function updateData() {

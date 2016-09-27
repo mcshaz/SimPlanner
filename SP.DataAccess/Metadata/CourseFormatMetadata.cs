@@ -16,5 +16,8 @@ namespace SP.Metadata
         [Range(1,250)]
         [DefaultValue(1)]
         public byte DaysDuration { get; set; }
+        [Required]
+        [DefaultValue(typeof(TimeSpan),"08:00")]
+        public TimeSpan DefaultStartTime { get; set; }
     }
 }

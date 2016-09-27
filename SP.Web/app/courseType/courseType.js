@@ -145,7 +145,7 @@
                 vm.courseType.courseFormats.forEach(function (cf) {
                     delete cf.selectedSlot;
                     delete cf.sortableSlots;
-                    delete cf.exampleStart;
+                    delete cf.defaultStartTime;
                     cf.courseSlots.forEach(function (cs) {
                         delete cs.exampleFinish;
                     });
@@ -295,15 +295,12 @@
         function resetExampleTimes(cf) {
             var currentDay;
             var startIndx;
-            if (!cf.exampleStart) {
-                cf.exampleStart = new Date(0);
-                cf.exampleStart.setHours(8);
-            }
+            
             cf.courseSlots.sort(common.sortOnPropertyName('order'));
             cf.courseSlots.forEach(function (cs) {
                 if (cs.isActive) {
                     if (cs.day !== currentDay) {
-                        startIndx = cf.exampleStart.getTime();
+                        startIndx = cf.defaultStartAsDate;
                         currentDay = cs.day;
                     }
                     startIndx += cs.minutesDuration * 60000;

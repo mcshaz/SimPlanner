@@ -1,4 +1,5 @@
-﻿using Jint;
+﻿using Breeze.ContextProvider;
+using Jint;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SP.DataAccess.Enums;
@@ -40,7 +41,8 @@ namespace SP.Dto
                            "edmxMetadataStore.exportMetadata();");
             var exportedMeta = JObject.Parse(engine.GetCompletionValue().AsString());
             AddValidators(exportedMeta);
-            return exportedMeta.ToString(pretty ? Formatting.Indented : Formatting.None);
+            var converters = BreezeConfig.Instance.GetJsonSerializerSettings().Converters;
+            return exportedMeta.ToString(pretty ? Formatting.Indented : Formatting.None, converters.ToArray());
         }
 
         public static MetaDataStrings GetAllMetadata(bool pretty = false)
@@ -61,6 +63,8 @@ namespace SP.Dto
             var attrValDict = GetValDictionary();
             var unaccountedVals = new HashSet<string>();
             var intTypes = new[] { typeof(byte), typeof(Int16), typeof(Int32), typeof(Int64) };
+            var serializerSettings = Breeze.ContextProvider.BreezeConfig.Instance.GetJsonSerializerSettings();
+            
             foreach (var breezeEntityType in metadata["structuralTypes"])
             {
                 string shortEntityName = breezeEntityType["shortName"].ToString();
@@ -95,9 +99,8 @@ namespace SP.Dto
                         {
                             var def = (DefaultValueAttribute)attr;
                             //to do handle nullable enum default values
-                            breezePropertyInfo["defaultValue"] = JToken.FromObject(propInfo.PropertyType.IsEnum
-                                ? Enum.ToObject(propInfo.PropertyType, def.Value).ToString()
-                                : def.Value);
+                            breezePropertyInfo["defaultValue"] = JToken.FromObject(def.Value);
+
                         }
                         else if (t == typeof(DisplayNameAttribute))
                         {

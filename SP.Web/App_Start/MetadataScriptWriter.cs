@@ -25,7 +25,7 @@ namespace SP.Web.App_Start
 
             //const string category = "MetadataScriptWriter";
             // get the metadata the same way we get it for the controller
-            var metadata = MedSimDtoMetadata.GetAllMetadata();
+            var metadata = MedSimDtoMetadata.GetAllMetadata(pretty:true);
 
 
             // the same pre- and post-fix strings we used earlier

@@ -239,6 +239,10 @@
     <Compile Include="Migrations\201609230926352_simplifyNameActivityId.Designer.cs">
       <DependentUpon>201609230926352_simplifyNameActivityId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609270206116_defaultStartTime.cs" />
+    <Compile Include="Migrations\201609270206116_defaultStartTime.Designer.cs">
+      <DependentUpon>201609270206116_defaultStartTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AddConstraints.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SqlHelpers.cs" />
@@ -312,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609230926352_simplifyNameActivityId.resx">
       <DependentUpon>201609230926352_simplifyNameActivityId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609270206116_defaultStartTime.resx">
+      <DependentUpon>201609270206116_defaultStartTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

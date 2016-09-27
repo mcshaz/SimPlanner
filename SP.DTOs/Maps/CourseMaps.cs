@@ -42,7 +42,8 @@ namespace SP.Dto.Maps
                 FacultyMeetingDuration = m.FacultyMeetingDuration,
                 FacultyMeeting = m.FacultyMeetingUtc,
                 Created = m.CreatedUtc,
-                LastModified = m.LastModifiedUtc
+                LastModified = m.LastModifiedUtc,
+                Cancelled = m.Cancelled
             })
         { }
 
