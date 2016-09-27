@@ -15,8 +15,7 @@
             $scope: $scope
         });
         var id = $routeParams.id;
-        
-        vm.changeScenario = changeScenario;
+        vm.changeActivityScenario = changeActivityScenario;
         vm.course = {};
         vm.scenarios = [];
 
@@ -30,11 +29,10 @@
                 common.activateController([datacontext.courses.fetchByKey(id, {
                     expand: ['courseParticipants.participant',
                         'courseFormat.courseSlots.activity.activityChoices',
-                        'courseSlotScenarios',
+                        'courseSlotActivities',
                         'courseSlotPresenters',
                         'courseSlotManikins',
                         'courseScenarioFacultyRoles',
-                        'chosenTeachingResources',
                         'department.scenarios',
                         'courseFormat.courseType.courseTypeScenarioRoles.facultyScenarioRole']
                 }).then(function (data) {
@@ -73,121 +71,143 @@
                     vm.map = data.courseFormat.courseSlots
                         .filter(function (cs) { return cs.isActive;})
                         .map(function (cs) {
-                        var start = slotTime;
-                        var returnVar = {
-                            id: cs.id,
-                            start: start,
-                            groupClass: 'grp' + count++,
-                            availableFaculty: faculty.slice()
-                        };
-                        var sortableOptions = {
-                            connectWith: '.' + returnVar.groupClass
-                        };
-                        returnVar.availableFacultyOptions = angular.extend({
-                            update: updateSortable
-                        },sortableOptions);
-                        var isThisSlot = function (el) { return el.courseSlotId === cs.id; };
-                        slotTime = new Date(start.getTime() + cs.minutesDuration * 60000);
-                        if (cs.activity) {
-                            var assignedFaculty = [];
-                            data.courseSlotPresenters.forEach(function (csp) {
-                                if (csp.courseSlotId === cs.id) {
-                                    var indx = returnVar.availableFaculty.findIndex(function (f) {
-                                        return f.participantId === csp.participantId;
-                                    });
-                                    assignedFaculty.push(returnVar.availableFaculty[indx]);
-                                    returnVar.availableFaculty.splice(indx, 1);
-                                }
-                            });
-                            sortableOptions.update = updateSortableRepo.bind(null, {
-                                courseSlotId: cs.id,
-                                courseId: data.id
-                            }, datacontext.courseSlotPresenters);
-
-                            return angular.extend(returnVar, {
-                                name: cs.activity.name,
+                            var start = slotTime;
+                            var isThisSlot = function (el) { return el.courseSlotId === cs.id; };
+                            var returnVar = {
+                                id: cs.id,
                                 start: start,
-                                choices: cs.activity.activityChoices,
-                                selectedChoice: (data.chosenTeachingResources.find(isThisSlot) || {}).activityTeachingResource,
-                                isSim: false,
-                                assignedFaculty: assignedFaculty,
-                                sortableOptions: sortableOptions
-                            });
-                        }
-                        //extra properties to allow duplication
-                        returnVar.availableFacultyOptions.start = startSortable;
-                        returnVar.availableFaculty.availableFaculty = true;
-
-                        var slotRoles = cs.courseScenarioFacultyRoles.filter(isThisSlot);
-                        data.courseFormat.courseType.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole', 'order'));
-                        angular.extend(returnVar, {
-                            name: 'Simulation',
-                            scenario: (data.courseSlotScenarios.find(isThisSlot) || {}).scenario,
-                            isSim: true,
-                            courseSlotManikins: data.courseSlotManikins,
-                            roles: data.courseFormat.courseType.courseTypeScenarioRoles.map(function (ctsr) {
+                                groupClass: 'grp' + count++,
+                                availableFaculty: faculty.slice(),
+                                activityScenario: data.courseSlotActivities.find(isThisSlot)
+                            };
+                            var sortableOptions = {
+                                connectWith: '.' + returnVar.groupClass
+                            };
+                            returnVar.availableFacultyOptions = angular.extend({
+                                update: updateSortable
+                            },sortableOptions);
+                            slotTime = new Date(start.getTime() + cs.minutesDuration * 60000);
+                            if (cs.activity) {
                                 var assignedFaculty = [];
-                                slotRoles.forEach(function (sr) {
-                                    if (ctsr.facultyScenarioRoleId === sr.facultyScenarioRoleId) {
-                                        var findMatch = function (f) {
-                                            return f.participantId === sr.participantId;
-                                        };
-                                        var indx = returnVar.availableFaculty.findIndex(findMatch);
-                                        if (indx === -1) {
-                                            assignedFaculty.push(faculty.find(findMatch));
-                                        } else {
-                                            assignedFaculty.push(returnVar.availableFaculty[indx]);
-                                            returnVar.availableFaculty.splice(indx, 1);
-                                        }
+                                data.courseSlotPresenters.forEach(function (csp) {
+                                    if (csp.courseSlotId === cs.id) {
+                                        var indx = returnVar.availableFaculty.findIndex(function (f) {
+                                            return f.participantId === csp.participantId;
+                                        });
+                                        assignedFaculty.push(returnVar.availableFaculty[indx]);
+                                        returnVar.availableFaculty.splice(indx, 1);
                                     }
                                 });
+                                sortableOptions.update = updateSortableRepo.bind(null, {
+                                    courseSlotId: cs.id,
+                                    courseId: data.id
+                                }, datacontext.courseSlotPresenters);
 
-                                return {
-                                    description: ctsr.facultyScenarioRole.description,
-                                    id: ctsr.facultyScenarioRoleId,
+                                return angular.extend(returnVar, {
+                                    name: cs.activity.name,
+                                    start: start,
+                                    choices: cs.activity.activityChoices,
+                                    selectedActivity: (returnVar.activityScenario || {}).activity,
+                                    isScenario: false,
                                     assignedFaculty: assignedFaculty,
-                                    sortableOptions: angular.extend({
-                                        update: updateSortableRepo.bind(null, {
-                                            courseSlotId: cs.id,
-                                            courseId: data.id,
-                                            facultyScenarioRoleId: ctsr.facultyScenarioRoleId
-                                        }, datacontext.courseScenarioFacultyRoles),
-                                        start: startSortable
-                                    }, sortableOptions)
-                                };
-                            })
-                        });
-                        returnVar.oldScenario = returnVar.scenario;
-                        return returnVar;
-                    });
-                    vm.notifyViewModelLoaded();
-                }), datacontext.manikins.all().then(function (data) {
-                    var departmentName;
-                    data.sort(common.sortOnChildPropertyName('department', 'name'));
-                    data.forEach(function (el) {
-                        if (departmentName !== el.department.name) {
-                            manikins.push({
-                                description: departmentName = el.department.name,
-                                isGroup:true
+                                    sortableOptions: sortableOptions
+                                });
+                            }
+                            //extra properties to allow duplication
+                            returnVar.availableFacultyOptions.start = startSortable;
+                            returnVar.availableFaculty.availableFaculty = true;
+
+                            var slotRoles = cs.courseScenarioFacultyRoles.filter(isThisSlot);
+                            data.courseFormat.courseType.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole', 'order'));
+                            return angular.extend(returnVar, {
+                                name: 'Simulation',
+                                selectedActivity: (returnVar.activityScenario || {}).scenario,
+                                isScenario: true,
+                                courseSlotManikins: data.courseSlotManikins.filter(isThisSlot),
+                                roles: data.courseFormat.courseType.courseTypeScenarioRoles.map(function (ctsr) {
+                                    var assignedFaculty = [];
+                                    slotRoles.forEach(function (sr) {
+                                        if (ctsr.facultyScenarioRoleId === sr.facultyScenarioRoleId) {
+                                            var findMatch = function (f) {
+                                                return f.participantId === sr.participantId;
+                                            };
+                                            var indx = returnVar.availableFaculty.findIndex(findMatch);
+                                            if (indx === -1) {
+                                                assignedFaculty.push(faculty.find(findMatch));
+                                            } else {
+                                                assignedFaculty.push(returnVar.availableFaculty[indx]);
+                                                returnVar.availableFaculty.splice(indx, 1);
+                                            }
+                                        }
+                                    });
+
+                                    return {
+                                        description: ctsr.facultyScenarioRole.description,
+                                        id: ctsr.facultyScenarioRoleId,
+                                        assignedFaculty: assignedFaculty,
+                                        sortableOptions: angular.extend({
+                                            update: updateSortableRepo.bind(null, {
+                                                courseSlotId: cs.id,
+                                                courseId: data.id,
+                                                facultyScenarioRoleId: ctsr.facultyScenarioRoleId
+                                            }, datacontext.courseScenarioFacultyRoles),
+                                            start: startSortable
+                                        }, sortableOptions)
+                                    };
+                                })
                             });
+                        });
+                    vm.notifyViewModelLoaded();
+                }), datacontext.manikins.all().then(function () {
+                    //at the moment, department and institution are loaded at datacontex.ready,
+                    //so the following will work here
+                    //if the institution and department data were to be loaded by a server call, this should go in the
+                    //activateController.then method
+                    datacontext.institutions.all().then(function (institutions) {
+                        var endGroup = {
+                            isGroup: false
+                        };
+                        institutions.forEach(function (inst) {
+                            var dptWithManikins = inst.departments.filter(dptHasManikins);
+                            if (dptWithManikins.length) {
+                                manikins.push({
+                                    description: '<strong>' + inst.name + '</strong>',
+                                    isGroup: true
+                                });
+                                dptWithManikins.forEach(forEachDepartment);
+                                manikins.push(endGroup);
+                            }
+                        });
+
+                        function forEachDepartment(d) {
+                            d.manikins.sort(common.sortOnPropertyName('description'));
+                            manikins.push({
+                                description: '<em>' + d.name + '</em>',
+                                isGroup: true
+                            });
+                            manikins = manikins.concat(d.manikins);
+                            manikins.push(endGroup);
                         }
-                        manikins.push(el);
+
+                        function dptHasManikins(d) {
+                            return !!d.manikins.length;
+                        }
                     });
-                })], controllerId).then(function () {
+                })], controllerId).then(function () { //all loaded
                     vm.map.forEach(function (el, indx) {
                         if (el.courseSlotManikins) {
                             el.manikins = manikins.map(function (m) {
-                                return m.isGroup
+                                return m.isGroup !== angular.undefined
                                     ? m
                                     : {
-                                        checked: el.courseSlotManikins.some(function (cs) {
-                                            return cs.manikinId === m.id;
+                                        checked: el.courseSlotManikins.some(function (csm) {
+                                            return csm.manikinId === m.id;
                                         }),
                                         description: m.description,
                                         id: m.id
                                     };
                             });
-                            el.selectedManikins = el.manikins.filter(function (m) { return m.checked; });
+                            el.selectedManikins = [];
                             $scope.$watchCollection(function () {
                                 return el.selectedManikins;
                             }, common.manageCollectionChange(datacontext.courseSlotManikins, 'id',
@@ -204,17 +224,33 @@
                 });
             });
         }
-
-        function changeScenario(m) {
+        function changeActivityScenario(m) {
+            var fk = m.isScenario ?'scenarioId':'activityId';
             //console.log(m.scenario.briefDescription);
-            common.collectionChange(datacontext.courseSlotScenarios, 'id', function (ent) {
-                return { 
-                    courseSlotId:m.id,
-                    scenarioId:ent.id,
-                    courseId:vm.course.id
-                };
-            }, m.scenario?[m.scenario]:[], m.oldScenario?[m.oldScenario]:[]);
-            m.oldScenario = m.scenario;
+            if (m.activityScenario && m.activityScenario.entityAspect.entityState.isDetached()) {
+                m.activityScenario = null;
+            }
+            if (!m.activityScenario) {
+                if (m.selectedActivity) {
+                    m.activityScenario = datacontext.courseSlotActivities.create({
+                        courseSlotId: m.id,
+                        courseId: vm.course.id
+                    });
+                    m.activityScenario[fk] = m.selectedActivity.id;
+                }
+            } else if (m.selectedActivity) {
+                if (m.activityScenario.entityAspect.entityState.isDeleted()) {
+                    if (m.activityScenario[fk] === m.selectedChoice.id) {
+                        m.activityScenario.entityAspect.setUnchanged();
+                        //could notify change to controller.abstract here
+                    } else {
+                        m.activityScenario.entityAspect.setModified();
+                    }
+                }
+                m.activityScenario[fk] = m.selectedActivity.id;
+            } else { //chosenTeachingResource exists, but activity is set to null
+                m.activityScenario.entityAspect.setDeleted();
+            }
         }
 
         function calculateCourseRoles(participantId) {
@@ -283,7 +319,7 @@
                     repo.create(key);
                     //this is not user changed (Ids only) - probably could look at how this is implemented 
                     //but for now just set manually
-                    vm.isEntityStateChanged = true;
+                    //vm.isEntityStateChanged = true;
                 }
                 
             } else if (!ui.item.sortable.isCopy && (!cancelled || removingDuplicate)) { //sending = deleting
@@ -293,5 +329,18 @@
 
             angular.extend(sortable.model, calculateCourseRoles(key.participantId));
         }
+    }
+    function sortManikins(man1, man2){
+        if (man1.department.name > man2.department.name)
+            return 1;
+        if (man1.department.name < man2.department.name)
+            return -1;
+
+        if (man1.description > man2.description)
+            return 1;
+        if (man1.description < man2.description)
+            return -1;
+
+        return 0;
     }
 })();

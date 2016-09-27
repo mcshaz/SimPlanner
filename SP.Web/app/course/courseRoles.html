@@ -17,7 +17,7 @@
                                     <h4 class="panel-title">
                                         <a>
                                             {{m.start | amDateFormat:'hh:mm a'}}
-                                            <span class="label" ng-class="m.isSim?'label-success':'label-info'">
+                                            <span class="label" ng-class="m.isScenario?'label-success':'label-info'">
                                                 {{m.name}}
                                             </span>
                                         </a>
@@ -26,34 +26,39 @@
                                 <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                                     <div class="panel-body">
                                         <div class="row col-md-12">
-                                            <div class="form-group">
+                                            <div class="form-group" ng-if="m.choices.length"> <!--m.choices only if !scenario-->
                                                 <label class="control-label col-md-1" for="resource">
-                                                    {{m.isSim?'Scenario':'Resource'}}
+                                                    Resource
                                                 </label>
                                                 <div class="col-md-5">
-                                                    <select id="resource" class="form-control" ng-model="m.selectedChoice" ng-options="s as s.description for s in m.choices" ng-if="m.choices.length && !m.isSim">
-                                                        <option disabled selected hidden value="">
-                                                            Please Select...
-                                                        </option>
-                                                    </select>
-
-                                                    <select id="resource" class="form-control" ng-model="m.scenario" ng-options="s as s.briefDescription for s in vm.scenarios" ng-change="vm.changeScenario(m)" ng-if="m.isSim">
-                                                        <option disabled selected hidden value="">
+                                                    <select id="resource" class="form-control" ng-model="m.selectedActivity" ng-options="s as s.description for s in m.choices" ng-change="vm.changeActivityScenario(m)" >
+                                                        <option selected value="">
                                                             Please Select...
                                                         </option>
                                                     </select>
                                                 </div>
-                                                <aside ng-if="m.isSim" class="col-md-6">
+                                            </div>
+                                            <div class="form-group" ng-if="m.isScenario">
+                                                <label class="control-label col-md-1" for="resource">
+                                                    Scenario
+                                                </label>
+                                                <div class="col-md-5">
+                                                    <select id="resource" class="form-control" ng-model="m.selectedActivity" ng-options="s as s.briefDescription for s in vm.scenarios" ng-change="vm.changeActivityScenario(m)" >
+                                                        <option selected value="">
+                                                            Please Select...
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <aside class="col-md-6">
                                                     {{m.scenario.fullDescription}}
                                                 </aside>
 
                                             </div>
-                                            <div class="form-group" ng-if="m.isSim">
+                                            <div class="form-group" ng-if="m.isScenario">
                                                 <label class="control-label col-md-1" for="manikin">
                                                     Manikin(s)
                                                 </label>
                                                 <div class="col-md-5">
-
                                                     <div isteven-multi-select
                                                          input-model="m.manikins" helper-elements="filter"
                                                          output-model="m.selectedManikins" tick-property="checked"
@@ -65,11 +70,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <span class="label" ng-class="m.isSim?'label-info':'label-default'">
+                                                <span class="label" ng-class="m.isScenario?'label-info':'label-default'">
                                                     Faculty
                                                 </span>
 
-                                                <ul class="col-md-12 faculty" ng-if="!m.isSim" ng-model="m.assignedFaculty" ui-sortable="m.sortableOptions"
+                                                <ul class="col-md-12 faculty" ng-if="!m.isScenario" ng-model="m.assignedFaculty" ui-sortable="m.sortableOptions"
                                                     ng-class="m.groupClass">
                                                     <li class="list-group-item col-SP-6 clearfix" ng-repeat="r in m.assignedFaculty track by r.participantId"
                                                         ng-class="{unavailableParticipant: r.isConfirmed===false}">
@@ -84,7 +89,7 @@
                                                         </span>
                                                     </li>
                                                 </ul>
-                                                <div ng-repeat="r in m.roles track by r.id" ng-if="m.isSim" class="dl-horizontal">
+                                                <div ng-repeat="r in m.roles track by r.id" ng-if="m.isScenario" class="dl-horizontal">
                                                     <div class="simRoleDescription col-md-3 control-label">
                                                         {{r.description}}
                                                     </div>
@@ -109,7 +114,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <div class="label label-info" bs-enabled="m.isSim" bs-tooltip data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Ctrl + drag to assign faculty member to multiple roles">
+                                                <div class="label label-info" bs-enabled="m.isScenario" bs-tooltip data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Ctrl + drag to assign faculty member to multiple roles">
                                                     Available Faculty
                                                 </div>
                                                 <ul class="list-group faculty" ng-model="m.availableFaculty" ui-sortable="m.availableFacultyOptions" ng-class="m.groupClass">

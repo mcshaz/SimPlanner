@@ -1,6 +1,6 @@
 ﻿<section id="course-view" class="mainbar" data-ng-controller="courseType as vm">
     <section class="matter">
-        <div class="container">
+        <div class="container col-md-12">
             <form class="form-horizontal" ng-submit="vm.save($event)" id="courseFormatForm">
                 <div class="row">
                     <fieldset class="col-md-7">
@@ -99,7 +99,7 @@
                                             </label>
                                             <div class="col-md-9">
                                                 <button type="button" class="btn btn-default" bs-checkbox id="obsolete" ng-model="cf.obsolete" ng-change="vm.alterObsoleteFormat(cf)" >
-                                                    Marked Inactive
+                                                    {{cf.obsolete?'Inactive':'Active'}}
                                                 </button>
                                             </div>
                                         </div>
@@ -110,32 +110,32 @@
                                             </label>
                                             <div class="col-md-9">
                                                 <button type="button" class="btn btn-default" bs-checkbox id="hotDrink" ng-model="cf.hotDrinkProvided" >
-                                                    Take Orders
+                                                    {{cf.hotDrinkProvided?'Take Order':'N/A'}}
                                                 </button>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="diet" class="col-md-3 control-label">
-                                                Dietary Needs
+                                                Diet Requirements
                                             </label>
                                             <div class="col-md-9">
                                                 <button type="button" class="btn btn-default" bs-checkbox id="diet" ng-model="cf.mealProvided" >
-                                                    Note Requirements
+                                                    {{cf.mealProvided?'Take Order':'N/A'}}
                                                 </button>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="startTime" class="col-md-3 control-label">
-                                                <small>(Example Start Time)</small>
+                                                Default Start
                                             </label>
                                             <div class="col-md-9">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-clock-o"></i>
                                                     </span>
-                                                    <input id="startTime" class="form-control" ng-model="cf.exampleStart" data-time-format="shortTime" data-autoclose="1" 
+                                                    <input id="startTime" class="form-control" ng-model="cf.defaultStartAsDate" data-time-format="shortTime" data-autoclose="1" 
                                                            placeholder="Time" bs-timepicker type="text" ng-change="vm.resetExampleTimes(cf)" />
                                                 </div>
                                             </div>
@@ -152,17 +152,14 @@
                                                         Activities 
                                                     </th>
                                                     <th>Minutes</th>
-                                                    <td><small>example finish</small></td>
-                                                     <!--
-                                                    simultaneousStreams functionality not implemented yet
+                                                    <td><small>default finish</small></td>
                                                     <th>Streams</th>
-                                                    -->
                                                     <td></td>
                                                 </tr>
                                             </thead>
                                             <tbody ui-sortable="vm.sortableOptions" ng-model="cf.sortableSlots">
                                                 <tr ng-if="!cf.courseSlots.length">
-                                                    <td colspan="5">please click the <i class="fa fa-plus-circle"></i> Add Activity below to add an activity</td>
+                                                    <td colspan="5">please click the <i class="fa fa-plus-circle"></i> New Activity below to add an activity</td>
                                                 </tr>
                                                 <tr ng-include="cs===cf.selectedSlot?'edit':'display'" ng-repeat="cs in cf.sortableSlots | filter: {isActive: true}" ng-class="{'info':cs===cf.selectedSlot, 'not-sortable': cs.locked}">
                                                 </tr>
@@ -194,82 +191,86 @@
     </section>
 </section>
 <script type="text/ng-template" id="display">
-        <td class="handle" ng-if="!cs.locked">
-            :::
-        </td>
-        <td ng-if="cs.isDayMarker" colspan="{{cs.locked?6:5}}" class="day-marker text-center warning">
-            Day {{cs.day}}
-        </td>
-        <td ng-if-start="!cs.isDayMarker">
-            <span ng-hide="cs.activity" class="simulation">Simulation</span>
-            <span ng-show="cs.activity" class="activity">{{cs.activity.name}}</span>
-        </td>
-        <td>
-            {{cs.minutesDuration}}
-        </td>
-        <td>
-            {{cs.exampleFinish | amDateFormat:'LT'}}
-        </td>
-        <!--
-    simultaneousStreams functionality not implemented yet
+    <td class="handle" ng-if="!cs.locked">
+        :::
+    </td>
+    <td ng-if="cs.isDayMarker" colspan="{{cs.locked?7:6}}" class="day-marker text-center warning">
+        Day {{cs.day}}
+    </td>
+    <td ng-if-start="!cs.isDayMarker">
+        <span ng-hide="cs.activity" class="simulation">Simulation</span>
+        <span ng-show="cs.activity" class="activity">{{cs.activity.name}}</span>
+    </td>
+    <td>
+        {{cs.minutesDuration}}
+    </td>
+    <td>
+        {{cs.exampleFinish | amDateFormat:'LT'}}
+    </td>
+
     <td>
         {{cs.simultaneousStreams}}
     </td>
-    -->
-        <td ng-if-end>
-            <button type="button" class="btn-link" ng-click="vm.editSlot(cs)" ng-disabled="cf.selectedSlot.entityAspect.hasValidationErrors">
-                <i class="fa fa-edit"></i>
-            </button>
-            |
-            <button type="button" class="btn-link" ng-click="vm.removeSlot(cs)">
-                <i class="fa fa-trash-o"></i>
-            </button>
-        </td>
+    <td ng-if-end>
+        <button type="button" class="btn-link" ng-click="vm.editSlot(cs)" ng-disabled="cs.entityAspect.hasValidationErrors">
+            <i class="fa fa-edit"></i>
+        </button>
+        |
+        <button type="button" class="btn-link" ng-click="vm.removeSlot(cs)">
+            <i class="fa fa-trash-o"></i>
+        </button>
+        |
+        <div ng-include="'buttons'" style="display:inline"></div>
+    </td>
+</script>
+<script type="text/ng-template" id="buttons">
+    <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save first" bs-tooltip bs-enabled="cs.entityAspect.entityState.isAdded()" ng-if="!cs.isScenario">
+        <button class="btn-link" type="button" ng-click="vm.editChoices(cs)" aria-label="edit list of options for this slot">
+            <i class="glyphicon glyphicon-list" aria-hidden="true"></i>
+        </button>
+    </div>
 </script>
 <script type="text/ng-template" id="edit">
-        <td class="form-group">
-            <label class="control-label">
-                <input type="checkbox" ng-model="cf.selectedSlot.isScenario" ng-change="vm.isScenarioChanged(cf.selectedSlot)" id="isScenario" class="checkbox-inline"
-                       ng-disabled="!cf.selectedSlot.entityAspect.entityState.isAdded()" />
-            </label>
-        </td>
-        <td class="form-group">
-            <input class="form-control simulation" type="text" ng-show="cf.selectedSlot.isScenario" value="Simulation" disabled="disabled">
-            <div ng-hide="cf.selectedSlot.isScenario">
-                <input ng-hide="cf.selectedSlot.entityAspect.entityState.isAdded()" class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name" ng-disabled="!cf.selectedSlot" />
-                <input ng-show="cf.selectedSlot.entityAspect.entityState.isAdded()" class="form-control" id="activity" type="text" ng-model="cf.selectedSlot.activity.name" placeholder="activity name"
-                       autocomplete="off" ng-disabled="!cf.selectedSlot"
-                       uib-typeahead="ca for ca in vm.getCourseActivityNames($viewValue)"
-                       typeahead-focus-first="false" typeahead-on-select="vm.activitySelected($item, cf.selectedSlot)"
-                       typeahead-no-results="cf.noResults" typeahead-select-on-exact="true"
-                       typeahead-select-on-blur="true" data-z-validate /> <!--typeahead-show-hint="true" is off for now as will have to fiddle with the left ?margin/padding ?tt-typeahed class? in the error state-->
-                <div ng-show="cf.selectedSlot.noResults">
-                    <i class="glyphicon glyphicon-remove"></i> No Existing Activities
-                </div>
+    <td class="form-group">
+        <label class="control-label">
+            <input type="checkbox" ng-checked="cs.isScenario" ng-click="vm.isScenarioChanged(cs)" id="isScenario" class="checkbox-inline"
+                    ng-disabled="!cs.entityAspect.entityState.isAdded()" />
+        </label>
+    </td>
+    <td class="form-group">
+        <input class="form-control simulation" type="text" ng-show="cs.isScenario" value="Simulation" disabled="disabled">
+        <div ng-hide="cs.isScenario">
+            <input ng-hide="cs.entityAspect.entityState.isAdded()" class="form-control" id="activity" type="text" ng-model="cs.activity.name" placeholder="activity name" />
+            <input ng-show="cs.entityAspect.entityState.isAdded()" class="form-control" id="activity" type="text" ng-model="cs.activity.name" placeholder="activity name"
+                    autocomplete="off" 
+                    uib-typeahead="ca for ca in vm.getCourseActivityNames($viewValue)"
+                    typeahead-focus-first="false" typeahead-on-select="vm.activitySelected($item, cs)"
+                    typeahead-no-results="cf.noResults" typeahead-select-on-exact="true"
+                    typeahead-select-on-blur="true" data-z-validate /> <!--typeahead-show-hint="true" is off for now as will have to fiddle with the left ?margin/padding ?tt-typeahed class? in the error state-->
+            <div ng-show="cf.noResults">
+                <i class="glyphicon glyphicon-remove"></i> No Existing Activities
             </div>
-        </td>
-        <td class="form-group col-md-1">
-            <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.minutesDuration" ng-disabled="!cf.selectedSlot" ng-change="vm.resetExampleTimes(cf)">
-        </td>
-        <!--
-        simultaneousStreams functionality not implemented yet
-        <td class="form-group  col-md-1">
-            <input class="form-control" type="number" step="1" z-validate ng-model="cf.selectedSlot.simultaneousStreams" ng-disabled="!cf.selectedSlot">
-        </td>
-        -->
-        <td>
-            <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save first" bs-tooltip bs-enabled="!!(cf.selectedSlot && cf.selectedSlot.entityAspect.entityState.isAdded())">
-                <button class="btn btn-link" type="button" ng-click="vm.editChoices(cf.selectedSlot)" ng-disabled="!cf.selectedSlot || cf.selectedSlot.isScenario || cf.selectedSlot.entityAspect.entityState.isAdded()" aria-label="edit list of options for this slot">
-                    <i class="glyphicon glyphicon-list" aria-hidden="true"></i>
-                </button>
-            </div>
-        </td>
-        <td>
-            <button type="button" class="btn-link btn" ng-click="vm.removeSlot(cs)">
-                <i class="fa fa-trash-o"></i>
-            </button>
-            <button type="button" class="btn-link btn" ng-disabled="cs.entityAspect.hasValidationErrors" ng-click="cf.selectedSlot = null">
-                <i class="fa fa-check"></i>
-            </button>
-        </td>
+        </div>
+    </td>
+    <td class="form-group">
+        <input class="form-control" type="number" step="1" z-validate ng-model="cs.minutesDuration"  ng-change="vm.resetExampleTimes(cf)">
+    </td>
+    <td>
+        {{cs.exampleFinish | amDateFormat:'LT'}}
+    </td>
+    <td class="form-group">
+        <input class="form-control" type="number" step="1" z-validate ng-model="cs.simultaneousStreams" >
+    </td>
+
+    <td>
+        <button type="button" class="btn-link" ng-disabled="cs.entityAspect.hasValidationErrors" ng-click="cf.selectedSlot = null">
+            <i class="fa fa-check"></i>
+        </button>
+        |
+        <button type="button" class="btn-link" ng-click="vm.removeSlot(cs)">
+            <i class="fa fa-trash-o"></i>
+        </button>
+        |
+        <div ng-include="'buttons'" style="display:inline"></div>
+    </td>
 </script>
