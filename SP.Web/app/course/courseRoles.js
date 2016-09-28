@@ -170,7 +170,10 @@
                     //if the institution and department data were to be loaded by a server call, this should go in the
                     //activateController.then method
                     datacontext.institutions.all().then(function (institutions) {
-                        institutions.forEach(function (inst) {
+                        var sortName = common.sortOnPropertyName('name');
+                        var sortDescription = common.sortOnPropertyName('description');
+                        institutions.sort(sortName).forEach(function (inst) {
+                            inst.departments.sort(sortName);
                             var dpts = departmentMap(inst.departments);
                             if (dpts.length) {
                                 manikins.push({
@@ -194,7 +197,7 @@
                                         open: d.id === vm.course.department.id,
                                         name: d.name,
                                         abbrev: d.abbreviation,
-                                        children: d.manikins.map(manikinMap)
+                                        children: d.manikins.sort(sortDescription).map(manikinMap)
                                     });
                                 }
                             });

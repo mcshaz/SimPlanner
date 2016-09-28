@@ -40,6 +40,7 @@
         vm.save = save;
         vm.sendEmails = sendEmails;
         vm.title = 'course';
+        vm.timeUpdated = timeUpdated;
 
         activate();
 
@@ -132,13 +133,13 @@
             return _modalInstance;
         }
 
-        function dateChanged(propName,courseDay) {
-            var dateInst = vm.course[propName];
-            if (!dateInst instanceof Date) { return; }
-            if (dateInst.getHours() === 0 && dateInst.getMinutes() === 0) { //bad luck if you want your course to start at midnight local time, but this would be an extreme edge case!
-                dateInst.setTime(dateInst + vm.course.courseFormat.defaultStartAsDate);
+        function dateChanged(dateInst,propName,courseDay) {
+            if (!dateInst) { return; }
+            if (vm.course.courseFormat && dateInst.getHours() === 0 && dateInst.getMinutes() === 0) { //bad luck if you want your course to start at midnight local time, but this would be an extreme edge case!
+                var msOffset = vm.course.courseFormat.defaultStartMsOffset();
+                dateInst.setHours(Math.floor(msOffset / 3600000), msOffset % 3600000 / 60000);
             }
-            if (propName === 'start') {
+            if (propName === 'startUtc') {
                 if (courseDay === vm.courseDays[0] && vm.courseDays.every(function(cd,indx){return indx===1 || !cd.startUtc;})){
                     var date = vm.courseDays[0].startUtc;
                     for (var i=1; i<vm.courseDays.length; i++){
@@ -151,6 +152,13 @@
                 }
             }
         }
+        // hack - the directive is obviously using setHours, and so breeze sees the entity as unchaged 
+        function timeUpdated(owner) {
+            if (owner.entityAspect.entityState.isUnchanged()) {
+                owner.entityAspect.setModified();
+            }
+        }
+
 
         function concatCourseDays() {
             vm.course.courseDays.sort(common.sortOnPropertyName('day'));

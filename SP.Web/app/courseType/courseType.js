@@ -95,9 +95,11 @@
                     .then(function () {
                         vm.notifyViewModelLoaded();
                         var ctds = vm.courseType.courseTypeDepartments;
+                        var sortName = common.sortOnPropertyName('name');
                         vm.departments = [];
-                        institutions.forEach(function (inst) {
+                        institutions.sort(sortName).forEach(function (inst) {
                             if (inst.departments.length) {
+                                inst.departments.sort(sortName);
                                 vm.departments.push({
                                     id: inst.id,
                                     checked: false,
@@ -436,8 +438,10 @@
                 return slotsSharingActivity.id !== cs.id;
             })) {
                 cs.activity.entityAspect.setDeleted();
-                cs.activityId = cs.activity = null;
+            } else {
+                cs.activity.entityAspect.setUnchanged();
             }
+            cs.activityId = cs.activity = null;
         }
 
         function removeActivityAndSlots(cs) {

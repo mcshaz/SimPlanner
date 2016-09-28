@@ -64,7 +64,7 @@
                     : course;
             };
 
-            var courseInitializer = function (courseFormat) {
+            var courseInitializer = function (course) {
                 Object.defineProperty(CourseCtor.prototype, 'finish', {
                     enumerable: true,
                     configurable: true,
@@ -120,13 +120,16 @@
                     }
                 });
 
+                CourseFormatCtor.prototype.defaultStartMsOffset = function () {
+                    var duration = parseSimpleDuration.exec(this.defaultStartTime);
+                    return parseInt(duration[1] || 0)*3600000 + parseInt(duration[2] || 0)*60000;
+                }
+
                 Object.defineProperty(CourseFormatCtor.prototype, 'defaultStartAsDate', {
                     enumerable: true,
                     configurable: true,
                     get: function () {
-                        var duration = parseSimpleDuration.exec(this.defaultStartTime);
-
-                        return parseInt(duration[1] || 0)*3600000 + parseInt(duration[2] || 0)*60000 + utcOffset;
+                        return this.defaultStartMsOffset() + utcOffset;
                     },
                     set: function (value) {
                         value = value - utcOffset;
@@ -148,7 +151,7 @@
 
             var CourseDayCtor = function () { };
 
-            var courseDayInitializer = function (courseFormat) {
+            var courseDayInitializer = function (courseDay) {
                 Object.defineProperty(CourseDayCtor.prototype, 'finish', {
                     enumerable: true,
                     configurable: true,
@@ -240,11 +243,15 @@
             var courseEntity = metadataStore.getEntityType('CourseDto');
             var comesBeforeStart = validator.comesBeforeValidatorFactory(courseEntity.getProperty('startUtc'));
             courseEntity.getProperty('facultyMeeting').validators.push(comesBeforeStart);
+
+            //no repeat activity name
+            var courseActivityEntity = metadataStore.getEntityType('CourseActivityDto');
+            courseActivityEntity.getProperty('name').validators.push(validator.noRepeatActivityNameValidatorFactory());
+            
         }
 
         function getFinish() {
-            var self = this;
-            return new Date(self.startUtc + self.durationMins * 60000);
+            return new Date(this.startUtc.getTime() + this.durationMins * 60000);
         }
 
     }

@@ -8,8 +8,10 @@
     //validator instances (to be added manually)
     validator.requireReferenceValidator = requireReferenceValidatorFactory();
     validator.register(validator.requireReferenceValidator);
-    
+
     validator.comesBeforeValidatorFactory = comesBeforeValidatorFactory;
+
+    validator.noRepeatActivityNameValidatorFactory = noRepeatActivityNameValidatorFactory;
 
     function createTwitterValidator() {
         // create the validator
@@ -84,6 +86,18 @@
             var laterVal = c.entity.getProperty(ctx.name);
 
             return !(laterVal && earlierVal) || earlierVal<laterVal;
+        }
+    }
+
+    function noRepeatActivityNameValidatorFactory() {
+        // isRequired = true so zValidate directive displays required indicator
+        return new validator('noRepeatActivityName', valFunction, { messageTemplate: 'Cannot have repeat names. Delete and creating a new %% rather than rename %%' });
+
+        function valFunction(name, c) {
+            var otherActivities = c.entity.getProperty('courseType').courseActivities;
+            var id = c.entity.getProperty('id');
+
+            return !otherActivities.some(function (a) { return a.id !== id && a.name === name; });
         }
     }
 
