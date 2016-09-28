@@ -11,7 +11,7 @@ namespace SP.Dto
 
         public int Day { get; set; }
 
-        public DateTime Start { get; set; }
+        public DateTime StartUtc { get; set; }
 
         public int DurationMins { get; set; }
 

@@ -25,12 +25,13 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">Departments</label>
                             <div class="col-md-9">
-                                <div id="departments" isteven-multi-select on-item-click="vm.departmentClicked(data)"
+                                <div angular-multi-select
+                                     dropdown-label="<[ '<(abbreviation)>' | outputModelIterator : this : ', ']>"
+                                     output-type="objects"
                                      input-model="vm.departments"
                                      output-model="vm.selectedDepartments"
-                                     button-label="abbreviation"
-                                     item-label="name" group-property="dptGroup"
-                                     tick-property="checked">
+                                     node-label="<strong><[ name ]></strong>"
+                                     leaf-label="<[ name ]>">
                                 </div>
                             </div>
                         </div>

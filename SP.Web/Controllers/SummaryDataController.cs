@@ -30,7 +30,15 @@ namespace SP.Web.Controllers
         public IHttpActionResult GetUserInfo(DateTime? after=null)
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
-            return Json(ParticipantSummaryServices.GetParticipantSummary(Context, userId, after));
+            return Ok(ParticipantSummaryServices.GetParticipantSummary(Context, userId, after));
+        }
+
+        [Route("PriorExposure")]
+        [HttpGet]
+        public IHttpActionResult PriorExposure(Guid courseId)
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            return Ok(ParticipantSummaryServices.GetExposures(Context, courseId, userId));
         }
 
     }

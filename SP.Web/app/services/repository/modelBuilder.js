@@ -224,6 +224,7 @@
 
         function extendValidators(metadataStore)
         {
+            //requiredReference
             var required = window.medsimMetadata.getBreezeValidators();
             var validator = breeze.Validator;
             for (var typeName in required) {
@@ -234,11 +235,16 @@
                     });
                 }
             }
+
+            //comes after
+            var courseEntity = metadataStore.getEntityType('CourseDto');
+            var comesBeforeStart = validator.comesBeforeValidatorFactory(courseEntity.getProperty('startUtc'));
+            courseEntity.getProperty('facultyMeeting').validators.push(comesBeforeStart);
         }
 
         function getFinish() {
             var self = this;
-            return new Date(self.start + self.durationMins * 60000);
+            return new Date(self.startUtc + self.durationMins * 60000);
         }
 
     }

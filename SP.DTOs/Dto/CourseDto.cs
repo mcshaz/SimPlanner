@@ -9,7 +9,7 @@ namespace SP.Dto
     public class CourseDto
     {
         public Guid Id { get; set; }
-        public DateTime Start { get; set; }
+        public DateTime StartUtc { get; set; }
         public int DurationMins { get; set; }
         public DateTime? FacultyMeeting { get; set; }
         public Guid DepartmentId { get; set; }

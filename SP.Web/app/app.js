@@ -25,7 +25,7 @@
         'ui.grid',
         'ui.grid.pagination',
         'ui.grid.grouping',
-        'isteven-multi-select',
+        'angular-multi-select',
         'ngLocationUpdate',
         'mwl.calendar'
     ]);

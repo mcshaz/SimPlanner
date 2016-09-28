@@ -152,11 +152,11 @@
             };
             var term = grid.columns[7].filters[0].term;
             if (term) {
-                predicates.push(breeze.Predicate.create('start', '>=', term));
+                predicates.push(breeze.Predicate.create('startUtc', '>=', term));
             }
             term = grid.columns[7].filters[1].term;
             if (term) {
-                predicates.push(breeze.Predicate.create('start', '<=', term));
+                predicates.push(breeze.Predicate.create('startUtc', '<=', term));
             }
             var dptHash = { d: 'departmentId', i: 'department.institutionId' };
             createIdPredicate(dptHash, grid.columns[1].filters[0].term);
@@ -204,7 +204,8 @@
             var grouping = gridApi.grouping;
             grouping.clearGrouping();
             grouping.groupColumn('Course');
-            grouping.groupColumn('Department');
+            //not working at the moment - issue logged
+            //grouping.groupColumn('Department');
         }
 
         function updateData() {
@@ -228,7 +229,7 @@
                         totalDurationMins: el.totalDurationMins,
                         participantCount: el.participantCount,
                         facultyCount: el.facultyCount,
-                        start: el.start,
+                        start: el.startUtc,
                         id: el.id
                     };
                 });

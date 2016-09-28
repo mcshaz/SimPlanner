@@ -139,10 +139,10 @@
                 dateInst.setTime(dateInst + vm.course.courseFormat.defaultStartAsDate);
             }
             if (propName === 'start') {
-                if (courseDay === vm.courseDays[0] && vm.courseDays.every(function(cd,indx){return indx===1 || !cd.start;})){
-                    var date = vm.courseDays[0].start;
+                if (courseDay === vm.courseDays[0] && vm.courseDays.every(function(cd,indx){return indx===1 || !cd.startUtc;})){
+                    var date = vm.courseDays[0].startUtc;
                     for (var i=1; i<vm.courseDays.length; i++){
-                        vm.courseDays[i].start = new Date(date).setDate(date.getDate() + i);
+                        vm.courseDays[i].startUtc = new Date(date).setDate(date.getDate() + i);
                     }
                 }
             } else if (propName === 'facultyMeeting') {
@@ -267,7 +267,7 @@
                 data: { CourseId: vm.course.id }
             }).then(function (response) {
                 alert(response.data || 'emails sent');
-            });
+            }, log.error);
         }
     }
     function sortDepartments(dpt1, dpt2) {

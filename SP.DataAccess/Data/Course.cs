@@ -123,7 +123,10 @@ namespace SP.DataAccess
 
     public static class CourseExtensions
     {
-
+        public static IEnumerable<ICourseDay> AllDays(this Course course)
+        {
+            return (new[] { (ICourseDay)course }).Concat(course.CourseDays).OrderBy(cd=>cd.Day);
+        } 
         public static ICourseDay LastDay(this Course course)
         {
             var days = course.CourseFormat.DaysDuration;

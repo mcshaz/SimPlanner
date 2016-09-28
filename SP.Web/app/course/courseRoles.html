@@ -7,7 +7,7 @@
                         <div class="panel-title">
                             {{vm.course.department.name}}
                             {{vm.course.courseFormat.typeFormatDescriptor}}
-                            {{vm.course.start | amDateFormat:'LL'}}
+                            {{vm.course.startUtc | amDateFormat:'LL'}}
                         </div>
                     </div>
                     <div class="panel-body">
@@ -16,7 +16,7 @@
                                 <div class="panel-heading" role="tab" bs-collapse-toggle>
                                     <h4 class="panel-title">
                                         <a>
-                                            {{m.start | amDateFormat:'hh:mm a'}}
+                                            {{m.startUtc | amDateFormat:'hh:mm a'}}
                                             <span class="label" ng-class="m.isScenario?'label-success':'label-info'">
                                                 {{m.name}}
                                             </span>
@@ -59,11 +59,13 @@
                                                     Manikin(s)
                                                 </label>
                                                 <div class="col-md-5">
-                                                    <div isteven-multi-select
-                                                         input-model="m.manikins" helper-elements="filter"
-                                                         output-model="m.selectedManikins" tick-property="checked"
-                                                         button-label="description" group-property="isGroup"
-                                                         item-label="description">
+                                                    <div angular-multi-select
+                                                         dropdown-label="<[ '<(description)>' | outputModelIterator : this : ', ']>"
+                                                         input-model="m.manikins" 
+                                                         output-type="objects"
+                                                         output-model="m.selectedManikins" 
+                                                         node-label="<strong><[ name ]></strong>"
+                                                         leaf-label="<div class='<[ booked ]>'><[ description ]></div>" >
                                                     </div>
                                                 </div>
                                             </div>

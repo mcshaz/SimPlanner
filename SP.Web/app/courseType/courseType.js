@@ -62,60 +62,74 @@
         activate();
 
         function activate() {
-            var institutions;
-            var promises = [
-                    datacontext.ready(),
-                    datacontext.courseTypes.find({where: breeze.Predicate.create('instructorCourseId','==',null).and('id','!=',id)}).then(function (data) {
-                        vm.instructorCourses = data;
-                    }),
-                    datacontext.institutions.all({expand:'departments'}).then(function(data){
-                        institutions = data;
-                    })
+            datacontext.ready().then(function () {
+                var institutions;
+                var promises = [
+                        datacontext.courseTypes.find({ where: breeze.Predicate.create('instructorCourseId', '==', null).and('id', '!=', id) }).then(function (data) {
+                            vm.instructorCourses = data;
+                        }),
+                        datacontext.institutions.all(/*{expand:'departments'}*/).then(function (data) {
+                            institutions = data;
+                        })
                 ];
-            if (isNew) {
-                vm.courseType = datacontext.courseTypes.create();
-                datacontext.courseFormats.create({ courseType: vm.courseType });
-            } else {
-                //promises.push(datacontext.courseTypes.fetchByKey(id, { expand: 'courseFormats.courseSlots' }).then(function (data) { - if the courseFormats were not already loaded from the server
-                promises.push(datacontext.courseTypes.fetchByKey(id,
-                {
-                    expand: ["courseFormats.courseSlots.activity", "courseTypeDepartments"]
-                }).then(function (data) {
-                    vm.courseType = data;
-                    vm.courseType.courseFormats.forEach(function (cf) {
-                        resetExampleTimes(cf);
-                        cf.sortableSlots = createCourseSlotSortableArray(cf.courseSlots);
-                    });
-                    vm.activeFormatIndex = vm.courseType.courseFormats.findIndex(function (cf) {
-                        return cf.id === $routeParams.formatId;
-                    });
-                }));
-            }
-            common.activateController(promises, controllerId)
-                .then(function () {
-                    vm.notifyViewModelLoaded();
-                    var ctds = vm.courseType.courseTypeDepartments;
-                    institutions.forEach(function (i) {
-                        i.departments.sort(common.sortOnPropertyName('name'));
-                        vm.departments.push({ name: '<strong>' + i.name + '</strong>', dptGroup: true });
-                        i.departments.forEach(iterateDpt);
-                        vm.departments.push({ dptGroup: false });
-                    });
-                    function iterateDpt(d) {
-                        var checked = ctds.some(function(c){return c.departmentId === d.id;});
-                        vm.departments.push({ name: d.name, abbreviation: d.abbreviation, dptId:d.id, checked:checked });
-                    }
-                    $scope.$watchCollection(function () { return vm.selectedDepartments; }, common.manageCollectionChange(datacontext.courseTypeDepartments, 'dptId',
-                        function (member) {
+                if (isNew) {
+                    vm.courseType = datacontext.courseTypes.create();
+                    datacontext.courseFormats.create({ courseType: vm.courseType });
+                } else {
+                    //promises.push(datacontext.courseTypes.fetchByKey(id, { expand: 'courseFormats.courseSlots' }).then(function (data) { - if the courseFormats were not already loaded from the server
+                    promises.push(datacontext.courseTypes.fetchByKey(id,
+                    {
+                        expand: ["courseFormats.courseSlots.activity", "courseTypeDepartments"]
+                    }).then(function (data) {
+                        vm.courseType = data;
+                        vm.courseType.courseFormats.forEach(function (cf) {
+                            resetExampleTimes(cf);
+                            cf.sortableSlots = createCourseSlotSortableArray(cf.courseSlots);
+                        });
+                        vm.activeFormatIndex = vm.courseType.courseFormats.findIndex(function (cf) {
+                            return cf.id === $routeParams.formatId;
+                        });
+                    }));
+                }
+                common.activateController(promises, controllerId)
+                    .then(function () {
+                        vm.notifyViewModelLoaded();
+                        var ctds = vm.courseType.courseTypeDepartments;
+                        vm.departments = [];
+                        institutions.forEach(function (inst) {
+                            if (inst.departments.length) {
+                                vm.departments.push({
+                                    id: inst.id,
+                                    checked: false,
+                                    open: true,
+                                    name: inst.name,
+                                    abbrev: inst.abbreviation,
+                                    children: inst.departments.map(departmentMap)
+                                });
+                            }
+                        });
+
+                        function departmentMap(d) {
                             return {
-                                departmentId: member.dptId,
-                                courseTypeId: vm.courseType.id
+                                id: d.id,
+                                checked: ctds.some(function (ctd) { return ctd.departmentId === d.id}),
+                                open: true,
+                                name: d.name,
+                                abbrev: d.abbreviation
                             };
-                        }));
-                    if (vm.courseType.courseFormats.length === 1) {
-                        vm.activeFormatIndex = 0;
-                    }
-                    vm.log('Activated Course Format View');
+                        }
+                        $scope.$watchCollection(function () { return vm.selectedDepartments; }, common.manageCollectionChange(datacontext.courseTypeDepartments, 'id',
+                            function (member) {
+                                return {
+                                    departmentId: member.id,
+                                    courseTypeId: vm.courseType.id
+                                };
+                            }));
+                        if (vm.courseType.courseFormats.length === 1) {
+                            vm.activeFormatIndex = 0;
+                        }
+                        vm.log('Activated Course Format View');
+                    });
             });
         }
         

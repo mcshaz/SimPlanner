@@ -486,6 +486,17 @@ div.time-accompany{
 .btn.btn-link{
     pointer-events:all;
 }
+
+/*Calndar overrides*/
+.cancelled {
+    text-decoration: line-through;
+}
+/*end region*/
+/*ui-grid overrides*/
+.ui-grid-tree-base-row-header-buttons {
+    cursor: pointer;
+}
+/*end region*/
 /*#region overide breeze directives*/
         .z-decorator {
             display: block;

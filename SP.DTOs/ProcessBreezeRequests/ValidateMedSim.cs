@@ -268,10 +268,10 @@ namespace SP.Dto.ProcessBreezeRequests
             foreach (var course in Context.Courses.Include("CourseDays").Include("CourseFormat")
                     .Where(c=>c.StartUtc > DateTime.UtcNow && courseFormatIds.Contains(c.CourseFormatId)))
             {
-                var days = course.CourseDays.Cast<ICourseDay>().ToDictionary(k=>k.Day);
-                days.Add(1, course);
+                int i = 0;
+                var days = course.AllDays().ToDictionary(k=>++i);
 
-                for (var i = 1; i <= course.CourseFormat.DaysDuration; i++)
+                for (i = 1; i <= course.CourseFormat.DaysDuration; i++)
                 {
                     ICourseDay icd;
                     if (!days.TryGetValue(i,out icd)){
@@ -287,9 +287,9 @@ namespace SP.Dto.ProcessBreezeRequests
                     slotDays.TryGetValue((byte)i,out duration);
                     icd.DurationMins = duration;
                 }
-                foreach (var i in days.Keys.Where(d=>d> course.CourseFormat.DaysDuration))
+                foreach (var k in days.Keys.Where(d=>d> course.CourseFormat.DaysDuration))
                 {
-                    days[i].DurationMins = 0;
+                    days[k].DurationMins = 0;
                 }
             }
             Context.SaveChanges();

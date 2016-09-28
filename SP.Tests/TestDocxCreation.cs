@@ -18,7 +18,7 @@ namespace SP.Tests
             Course course;
             using (var db = new MedSimDbContext())
             {
-                course = CreateDocxTimetable.GetCourseWithIncludes(Guid.Parse("b15b8615-5883-4438-983b-45bd5a4deea8"),db);
+                course = CreateDocxTimetable.GetCourseWithIncludes(Guid.Parse("0ca5d24f-292e-4004-bb08-096db4b440ad"),db);
                 
                 using (var stream = CreateDocxTimetable.CreateTimetableDocx(course, templ))
                 {

@@ -1,7 +1,6 @@
 ﻿using HtmlAgilityPack;
 using SP.DataAccess;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
@@ -49,7 +48,7 @@ namespace SP.Web.UserEmails
                 IsAllDay = false,
                 Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description
             };
-            foreach (var cd in course.CourseDays.Take(course.CourseFormat.DaysDuration).OrderBy(cd=>cd.Day))
+            foreach (var cd in course.AllDays().Take(course.CourseFormat.DaysDuration))
             {
                 var start = TimeZoneInfo.ConvertTimeFromUtc(cd.StartUtc, tzi);
                 var dayEvt = courseEvt.Copy<Event>();

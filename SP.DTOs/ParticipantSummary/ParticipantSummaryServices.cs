@@ -1,7 +1,10 @@
 ﻿using SP.DataAccess;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
+using SP.Dto.Utilities;
+using System.Data.Entity;
 
 namespace SP.Dto.ParticipantSummary
 {
@@ -43,5 +46,66 @@ namespace SP.Dto.ParticipantSummary
                                          }).ToList();
             return returnVar;
         }
+
+        public static PriorExposures GetExposures(MedSimDbContext context ,Guid courseId, Guid userId)
+        {
+            //to do - check authorization
+            var course = (from c in context.Courses.Include(co => co.CourseParticipants).Include(co => co.CourseFormat)
+                          where c.Id == courseId
+                          select c).First();
+            //only interested in faculty
+            var participantIds = (from cp in course.CourseParticipants
+                                  where !cp.IsFaculty
+                                  select cp.ParticipantId).ToList();
+            //however, if they have been faculty for a scenario or activity, we want to know that
+            var otherCourses = (from c in context.Courses.Include(co => co.CourseSlotActivities).Include(co => co.CourseParticipants)
+                                where c.Id != courseId && c.CourseFormat.CourseTypeId == course.CourseFormat.CourseTypeId && !c.Cancelled && c.CourseParticipants.Any(cp => participantIds.Contains(cp.ParticipantId))
+                                select c).ToList();
+            var returnVar = new PriorExposures
+            {
+                ScenarioParticipants = new Dictionary<Guid, HashSet<Guid>>(),
+                ActivityParticipants = new Dictionary<Guid, HashSet<Guid>>(),
+                BookedManikins = GetBookedManikins(context, course)
+            };
+
+            foreach (var oc in otherCourses)
+            {
+                var participants = (from cp in oc.CourseParticipants
+                                    select cp.ParticipantId).Intersect(participantIds).ToList();
+                foreach (var csa in oc.CourseSlotActivities)
+                {
+                    if (csa.ActivityId.HasValue)
+                    {
+                        returnVar.ActivityParticipants.AddRangeOrCreate(csa.ActivityId.Value, participants);
+                    }
+                    else
+                    {
+                        returnVar.ScenarioParticipants.AddRangeOrCreate(csa.ScenarioId.Value, participants);
+                    }
+                }
+            }
+            return returnVar;
+        }
+
+        public static IEnumerable<Guid> GetBookedManikins(MedSimDbContext context, Course course)
+        {
+            var refStart = course.StartUtc;
+            var refFinish = course.FinishTimeUtc();
+            return (from csm in context.CourseSlotManikins
+                    let c = csm.Course
+                    let lastDay = c.CourseDays.FirstOrDefault(cd=>cd.Day == c.CourseFormat.DaysDuration)
+                    let cFinish = lastDay == null 
+                        ? DbFunctions.AddMinutes(c.StartUtc,c.DurationMins)
+                        : DbFunctions.AddMinutes(lastDay.StartUtc, lastDay.DurationMins)
+                    where c.Id!= course.Id && c.StartUtc < refFinish &&  refStart < cFinish 
+                    select csm.ManikinId).ToList();
+
+        }
+    }
+    public class PriorExposures
+    {
+        public Dictionary<Guid, HashSet<Guid>> ScenarioParticipants { get; set; }
+        public Dictionary<Guid, HashSet<Guid>> ActivityParticipants { get; set; }
+        public IEnumerable<Guid> BookedManikins { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace SP.Dto.Maps
         public CourseMaps() : base(m => new Course
             {
                 Id = m.Id,
-                StartUtc = m.Start,
+                StartUtc = m.StartUtc,
                 DurationMins = m.DurationMins,
                 DepartmentId = m.DepartmentId,
                 EmailSequence = m.EmailSequence,
@@ -28,7 +28,7 @@ namespace SP.Dto.Maps
             m => new CourseDto
             {
                 Id = m.Id,
-                Start = m.StartUtc,
+                StartUtc = m.StartUtc,
                 DurationMins = m.DurationMins,
                 DepartmentId = m.DepartmentId,
                 EmailSequence = m.EmailSequence,

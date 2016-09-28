@@ -25,12 +25,13 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">Departments</label>
                             <div class="col-md-9">
-                                <div id="departments" isteven-multi-select
+                                <div angular-multi-select
+                                     dropdown-label="<[ '<(abbrev)>' | outputModelIterator : this : ', ']>"
+                                     output-type="objects"
                                      input-model="vm.departments"
                                      output-model="vm.selectedDepartments"
-                                     button-label="abbreviation"
-                                     item-label="name" group-property="dptGroup"
-                                     tick-property="checked">
+                                     node-label="<strong><[ name ]></strong>"
+                                     leaf-label="<[ name ]>">
                                 </div>
                             </div>
                         </div>
@@ -240,8 +241,7 @@
     <td class="form-group">
         <input class="form-control simulation" type="text" ng-show="cs.isScenario" value="Simulation" disabled="disabled">
         <div ng-hide="cs.isScenario">
-            <input ng-hide="cs.entityAspect.entityState.isAdded()" class="form-control" id="activity" type="text" ng-model="cs.activity.name" placeholder="activity name" />
-            <input ng-show="cs.entityAspect.entityState.isAdded()" class="form-control" id="activity" type="text" ng-model="cs.activity.name" placeholder="activity name"
+            <input class="form-control" id="activity" type="text" ng-model="cs.activity.name" placeholder="activity name"
                     autocomplete="off" 
                     uib-typeahead="ca for ca in vm.getCourseActivityNames($viewValue)"
                     typeahead-focus-first="false" typeahead-on-select="vm.activitySelected($item, cs)"

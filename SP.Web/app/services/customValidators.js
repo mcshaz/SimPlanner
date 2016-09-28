@@ -1,15 +1,15 @@
-﻿; window.emptyGuid = "00000000-0000-0000-0000-000000000000";
+﻿window.emptyGuid = "00000000-0000-0000-0000-000000000000";
 (function () {
     var validator = breeze.Validator;
     //factory methods (to be loaded from metadata)
-    validator.registerFactory(createRangeValidator, "numericRange");
-    validator.registerFactory(createFullnameValidator, "personFullName");
+    validator.registerFactory(rangeValidatorFactory, "numericRange");
+    validator.registerFactory(createFullnameValidatorFactory, "personFullName");
 
     //validator instances (to be added manually)
-    requireReferenceValidator = createRequireReferenceValidator();
-    validator.register(requireReferenceValidator);
-    validator.requireReferenceValidator = requireReferenceValidator;
+    validator.requireReferenceValidator = requireReferenceValidatorFactory();
+    validator.register(validator.requireReferenceValidator);
     
+    validator.comesBeforeValidatorFactory = comesBeforeValidatorFactory;
 
     function createTwitterValidator() {
         // create the validator
@@ -22,11 +22,11 @@
         validator.register(val);
 
         // make it available as a validator static fn like the others
-        validator.twitter = function () { return val; }
+        validator.twitter = function () { return val; };
 
     }
 
-    function createRangeValidator(context) {
+    function rangeValidatorFactory(context) {
         var template = context.messageTemplate || breeze.core.formatString(
             "'%displayName%' must be a number between the values of %1 and %2",
             context.min, context.max);
@@ -39,15 +39,15 @@
         });
 
         function valFn(v, ctx) {
-            if (v == null) return true;
-            if (typeof (v) !== "number") return false;
-            if (ctx.min != null && v < ctx.min) return false;
-            if (ctx.max != null && v > ctx.max) return false;
+            if (v === null) return true;
+            if (typeof v !== "number") return false;
+            if (ctx.min !== null && v < ctx.min) return false;
+            if (ctx.max !== null && v > ctx.max) return false;
             return true;
-        };
-    };
+        }
+    }
 
-    function createFullnameValidator(context) {
+    function createFullnameValidatorFactory(context) {
         // The last parameter below is the 'context' object that will be passed into the 'ctx' parameter above
         // when this validator executes. Several other properties, such as displayName will get added to this object as well.
         var template = breeze.core.formatString(
@@ -58,25 +58,33 @@
         });
 
         function valFn(v, ctx) {
-            if (v == null) return true;
-            if (typeof (v) !== "string" || !v.length) return false;
+            if (v === null) return true;
+            if (typeof v !== "string" || !v.length) return false;
             var names = v.trim().split(' ');
-            return (names.length <= context.maxNames && names.length >= context.minNames &&
+            return names.length <= context.maxNames && names.length >= context.minNames &&
                 names[0].length >= context.minNameLength &&
-                names[names.length - 1].length >= context.minNameLength);
-        };
-    };
+                names[names.length - 1].length >= context.minNameLength;
+        }
+    }
     //http://stackoverflow.com/questions/16733251/breezejs-overriding-displayname
-    function createRequireReferenceValidator() {
-        var name = 'requireReferenceEntity';
-        // isRequired = true so zValidate directive displays required indicator
-        var ctx = { messageTemplate: 'Missing %displayName%', isRequired: true };
-        var val = new validator(name, valFunction, ctx);
-        return val;
+    function requireReferenceValidatorFactory() {
+        return new validator('requireReferenceEntity', valFunction, { messageTemplate: 'Missing %displayName%', isRequired: true });
 
         // passes if reference has a value and is not the nullo (whose id===0)
         function valFunction(value) {
             return value ? value.id !== window.emptyGuid : false;
         }
     }
+
+    function comesBeforeValidatorFactory(ctx) {
+        // isRequired = true so zValidate directive displays required indicator
+        return new validator('comesBefore' + ctx.nameOnServer, valFunction, { messageTemplate: '%displayName% must be before %later%', later: ctx.displayName });
+
+        function valFunction(earlierVal, c) {
+            var laterVal = c.entity.getProperty(ctx.name);
+
+            return !(laterVal && earlierVal) || earlierVal<laterVal;
+        }
+    }
+
 })();

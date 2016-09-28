@@ -469,8 +469,6 @@
     <Content Include="app\courseType\courseType.js" />
     <Content Include="app\courseParticipant\courseParticipant.html" />
     <Content Include="app\courseParticipant\courseParticipant.js" />
-    <Content Include="app\courseType\courseTypeFacultyRoles.html" />
-    <Content Include="app\courseType\courseTypeFacultyRoles.js" />
     <Content Include="app\course\courses.html" />
     <Content Include="app\course\courses.js" />
     <Content Include="app\course\courseRoles.html" />
@@ -788,7 +786,7 @@
     <Content Include="dist\apple-touch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dist\css\main-f6185501ac.min.css" />
+    <Content Include="dist\css\main-71c7e402dd.min.css" />
     <Content Include="dist\css\ui-grid.eot" />
     <Content Include="dist\css\ui-grid.svg" />
     <Content Include="dist\css\ui-grid.ttf" />
@@ -815,7 +813,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-d8268ae74d.min.js" />
+    <Content Include="dist\js\main-15e599066a.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -936,7 +934,9 @@
     <Content Include="bower.json" />
     <Content Include="package.json" />
     <Content Include="dist\manifest.json" />
-    <Content Include="App_Data\CourseTimeTableTemplate.docx" />
+    <Content Include="App_Data\CourseTimeTableTemplate.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\OpenHost.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

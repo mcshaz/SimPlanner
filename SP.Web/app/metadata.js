@@ -610,7 +610,7 @@
           "displayName": "Id"
         },
         {
-          "name": "start",
+          "name": "startUtc",
           "dataType": "DateTime",
           "isNullable": false,
           "defaultValue": "",
@@ -622,7 +622,7 @@
               "name": "date"
             }
           ],
-          "displayName": "Start"
+          "displayName": "Course Start"
         },
         {
           "name": "durationMins",
@@ -991,7 +991,7 @@
           "displayName": "Day"
         },
         {
-          "name": "start",
+          "name": "startUtc",
           "dataType": "DateTime",
           "isNullable": false,
           "defaultValue": "",
@@ -1003,7 +1003,7 @@
               "name": "date"
             }
           ],
-          "displayName": "Start"
+          "displayName": "Start Utc"
         },
         {
           "name": "durationMins",

@@ -16,7 +16,6 @@ namespace SP.Dto.Utilities
             return context.Courses.Include("CourseParticipants.Participant")
                         .Include("Department.Institution.Culture")
                         .Include("CourseFormat.CourseSlots.Activity.ActivityChoices")
-                        .Include("CourseSlotScenarios")
                         .Include("CourseSlotPresenters")
                         .Include("CourseSlotManikins")
                         .Include("CourseScenarioFacultyRoles")
@@ -32,15 +31,9 @@ namespace SP.Dto.Utilities
         {
             var start = TimeZoneInfo.ConvertTimeFromUtc(course.StartUtc, tzi);
             int scenarioCount = 0;
-            /*
-            ILookup<Guid, CourseSlotPresenter> csps = null;
-            var getCsp = new Func<Guid, IEnumerable<CourseSlotPresenter>>(id=> (csps ?? (csps = course.CourseSlotPresenters.ToLookup(c=>c.CourseSlotId)))[id]);
-            ILookup<Guid, CourseScenarioFacultyRole> csfrs = null;
-            var getCsfr = new Func<Guid, IEnumerable<CourseScenarioFacultyRole>>(id => (csfrs ?? (csfrs = course.CourseScenarioFacultyRoles.ToLookup(c => c.CourseSlotId)))[id]);
+            var csps = course.CourseSlotPresenters.ToLookup(c=>c.CourseSlotId);
+            var csfrs = course.CourseScenarioFacultyRoles.ToLookup(c => c.CourseSlotId);
 
-            var emptyCsp = new CourseSlotPresenter[0];
-            var emptyCsfr = new CourseScenarioFacultyRole[0];
-            */
             var returnVar = course.CourseFormat.CourseSlots.Where(cs=>cs.IsActive)
                 .OrderBy(cs=>cs.Order).Select(cs=> {
                     var ttr = new TimetableRow
@@ -51,13 +44,15 @@ namespace SP.Dto.Utilities
                     {
                         ttr.IsScenario = false;
                         ttr.SlotName = cs.Activity.Name;
-                        ttr.Faculty = cs.CourseSlotPresenters.Select(csp => csp.Participant.FullName);
+                        ttr.Faculty = csps[cs.Id]?.Select(csp => csp.Participant.FullName)
+                            ?? new string[0];
                     }
                     else
                     {
                         ttr.IsScenario = false;
                         ttr.SlotName = "Scenario " + (++scenarioCount).ToString();
-                        ttr.Faculty = cs.CourseScenarioFacultyRoles.Select(csfr => csfr.Participant.FullName);
+                        ttr.Faculty = csfrs[cs.Id]?.Select(csfr => csfr.Participant.FullName)
+                            ?? new string[0];
                     }
                     start += TimeSpan.FromMinutes(cs.MinutesDuration);
                     return ttr;
@@ -160,7 +155,7 @@ namespace SP.Dto.Utilities
                 TableRow slotRow = classifiedMergeFields[MergeClassification.Slot].First().First().FindFirstAncestor<TableRow>();
                 var ttrs = GetTimeTableRows(course, tzi);
 
-                slotRow.CloneElements(ttrs, (mergeFieldName, ttr) =>
+                slotRow.CloneElement(ttrs, (mergeFieldName, ttr) =>
                 {
                     switch (mergeFieldName)
                     {
@@ -188,17 +183,19 @@ namespace SP.Dto.Utilities
 
             var allScenarioEls = firstParaWithSectionBreak.Parent.ChildElements
                 .SkipWhile(c => c != firstParaWithSectionBreak)
-                .TakeWhile(c => c.GetType() != typeof(SectionProperties));
+                .TakeWhile(c => c.GetType() != typeof(SectionProperties))
+                .ToList();
 
             var csss = course.CourseSlotActivities.OrderBy(css => css.CourseSlot.Order).ToList();
             int i = 0;
+
             allScenarioEls.CloneElements(csss, (mergeFieldName, css, clonables) =>
             {
                 TableRow scenarioRoleRow = clonables.First(k => k.Key.StartsWith("ScenarioRole"))
                     .First().FindFirstAncestor<TableRow>();
 
                 var roles = css.CourseSlot.CourseScenarioFacultyRoles.ToLookup(k => k.FacultyScenarioRole);
-                scenarioRoleRow.CloneElements(roles, (scenarioRoleFieldName, role) =>
+                scenarioRoleRow.CloneElement(roles, (scenarioRoleFieldName, role) =>
                 {
                     switch (scenarioRoleFieldName)
                     {

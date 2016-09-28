@@ -11,14 +11,14 @@ namespace SP.Dto.Maps
             CourseId = m.CourseId,
             Day = m.Day,
             DurationMins =m.DurationMins,
-            StartUtc = m.Start
+            StartUtc = m.StartUtc
         },
         m => new CourseDayDto
         {
             CourseId = m.CourseId,
             Day = m.Day,
             DurationMins = m.DurationMins,
-            Start = m.StartUtc
+            StartUtc = m.StartUtc
         })
         { }
 

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,5 +19,8 @@ namespace SP.Metadata
 
         [Range(0,480)]
         public int? FacultyMeetingDuration { get; set; }
+
+        [DisplayName("Course Start")]
+        public DateTime StartUtc { get; set; }
     }
 }

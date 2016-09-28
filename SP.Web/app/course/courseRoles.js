@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$http'];
 
-    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope) {
+    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $http) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -24,9 +24,12 @@
         activate();
 
         function activate() {
-            var manikins = [];
             datacontext.ready().then(function () {
-                common.activateController([datacontext.courses.fetchByKey(id, {
+                var priorExposure;
+                common.activateController([$http({ method: 'GET', url: '/api/ActivitySummary/PriorExposure?courseId=' + id }).then(function (response) {
+                    priorExposure = response.data;
+                }, vm.log.error),
+                datacontext.courses.fetchByKey(id, {
                     expand: ['courseParticipants.participant',
                         'courseFormat.courseSlots.activity.activityChoices',
                         'courseSlotActivities',
@@ -41,7 +44,7 @@
                         return;
                         //gotoCourses();
                     }
-                    var slotTime = data.start;
+                    var slotTime = data.startUtc;
                     var count = 0;
 
                     vm.course = data;
@@ -158,71 +161,80 @@
                             });
                         });
                     vm.notifyViewModelLoaded();
-                }), datacontext.manikins.all().then(function () {
+                }), //end datacontext.courses.findbykey
+                datacontext.manikins.all()
+                ], controllerId).then(function () { //all loaded
+                    var manikins = [];
                     //at the moment, department and institution are loaded at datacontex.ready,
                     //so the following will work here
                     //if the institution and department data were to be loaded by a server call, this should go in the
                     //activateController.then method
                     datacontext.institutions.all().then(function (institutions) {
-                        var endGroup = {
-                            isGroup: false
-                        };
                         institutions.forEach(function (inst) {
-                            var dptWithManikins = inst.departments.filter(dptHasManikins);
-                            if (dptWithManikins.length) {
+                            var dpts = departmentMap(inst.departments);
+                            if (dpts.length) {
                                 manikins.push({
-                                    description: '<strong>' + inst.name + '</strong>',
-                                    isGroup: true
+                                    id: inst.id,
+                                    checked: false,
+                                    open: inst.id === vm.course.department.institution.id,
+                                    name: inst.name,
+                                    abbrev: inst.abbreviation,
+                                    children: dpts
                                 });
-                                dptWithManikins.forEach(forEachDepartment);
-                                manikins.push(endGroup);
                             }
                         });
 
-                        function forEachDepartment(d) {
-                            d.manikins.sort(common.sortOnPropertyName('description'));
-                            manikins.push({
-                                description: '<em>' + d.name + '</em>',
-                                isGroup: true
+                        function departmentMap(ds) {
+                            var returnVar = [];
+                            ds.forEach(function (d) {
+                                if (d.manikins.length) {
+                                    returnVar.push({
+                                        id: d.id,
+                                        checked: false,
+                                        open: d.id === vm.course.department.id,
+                                        name: d.name,
+                                        abbrev: d.abbreviation,
+                                        children: d.manikins.map(manikinMap)
+                                    });
+                                }
                             });
-                            manikins = manikins.concat(d.manikins);
-                            manikins.push(endGroup);
+                            return returnVar;
                         }
 
-                        function dptHasManikins(d) {
-                            return !!d.manikins.length;
+                        function manikinMap(m) {
+                            return {
+                                id: m.id,
+                                checked: false,
+                                description: m.description,
+                                booked: priorExposure.BookedManikins.indexOf(m.id) !== -1
+                            };
                         }
-                    });
-                })], controllerId).then(function () { //all loaded
-                    vm.map.forEach(function (el, indx) {
-                        if (el.courseSlotManikins) {
-                            el.manikins = manikins.map(function (m) {
-                                return m.isGroup !== angular.undefined
-                                    ? m
-                                    : {
-                                        checked: el.courseSlotManikins.some(function (csm) {
+                        vm.map.forEach(function (el, indx) {
+                            if (el.courseSlotManikins) {
+                                el.manikins = angular.copy(manikins);
+                                el.manikins.forEach(function (i) {
+                                    i.children.forEach(function (m) {
+                                        m.checked = el.courseSlotManikins.some(function (csm) {
                                             return csm.manikinId === m.id;
-                                        }),
-                                        description: m.description,
-                                        id: m.id
-                                    };
-                            });
-                            el.selectedManikins = [];
-                            $scope.$watchCollection(function () {
-                                return el.selectedManikins;
-                            }, common.manageCollectionChange(datacontext.courseSlotManikins, 'id',
-                                function (member) {
-                                    return {
-                                        manikinId: member.id,
-                                        courseSlotId: vm.map[indx].id,//slight hack because the collection is replaced by the isteven multiselect - not really sure why this works, but otherwise digest in progress error on change
-                                        courseId: vm.course.id
-                                    };
-                                }));
-                        }
+                                        });
+                                    });
+                                });
+                                el.selectedManikins = [];
+                                $scope.$watchCollection(function () {
+                                    return el.selectedManikins;
+                                }, common.manageCollectionChange(datacontext.courseSlotManikins, 'id',
+                                    function (member) {
+                                        return {
+                                            manikinId: member.id,
+                                            courseSlotId: vm.map[indx].id,//slight hack because the collection is replaced by the isteven multiselect - not really sure why this works, but otherwise digest in progress error on change
+                                            courseId: vm.course.id
+                                        };
+                                    }));
+                            }
+                        });
                     });
-                    vm.log('Activated Course Roles View');
                 });
-            });
+            }); // end datacontext.ready
         }
         function changeActivityScenario(m) {
             var fk = m.isScenario ?'scenarioId':'activityId';

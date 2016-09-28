@@ -26,7 +26,7 @@
                 .then(function () {
                     log('Activated calendar View');
                 });
-        };
+        }
 
         function eventClicked(calendarEvent) {
             $location.path('course/' + calendarEvent.id);
@@ -45,16 +45,16 @@
 			var newlyRetrieved = 0;
 			var requiredMonths;
 			if (month === undefined){
-			    requiredMonths = Array.apply(null, { length: 12 }).map(Number.call, Number)
+                requiredMonths = Array.apply(null, { length: 12 }).map(Number.call, Number);
 			} else {
 				var startMonth = month-1;
-				requiredMonths = Array.apply(null, { length: 3 }).map(function (el, indx) { return startMonth + indx; })
+				requiredMonths = Array.apply(null, { length: 3 }).map(function (el, indx) { return startMonth + indx; });
 			}
 			
 			var dtRanges = createDateRanges();
 
 			requiredMonths.forEach(function(el){
-				var bitMonth = 1 << (el+1);
+				var bitMonth = 1 << el+1;
 				if ((bitMonth & yearData) === 0) {
 					dtRanges.includeMonth(year, el);
 					newlyRetrieved |= bitMonth;
@@ -69,7 +69,7 @@
 			}
 			
 			var predicate = dtRanges.map(function (el) {
-			    return new breeze.Predicate.create('start', '>=', el.start).and('start','<=',el.finish);
+                return new breeze.Predicate.create('startUtc', '>=', el.start).and('startUtc','<=',el.finish);
 			}).reduce(function(a,b){ 
 				return a.or(b); 
 			});
@@ -77,15 +77,15 @@
 			var returnedCourses;
 			return $q.all([datacontext.ready(),
                 datacontext.courses.find({
-			        where: predicate,
-			        expand: 'courseDays'
+                    where: predicate,
+                    expand: 'courseDays'
                 }).then(function (data) {
                     returnedCourses = data;
-			    })]).then(function () {
-			        Array.prototype.push.apply(vm.events, returnedCourses.map(mapCourse).reduce(function (a, b) {
-			            return a.concat(b);
-			        },[]));
-			    });
+                })]).then(function () {
+                    Array.prototype.push.apply(vm.events, returnedCourses.map(mapCourse).reduce(function (a, b) {
+                        return a.concat(b);
+                    },[]));
+                });
 		}
     }
 
@@ -108,7 +108,7 @@
                 start: new Date(year, month, 1),
                 finish: new Date(year, month + 1, 1)
             });
-        };
+        }
     }
 
 
@@ -120,22 +120,23 @@
                 primary: course.department.primaryColourHtml, // the primary event color (should be darker than secondary)
                 secondary: course.department.secondaryColourHtml // the secondary event color (should be lighter than primary)
             },
-            //cssClass: safeClassName(course.department.abbreviation),
-            startsAt: course.start,
+            //safeClassName(course.department.abbreviation),
+            startsAt: course.startUtc,
             endsAt: course.finish,
             draggable: true,
             resizable: true
         };
-        var returnVar = [day1];
-
-        course.courseDays.forEach(function (el) {
+        if (course.cancelled) {
+            day1.cssClass = 'cancelled';
+            delete day1.color;
+        }
+        return [day1].concat(course.courseDays.map(function (el) {
             var clone = angular.copy(day1);
-            clone.startsAt = el.start;
+            clone.startsAt = el.startUtc;
             clone.endsAt = el.finish;
             clone.title += ' day '+ el.day;
-        });
-
-        return returnVar;
+            return clone;
+        }));
     }
 
     /*

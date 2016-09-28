@@ -20,12 +20,12 @@ namespace SP.Dto
                 .ToLookup(k => string.Join(" ", k.words.Skip(1).TakeWhile(i => i != "\\*")), v => v.el);
         }
 
-        public static void CloneElements<T>(this IEnumerable<OpenXmlElement> cloneSource, IEnumerable<T> itemCollection, Func<string, T, string> withMergeField)
+        public static void CloneElement<T>(this OpenXmlElement cloneSource, IEnumerable<T> itemCollection, Func<string, T, string> withMergeField)
         {
-            CloneElements(cloneSource, itemCollection, (s, t, dummy) => withMergeField(s, t));
+            CloneElements(new[] { cloneSource }, itemCollection, (s, t, dummy) => withMergeField(s, t));
         }
 
-        public static void CloneElements<T>(this IEnumerable<OpenXmlElement> cloneSource, IEnumerable<T> itemCollection, Func<string, T, ILookup<string, OpenXmlElement>, string> withMergeField)
+        public static void CloneElements<T>(this IList<OpenXmlElement> cloneSource, IEnumerable<T> itemCollection, Func<string, T, ILookup<string, OpenXmlElement>, string> withMergeField)
         {
             List<T> itemList = itemCollection as List<T>;
             if (itemList == null)
@@ -34,16 +34,21 @@ namespace SP.Dto
             }
             if (itemList.Count == 0)
             {
-                foreach (var e in cloneSource)
+                foreach (var c in cloneSource)
                 {
-                    e.Remove();
+                    c.Remove();
                 }
                 return;
             }
 
             var parent = cloneSource.First().Parent;
+            var lastSibling = cloneSource.Last().NextSibling();
+            if (parent is TableRow)
+            {
+                parent = parent.FindFirstAncestor<Table>();
+            }
 
-            var virginClonable = cloneSource.Select(e => e.CloneNode(true));
+            var virginClonable = cloneSource.Select(c=>c.CloneNode(true)).ToList();
 
             int lastRowIndex = itemList.Count - 1;
             for (int i = 0; i < itemList.Count; i++)
@@ -59,11 +64,22 @@ namespace SP.Dto
                 }
                 if (i > 0)
                 {
-                    parent.Append(cloneSource);
+                    foreach (var c in cloneSource)
+                    {
+                        if (lastSibling == null)
+                        {
+                            parent.AppendChild(c);
+                        }
+                        else
+                        {
+                            parent.InsertBefore(c, lastSibling);
+                        }
+                    }
+                    
                 }
                 if (i < lastRowIndex)
                 {
-                    cloneSource = virginClonable.Select(e => e.CloneNode(true));
+                    cloneSource = cloneSource.Select(c => c.CloneNode(true)).ToList();
                 }
                 else
                 {
@@ -82,12 +98,18 @@ namespace SP.Dto
             return found;
         }
 
-        private static Run CreateSimpleTextRun(string text)
+        private static Run CreateSimpleRun()
         {
             Run returnVar = new Run();
             RunProperties runProp = new RunProperties();
             runProp.Append(new NoProof());
             returnVar.Append(runProp);
+            return returnVar;
+        }
+
+        private static Run CreateSimpleTextRun(string text)
+        {
+            var returnVar = CreateSimpleRun();
             returnVar.Append(new Text() { Text = text });
             return returnVar;
         }
@@ -107,14 +129,10 @@ namespace SP.Dto
                         withNext.Add(new TabChar());
                         break;
                     default:
-                        var run = CreateSimpleTextRun(m);
-                        if (withNext.Any())
-                        {
-                            var t = run.ChildElements;
-                            run.RemoveAllChildren();
-                            run.Append(withNext.Concat(t));
-                            withNext.Clear();
-                        }
+                        var run = CreateSimpleRun();
+                        run.Append(withNext);
+                        run.Append(new Text { Text=m });
+                        withNext.Clear();
                         runs.Add(run);
                         break;
                 }
@@ -127,7 +145,7 @@ namespace SP.Dto
             var sf = field as SimpleField;
             if (sf != null)
             {
-                sf.GetFirstChild<Run>().Remove();
+                sf.RemoveAllChildren();
                 sf.Append(runs);
             }
             else

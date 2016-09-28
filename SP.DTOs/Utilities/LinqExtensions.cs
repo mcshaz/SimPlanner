@@ -5,6 +5,10 @@ namespace SP.Dto.Utilities
 {
     public static class LinqExtensions
     {
+        public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source)
+        {
+            return new HashSet<TSource>(source);
+        }
         public static HashSet<TKey> ToHashSet<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> map)
         {
             HashSet<TKey> returnVar = new HashSet<TKey>();
@@ -137,6 +141,35 @@ namespace SP.Dto.Utilities
                 }
             }
             return - 1;
+        }
+
+        public static void AddOrCreate<TKey, TCollection, TValue>(
+            this Dictionary<TKey, TCollection> dictionary, TKey key, TValue value)
+            where TCollection : ICollection<TValue>, new()
+        {
+            TCollection collection;
+            if (!dictionary.TryGetValue(key, out collection))
+            {
+                collection = new TCollection();
+                dictionary.Add(key, collection);
+            }
+            collection.Add(value);
+        }
+
+        public static void AddRangeOrCreate<TKey, TCollection, TValue>(
+            this Dictionary<TKey, TCollection> dictionary, TKey key, IEnumerable<TValue> values)
+            where TCollection : ICollection<TValue>, new()
+        {
+            TCollection collection;
+            if (!dictionary.TryGetValue(key, out collection))
+            {
+                collection = new TCollection();
+                dictionary.Add(key, collection);
+            }
+            foreach (var v in values)
+            {
+                collection.Add(v);
+            }
         }
     }
 }
