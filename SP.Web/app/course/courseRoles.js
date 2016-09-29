@@ -328,7 +328,7 @@
                     if (ent.entityAspect.entityState.isDeleted()) {
                         ent.entityAspect.setUnchanged();
                     } else {
-                        log.debug({msg:'attempted to readd existing entity in unknown state', data:ent});
+                        vm.log.debug({msg:'attempted to readd existing entity in unknown state', data:ent});
                     }
                 } else {
                     repo.create(key);

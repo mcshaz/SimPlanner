@@ -170,7 +170,7 @@
             var name = cp.participant.fullName;
             cp.entityAspect.setDeleted();
             datacontext.save(cp).then(function (data) { vm.log('removed ' + name + ' from course'); },
-                function (error) { log.error({ msg: 'failed to remove ' + name + ' from course' }); });
+                function (error) { vm.log.error({ msg: 'failed to remove ' + name + ' from course' }); });
         }
 
         function formatChanged() {
@@ -275,7 +275,7 @@
                 data: { CourseId: vm.course.id }
             }).then(function (response) {
                 alert(response.data || 'emails sent');
-            }, log.error);
+            }, vm.log.error);
         }
     }
     function sortDepartments(dpt1, dpt2) {
