@@ -53,7 +53,8 @@
                 Perfusionist: 'cog',
                 Other: 'question',
                 Paramedic: 'ambulance',
-                Nursing: 'heartbeat'
+                Nursing: 'heartbeat',
+                Educator: 'graduation-cap',
             },
             collectionChange: collectionManager.collectionChange,
             sortOnPropertyName: sortOnPropertyName,

@@ -3985,7 +3985,7 @@
 };
 	}
 	function getEnums(){
-		return {"emersion":["Interactive","Pause","Emersive"],"difficulty":["Easy","Moderate","Hard"],"professionalCategory":["Nursing","Medical","Tech","Perfusionist","Paramedic","Actor","Other"],"sharingLevel":["DepartmentOnly","InstitutionWide","NoRestriction","DepartmentAndExParticipants"]};
+		return {"emersion":["Interactive","Pause","Emersive"],"difficulty":["Easy","Moderate","Hard"],"professionalCategory":["Nursing","Medical","Tech","Perfusionist","Paramedic","Educator","Actor","Other"],"sharingLevel":["DepartmentOnly","InstitutionWide","NoRestriction","DepartmentAndExParticipants"]};
 	}
 })();
 

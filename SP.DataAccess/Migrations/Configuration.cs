@@ -136,6 +136,13 @@ namespace SP.DataAccess.Migrations
                         .Concat(new[] { "Long Black", "Short Black", "Ristretto" })
                         .Select(c=> new HotDrink { Description=c, Id=Guid.NewGuid() }));
             }
+            if (!context.ProfessionalRoles.Any(pr=>pr.Category == ProfessionalCategory.Actor))
+            {
+                context.ProfessionalRoles.Add(new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Actor, Description = "Actor" });
+                context.ProfessionalRoles.Add(new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Other, Description = "Other" });
+                context.ProfessionalRoles.Add(new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Educator, Description = "Educator" });
+                context.ProfessionalRoles.Add(new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Perfusionist, Description = "Perfusionist" });
+            }
             context.SaveChanges();
         }
     }

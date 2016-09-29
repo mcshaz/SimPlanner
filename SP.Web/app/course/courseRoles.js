@@ -346,7 +346,7 @@
 
         function createBsOptionHtml(text, priorExposure) {
             return priorExposure
-                ? '<div class="exposed" title="repeat for participants ' + priorExposure + '">' + text + '</div>' //
+                ? '<div class="exposed" title="repeat for participants ' + priorExposure + '">' + text + '</div>' //<div data-trigger="hover" data-type="warn" data-animation="am-flip-x" data-title="xxxxxx" bs-tooltip ></div>
                 : '<div>' + text + '</div>';
         }
 
@@ -359,6 +359,18 @@
             return names.join(', ');
         }
 
+        /*
+        {
+		text: 'B', value: 'b', id: 2, checked: 1, open: true,
+		$ams_order: 2, $ams_parents_id: [], $ams_children_nodes: 0,
+		$ams_children_leafs: 1,$ams_level: 0, $ams_tree_visibility: true,  $ams_checked_children: 1
+	},
+	{
+		text: 'C', value: 'c', id: 3, checked: true, open: false,
+		$ams_order: 3, $ams_parents_id: [2], $ams_children_nodes: 0,
+		$ams_children_leafs: 0,$ams_level: 1, $ams_tree_visibility: true,  $ams_checked_children: 0
+	},
+        */
         function createMultiSelect(institutions, dptPropertyName, dptPropertyMap) {
             var returnVar = [];
             institutions.forEach(function (inst) {
