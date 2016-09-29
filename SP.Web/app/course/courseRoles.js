@@ -83,7 +83,8 @@
                                 id: m.id,
                                 checked: false,
                                 description: m.description,
-                                booked: priorExposure.BookedManikins[m.id]
+                                isBooked: !!priorExposure.BookedManikins[m.id],
+                                bookingDetails: priorExposure.BookedManikins[m.id]
                             };
                         });
                         /*
@@ -101,7 +102,7 @@
                             return new {
                                 html: createBsOptionHtml(s.briefDescription, priorExposure),
                                 id: s.id
-                            }
+                            };
                         });
 
                         vm.map = vm.course.courseFormat.courseSlots
@@ -116,7 +117,7 @@
                                         ? cs.activity.name
                                         : 'Simulation ' + ++scenarioCount,
                                     track: cs.trackParticipants
-                                }
+                                };
                                 if (!cs.trackParticipants) {
                                     return returnVar;
                                 }
@@ -162,7 +163,7 @@
                                 returnVar.availableFaculty.availableFaculty = true;
 
                                 var slotRoles = cs.courseScenarioFacultyRoles.filter(isThisSlot);
-                                var courseSlotManikins = vm.course.courseSlotManikins.filter(isThisSlot)
+                                var courseSlotManikins = vm.course.courseSlotManikins.filter(isThisSlot);
 
                                 //manikin 
                                 if (courseSlotManikins) {

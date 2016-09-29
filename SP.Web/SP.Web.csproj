@@ -786,7 +786,7 @@
     <Content Include="dist\apple-touch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dist\css\main-71c7e402dd.min.css" />
+    <Content Include="dist\css\main-bee357239d.min.css" />
     <Content Include="dist\css\ui-grid.eot" />
     <Content Include="dist\css\ui-grid.svg" />
     <Content Include="dist\css\ui-grid.ttf" />
@@ -813,7 +813,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-15e599066a.min.js" />
+    <Content Include="dist\js\main-087d9ca883.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

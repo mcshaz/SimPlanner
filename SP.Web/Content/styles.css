@@ -491,8 +491,12 @@ div.time-accompany{
 .btn.btn-link{
     pointer-events:all;
 }
+/*CourseRole*/
+.exposed{
+    background-color:blanchedalmond;
+}
 
-/*Calndar overrides*/
+/*Calendar overrides*/
 .cancelled {
     text-decoration: line-through;
 }

@@ -54,7 +54,7 @@
                 Other: 'question',
                 Paramedic: 'ambulance',
                 Nursing: 'heartbeat',
-                Educator: 'graduation-cap',
+                Educator: 'graduation-cap'
             },
             collectionChange: collectionManager.collectionChange,
             sortOnPropertyName: sortOnPropertyName,
