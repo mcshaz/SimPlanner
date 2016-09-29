@@ -24,5 +24,7 @@ namespace SP.Metadata
         [Range(1,MaxStreams)]
         [DefaultValue(1)]
         public byte SimultaneousStreams { get; set; }
+        [DefaultValue(true)]
+        public bool TrackParticipants { get; set; }
     }
 }

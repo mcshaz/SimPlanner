@@ -87,7 +87,7 @@ namespace SP.Dto.ParticipantSummary
             return returnVar;
         }
 
-        public static IEnumerable<Guid> GetBookedManikins(MedSimDbContext context, Course course)
+        public static IEnumerable<KeyValuePair<Guid, string>> GetBookedManikins(MedSimDbContext context, Course course)
         {
             var refStart = course.StartUtc;
             var refFinish = course.FinishTimeUtc();
@@ -98,14 +98,14 @@ namespace SP.Dto.ParticipantSummary
                         ? DbFunctions.AddMinutes(c.StartUtc,c.DurationMins)
                         : DbFunctions.AddMinutes(lastDay.StartUtc, lastDay.DurationMins)
                     where c.Id!= course.Id && c.StartUtc < refFinish &&  refStart < cFinish 
-                    select csm.ManikinId).ToList();
-
+                    select new { csm.ManikinId, c.CourseFormat.Description, c.Department.Abbreviation })
+                    .ToKeyValuePairList(a=>a.ManikinId, a=> a.Abbreviation + ' ' + a.Description);
         }
     }
     public class PriorExposures
     {
         public Dictionary<Guid, HashSet<Guid>> ScenarioParticipants { get; set; }
         public Dictionary<Guid, HashSet<Guid>> ActivityParticipants { get; set; }
-        public IEnumerable<Guid> BookedManikins { get; set; }
+        public IEnumerable<KeyValuePair<Guid,string>> BookedManikins { get; set; }
     }
 }

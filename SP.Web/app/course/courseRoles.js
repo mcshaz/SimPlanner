@@ -26,6 +26,7 @@
         function activate() {
             datacontext.ready().then(function () {
                 var priorExposure;
+                var faculty = [];
                 common.activateController([$http({ method: 'GET', url: '/api/ActivitySummary/PriorExposure?courseId=' + id }).then(function (response) {
                     priorExposure = response.data;
                 }, vm.log.error),
@@ -44,17 +45,10 @@
                         return;
                         //gotoCourses();
                     }
-                    var slotTime = data.startUtc;
-                    var count = 0;
 
                     vm.course = data;
-                    vm.scenarios = data.department.scenarios;
-
                     data.courseFormat.courseSlots.sort(common.sortOnPropertyName('order'));
                     data.courseParticipants.sort(common.sortOnChildPropertyName('participant', 'fullName'));
-
-                    //map faculty
-                    var faculty = [];
 
                     data.courseParticipants.forEach(function (el) {
                         if (el.isFaculty) {
@@ -70,101 +64,12 @@
                         }
                     });
                     //end region map faculty
-
-                    vm.map = data.courseFormat.courseSlots
-                        .filter(function (cs) { return cs.isActive;})
-                        .map(function (cs) {
-                            var start = slotTime;
-                            var isThisSlot = function (el) { return el.courseSlotId === cs.id; };
-                            var returnVar = {
-                                id: cs.id,
-                                start: start,
-                                groupClass: 'grp' + count++,
-                                availableFaculty: faculty.slice(),
-                                activityScenario: data.courseSlotActivities.find(isThisSlot)
-                            };
-                            var sortableOptions = {
-                                connectWith: '.' + returnVar.groupClass
-                            };
-                            returnVar.availableFacultyOptions = angular.extend({
-                                update: updateSortable
-                            },sortableOptions);
-                            slotTime = new Date(start.getTime() + cs.minutesDuration * 60000);
-                            if (cs.activity) {
-                                var assignedFaculty = [];
-                                data.courseSlotPresenters.forEach(function (csp) {
-                                    if (csp.courseSlotId === cs.id) {
-                                        var indx = returnVar.availableFaculty.findIndex(function (f) {
-                                            return f.participantId === csp.participantId;
-                                        });
-                                        assignedFaculty.push(returnVar.availableFaculty[indx]);
-                                        returnVar.availableFaculty.splice(indx, 1);
-                                    }
-                                });
-                                sortableOptions.update = updateSortableRepo.bind(null, {
-                                    courseSlotId: cs.id,
-                                    courseId: data.id
-                                }, datacontext.courseSlotPresenters);
-
-                                return angular.extend(returnVar, {
-                                    name: cs.activity.name,
-                                    start: start,
-                                    choices: cs.activity.activityChoices,
-                                    selectedActivity: (returnVar.activityScenario || {}).activity,
-                                    isScenario: false,
-                                    assignedFaculty: assignedFaculty,
-                                    sortableOptions: sortableOptions
-                                });
-                            }
-                            //extra properties to allow duplication
-                            returnVar.availableFacultyOptions.start = startSortable;
-                            returnVar.availableFaculty.availableFaculty = true;
-
-                            var slotRoles = cs.courseScenarioFacultyRoles.filter(isThisSlot);
-                            data.courseFormat.courseType.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole', 'order'));
-                            return angular.extend(returnVar, {
-                                name: 'Simulation',
-                                selectedActivity: (returnVar.activityScenario || {}).scenario,
-                                isScenario: true,
-                                courseSlotManikins: data.courseSlotManikins.filter(isThisSlot),
-                                roles: data.courseFormat.courseType.courseTypeScenarioRoles.map(function (ctsr) {
-                                    var assignedFaculty = [];
-                                    slotRoles.forEach(function (sr) {
-                                        if (ctsr.facultyScenarioRoleId === sr.facultyScenarioRoleId) {
-                                            var findMatch = function (f) {
-                                                return f.participantId === sr.participantId;
-                                            };
-                                            var indx = returnVar.availableFaculty.findIndex(findMatch);
-                                            if (indx === -1) {
-                                                assignedFaculty.push(faculty.find(findMatch));
-                                            } else {
-                                                assignedFaculty.push(returnVar.availableFaculty[indx]);
-                                                returnVar.availableFaculty.splice(indx, 1);
-                                            }
-                                        }
-                                    });
-
-                                    return {
-                                        description: ctsr.facultyScenarioRole.description,
-                                        id: ctsr.facultyScenarioRoleId,
-                                        assignedFaculty: assignedFaculty,
-                                        sortableOptions: angular.extend({
-                                            update: updateSortableRepo.bind(null, {
-                                                courseSlotId: cs.id,
-                                                courseId: data.id,
-                                                facultyScenarioRoleId: ctsr.facultyScenarioRoleId
-                                            }, datacontext.courseScenarioFacultyRoles),
-                                            start: startSortable
-                                        }, sortableOptions)
-                                    };
-                                })
-                            });
-                        });
-                    vm.notifyViewModelLoaded();
                 }), //end datacontext.courses.findbykey
                 datacontext.manikins.all()
                 ], controllerId).then(function () { //all loaded
-                    var manikins = [];
+                    var slotTime = vm.course.startUtc;
+                    var slotCount = 0;
+                    var scenarioCount = 0;
                     //at the moment, department and institution are loaded at datacontex.ready,
                     //so the following will work here
                     //if the institution and department data were to be loaded by a server call, this should go in the
@@ -172,69 +77,163 @@
                     datacontext.institutions.all().then(function (institutions) {
                         var sortName = common.sortOnPropertyName('name');
                         var sortDescription = common.sortOnPropertyName('description');
-                        institutions.sort(sortName).forEach(function (inst) {
-                            inst.departments.sort(sortName);
-                            var dpts = departmentMap(inst.departments);
-                            if (dpts.length) {
-                                manikins.push({
-                                    id: inst.id,
-                                    checked: false,
-                                    open: inst.id === vm.course.department.institution.id,
-                                    name: inst.name,
-                                    abbrev: inst.abbreviation,
-                                    children: dpts
-                                });
-                            }
-                        });
-
-                        function departmentMap(ds) {
-                            var returnVar = [];
-                            ds.forEach(function (d) {
-                                if (d.manikins.length) {
-                                    returnVar.push({
-                                        id: d.id,
-                                        checked: false,
-                                        open: d.id === vm.course.department.id,
-                                        name: d.name,
-                                        abbrev: d.abbreviation,
-                                        children: d.manikins.sort(sortDescription).map(manikinMap)
-                                    });
-                                }
-                            });
-                            return returnVar;
-                        }
-
-                        function manikinMap(m) {
+                        institutions.sort(sortName);
+                        var manikins = createMultiSelect(institutions, 'manikins', function (m) {
                             return {
                                 id: m.id,
                                 checked: false,
                                 description: m.description,
-                                booked: priorExposure.BookedManikins.indexOf(m.id) !== -1
+                                booked: priorExposure.BookedManikins[m.id]
                             };
-                        }
-                        vm.map.forEach(function (el, indx) {
-                            if (el.courseSlotManikins) {
-                                el.manikins = angular.copy(manikins);
-                                el.manikins.forEach(function (i) {
-                                    i.children.forEach(function (m) {
-                                        m.checked = el.courseSlotManikins.some(function (csm) {
-                                            return csm.manikinId === m.id;
-                                        });
-                                    });
-                                });
-                                el.selectedManikins = [];
-                                $scope.$watchCollection(function () {
-                                    return el.selectedManikins;
-                                }, common.manageCollectionChange(datacontext.courseSlotManikins, 'id',
-                                    function (member) {
-                                        return {
-                                            manikinId: member.id,
-                                            courseSlotId: vm.map[indx].id,//slight hack because the collection is replaced by the isteven multiselect - not really sure why this works, but otherwise digest in progress error on change
-                                            courseId: vm.course.id
-                                        };
-                                    }));
+                        });
+                        /*
+                        vm.scenarios = createMultiSelect(institutions, 'scenarios', function (s) {
+                            return {
+                                id: s.id,
+                                checked: false,
+                                description: s.description,
+                                priorExposure: participantIdsToName(priorExposure.ScenarioParticipants[s.id])
+                            };
+                        });
+                        */
+                        vm.scenarios = vm.course.department.scenarios.map(function (s) {
+                            var priorExposure = participantIdsToName(priorExposure.ScenarioParticipants[s.id]);
+                            return new {
+                                html: createBsOptionHtml(s.briefDescription, priorExposure),
+                                id: s.id
                             }
                         });
+
+                        vm.map = vm.course.courseFormat.courseSlots
+                            .filter(function (cs) { return cs.isActive; })
+                            .map(function (cs) {
+                                var start = slotTime;
+                                var returnVar = {
+                                    id: cs.id,
+                                    start: start,
+                                    groupClass: 'grp' + slotCount++,
+                                    name: cs.activity
+                                        ? cs.activity.name
+                                        : 'Simulation ' + ++scenarioCount,
+                                    track: cs.trackParticipants
+                                }
+                                if (!cs.trackParticipants) {
+                                    return returnVar;
+                                }
+                                var isThisSlot = function (el) { return el.courseSlotId === cs.id; };
+                                var sortableOptions = {
+                                    connectWith: '.' + returnVar.groupClass
+                                };
+                                var activityScenario = vm.course.courseSlotActivities.find(isThisSlot);
+                                returnVar.availableFaculty = faculty.slice();
+                                returnVar.availableFacultyOptions = angular.extend({
+                                    update: updateSortable
+                                }, sortableOptions);
+                                slotTime = new Date(start.getTime() + cs.minutesDuration * 60000);
+                                if (cs.activity) {
+                                    var assignedFaculty = [];
+                                    vm.course.courseSlotPresenters.forEach(function (csp) {
+                                        if (csp.courseSlotId === cs.id) {
+                                            var indx = returnVar.availableFaculty.findIndex(function (f) {
+                                                return f.participantId === csp.participantId;
+                                            });
+                                            assignedFaculty.push(returnVar.availableFaculty[indx]);
+                                            returnVar.availableFaculty.splice(indx, 1);
+                                        }
+                                    });
+                                    sortableOptions.update = updateSortableRepo.bind(null, {
+                                        courseSlotId: cs.id,
+                                        courseId: vm.course.id
+                                    }, datacontext.courseSlotPresenters);
+
+                                    return angular.extend(returnVar, {
+                                        choices: cs.activity.activityChoices.map(mapChoice),
+                                        selectedActivityId: activityScenario
+                                            ? activityScenario.activityId
+                                            : null,
+                                        isScenario: false,
+                                        assignedFaculty: assignedFaculty,
+                                        sortableOptions: sortableOptions
+                                    });
+                                }
+                                //else if isScenario {
+
+                                returnVar.availableFacultyOptions.start = startSortable;
+                                returnVar.availableFaculty.availableFaculty = true;
+
+                                var slotRoles = cs.courseScenarioFacultyRoles.filter(isThisSlot);
+                                var courseSlotManikins = vm.course.courseSlotManikins.filter(isThisSlot)
+
+                                //manikin 
+                                if (courseSlotManikins) {
+                                    returnVar.manikins = angular.copy(manikins);
+                                    returnVar.manikins.forEach(function (i) {
+                                        i.children.forEach(function (m) {
+                                            m.checked = courseSlotManikins.some(function (csm) {
+                                                return csm.manikinId === m.id;
+                                            });
+                                        });
+                                    });
+                                    returnVar.selectedManikins = [];
+                                    $scope.$watchCollection(function () {
+                                        return returnVar.selectedManikins;
+                                    }, common.manageCollectionChange(datacontext.courseSlotManikins, 'id',
+                                        function (member) {
+                                            return {
+                                                manikinId: member.id,
+                                                courseSlotId: cs.id, //vm.map[indx].id,//slight hack because the collection is replaced by the isteven multiselect - not really sure why this works, but otherwise digest in progress error on change
+                                                courseId: vm.course.id
+                                            };
+                                        }));
+                                }
+                                //end manikin
+                                vm.course.courseFormat.courseType.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole', 'order'));
+                                return angular.extend(returnVar, {
+                                    selectedActivityId: activityScenario
+                                        ? activityScenario.scenarioId
+                                        : null,
+                                    isScenario: true,
+                                    roles: vm.course.courseFormat.courseType.courseTypeScenarioRoles.map(function (ctsr) {
+                                        var assignedFaculty = [];
+                                        slotRoles.forEach(function (sr) {
+                                            if (ctsr.facultyScenarioRoleId === sr.facultyScenarioRoleId) {
+                                                var findMatch = function (f) {
+                                                    return f.participantId === sr.participantId;
+                                                };
+                                                var indx = returnVar.availableFaculty.findIndex(findMatch);
+                                                if (indx === -1) {
+                                                    assignedFaculty.push(faculty.find(findMatch));
+                                                } else {
+                                                    assignedFaculty.push(returnVar.availableFaculty[indx]);
+                                                    returnVar.availableFaculty.splice(indx, 1);
+                                                }
+                                            }
+                                        });
+
+                                        return {
+                                            description: ctsr.facultyScenarioRole.description,
+                                            id: ctsr.facultyScenarioRoleId,
+                                            assignedFaculty: assignedFaculty,
+                                            sortableOptions: angular.extend({
+                                                update: updateSortableRepo.bind(null, {
+                                                    courseSlotId: cs.id,
+                                                    courseId: vm.course.id,
+                                                    facultyScenarioRoleId: ctsr.facultyScenarioRoleId
+                                                }, datacontext.courseScenarioFacultyRoles),
+                                                start: startSortable
+                                            }, sortableOptions)
+                                        };
+                                    })
+                                });
+                            });//end map courseSlot
+                        vm.notifyViewModelLoaded();
+                        
+                        function mapChoice(c) {
+                            return {
+                                id: c.id,
+                                html: createBsOptionHtml(c.description, participantIdsToName(priorExposure.ActivityParticipants[c.id]))
+                            };
+                        }
                     });
                 });
             }); // end datacontext.ready
@@ -246,14 +245,14 @@
                 m.activityScenario = null;
             }
             if (!m.activityScenario) {
-                if (m.selectedActivity) {
+                if (m.selectedActivityId) {
                     m.activityScenario = datacontext.courseSlotActivities.create({
                         courseSlotId: m.id,
                         courseId: vm.course.id
                     });
-                    m.activityScenario[fk] = m.selectedActivity.id;
+                    m.activityScenario[fk] = m.selectedActivityId;
                 }
-            } else if (m.selectedActivity) {
+            } else if (m.selectedActivityId) {
                 if (m.activityScenario.entityAspect.entityState.isDeleted()) {
                     if (m.activityScenario[fk] === m.selectedChoice.id) {
                         m.activityScenario.entityAspect.setUnchanged();
@@ -262,7 +261,7 @@
                         m.activityScenario.entityAspect.setModified();
                     }
                 }
-                m.activityScenario[fk] = m.selectedActivity.id;
+                m.activityScenario[fk] = m.selectedActivityId;
             } else { //chosenTeachingResource exists, but activity is set to null
                 m.activityScenario.entityAspect.setDeleted();
             }
@@ -343,6 +342,57 @@
             }
 
             angular.extend(sortable.model, calculateCourseRoles(key.participantId));
+        }
+
+        function createBsOptionHtml(text, priorExposure) {
+            return priorExposure
+                ? '<div class="exposed" title="repeat for participants ' + priorExposure + '">' + text + '</div>' //
+                : '<div>' + text + '</div>';
+        }
+
+        function participantIdsToName(ids) {
+            if (!ids) {return ids;}
+            var names = ids.map(function(id){
+                return vm.course.participants.find(function(p){
+                    return p.id === id;}).name;
+            });
+            return names.join(', ');
+        }
+
+        function createMultiSelect(institutions, dptPropertyName, dptPropertyMap) {
+            var returnVar = [];
+            institutions.forEach(function (inst) {
+                var dpts = departmentMap(inst.departments);
+                if (dpts.length) {
+                    returnVar.push({
+                        id: inst.id,
+                        checked: false,
+                        open: inst.id === vm.course.department.institution.id,
+                        name: inst.name,
+                        abbrev: inst.abbreviation,
+                        children: dpts
+                    });
+                }
+            });
+
+            function departmentMap(ds) {
+                var dpts = [];
+                ds.forEach(function (d) {
+                    if (d[dptPropertyName].length) {
+                        dpts.push({
+                            id: d.id,
+                            checked: false,
+                            open: d.id === vm.course.department.id,
+                            name: d.name,
+                            abbrev: d.abbreviation,
+                            children: d[dptPropertyName].map(dptPropertyMap)
+                        });
+                    }
+                });
+                return dpts;
+            }
+
+            return returnVar;
         }
     }
     function sortManikins(man1, man2){

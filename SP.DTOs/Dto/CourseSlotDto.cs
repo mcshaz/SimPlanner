@@ -13,6 +13,7 @@ namespace SP.Dto
         public int Order { get; set; }
         public byte Day { get; set; }
         public byte SimultaneousStreams { get; set; }
+        public bool TrackParticipants { get; set; }
         /// <summary>
         /// if activity/activityId is null, must be a scenario
         /// </summary>

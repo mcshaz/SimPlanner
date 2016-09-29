@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SP.Dto.Utilities
 {
@@ -170,6 +171,13 @@ namespace SP.Dto.Utilities
             {
                 collection.Add(v);
             }
+        }
+
+
+        public static List<KeyValuePair<TKey,TValue>> ToKeyValuePairList<TSource, TKey, TValue>(
+            this IEnumerable<TSource> source, Func<TSource,TKey> keySelector, Func<TSource,TValue> valueSelector)
+        {
+            return new List<KeyValuePair<TKey, TValue>>(source.Select(s=>new KeyValuePair<TKey, TValue>(keySelector(s), valueSelector(s))));
         }
     }
 }

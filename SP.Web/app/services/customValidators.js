@@ -91,13 +91,13 @@
 
     function noRepeatActivityNameValidatorFactory() {
         // isRequired = true so zValidate directive displays required indicator
-        return new validator('noRepeatActivityName', valFunction, { messageTemplate: 'Cannot have repeat names. Delete and creating a new %% rather than rename %%' });
+        return new validator('noRepeatActivityName', valFunction, { messageTemplate: 'Cannot have repeat names. Delete and creating a new %value% rather than rename %originalValue%' });
 
         function valFunction(name, c) {
             var otherActivities = c.entity.getProperty('courseType').courseActivities;
             var id = c.entity.getProperty('id');
-
-            return !otherActivities.some(function (a) { return a.id !== id && a.name === name; });
+            name = name.toLowerCase();
+            return !otherActivities.some(function (a) { return a.id !== id && a.name.toLowerCase() === name; }); //quick and dirty - should somehow hook into breeze engine which uses LocalQueryComparisonOptions
         }
     }
 

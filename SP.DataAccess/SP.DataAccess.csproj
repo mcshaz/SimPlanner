@@ -243,6 +243,10 @@
     <Compile Include="Migrations\201609270206116_defaultStartTime.Designer.cs">
       <DependentUpon>201609270206116_defaultStartTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609290114277_trackParticipants.cs" />
+    <Compile Include="Migrations\201609290114277_trackParticipants.Designer.cs">
+      <DependentUpon>201609290114277_trackParticipants.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AddConstraints.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SqlHelpers.cs" />
@@ -319,6 +323,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609270206116_defaultStartTime.resx">
       <DependentUpon>201609270206116_defaultStartTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609290114277_trackParticipants.resx">
+      <DependentUpon>201609290114277_trackParticipants.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

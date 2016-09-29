@@ -11,43 +11,41 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div class="panel-group" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse>
+                        <div class="panel-group" data-allow-multiple="true" ng-model="vm.activePanels" role="tablist" aria-multiselectable="true" bs-collapse>
                             <div class="panel panel-default" ng-repeat="m in vm.map track by m.id">
-                                <div class="panel-heading" role="tab" bs-collapse-toggle>
+                                <div class="panel-heading" role="tab" bs-collapse-toggle ng-class="{collapsed:vm.activePanels.indexOf($index)===-1}">
                                     <h4 class="panel-title">
                                         <a>
-                                            {{m.startUtc | amDateFormat:'hh:mm a'}}
+                                            {{m.start | amDateFormat:'hh:mm a'}}
                                             <span class="label" ng-class="m.isScenario?'label-success':'label-info'">
                                                 {{m.name}}
                                             </span>
                                         </a>
+                                        <i class="chevron" ng-if="m.track"></i>
                                     </h4>
                                 </div>
                                 <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-                                    <div class="panel-body">
+                                    <div class="panel-body" ng-if="m.track">
                                         <div class="row col-md-12">
                                             <div class="form-group" ng-if="m.choices.length"> <!--m.choices only if !scenario-->
-                                                <label class="control-label col-md-1" for="resource">
+                                                <label class="control-label col-md-1" for="activity">
                                                     Resource
                                                 </label>
                                                 <div class="col-md-5">
-                                                    <select id="resource" class="form-control" ng-model="m.selectedActivity" ng-options="s as s.description for s in m.choices" ng-change="vm.changeActivityScenario(m)" >
-                                                        <option selected value="">
-                                                            Please Select...
-                                                        </option>
-                                                    </select>
+                                                    <button type="button" id="activity" class="form-control" ng-model="m.selectedActivityId" bs-select data-html="1" bs-options="a.id as a.html for a in m.choices" ng-change="vm.changeActivityScenario(m)"  >
+                                                        Action <span class="caret"></span>
+                                                    </button>
                                                 </div>
                                             </div>
                                             <div class="form-group" ng-if="m.isScenario">
-                                                <label class="control-label col-md-1" for="resource">
+                                                <label class="control-label col-md-1" for="scenario">
                                                     Scenario
                                                 </label>
                                                 <div class="col-md-5">
-                                                    <select id="resource" class="form-control" ng-model="m.selectedActivity" ng-options="s as s.briefDescription for s in vm.scenarios" ng-change="vm.changeActivityScenario(m)" >
-                                                        <option selected value="">
-                                                            Please Select...
-                                                        </option>
-                                                    </select>
+                                                    
+                                                    <button type="button" id="scenario" class="form-control" ng-model="m.selectedActivityId" bs-select data-html="1" bs-options="s.value as s.html for s in vm.scenarios" ng-change="vm.changeActivityScenario(m)" >
+                                                        Action <span class="caret"></span>
+                                                    </button>
                                                 </div>
                                                 <aside class="col-md-6">
                                                     {{m.scenario.fullDescription}}

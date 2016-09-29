@@ -1,4 +1,4 @@
-//201609270206116_defaultStartTime
+//201609290114277_trackParticipants
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -331,6 +331,21 @@
             }
           ],
           "displayName": "Simultaneous Streams"
+        },
+        {
+          "name": "trackParticipants",
+          "dataType": "Boolean",
+          "isNullable": false,
+          "defaultValue": true,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "bool"
+            }
+          ],
+          "displayName": "Track Participants"
         },
         {
           "name": "activityId",

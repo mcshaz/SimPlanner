@@ -434,12 +434,19 @@
         }
 
         function removeActivity(cs) {
-            if (cs.activity && !cs.activity.courseSlots.some(function (slotsSharingActivity) {
-                return slotsSharingActivity.id !== cs.id;
-            })) {
-                cs.activity.entityAspect.setDeleted();
-            } else {
-                cs.activity.entityAspect.setUnchanged();
+            if (cs.activity) {
+                var slotsSharingActivity = cs.activity.courseSlots.fiter(function (slotSharingActivity) {
+                    return slotSharingActivity.id !== cs.id;
+                });
+                if (slotsSharingActivity.lenth) {
+                    if (slotsSharingActivity.every(function (slotSharingActivity) {
+                        return !slotSharingActivity.isActive;
+                    })) {
+                        cs.activity.entityAspect.setUnchanged();
+                    }
+                } else {
+                    cs.activity.entityAspect.setDeleted();
+                }
             }
             cs.activityId = cs.activity = null;
         }

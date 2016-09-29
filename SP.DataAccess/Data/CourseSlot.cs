@@ -13,6 +13,7 @@ namespace SP.DataAccess
         public int Order { get; set; }
         public byte Day { get; set; }
         public bool IsActive { get; set; }
+        public bool TrackParticipants { get; set; }
         public byte SimultaneousStreams { get; set; }
         public Guid? ActivityId { get; set; }
         public Guid CourseFormatId { get; set; }

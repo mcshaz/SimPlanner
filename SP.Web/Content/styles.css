@@ -430,12 +430,17 @@ a {
     color:inherit;
 }
 
+input[type="number"] {
+    width: 58px;
+}
+
 .panel-heading .chevron:after {
     /* symbol for "opening" panels */
     font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
     content: "\e113";    /* adjust as needed, taken from bootstrap.css */
     float: right;        /* adjust as needed */
     color:inherit;
+    cursor: pointer;
 }
 .panel-heading.collapsed .chevron:after {
     /* symbol for "collapsed" panels */
