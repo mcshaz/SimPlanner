@@ -27,7 +27,7 @@ namespace SP.Web.Controllers
         [HttpPost]
         public IHttpActionResult EmailAll(EmailAllBindingModel model)
         {
-            var course = Repo.Courses.Include("CourseParticipants.Participant").Include("CourseFormat.CourseType").Include("Department.Institution").Include("Room").Include("FacultyMeetingRoom")
+            var course = Repo.Courses.Include("CourseParticipants.Participant").Include("CourseParticipants.Department").Include("CourseFormat.CourseType").Include("Department.Institution").Include("Room").Include("FacultyMeetingRoom")
                 .FirstOrDefault(cp => cp.Id == model.CourseId);
             //Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(course.Department.Institution.LocaleCode);
 
@@ -47,21 +47,21 @@ namespace SP.Web.Controllers
                 IEnumerable<Attachment> attachments = new Attachment[0];
                 using (var client = new SmtpClient())
                 {
-                    
+                    var mailMessages= new List<MailMessage>();
                     var sendMail = new Action<CourseParticipant>(cp => {
-                        using (var mail = new MailMessage())
+                        var mail = new MailMessage();
+                        mailMessages.Add(mail);
+                        mail.To.AddParticipants(cp.Participant);
+                        var confirmEmail = new CourseInvite { CourseParticipant = cp };
+                        mail.CreateHtmlBody(confirmEmail);
+                        cal.AddAppointment(mail);
+                        foreach (var a in attachments)
                         {
-                            mail.To.AddParticipants(cp.Participant);
-                            var confirmEmail = new CourseInvite { CourseParticipant = cp };
-                            mail.CreateHtmlBody(confirmEmail);
-                            cal.AddAppointment(mail);
-                            foreach (var a in attachments)
-                            {
-                                mail.Attachments.Add(a);
-                            }
-                            
-                            client.Send(mail);
+                            a.ContentStream.Position = 0;
+                            mail.Attachments.Add(a);
                         }
+                            
+                        client.Send(mail);
                     });
 
                     foreach (var cp in faculty[false])
@@ -81,6 +81,7 @@ namespace SP.Web.Controllers
                             sendMail(cp);
                         }
                     }
+                    mailMessages.ForEach(mm => mm.Dispose());
                 }
             }
             return Ok();

@@ -24,6 +24,8 @@
             returnVar.error = returnVar.err = function (argOpts) {
                 if (argOpts instanceof Error) {
                     log({ message: argOpts.message, data: argOpts }, 'error');
+                } else if (argOpts.data && argOpts.data.ExceptionMessage) {
+                    log({ message: 'Server Error: ' + argOpts.data.ExceptionMessage, data: argOpts.data }, 'error');
                 } else {
                     log(argOpts, 'error');
                 }

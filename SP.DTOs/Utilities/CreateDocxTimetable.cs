@@ -171,7 +171,7 @@ namespace SP.Dto.Utilities
                 });
 
                 AddScenarios(mainPart, course);
-
+                stream.Position = 0;
                 return stream; 
             }
         }

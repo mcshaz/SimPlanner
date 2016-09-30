@@ -813,7 +813,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-087d9ca883.min.js" />
+    <Content Include="dist\js\main-91effc9f2b.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

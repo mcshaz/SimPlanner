@@ -274,7 +274,7 @@
                 url: 'api/CoursePlanning/EmailAll/',
                 data: { CourseId: vm.course.id }
             }).then(function (response) {
-                alert(response.data || 'emails sent');
+                vm.log('emails sent');
             }, vm.log.error);
         }
     }

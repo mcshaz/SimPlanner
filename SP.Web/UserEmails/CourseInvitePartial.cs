@@ -1,6 +1,5 @@
 ﻿using SP.DataAccess;
 using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SP.Web.UserEmails
