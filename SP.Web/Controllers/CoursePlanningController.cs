@@ -27,7 +27,7 @@ namespace SP.Web.Controllers
         [HttpPost]
         public IHttpActionResult EmailAll(EmailAllBindingModel model)
         {
-            var course = Repo.Courses.Include("CourseParticipants.Participant").Include("CourseParticipants.Department").Include("CourseFormat.CourseType").Include("Department.Institution").Include("Room").Include("FacultyMeetingRoom")
+            var course = Repo.Courses.Include("CourseParticipants.Participant").Include("CourseParticipants.Department.Institution").Include("CourseFormat.CourseType").Include("Department.Institution").Include("Room").Include("FacultyMeetingRoom")
                 .FirstOrDefault(cp => cp.Id == model.CourseId);
             //Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(course.Department.Institution.LocaleCode);
 
