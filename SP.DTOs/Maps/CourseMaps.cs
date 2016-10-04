@@ -24,7 +24,8 @@ namespace SP.Dto.Maps
                 FacultyMeetingUtc = m.FacultyMeeting,
                 CreatedUtc = m.Created,
                 LastModifiedUtc = m.LastModified
-            },
+                //EmailTimeStamp = m.EmailTimeStamp
+        },
             m => new CourseDto
             {
                 Id = m.Id,

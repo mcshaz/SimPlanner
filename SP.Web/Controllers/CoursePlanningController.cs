@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace SP.Web.Controllers
@@ -25,9 +26,9 @@ namespace SP.Web.Controllers
 
         //[Route("EmailAll")]
         [HttpPost]
-        public IHttpActionResult EmailAll(EmailAllBindingModel model)
+        public async Task<IHttpActionResult> EmailAll(EmailAllBindingModel model)
         {
-            var course = Repo.Courses.Include("CourseParticipants.Participant").Include("CourseParticipants.Department.Institution").Include("CourseFormat.CourseType").Include("Department.Institution").Include("Room").Include("FacultyMeetingRoom")
+            var course = Repo.Courses.Include("CourseParticipants.Participant").Include("CourseParticipants.Department.Institution").Include("CourseFormat.CourseType").Include("Room").Include("FacultyMeetingRoom")
                 .FirstOrDefault(cp => cp.Id == model.CourseId);
             //Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(course.Department.Institution.LocaleCode);
 
@@ -38,53 +39,68 @@ namespace SP.Web.Controllers
                 return Ok("The course finish must be after now");
             }
 
-            course.EmailSequence++;
+            await SendEmail(course);
             Repo.SaveChanges();
+            return Ok();
+        }
+        //move to a service layer
+        private async Task SendEmail(Course course)
+        {
+            course.EmailSequence++;
+            course.EmailTimeStamp = DateTime.UtcNow;
 
             using (var cal = Appointment.CreateiCalendar(course, User.Identity))
             {
-                var faculty = course.CourseParticipants.Where(cp=>!cp.IsConfirmed.HasValue || cp.IsOrganiser).ToLookup(cp => cp.IsFaculty);
+                var faculty = course.CourseParticipants.Where(cp => !cp.IsConfirmed.HasValue || cp.IsOrganiser).ToLookup(cp => cp.IsFaculty);
                 IEnumerable<Attachment> attachments = new Attachment[0];
                 using (var client = new SmtpClient())
                 {
-                    var mailMessages= new List<MailMessage>();
-                    var sendMail = new Action<CourseParticipant>(cp => {
+                    var mailMessages = new List<MailMessage>();
+                    var sendMail = new Func<CourseParticipant, Task>(async (cp) =>
+                    {
                         var mail = new MailMessage();
                         mailMessages.Add(mail);
                         mail.To.AddParticipants(cp.Participant);
                         var confirmEmail = new CourseInvite { CourseParticipant = cp };
                         mail.CreateHtmlBody(confirmEmail);
-                        cal.AddAppointment(mail);
+                        cal.AddAppointmentTo(mail);
                         foreach (var a in attachments)
                         {
                             a.ContentStream.Position = 0;
                             mail.Attachments.Add(a);
                         }
-                            
-                        client.Send(mail);
+
+                        try
+                        {
+                            await client.SendMailAsync(mail);
+                            cp.EmailTimeStamp = course.EmailTimeStamp;
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
                     });
 
                     foreach (var cp in faculty[false])
                     {
-                        sendMail(cp);
+                        await sendMail(cp);
                     }
                     if (faculty[true].Any())
                     {
-                        if (course.FacultyMeetingUtc.HasValue && course.FacultyMeetingUtc > now)
+                        if (course.FacultyMeetingUtc.HasValue && course.FacultyMeetingUtc > course.EmailTimeStamp)
                         {
                             Appointment.AddFacultyMeeting(cal.Cal, course);
                         }
                         attachments = course.GetFilePaths().Select(fp => new Attachment(fp.Value, "application/zip") { Name = fp.Key })
-                            .Concat(new[] { new Attachment(CreateDocxTimetable.CreateTimetableDocx(course, System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/CourseTimeTableTemplate.docx")), "application/vnd.openxmlformats-officedocument.wordprocessingml.document") { Name = $"Timetable for {course.CourseFormat.CourseType.Abbreviation}"} });
+                            .Concat(new[] { new Attachment(CreateDocxTimetable.CreateTimetableDocx(course, System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/CourseTimeTableTemplate.docx")), "application/vnd.openxmlformats-officedocument.wordprocessingml.document") { Name = $"Timetable for {course.CourseFormat.CourseType.Abbreviation}" } });
                         foreach (var cp in faculty[true])
                         {
-                            sendMail(cp);
+                            await sendMail(cp);
                         }
                     }
                     mailMessages.ForEach(mm => mm.Dispose());
                 }
             }
-            return Ok();
         }
 
         [Route("Rsvp")]

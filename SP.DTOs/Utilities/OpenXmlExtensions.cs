@@ -9,15 +9,22 @@ namespace SP.Dto
 {
     public static class OpenXmlExtensions
     {
+        private const string _fieldTerminator = "\\*";
+        private const string _fieldBeforeText = "\\b";
+        private const string _fieldAfterText = "\\f";
+
+        private static readonly string[] _fieldCmds = new[] { _fieldTerminator, _fieldBeforeText, _fieldAfterText };
+        private const string _mergefield = "MERGEFIELD";
+
         public static ILookup<string, OpenXmlElement> GetMergeFieldDict(this IEnumerable<OpenXmlElement> elements)
         {
-            var splitter = new[] { ' ', '"' };
-            const string mergefield = "MERGEFIELD";
-            return elements.SelectMany(x => x.Descendants<SimpleField>().Select(sf => new { text = sf.Instruction.Value, el = (OpenXmlElement)sf })
-                    .Concat(x.Descendants<FieldCode>().Select(fc => new { text = fc.Text, el = (OpenXmlElement)fc })))
-                .Select(a => new { words = a.text.Split(splitter, StringSplitOptions.RemoveEmptyEntries), el = a.el })
-                .Where(a => mergefield.Equals(a.words.FirstOrDefault(), StringComparison.OrdinalIgnoreCase))
-                .ToLookup(k => string.Join(" ", k.words.Skip(1).TakeWhile(i => i != "\\*")), v => v.el);
+            var allFields = elements.SelectMany(x => x.Descendants<SimpleField>().Select(sf => new { text = sf.Instruction.Value, el = (OpenXmlElement)sf })
+                        .Concat(x.Descendants<FieldCode>().Select(fc => new { text = fc.Text, el = (OpenXmlElement)fc })));
+            return (from fc in allFields
+                    let words = fc.text.TrimStart().Split(null,2)
+                    where _mergefield.Equals(words.FirstOrDefault(), StringComparison.OrdinalIgnoreCase)
+                    select new { text = words[1].FirstWord(), el= fc.el })
+                    .ToLookup(k => k.text, v => v.el);
         }
 
         public static void CloneElement<T>(this OpenXmlElement cloneSource, IEnumerable<T> itemCollection, Func<string, T, string> withMergeField)
@@ -36,7 +43,10 @@ namespace SP.Dto
             {
                 foreach (var c in cloneSource)
                 {
-                    c.Remove();
+                    if (c.Parent != null)
+                    {
+                        c.Remove();
+                    }
                 }
                 return;
             }
@@ -79,7 +89,7 @@ namespace SP.Dto
                 }
                 if (i < lastRowIndex)
                 {
-                    cloneSource = cloneSource.Select(c => c.CloneNode(true)).ToList();
+                    cloneSource = virginClonable.Select(c => c.CloneNode(true)).ToList();
                 }
                 else
                 {
@@ -116,56 +126,132 @@ namespace SP.Dto
 
         private static void InsertMergeFieldText(OpenXmlElement field, IList<string> listMembers)
         {
-            var runs = new List<Run>(listMembers.Count);
-            var withNext = new List<OpenXmlLeafElement>();
+            var leafs = new List<OpenXmlLeafElement>(listMembers.Count);
             foreach (var m in listMembers)
             {
                 switch (m)
                 {
                     case "\n":
-                        withNext.Add(new Break());
+                        leafs.Add(new Break());
                         break;
                     case "\t":
-                        withNext.Add(new TabChar());
+                        leafs.Add(new TabChar());
                         break;
                     default:
-                        var run = CreateSimpleRun();
-                        run.Append(withNext);
-                        run.Append(new Text { Text=m });
-                        withNext.Clear();
-                        runs.Add(run);
+                        leafs.Add(new Text(m));
                         break;
                 }
             }
-            //for now
-            if (withNext.Any() && runs.Count > 0)
-            {
-                runs[runs.Count - 1].Append(withNext);
-            }
+            Run textRun;
+            //have to try and preserve formatting - therefore need to insert text into 1st run
             var sf = field as SimpleField;
             if (sf != null)
             {
-                sf.RemoveAllChildren();
-                sf.Append(runs);
+                foreach (var l in leafs.OfType<Text>())
+                {
+                    l.Text = InterpretFieldInstructions(l.Text, sf.Instruction);
+                }
+                var allTextRuns = sf.ChildElements<Run>().ToList(); ;
+                textRun = allTextRuns.GetTextRun();
+                if (textRun == null)
+                {
+                    textRun = CreateSimpleRun();
+                    sf.Append(textRun);
+                }
+                foreach (var r in allTextRuns.Where(ar=>ar != textRun))
+                {
+                    r.Remove();
+                }
             }
             else
             {
                 var fc = (FieldCode)field;
+                
+                foreach (var l in leafs.OfType<Text>())
+                {
+                    l.Text = InterpretFieldInstructions(l.Text, fc.InnerText);
+                }
                 var existingRuns = GetAssociatedRuns(fc);
-                var rEnd = existingRuns[existingRuns.Count - 1];
-                foreach (var er in existingRuns
+                var textRuns = existingRuns.Skip(1)
                     .SkipWhile(er => !er.ContainsCharType(FieldCharValues.Separate))
-                    .Skip(1)
-                    .TakeWhile(er => er != rEnd))
+                    .Skip(1).ToList();
+                textRuns.RemoveAt(textRuns.Count - 1);
+                textRun = textRuns.GetTextRun();
+                if (textRun == null)
+                {
+                    textRun = CreateSimpleRun();
+                    var rEnd = existingRuns[existingRuns.Count - 1];
+                    rEnd.InsertBeforeSelf(textRun);
+                }
+
+                foreach (var er in textRuns.Where(tr=>tr!= textRun))
                 {
                     er.Remove();
                 }
-                foreach (var r in runs)
-                {
-                    rEnd.InsertBeforeSelf(r);
-                }
                 //fc.Append
             }
+            textRun.ChildElementsNot<RunProperties>().ToList()
+                .ForEach(c=>c.Remove());
+            /*
+            if (leafs.Count == 0)
+            {
+                leafs.Add(new Text(string.Empty));
+            }
+            */
+            textRun.Append(leafs);
+        }
+
+        private static string InterpretFieldInstructions(string str, string inst)
+        {
+            if (string.IsNullOrWhiteSpace(inst)) { return str; }
+            int instStart = inst.IndexOfWord(3);
+            int instFinish = inst.LastIndexOf(_fieldTerminator);
+            if (instStart == instFinish) { return str; }
+            inst = inst.Substring(instStart, instFinish - instStart);
+            bool after = false;
+            bool before = false;
+            foreach (var c in inst.SplitAndInclude(_fieldCmds))
+            {
+                switch (c)
+                {
+                    case _fieldAfterText:
+                        after = true;
+                        break;
+                    case _fieldBeforeText:
+                        before = true;
+                        break;
+                    default:
+                        if (after)
+                        {
+                            str += GetText(c);
+                            after = false;
+                        }
+                        else if (before)
+                        {
+                            str = GetText(c) + str;
+                            before = false;
+                        }
+                        break;
+                }
+            }
+            return str;
+        }
+
+        private static string GetText(string str)
+        {
+            str = str.Trim();
+            char firstChar = str[0];
+            if (firstChar == '\'' || firstChar == '"')
+            {
+                str = str.Substring(1, str.Length - 2);
+            }
+            return str;
+        }
+
+        private static Run GetTextRun(this IEnumerable<Run> runs)
+        {
+            return runs.FirstOrDefault(er => !string.IsNullOrWhiteSpace(er.InnerText))
+                ?? runs.FirstOrDefault(er => er.GetFirstChild<Text>() != null);
         }
 
         public static void InsertMergeFieldText(this OpenXmlElement field, string replacementText)
@@ -191,6 +277,33 @@ namespace SP.Dto
             return runs;
         }
 
+        public static IEnumerable<T> ChildElements<T>(this OpenXmlElement el) where T: OpenXmlElement
+        {
+            if (el.HasChildren)
+            {
+                var child = el.GetFirstChild<T>();
+                while (child != null)
+                {
+                    yield return child;
+                    child = child.NextSibling<T>();
+                }
+            }
+        }
+
+        public static IEnumerable<OpenXmlElement> ChildElementsNot<T>(this OpenXmlElement el) where T : OpenXmlElement
+        {
+            if (el.HasChildren)
+            {
+                foreach(var c in el.ChildElements)
+                {
+                    if (c.GetType() != typeof(T))
+                    {
+                        yield return c;
+                    }
+                }
+            }
+        }
+
         public static bool ContainsCharType(this Run run, FieldCharValues fieldCharType)
         {
             var fc = run.GetFirstChild<FieldChar>();
@@ -198,5 +311,7 @@ namespace SP.Dto
                 ? false
                 : fc.FieldCharType.Value == fieldCharType;
         }
+
+
     }
 }

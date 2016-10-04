@@ -75,6 +75,8 @@ namespace SP.DataAccess
             }
         }
 
+        public DateTime? EmailTimeStamp { get; set; }
+
         public byte FacultyNoRequired { get; set; }
 
         public string ParticipantVideoFilename { get; set; }

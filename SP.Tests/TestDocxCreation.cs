@@ -18,7 +18,7 @@ namespace SP.Tests
             Course course;
             using (var db = new MedSimDbContext())
             {
-                course = CreateDocxTimetable.GetCourseWithIncludes(Guid.Parse("0ca5d24f-292e-4004-bb08-096db4b440ad"),db);
+                course = CreateDocxTimetable.GetCourseWithIncludes(Guid.Parse("c6a65255-81b9-40ba-b7c0-e122fb06f515"),db);
                 
                 using (var stream = CreateDocxTimetable.CreateTimetableDocx(course, templ))
                 {
@@ -32,14 +32,59 @@ namespace SP.Tests
         }
 
         [TestMethod]
-        public void TestSplitAndInclude()
+        public void TestSplitAndIncludeChar()
         {
             var anyOf = new[] { '\t', '\n' };
-            CollectionAssert.AreEqual(new[] { "asdewrr" }, (List<string>)"asdewrr".SplitAndInclude(anyOf));
-            CollectionAssert.AreEqual(new[] { "asdewrr","\t","\n" }, (List<string>)"asdewrr\t\n".SplitAndInclude(anyOf));
-            CollectionAssert.AreEqual(new[] { "asdewr","\n","\t","r" }, (List<string>)"asdewr\n\tr".SplitAndInclude(anyOf));
-            CollectionAssert.AreEqual(new[] { "as","\t","de","\n","wrr" }, (List<string>)"as\tde\nwrr".SplitAndInclude(anyOf));
-            CollectionAssert.AreEqual(new[] { "\t","asdewrr","\n" }, (List<string>)"\tasdewrr\n".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "asdewrr" }, "asdewrr".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "a" }, "a".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "asdewrr","\t","\n" }, "asdewrr\t\n".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "asdewr","\n","\t","r" }, "asdewr\n\tr".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "as","\t","de","\n","wrr" }, "as\tde\nwrr".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "\t","asdewrr","\n" }, "\tasdewrr\n".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new string[0] , "".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "\t" }, "\t".SplitAndInclude(anyOf));
+        }
+
+        [TestMethod]
+        public void TestFirstWord()
+        {
+            string testString = null;
+            Assert.AreEqual(null, testString.FirstWord());
+
+            Assert.AreEqual(string.Empty, string.Empty.FirstWord());
+            Assert.AreEqual(string.Empty, "   ".FirstWord());
+
+            Assert.AreEqual("Hello", "Hello".FirstWord());
+            Assert.AreEqual("Hello", "   Hello".FirstWord());
+            Assert.AreEqual("Hello", "Hello   ".FirstWord());
+            Assert.AreEqual("Hello", "  Hello   ".FirstWord());
+            Assert.AreEqual("Hello", "Hello There".FirstWord());
+            Assert.AreEqual("Hello", "  Hello There  ".FirstWord());
+        }
+
+        [TestMethod]
+        public void TestSplitAndIncludeString()
+        {
+            var anyOf = new[] { "\t", "\n" };
+            CollectionAssert.AreEqual(new[] { "asdewrr" }, "asdewrr".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "a" }, "a".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "asdewrr", "\t", "\n" }, "asdewrr\t\n".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "asdewr", "\n", "\t", "r" }, "asdewr\n\tr".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "as", "\t", "de", "\n", "wrr" }, "as\tde\nwrr".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "\t", "asdewrr", "\n" }, "\tasdewrr\n".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new string[0], "".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "\t" }, "\t".SplitAndInclude(anyOf));
+
+            anyOf = new[] { "\t\n" };
+            CollectionAssert.AreEqual(new[] { "asdewrr", "\t\n" }, "asdewrr\t\n".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] {  "\t\n", "asdewrr" }, "\t\nasdewrr".SplitAndInclude(anyOf));
+            CollectionAssert.AreEqual(new[] { "asd", "\t\n", "ewrr" }, "asd\t\newrr".SplitAndInclude(anyOf));
+        }
+
+        [TestMethod]
+        public void MultiToSingleWhitespace()
+        {
+            Assert.AreEqual("a r e", "a\r\n\t r     e".MultiToSingleWhitespace());
         }
     }
 }

@@ -15,7 +15,7 @@ using Ical.Net.Interfaces.DataTypes;
 
 namespace SP.Web.UserEmails
 {
-    static class Appointment
+    public static class Appointment
     {
         const string mailto = "MAILTO:";
         static public AppointmentStream CreateiCalendar(Course course, IIdentity currentUser)
@@ -184,16 +184,17 @@ namespace SP.Web.UserEmails
                 return _calType;
             }
         }
-        public void AddAppointment(MailMessage msg)
-        {
 
+        private void AddHtmlFromMsg(MailMessage msg)
+        {
             var evt = (Event)Cal.Events.First();
 
             evt.Description = msg.Body;
-            
-            var htmlView = msg.AlternateViews.First(av => av.ContentType.MediaType == MediaTypeNames.Text.Html);
-            string html;
 
+            var htmlView = msg.AlternateViews.First(av => av.ContentType.MediaType == MediaTypeNames.Text.Html);
+
+            //remove image tags from doc
+            string html;
             var htmlDoc = new HtmlDocument();
             htmlView.ContentStream.Position = 0;
             using (var sr = new StreamReader(htmlView.ContentStream, Encoding.UTF8, false, 1024, true))
@@ -206,6 +207,7 @@ namespace SP.Web.UserEmails
                 html = htmlDoc.DocumentNode.OuterHtml;
             }
             htmlView.ContentStream.Position = 0;
+            //end remove image tags
 
             //add html to ical
             const string altDesc = "X-ALT-DESC";
@@ -219,8 +221,15 @@ namespace SP.Web.UserEmails
             }
             prop.SetValue(html);
             //end add HTML to ical
+        }
 
-            string calString = _serializer.SerializeToString(Cal);
+        public string IcalString()
+        {
+            return _serializer.SerializeToString(Cal);
+        }
+
+        public void AddAppointmentTo(MailMessage msg)
+        {
 
             //writeOutlookFormat
 
@@ -233,8 +242,7 @@ namespace SP.Web.UserEmails
             */
             //end writeOutlookFormat
 
-            File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "calendar.ics", calString);
-            var attach = System.Net.Mail.Attachment.CreateAttachmentFromString(calString, CalType);
+            var attach = System.Net.Mail.Attachment.CreateAttachmentFromString(IcalString(), CalType);
 
             msg.Attachments.Add(attach);
 

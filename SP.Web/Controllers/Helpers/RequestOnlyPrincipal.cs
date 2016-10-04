@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Web;
 
 namespace SP.Web.Controllers.Helpers
 {
-    internal class RequestOnlyPrincipal : IPrincipal
+    public class RequestOnlyPrincipal : IPrincipal
     {
         public RequestOnlyPrincipal(string userName, IEnumerable<string> roleNames)
         {

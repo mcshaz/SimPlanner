@@ -19,6 +19,8 @@ namespace SP.Dto.Utilities
                         .Include("CourseSlotPresenters")
                         .Include("CourseSlotManikins")
                         .Include("CourseScenarioFacultyRoles")
+                        .Include("CourseSlotActivities.Activity")
+                        .Include("CourseSlotActivities.Scenario")
                         .First(c=>c.Id == courseId);
         }
 
@@ -33,6 +35,7 @@ namespace SP.Dto.Utilities
             int scenarioCount = 0;
             var csps = course.CourseSlotPresenters.ToLookup(c=>c.CourseSlotId);
             var csfrs = course.CourseScenarioFacultyRoles.ToLookup(c => c.CourseSlotId);
+            var csas = course.CourseSlotActivities.ToDictionary(c => c.CourseSlotId);
 
             var returnVar = course.CourseFormat.CourseSlots.Where(cs=>cs.IsActive)
                 .OrderBy(cs=>cs.Order).Select(cs=> {
@@ -40,10 +43,13 @@ namespace SP.Dto.Utilities
                     {
                         LocalStart = start,
                     };
+                    CourseSlotActivity activity;
+                    csas.TryGetValue(cs.Id, out activity);
                     if (cs.ActivityId.HasValue)
                     {
                         ttr.IsScenario = false;
                         ttr.SlotName = cs.Activity.Name;
+                        ttr.SlotActivity = activity?.Activity?.Description;
                         ttr.Faculty = csps[cs.Id]?.Select(csp => csp.Participant.FullName)
                             ?? new string[0];
                     }
@@ -51,6 +57,7 @@ namespace SP.Dto.Utilities
                     {
                         ttr.IsScenario = false;
                         ttr.SlotName = "Scenario " + (++scenarioCount).ToString();
+                        ttr.SlotActivity = activity?.Scenario?.BriefDescription;
                         ttr.Faculty = csfrs[cs.Id]?.Select(csfr => csfr.Participant.FullName)
                             ?? new string[0];
                     }
@@ -162,6 +169,8 @@ namespace SP.Dto.Utilities
                         case "SlotStart":
                             return ttr.LocalStart.ToString("t", prov);
                         case "SlotActivity":
+                            return ttr.SlotActivity;
+                        case "SlotName":
                             return ttr.SlotName;
                         case "SlotFaculty":
                             return string.Join("\n", ttr.Faculty);
@@ -213,9 +222,9 @@ namespace SP.Dto.Utilities
                         return "Scenario " + (++i).ToString();
                     case "ScenarioName":
                     case "ScenarioBriefDescription":
-                        return css.Scenario.BriefDescription;
+                        return css.Scenario?.BriefDescription;
                     case "ScenarioFullDescription":
-                        return css.Scenario.BriefDescription;
+                        return css.Scenario?.FullDescription;
                     default:
                         return $"[Value Not Found - \'{ mergeFieldName }\']";
                 }
@@ -227,6 +236,7 @@ namespace SP.Dto.Utilities
     {
         public DateTime LocalStart { get; set; }
         public string SlotName { get; set; }
+        public string SlotActivity { get; set; }
         public bool IsScenario { get; set; }
         public IEnumerable<string> Faculty { get; set; }
     }
