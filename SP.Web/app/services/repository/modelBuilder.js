@@ -251,6 +251,9 @@
         }
 
         function getFinish() {
+            if (!this.startUtc) {
+                return this.startUtc;
+            }
             return new Date(this.startUtc.getTime() + this.durationMins * 60000);
         }
 

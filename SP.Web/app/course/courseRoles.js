@@ -98,9 +98,8 @@
                         });
                         */
                         vm.scenarios = vm.course.department.scenarios.map(function (s) {
-                            var priorExposure = participantIdsToName(priorExposure.ScenarioParticipants[s.id]);
-                            return new {
-                                html: createBsOptionHtml(s.briefDescription, priorExposure),
+                            return {
+                                html: createBsOptionHtml(s.briefDescription, participantIdsToName(priorExposure.ScenarioParticipants[s.id])),
                                 id: s.id
                             };
                         });
@@ -121,11 +120,12 @@
                                 if (!cs.trackParticipants) {
                                     return returnVar;
                                 }
+
                                 var isThisSlot = function (el) { return el.courseSlotId === cs.id; };
                                 var sortableOptions = {
                                     connectWith: '.' + returnVar.groupClass
                                 };
-                                var activityScenario = vm.course.courseSlotActivities.find(isThisSlot);
+                                returnVar.activityScenario = vm.course.courseSlotActivities.find(isThisSlot);
                                 returnVar.availableFaculty = faculty.slice();
                                 returnVar.availableFacultyOptions = angular.extend({
                                     update: updateSortable
@@ -149,8 +149,8 @@
 
                                     return angular.extend(returnVar, {
                                         choices: cs.activity.activityChoices.map(mapChoice),
-                                        selectedActivityId: activityScenario
-                                            ? activityScenario.activityId
+                                        selectedActivityId: returnVar.activityScenario
+                                            ? returnVar.activityScenario.activityId
                                             : null,
                                         isScenario: false,
                                         assignedFaculty: assignedFaculty,
@@ -162,16 +162,18 @@
                                 returnVar.availableFacultyOptions.start = startSortable;
                                 returnVar.availableFaculty.availableFaculty = true;
 
-                                var slotRoles = cs.courseScenarioFacultyRoles.filter(isThisSlot);
+                                var slotRoles = vm.course.courseScenarioFacultyRoles.filter(isThisSlot);
                                 var courseSlotManikins = vm.course.courseSlotManikins.filter(isThisSlot);
 
+                                returnVar.manikins = angular.copy(manikins);
                                 //manikin 
                                 if (courseSlotManikins) {
-                                    returnVar.manikins = angular.copy(manikins);
                                     returnVar.manikins.forEach(function (i) {
-                                        i.children.forEach(function (m) {
-                                            m.checked = courseSlotManikins.some(function (csm) {
-                                                return csm.manikinId === m.id;
+                                        i.children.forEach(function (d) {
+                                            d.children.forEach(function (m) {
+                                                m.checked = courseSlotManikins.some(function (csm) {
+                                                    return csm.manikinId === m.id;
+                                                });
                                             });
                                         });
                                     });
@@ -190,8 +192,8 @@
                                 //end manikin
                                 vm.course.courseFormat.courseType.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole', 'order'));
                                 return angular.extend(returnVar, {
-                                    selectedActivityId: activityScenario
-                                        ? activityScenario.scenarioId
+                                    selectedActivityId: returnVar.activityScenario
+                                        ? returnVar.activityScenario.scenarioId
                                         : null,
                                     isScenario: true,
                                     roles: vm.course.courseFormat.courseType.courseTypeScenarioRoles.map(function (ctsr) {
@@ -255,7 +257,7 @@
                 }
             } else if (m.selectedActivityId) {
                 if (m.activityScenario.entityAspect.entityState.isDeleted()) {
-                    if (m.activityScenario[fk] === m.selectedChoice.id) {
+                    if (m.activityScenario[fk] === m.selectedActivityId) {
                         m.activityScenario.entityAspect.setUnchanged();
                         //could notify change to controller.abstract here
                     } else {
@@ -267,19 +269,27 @@
                 m.activityScenario.entityAspect.setDeleted();
             }
         }
-
+        var _activeSlots;
+        function getActiveSlots() {
+            if (!_activeSlots) {
+                _activeSlots = vm.course.courseFormat.courseSlots
+                    .filter(function (cs) { return cs.isActive })
+                    .map(function(cs){ return cs.id });
+            }
+            return _activeSlots;
+        }
         function calculateCourseRoles(participantId) {
             var returnVar = {
                 slotCount: 0,
                 scenarioCount: 0
             };
             vm.course.courseSlotPresenters.forEach(function (el) {
-                if (el.participantId===participantId) {
+                if (el.participantId === participantId && getActiveSlots().indexOf(el.courseSlotId) > -1) {
                     returnVar.slotCount++;
                 }
             });
             vm.course.courseScenarioFacultyRoles.forEach(function (el) {
-                if (el.participantId === participantId) {
+                if (el.participantId === participantId && getActiveSlots().indexOf(el.courseSlotId) > -1) {
                     returnVar.scenarioCount++;
                 }
             });
@@ -345,9 +355,9 @@
             angular.extend(sortable.model, calculateCourseRoles(key.participantId));
         }
 
-        function createBsOptionHtml(text, priorExposure) {
-            return priorExposure
-                ? '<div class="exposed" title="repeat for participants ' + priorExposure + '">' + text + '</div>' //<div data-trigger="hover" data-type="warn" data-animation="am-flip-x" data-title="xxxxxx" bs-tooltip ></div>
+        function createBsOptionHtml(text, priorExp) {
+            return priorExp
+                ? '<div class="exposed" title="repeat for participants ' + priorExp + '">' + text + '</div>' //<div data-trigger="hover" data-type="warn" data-animation="am-flip-x" data-title="xxxxxx" bs-tooltip ></div>
                 : '<div>' + text + '</div>';
         }
 

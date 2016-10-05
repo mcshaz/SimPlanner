@@ -42,8 +42,8 @@
                                                     Scenario
                                                 </label>
                                                 <div class="col-md-5">
-                                                    
-                                                    <button type="button" id="scenario" class="form-control" ng-model="m.selectedActivityId" bs-select data-html="1" bs-options="s.value as s.html for s in vm.scenarios" ng-change="vm.changeActivityScenario(m)" >
+                                                    <button type="button" id="scenario" class="form-control" ng-model="m.selectedActivityId" bs-select data-html="1" bs-options="s.id as s.html for s in vm.scenarios"
+                                                             ng-change="vm.changeActivityScenario(m)" data-toggle="true">
                                                         Action <span class="caret"></span>
                                                     </button>
                                                 </div>
@@ -83,7 +83,7 @@
                                                             <span class="badge badge-info">
                                                                 {{r.slotCount}}
                                                             </span>
-                                                            <span class="badge badge-important">
+                                                            <span class="badge badge-success">
                                                                 {{r.scenarioCount}}
                                                             </span>
                                                         </span>
@@ -105,7 +105,7 @@
                                                                 <span class="badge badge-info">
                                                                     {{p.slotCount}}
                                                                 </span>
-                                                                <span class="badge badge-important">
+                                                                <span class="badge badge-success">
                                                                     {{p.scenarioCount}}
                                                                 </span>
                                                             </span>
@@ -125,7 +125,7 @@
                                                             <span class="badge badge-info">
                                                                 {{cp.slotCount}}
                                                             </span>
-                                                            <span class="badge badge-important">
+                                                            <span class="badge badge-success">
                                                                 {{cp.scenarioCount}}
                                                             </span>
                                                         </span>

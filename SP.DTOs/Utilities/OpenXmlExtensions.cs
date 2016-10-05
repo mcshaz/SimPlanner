@@ -32,9 +32,9 @@ namespace SP.Dto
             CloneElements(new[] { cloneSource }, itemCollection, (s, t, dummy) => withMergeField(s, t));
         }
 
-        public static void CloneElements<T>(this IList<OpenXmlElement> cloneSource, IEnumerable<T> itemCollection, Func<string, T, ILookup<string, OpenXmlElement>, string> withMergeField)
+        public static void CloneElements<T>(this IList<OpenXmlElement> cloneSource, IEnumerable<T> itemCollection, Func<string, T, IEnumerable<OpenXmlElement>, string> withMergeField)
         {
-            List<T> itemList = itemCollection as List<T>;
+            IList<T> itemList = itemCollection as IList<T>;
             if (itemList == null)
             {
                 itemList = itemCollection.ToList();
@@ -52,11 +52,13 @@ namespace SP.Dto
             }
 
             var parent = cloneSource.First().Parent;
-            var lastSibling = cloneSource.Last().NextSibling();
+            var followingSibling = cloneSource[cloneSource.Count-1].NextSibling();
+            /*
             if (parent is TableRow)
             {
                 parent = parent.FindFirstAncestor<Table>();
             }
+            */
 
             var virginClonable = cloneSource.Select(c=>c.CloneNode(true)).ToList();
 
@@ -66,23 +68,26 @@ namespace SP.Dto
                 var mergeFieldDict = cloneSource.GetMergeFieldDict();
                 foreach (var sf in mergeFieldDict)
                 {
-                    string replaceVal = withMergeField(sf.Key.Replace(" ", string.Empty).Replace(".", string.Empty), itemList[i], mergeFieldDict);
-                    foreach (var s in sf)
+                    string replaceVal = withMergeField(sf.Key.Replace(" ", string.Empty).Replace(".", string.Empty), itemList[i], sf);
+                    if (replaceVal != null)
                     {
-                        InsertMergeFieldText(s, replaceVal);
+                        foreach (var s in sf)
+                        {
+                            InsertMergeFieldText(s, replaceVal);
+                        }
                     }
                 }
-                if (i > 0)
+                if (i > 0) //on 1st run we are adjusting the current row, so no need to insert
                 {
                     foreach (var c in cloneSource)
                     {
-                        if (lastSibling == null)
+                        if (followingSibling == null)
                         {
                             parent.AppendChild(c);
                         }
                         else
                         {
-                            parent.InsertBefore(c, lastSibling);
+                            parent.InsertBefore(c, followingSibling);
                         }
                     }
                     
@@ -172,7 +177,7 @@ namespace SP.Dto
                     l.Text = InterpretFieldInstructions(l.Text, fc.InnerText);
                 }
                 var existingRuns = GetAssociatedRuns(fc);
-                var textRuns = existingRuns.Skip(1)
+                var textRuns = existingRuns.Skip(2)
                     .SkipWhile(er => !er.ContainsCharType(FieldCharValues.Separate))
                     .Skip(1).ToList();
                 textRuns.RemoveAt(textRuns.Count - 1);
@@ -240,8 +245,7 @@ namespace SP.Dto
         private static string GetText(string str)
         {
             str = str.Trim();
-            char firstChar = str[0];
-            if (firstChar == '\'' || firstChar == '"')
+            if (str[0] == '"')
             {
                 str = str.Substring(1, str.Length - 2);
             }
@@ -266,7 +270,7 @@ namespace SP.Dto
             Run rBegin = rFieldCode.PreviousSibling<Run>();
             Run rCurrent = rFieldCode.NextSibling<Run>();
 
-            var runs = new List<Run>(new[] { rBegin, rCurrent });
+            var runs = new List<Run>(new[] { rBegin, rFieldCode, rCurrent });
 
             while (!rCurrent.ContainsCharType(FieldCharValues.End))
             {

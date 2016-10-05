@@ -18,7 +18,7 @@ namespace SP.Dto.Utilities
                         .Include("CourseFormat.CourseSlots.Activity.ActivityChoices")
                         .Include("CourseSlotPresenters")
                         .Include("CourseSlotManikins")
-                        .Include("CourseScenarioFacultyRoles")
+                        .Include("CourseScenarioFacultyRoles.FacultyScenarioRole")
                         .Include("CourseSlotActivities.Activity")
                         .Include("CourseSlotActivities.Scenario")
                         .First(c=>c.Id == courseId);
@@ -34,8 +34,9 @@ namespace SP.Dto.Utilities
             var start = TimeZoneInfo.ConvertTimeFromUtc(course.StartUtc, tzi);
             int scenarioCount = 0;
             var csps = course.CourseSlotPresenters.ToLookup(c=>c.CourseSlotId);
-            var csfrs = course.CourseScenarioFacultyRoles.ToLookup(c => c.CourseSlotId);
+            //var csfrs = course.CourseScenarioFacultyRoles.ToLookup(c => c.CourseSlotId);
             var csas = course.CourseSlotActivities.ToDictionary(c => c.CourseSlotId);
+            var emptyStringArray = new string[0];
 
             var returnVar = course.CourseFormat.CourseSlots.Where(cs=>cs.IsActive)
                 .OrderBy(cs=>cs.Order).Select(cs=> {
@@ -51,15 +52,15 @@ namespace SP.Dto.Utilities
                         ttr.SlotName = cs.Activity.Name;
                         ttr.SlotActivity = activity?.Activity?.Description;
                         ttr.Faculty = csps[cs.Id]?.Select(csp => csp.Participant.FullName)
-                            ?? new string[0];
+                            ?? emptyStringArray;
                     }
                     else
                     {
                         ttr.IsScenario = false;
                         ttr.SlotName = "Scenario " + (++scenarioCount).ToString();
                         ttr.SlotActivity = activity?.Scenario?.BriefDescription;
-                        ttr.Faculty = csfrs[cs.Id]?.Select(csfr => csfr.Participant.FullName)
-                            ?? new string[0];
+                        ttr.Faculty = emptyStringArray;//csfrs[cs.Id]?.Select(csfr => csfr.Participant.FullName)
+                        //    ?? emptyStringArray;
                     }
                     start += TimeSpan.FromMinutes(cs.MinutesDuration);
                     return ttr;
@@ -169,7 +170,7 @@ namespace SP.Dto.Utilities
                         case "SlotStart":
                             return ttr.LocalStart.ToString("t", prov);
                         case "SlotActivity":
-                            return ttr.SlotActivity;
+                            return ttr.SlotActivity ?? string.Empty;
                         case "SlotName":
                             return ttr.SlotName;
                         case "SlotFaculty":
@@ -195,18 +196,65 @@ namespace SP.Dto.Utilities
                 .TakeWhile(c => c.GetType() != typeof(SectionProperties))
                 .ToList();
 
-            var csss = course.CourseSlotActivities.OrderBy(css => css.CourseSlot.Order).ToList();
+            var csss = (from cs in course.CourseFormat.CourseSlots
+                        where cs.IsActive && cs.ActivityId==null
+                        orderby cs.Order
+                        select cs).ToList();
+
+            var csas = course.CourseSlotActivities
+                .Where(ca=>ca.ScenarioId != null)
+                .ToDictionary(ca=>ca.CourseSlotId);
+
+            var manikins = course.CourseSlotManikins
+                .ToLookup(m => m.CourseSlotId);
+
+            var roleFacultyEls = new List<ScenarioRoleEl>();
             int i = 0;
-
-            allScenarioEls.CloneElements(csss, (mergeFieldName, css, clonables) =>
+            allScenarioEls.CloneElements(csss, (mergeFieldName, css, elements) =>
             {
-                TableRow scenarioRoleRow = clonables.First(k => k.Key.StartsWith("ScenarioRole"))
-                    .First().FindFirstAncestor<TableRow>();
-
-                var roles = css.CourseSlot.CourseScenarioFacultyRoles.ToLookup(k => k.FacultyScenarioRole);
-                scenarioRoleRow.CloneElement(roles, (scenarioRoleFieldName, role) =>
+                switch (mergeFieldName)
                 {
-                    switch (scenarioRoleFieldName)
+                    case "ScenarioRole":
+                    case "ScenarioRoleFaculty":
+                        if (roleFacultyEls.Count == 0 || roleFacultyEls[roleFacultyEls.Count - 1].SlotId != css.Id)
+                        {
+                            roleFacultyEls.Add(new ScenarioRoleEl { Row = elements.First().FindFirstAncestor<TableRow>(), SlotId = css.Id });
+                        }
+                        return null;
+                    case "ScenarioNo":
+                        return "Scenario " + (++i).ToString();
+                    case "ScenarioName":
+                    case "ScenarioBriefDescription":
+                        CourseSlotActivity csab;
+                        if (csas.TryGetValue(css.Id, out csab))
+                        {
+                            return csab.Scenario?.BriefDescription ?? string.Empty;
+                        }
+                        return string.Empty;
+                    case "ScenarioFullDescription":
+                        CourseSlotActivity csaf;
+                        if (csas.TryGetValue(css.Id, out csaf))
+                        {
+                            return csaf.Scenario?.FullDescription ?? string.Empty;
+                        }
+                        return string.Empty;
+                    case "Manikins":
+                        return string.Join("\t",manikins[css.Id].Select(m=>m.Manikin.Description));
+                    default:
+                        return $"[Value Not Found - \'{ mergeFieldName }\']";
+                }
+            });
+
+            var roles = course.CourseScenarioFacultyRoles
+                .ToLookup(k => k.CourseSlotId);
+
+            foreach (var sre in roleFacultyEls)
+            {
+                var scenarioRoles = roles[sre.SlotId].ToLookup(csfr => csfr.FacultyScenarioRole)
+                    .OrderBy(l => l.Key.Order);
+                sre.Row.CloneElement(scenarioRoles, (mergeFieldName, role) =>
+                {
+                    switch (mergeFieldName)
                     {
                         case "ScenarioRole":
                             return role.Key.Description;
@@ -216,20 +264,14 @@ namespace SP.Dto.Utilities
                             return $"[Value Not Found - \'{ mergeFieldName }\']";
                     }
                 });
-                switch (mergeFieldName)
-                {
-                    case "ScenarioNo":
-                        return "Scenario " + (++i).ToString();
-                    case "ScenarioName":
-                    case "ScenarioBriefDescription":
-                        return css.Scenario?.BriefDescription;
-                    case "ScenarioFullDescription":
-                        return css.Scenario?.FullDescription;
-                    default:
-                        return $"[Value Not Found - \'{ mergeFieldName }\']";
-                }
-            });
+            }
         }
+    }
+
+    internal class ScenarioRoleEl
+    {
+        public Guid SlotId { get; set; }
+        public TableRow Row { get; set; }
     }
 
     internal class TimetableRow
@@ -240,4 +282,5 @@ namespace SP.Dto.Utilities
         public bool IsScenario { get; set; }
         public IEnumerable<string> Faculty { get; set; }
     }
+
 }
