@@ -17,6 +17,8 @@ namespace SP.Dto
         public ProfessionalRoleDto ProfessionalRole { get; set; }
         public DepartmentDto Department { get; set; }
         public CourseDto Course { get; set; }
-
+        public DateTime? EmailTimeStamp { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime LastModified { get; set; }
     }
 }

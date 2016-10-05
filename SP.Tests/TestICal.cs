@@ -19,13 +19,26 @@ namespace SP.Tests
             {
                 var bm = new RequestOnlyPrincipal("brentm@adhb.govt.nz", db.Roles.Select(r=>r.Name).ToList());
                 var course = db.Courses.Find(Guid.Parse("0ca5d24f-292e-4004-bb08-096db4b440ad"));
-                using (var cal = Appointment.CreateiCalendar(course, bm.Identity))
+                using (var appt = new AppointmentStream())
                 {
-                    string calString = cal.IcalString();
-                    File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "calendar.ics", calString);
-                    Appointment.AddFacultyMeeting(cal.Cal, course);
-                    File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "calendar2Appt.ics", calString);
+                    using (var cal = Appointment.CreateCourseAppointment(course, bm.Identity))
+                    {
+                        appt.Add(cal);
+                        using (var fileStream = File.Create(AppDomain.CurrentDomain.BaseDirectory + "calendar.ics"))
+                        {
+                            appt.GetStreams().First().CopyTo(fileStream);
+                        }
+                    }
+                    using (var cal = Appointment.CreateFacultyCalendar(course))
+                    {
+                        appt.Replace(cal);
+                        using (var fileStream = File.Create(AppDomain.CurrentDomain.BaseDirectory + "calendar2Appt.ics"))
+                        {
+                            appt.GetStreams().First().CopyTo(fileStream);
+                        }
+                    }
                 }
+
             }
         }
     }

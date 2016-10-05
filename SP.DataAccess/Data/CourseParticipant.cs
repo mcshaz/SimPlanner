@@ -5,6 +5,7 @@ namespace SP.DataAccess
     using Metadata;
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     [MetadataType(typeof(CourseParticipantMetadata))]
     public class CourseParticipant : ITimeTracking
@@ -45,6 +46,9 @@ namespace SP.DataAccess
         }
 
         public DateTime? EmailTimeStamp { get; set; }
+
+        [NotMapped]
+        public bool SystemChangesOnly { get; set; }
 
         public virtual Participant Participant { get; set; }
         public virtual Course Course { get; set; }

@@ -4,6 +4,7 @@ using SP.Web.Models;
 using SP.Web.UserEmails;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -28,8 +29,8 @@ namespace SP.Web.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> EmailAll(EmailAllBindingModel model)
         {
-            var course = Repo.Courses.Include("CourseParticipants.Participant").Include("CourseParticipants.Department.Institution").Include("CourseFormat.CourseType").Include("Room").Include("FacultyMeetingRoom")
-                .FirstOrDefault(cp => cp.Id == model.CourseId);
+            var course = await Repo.Courses.Include("CourseParticipants.Participant").Include("CourseParticipants.Department.Institution").Include("CourseFormat.CourseType").Include("Room").Include("FacultyMeetingRoom")
+                .FirstOrDefaultAsync(cp => cp.Id == model.CourseId);
             //Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(course.Department.Institution.LocaleCode);
 
             var now = DateTime.UtcNow;
@@ -38,67 +39,67 @@ namespace SP.Web.Controllers
             {
                 return Ok("The course finish must be after now");
             }
+            course.EmailSequence++;
+            course.EmailTimeStamp = DateTime.UtcNow;
+            course.SystemChangesOnly = true;
 
             await SendEmail(course);
-            Repo.SaveChanges();
+
+            await Repo.SaveChangesAsync();
             return Ok();
         }
         //move to a service layer
         private async Task SendEmail(Course course)
         {
-            course.EmailSequence++;
-            course.EmailTimeStamp = DateTime.UtcNow;
-
-            using (var cal = Appointment.CreateiCalendar(course, User.Identity))
+            using (var cal = Appointment.CreateCourseAppointment(course, User.Identity))
             {
-                var faculty = course.CourseParticipants.Where(cp => !cp.IsConfirmed.HasValue || cp.IsOrganiser).ToLookup(cp => cp.IsFaculty);
-                IEnumerable<Attachment> attachments = new Attachment[0];
-                using (var client = new SmtpClient())
+                using (var appt = new AppointmentStream(cal))
                 {
-                    var mailMessages = new List<MailMessage>();
-                    var sendMail = new Func<CourseParticipant, Task>(async (cp) =>
+                    var faculty = course.CourseParticipants.Where(cp => !cp.EmailTimeStamp.HasValue || cp.EmailTimeStamp.Value < course.LastModifiedUtc)
+                        .ToLookup(cp => cp.IsFaculty);
+                    IEnumerable<Attachment> attachments = new Attachment[0];
+                    using (var client = new SmtpClient())
                     {
-                        var mail = new MailMessage();
-                        mailMessages.Add(mail);
-                        mail.To.AddParticipants(cp.Participant);
-                        var confirmEmail = new CourseInvite { CourseParticipant = cp };
-                        mail.CreateHtmlBody(confirmEmail);
-                        cal.AddAppointmentTo(mail);
-                        foreach (var a in attachments)
+                        var mailMessages = new List<MailMessage>();
+                        var sendMail = new Func<CourseParticipant, Task>(async (cp) =>
                         {
-                            a.ContentStream.Position = 0;
-                            mail.Attachments.Add(a);
-                        }
+                            var mail = new MailMessage();
+                            mailMessages.Add(mail);
+                            mail.To.AddParticipants(cp.Participant);
+                            var confirmEmail = new CourseInvite { CourseParticipant = cp };
+                            mail.CreateHtmlBody(confirmEmail);
+                            appt.AddAppointmentsTo(mail);
+                            foreach (var a in attachments)
+                            {
+                                a.ContentStream.Position = 0;
+                                mail.Attachments.Add(a);
+                            }
 
-                        try
-                        {
                             await client.SendMailAsync(mail);
-                            cp.EmailTimeStamp = course.EmailTimeStamp;
-                        }
-                        catch (Exception)
-                        {
-                            throw;
-                        }
-                    });
+                        });
 
-                    foreach (var cp in faculty[false])
-                    {
-                        await sendMail(cp);
-                    }
-                    if (faculty[true].Any())
-                    {
-                        if (course.FacultyMeetingUtc.HasValue && course.FacultyMeetingUtc > course.EmailTimeStamp)
-                        {
-                            Appointment.AddFacultyMeeting(cal.Cal, course);
-                        }
-                        attachments = course.GetFilePaths().Select(fp => new Attachment(fp.Value, "application/zip") { Name = fp.Key })
-                            .Concat(new[] { new Attachment(CreateDocxTimetable.CreateTimetableDocx(course, System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/CourseTimeTableTemplate.docx")), "application/vnd.openxmlformats-officedocument.wordprocessingml.document") { Name = $"Timetable for {course.CourseFormat.CourseType.Abbreviation}" } });
-                        foreach (var cp in faculty[true])
+                        foreach (var cp in faculty[false])
                         {
                             await sendMail(cp);
                         }
+                        if (faculty[true].Any())
+                        {
+                            if (course.FacultyMeetingUtc.HasValue && course.FacultyMeetingUtc > course.EmailTimeStamp)
+                            {
+                                using (var fm = Appointment.CreateFacultyCalendar(course))
+                                {
+                                    appt.Add(fm);
+                                }
+                            }
+                            attachments = course.GetFilePaths().Select(fp => new Attachment(fp.Value, "application/zip") { Name = fp.Key })
+                                .Concat(new[] { new Attachment(CreateDocxTimetable.CreateTimetableDocx(course, System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/CourseTimeTableTemplate.docx")), "application/vnd.openxmlformats-officedocument.wordprocessingml.document") { Name = $"Timetable for {course.CourseFormat.CourseType.Abbreviation}.docx" } });
+                            foreach (var cp in faculty[true])
+                            {
+                                await sendMail(cp);
+                            }
+                        }
+                        mailMessages.ForEach(mm => mm.Dispose());
                     }
-                    mailMessages.ForEach(mm => mm.Dispose());
                 }
             }
         }
@@ -106,11 +107,12 @@ namespace SP.Web.Controllers
         [Route("Rsvp")]
         [HttpPost]
         [AllowAnonymous]
-        public IHttpActionResult Rsvp(RsvpBindingModel model)
+        public async Task<IHttpActionResult> Rsvp(RsvpBindingModel model)
         {
             var find = model.Auth.HasValue ? new[] { model.Auth.Value, model.ParticipantId }
                 : new[] { model.ParticipantId };
-            var cps = Repo.CourseParticipants.Include("Participant").Include("Course").Where(cp=>cp.CourseId == model.CourseId && find.Contains(cp.ParticipantId)).ToList();
+            var cps = await Repo.CourseParticipants.Include("Participant").Include("Course")
+                .Where(cp=>cp.CourseId == model.CourseId && find.Contains(cp.ParticipantId)).ToListAsync();
 
             var part = cps.First(cp => cp.ParticipantId == model.ParticipantId);
 
@@ -151,7 +153,7 @@ namespace SP.Web.Controllers
                             IsChanged = wasConfirmed != model.IsAttending
                         };
                         mail.CreateHtmlBody(confirmEmail);
-                        client.Send(mail);
+                        await client.SendMailAsync(mail);
                     }
                 }
                 return Ok(userName + " is now " + returnString + ". A confirmation email has been sent, with copies to the course organisers.");
@@ -159,7 +161,7 @@ namespace SP.Web.Controllers
             if (!part.IsConfirmed.HasValue || part.IsOrganiser)
             {
                 part.IsConfirmed = model.IsAttending;
-                Repo.SaveChanges();
+                await Repo.SaveChangesAsync();
                 return Ok(userName + " is now " + returnString);
             }
 
@@ -172,7 +174,7 @@ namespace SP.Web.Controllers
                         mail.To.AddParticipants(org.Participant);
                         var confirmEmail = new ReverseConfirmation(org.ParticipantId.ToString()) { CourseParticipant = part };
                         mail.CreateHtmlBody(confirmEmail);
-                        client.Send(mail);
+                        await client.SendMailAsync(mail);
                     }
                 }
             }

@@ -107,7 +107,7 @@
 					</table>
 				</th>
 			</tr></tbody></table>
-		<# if(CourseParticipant.IsFaculty && CourseParticipant.Course.FacultyMeetingTimeUtc.HasValue) { #>
+		<# if(CourseParticipant.IsFaculty && CourseParticipant.Course.FacultyMeetingUtc.HasValue) { #>
 			<hr/>
 
 			<table class="row"><tbody><tr>
@@ -121,21 +121,26 @@
 								</tr>
 							</table>
 						</th>
-					</tr></tbody></table>
-
-					<table class="row"><tbody><tr>
-						<th class="small-offset-1 large-offset-1 small-11 large-11 columns first last">
-							<table>
-								<tr>
-									<th>
-										<h5>Planning Meeting Location:</h5>
-										<p><#= CourseParticipant.Course.FacultyMeetingRoom.FullDescription #></p>
-										<# if(CourseParticipant.Course.FacultyMeetingRoom != CourseParticipant.Course.Room) { #>
-											<small>(<#= CourseParticipant.Course.FacultyMeetingRoom.Directions #>)</small>
-										<# } #>
-									</th>
-								</tr>
-							</table>
-						</th>
-					</tr></tbody></table>
+					</tr>
+				</tbody>
+			</table>
+			<# if(CourseParticipant.Course.FacultyMeetingRoom != null) { #>
+				<table class="row"><tbody><tr>
+							<th class="small-offset-1 large-offset-1 small-11 large-11 columns first last">
+								<table>
+									<tr>
+										<th>
+											<h5>Planning Meeting Location:</h5>
+											<p><#= CourseParticipant.Course.FacultyMeetingRoom.FullDescription #></p>
+											<# if(CourseParticipant.Course.FacultyMeetingRoom != CourseParticipant.Course.Room) { #>
+												<small>(<#= CourseParticipant.Course.FacultyMeetingRoom.Directions #>)</small>
+											<# } #>
+										</th>
+									</tr>
+								</table>
+							</th>
+						</tr>
+					</tbody>
+				</table>
 			<# } #>
+		<# } #>

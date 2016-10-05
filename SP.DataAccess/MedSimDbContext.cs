@@ -435,8 +435,10 @@ namespace SP.DataAccess
                 {
                     tt.CreatedUtc = currentTime ?? (currentTime = DateTime.UtcNow).Value;
                 }
-
-                tt.LastModifiedUtc = currentTime ?? (currentTime = DateTime.UtcNow).Value;
+                if (!tt.SystemChangesOnly)
+                {
+                    tt.LastModifiedUtc = currentTime ?? (currentTime = DateTime.UtcNow).Value;
+                }
             }
         }
     }

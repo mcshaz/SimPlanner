@@ -6,5 +6,6 @@ namespace SP.DataAccess.Data.Interfaces
     {
         DateTime CreatedUtc { get; set; }
         DateTime LastModifiedUtc { get; set; }
+        bool SystemChangesOnly { get; set; }
     }
 }

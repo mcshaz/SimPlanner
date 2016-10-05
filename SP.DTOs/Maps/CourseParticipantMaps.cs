@@ -1,5 +1,6 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
     internal class CourseParticipantMaps: DomainDtoMap<CourseParticipant, CourseParticipantDto>
     {
@@ -11,9 +12,10 @@ using SP.DataAccess;
                 IsFaculty = m.IsFaculty,
                 IsOrganiser = m.IsOrganiser,
                 DepartmentId = m.DepartmentId,
-                ProfessionalRoleId = m.ProfessionalRoleId
-                //Participant = m.Participant,
-                //Course = m.Course
+                ProfessionalRoleId = m.ProfessionalRoleId,
+                EmailTimeStamp = m.EmailTimeStamp,
+                CreatedUtc = m.Created,
+                LastModifiedUtc = m.LastModified
             }, 
             m => new CourseParticipantDto
             {
@@ -23,9 +25,10 @@ using SP.DataAccess;
                 IsFaculty = m.IsFaculty,
                 IsOrganiser = m.IsOrganiser,
                 DepartmentId = m.DepartmentId,
-                ProfessionalRoleId = m.ProfessionalRoleId
-                //Participant = m.Participant,
-                //Course = m.Course
+                ProfessionalRoleId = m.ProfessionalRoleId,
+                EmailTimeStamp = m.EmailTimeStamp,
+                Created = m.CreatedUtc,
+                LastModified = m.LastModifiedUtc
             })
         { }
     }

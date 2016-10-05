@@ -51,7 +51,7 @@ namespace SP.DataAccess
 
         public byte EmailSequence { get; set; }
 
-        public int Version { get; internal set; }
+        public int Version { get; set; }
 
         private DateTime _createdUtc;
         public DateTime CreatedUtc
@@ -86,6 +86,9 @@ namespace SP.DataAccess
         public bool Cancelled { get; set; }
 
         public Guid CourseFormatId { get; set; }
+
+        [NotMapped]
+        public bool SystemChangesOnly { get; set; }
 
         public virtual Department Department { get; set; }
 

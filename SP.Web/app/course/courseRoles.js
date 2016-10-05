@@ -273,8 +273,8 @@
         function getActiveSlots() {
             if (!_activeSlots) {
                 _activeSlots = vm.course.courseFormat.courseSlots
-                    .filter(function (cs) { return cs.isActive })
-                    .map(function(cs){ return cs.id });
+                    .filter(function (cs) { return cs.isActive; })
+                    .map(function (cs) { return cs.id; });
             }
             return _activeSlots;
         }

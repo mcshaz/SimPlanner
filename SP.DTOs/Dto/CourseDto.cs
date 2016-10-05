@@ -25,6 +25,8 @@ namespace SP.Dto
         public DateTime Created { get; set; }
         public DateTime LastModified { get; set; }
         public bool Cancelled { get; set; }
+        public int Version { get; set; }
+        public DateTime? EmailTimeStamp { get; set; }
 
         public DepartmentDto Department { get; set; }
         public DepartmentDto OutreachingDepartment { get; set; }
