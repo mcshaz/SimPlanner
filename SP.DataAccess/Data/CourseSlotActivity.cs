@@ -1,21 +1,19 @@
-﻿using SP.Metadata;
+﻿using SP.DataAccess.Data.Interfaces;
+using SP.Metadata;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SP.DataAccess
 {
     [MetadataType(typeof(CourseSlotActivityMetadata))]
-    public class CourseSlotActivity
+    public class CourseSlotActivity: IModified
     {
         public Guid CourseId { get; set; }
-
         public Guid CourseSlotId { get; set; }
-
         public byte StreamNumber { get; set; }
-
         public Guid? ScenarioId { get; set; }
-
         public Guid? ActivityId { get; set; }
+        public DateTime Modified { get; set; }
 
         public virtual Course Course { get; set; }
 

@@ -400,17 +400,19 @@ namespace SP.DataAccess
                 .HasKey(e => new { e.RoleId, e.UserId });
 
         }
-        */
+
 
         private SanitizeStringProperties _sanitizeHtml { get; set; }
         private SanitizeStringProperties SanitizeHtml
         {
             get { return _sanitizeHtml ?? (_sanitizeHtml = new SanitizeStringProperties()); }
         }
+        */
 
         public override int SaveChanges()
         {
-            SanitizeHtml.ForEntities(ChangeTracker);
+            //not sanitizing for the time being - at that point we will need a wysywig editor
+            //SanitizeHtml.ForEntities(ChangeTracker);
             SetTimeTracking();
             try
             {
@@ -425,19 +427,49 @@ namespace SP.DataAccess
 
         private void SetTimeTracking()
         {
-            DateTime? currentTime = null;
-            foreach (var ent in ChangeTracker.Entries().Where(e=>
-                               (e.State == EntityState.Added || e.State == EntityState.Modified)
-                                   && typeof(ITimeTracking).IsAssignableFrom(e.Entity.GetType())))
+            var now = DateTime.UtcNow;
+            foreach (var ent in ChangeTracker.Entries().Where(e=>e.State == EntityState.Modified || e.State == EntityState.Added))
             {
-                var tt = (ITimeTracking)ent.Entity;
-                if (ent.State == EntityState.Added)
+                var im = ent.Entity as IModified;
+                if (im != null)
                 {
-                    tt.CreatedUtc = currentTime ?? (currentTime = DateTime.UtcNow).Value;
+                    if(ent.State == EntityState.Modified && im.Modified == default(DateTime))
+                    {
+                        ent.Property("Modified").IsModified = false;
+                    }
+                    else
+                    {
+                        im.Modified = now;
+                    }
                 }
-                if (!tt.SystemChangesOnly)
+
+                var c = ent.Entity as Course;
+                if (c != null)
                 {
-                    tt.LastModifiedUtc = currentTime ?? (currentTime = DateTime.UtcNow).Value;
+                    if (ent.State == EntityState.Added)
+                    {
+                        c.CourseDatesLastModified = c.CreatedUtc = c.FacultyMeetingDatesLastModified = now;
+                    }
+                    else if(ent.State == EntityState.Modified)
+                    {
+                        if (ent.Property("StartUtc").IsModified)
+                        {
+                            c.CourseDatesLastModified = now;
+                        }
+                        else
+                        {
+                            ent.Property("CourseDatesLastModified").IsModified = false;
+                        }
+                        if (ent.Property("FacultyMeetingUtc").IsModified)
+                        {
+                            c.FacultyMeetingDatesLastModified = now;
+                        }
+                        else
+                        {
+                            ent.Property("FacultyMeetingDatesLastModified").IsModified = false;
+                        }
+                        ent.Property("CreatedUtc").IsModified = false;
+                    }
                 }
             }
         }

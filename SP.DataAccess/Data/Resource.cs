@@ -20,7 +20,7 @@ namespace SP.DataAccess
         public Guid CourseActivityId { get; set; }
         public virtual CourseActivity CourseActivity { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseSlotActivity> CourseSlotActivities { get; set; }
     }
 

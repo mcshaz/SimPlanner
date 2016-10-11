@@ -6,7 +6,7 @@ namespace SP.DataAccess
     using System.ComponentModel.DataAnnotations;
 
     [MetadataType(typeof(CourseFormatMetadata))]
-    public partial class CourseFormat
+    public partial class CourseFormat 
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
@@ -19,10 +19,9 @@ namespace SP.DataAccess
 
         public virtual CourseType CourseType { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> Courses { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseSlot> CourseSlots { get; set; }
 
 

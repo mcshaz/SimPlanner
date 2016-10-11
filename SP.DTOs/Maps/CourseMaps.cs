@@ -21,10 +21,7 @@ namespace SP.Dto.Maps
                 RoomId = m.RoomId,
                 FacultyMeetingRoomId = m.FacultyMeetingRoomId,
                 FacultyMeetingDuration = m.FacultyMeetingDuration,
-                FacultyMeetingUtc = m.FacultyMeeting,
-                CreatedUtc = m.Created,
-                LastModifiedUtc = m.LastModified,
-                EmailTimeStamp = m.EmailTimeStamp
+                FacultyMeetingUtc = m.FacultyMeeting
         },
             m => new CourseDto
             {
@@ -42,10 +39,7 @@ namespace SP.Dto.Maps
                 FacultyMeetingRoomId = m.FacultyMeetingRoomId,
                 FacultyMeetingDuration = m.FacultyMeetingDuration,
                 FacultyMeeting = m.FacultyMeetingUtc,
-                Created = m.CreatedUtc,
-                LastModified = m.LastModifiedUtc,
-                Cancelled = m.Cancelled,
-                EmailTimeStamp = m.EmailTimeStamp
+                Cancelled = m.Cancelled
             })
         { }
 

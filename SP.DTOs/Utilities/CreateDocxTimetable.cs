@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using SP.DataAccess;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 
@@ -11,27 +12,32 @@ namespace SP.Dto.Utilities
 {
     public static class CreateDocxTimetable
     {
-        public static Course GetCourseWithIncludes(Guid courseId, MedSimDbContext context)
+        public static DbQuery<Course> GetCourseIncludes(MedSimDtoRepository repo)
+        {
+            return GetCourseIncludes(repo.Context);
+        }
+        public static DbQuery<Course> GetCourseIncludes(MedSimDbContext context)
         {
             return context.Courses.Include("CourseParticipants.Participant")
                         .Include("Department.Institution.Culture")
                         .Include("CourseFormat.CourseSlots.Activity.ActivityChoices")
+                        .Include("CourseFormat.CourseType")
                         .Include("CourseSlotPresenters")
                         .Include("CourseSlotManikins")
                         .Include("CourseScenarioFacultyRoles.FacultyScenarioRole")
                         .Include("CourseSlotActivities.Activity")
-                        .Include("CourseSlotActivities.Scenario")
-                        .First(c=>c.Id == courseId);
+                        .Include("CourseSlotActivities.Scenario");
         }
 
         static void UpdateMetadata(WordprocessingDocument doc, Course course)
         {
             //doc.AddCoreProperty();
+            throw new NotImplementedException();
         }
 
-        static IList<TimetableRow> GetTimeTableRows(Course course, TimeZoneInfo tzi)
+        static IList<TimetableRow> GetTimeTableRows(Course course)
         {
-            var start = TimeZoneInfo.ConvertTimeFromUtc(course.StartUtc, tzi);
+            var start = course.StartUtc;
             int scenarioCount = 0;
             var csps = course.CourseSlotPresenters.ToLookup(c=>c.CourseSlotId);
             //var csfrs = course.CourseScenarioFacultyRoles.ToLookup(c => c.CourseSlotId);
@@ -79,8 +85,7 @@ namespace SP.Dto.Utilities
             stream.Write(byteArray, 0, byteArray.Length);
             using (WordprocessingDocument document = WordprocessingDocument.Open(stream, true))
             {
-                IFormatProvider prov = course.Department.Institution.Culture.GetCultureInfo();
-                var tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
+                IFormatProvider prov = course.Department.Institution.Culture.CultureInfo;
 
                 // If your sourceFile is a different type (e.g., .DOTX), you will need to change the target type like so:
                 document.ChangeDocumentType(WordprocessingDocumentType.Document);
@@ -116,16 +121,13 @@ namespace SP.Dto.Utilities
                             replaceVal = course.CourseFormat.Description ;
                             break;
                         case "CourseStart":
-                            replaceVal = TimeZoneInfo.ConvertTimeFromUtc(course.StartUtc, tzi).ToString("D", prov) ;
+                            replaceVal = course.StartLocal.ToString("D", prov) ;
                             break;
                         case "CourseTypeAbbreviation":
                             replaceVal = course.CourseFormat.CourseType.Abbreviation ;
                             break;
                         case "CourseTypeDescription":
                             replaceVal = course.CourseFormat.CourseType.Description ;
-                            break;
-                        case "Version":
-                            replaceVal = course.Version.ToString() ;
                             break;
                         case "Department":
                         case "DepartmentAbbreviation":
@@ -161,7 +163,7 @@ namespace SP.Dto.Utilities
                 //the second first is assuming each slot, eg slotStart only occurs once in the doc
                 //could at a later date come up with some fancy ancestors() to find matching subgroup
                 TableRow slotRow = classifiedMergeFields[MergeClassification.Slot].First().First().FindFirstAncestor<TableRow>();
-                var ttrs = GetTimeTableRows(course, tzi);
+                var ttrs = GetTimeTableRows(course);
 
                 slotRow.CloneElement(ttrs, (mergeFieldName, ttr) =>
                 {
@@ -181,7 +183,6 @@ namespace SP.Dto.Utilities
                 });
 
                 AddScenarios(mainPart, course);
-                stream.Position = 0;
                 return stream; 
             }
         }
@@ -196,76 +197,94 @@ namespace SP.Dto.Utilities
                 .TakeWhile(c => c.GetType() != typeof(SectionProperties))
                 .ToList();
 
-            var csss = (from cs in course.CourseFormat.CourseSlots
-                        where cs.IsActive && cs.ActivityId==null
-                        orderby cs.Order
-                        select cs).ToList();
-
             var csas = course.CourseSlotActivities
-                .Where(ca=>ca.ScenarioId != null)
-                .ToDictionary(ca=>ca.CourseSlotId);
+                .Where(ca => ca.ScenarioId != null)
+                .ToDictionary(ca => ca.CourseSlotId);
 
             var manikins = course.CourseSlotManikins
                 .ToLookup(m => m.CourseSlotId);
 
-            var roleFacultyEls = new List<ScenarioRoleEl>();
+            var roles = course.CourseScenarioFacultyRoles
+                .ToLookup(k => k.CourseSlotId);
             int i = 0;
+            var csss = (from cs in course.CourseFormat.CourseSlots.OrderBy(c=>c.Order)
+                        let scenarioNo = ++i
+                        where cs.IsActive && (csas.ContainsKey(cs.Id) || manikins[cs.Id].Any() || roles[cs.Id].Any())
+                        select new { cs, scenarioNo}).ToList();
+
+            var roleFacultyEls = new List<ScenarioRoleEl>();
             allScenarioEls.CloneElements(csss, (mergeFieldName, css, elements) =>
             {
                 switch (mergeFieldName)
                 {
                     case "ScenarioRole":
                     case "ScenarioRoleFaculty":
-                        if (roleFacultyEls.Count == 0 || roleFacultyEls[roleFacultyEls.Count - 1].SlotId != css.Id)
+                        if (roleFacultyEls.Count == 0 || roleFacultyEls[roleFacultyEls.Count - 1].SlotId != css.cs.Id)
                         {
-                            roleFacultyEls.Add(new ScenarioRoleEl { Row = elements.First().FindFirstAncestor<TableRow>(), SlotId = css.Id });
+                            roleFacultyEls.Add(new ScenarioRoleEl { Row = elements.First().FindFirstAncestor<TableRow>(), SlotId = css.cs.Id });
                         }
                         return null;
                     case "ScenarioNo":
-                        return "Scenario " + (++i).ToString();
+                        return "Scenario " + css.scenarioNo.ToString();
                     case "ScenarioName":
                     case "ScenarioBriefDescription":
                         CourseSlotActivity csab;
-                        if (csas.TryGetValue(css.Id, out csab))
+                        if (csas.TryGetValue(css.cs.Id, out csab))
                         {
                             return csab.Scenario?.BriefDescription ?? string.Empty;
                         }
                         return string.Empty;
                     case "ScenarioFullDescription":
                         CourseSlotActivity csaf;
-                        if (csas.TryGetValue(css.Id, out csaf))
+                        if (csas.TryGetValue(css.cs.Id, out csaf))
                         {
                             return csaf.Scenario?.FullDescription ?? string.Empty;
                         }
                         return string.Empty;
                     case "Manikins":
-                        return string.Join("\t",manikins[css.Id].Select(m=>m.Manikin.Description));
+                        return string.Join("\t",manikins[css.cs.Id].Select(m=>m.Manikin.Description));
                     default:
                         return $"[Value Not Found - \'{ mergeFieldName }\']";
                 }
             });
 
-            var roles = course.CourseScenarioFacultyRoles
-                .ToLookup(k => k.CourseSlotId);
-
             foreach (var sre in roleFacultyEls)
             {
-                var scenarioRoles = roles[sre.SlotId].ToLookup(csfr => csfr.FacultyScenarioRole)
-                    .OrderBy(l => l.Key.Order);
-                sre.Row.CloneElement(scenarioRoles, (mergeFieldName, role) =>
+                var scenarioRoles = roles[sre.SlotId].OrderBy(csfr => csfr.FacultyScenarioRole.Order)
+                    .ToLookup(csfr => csfr.FacultyScenarioRole);
+
+
+                if (scenarioRoles.Count == 0)
                 {
-                    switch (mergeFieldName)
+                    sre.Row.FindFirstAncestor<Table>().Remove();
+                }
+                else
+                {
+                    sre.Row.CloneElement(scenarioRoles, (mergeFieldName, role) =>
                     {
-                        case "ScenarioRole":
-                            return role.Key.Description;
-                        case "ScenarioRoleFaculty":
-                            return string.Join("\n", role.Select(r => r.Participant.FullName));
-                        default:
-                            return $"[Value Not Found - \'{ mergeFieldName }\']";
-                    }
-                });
+                        switch (mergeFieldName)
+                        {
+                            case "ScenarioRole":
+                                return role.Key.Description;
+                            case "ScenarioRoleFaculty":
+                                return string.Join("\n", role.Select(r => r.Participant.FullName));
+                            default:
+                                return $"[Value Not Found - \'{ mergeFieldName }\']";
+                        }
+                    });
+                }
             }
         }
+        internal static string CourseNameWithoutExt(Course course)
+        {
+            string dateString = course.StartLocal.ToString("d", course.Department.Institution.Culture.CultureInfo).Replace('/', '-');
+            return $"{course.Department.Abbreviation} {course.CourseFormat.CourseType.Abbreviation} - {dateString}";
+        }
+        public static string TimetableName(Course course)
+        {
+            return CourseNameWithoutExt(course) + "Timetable.docx";
+        }
+
     }
 
     internal class ScenarioRoleEl

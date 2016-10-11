@@ -7,11 +7,12 @@ using System.Linq;
 
 namespace SP.Dto
 {
-    public static class OpenXmlExtensions
+    public static class OpenXmlDocxExtensions
     {
         private const string _fieldTerminator = "\\*";
         private const string _fieldBeforeText = "\\b";
         private const string _fieldAfterText = "\\f";
+        public const string DocxMimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
         private static readonly string[] _fieldCmds = new[] { _fieldTerminator, _fieldBeforeText, _fieldAfterText };
         private const string _mergefield = "MERGEFIELD";
@@ -32,6 +33,17 @@ namespace SP.Dto
             CloneElements(new[] { cloneSource }, itemCollection, (s, t, dummy) => withMergeField(s, t));
         }
 
+        public static void RemoveAll(this IList<OpenXmlElement> elements)
+        {
+            foreach (var e in elements)
+            {
+                if (e.Parent != null)
+                {
+                    e.Remove();
+                }
+            }
+        }
+
         public static void CloneElements<T>(this IList<OpenXmlElement> cloneSource, IEnumerable<T> itemCollection, Func<string, T, IEnumerable<OpenXmlElement>, string> withMergeField)
         {
             IList<T> itemList = itemCollection as IList<T>;
@@ -41,13 +53,7 @@ namespace SP.Dto
             }
             if (itemList.Count == 0)
             {
-                foreach (var c in cloneSource)
-                {
-                    if (c.Parent != null)
-                    {
-                        c.Remove();
-                    }
-                }
+                cloneSource.RemoveAll();
                 return;
             }
 
@@ -111,6 +117,30 @@ namespace SP.Dto
                 found = element as T;
             }
             return found;
+        }
+
+        public static T FindFirstAncestor<T>(this OpenXmlElement element, out List<int> mapPositionsInHeirarchy) where T : OpenXmlElement
+        {
+            mapPositionsInHeirarchy = new List<int>();
+            T found = null;
+            while (found == null && element != null)
+            {
+                var parentElement = element.Parent;
+                mapPositionsInHeirarchy.Add(parentElement.ChildElements.IndexOf(element));
+                element = parentElement;
+                found = element as T;
+            }
+            mapPositionsInHeirarchy.Reverse();
+            return found;
+        }
+
+        public static OpenXmlElement NavigateIndexPath(this OpenXmlElement element, IEnumerable<int> descendentIndicies)
+        {
+            foreach (var indx in descendentIndicies)
+            {
+                element = element.ChildElements[indx];
+            }
+            return element;
         }
 
         private static Run CreateSimpleRun()

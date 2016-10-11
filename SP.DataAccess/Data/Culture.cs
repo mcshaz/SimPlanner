@@ -16,13 +16,14 @@ namespace SP.DataAccess
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Institution> Institutions { get; set; }
 
-    }
-
-    public static class CultureExtensions
-    {
-        public static CultureInfo GetCultureInfo(this Culture culture)
+        CultureInfo _cultureInfo;
+        public virtual CultureInfo CultureInfo
         {
-            return CultureInfo.GetCultureInfo(culture.LocaleCode);
+            get
+            {
+                return _cultureInfo ?? (_cultureInfo = CultureInfo.GetCultureInfo(LocaleCode));
+            }
         }
+
     }
 }

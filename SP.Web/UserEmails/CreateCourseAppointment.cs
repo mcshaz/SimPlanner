@@ -16,14 +16,13 @@ namespace SP.Web.UserEmails
 {
     public static class Appointment
     {
-        private static Calendar CreateCal(Course course, out TimeZoneInfo tzi)
+        private static Calendar CreateCal(Course course)
         {
             var currentCal = new Calendar
             {
                 Method = course.Cancelled ? CalendarMethods.Cancel : CalendarMethods.Request,
             };
-            tzi = TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone);
-            var timezone = VTimeZone.FromSystemTimeZone(tzi);
+            var timezone = VTimeZone.FromSystemTimeZone(course.Department.Institution.TimeZone);
             currentCal.AddTimeZone(timezone);
             return currentCal;
         }
@@ -44,15 +43,15 @@ namespace SP.Web.UserEmails
         const string mailto = "mailto:";
         static public Calendar CreateCourseAppointment(Course course, IIdentity currentUser)
         {
-            TimeZoneInfo tzi;
-            var currentCal = CreateCal(course, out tzi);
+            TimeZoneInfo tzi = course.Department.Institution.TimeZone;
+            var currentCal = CreateCal(course);
             // Create the event, and add it to the iCalendar
             //
             Event courseEvt = new Event
             {
                 Class = "PRIVATE",
                 Created = new CalDateTime(course.CreatedUtc),
-                LastModified = new CalDateTime(course.LastModifiedUtc),
+                LastModified = new CalDateTime(course.CourseDatesLastModified),
                 Sequence = course.EmailSequence,
                 Transparency = TransparencyType.Opaque,
                 Status = course.Cancelled ? EventStatus.Cancelled : EventStatus.Confirmed,
@@ -64,15 +63,15 @@ namespace SP.Web.UserEmails
                 IsAllDay = false,
                 Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description,
                 GeographicLocation = GetGeoLocation(course),
-                Organizer = GetOrganizer(course)
+                Organizer = GetOrganizer(course),
+                //DtStamp = - this is probably being inserted - check
             };
             System.Diagnostics.Debug.WriteLine(courseEvt.Organizer);
             foreach (var cd in course.AllDays().Take(course.CourseFormat.DaysDuration))
             {
-                var start = TimeZoneInfo.ConvertTimeFromUtc(cd.StartUtc, tzi);
                 var dayEvt = courseEvt.Copy<Event>();
-                dayEvt.Start = new CalDateTime(start, course.Department.Institution.StandardTimeZone);
-                dayEvt.Description += " - " + start.ToString("g");
+                dayEvt.Start = new CalDateTime(course.StartLocal, tzi.Id);
+                dayEvt.Description += " - " + course.StartLocal.ToString("g");
                 dayEvt.Duration = TimeSpan.FromMinutes(cd.DurationMins);
                 if (course.CourseFormat.DaysDuration > 1)
                 {
@@ -126,9 +125,8 @@ namespace SP.Web.UserEmails
 
         public static Calendar CreateFacultyCalendar(Course course)
         {
-            TimeZoneInfo tzi;
-            var currentCal = CreateCal(course, out tzi);
-            var facultyMeet = CreateFacultyMeetingEvent(course, tzi);
+            var currentCal = CreateCal(course);
+            var facultyMeet = CreateFacultyMeetingEvent(course);
             currentCal.Events.Add(facultyMeet);
             return currentCal;
         }
@@ -139,28 +137,27 @@ namespace SP.Web.UserEmails
             //CalendarMethods.Request is only valid for single event per calendar
             cal.Method = course.Cancelled ? CalendarMethods.Cancel : CalendarMethods.Publish;
             var courseEvent = cal.Events.First();
-            var facultyMeet = CreateFacultyMeetingEvent(course, TimeZoneInfo.FindSystemTimeZoneById(course.Department.Institution.StandardTimeZone));
+            var facultyMeet = CreateFacultyMeetingEvent(course);
             cal.Events.Add(facultyMeet);
         }
 
-        public static Event CreateFacultyMeetingEvent(Course course, TimeZoneInfo tzi)
+        public static Event CreateFacultyMeetingEvent(Course course)
         {
-            var start = TimeZoneInfo.ConvertTimeFromUtc(course.StartUtc, tzi);
             Event meeting = new Event
             {
                 Class = "PRIVATE",
                 Created = new CalDateTime(course.CreatedUtc),
-                LastModified = new CalDateTime(course.LastModifiedUtc),
+                LastModified = new CalDateTime(course.FacultyMeetingDatesLastModified),
                 Sequence = course.EmailSequence,
                 Uid = "planning" + course.Id.ToString(),
                 Priority = 5,
                 Organizer = GetOrganizer(course),
                 Transparency = TransparencyType.Opaque,
                 Status = course.Cancelled ? EventStatus.Cancelled : EventStatus.Confirmed,
-                Description = "planning meeting for " + course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + start.ToString("g"),
-                Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting - " + start.ToString("d"),
+                Description = "planning meeting for " + course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + course.StartLocal.ToString("g"),
+                Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting for " + course.StartLocal.ToString("d"),
                 Attendees = course.CourseParticipants.Where(cp => cp.IsFaculty).Select(MapCourseParticipantToAttendee).ToList(),
-                Start = new CalDateTime(TimeZoneInfo.ConvertTimeFromUtc(course.FacultyMeetingUtc.Value, tzi), tzi.Id),
+                Start = new CalDateTime(course.FacultyMeetingLocal.Value, course.Department.Institution.StandardTimeZone),
                 GeographicLocation = GetGeoLocation(course)
             };
 
@@ -203,6 +200,7 @@ namespace SP.Web.UserEmails
             var evt = cal.Events.First();
             var stream = new MemoryStream();
             //should work but truncating the stream at the moment - ? flush needed in the ical.net source code
+            //galaxy13
             //_serializer.Serialize(cal, stream, Encoding.UTF8);
             //stream.Flush();
             using (var sw = new StreamWriter(stream, Encoding.UTF8, 2500, true))

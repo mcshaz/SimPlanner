@@ -38,11 +38,6 @@ namespace SP.DataAccess
                         }
                     }
                 }
-                //hack having this here
-                foreach (var c in ents[typeof(Course)])
-                {
-                    ((Course)c.Entity).Version++;
-                }
 
             }
         }

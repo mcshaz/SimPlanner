@@ -15,6 +15,7 @@ using SP.Web.Models;
 using System.Web;
 using SP.Web.Controllers.Helpers;
 using SP.Dto;
+using System.Data.Entity;
 
 namespace SP.Web.Controllers
 {
@@ -124,10 +125,60 @@ namespace SP.Web.Controllers
 
             return ri.ISOCurrencySymbol;
         }
-
         [Route("ScenarioResources")]
         [HttpGet]
         public async Task<HttpResponseMessage> GetResourcesForScenario([FromUri]DowloadFileSetModel model)
+        {
+            var validation = await ValidateInput(model);
+            if (validation != null)
+            {
+                return validation;
+            }
+
+            var scenario = await Context.GetScenarios(_emptyString, _emptyString).FirstAsync(s=>s.Id == model.EntitySetId);
+
+            var path = ResourceExtensions.ScenarioResourceToPath(scenario.DepartmentId, scenario.Id);
+
+            return StreamToResponse(new FileStream(path, FileMode.Open), scenario.BriefDescription + ".zip");
+        }
+
+        [Route("GetTimetable")]
+        [HttpGet]
+        public async Task<HttpResponseMessage> GetTimetableForCourse([FromUri]DowloadFileSetModel model)
+        {
+            var validation = await ValidateInput(model);
+            if (validation != null)
+            {
+                return validation;
+            }
+
+            var course = await CreateDocxTimetable.GetCourseIncludes(Context)
+                .FirstOrDefaultAsync(c => c.Id == model.EntitySetId);
+            return StreamToResponse(
+                CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath),
+                CreateDocxTimetable.TimetableName(course));
+        }
+
+        [Route("GetCertificates")]
+        [HttpGet]
+        public async Task<HttpResponseMessage> GetCertificatesForCourse([FromUri]DowloadFileSetModel model)
+        {
+            var validation = await ValidateInput(model);
+            if (validation != null)
+            {
+                return validation;
+            }
+            var course = await CreateCertificates.GetCourseIncludes(Context)
+                    .FirstOrDefaultAsync(c => c.Id == model.EntitySetId);
+            return StreamToResponse(
+                CreateCertificates.CreatePptxCertificates(course, WebApiConfig.DefaultCertificateTemplatePath),
+                CreateCertificates.CertificateName(course));
+        }
+
+        #region Helpers
+
+        readonly string[] _emptyString = new string[0];
+        private async Task<HttpResponseMessage> ValidateInput(DowloadFileSetModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -138,16 +189,12 @@ namespace SP.Web.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
+            return null;
+        }
 
-            var emptyString = new string[0];
-
-            var scenario = Context.GetScenarios(emptyString, emptyString).First(s=>s.Id == model.EntitySetId);
-
-            var path = ResourceExtensions.ScenarioResourceToPath(scenario.DepartmentId, scenario.Id);
-
-            FileStream stream = new FileStream(path, FileMode.Open);
+        private HttpResponseMessage StreamToResponse(Stream stream, string fileName){
             _streamsToDispose.Add(stream);
-
+            stream.Position = 0;
             var result = new HttpResponseMessage()
             {
                 Content = new StreamContent(stream)
@@ -155,12 +202,13 @@ namespace SP.Web.Controllers
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
                 //?urlencode
-                FileName = scenario.BriefDescription + ".zip"
+                FileName = fileName
             };
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             result.Content.Headers.ContentLength = stream.Length;
             return result;
         }
+        #endregion //Helpers
 
         protected override void Dispose(bool disposing)
         {

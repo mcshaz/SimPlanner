@@ -34,7 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,7 +43,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AngleSharp, Version=0.9.7.21214, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
@@ -889,6 +889,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="UserEmails\AuthConfirmationResultPartial.cs" />
+    <Compile Include="UserEmails\CreateParticipantEmails.cs" />
     <Compile Include="UserEmails\ReverseConfirmationPartial.cs" />
     <Compile Include="UserEmails\ReverseConfirmation.cs">
       <DependentUpon>ReverseConfirmation.tt</DependentUpon>
@@ -937,6 +938,9 @@
     <Content Include="package.json" />
     <Content Include="dist\manifest.json" />
     <Content Include="App_Data\CourseTimeTableTemplate.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\CertificateTemplate.pptx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\PublishProfiles\OpenHost.pubxml" />

@@ -1,5 +1,6 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
     internal class ManikinMaps: DomainDtoMap<Manikin, ManikinDto>
     {
@@ -24,7 +25,8 @@ using SP.DataAccess;
                 DecommissionDate = m.DecommissionDate,
                 DecommissionReason = m.DecommissionReason,
                 PurchaseDate = m.PurchaseDate,
-                PurchasedNew = m.PurchasedNew
+                PurchasedNew = m.PurchasedNew,
+                LocalCurrencyPurchasePrice = m.LocalCurrencyPurchasePrice
                 //Department = m.Department,
                 //Scenarios = m.Scenarios,
                 //Manufacturer = m.Manufacturer

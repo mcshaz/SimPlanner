@@ -96,7 +96,7 @@
     <Compile Include="Data\Enum\SharingLevel.cs" />
     <Compile Include="Data\HotDrink.cs" />
     <Compile Include="Data\Interfaces\ICourseDay.cs" />
-    <Compile Include="Data\Interfaces\ITimeTracking.cs" />
+    <Compile Include="Data\Interfaces\IModified.cs" />
     <Compile Include="Data\Manikin.cs" />
     <Compile Include="Data\ManikinManufacturer.cs" />
     <Compile Include="Data\ManikinModel.cs" />
@@ -251,6 +251,10 @@
     <Compile Include="Migrations\201610032143174_itimetrackingCourseParticipant.Designer.cs">
       <DependentUpon>201610032143174_itimetrackingCourseParticipant.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610062304535_iModified.cs" />
+    <Compile Include="Migrations\201610062304535_iModified.Designer.cs">
+      <DependentUpon>201610062304535_iModified.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AddConstraints.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SqlHelpers.cs" />
@@ -333,6 +337,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610032143174_itimetrackingCourseParticipant.resx">
       <DependentUpon>201610032143174_itimetrackingCourseParticipant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610062304535_iModified.resx">
+      <DependentUpon>201610062304535_iModified.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -14,6 +14,7 @@
         function extendMetadata(metadataStore) {
             extendCourse(metadataStore);
             extendCourseFormat(metadataStore);
+            extendCourseParticipant(metadataStore);
             extendDepartment(metadataStore);
             extendCourseSlot(metadataStore);
             extendValidators(metadataStore);
@@ -106,6 +107,13 @@
             metadataStore.registerEntityTypeCtor('CourseDto', CourseCtor, courseInitializer);
         }
 
+        function extendCourseParticipant(metadataStore) {
+            var CourseParticipantCtor = function () {
+                this.isEmailed = false;
+            };
+            metadataStore.registerEntityTypeCtor('CourseParticipantDto', CourseParticipantCtor);
+        }
+
         function extendCourseFormat(metadataStore) {
 
             var CourseFormatCtor = function () { };
@@ -122,8 +130,8 @@
 
                 CourseFormatCtor.prototype.defaultStartMsOffset = function () {
                     var duration = parseSimpleDuration.exec(this.defaultStartTime);
-                    return parseInt(duration[1] || 0)*3600000 + parseInt(duration[2] || 0)*60000;
-                }
+                    return parseInt(duration[1] || 0) * 3600000 + parseInt(duration[2] || 0) * 60000;
+                };
 
                 Object.defineProperty(CourseFormatCtor.prototype, 'defaultStartAsDate', {
                     enumerable: true,

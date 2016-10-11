@@ -1,4 +1,5 @@
-﻿using SP.Metadata;
+﻿using SP.DataAccess.Data.Interfaces;
+using SP.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace SP.DataAccess
 {
     [MetadataType(typeof(CourseSlotMetadata))]
-    public class CourseSlot
+    public class CourseSlot : IModified
     {
         public Guid Id { get; set; }
         public byte MinutesDuration { get; set; }
@@ -17,19 +18,21 @@ namespace SP.DataAccess
         public byte SimultaneousStreams { get; set; }
         public Guid? ActivityId { get; set; }
         public Guid CourseFormatId { get; set; }
+        public DateTime Modified { get; set; }
+
         public virtual CourseActivity Activity { get; set; }
         public virtual CourseFormat CourseFormat { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseSlotPresenter> CourseSlotPresenters { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseSlotActivity> CourseSlotActivities { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseSlotManikin> CourseSlotManikins { get; set; }
 
     }

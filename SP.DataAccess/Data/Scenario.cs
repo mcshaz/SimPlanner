@@ -30,10 +30,10 @@ namespace SP.DataAccess
         public virtual CourseType CourseType { get; set; }
         public virtual Department Department { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<ScenarioResource> ScenarioResources{ get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseSlotActivity> CourseSlotScenarios{ get; set; }
     }
 }

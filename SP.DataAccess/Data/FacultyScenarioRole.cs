@@ -11,10 +11,10 @@ namespace SP.DataAccess
         public string Description { get; set; }
         public int Order { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public ICollection<CourseTypeScenarioRole> CourseTypeScenarioRoles { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
 
     }

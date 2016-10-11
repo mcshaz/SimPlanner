@@ -46,5 +46,23 @@ namespace SP.Web
                 || (sslPolicyErrors == System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch
                     && certificate.Subject.Contains("CN=*.openhost.net.nz")));
         }
+
+        static string _defaultTimetableTemplatePath;
+        internal static string DefaultTimetableTemplatePath{
+            get{
+                return _defaultTimetableTemplatePath
+                    ?? (_defaultTimetableTemplatePath = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/CourseTimeTableTemplate.docx"));
+            }    
+        }
+
+        static string _defaultCertificateTemplatePath;
+        internal static string DefaultCertificateTemplatePath
+        {
+            get
+            {
+                return _defaultCertificateTemplatePath
+                    ?? (_defaultCertificateTemplatePath = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/CertificateTemplate.pptx"));
+            }
+        }
     }
 }

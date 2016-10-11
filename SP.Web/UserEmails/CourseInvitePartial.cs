@@ -6,7 +6,7 @@ namespace SP.Web.UserEmails
 {
     public partial class CourseInvite : IMailBody
     {
-        public string Title { get { return "Please Confirm - simulation Course " + FormattedDate(StartTime); } }
+        public string Title { get { return "Please Confirm - simulation Course " + FormattedDate(CourseParticipant.Course.StartLocal); } }
         private CourseParticipant _courseParticipant;
         public CourseParticipant CourseParticipant
         {
@@ -14,25 +14,14 @@ namespace SP.Web.UserEmails
             set
             {
                 _courseParticipant = value;
-                ToStringFormatProvider = _courseParticipant.Department.Institution.Culture.GetCultureInfo();
+                ToStringFormatProvider = _courseParticipant.Department.Institution.Culture.CultureInfo;
             }
         }
         public string BaseUrl { get; set; }
-        TimeZoneInfo _tzi;
-        TimeZoneInfo Tzi
-        {
-            get
-            {
-                return _tzi ?? (_tzi = TimeZoneInfo.FindSystemTimeZoneById(CourseParticipant.Course.Department.Institution.StandardTimeZone));
-            }
-        }
-        DateTime LocalTime(DateTime date)
-        {
-            return TimeZoneInfo.ConvertTimeFromUtc(date, Tzi);
-        }
+
         string FormattedDate(DateTime date)
         {
-            return LocalTime(date).ToString("g", ToStringHelper.FormatProvider);
+            return date.ToString("g", ToStringHelper.FormatProvider);
         }
         string _rsvpFormat;
         string RsvpFormat
@@ -70,23 +59,12 @@ namespace SP.Web.UserEmails
                 return returnVar;
             } 
         }
-        private DateTime _startTime;
-        private DateTime StartTime
-        {
-            get
-            {
-                if (_startTime == default(DateTime))
-                {
-                    _startTime = LocalTime(CourseParticipant.Course.StartUtc);
-                }
-                return _startTime;
-            }
-        }
+
         public string StartTimeText
         {
             get
             {
-                return string.Format(ToStringHelper.FormatProvider, "{0:D} at {0:t}", StartTime);
+                return string.Format(ToStringHelper.FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal);
             }
         }
 
@@ -94,7 +72,7 @@ namespace SP.Web.UserEmails
         {
             get
             {
-                return (LocalTime(CourseParticipant.Course.FinishTimeUtc())).ToString("g", ToStringHelper.FormatProvider);
+                return CourseParticipant.Course.FinishCourseLocal().ToString("g", ToStringHelper.FormatProvider);
             }
         }
 

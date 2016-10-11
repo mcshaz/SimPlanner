@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace SP.Dto.Maps
 {
-    abstract class DomainDtoMap<TDomain, TDto> : IDomainDtoMap
+    public abstract class DomainDtoMap<TDomain, TDto> : IDomainDtoMap
     {
         protected DomainDtoMap(Func<TDto, TDomain> mapToDomain, Expression<Func<TDomain, TDto>> mapFromDomain)
         {

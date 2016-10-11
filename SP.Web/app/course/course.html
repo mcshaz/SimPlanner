@@ -184,6 +184,9 @@
                                             Confirmed
                                         </th>
                                         <th>
+                                            Emailed
+                                        </th>
+                                        <th>
                                         </th>
                                     </tr>
                                 </thead>
@@ -202,6 +205,9 @@
                                             <button class="btn-link" ng-click="vm.cycleConfirmed(cp)">
                                                 <i class="fa" ng-class="{'fa-times-circle':cp.isConfirmed===false,'fa-question-circle':cp.isConfirmed===null,'fa-check-circle':cp.isConfirmed}"></i>
                                             </button>
+                                        </td>
+                                        <td>
+                                                <i class="fa" ng-class="{'fa-times-circle':!cp.isEmailed,'fa-check-circle':cp.isEmailed}"></i>
                                         </td>
                                         <td>
                                             <button type="button" class="btn-link" ng-click="vm.openCourseParticipant(cp.participantId)"><i class="fa fa-edit"></i></button> |
@@ -240,6 +246,9 @@
                                             Confirmed
                                         </th>
                                         <th>
+                                            Emailed
+                                        </th>
+                                        <th>
                                         </th>
                                     </tr>
                                 </thead>
@@ -257,6 +266,8 @@
                                             </button>
                                         </td>
                                         <td>
+                                            <i class="fa" ng-class="{'fa-times-circle':!cp.isEmailed,'fa-check-circle':cp.isEmailed}"></i>
+                                        </td>
                                         <td>
                                             <button type="button" class="btn-link" ng-click="vm.openCourseParticipant(cp.participantId)"><i class="fa fa-edit"></i></button> |
                                             <button type="button" class="btn-link" ng-click="vm.deleteCourseParticipant(cp.participantId)"><i class="fa fa-trash-o"></i></button>
@@ -272,12 +283,29 @@
                         </div>
                     </fieldset>
                 </div>
+                <iframe style="display:none;" ng-src="{{vm.downloadFileUrl}}"></iframe>
                 <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course & add people first" bs-tooltip bs-enabled="vm.isEntityStateChanged  || !vm.course.courseParticipants.length">
                     <button class="btn btn-default" ng-disabled="vm.isEntityStateChanged || !vm.course.courseParticipants.length" ng-click="vm.sendEmails()" type="button">
-                        Send Confirmation Emails
+                       <i class="fa fa-send"></i> Send {{vm.course.cancelled?'Cancellations':'Appointments'}} <i class="fa fa-envelope"></i>
                     </button> 
                 </div>
-            </div>
+                <div class="disable-workaround">
+                    <button class="btn btn-default" ng-click="vm.downloadTimetable()" type="button">
+                        <i class="fa fa-download"></i>
+                        Download Timetable
+                        <i class="fa fa-tasks"></i>
+                    </button>
+                </div>
+                <div class="disable-workaround">
+                    <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course & add people first" bs-tooltip bs-enabled="vm.isEntityStateChanged  || !vm.course.courseParticipants.length">
+                        <button class="btn btn-default" ng-click="vm.downloadCertificates()" type="button">
+                            <i class="fa fa-download"></i>
+                            Download Participant Certificates
+                            <i class="fa fa-certificate"></i>
+                        </button>
+                    </div>
+                </div>
+             </div>
         </div>
     </section>
 </section>

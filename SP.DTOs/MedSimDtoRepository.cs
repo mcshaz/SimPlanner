@@ -17,7 +17,7 @@ namespace SP.Dto
         private readonly ValidateMedSim _validationHelper;
         private readonly IPrincipal _user;
 
-        private MedSimDbContext Context
+        internal MedSimDbContext Context
         {
             get { return _contextProvider.Context; }
         }

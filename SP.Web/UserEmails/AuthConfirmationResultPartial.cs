@@ -6,7 +6,7 @@ namespace SP.Web.UserEmails
 {
     public partial class AuthConfirmationResult : IMailBody
     {
-        public string Title { get { return "request to alter confirmation for simulation on " + FormattedDate(CourseParticipant.Course.StartUtc); } }
+        public string Title { get { return "request to alter confirmation for simulation on " + FormattedDate(CourseParticipant.Course.StartLocal); } }
         private CourseParticipant _courseParticipant;
         public CourseParticipant CourseParticipant
         {
@@ -14,27 +14,16 @@ namespace SP.Web.UserEmails
             set
             {
                 _courseParticipant = value;
-                ToStringFormatProvider = _courseParticipant.Course.Department.Institution.Culture.GetCultureInfo();
+                ToStringFormatProvider = _courseParticipant.Course.Department.Institution.Culture.CultureInfo;
             }
         }
         public Participant Auth { get; set; }
         public bool IsChanged { get; set; }
         public string BaseUrl { get; set; }
-        TimeZoneInfo _tzi;
-        TimeZoneInfo Tzi
-        {
-            get
-            {
-                return _tzi ?? (_tzi = TimeZoneInfo.FindSystemTimeZoneById(CourseParticipant.Course.Department.Institution.StandardTimeZone));
-            }
-        }
-        DateTime LocalTime(DateTime date)
-        {
-            return TimeZoneInfo.ConvertTimeFromUtc(date, Tzi);
-        }
+
         string FormattedDate(DateTime date)
         {
-            return LocalTime(date).ToString("g", ToStringHelper.FormatProvider);
+            return date.ToString("g", ToStringHelper.FormatProvider);
         }
 
         public IFormatProvider ToStringFormatProvider

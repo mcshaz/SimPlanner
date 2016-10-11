@@ -44,7 +44,7 @@ namespace SP.DataAccess
         public virtual HotDrink DrinkPreference { get; set; }
 
 		ICollection<CourseParticipant> _courseParticipants; 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseParticipant> CourseParticipants
 		{
 			get
@@ -58,7 +58,7 @@ namespace SP.DataAccess
 		}
 
         ICollection<CourseScenarioFacultyRole> _courseScenarioFacultyRoles;
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles
         {
             get
@@ -72,7 +72,7 @@ namespace SP.DataAccess
         }
 
         ICollection<CourseSlotPresenter> _courseSlotPresentations;
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseSlotPresenter> CourseSlotPresentations
         {
             get

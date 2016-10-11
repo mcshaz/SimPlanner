@@ -73,7 +73,7 @@ namespace SP.Dto.Utilities
             FileInfo fi = new FileInfo(path);
             if (!fi.Exists) { return; }
             bool deleteFile = false;
-            using (ZipArchive archive = ZipFile.Open(path, ZipArchiveMode.Read))
+            using (ZipArchive archive = ZipFile.Open(path, ZipArchiveMode.Update))
             {
                 ZipArchiveEntry entry = archive.Entries.FirstOrDefault(e => e.Name == resource.FileName);
                 if (entry == null)

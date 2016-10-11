@@ -1,4 +1,4 @@
-//201610032143174_itimetrackingCourseParticipant
+//201610062304535_iModified
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -807,36 +807,6 @@
           "displayName": "Feedback Summary Filename"
         },
         {
-          "name": "created",
-          "dataType": "DateTime",
-          "isNullable": false,
-          "defaultValue": "",
-          "validators": [
-            {
-              "name": "required"
-            },
-            {
-              "name": "date"
-            }
-          ],
-          "displayName": "Created"
-        },
-        {
-          "name": "lastModified",
-          "dataType": "DateTime",
-          "isNullable": false,
-          "defaultValue": "",
-          "validators": [
-            {
-              "name": "required"
-            },
-            {
-              "name": "date"
-            }
-          ],
-          "displayName": "Last Modified"
-        },
-        {
           "name": "cancelled",
           "dataType": "Boolean",
           "isNullable": false,
@@ -850,33 +820,6 @@
             }
           ],
           "displayName": "Cancelled"
-        },
-        {
-          "name": "version",
-          "dataType": "Int32",
-          "isNullable": false,
-          "defaultValue": 0,
-          "validators": [
-            {
-              "name": "required"
-            },
-            {
-              "min": -2147483648,
-              "max": 2147483647,
-              "name": "int32"
-            }
-          ],
-          "displayName": "Version"
-        },
-        {
-          "name": "emailTimeStamp",
-          "dataType": "DateTime",
-          "validators": [
-            {
-              "name": "date"
-            }
-          ],
-          "displayName": "Email Time Stamp"
         }
       ],
       "navigationProperties": [
@@ -1185,46 +1128,6 @@
             }
           ],
           "displayName": "Professional Role Id"
-        },
-        {
-          "name": "emailTimeStamp",
-          "dataType": "DateTime",
-          "validators": [
-            {
-              "name": "date"
-            }
-          ],
-          "displayName": "Email Time Stamp"
-        },
-        {
-          "name": "created",
-          "dataType": "DateTime",
-          "isNullable": false,
-          "defaultValue": "",
-          "validators": [
-            {
-              "name": "required"
-            },
-            {
-              "name": "date"
-            }
-          ],
-          "displayName": "Created"
-        },
-        {
-          "name": "lastModified",
-          "dataType": "DateTime",
-          "isNullable": false,
-          "defaultValue": "",
-          "validators": [
-            {
-              "name": "required"
-            },
-            {
-              "name": "date"
-            }
-          ],
-          "displayName": "Last Modified"
         }
       ],
       "navigationProperties": [

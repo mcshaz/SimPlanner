@@ -107,6 +107,30 @@ namespace SP.Dto.Utilities
             }
         }
 
+        public static int IndexOf<T>(this IEnumerable<T> source, T find)
+        {
+            int i = 0;
+            using (var e = source.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    if (e.Current == null)
+                    {
+                        if (find == null)
+                        {
+                            return i;
+                        }
+                    }
+                    else if (e.Current.Equals(find))
+                    {
+                        return i;
+                    }
+                    i++;
+                }
+            }
+            return -1;
+        }
+
         //if performance critical and > ~3 elements, use unsafe method - starting point around here: http://www.techmikael.com/2009/01/fast-byte-array-comparison-in-c.html
 
         public static bool StartsWith<T>(this IList<T> source, IList<T> startList)

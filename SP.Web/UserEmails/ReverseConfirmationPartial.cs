@@ -14,7 +14,7 @@ namespace SP.Web.UserEmails
         public string Title { get {
                 return string.Format(ToStringHelper.FormatProvider, "participant request to alter confirmation for {0} on {1:d}",
                     CourseParticipant.Course.CourseFormat.CourseType.Abbreviation,
-                    LocalTime(CourseParticipant.Course.StartUtc)); } }
+                    CourseParticipant.Course.StartLocal); } }
         private CourseParticipant _courseParticipant;
         public CourseParticipant CourseParticipant
         {
@@ -22,33 +22,15 @@ namespace SP.Web.UserEmails
             set
             {
                 _courseParticipant = value;
-                ToStringFormatProvider = _courseParticipant.Course.Department.Institution.Culture.GetCultureInfo();
+                ToStringFormatProvider = _courseParticipant.Course.Department.Institution.Culture.CultureInfo;
             }
         }
         readonly string AuthorizationToken;
         public string BaseUrl { get; set; }
-        TimeZoneInfo _tzi;
-        TimeZoneInfo Tzi
-        {
-            get
-            {
-                return _tzi ?? (_tzi = TimeZoneInfo.FindSystemTimeZoneById(CourseParticipant.Course.Department.Institution.StandardTimeZone));
-            }
-        }
-        DateTime StartTimeUtc
-        {
-            get
-            {
-                return CourseParticipant.Course.StartUtc;
-            }
-        }
-        DateTime LocalTime(DateTime date)
-        {
-            return TimeZoneInfo.ConvertTimeFromUtc(date, Tzi);
-        }
+
         string FormattedDate(DateTime date)
         {
-            return LocalTime(date).ToString("g", ToStringHelper.FormatProvider);
+            return date.ToString("g", ToStringHelper.FormatProvider);
         }
 
         string _rsvpFormat;

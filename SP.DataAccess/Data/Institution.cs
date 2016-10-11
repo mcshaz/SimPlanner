@@ -28,10 +28,15 @@ namespace SP.DataAccess
 
         public virtual Culture Culture { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Department> Departments { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        TimeZoneInfo _timeZone;
+        public virtual TimeZoneInfo TimeZone
+        {
+            get { return _timeZone ?? (_timeZone = TimeZoneInfo.FindSystemTimeZoneById(StandardTimeZone)); }
+        }
+
+
         public virtual ICollection<ProfessionalRoleInstitution> ProfessionalRoleInstitutions { get; set; }
 
     }

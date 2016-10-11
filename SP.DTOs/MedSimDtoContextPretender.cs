@@ -116,6 +116,9 @@ namespace SP.Dto
                 .HasForeignKey(e => e.CourseFormatId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<CourseParticipantDto>()
+                .Ignore(e => e.IsEmailed);
+
             modelBuilder.Entity<CourseSlotDto>()
                 .HasMany(e => e.CourseSlotPresenters)
                 .WithRequired(e => e.CourseSlot)

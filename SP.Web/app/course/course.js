@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$location', '$http', '$q', 'commonConfig', 'moment'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$location', '$http', '$q', 'commonConfig', 'moment', 'loginFactory'];
 
-    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $location, $http, $q, commonConfig, moment) {
+    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $location, $http, $q, commonConfig, moment, loginFactory) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -26,6 +26,8 @@
         vm.dateChanged = dateChanged;
         vm.dateFormat = '';
         vm.deleteCourseParticipant = deleteCourseParticipant;
+        vm.downloadCertificates = downloadCertificates;
+        vm.downloadTimetable = downloadTimetable;
         vm.dpPopup = { isOpen: false };
         vm.departments = [];
         vm.formatChanged = formatChanged;
@@ -274,8 +276,44 @@
                 url: 'api/CoursePlanning/EmailAll/',
                 data: { CourseId: vm.course.id }
             }).then(function (response) {
-                vm.log('emails sent');
+                if (response.status !== 200) {
+                    vm.log.error(response);
+                }
+                var result = response.data;
+                if (typeof result === 'string') {
+                    vm.log(result);
+                } else {
+                    if (result.FailRecipients.length) {
+                        var failPart = result.FailRecipients.map(mapToParticipantName);
+
+                        vm.log.warning({ msg: 'Emails unable to be sent to ' + failPart.join(', '), data: response});
+                    } else {
+                        vm.log.success('participants & faculty emailed');
+                    }
+                    result.SuccessRecipients.map(mapToParticipant).forEach(function (cp) {
+                        cp.isEmailed = true;
+                    });
+                }
             }, vm.log.error);
+            function mapToParticipant(guid) {
+                return vm.course.courseParticipants.find(function (cp) { return cp.participantId === guid; });
+            }
+
+            function mapToParticipantName(guid){
+                return mapToParticipant(guid).fullName;
+            }
+        }
+        function downloadCertificates() {
+            loginFactory.downloadFileLink('GetCertificates', vm.course.id)
+                .then(function (url) {
+                    vm.downloadFileUrl = url;
+                });
+        }
+        function downloadTimetable() {
+            loginFactory.downloadFileLink('GetTimetable', vm.course.id)
+                .then(function (url) {
+                    vm.downloadFileUrl = url;
+                });
         }
     }
     function sortDepartments(dpt1, dpt2) {

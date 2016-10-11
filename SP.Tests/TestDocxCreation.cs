@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using SP.DataAccess;
 using SP.Dto.Utilities;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace SP.Tests
 {
@@ -18,7 +18,8 @@ namespace SP.Tests
             Course course;
             using (var db = new MedSimDbContext())
             {
-                course = CreateDocxTimetable.GetCourseWithIncludes(Guid.Parse("c6a65255-81b9-40ba-b7c0-e122fb06f515"),db);
+                var testId = Guid.Parse("f1afbbbb-b72f-43f4-8b36-7837fe8d1b80");
+                course = CreateDocxTimetable.GetCourseIncludes(db).First(c=>c.Id == testId);
                 
                 using (var stream = CreateDocxTimetable.CreateTimetableDocx(course, templ))
                 {

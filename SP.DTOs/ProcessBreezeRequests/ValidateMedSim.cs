@@ -1,5 +1,4 @@
 ﻿using Breeze.ContextProvider;
-using Breeze.ContextProvider.EF6;
 using LinqKit;
 using SP.DataAccess;
 using SP.DataAccess.Data.Interfaces;

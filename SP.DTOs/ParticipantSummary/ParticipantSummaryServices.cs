@@ -90,7 +90,7 @@ namespace SP.Dto.ParticipantSummary
         public static IEnumerable<KeyValuePair<Guid, string>> GetBookedManikins(MedSimDbContext context, Course course)
         {
             var refStart = course.StartUtc;
-            var refFinish = course.FinishTimeUtc();
+            var refFinish = course.FinishCourseUtc();
             return (from csm in context.CourseSlotManikins
                     let c = csm.Course
                     let lastDay = c.CourseDays.FirstOrDefault(cd=>cd.Day == c.CourseFormat.DaysDuration)

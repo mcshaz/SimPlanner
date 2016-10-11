@@ -10,7 +10,7 @@ namespace SP.DataAccess
     using System.Linq;
 
     [MetadataType(typeof(CourseMetadata))]
-    public class Course : ICourseDay, ITimeTracking
+    public class Course : ICourseDay
     {
         public Guid Id { get; set; }
 
@@ -18,14 +18,13 @@ namespace SP.DataAccess
         public DateTime StartUtc
         {
             get { return _startUtc; }
-            set { _startUtc = value.AsUtc(); }
+            set { _startUtc = value.AsUtc(); _startLocal = default(DateTime); }
         }
 
         /// <summary>
         /// To implement ICourseDay - refers to duration in minutes for day 1.
         /// </summary>
         public int DurationMins { get; set; }
-
         private DateTime? _facultyMeetingUtc;
         public DateTime? FacultyMeetingUtc
         {
@@ -36,59 +35,23 @@ namespace SP.DataAccess
             set
             {
                 _facultyMeetingUtc = value.HasValue? value.Value.AsUtc(): (DateTime?)null;
+                _facultyMeetingLocal = default(DateTime);
             }
         }
-
         public Guid DepartmentId { get; set; }
-
         public Guid? OutreachingDepartmentId { get; set; }
-
         public Guid RoomId { get; set; }
-
         public Guid? FacultyMeetingRoomId { get; set; }
-
         public int? FacultyMeetingDuration { get; set; }
-
         public byte EmailSequence { get; set; }
-
-        public int Version { get; set; }
-
-        private DateTime _createdUtc;
-        public DateTime CreatedUtc
-        {
-            get {
-                return _createdUtc;
-            }
-            set {
-                _createdUtc = value.AsUtc();
-            }
-        }
-
-        private DateTime _lastModifiedUtc;
-        public DateTime LastModifiedUtc
-        {
-            get {
-                return _lastModifiedUtc;
-            }
-            set {
-                _lastModifiedUtc = value.AsUtc();
-            }
-        }
-
-        public DateTime? EmailTimeStamp { get; set; }
-
         public byte FacultyNoRequired { get; set; }
-
         public string ParticipantVideoFilename { get; set; }
-
         public string FeedbackSummaryFilename { get; set; }
-
         public bool Cancelled { get; set; }
-
         public Guid CourseFormatId { get; set; }
-
-        [NotMapped]
-        public bool SystemChangesOnly { get; set; }
+        public DateTime CreatedUtc { get; set; }
+        public DateTime CourseDatesLastModified { get; set; }
+        public DateTime FacultyMeetingDatesLastModified { get; set; }
 
         public virtual Department Department { get; set; }
 
@@ -100,22 +63,22 @@ namespace SP.DataAccess
 
         public virtual Room FacultyMeetingRoom { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseParticipant> CourseParticipants { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseSlotManikin> CourseSlotManikins { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseSlotActivity> CourseSlotActivities { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseSlotPresenter> CourseSlotPresenters { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<CourseDay> CourseDays { get; set; }
 
         //ICourseDay implementation
@@ -123,6 +86,32 @@ namespace SP.DataAccess
         public int Day
         {
             get { return 1; }
+        }
+
+        [NotMapped]
+        DateTime _startLocal;
+        public DateTime StartLocal
+        {
+            get
+            {
+                return _startLocal == default(DateTime) 
+                    ? (_startLocal = TimeZoneInfo.ConvertTimeFromUtc(StartUtc, Department.Institution.TimeZone))
+                    : _startLocal;
+            }
+        }
+
+        [NotMapped]
+        DateTime _facultyMeetingLocal;
+        public DateTime? FacultyMeetingLocal
+        {
+            get
+            {
+                return FacultyMeetingUtc.HasValue
+                    ? _facultyMeetingLocal == default(DateTime)
+                        ? TimeZoneInfo.ConvertTimeFromUtc(FacultyMeetingUtc.Value, Department.Institution.TimeZone)
+                        : _facultyMeetingLocal
+                    : (DateTime?)null;
+            }
         }
     }
 
@@ -140,10 +129,28 @@ namespace SP.DataAccess
                 :(ICourseDay)course;
         }
 
-        public static DateTime FinishTimeUtc(this Course course)
+        public static DateTime FinishCourseUtc(this Course course)
         {
             var lastDay = course.LastDay();
             return lastDay.StartUtc + TimeSpan.FromMinutes(lastDay.DurationMins);
+        }
+
+        public static DateTime FinishCourseLocal(this Course course)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(course.FinishCourseUtc(), course.Department.Institution.TimeZone);
+        }
+
+        public static DateTime FinishCourseDayUtc(this ICourseDay courseDay)
+        {
+            return courseDay.StartUtc + TimeSpan.FromMinutes(courseDay.DurationMins);
+        }
+
+        public static DateTime FinishCourseDayLocal(this ICourseDay courseDay)
+        {
+            var dpt = courseDay.Day==1
+                ? ((Course)courseDay).Department
+                : ((CourseDay)courseDay).Course.Department;
+            return TimeZoneInfo.ConvertTimeFromUtc(courseDay.FinishCourseDayUtc(), dpt.Institution.TimeZone);
         }
     }
 
