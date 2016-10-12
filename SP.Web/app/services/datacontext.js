@@ -64,6 +64,7 @@
         self.manikinManufacturers = repository.create(self.provider, 'ManikinManufacturerDto', 'ManikinManufacturers', breeze.FetchStrategy.FromLocalCache);
         self.manikinModels = repository.create(self.provider, 'ManikinModelDto', 'ManikinModels');
         self.manikins = repository.create(self.provider, 'ManikinDto', 'Manikins', breeze.FetchStrategy.FromLocalCache);
+        self.manikinServices = repository.create(self.provider, 'ManikinServiceDto', 'ManikinServices');
         self.participants = repository.create(self.provider, 'ParticipantDto', 'Participants');
         self.professionalRoleInstitutions = repository.create(self.provider, 'ProfessionalRoleInstitutionDto', 'ProfessionalRoleInstitutions');
         self.professionalRoles = repository.create(self.provider, 'ProfessionalRoleDto', 'ProfessionalRoles', breeze.FetchStrategy.FromLocalCache);

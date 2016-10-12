@@ -53,6 +53,12 @@ namespace SP.Web.Controllers
             var iso = new IncludeSelectOptions(options);
             return Repo.GetCourseActivities(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
+        [HttpGet, EnableMappedBreezeQuery]
+        public IQueryable<ManikinServiceDto> ManikinServices(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetManikinServices(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
         [HttpGet]
 		public IQueryable<DepartmentDto> Departments(){ return Repo.Departments; }
 

@@ -37,7 +37,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div class="form-group" ng-if="m.isScenario">
+                                            <div class="form-group" ng-if="m.isScenario && (m.selectedActivityId || vm.scenarios.length)">
                                                 <label class="control-label col-md-1" for="scenario">
                                                     Scenario
                                                 </label>
@@ -52,13 +52,13 @@
                                                 </aside>
 
                                             </div>
-                                            <div class="form-group" ng-if="m.isScenario">
+                                            <div class="form-group" ng-if="m.isScenario && m.manikins.length">
                                                 <label class="control-label col-md-1" for="manikin">
                                                     Manikin(s)
                                                 </label>
                                                 <div class="col-md-5">
                                                     <div angular-multi-select
-                                                         dropdown-label="<[ '<(description)>' | outputModelIterator : this : ', ']>"
+                                                         dropdown-label="<[ <# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> === 0 ? 'Please Select...' : ('<(description)>' | outputModelIterator : this : ', ') ]>"
                                                          input-model="m.manikins" 
                                                          output-type="objects"
                                                          output-model="m.selectedManikins" 

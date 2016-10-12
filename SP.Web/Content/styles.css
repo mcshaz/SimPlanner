@@ -400,7 +400,10 @@ a {
   display:inline-block;
 }
 .aside{
-    width:30%;
+    width:33%;
+}
+#activityResourceBox{
+    width:66%
 }
 #userName {
     display: inline;

@@ -128,13 +128,13 @@
                         }
                     }
                 }, {
-                    url: '/institutions',
+                    url: '/resources',
                     config: {
-                        title: 'Institutions',
+                        title: 'Resources',
                         templateUrl: 'app/institution/institutions.html',
                         settings: {
                             nav: 7,
-                            content: 'Institutions' //<i class="fa fa-"></i> 
+                            content: 'Resources <i class="fa fa-info-circle" title="Update or Create Institutions, Departments or department resources - comprising Manikins, Scenarios & Rooms"></i>'
                         },
                         access: {
                             allowedRoles: userRoles.all

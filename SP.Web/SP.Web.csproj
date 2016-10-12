@@ -484,6 +484,8 @@
     <Content Include="app\manikinModels\manikinModel.js" />
     <Content Include="app\manikinModels\manikinModels.html" />
     <Content Include="app\manikinModels\manikinModels.js" />
+    <Content Include="app\manikinService\manikinService.html" />
+    <Content Include="app\manikinService\manikinService.js" />
     <Content Include="app\manikin\manikin.html" />
     <Content Include="app\manikin\manikin.js" />
     <Content Include="app\professionalRoles\professionalRoles.html" />

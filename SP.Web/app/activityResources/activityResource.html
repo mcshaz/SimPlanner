@@ -8,34 +8,51 @@
                     </h4>
                 </div>
                 <div class="aside-body">
-                    <form id="courseParticipantForm" ng-submit="ar.save()">
-                        <span class="disabeWorkaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please fix current errors first" bs-tooltip bs-enabled="ar.selectedActivityResource?ar.selectedActivityResource.entityAspect.hasValidationErrors:false">
-                            <button type="button" class="btn-link" ng-click="ar.createActivityResource()" ng-disabled="ar.selectedActivityResource.entityAspect.hasValidationErrors" >
-                                Create new choice
-                            </button>
-                        </span>
-                        <ul class="list-unstyled">
-                            <li ng-repeat="ac in ar.courseActivity.activityChoices track by ac.id" class="clearfix" ng-class="ac===ar.selectedActivityResource?'warning':''">
-                                {{ac.description}} 
-                                <span class="pull-right">
-                                    <span class="disabeWorkaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please fix current errors first" bs-tooltip bs-enabled="ar.selectedActivityResource?ar.selectedActivityResource.entityAspect.hasValidationErrors:false">
-                                        <button type="button" class="btn-link" ng-click="ar.selectActivityResource(ac)" ng-disabled="ar.selectedActivityResource.entityAspect.hasValidationErrors" >
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                    </span> |
-                                    <button type="button" class="btn-link" ng-click="ar.deleteResource(ac)"><i class="fa fa-trash-o"></i></button>
-                                </span>
-                            </li>
-                        </ul>
-
-                        <div class="form-group">
-                            <label for="resourceName" class="control-label">Name</label>
-                            <div>
-                                <input type="text" id="resourceName" class="form-control" data-z-validate
-                                       data-ng-model="ar.selectedActivityResource.description" ng-disabled="!ar.selectedActivityResource"/>
-                            </div>
-                        </div>
-
+                    <form id="activityResourceForm" ng-submit="ar.save()">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>File</th>
+                                    <th>Modified</th>
+                                    <th>Size</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="sr in ar.courseActivity.activityChoices track by sr.id">
+                                    <td>
+                                        <input class="form-control" type="text" ng-model="sr.description" z-validate />
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <label class="input-group-btn">
+                                                <span class="btn btn-primary">
+                                                    Browse&hellip;
+                                                    <input type="file" ng-model="sr.file" app-filereader ng-file-size="sr.fileSize" ng-file-name="sr.fileName" ng-last-modified="sr.fileModified" style="display:none!important;" />
+                                                </span>
+                                            </label>
+                                            <input type="text" class="form-control" readonly ng-model="sr.fileName" z-validate z-append-to="td">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" disabled type="text" ng-value="sr.getFormattedDate(sr.fileModified)" />
+                                    </td>
+                                    <!--TO DO check validates on big files-->
+                                    <td>
+                                        <input type="hidden" ng-model="sr.fileSize" z-validate z-append-to="td" />
+                                        <div class="input-group">
+                                            <input class="form-control" disabled type="text" ng-value="sr.getSizeInKb(sr.fileSize)" />
+                                            <span class="input-group-addon">KB</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-link" ng-click="sr.entityAspect.setDeleted()"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" ng-click="ar.createActivityResource()" class="btn btn-link"><i class="fa fa-plus-square"></i>Add Resource</button>
                         <button class="btn btn-success" type="submit" ng-disabled="ar.disableSave()">Save</button>
                     </form>
                 </div>

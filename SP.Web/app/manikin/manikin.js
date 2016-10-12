@@ -5,7 +5,7 @@
         .module('app')
         .controller(controllerId, courseTypesCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http', '$locale'];
+    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http', '$locale', '$modal'];
     //changed $uibModalInstance to $scope to get the events
 
     function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http, $locale) {
@@ -20,6 +20,8 @@
         var isNew = id === 'new';
 
         vm.departments = [];
+        vm.editService = editService;
+        vm.createService = createService;
         vm.manikin = {};
         vm.minDate = new Date(1998, 0);
         vm.maxDate = new Date();
@@ -44,7 +46,7 @@
             })];
 
             if (!isNew) {
-                promises.push(datacontext.manikins.fetchByKey(id).then(function (data) {
+                promises.push(datacontext.manikins.fetchByKey(id, { expand: 'manikinServices' }).then(function (data) {
                     vm.manikin = data;
                     if (!vm.manikin) {
                         vm.log.warning('Could not find manikin id = ' + id);
@@ -68,7 +70,31 @@
                     vm.isoCurrency = response.data;
                 }, vm.log.error);
             }
+        }
 
+        function editService(service) {
+            var modal = getModalInstance();
+            modal.$scope.manikinsService = service;
+            modal.$promise.then(modal.show);
+        }
+
+        function createService() {
+            editService(datacontext.manikinServices.create({manikinId: vm.manikin.id}));
+        }
+
+        var _modalInstance;
+        function getModalInstance() {
+            if (!_modalInstance) {
+                var scope = $scope.$new();
+                _modalInstance = $modal({
+                    templateUrl: 'app/manikinServices/manikinServices.html',
+                    controller: 'manikinService',
+                    show: false,
+                    scope: scope,
+                    controllerAs: 'ms'
+                });
+            }
+            return _modalInstance;
         }
     }
 })();

@@ -135,6 +135,12 @@ namespace SP.Dto
             return Context.Scenarios.ProjectToDto<Scenario, ScenarioDto>(includes, selects, sepChar);
         }
 
+        public IQueryable<ManikinServiceDto> GetManikinServices(string[] includes, string[] selects, char sepChar = '.')
+        {
+            return Context.ManikinServices.ProjectToDto<ManikinService, ManikinServiceDto>(includes, selects, sepChar);
+
+        }
+
         public IQueryable<FacultyScenarioRoleDto> SenarioRoles { get { return Context.FacultyScenarioRoles.ProjectToDto<FacultyScenarioRole,FacultyScenarioRoleDto>(); } }
 
         public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.ProjectToDto<Institution,InstitutionDto>(); } }

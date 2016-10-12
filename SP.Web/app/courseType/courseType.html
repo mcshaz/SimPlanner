@@ -26,7 +26,7 @@
                             <label class="col-md-3 control-label">Departments</label>
                             <div class="col-md-9">
                                 <div angular-multi-select
-                                     dropdown-label="<[ '<(abbrev)>' | outputModelIterator : this : ', ']>"
+                                     dropdown-label="<[ <# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> === 0 ? 'Please Select...' : ('<(abbrev)>' | outputModelIterator : this : ', ') ]>"
                                      output-type="objects"
                                      input-model="vm.departments"
                                      output-model="vm.selectedDepartments"

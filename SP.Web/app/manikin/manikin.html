@@ -98,6 +98,54 @@
                         </div>
                     </div>
                 </fieldset>
+                <fieldset>
+                    <legend>Services</legend>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>internal service</th>
+                                <th>Sent</th>
+                                <th>Returned</th>
+                                <th>Problem</th>
+                                <th>Estimate</th>
+                                <th>Cost</th>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="s in vm.manikin.manikinServices track by s.id">
+                                <td>
+                                    {{s.servicedInternally}}
+                                </td>
+                                <td>
+                                    {{s.sent}}
+                                </td>
+                                <td>
+                                    {{s.returned}}
+                                </td>
+                                <td bs-tooltip data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="{{s.problemDescription}}">
+                                    {{s.problemDescription | limitTo:20}}<span ng-if="s.problemDescription.length>20">&hellip;</span>
+                                </td>
+                                <td>
+                                    {{s.priceEstimate | currency:vm.currencySymbol}}
+                                </td>
+                                <td>
+                                    {{s.serviceCost | currency:vm.currencySymbol}}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn-link" ng-click="vm.editService(s)">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    |
+                                    <button type="button" class="btn btn-link" ng-click="s.entityAspect.setDeleted()"><i class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the manikin first" bs-tooltip bs-enabled="vm.manikin.entityAspect.entityState.isAdded()">
+                        <button type="button" ng-click="vm.createService()" class="btn btn-link"><i class="fa fa-plus-square"></i>Add Service</button>
+                    </div>
+                    </fieldset>
             </form>
         </div>
     </section>

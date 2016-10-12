@@ -8,7 +8,6 @@
                         <div class="form-group">
                             <label for="department" class="col-md-2 control-label">Department</label>
                             <div class="col-md-10">
-
                                 <select id="department" class="form-control" data-z-validate data-ng-model="vm.course.department" ng-options="d as d.name group by d.institution.name for d in vm.departments">
                                     <option disabled selected hidden value="">
                                         Select Department...
@@ -32,7 +31,6 @@
                         </div>
 
                         <div ng-repeat="cd in vm.courseDays">
-
                             <div class="form-group">
                                 <label for="startDate" class="col-md-2 control-label">Course Start
                                     <br/>
@@ -88,7 +86,6 @@
                                 <span class="text-danger" />
                             </div>
                         </div>
-
                     </fieldset>
 
                     <fieldset>

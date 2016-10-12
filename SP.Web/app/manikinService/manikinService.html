@@ -1,0 +1,72 @@
+﻿<div class="modal mainbox" id="courseParticipantBox" tabindex="-1" role="dialog">
+    <div class="aside-dialog">
+        <div class="aside-content">
+            <form ng-submit="ms.save()" id="courseParticipantForm">
+                <div class="aside-header">
+                    <button class="close" type="button" ng-click="ms.close()">&times;</button>
+                    <h4 class="aside-title">
+                        Manikin Service Details
+                    </h4>
+                </div>
+                <div class="aside-body">
+                    <div class="form-group">
+                        <label for="internal" class="col-md-2 control-label">Service Location</label>
+                        <div class="col-md-10">
+                            <button type="button" class="btn btn-default" bs-checkbox id="internal" data-z-validate data-ng-model="vm.course.cancelled">
+                                {{ms.manikinService.servicedInternally?'Internal':'External'}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sent" class="col-md-2 control-label">Date Sent</label>
+                        <div class="col-md-10">
+                            <input id="sent" class="form-control" ng-model="ms.manikinService.sent" z-validate
+                                   data-autoclose="1" placeholder="Date" bs-datepicker type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="returned" class="col-md-2 control-label">Date Returned</label>
+                        <div class="col-md-10">
+                            <input id="returned" class="form-control" ng-model="ms.manikinService.returned" z-validate
+                                   data-autoclose="1" placeholder="Date" bs-datepicker type="text" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="problem" class="col-md-2 control-label">Problem</label>
+                        <div class="col-md-10">
+                            <textarea id="problem" ng-model="ms.manikinService.problemDescription" z-validate/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="estimate" class="col-md-2 control-label">Service Estimate</label>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <strong>{{vm.currencySymbol}}</strong><small class="small">{{vm.isoCurrency}}</small>
+                                </span>
+                                <input type="text" id="estimate" class="form-control" ng-model="ms.manikinService.priceEstimate" z-validate />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cost" class="col-md-2 control-label">Final Service Cost</label>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <strong>{{vm.currencySymbol}}</strong><small class="small">{{vm.isoCurrency}}</small>
+                                </span>
+                                <input type="text" id="cost" class="form-control" ng-model="ms.manikinService.serviceCost" z-validate />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" ng-disabled="ms.disableSave()" class="btn btn-default">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

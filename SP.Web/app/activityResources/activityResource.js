@@ -21,9 +21,9 @@
         vm.courseActivity = $scope.courseActivity;
         vm.createActivityResource = createActivityResource;
         vm.deleteResource = deleteResource;
-        vm.selectedActivityResource = null;
+        vm.getFormattedDate = getFormattedDate;
+        vm.getSizeInKb = getSizeInKb;
 
-        vm.selectActivityResource = selectActivityResource;
         var baseSave = vm.save;
         vm.save = saveOverride;
 
@@ -43,10 +43,6 @@
             });
         }
 
-        function selectActivityResource(activityResource) {
-            vm.selectedActivityResource = activityResource;
-        }
-
         function createActivityResource() {
             vm.selectedActivityResource = datacontext.activityResources.create({
                 courseActivityId: $scope.courseActivity.id
@@ -64,5 +60,15 @@
                 vm.selectedActivityResource = null;
             }
         }
+
+        function getFormattedDate(date) {
+            var dt = moment(date);
+            return dt.format('L') + ' ' + dt.format('LT');
+        }
+
+        function getSizeInKb(bytes) {
+            return $filter('number')(bytes / 1024, 1);
+        }
+
     }
 })();

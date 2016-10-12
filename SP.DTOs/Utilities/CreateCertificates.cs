@@ -5,9 +5,7 @@ using SP.DataAccess;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System;
 
 namespace SP.Dto.Utilities
@@ -191,7 +189,10 @@ var replaceDict = new Dictionary<string, string>() {
                 };
                 #endregion //MasterSlide
                 #region certificates
-                var participants = course.CourseParticipants.Where(cp=>!cp.IsFaculty).ToList();
+                var participants = (from cp in course.CourseParticipants
+                                    where !cp.IsFaculty
+                                    orderby cp.Participant.FullName
+                                    select cp.Participant.FullName).ToList();
 
                 //find equivalent id in first slide
                 document.PresentationPart.DeleteParts(document.PresentationPart.SlideParts);
@@ -213,7 +214,7 @@ var replaceDict = new Dictionary<string, string>() {
                                          select dr))
                     {
                         //should probably be using innerText and xml powertools regex replace
-                        r.Text.Text = r.Text.Text.Replace(fullNameTxt, part.Participant.FullName);
+                        r.Text.Text = r.Text.Text.Replace(fullNameTxt, part);
                     }
                 }
 
