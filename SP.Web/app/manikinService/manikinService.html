@@ -1,45 +1,45 @@
 ﻿<div class="modal mainbox" id="courseParticipantBox" tabindex="-1" role="dialog">
-    <div class="aside-dialog">
-        <div class="aside-content">
-            <form ng-submit="ms.save()" id="courseParticipantForm">
-                <div class="aside-header">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form ng-submit="ms.save()" id="courseParticipantForm" class="form-horizontal">
+                <div class="modal-header">
                     <button class="close" type="button" ng-click="ms.close()">&times;</button>
-                    <h4 class="aside-title">
-                        Manikin Service Details
+                    <h4 class="modal-title">
+                        {{vm.manikin.description}} Service Details
                     </h4>
                 </div>
-                <div class="aside-body">
+                <div class="modal-body">
                     <div class="form-group">
-                        <label for="internal" class="col-md-2 control-label">Service Location</label>
-                        <div class="col-md-10">
+                        <label for="internal" class="col-md-3 control-label">Service Location</label>
+                        <div class="col-md-9">
                             <button type="button" class="btn btn-default" bs-checkbox id="internal" data-z-validate data-ng-model="vm.course.cancelled">
                                 {{ms.manikinService.servicedInternally?'Internal':'External'}}
                             </button>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="sent" class="col-md-2 control-label">Date Sent</label>
-                        <div class="col-md-10">
+                        <label for="sent" class="col-md-3 control-label">Date Sent</label>
+                        <div class="col-md-9">
                             <input id="sent" class="form-control" ng-model="ms.manikinService.sent" z-validate
                                    data-autoclose="1" placeholder="Date" bs-datepicker type="text" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="returned" class="col-md-2 control-label">Date Returned</label>
-                        <div class="col-md-10">
+                        <label for="returned" class="col-md-3 control-label">Date Returned</label>
+                        <div class="col-md-9">
                             <input id="returned" class="form-control" ng-model="ms.manikinService.returned" z-validate
                                    data-autoclose="1" placeholder="Date" bs-datepicker type="text" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="problem" class="col-md-2 control-label">Problem</label>
-                        <div class="col-md-10">
-                            <textarea id="problem" ng-model="ms.manikinService.problemDescription" z-validate/>
+                        <label for="problem" class="col-md-3 control-label">Problem</label>
+                        <div class="col-md-9">
+                            <textarea id="problem" class="form-control" ng-model="ms.manikinService.problemDescription" z-validate/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="estimate" class="col-md-2 control-label">Service Estimate</label>
-                        <div class="col-md-10">
+                        <label for="estimate" class="col-md-3 control-label">Service Estimate</label>
+                        <div class="col-md-9">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <strong>{{vm.currencySymbol}}</strong><small class="small">{{vm.isoCurrency}}</small>
@@ -49,8 +49,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="cost" class="col-md-2 control-label">Final Service Cost</label>
-                        <div class="col-md-10">
+                        <label for="cost" class="col-md-3 control-label">Final Service Cost</label>
+                        <div class="col-md-9">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <strong>{{vm.currencySymbol}}</strong><small class="small">{{vm.isoCurrency}}</small>
@@ -60,11 +60,11 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <button type="submit" ng-disabled="ms.disableSave()" class="btn btn-default">Save</button>
-                        </div>
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" ng-disabled="ms.disableSave()" class="btn btn-default">Save</button>
                     </div>
+                </div>
+                <div class="modal-footer">
                 </div>
             </form>
         </div>

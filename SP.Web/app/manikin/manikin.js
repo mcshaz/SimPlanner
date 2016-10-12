@@ -8,7 +8,7 @@
     courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http', '$locale', '$modal'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http, $locale) {
+    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http, $locale,$modal) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -64,7 +64,7 @@
         }
 
         function getIsoCurrency() {
-            var cultureCode = vm.manikin && vm.manikin.department.institution.localeCode;
+            var cultureCode = vm.manikin && vm.manikin.department && vm.manikin.department.institution.localeCode;
             if (cultureCode) {
                 $http({ method: 'GET', url: 'api/utilities/currencyInfo/' + cultureCode }).then(function (response) {
                     vm.isoCurrency = response.data;
@@ -87,7 +87,7 @@
             if (!_modalInstance) {
                 var scope = $scope.$new();
                 _modalInstance = $modal({
-                    templateUrl: 'app/manikinServices/manikinServices.html',
+                    templateUrl: 'app/manikinService/manikinService.html',
                     controller: 'manikinService',
                     show: false,
                     scope: scope,

@@ -24,7 +24,7 @@
 
         function activate() {
             datacontext.ready().then(function () {
-                common.activateController(promises, controllerId)
+                common.activateController([], controllerId)
                     .then(function () {
                         vm.notifyViewModelLoaded();
                     });

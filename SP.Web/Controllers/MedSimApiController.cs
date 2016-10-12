@@ -75,7 +75,11 @@ namespace SP.Web.Controllers
         [HttpGet]
 		public IQueryable<FacultyScenarioRoleDto> SenarioRoles(){ return Repo.SenarioRoles; } 
         [HttpGet]
-		public IQueryable<ManikinDto> Manikins(){ return Repo.Manikins; }
+		public IQueryable<ManikinDto> Manikins(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetManikins(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
         [HttpGet]
         public IQueryable<ManikinModelDto> ManikinModels() { return Repo.ManikinModels; }
         [HttpGet]

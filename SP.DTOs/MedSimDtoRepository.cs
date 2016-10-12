@@ -84,6 +84,11 @@ namespace SP.Dto
             return Context.CourseSlots.ProjectToDto<CourseSlot, CourseSlotDto>(includes, selects, sepChar);
         }
 
+        public IQueryable<ManikinDto> GetManikins(string[] includes, string[] selects, char sepChar)
+        {
+            return Context.Manikins.ProjectToDto<Manikin, ManikinDto>(includes, selects, sepChar);
+        }
+
         [Serializable]
         public class UnknownPropertyException : Exception
         {
