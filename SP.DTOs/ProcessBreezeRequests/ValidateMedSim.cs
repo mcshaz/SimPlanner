@@ -1,5 +1,6 @@
 ﻿using Breeze.ContextProvider;
 using LinqKit;
+using Microsoft.AspNet.Identity.EntityFramework;
 using SP.DataAccess;
 using SP.DataAccess.Data.Interfaces;
 using SP.Dto.Utilities;
@@ -9,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Security.Principal;
 
 namespace SP.Dto.ProcessBreezeRequests
@@ -31,6 +33,19 @@ namespace SP.Dto.ProcessBreezeRequests
             }
         }
 
+        private static IEnumerable<PropertyInfo> _identityUserDbProperties;
+        private static IEnumerable<PropertyInfo> IdentityUserDbProperties
+        {
+            get
+            {
+                return _identityUserDbProperties ??
+                    (_identityUserDbProperties = typeof(IdentityUser<Guid, AspNetUserLogin, AspNetUserRole, AspNetUserClaim>)
+                        .GetProperties(BindingFlags.DeclaredOnly |
+                                           BindingFlags.Public |
+                                           BindingFlags.Instance));
+            }
+        }
+
         public Dictionary<Type, List<EntityInfo>> Validate(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             IEnumerable<EntityError> errors = new EntityError[0];
@@ -50,6 +65,13 @@ namespace SP.Dto.ProcessBreezeRequests
             {
                 throw new EntityErrorsException(errors);
             }
+            //if a participant, add the server data
+
+            if(saveMap.TryGetValue(typeof(Participant), out currentInfos))
+            {
+                MapIdentityUser(currentInfos);
+            }
+            //now map base64 string/bytearrrays to files
 
             if (saveMap.TryGetValue(typeof(ScenarioResourceDto), out currentInfos))
             {
@@ -83,6 +105,24 @@ namespace SP.Dto.ProcessBreezeRequests
             {
                 DeleteActivityFromFileSystem(ei);
             }
+        }
+
+        void MapIdentityUser(List<EntityInfo> currentInfos)
+        {
+            var breezeParticipants = from ci in currentInfos
+                                     where ci.EntityState == EntityState.Modified
+                                     select (Participant)ci.Entity;
+            var ids = breezeParticipants.Select(p => p.Id);
+            var usrs = Context.Users.Where(u => ids.Contains(u.Id)).ToDictionary(u=>u.Id);
+            foreach (var p in breezeParticipants)
+            {
+                Participant u = usrs[p.Id];
+                foreach (var pi in IdentityUserDbProperties)
+                {
+                    pi.SetValue(p, pi.GetValue(u));
+                }
+            }
+
         }
 
         IEnumerable<EntityError> GetCourseFormatErrors(List<EntityInfo> currentInfos)

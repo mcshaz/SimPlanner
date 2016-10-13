@@ -435,7 +435,7 @@
 
         function removeActivity(cs) {
             if (cs.activity) {
-                var slotsSharingActivity = cs.activity.courseSlots.fiter(function (slotSharingActivity) {
+                var slotsSharingActivity = cs.activity.courseSlots.filter(function (slotSharingActivity) {
                     return slotSharingActivity.id !== cs.id;
                 });
                 if (slotsSharingActivity.lenth) {

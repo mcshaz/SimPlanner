@@ -9,6 +9,7 @@ namespace SP.DataAccess
     using System.Data.Entity.ModelConfiguration.Conventions;
     using System.Data.Entity.Validation;
     using System.Linq;
+
     public partial class MedSimDbContext : IdentityDbContext<Participant, AspNetRole,
         Guid, AspNetUserLogin,AspNetUserRole, AspNetUserClaim>
     {
@@ -424,16 +425,16 @@ namespace SP.DataAccess
                 throw de;
             }
         }
-
         private void SetTimeTracking()
         {
             var now = DateTime.UtcNow;
-            foreach (var ent in ChangeTracker.Entries().Where(e=>e.State == EntityState.Modified || e.State == EntityState.Added))
+            foreach (var ent in ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added))
             {
-                var im = ent.Entity as IModified;
-                if (im != null)
+                var t = ent.Entity.GetType();
+                if (t.GetInterface(nameof(IModified)) != null)
                 {
-                    if(ent.State == EntityState.Modified && im.Modified == default(DateTime))
+                    var im = (IModified)ent.Entity;
+                    if (ent.State == EntityState.Modified && im.Modified == default(DateTime))
                     {
                         ent.Property("Modified").IsModified = false;
                     }
@@ -442,15 +443,14 @@ namespace SP.DataAccess
                         im.Modified = now;
                     }
                 }
-
-                var c = ent.Entity as Course;
-                if (c != null)
+                else if (t == typeof(Course))//not IModified
                 {
+                    var c = (Course)ent.Entity;
                     if (ent.State == EntityState.Added)
                     {
                         c.CourseDatesLastModified = c.CreatedUtc = c.FacultyMeetingDatesLastModified = now;
                     }
-                    else if(ent.State == EntityState.Modified)
+                    else if (ent.State == EntityState.Modified)
                     {
                         if (ent.Property("StartUtc").IsModified)
                         {

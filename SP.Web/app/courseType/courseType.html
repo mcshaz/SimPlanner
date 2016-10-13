@@ -240,9 +240,8 @@
 </script>
 <script type="text/ng-template" id="edit">
     <td class="form-group">
-        <label class="control-label">
-            <input type="checkbox" ng-checked="cs.isScenario" ng-click="vm.isScenarioChanged(cs)" id="isScenario" class="checkbox-inline"
-                    ng-disabled="!cs.entityAspect.entityState.isAdded()" />
+        <label class="control-label" ng-if="cs.entityAspect.entityState.isAdded()">
+            <input type="checkbox" ng-checked="cs.isScenario" ng-click="vm.isScenarioChanged(cs)" id="isScenario" class="checkbox-inline" />
         </label>
     </td>
     <td class="form-group">
