@@ -28,10 +28,11 @@ namespace SP.Dto.ParticipantSummary
             returnVar.PresentationSummary = (from csp in context.CourseSlotPresenters
                                              let course = csp.Course
                                              where csp.ParticipantId == userId && !course.Cancelled && course.StartUtc >= after
+                                                && csp.CourseSlot.Activity != null
                                              group csp by csp.CourseSlot.Activity into a
                                              select new FacultyPresentationRoleSummary
                                              {
-                                                 Description = a.Key.Name,
+                                                 Description = a.Key.CourseType.Abbreviation + "-" + a.Key.Name,
                                                  Count = a.Count()
                                              }).ToList();
 

@@ -3,7 +3,6 @@ using SP.Dto.Utilities;
 using SP.Web.Models;
 using SP.Web.UserEmails;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net.Mail;
