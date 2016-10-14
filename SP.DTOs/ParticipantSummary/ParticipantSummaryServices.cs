@@ -100,7 +100,7 @@ namespace SP.Dto.ParticipantSummary
                         : DbFunctions.AddMinutes(lastDay.StartUtc, lastDay.DurationMins)
                     where c.Id!= course.Id && c.StartUtc < refFinish &&  refStart < cFinish 
                     select new { csm.ManikinId, c.CourseFormat.Description, c.Department.Abbreviation })
-                    .ToKeyValuePairList(a=>a.ManikinId, a=> a.Abbreviation + ' ' + a.Description);
+                    .ToKeyValuePairList(a=>a.ManikinId, a=> a.Abbreviation + '-' + a.Description);
         }
     }
     public class PriorExposures

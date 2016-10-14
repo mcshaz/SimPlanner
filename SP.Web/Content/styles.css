@@ -500,8 +500,9 @@ div.time-accompany{
     pointer-events:all;
 }
 /*CourseRole*/
-.exposed{
-    background-color:blanchedalmond;
+.exposed,.booked{
+    background-color:#FF7518;
+    font-style:italic;
 }
 
 /*Calendar overrides*/

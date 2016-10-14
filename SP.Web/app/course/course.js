@@ -185,6 +185,11 @@
                 return;
             }
             adjustCourseDays();
+            if (vm.course.startUtc) {
+                dateChanged(vm.course.startUtc, "startUtc", vm.course);
+                //not updating in the UI at present
+                vm.course.startUtc = new Date(vm.course.startUtc);
+            }
         }
 
         function adjustCourseDays() {

@@ -28,7 +28,13 @@
                 var priorExposure;
                 var faculty = [];
                 common.activateController([$http({ method: 'GET', url: '/api/ActivitySummary/PriorExposure?courseId=' + id }).then(function (response) {
+                    var bookedManikins = {};
                     priorExposure = response.data;
+                    priorExposure.BookedManikins.forEach(function (bm) {
+                        bookedManikins[bm.Key] = bm.Value;
+                    });
+                    priorExposure.BookedManikins = bookedManikins;
+                    
                 }, vm.log.error),
                 datacontext.courses.fetchByKey(id, {
                     expand: ['courseParticipants.participant',
@@ -83,8 +89,8 @@
                                 id: m.id,
                                 checked: false,
                                 description: m.description,
-                                isBooked: !!priorExposure.BookedManikins[m.id],
-                                bookingDetails: priorExposure.BookedManikins[m.id]
+                                bookedCssClass: priorExposure.BookedManikins[m.id]?'booked':'',
+                                bookingDetails: priorExposure.BookedManikins[m.id] || ''
                             };
                         });
                         /*
@@ -357,7 +363,7 @@
 
         function createBsOptionHtml(text, priorExp) {
             return priorExp
-                ? '<div class="exposed" title="repeat for participants ' + priorExp + '">' + text + '</div>' //<div data-trigger="hover" data-type="warn" data-animation="am-flip-x" data-title="xxxxxx" bs-tooltip ></div>
+                ? '<div class="exposed" title="repeat for participant(s) ' + priorExp + '">' + text + '</div>' //<div data-trigger="hover" data-type="warn" data-animation="am-flip-x" data-title="xxxxxx" bs-tooltip ></div>
                 : '<div>' + text + '</div>';
         }
 
