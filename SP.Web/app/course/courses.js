@@ -105,6 +105,11 @@
                 //gridApi.core.on.sortChanged($scope, sortChanged);
                 gridApi.core.on.filterChanged($scope, filterChanged);
                 //gridApi.pagination.on.paginationChanged($scope, updateData);
+
+                //feels like a hack
+                if (gridApi.grid.options.columnDefs.some(function (cd) { return !!(cd.filter && cd.filter.term); })) {
+                    setTimeout(filterChanged.bind(gridApi),1);
+                }
             }
         };
         activate();

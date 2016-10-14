@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('app')
-        .factory('modelBuilder', ['breeze', 'moment', factory]);
+        .factory('modelBuilder', ['breeze', 'moment', 'common', factory]);
 
-    function factory(breeze, moment) {
+    function factory(breeze, moment,common) {
         var self = {
             extendMetadata: extendMetadata
         };
@@ -92,6 +92,7 @@
                     enumerable: true,
                     configurable: true,
                     get: function () {
+                        //.filter(function (cd) { return cd.day <= this.courseFormat.daysDuration; }) - unnecesasry as server setting course day to 0 in such cases
                         return this.courseDays.reduce(function (a, b) { return a + b.durationMins; }, this.durationMins);
                     }
                 });

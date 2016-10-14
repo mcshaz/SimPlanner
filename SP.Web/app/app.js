@@ -62,18 +62,21 @@
             'm': function(value) { return value * 60; },
             'h': function(value) { return value * 3600; }
         };
-        var testUiGridAggregateVals = /^[\w\s]+:\s*/;
+        var testUiGridAggregateVals = /^([^\d]*)(\d+\.?\d*)$/;
 
         return function (value, unit, format) {
+            var prefix = '';
             if (value === angular.undefined) { return ''; }
             if (typeof value === 'string') {
-                value = value.replace(testUiGridAggregateVals, '');
+                value = testUiGridAggregateVals.exec(value);
+                prefix = value[1];
+                value = value[2];
             }
             value = parseFloat(value);
             var totalSeconds = conversions[(unit || 's')[0]](value);
             format = format || 'hh:mm:ss';
 
-            return format.replace(/hh?/, function(capture){
+            return prefix + format.replace(/hh?/, function(capture){
                 var h = Math.floor(totalSeconds / 3600);
                 return capture.length === 1
                     ? h

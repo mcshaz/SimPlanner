@@ -438,7 +438,7 @@
                 var slotsSharingActivity = cs.activity.courseSlots.filter(function (slotSharingActivity) {
                     return slotSharingActivity.id !== cs.id;
                 });
-                if (slotsSharingActivity.lenth) {
+                if (slotsSharingActivity.length) {
                     if (slotsSharingActivity.every(function (slotSharingActivity) {
                         return !slotSharingActivity.isActive;
                     })) {
@@ -462,6 +462,8 @@
                 })).then(function () {
                     removeActivity(cs);
                 });
+            } else {
+                cs.isActive = false;
             }
         }
     }

@@ -13,7 +13,7 @@ body {
 }
 
 .sidebar-widget form {
-    margin: 0em -1em;
+    margin: 0 -1em;
 }
 
 .sidebar .navi > li > a {
@@ -401,6 +401,11 @@ a {
 }
 .aside{
     width:33%;
+}
+#nextApptDetails li {
+    margin-left:1.5em;
+    padding-left: 1.5em;
+    text-indent:-1.5em;
 }
 #activityResourceBox{
     width:66%
