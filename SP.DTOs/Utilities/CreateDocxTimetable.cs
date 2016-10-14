@@ -23,7 +23,7 @@ namespace SP.Dto.Utilities
                         .Include("CourseFormat.CourseSlots.Activity.ActivityChoices")
                         .Include("CourseFormat.CourseType")
                         .Include("CourseSlotPresenters")
-                        .Include("CourseSlotManikins")
+                        .Include("CourseSlotManikins.Manikin")
                         .Include("CourseScenarioFacultyRoles.FacultyScenarioRole")
                         .Include("CourseSlotActivities.Activity")
                         .Include("CourseSlotActivities.Scenario");
@@ -37,7 +37,7 @@ namespace SP.Dto.Utilities
 
         static IList<TimetableRow> GetTimeTableRows(Course course)
         {
-            var start = course.StartUtc;
+            var start = course.StartLocal;
             int scenarioCount = 0;
             var csps = course.CourseSlotPresenters.ToLookup(c=>c.CourseSlotId);
             //var csfrs = course.CourseScenarioFacultyRoles.ToLookup(c => c.CourseSlotId);
