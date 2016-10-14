@@ -118,10 +118,10 @@
                                     {{s.servicedInternally}}
                                 </td>
                                 <td>
-                                    {{s.sent}}
+                                    {{s.sent | amDateFormat:'L'}}
                                 </td>
                                 <td>
-                                    {{s.returned}}
+                                    {{s.returned | amDateFormat:'L'}}
                                 </td>
                                 <td bs-tooltip data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="{{s.problemDescription}}">
                                     {{s.problemDescription | limitTo:20}}<span ng-if="s.problemDescription.length>20">&hellip;</span>

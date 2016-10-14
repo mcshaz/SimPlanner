@@ -7,7 +7,7 @@ namespace SP.Dto.Maps
         public ManikinServiceMaps() : base(m => new ManikinService
             {
                 Id = m.Id,
-                ManikinId = m.Id,
+                ManikinId = m.ManikinId,
                 PriceEstimate =m.PriceEstimate,
                 ProblemDescription =m.ProblemDescription,
                 Sent =m.Sent,
@@ -18,7 +18,7 @@ namespace SP.Dto.Maps
             m => new ManikinServiceDto
             {
                 Id = m.Id,
-                ManikinId = m.Id,
+                ManikinId = m.ManikinId,
                 PriceEstimate = m.PriceEstimate,
                 ProblemDescription = m.ProblemDescription,
                 Sent = m.Sent,

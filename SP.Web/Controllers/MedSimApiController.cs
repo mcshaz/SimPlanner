@@ -74,7 +74,7 @@ namespace SP.Web.Controllers
         }
         [HttpGet]
 		public IQueryable<FacultyScenarioRoleDto> SenarioRoles(){ return Repo.SenarioRoles; } 
-        [HttpGet]
+        [HttpGet, EnableMappedBreezeQuery(MaxExpansionDepth = 4)]
 		public IQueryable<ManikinDto> Manikins(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);

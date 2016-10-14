@@ -74,7 +74,7 @@
 
         function editService(service) {
             var modal = getModalInstance();
-            modal.$scope.manikinsService = service;
+            modal.$scope.manikinService = service;
             modal.$promise.then(modal.show);
         }
 
