@@ -364,8 +364,7 @@
         function participantIdsToName(ids) {
             if (!ids) {return ids;}
             var names = ids.map(function(id){
-                return vm.course.participants.find(function(p){
-                    return p.id === id;}).name;
+                return datacontext.participants.getByKey(id).fullName;
             });
             return names.join(', ');
         }
