@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SP.DataAccess.Helpers
+namespace SP.DataAccess.Utilities
 {
-    internal static class Extensions
+    internal static class DateTimeExtensions
     {
         internal static DateTime AsUtc(this DateTime inptDate)
         {

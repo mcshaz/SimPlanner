@@ -30,5 +30,7 @@ namespace SP.Dto
         public ICollection<CourseTypeScenarioRoleDto> CourseTypeScenarioRoles { get; set; }
 
         public ICollection<CourseFormatDto> CourseFormats { get; set; }
+
+        public virtual ICollection<CandidatePrereadingDto> CandidatePrereading { get; set; }
     }
 }

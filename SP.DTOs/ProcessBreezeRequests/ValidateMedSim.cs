@@ -3,6 +3,7 @@ using LinqKit;
 using Microsoft.AspNet.Identity.EntityFramework;
 using SP.DataAccess;
 using SP.DataAccess.Data.Interfaces;
+using SP.Dto.Maps;
 using SP.Dto.Utilities;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,14 @@ namespace SP.Dto.ProcessBreezeRequests
             }
         }
 
+        private static readonly Type[] _associatedFiles = new[] {
+            typeof(Institution),
+            typeof(Room),
+            typeof(ScenarioResource),
+            typeof(CandidatePrereading),
+            typeof(Activity)
+        };
+
         private static IEnumerable<PropertyInfo> _identityUserDbProperties;
         private static IEnumerable<PropertyInfo> IdentityUserDbProperties
         {
@@ -46,7 +55,7 @@ namespace SP.Dto.ProcessBreezeRequests
             }
         }
 
-        public Dictionary<Type, List<EntityInfo>> Validate(Dictionary<Type, List<EntityInfo>> saveMap)
+        public Dictionary<Type, List<EntityInfo>> ValidateAndMapToServer(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             IEnumerable<EntityError> errors = new EntityError[0];
 
@@ -61,31 +70,50 @@ namespace SP.Dto.ProcessBreezeRequests
                 errors = errors.Concat(GetInstitutionErrors(currentInfos));
             }
 
-            if (errors.Any())
+            if (saveMap.TryGetValue(typeof(CandidatePrereadingDto), out currentInfos))
             {
-                throw new EntityErrorsException(errors);
+                errors = errors.Concat(GetCandidatePrereadingErrors(currentInfos));
             }
-            //if a participant, add the server data
 
-            if(saveMap.TryGetValue(typeof(Participant), out currentInfos))
+            if (saveMap.TryGetValue(typeof(RoomDto), out currentInfos))
             {
-                MapIdentityUser(currentInfos);
-            }
-            //now map base64 string/bytearrrays to files
-
-            if (saveMap.TryGetValue(typeof(ScenarioResourceDto), out currentInfos))
-            {
-                //if error function for scenario resource, place here and only proceed if no errors
-                SaveScenarioFileToFileSystem(currentInfos);
+                errors = errors.Concat(GetRoomErrors(currentInfos));
             }
 
             if (saveMap.TryGetValue(typeof(ActivityDto), out currentInfos))
             {
-                //if error function for scenario resource, place here and only proceed if no errors
-                SaveActivityFileToFileSystem(currentInfos);
+                errors = errors.Concat(GetActivityErrors(currentInfos));
             }
 
-            return saveMap;
+            if (saveMap.TryGetValue(typeof(ScenarioResourceDto), out currentInfos))
+            {
+                errors = errors.Concat(GetScenarioResourceErrors(currentInfos));
+            }
+
+            if (errors.Any())
+            {
+                throw new EntityErrorsException(errors);
+            }
+
+            //avoid clobbering details sitting in out database not mapped to the DTO
+            if(saveMap.TryGetValue(typeof(ParticipantDto), out currentInfos))
+            {
+                MapIdentityUser(currentInfos);
+            }
+
+
+            //map to server model
+            var returnVar = new Dictionary<Type, List<EntityInfo>>();
+
+            foreach (var kv in saveMap)
+            {
+                Type serverType = MapperConfig.GetServerModelType(kv.Key);
+                var mapper = MapperConfig.GetFromDtoMapper(kv.Key);
+                var vals = kv.Value.Select(d => d.ContextProvider.CreateEntityInfo(mapper(d.Entity), d.EntityState)).ToList();
+                returnVar.Add(serverType, vals);
+            }
+
+            return returnVar;
         }
 
         public void PostValidation(Dictionary<Type, List<EntityInfo>> saveMap, List<KeyMapping> maps)
@@ -95,16 +123,7 @@ namespace SP.Dto.ProcessBreezeRequests
             {
                 UpdateICourseDays(ei.Select(e=> (CourseSlot)e.Entity));
             }
-
-            if (saveMap.TryGetValue(typeof(ScenarioResource), out ei))
-            {
-                DeleteScenarioFromFileSystem(ei);
-            }
-
-            if (saveMap.TryGetValue(typeof(Activity), out ei))
-            {
-                DeleteActivityFromFileSystem(ei);
-            }
+            DeleteFilesFromFileSystem(saveMap.TryGetValues(_associatedFiles).SelectMany(f=>f));
         }
 
         void MapIdentityUser(List<EntityInfo> currentInfos)
@@ -127,7 +146,7 @@ namespace SP.Dto.ProcessBreezeRequests
 
         IEnumerable<EntityError> GetCourseFormatErrors(List<EntityInfo> currentInfos)
         {
-            var cfs = TypedEntityinfo<CourseFormatDto>.GetTyped(currentInfos);
+            var cfs = TypedEntityInfo<CourseFormatDto>.GetTyped(currentInfos);
 
             //multiple individual queries may be the way to go here
             var pred = cfs.Aggregate(PredicateBuilder.New<CourseFormat>(), (prev, cur) => prev.Or(
@@ -160,7 +179,7 @@ namespace SP.Dto.ProcessBreezeRequests
 
         IEnumerable<EntityError> GetParticipantErrors(List<EntityInfo> currentInfos)
         {
-            var ps = TypedEntityinfo<ParticipantDto>.GetTyped(currentInfos);
+            var ps = TypedEntityInfo<ParticipantDto>.GetTyped(currentInfos);
 
             /* too dificult, and there are exceptions - had been trying to keep drs as drs etc
             var pred = PredicateBuilder.False<ProfessionalRole>();
@@ -201,7 +220,7 @@ namespace SP.Dto.ProcessBreezeRequests
 
         IEnumerable<EntityError> GetInstitutionErrors(List<EntityInfo> currentInfos)
         {
-            var insts = TypedEntityinfo<InstitutionDto>.GetTyped(currentInfos);
+            var insts = TypedEntityInfo<InstitutionDto>.GetTyped(currentInfos);
             List<EntityError> returnVar = new List<EntityError>();
 
             foreach (var i in insts)
@@ -236,61 +255,153 @@ namespace SP.Dto.ProcessBreezeRequests
                             "StandardTimeZone"));
                     }
                 }
+                returnVar.AddRange(GetFileErrors(i.Entity.File, i, () => Context.Institutions.Find(i.Entity.Id)));
             }
             return returnVar;
         }
 
-        void SaveScenarioFileToFileSystem(IEnumerable<EntityInfo> scenarioResources)
+        IEnumerable<EntityError> GetCandidatePrereadingErrors(List<EntityInfo> currentInfos)
         {
-            foreach (var sr in (from ei in scenarioResources
-                                 let sr = (ScenarioResourceDto)ei.Entity
-                                 where ei.EntityState == EntityState.Added || ei.EntityState == EntityState.Modified
-                                    && sr.File != null
-                                 select sr))
+            var prereadings = TypedEntityInfo<CandidatePrereadingDto>.GetTyped(currentInfos);
+            List<EntityError> returnVar = new List<EntityError>();
+
+            foreach (var p in prereadings)
             {
-                sr.CreateFile((from s in Context.Scenarios
-                               where s.Id == sr.ScenarioId
-                               select s.DepartmentId).First());
+                returnVar.AddRange(GetFileErrors(p.Entity.File, p, () => Context.CandidatePrereadings.Find(p.Entity.Id)));
             }
+            return returnVar;
         }
 
-        void DeleteScenarioFromFileSystem(IEnumerable<EntityInfo> scenarioResources)
+        IEnumerable<EntityError> GetRoomErrors(List<EntityInfo> currentInfos)
         {
-            foreach (var sr in (from ei in scenarioResources
-                                let sr = (ScenarioResource)ei.Entity
-                                where ei.EntityState == EntityState.Deleted || sr.FileName == null
-                                select sr))
+            var rooms = TypedEntityInfo<RoomDto>.GetTyped(currentInfos);
+            List<EntityError> returnVar = new List<EntityError>();
+
+            foreach (var r in rooms)
             {
-                sr.DeleteFile((from s in Context.Scenarios
-                               where s.Id == sr.ScenarioId
-                               select s.DepartmentId).First());
+                returnVar.AddRange(GetFileErrors(r.Entity.File, r, () => Context.Rooms.Find(r.Entity.Id)));
             }
+            return returnVar;
         }
 
-        void SaveActivityFileToFileSystem(IEnumerable<EntityInfo> activityResources)
+        IEnumerable<EntityError> GetScenarioResourceErrors(List<EntityInfo> currentInfos)
         {
-            foreach (var atr in (from ei in activityResources
-                                let atr = (ActivityDto)ei.Entity
-                                where (ei.EntityState == EntityState.Added || ei.EntityState == EntityState.Modified)
-                                   && atr.File != null
-                                select atr))
+            var resources = TypedEntityInfo<ScenarioResourceDto>.GetTyped(currentInfos);
+            List<EntityError> returnVar = new List<EntityError>();
+
+            foreach (var r in resources)
             {
-                atr.CreateFile((from ca in Context.CourseActivities
-                               where ca.Id == atr.CourseActivityId
-                               select ca.CourseTypeId).First());
+                returnVar.AddRange(GetFileErrors(r.Entity.File, r, () => Context.ScenarioResources.Find(r.Entity.Id)));
             }
+            return returnVar;
         }
 
-        void DeleteActivityFromFileSystem(IEnumerable<EntityInfo> activityResources)
+        IEnumerable<EntityError> GetActivityErrors(List<EntityInfo> currentInfos)
         {
-            foreach (var atr in (from ei in activityResources
-                                let atr = (Activity)ei.Entity
-                                 where ei.EntityState == EntityState.Deleted || atr.FileName == null
-                                 select atr))
+            var activities = TypedEntityInfo<ActivityDto>.GetTyped(currentInfos);
+            List<EntityError> returnVar = new List<EntityError>();
+
+            foreach (var a in activities)
             {
-                atr.DeleteFile((from ca in Context.CourseActivities
-                               where ca.Id == atr.CourseActivityId
-                               select ca.CourseTypeId).First());
+                returnVar.AddRange(GetFileErrors(a.Entity.File, a, () => Context.Activities.Find(a.Entity.Id)));
+            }
+            return returnVar;
+        }
+
+        IEnumerable<EntityError> GetFileErrors<T>(byte[] file, TypedEntityInfo<T> entityInfo, Func<IAssociateFileRequired> getExistingEntity) where T : class, IAssociateFileRequired
+        {
+            var returnVar = GetBaseErrors(file, entityInfo, entityInfo.Entity.FileSize, entityInfo.Entity.FileModified, () => getExistingEntity().AsOptional());
+            if (entityInfo.Info.EntityState == EntityState.Added)
+            {
+                if (file == null)
+                {
+                    returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
+                        "FileNull",
+                        "A file must be supplied for upload",
+                        "File"));
+                }
+            }
+            
+            return returnVar;
+        }
+
+        List<EntityError> GetBaseErrors<T>(byte[] file, TypedEntityInfo<T> entityInfo, long? fileSize, DateTime? fileModified, Func<IAssociateFileOptional> getExistingEntity) where T:class, IAssociateFile
+        {
+            var returnVar = new List<EntityError>();
+            if (file != null && fileSize != file.Length)
+            {
+                returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
+                    "FileSizeDifference",
+                    "The file size stated is different to the size of the file being uploaded",
+                    "FileSize"));
+            }
+            if (fileModified == default(DateTime))
+            {
+                returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
+                    "FileModifiedDefaultDate",
+                    $"The file modified must not be the default value for a date ({(default(DateTime)):D})",
+                    "FileModified"));
+            }
+            if (entityInfo.Info.EntityState == EntityState.Modified && file == null)
+            {
+                var existingEntity = getExistingEntity();
+                if (entityInfo.Entity.FileName != existingEntity.FileName)
+                {
+                    returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
+                    "FileNameDifferWithExisting",
+                    "The filename is different to the existing filename, but no new file is being uploaded",
+                    "FileName"));
+                }
+                if (fileModified != existingEntity.FileModified)
+                {
+                    returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
+                    "FileModifiedDifferWithExisting",
+                    "The file modified date is different to the existing date modified, but no new file is being uploaded",
+                    "FileModified"));
+                }
+                if (fileSize != existingEntity.FileSize)
+                {
+                    returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
+                    "FileSizeDifferWithExisting",
+                    "The file size is different to the existing file size, but no new file is being uploaded",
+                    "FileSize"));
+                }
+            }
+            return returnVar;
+        }
+
+        IEnumerable<EntityError> GetFileErrors<T>(byte[] file, TypedEntityInfo<T> entityInfo, Func<IAssociateFileOptional> getExistingEntity) where T: class, IAssociateFileOptional
+        {
+            var returnVar = GetBaseErrors(file, entityInfo, entityInfo.Entity.FileSize, entityInfo.Entity.FileModified, getExistingEntity);
+
+            if ((entityInfo.Entity.FileModified == null) != (entityInfo.Entity.FileName == null) || (entityInfo.Entity.FileName == null) != (entityInfo.Entity.FileSize == null))
+            {
+                if (entityInfo.Entity.FileName == null)
+                {
+                    returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
+                        "FileNamePropertiesDiscordant",
+                        "Filename is null but file size and date modified are not also null",
+                        "FileName"));
+                }
+                else
+                {
+                    returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
+                        "FileNamePropertiesDiscordant",
+                        "Filename is not null but file size or date modified are null",
+                        "FileName"));
+                }
+            }
+            return returnVar;
+        }
+
+        void DeleteFilesFromFileSystem(IEnumerable<EntityInfo> fileEntities)
+        {
+            foreach (var f in (from ei in fileEntities
+                                let fr = ei.Entity as IAssociateFile
+                                where fr != null && ei.EntityState == EntityState.Deleted
+                                select fr))
+            {
+                f.DeleteFile();
             }
         }
 
@@ -307,10 +418,9 @@ namespace SP.Dto.ProcessBreezeRequests
             foreach (var course in Context.Courses.Include("CourseDays").Include("CourseFormat")
                     .Where(c=>c.StartUtc > DateTime.UtcNow && courseFormatIds.Contains(c.CourseFormatId)))
             {
-                int i = 0;
-                var days = course.AllDays().ToDictionary(k=>++i);
+                var days = course.AllDays().ToDictionary(k=>k.Day);
 
-                for (i = 1; i <= course.CourseFormat.DaysDuration; i++)
+                for (int i = 1; i <= course.CourseFormat.DaysDuration; i++)
                 {
                     ICourseDay icd;
                     if (!days.TryGetValue(i,out icd)){
@@ -376,14 +486,14 @@ namespace SP.Dto.ProcessBreezeRequests
             public InvalidDataException(string msg) : base(msg) { }
         }
 
-        class TypedEntityinfo<T>
+        class TypedEntityInfo<T>
         {
             internal T Entity;
             internal EntityInfo Info;
 
-            internal static IEnumerable<TypedEntityinfo<T>> GetTyped(IEnumerable<EntityInfo> info)
+            internal static IEnumerable<TypedEntityInfo<T>> GetTyped(IEnumerable<EntityInfo> info)
             {
-                return info.Select(i => new TypedEntityinfo<T> { Info = i, Entity = (T)i.Entity }).ToList();
+                return info.Select(i => new TypedEntityInfo<T> { Info = i, Entity = (T)i.Entity }).ToList();
             }
         }
 

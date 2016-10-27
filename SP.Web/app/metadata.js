@@ -1,4 +1,4 @@
-//201610062304535_iModified
+//201610240906080_iAssociateFile
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -3546,12 +3546,7 @@
         {
           "name": "serviceCost",
           "dataType": "Decimal",
-          "isNullable": false,
-          "defaultValue": 0,
           "validators": [
-            {
-              "name": "required"
-            },
             {
               "name": "number"
             }

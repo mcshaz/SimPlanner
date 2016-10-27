@@ -41,11 +41,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="DelegateDecompiler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93b26a10a04705bd, processorArchitecture=MSIL">
-      <HintPath>..\packages\DelegateDecompiler.0.19.0\lib\net40-Client\DelegateDecompiler.dll</HintPath>
+      <HintPath>..\packages\DelegateDecompiler.0.20.0\lib\net40-Client\DelegateDecompiler.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DelegateDecompiler.EntityFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93b26a10a04705bd, processorArchitecture=MSIL">
-      <HintPath>..\packages\DelegateDecompiler.EntityFramework.0.19.0\lib\net45\DelegateDecompiler.EntityFramework.dll</HintPath>
+      <HintPath>..\packages\DelegateDecompiler.EntityFramework.0.20.0\lib\net45\DelegateDecompiler.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -60,12 +60,12 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Jint, Version=2.9.1.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jint.2.9.1\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\Jint.dll</HintPath>
+    <Reference Include="jint, Version=2.10.2.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
+      <HintPath>..\packages\jint.2.10.2\lib\net45\jint.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="LinqKit, Version=1.1.7.3, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
-      <HintPath>..\packages\LinqKit.1.1.7.3\lib\net461\LinqKit.dll</HintPath>
+    <Reference Include="LinqKit, Version=1.1.8.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.1.1.8.0\lib\net461\LinqKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
@@ -93,6 +93,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.Contracts" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -132,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\CourseDayDto.cs" />
+    <Compile Include="Dto\CandidatePrereadingDto.cs" />
     <Compile Include="Dto\CourseSlotManikinDto.cs" />
     <Compile Include="Dto\CourseTypeScenarioRoleDto.cs" />
     <Compile Include="Dto\FacultyScenarioRoleDto.cs" />
@@ -176,7 +178,7 @@
     <Compile Include="Maps\HotDrinkMaps.cs" />
     <Compile Include="Maps\CourseTypeScenarioRoleMaps.cs" />
     <Compile Include="Maps\DomainDtoMap.cs" />
-    <Compile Include="Maps\IDomainDtoMap.cs" />
+    <Compile Include="Interfaces\IDomainDtoMap.cs" />
     <Compile Include="Maps\ManikinManufacturerMaps.cs" />
     <Compile Include="Maps\ManikinMaps.cs" />
     <Compile Include="Maps\ManikinModelMaps.cs" />
@@ -189,7 +191,7 @@
     <Compile Include="Maps\CourseParticipantMaps.cs" />
     <Compile Include="Maps\CourseSlotMaps.cs" />
     <Compile Include="Maps\CourseSlotPresenterMaps.cs" />
-    <Compile Include="Maps\CourseTeachingResourceMaps.cs" />
+    <Compile Include="Maps\ActivityMaps.cs" />
     <Compile Include="Maps\CourseTypeMaps.cs" />
     <Compile Include="Maps\DepartmentMaps.cs" />
     <Compile Include="Maps\InstitutionMaps.cs" />
@@ -198,6 +200,7 @@
     <Compile Include="Maps\CourseSlotActivityMaps.cs" />
     <Compile Include="Maps\CourseScenarioFacultyRoleMaps.cs" />
     <Compile Include="Maps\ScenarioMaps.cs" />
+    <Compile Include="Maps\CandidatePrereadingMaps.cs" />
     <Compile Include="Maps\ScenarioResourceMaps.cs" />
     <Compile Include="Maps\FacultyScenarioRoleMapsMaps.cs" />
     <Compile Include="Maps\RoleMaps.cs" />
@@ -218,7 +221,7 @@
     <Compile Include="Utilities\CreateDocxTimetable.cs" />
     <Compile Include="Utilities\LinqExtensions.cs" />
     <Compile Include="Utilities\OpenXmlExtensions.cs" />
-    <Compile Include="Utilities\ResourceExtensions.cs" />
+    <Compile Include="Utilities\IAssociateFileExtensions.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +234,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

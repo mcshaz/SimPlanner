@@ -1,10 +1,11 @@
+using SP.DataAccess.Data.Interfaces;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SP.Metadata
-{        
-	public class InstitutionMetadata
+{
+    public class InstitutionMetadata
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -19,6 +20,9 @@ namespace SP.Metadata
         //public string About { get; set; }
         [FixedLength(Length=5)]
         public string LocaleCode { get; set; }
+
+        [Range(FileDefaults._minFileSize, FileDefaults._maxFileSize, ErrorMessage = FileDefaults._errMsg)]
+        public long? FileSize { get; set; }
 
         [StringLength(40)]
         public string StandardTimeZone { get; set; }

@@ -12,7 +12,6 @@ namespace SP.Dto.Maps
                 ScenarioId = m.ScenarioId,
                 FileModified = m.FileModified,
                 FileSize = m.FileSize,
-                //File = m.File
             },
             m => new ScenarioResourceDto
             {
@@ -22,7 +21,6 @@ namespace SP.Dto.Maps
                 ScenarioId = m.ScenarioId,
                 FileModified = m.FileModified,
                 FileSize = m.FileSize
-                //Scenario = m.Scenario
             })
         { }
     }

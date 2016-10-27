@@ -19,7 +19,7 @@ namespace SP.DataAccess
 
         public decimal? PriceEstimate { get; set; }
 
-        public decimal ServiceCost { get; set; }
+        public decimal? ServiceCost { get; set; }
 
         public Guid ManikinId { get; set; }
 

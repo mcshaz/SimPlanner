@@ -11,6 +11,7 @@ using Ical.Net.DataTypes;
 using Ical.Net.Serialization.iCalendar.Serializers;
 using Ical.Net.Interfaces.DataTypes;
 using System.Collections.Generic;
+using SP.Dto;
 
 namespace SP.Web.UserEmails
 {

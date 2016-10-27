@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SP.DataAccess.Data.Interfaces;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SP.Metadata
@@ -13,5 +14,8 @@ namespace SP.Metadata
         public string FullDescription { get; set; }
         [StringLength(256)]
         public string Directions { get; set; }
+
+        [Range(FileDefaults._minFileSize, FileDefaults._maxFileSize, ErrorMessage = FileDefaults._errMsg)]
+        public long FileSize { get; set; }
     }
 }

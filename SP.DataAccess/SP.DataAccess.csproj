@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AngleSharp, Version=0.9.7.21214, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
-      <HintPath>..\packages\AngleSharp.0.9.7\lib\net45\AngleSharp.dll</HintPath>
+    <Reference Include="AngleSharp, Version=0.9.8.1, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\packages\AngleSharp.0.9.8.1\lib\net45\AngleSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
@@ -47,7 +47,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlSanitizer, Version=3.0.0.0, Culture=neutral, PublicKeyToken=61c49a1a9e79cc28, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlSanitizer.3.3.132-beta\lib\net45\HtmlSanitizer.dll</HintPath>
+      <HintPath>..\packages\HtmlSanitizer.3.3.142\lib\net45\HtmlSanitizer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\CandidatePrereading.cs" />
     <Compile Include="Data\CourseDay.cs" />
     <Compile Include="Data\CourseActivity.cs" />
     <Compile Include="Data\Authentication\AspNetRole.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Data\CourseType.cs" />
     <Compile Include="Data\Enum\SharingLevel.cs" />
     <Compile Include="Data\HotDrink.cs" />
+    <Compile Include="Data\Interfaces\IAssociateFile.cs" />
     <Compile Include="Data\Interfaces\ICourseDay.cs" />
     <Compile Include="Data\Interfaces\IModified.cs" />
     <Compile Include="Data\Manikin.cs" />
@@ -123,7 +125,7 @@
     <Compile Include="Data\CourseFormat.cs" />
     <Compile Include="Data\Participant.cs" />
     <Compile Include="Data\CourseSlot.cs" />
-    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
     <Compile Include="Metadata\CourseDayMetadata.cs" />
@@ -150,6 +152,7 @@
     <Compile Include="Metadata\InstitutionMetadata.cs" />
     <Compile Include="Metadata\ParticipantMetadata.cs" />
     <Compile Include="Metadata\ProfessionalRoleMetadata.cs" />
+    <Compile Include="Metadata\CandidateResourceMetadata.cs" />
     <Compile Include="Metadata\ResourceMetadata.cs" />
     <Compile Include="Metadata\RoomMetadata.cs" />
     <Compile Include="Metadata\CourseScenarioFacultyRoleMetadata.cs" />
@@ -255,6 +258,10 @@
     <Compile Include="Migrations\201610062304535_iModified.Designer.cs">
       <DependentUpon>201610062304535_iModified.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610240906080_iAssociateFile.cs" />
+    <Compile Include="Migrations\201610240906080_iAssociateFile.Designer.cs">
+      <DependentUpon>201610240906080_iAssociateFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AddConstraints.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\SqlHelpers.cs" />
@@ -340,6 +347,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610062304535_iModified.resx">
       <DependentUpon>201610062304535_iModified.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610240906080_iAssociateFile.resx">
+      <DependentUpon>201610240906080_iAssociateFile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

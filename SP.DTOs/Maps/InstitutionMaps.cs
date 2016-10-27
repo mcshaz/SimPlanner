@@ -13,7 +13,11 @@ namespace SP.Dto.Maps
                 LocaleCode = m.LocaleCode,
                 StandardTimeZone = m.StandardTimeZone,
                 Latitude = m.Latitude,
-                Longitude = m.Longitude
+                Longitude = m.Longitude,
+                AdminApproved = m.AdminApproved,
+                FileModified = m.FileModified,
+                LogoImageFileName = m.LogoImageFileName,
+                FileSize = m.FileSize
             },
             m => new InstitutionDto
             {
@@ -24,7 +28,11 @@ namespace SP.Dto.Maps
                 LocaleCode = m.LocaleCode,
                 StandardTimeZone = m.StandardTimeZone,
                 Latitude = m.Latitude,
-                Longitude = m.Longitude
+                Longitude = m.Longitude,
+                AdminApproved = m.AdminApproved,
+                FileModified = m.FileModified,
+                LogoImageFileName = m.LogoImageFileName,
+                FileSize = m.FileSize
             })
         { }
     }

@@ -1,7 +1,6 @@
 namespace SP.DataAccess
 {
     using Data.Interfaces;
-    using Helpers;
     using SP.Metadata;
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -28,6 +27,5 @@ namespace SP.DataAccess
         public int DurationMins { get; set; }
 
         public virtual Course Course {get; set;}
-
     }
 }

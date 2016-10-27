@@ -33,7 +33,7 @@
 
         vm.authExternalProvider = function (provider) {
             var port = $location.port();
-            var redirectUri = $location.protocol() + '://' + $location.host() + (port?(':' + port):'') + '/app/auth/authcomplete.html';
+            var redirectUri = $location.protocol() + '://' + $location.host() + (port?':' + port:'') + '/app/auth/authcomplete.html';
             var externalProviderUrl = ngAuthSettings.apiServiceBaseUri + "api/Account/ExternalLogin?provider=" + provider
                                                                         + "&response_type=token&client_id=" + ngAuthSettings.clientId
                                                                         + "&redirect_uri=" + redirectUri;
@@ -53,7 +53,7 @@
                 }
 
             });
-        }
+        };
 
         function forgotPassword() {
             //close dialog and redirect
@@ -82,6 +82,6 @@
         return "height=" + winHeight +
             ",width=" + winWidth +
             ",top=" + top +
-            ",left=" + left ;
+            ",left=" + left;
     }
 })();

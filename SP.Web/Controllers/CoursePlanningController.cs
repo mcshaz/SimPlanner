@@ -1,4 +1,5 @@
 ﻿using SP.DataAccess;
+using SP.Dto;
 using SP.Dto.Utilities;
 using SP.Web.Models;
 using SP.Web.UserEmails;
@@ -23,6 +24,16 @@ namespace SP.Web.Controllers
                 return _repository ?? (_repository = new MedSimDbContext());
             }
         }
+        /*
+        private MedSimDtoRepository _repository; // not populating in constructor as I believe this may be too early
+        private MedSimDtoRepository Repo
+        {
+            get
+            {
+                return _repository ?? (_repository = new MedSimDtoRepository(User));
+            }
+        }
+        */
 
         //[Route("EmailAll")]
         [HttpPost]
@@ -39,7 +50,6 @@ namespace SP.Web.Controllers
             {
                 return Ok("The course finish must be after now");
             }
-            course.EmailSequence++;
 
             var result = await CreateParticipantEmails.SendEmail(course, User);
 
@@ -48,7 +58,6 @@ namespace SP.Web.Controllers
                 cp.EmailedUtc = now;
             }
 
-            await Repo.SaveChangesAsync();
             return Ok(new { SuccessRecipients = result[true].Select(cp=>cp.ParticipantId), FailRecipients = result[false].Select(cp => cp.ParticipantId) });
         }
 
@@ -85,7 +94,7 @@ namespace SP.Web.Controllers
             {
                 bool wasConfirmed = part.IsConfirmed.Value;
                 part.IsConfirmed = model.IsAttending;
-                Repo.SaveChanges();
+                await Repo.SaveChangesAsync();
                 using (var client = new SmtpClient())
                 {
                     using (var mail = new MailMessage())

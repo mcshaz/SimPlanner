@@ -1,5 +1,4 @@
-﻿using SP.Dto.Maps;
-using SP.Dto.Utilities;
+﻿using SP.Dto.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +18,7 @@ namespace SP.Dto.Maps
             var maps = new IDomainDtoMap[]
             {
                 new ActivityMaps(),
+                new CandidatePrereadingMaps(),
                 new CultureMaps(),
                 new CourseMaps(),
                 new CourseActivityMaps(),

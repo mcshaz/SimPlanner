@@ -203,5 +203,17 @@ namespace SP.Dto.Utilities
         {
             return new List<KeyValuePair<TKey, TValue>>(source.Select(s=>new KeyValuePair<TKey, TValue>(keySelector(s), valueSelector(s))));
         }
+
+        public static IEnumerable<TValue> TryGetValues<TKey, TValue>(this IDictionary<TKey, TValue> dict, params TKey[] keys)
+        {
+            foreach(var k in keys)
+            {
+                TValue val;
+                if (dict.TryGetValue(k, out val))
+                {
+                    yield return val;
+                }
+            }
+        }
     }
 }

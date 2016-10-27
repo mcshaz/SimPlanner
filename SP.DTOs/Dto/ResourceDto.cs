@@ -1,3 +1,4 @@
+using SP.DataAccess.Data.Interfaces;
 using SP.Metadata;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace SP.Dto
         public byte[] File { get; set; }
 	}
     [MetadataType(typeof(ActivityResourceMetadata))]
-    public class ActivityDto : ResourceDto
+    public class ActivityDto : ResourceDto, IAssociateFileOptional
     {
         public Guid CourseActivityId { get; set; }
         public CourseActivityDto CourseActivity { get; set; }
@@ -23,7 +24,7 @@ namespace SP.Dto
         public virtual ICollection<CourseSlotActivityDto> CourseSlotActivities { get; set; }
     }
     [MetadataType(typeof(ScenarioResourceMetadata))]
-    public class ScenarioResourceDto : ResourceDto
+    public class ScenarioResourceDto : ResourceDto, IAssociateFileRequired
     {
         public Guid ScenarioId { get; set; }
         public ScenarioDto Scenario { get; set; }

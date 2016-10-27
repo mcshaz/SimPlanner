@@ -1,11 +1,14 @@
+using SP.DataAccess.Data.Interfaces;
 using SP.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace SP.Dto
 {
     [MetadataType(typeof(InstitutionMetadata))]
-    public class InstitutionDto
+    public class InstitutionDto : IAssociateFileOptional
 	{
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -15,10 +18,17 @@ namespace SP.Dto
         public string StandardTimeZone { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
+        public string LogoImageFileName { get; set; }
+        public bool AdminApproved { get; set; }
+        [NotMapped]
+        string IAssociateFile.FileName { get { return LogoImageFileName; } }
+
+        public DateTime? FileModified { get; set; }
+        public long? FileSize { get; set; }
+        public byte[] File { get; set; }
+
         public CultureDto Culture { get; set; }
         public virtual ICollection<DepartmentDto> Departments { get; set; }
         public virtual ICollection<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get; set; }
-
-
     }
 }

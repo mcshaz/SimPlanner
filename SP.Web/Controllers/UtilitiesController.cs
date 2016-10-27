@@ -16,6 +16,7 @@ using System.Web;
 using SP.Web.Controllers.Helpers;
 using SP.Dto;
 using System.Data.Entity;
+using SP.DataAccess;
 
 namespace SP.Web.Controllers
 {
@@ -37,14 +38,18 @@ namespace SP.Web.Controllers
             }
         }
 
-        MedSimDtoRepository _context;
-        private MedSimDtoRepository Context
+        MedSimDbContext _repo;
+        private MedSimDbContext Repo
         {
-            get { return _context ?? (_context = new MedSimDtoRepository(User)); }
-            set { _context = value; }
+            get { return _repo ?? (_repo = HttpContext.Current.GetOwinContext().Get<MedSimDbContext>()); }
         }
-
         /*
+        MedSimDtoRepository _repo;
+        private MedSimDtoRepository Repo
+        {
+            get { return _repo ?? (_repo = new MedSimDtoRepository(User)); }
+            set { _repo = value; }
+        }
         private async Task<bool> VerifyAccessTokenAsync(string access_token, Guid userId)
         {
             var user = UserManager.FindByIdAsync(userId);
@@ -135,11 +140,8 @@ namespace SP.Web.Controllers
                 return validation;
             }
 
-            var scenario = await Context.GetScenarios(_emptyString, _emptyString).FirstAsync(s=>s.Id == model.EntitySetId);
-
-            var path = ResourceExtensions.ScenarioResourceToPath(scenario.DepartmentId, scenario.Id);
-
-            return StreamToResponse(new FileStream(path, FileMode.Open), scenario.BriefDescription + ".zip");
+            var sr = await Repo.ScenarioResources.Include(s=>s.Scenario).FirstOrDefaultAsync(s=>s.ScenarioId == model.EntitySetId);
+            return StreamToResponse(new FileStream(sr.GetServerPath(), FileMode.Open), sr.Scenario.BriefDescription + ".zip");
         }
 
         [Route("GetTimetable")]
@@ -152,7 +154,7 @@ namespace SP.Web.Controllers
                 return validation;
             }
 
-            var course = await CreateDocxTimetable.GetCourseIncludes(Context)
+            var course = await CreateDocxTimetable.GetCourseIncludes(Repo)
                 .FirstOrDefaultAsync(c => c.Id == model.EntitySetId);
             return StreamToResponse(
                 CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath),
@@ -168,7 +170,7 @@ namespace SP.Web.Controllers
             {
                 return validation;
             }
-            var course = await CreateCertificates.GetCourseIncludes(Context)
+            var course = await CreateCertificates.GetCourseIncludes(Repo)
                     .FirstOrDefaultAsync(c => c.Id == model.EntitySetId);
             return StreamToResponse(
                 CreateCertificates.CreatePptxCertificates(course, WebApiConfig.DefaultCertificateTemplatePath),
@@ -214,9 +216,9 @@ namespace SP.Web.Controllers
         {
             if (disposing)
             {
-                if (_context != null)
+                if (_repo != null)
                 {
-                    _context.Dispose();
+                    _repo.Dispose();
                 }
                 _streamsToDispose.ForEach(s=>s.Dispose());
             }

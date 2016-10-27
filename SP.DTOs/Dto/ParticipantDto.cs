@@ -1,7 +1,10 @@
+using SP.DataAccess;
 using SP.Dto.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
+
 namespace SP.Dto
 {
     [MetadataType(typeof(ParticipantDtoMetadata))]
@@ -24,5 +27,24 @@ namespace SP.Dto
         public virtual ICollection<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresentations { get; set; }
         public virtual ICollection<UserRoleDto> Roles { get; set; }
+    }
+
+    public static class ParticipantExtensions
+    {
+        public static void AddParticipants(this MailAddressCollection addresses, Participant participant)
+        {
+            AddParticipants(addresses, new[] { participant });
+        }
+        public static void AddParticipants(this MailAddressCollection addresses, IEnumerable<Participant> participants)
+        {
+            foreach (var participant in participants)
+            {
+                addresses.Add(new MailAddress(participant.Email, participant.FullName));
+                if (participant.AlternateEmail != null)
+                {
+                    addresses.Add(new MailAddress(participant.AlternateEmail, participant.FullName));
+                }
+            }
+        }
     }
 }

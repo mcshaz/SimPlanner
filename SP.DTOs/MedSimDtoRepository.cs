@@ -17,7 +17,7 @@ namespace SP.Dto
         private readonly ValidateMedSim _validationHelper;
         private readonly IPrincipal _user;
 
-        internal MedSimDbContext Context
+        public MedSimDbContext Context
         {
             get { return _contextProvider.Context; }
         }
@@ -34,16 +34,7 @@ namespace SP.Dto
 
         Dictionary<Type, List<EntityInfo>> MapToServerTypes(Dictionary<Type, List<EntityInfo>> dtos)
         {
-            _validationHelper.Validate(dtos);
-            var returnVar = new Dictionary<Type, List<EntityInfo>>();
-            foreach (var kv in dtos)
-            {
-                Type serverType = MapperConfig.GetServerModelType(kv.Key);
-                var mapper = MapperConfig.GetFromDtoMapper(kv.Key);
-                var vals = kv.Value.Select(d => _contextProvider.CreateEntityInfo(mapper(d.Entity), d.EntityState)).ToList();
-                returnVar.Add(serverType, vals);
-            }
-            return returnVar;
+            return _validationHelper.ValidateAndMapToServer(dtos);
         }
 
         public static string GetEdmxMetadata()
@@ -209,6 +200,11 @@ namespace SP.Dto
         public IQueryable<CourseTypeDto> GetCourseTypes()
         {
             return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(includes: new[] { "CourseFormats" });
+        }
+
+        public int IncrementEmail(Guid courseId)
+        {
+            return (Context.Database.ExecuteSqlCommand($"UPDATE Courses SET EmailSequence = EmailSequence + 1 WHERE Id = {{guid '{courseId}'}}"));
         }
 
         #region IDisposable

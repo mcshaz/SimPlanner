@@ -1,3 +1,4 @@
+using SP.DataAccess.Data.Interfaces;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -15,8 +16,8 @@ namespace SP.Metadata
         public string Description { get; set; }
         [StringLength(256)]
         public string FileName { get; set; }
-        internal const int _maxFileSize = 250 * 1024;
-        [Range(0,_maxFileSize, ErrorMessage = "File Size must be less than 250 KB")]
+
+        [Range(FileDefaults._minFileSize, FileDefaults._maxFileSize, ErrorMessage = FileDefaults._errMsg)]
         public long? FileSize { get; set; }
         public DateTime? FileModified { get; set; }
     }
@@ -33,7 +34,7 @@ namespace SP.Metadata
         [Required]
         public string FileName { get; set; }
         [Required]
-        [Range(0, ActivityResourceMetadata._maxFileSize, ErrorMessage = "File Size must be less than 250 KB")]
+        [Range(FileDefaults._minFileSize, FileDefaults._maxFileSize, ErrorMessage = FileDefaults._errMsg)]
         [DefaultValue(0)]
         public long FileSize { get; set; }
         [Required]

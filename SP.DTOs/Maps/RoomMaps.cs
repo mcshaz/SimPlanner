@@ -11,15 +11,21 @@ namespace SP.Dto.Maps
                 DepartmentId = m.DepartmentId,
                 ShortDescription = m.ShortDescription,
                 FullDescription = m.FullDescription,
-                Directions = m.Directions
-            },
+                Directions = m.Directions,
+                FileModified = m.FileModified,
+                FileName = m.FileName,
+                FileSize = m.FileSize
+        },
             m => new RoomDto
             {
                 Id = m.Id,
                 DepartmentId = m.DepartmentId,
                 ShortDescription = m.ShortDescription,
                 FullDescription = m.FullDescription,
-                Directions = m.Directions
+                Directions = m.Directions,
+                FileModified = m.FileModified,
+                FileName = m.FileName,
+                FileSize = m.FileSize
             })
         { }
 

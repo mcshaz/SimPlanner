@@ -31,7 +31,7 @@
             }).then(function (response) {
                 tokenStorageService.notifyLogin(response.data);
                 return response.data;
-            }, log.error);
+            }); //intentionally no error handler as will be handled by the authentication service
         }
 
         function logout() {

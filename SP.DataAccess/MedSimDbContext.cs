@@ -23,6 +23,7 @@ namespace SP.DataAccess
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<MedSimDbContext, Configuration>());
         }
         public virtual DbSet<Activity> Activities { get; set; }
+        public virtual DbSet<CandidatePrereading> CandidatePrereadings { get; set; }
         public virtual DbSet<Culture> Cultures { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<CourseActivity> CourseActivities { get; set; }
@@ -175,25 +176,7 @@ namespace SP.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseType>()
-                .HasOptional(e => e.InstructorCourse)
-                .WithMany()
-                .HasForeignKey(e => e.InstructorCourseId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<CourseType>()
-                .HasMany(e => e.CourseTypeScenarioRoles)
-                .WithRequired(e => e.CourseType)
-                .HasForeignKey(e=>e.CourseTypeId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<CourseType>()
-                .HasMany(e => e.CourseFormats)
-                .WithRequired(e => e.CourseType)
-                .HasForeignKey(e=>e.CourseTypeId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<CourseType>()
-                .HasMany(e => e.Scenarios)
+                .HasMany(e => e.CandidatePrereading)
                 .WithRequired(e => e.CourseType)
                 .HasForeignKey(e => e.CourseTypeId);
 
@@ -203,7 +186,30 @@ namespace SP.DataAccess
                 .HasForeignKey(e => e.CourseTypeId);
 
             modelBuilder.Entity<CourseType>()
+                .HasMany(e => e.CourseFormats)
+                .WithRequired(e => e.CourseType)
+                .HasForeignKey(e => e.CourseTypeId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseType>()
                 .HasMany(e => e.CourseTypeDepartments)
+                .WithRequired(e => e.CourseType)
+                .HasForeignKey(e => e.CourseTypeId);
+
+            modelBuilder.Entity<CourseType>()
+                .HasMany(e => e.CourseTypeScenarioRoles)
+                .WithRequired(e => e.CourseType)
+                .HasForeignKey(e=>e.CourseTypeId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseType>()
+                .HasOptional(e => e.InstructorCourse)
+                .WithMany()
+                .HasForeignKey(e => e.InstructorCourseId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseType>()
+                .HasMany(e => e.Scenarios)
                 .WithRequired(e => e.CourseType)
                 .HasForeignKey(e => e.CourseTypeId);
 

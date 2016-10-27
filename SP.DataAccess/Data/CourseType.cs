@@ -18,19 +18,16 @@ namespace SP.DataAccess
 
         public virtual CourseType InstructorCourse { get; set; }
 
-
         public virtual ICollection<CourseActivity> CourseActivities { get; set; }
-
 
         public virtual ICollection<CourseTypeDepartment> CourseTypeDepartments { get; set; }
 
-
         public virtual ICollection<Scenario> Scenarios { get; set; }
-
 
         public virtual ICollection<CourseTypeScenarioRole> CourseTypeScenarioRoles { get; set;}
 
-
         public virtual ICollection<CourseFormat> CourseFormats { get; set; }
+
+        public virtual ICollection<CandidatePrereading> CandidatePrereading { get; set; }
     }
 }
