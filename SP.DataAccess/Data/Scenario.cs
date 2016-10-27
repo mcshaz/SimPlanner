@@ -30,10 +30,7 @@ namespace SP.DataAccess
         public virtual CourseType CourseType { get; set; }
         public virtual Department Department { get; set; }
 
-
         public virtual ICollection<ScenarioResource> ScenarioResources{ get; set; }
-
-
         public virtual ICollection<CourseSlotActivity> CourseSlotScenarios{ get; set; }
     }
 }

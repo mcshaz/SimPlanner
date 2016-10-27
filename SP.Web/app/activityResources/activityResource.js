@@ -22,7 +22,7 @@
         vm.createActivityResource = createActivityResource;
         vm.deleteResource = deleteResource;
         vm.getFormattedDate = getFormattedDate;
-        vm.getSizeInKb = getSizeInKb;
+        vm.getSizeInKiB = getSizeInKiB;
 
         var baseSave = vm.save;
         vm.save = saveOverride;
@@ -66,7 +66,7 @@
             return dt.format('L') + ' ' + dt.format('LT');
         }
 
-        function getSizeInKb(bytes) {
+        function getSizeInKiB(bytes) {
             return $filter('number')(bytes / 1024, 1);
         }
 

@@ -12,21 +12,27 @@ namespace SP.Dto.Utilities
 {
     public static class CreateDocxTimetable
     {
-        public static DbQuery<Course> GetCourseIncludes(MedSimDtoRepository repo)
+        private static readonly string[] _includeList = new [] {"CourseParticipants.Participant",
+            "Department.Institution.Culture",
+            "CourseFormat.CourseSlots.Activity.ActivityChoices",
+            "CourseFormat.CourseType",
+            "CourseSlotPresenters",
+            "CourseSlotManikins.Manikin",
+            "CourseScenarioFacultyRoles.FacultyScenarioRole",
+            "CourseSlotActivities.Activity",
+            "CourseSlotActivities.Scenario"
+        };
+        public static IQueryable<CourseDto> GetCourseIncludes(MedSimDtoRepository repo)
         {
-            return GetCourseIncludes(repo.Context);
+            return repo.GetCourses(_includeList);
         }
         public static DbQuery<Course> GetCourseIncludes(MedSimDbContext context)
         {
-            return context.Courses.Include("CourseParticipants.Participant")
-                        .Include("Department.Institution.Culture")
-                        .Include("CourseFormat.CourseSlots.Activity.ActivityChoices")
-                        .Include("CourseFormat.CourseType")
-                        .Include("CourseSlotPresenters")
-                        .Include("CourseSlotManikins.Manikin")
-                        .Include("CourseScenarioFacultyRoles.FacultyScenarioRole")
-                        .Include("CourseSlotActivities.Activity")
-                        .Include("CourseSlotActivities.Scenario");
+            DbQuery<Course> returnVar = context.Courses;
+            foreach (var i in _includeList) {
+                returnVar = returnVar.Include(i);
+            }
+            return returnVar;
         }
 
         static void UpdateMetadata(WordprocessingDocument doc, Course course)

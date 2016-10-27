@@ -20,7 +20,8 @@ namespace SP.DataAccess
         public double? Longitude { get; set; }
         public bool AdminApproved { get; set; }
         public string LogoImageFileName { get; set; }
-
+        [NotMapped]
+        public byte[] File { get; set; }
         [NotMapped]
         string IAssociateFile.FileName { get { return LogoImageFileName; } }
 

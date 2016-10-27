@@ -27,14 +27,19 @@ namespace SP.Dto
 
             _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
             _validationHelper = new ValidateMedSim(user);
-            _contextProvider.BeforeSaveEntitiesDelegate += MapToServerTypes; 
-            _contextProvider.AfterSaveEntitiesDelegate += _validationHelper.PostValidation;
+            _contextProvider.BeforeSaveEntitiesDelegate += BeforeSaveEntities; 
+            _contextProvider.AfterSaveEntitiesDelegate += _validationHelper.AfterSave;
             _user = user;
         }
 
-        Dictionary<Type, List<EntityInfo>> MapToServerTypes(Dictionary<Type, List<EntityInfo>> dtos)
+        Dictionary<Type, List<EntityInfo>> BeforeSaveEntities(Dictionary<Type, List<EntityInfo>> dtos)
         {
-            return _validationHelper.ValidateAndMapToServer(dtos);
+            var errors = _validationHelper.ValidateDto(dtos);
+            if (errors.Any())
+            {
+                throw new EntityErrorsException(errors);
+            }
+            return ValidateMedSim.MapDtoToServerType(dtos);
         }
 
         public static string GetEdmxMetadata()

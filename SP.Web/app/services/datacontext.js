@@ -34,6 +34,8 @@
                 .then(function (saveResult) {
                     saveResult.entities.forEach(function (el) {
                         if (el.entityAspect.instantiationValues) { delete el.entityAspect.instantiationValues; }
+                        //following should not be necessary as not being mapped back
+                        //if (el.file) { el.file = null; }
                     });
                     $rootScope.$broadcast('saved', saveResult.entities);
                     log.success({ msg: 'Saved changes', data: saveResult, showToast: true });
@@ -42,6 +44,7 @@
         };
 
         self.activityResources = repository.create(self.provider, 'ActivityDto', 'Activities');
+        self.candidatePrereadings = repository.create(self.provider, 'CandidatePrereadingDto', 'CandidatePrereadings');
         self.courses = repository.create(self.provider, 'CourseDto', 'Courses');
         self.cultures = repository.create(self.provider, 'CultureDto', 'Cultures', breeze.FetchStrategy.FromLocalCache);
         self.courseActivities = repository.create(self.provider, 'CourseActivityDto', 'CourseActivities');

@@ -27,7 +27,7 @@ namespace SP.Web.UserEmails
                 using (var appt = new AppointmentStream(cal))
                 {
                     var map = ((Expression<Func<CourseParticipant, CourseParticipantDto>>)new CourseParticipantMaps().MapToDto).Compile();
-                    var faculty = course.CourseParticipants.Where(cp=>!map(cp).IsEmailed)
+                    var faculty = course.CourseParticipants.Where(cp => !map(cp).IsEmailed)
                         .ToLookup(cp => cp.IsFaculty);
 
                     IEnumerable<Attachment> attachments = new Attachment[0];
@@ -62,7 +62,7 @@ namespace SP.Web.UserEmails
                                     appt.Add(fm);
                                 }
                             }
-                            attachments = course.GetFilePaths().Select(fp => new Attachment(fp.Value, "application/zip") { Name = fp.Key })
+                            attachments = GetFilePaths(course).Select(fp => new Attachment(fp.Value, System.Net.Mime.MediaTypeNames.Application.Zip) { Name = fp.Key })
                                 .Concat(new[] { new Attachment(CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath), OpenXmlDocxExtensions.DocxMimeType) { Name = CreateDocxTimetable.TimetableName(course)} });
                             foreach (var cp in faculty[true])
                             {
@@ -75,6 +75,18 @@ namespace SP.Web.UserEmails
                     }
                 }
             }
+        }
+
+        private static IEnumerable<KeyValuePair<string, string>> GetFilePaths(Course course)
+        {
+            return (from s in course.CourseSlotActivities
+                    let sr = s.Scenario.ScenarioResources.FirstOrDefault(ssr => ssr.FileName != null)
+                    where sr != null
+                    select new KeyValuePair<string, string>(s.Scenario.BriefDescription, sr.GetServerPath()))
+                   .Concat(from ctr in course.CourseSlotActivities
+                           let atr = ctr.Activity
+                           where atr.FileName != null
+                           select new KeyValuePair<string, string>(atr.Description, atr.GetServerPath()));
         }
     }
 

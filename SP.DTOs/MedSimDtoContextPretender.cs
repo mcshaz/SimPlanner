@@ -144,7 +144,7 @@ namespace SP.Dto
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseTypeDto>()
-                .HasMany(e => e.CandidatePrereading)
+                .HasMany(e => e.CandidatePrereadings)
                 .WithRequired(e => e.CourseType)
                 .HasForeignKey(e => e.CourseTypeId);
 

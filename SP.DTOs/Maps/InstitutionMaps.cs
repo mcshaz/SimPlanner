@@ -17,8 +17,9 @@ namespace SP.Dto.Maps
                 AdminApproved = m.AdminApproved,
                 FileModified = m.FileModified,
                 LogoImageFileName = m.LogoImageFileName,
-                FileSize = m.FileSize
-            },
+                FileSize = m.FileSize,
+                File = m.File
+        },
             m => new InstitutionDto
             {
                 Id = m.Id,

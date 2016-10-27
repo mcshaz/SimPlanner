@@ -21,6 +21,8 @@ namespace SP.DataAccess
         public string FileName { get; set; }
         public DateTime? FileModified { get; set; }
         public long? FileSize { get; set; }
+        [NotMapped]
+        public byte[] File { get; set; }
 
         public virtual Department Department { get; set; }
         public virtual ICollection <Course> Courses { get; set; }

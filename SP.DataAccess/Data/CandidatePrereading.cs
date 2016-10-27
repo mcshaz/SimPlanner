@@ -13,6 +13,8 @@ namespace SP.DataAccess
         public string FileName { get; set; }
         public DateTime FileModified { get; set; }
         public long FileSize { get; set; }
+        [NotMapped]
+        public byte[] File { get; set; }
 
         public Guid CourseTypeId { get; set; }
 

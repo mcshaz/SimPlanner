@@ -5,14 +5,14 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside','$q'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside','$q','$filter'];
 
-    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside, $q) {
+    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside, $q, $filter) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseSlots', 'courseType.courseFormats.courseSlots.activity', 'courseType.courseTypeDepartments'],
+            watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseSlots', 'courseType.courseFormats.courseSlots.activity', 'courseType.courseTypeDepartments', 'candidatePrereadings'],
             $scope: $scope
         });
         var id = $routeParams.id;
@@ -22,6 +22,7 @@
         //note also this variable is used in the functions below to identify which object is updated 
         vm.activeFormatIndex = -1;
         vm.activitySelected = activitySelected;
+        vm.addPrereading = addPrereading;
         vm.alterDayMarkers = alterDayMarkers;
         vm.alterObsoleteFormat = alterObsoleteFormat;
         vm.clone = clone;
@@ -34,6 +35,7 @@
         vm.editChoices = editChoices;
         vm.emersionCategories = common.getEnumValues().emersion;
         vm.getCourseActivityNames = getCourseActivityNames;
+        vm.getSizeInKiB = getSizeInKiB;
         vm.instructorCourses = [];
         vm.isScenarioChanged = isScenarioChanged;
         vm.removeSlot = removeSlot;
@@ -114,7 +116,7 @@
                         function departmentMap(d) {
                             return {
                                 id: d.id,
-                                checked: ctds.some(function (ctd) { return ctd.departmentId === d.id}),
+                                checked: ctds.some(function (ctd) { return ctd.departmentId === d.id; }),
                                 open: true,
                                 name: d.name,
                                 abbrev: d.abbreviation
@@ -148,6 +150,10 @@
             reinstateInactive(slot.courseFormat);
         }
 
+        function addPrereading() {
+            datacontext.candidatePrereadings.create({ courseTypeId: vm.courseType.id });
+        }
+
         function createActivity(slot) {
             slot.activity = datacontext.courseActivities.create({
                 courseTypeId: vm.courseType.id
@@ -177,6 +183,9 @@
             slot.activityId = slot.activity = null;
         }
         */
+        function getSizeInKiB(bytes) {
+            return $filter('number')(bytes / 1024, 1);
+        }
 
         function getCourseActivityNames(name) {
             name = name.toLowerCase();

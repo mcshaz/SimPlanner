@@ -12,7 +12,7 @@ namespace SP.Dto.Maps
             CourseActivityId = m.CourseActivityId,
             FileModified = m.FileModified,
             FileSize = m.FileSize,
-            //File = m.File
+            File = m.File
         },
         m => new ActivityDto
         {

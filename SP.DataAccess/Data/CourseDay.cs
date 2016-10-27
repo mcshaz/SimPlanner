@@ -4,14 +4,15 @@ namespace SP.DataAccess
     using SP.Metadata;
     using System;
     using System.ComponentModel.DataAnnotations;
+    using Utilities;
 
     [MetadataType(typeof(CourseDayMetadata))]
     public class CourseDay : ICourseDay
     {
         public Guid CourseId { get; set; }
         public int Day { get; set; }
-
-        private DateTime _startUtc;
+        public int DurationMins { get; set; }
+        DateTime _startUtc;
         public DateTime StartUtc
         {
             get
@@ -23,8 +24,6 @@ namespace SP.DataAccess
                 _startUtc = value.AsUtc();
             }
         }
-
-        public int DurationMins { get; set; }
 
         public virtual Course Course {get; set;}
     }

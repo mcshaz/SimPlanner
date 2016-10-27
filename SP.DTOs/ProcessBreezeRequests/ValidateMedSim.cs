@@ -34,14 +34,6 @@ namespace SP.Dto.ProcessBreezeRequests
             }
         }
 
-        private static readonly Type[] _associatedFiles = new[] {
-            typeof(Institution),
-            typeof(Room),
-            typeof(ScenarioResource),
-            typeof(CandidatePrereading),
-            typeof(Activity)
-        };
-
         private static IEnumerable<PropertyInfo> _identityUserDbProperties;
         private static IEnumerable<PropertyInfo> IdentityUserDbProperties
         {
@@ -55,7 +47,7 @@ namespace SP.Dto.ProcessBreezeRequests
             }
         }
 
-        public Dictionary<Type, List<EntityInfo>> ValidateAndMapToServer(Dictionary<Type, List<EntityInfo>> saveMap)
+        public IEnumerable<EntityError> ValidateDto(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             IEnumerable<EntityError> errors = new EntityError[0];
 
@@ -90,19 +82,11 @@ namespace SP.Dto.ProcessBreezeRequests
                 errors = errors.Concat(GetScenarioResourceErrors(currentInfos));
             }
 
-            if (errors.Any())
-            {
-                throw new EntityErrorsException(errors);
-            }
+            return errors;
+        }
 
-            //avoid clobbering details sitting in out database not mapped to the DTO
-            if(saveMap.TryGetValue(typeof(ParticipantDto), out currentInfos))
-            {
-                MapIdentityUser(currentInfos);
-            }
-
-
-            //map to server model
+        public static Dictionary<Type, List<EntityInfo>> MapDtoToServerType(Dictionary<Type, List<EntityInfo>> saveMap)
+        {
             var returnVar = new Dictionary<Type, List<EntityInfo>>();
 
             foreach (var kv in saveMap)
@@ -116,14 +100,38 @@ namespace SP.Dto.ProcessBreezeRequests
             return returnVar;
         }
 
-        public void PostValidation(Dictionary<Type, List<EntityInfo>> saveMap, List<KeyMapping> maps)
+        public void AfterSave(Dictionary<Type, List<EntityInfo>> saveMap, List<KeyMapping> maps)
         {
             List<EntityInfo> ei;
             if (saveMap.TryGetValue(typeof(CourseSlot), out ei))
             {
                 UpdateICourseDays(ei.Select(e=> (CourseSlot)e.Entity));
             }
-            DeleteFilesFromFileSystem(saveMap.TryGetValues(_associatedFiles).SelectMany(f=>f));
+            var iAssocFiles = (from s in saveMap
+                               where s.Key.IsAssignableFrom(typeof(IAssociateFile))
+                               from v in s.Value
+                               select v).ToLookup(k => k.EntityState, v => (IAssociateFile)v.Entity);
+
+            foreach (var i in iAssocFiles[EntityState.Deleted]) {
+                i.DeleteFile();
+            }
+
+            foreach (var i in iAssocFiles[EntityState.Added].Concat(iAssocFiles[EntityState.Modified]))
+            {
+                if (i.File != null)
+                {
+                    var o = i as IAssociateFileOptional;
+                    if (o == null)
+                    {
+                        ((IAssociateFileRequired)i).StoreFile();
+                    }
+                    else
+                    {
+                        o.StoreFile();
+                    }
+                    i.File = null;
+                }
+            }
         }
 
         void MapIdentityUser(List<EntityInfo> currentInfos)
@@ -392,17 +400,6 @@ namespace SP.Dto.ProcessBreezeRequests
                 }
             }
             return returnVar;
-        }
-
-        void DeleteFilesFromFileSystem(IEnumerable<EntityInfo> fileEntities)
-        {
-            foreach (var f in (from ei in fileEntities
-                                let fr = ei.Entity as IAssociateFile
-                                where fr != null && ei.EntityState == EntityState.Deleted
-                                select fr))
-            {
-                f.DeleteFile();
-            }
         }
 
         //if corseslots altered, need to update upcoming courses

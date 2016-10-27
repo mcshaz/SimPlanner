@@ -30,7 +30,7 @@
         vm.complexities = enums.difficulty;
         vm.emersionCategories = enums.emersion;
         vm.getFormattedDate = getFormattedDate;
-        vm.getSizeInKb = getSizeInKb;
+        vm.getSizeInKiB = getSizeInKiB;
         vm.sharingLevels = enums.sharingLevel.map(function (el) { return { value:el, display: common.toSeparateWords(el) }; });
 
         activate();
@@ -78,7 +78,7 @@
             return dt.format('L') + ' ' + dt.format('LT');
         }
 
-        function getSizeInKb(bytes) {
+        function getSizeInKiB(bytes) {
             return $filter('number')(bytes/1024, 1);
         }
 

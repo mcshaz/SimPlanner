@@ -62,18 +62,16 @@ namespace SP.Dto.Utilities
             return new AssociateFileRequiredWrapper(required);
         }
 
-        internal static void StoreFile(this IAssociateFileRequired resource, byte[] file)
+        internal static void StoreFile(this IAssociateFileRequired resource)
         {
-
             string path = GetServerPath(resource);
-            CreateFile(file, resource.FileName, resource.FileModified, path);
+            CreateFile(resource.File, resource.FileName, resource.FileModified, path);
         }
 
-        internal static void StoreFile(this IAssociateFileOptional resource, byte[] file)
+        internal static void StoreFile(this IAssociateFileOptional resource)
         {
-
             string path = GetServerPath(resource);
-            CreateFile(file, resource.FileName, resource.FileModified.Value, path);
+            CreateFile(resource.File, resource.FileName, resource.FileModified.Value, path);
         }
 
         private static void CreateFile(byte[] file, string fileName, DateTime fileModified, string path)
@@ -155,5 +153,6 @@ namespace SP.Dto.Utilities
         long? IAssociateFileOptional.FileSize { get { return _assocFile.FileSize; } }
         DateTime? IAssociateFileOptional.FileModified { get { return _assocFile.FileModified; } }
         Guid IAssociateFile.Id { get { return _assocFile.Id; } }
+        byte[] IAssociateFile.File { get { return _assocFile.File; } set { _assocFile.File = value; } }
     }  
 }

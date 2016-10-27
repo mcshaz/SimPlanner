@@ -16,6 +16,8 @@ namespace SP.DataAccess
         public DateTime? FileModified { get; set; }
         public long? FileSize { get; set; }
         public string FileName { get; set; }
+        [NotMapped]
+        public byte[] File { get; set; }
 
         public Guid CourseActivityId { get; set; }
         public virtual CourseActivity CourseActivity { get; set; }
@@ -30,6 +32,8 @@ namespace SP.DataAccess
         public string FileName { get; set; }
         public DateTime FileModified { get; set; }
         public long FileSize { get; set; }
+        [NotMapped]
+        public byte[] File { get; set; }
 
         public Guid ScenarioId { get; set; }
         public virtual Scenario Scenario { get; set; }

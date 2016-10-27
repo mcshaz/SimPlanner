@@ -22,9 +22,9 @@
                         data.sort(common.sortOnPropertyName('description'));
                         vm.courseTypes = data;
                         data.forEach(function (el) {
-                            el.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole','order'));
+                            el.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole', 'order'));
                         });
-                    })], controllerId)
+                    })], controllerId);
             });
         }
     }

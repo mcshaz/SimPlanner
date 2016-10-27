@@ -14,8 +14,9 @@ namespace SP.Dto.Maps
                 Directions = m.Directions,
                 FileModified = m.FileModified,
                 FileName = m.FileName,
-                FileSize = m.FileSize
-        },
+                FileSize = m.FileSize,
+                File = m.File
+            },
             m => new RoomDto
             {
                 Id = m.Id,

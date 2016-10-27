@@ -3,7 +3,7 @@
         <div class="container col-md-12">
             <form class="form-horizontal" ng-submit="vm.save($event)" id="courseFormatForm">
                 <div class="row">
-                    <fieldset class="col-md-7">
+                    <fieldset class="col-md-12">
                         <legend>Shared Course Details</legend>
                         <div class="form-group">
                             <label for="ctDescription" class="col-md-3 control-label">
@@ -61,7 +61,52 @@
                                 </select>
                             </div>
                         </div>
-                        <button class="btn-link" ng-click="vm.createNewFormat()" type="button"><i class="fa fa-plus-circle"></i> New Format</button>
+
+                        <h4>Candidate Pre-reading</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>File</th>
+                                    <th>Modified</th>
+                                    <th>Size</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="cp in vm.courseType.candidatePrereading">
+                                    <td>
+                                        <div class="input-group">
+                                            <label class="input-group-btn">
+                                                <span class="btn btn-primary">
+                                                    Browse&hellip;
+                                                    <input type="file" ng-model="cp.file" app-filereader ng-file-size="cp.fileSize" ng-file-name="cp.fileName" ng-last-modified="cp.fileModified" style="display:none!important;" />
+                                                </span>
+                                            </label>
+                                            <input type="text" class="form-control" readonly ng-model="cp.fileName" z-validate z-append-to="td">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" disabled type="text" ng-value="vm.getFormattedDate(cp.fileModified)" />
+                                    </td>
+                                    <!--TO DO check validates on big files-->
+                                    <td>
+                                        <input type="hidden" ng-model="cp.fileSize" z-validate z-append-to="td" />
+                                        <div class="input-group">
+                                            <input class="form-control" disabled type="text" ng-value="vm.getSizeInKiB(cp.fileSize)" />
+                                            <span class="input-group-addon">KiB</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-link" ng-click="sr.entityAspect.setDeleted()"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the course type first" bs-tooltip bs-enabled="vm.courseType.entityAspect.entityState.isAdded()">
+                            <button type="button" ng-click="vm.addPrereading()" class="btn btn-link" ng-disabled="vm.courseType.entityAspect.entityState.isAdded()"><i class="fa fa-plus-square"></i>Add Candidate Pre-reading</button>
+                        </div>
+
+                        <button class="btn-link" ng-click="vm.createNewFormat()" type="button"><i class="fa fa-plus-square"></i> New Format</button>
                     </fieldset>
                 </div>
                 <div class="panel-group" ng-model="vm.activeFormatIndex" role="tablist" aria-multiselectable="true" bs-collapse data-allow-multiple="false">
@@ -73,8 +118,8 @@
                         </div>
                         <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                             <div class="panel-body">
-                                <div class="row col-md-12">
-                                    <div class="col-md-4">
+                                <div class="row col-lg-12">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
                                             <label for="cfDescription" class="col-md-3 control-label">
                                                 Course Format
@@ -143,7 +188,7 @@
 
                                         </div>
                                     </div>
-                                    <fieldset class="col-md-8">
+                                    <fieldset class="col-lg-9">
                                         <!--ng-disabled="!cf.selectedSlot"-->
                                         <table class="table table-bordered table-striped">
                                             <thead>
@@ -155,10 +200,9 @@
                                                     <th>Minutes</th>
                                                     <td><small>default finish</small></td>
                                                     <th>Streams</th>
-                                                    <th>Track 
-                                                        <i class="fa fa-info-circle" data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Keep a track of which faculty members lead this activity" bs-tooltip></i>
+                                                    <th>Track<i class="fa fa-info-circle" data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Keep a track of which faculty members lead this activity" bs-tooltip></i>
                                                      </th>
-                                                    <td></td>
+                                                    <td>(Actions...)</td>
                                                 </tr>
                                             </thead>
                                             <tbody ui-sortable="vm.sortableOptions" ng-model="cf.sortableSlots">
@@ -219,15 +263,13 @@
     <td>
         <input type="checkbox" ng-checked="cs.trackParticipants" disabled="disabled"/>
     </td>
-    <td ng-if-end>
+    <td ng-if-end class="text-nowrap">
         <button type="button" class="btn-link" ng-click="vm.editSlot(cs)" ng-disabled="cs.entityAspect.hasValidationErrors">
             <i class="fa fa-edit"></i>
         </button>
-        |
         <button type="button" class="btn-link" ng-click="vm.removeSlot(cs)">
             <i class="fa fa-trash-o"></i>
         </button>
-        |
         <div ng-include="'buttons'" style="display:inline"></div>
     </td>
 </script>
@@ -278,11 +320,9 @@
         <button type="button" class="btn-link" ng-disabled="cs.entityAspect.hasValidationErrors" ng-click="cf.selectedSlot = null">
             <i class="fa fa-check"></i>
         </button>
-        |
         <button type="button" class="btn-link" ng-click="vm.removeSlot(cs)">
             <i class="fa fa-trash-o"></i>
         </button>
-        |
         <div ng-include="'buttons'" style="display:inline"></div>
     </td>
 </script>

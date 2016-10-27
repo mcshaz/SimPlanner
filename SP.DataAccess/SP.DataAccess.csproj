@@ -125,6 +125,10 @@
     <Compile Include="Data\CourseFormat.cs" />
     <Compile Include="Data\Participant.cs" />
     <Compile Include="Data\CourseSlot.cs" />
+    <Compile Include="Migrations\201610270329166_prereadingFilenameNonNul.cs" />
+    <Compile Include="Migrations\201610270329166_prereadingFilenameNonNul.Designer.cs">
+      <DependentUpon>201610270329166_prereadingFilenameNonNul.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
@@ -350,6 +354,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610240906080_iAssociateFile.resx">
       <DependentUpon>201610240906080_iAssociateFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610270329166_prereadingFilenameNonNul.resx">
+      <DependentUpon>201610270329166_prereadingFilenameNonNul.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

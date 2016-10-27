@@ -176,7 +176,7 @@ namespace SP.DataAccess
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CourseType>()
-                .HasMany(e => e.CandidatePrereading)
+                .HasMany(e => e.CandidatePrereadings)
                 .WithRequired(e => e.CourseType)
                 .HasForeignKey(e => e.CourseTypeId);
 
