@@ -13,6 +13,7 @@ namespace SP.Dto
             Database.SetInitializer<MedSimDtoContextPretender>(null);
         }
         public virtual DbSet<ActivityDto> Activities { get; set; }
+        public virtual DbSet<CandidatePrereadingDto> CandidatePrereading { get; set; }
         public virtual DbSet<CultureDto> cultures { get; set; }
         public virtual DbSet<CourseDto> Courses { get; set; }
         public virtual DbSet<CourseActivityDto> CourseActivities { get; set; }

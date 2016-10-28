@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+//using Ent = System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -18,12 +19,28 @@ namespace SP.Dto.ProcessBreezeRequests
 {
     internal sealed class ValidateMedSim : IDisposable
     {
-        private readonly IPrincipal _user;
         private MedSimDbContext _context;
+        private readonly string _userName;
+        private Participant _user;
 
         public ValidateMedSim(IPrincipal user)
         {
-            _user = user;
+            if (user.Identity.IsAuthenticated)
+            {
+                if (user.IsInRole(RoleConstants.AccessAllData))
+                {
+                    _adminLevel = AdminLevels.AllData;
+                }
+                else if (user.IsInRole(RoleConstants.AccessInstitution))
+                {
+                    _adminLevel = AdminLevels.InstitutionAdmin;
+                }
+                else if (user.IsInRole(RoleConstants.AccessDepartment))
+                {
+                    _adminLevel = AdminLevels.DepartmentAdmin;
+                }
+                _userName = user.Identity.Name;
+            }
         }
 
         private MedSimDbContext Context
@@ -33,6 +50,17 @@ namespace SP.Dto.ProcessBreezeRequests
                 return _context ?? (_context = new MedSimDbContext());
             }
         }
+        private Participant User
+        {
+            get
+            {
+                return _user ?? (_user = Context.Users.First(u=>u.UserName == _userName)); //?include("Department")
+            }
+        }
+
+        private enum AdminLevels { None = default(int), AllData, InstitutionAdmin, DepartmentAdmin };
+        private readonly AdminLevels _adminLevel;
+        private AdminLevels AdminLevel { get { return _adminLevel; } }
 
         private static IEnumerable<PropertyInfo> _identityUserDbProperties;
         private static IEnumerable<PropertyInfo> IdentityUserDbProperties
@@ -83,6 +111,139 @@ namespace SP.Dto.ProcessBreezeRequests
             }
 
             return errors;
+        }
+        bool HasCoursePermission(Guid courseId)
+        {
+            return HasDepartmentPermission((from c in Context.Courses
+                                            where c.Id == courseId
+                                            select c.DepartmentId).First());
+        }
+
+        bool HasCourseTypePermission(Guid courseTypeId)
+        {
+            return HasDepartmentPermission((from c in Context.CourseTypeDepartments
+                                            where c.CourseTypeId == courseTypeId
+                                            select c.DepartmentId).ToList());
+        }
+        bool HasDepartmentPermission(Guid departmentId)
+        {
+            return HasDepartmentPermission(new[] { departmentId });
+        }
+
+        bool HasDepartmentPermission(IEnumerable<Guid> departmentIds)
+        {
+            switch (AdminLevel)
+            {
+                case AdminLevels.AllData:
+                    return true;
+                case AdminLevels.None:
+                    return false;
+                case AdminLevels.DepartmentAdmin:
+                    return departmentIds.Contains(User.DefaultDepartmentId);
+                case AdminLevels.InstitutionAdmin:
+                    return departmentIds.Contains(User.DefaultDepartmentId) || User.Department.Institution.Departments.Any(d=>d.InstitutionId == User.Department.InstitutionId && departmentIds.Contains(d.Id));
+            }
+                throw new UnauthorizedAccessException("Unknown Admin Level");
+        }
+
+        bool HasInstitutionPermission(Guid institutionId)
+        {
+            switch (AdminLevel)
+            {
+                case AdminLevels.AllData:
+                    return true;
+                case AdminLevels.None:
+                case AdminLevels.DepartmentAdmin:
+                    return false;
+                case AdminLevels.InstitutionAdmin:
+                    return User.Department.InstitutionId == institutionId;
+            }
+            throw new UnauthorizedAccessException("Unknown Admin Level");
+        }
+
+
+        private static IEnumerable<EntityError> PermissionErrors<T>(Dictionary<Type, List<EntityInfo>> saveMap, Func<T,bool> isPermitted, string propertyName = null)
+        {
+            List<EntityInfo> eis;
+            if (saveMap.TryGetValue(typeof(T), out eis))
+            {
+                return (from ei in eis
+                        let e = (T)ei.Entity
+                        where !isPermitted(e)
+                        select MappedEFEntityError.Create(e, "insufficientPermission","you do not have permission to update this property",propertyName));
+            }
+            return Enumerable.Empty<EntityError>();
+        }
+
+        public IEnumerable<EntityError> ValidatePermission(Dictionary<Type, List<EntityInfo>> saveMap)
+        {
+            return PermissionErrors<ActivityDto>(saveMap,
+                a => HasDepartmentPermission((from ca in Context.CourseActivities
+                                              where ca.Id == a.CourseActivityId
+                                              from ctd in ca.CourseType.CourseTypeDepartments
+                                              select ctd.DepartmentId).ToList()))
+                .Concat(PermissionErrors<CandidatePrereadingDto>(saveMap,
+                c => HasCourseTypePermission(c.CourseTypeId)))
+                .Concat(PermissionErrors<CultureDto>(saveMap,
+                e => AdminLevel == AdminLevels.InstitutionAdmin))
+                .Concat(PermissionErrors<CourseDto>(saveMap,
+                e => HasDepartmentPermission(e.DepartmentId)))
+                .Concat(PermissionErrors<CourseActivityDto>(saveMap,
+                e => HasCourseTypePermission(e.CourseTypeId)))
+                .Concat(PermissionErrors<CourseFormatDto>(saveMap,
+                e => HasCourseTypePermission(e.CourseTypeId)))
+                .Concat(PermissionErrors<CourseParticipantDto>(saveMap,
+                e => HasCoursePermission(e.CourseId)))
+                .Concat(PermissionErrors<CourseScenarioFacultyRoleDto>(saveMap,
+                e => HasCoursePermission(e.CourseId)))
+                .Concat(PermissionErrors<CourseSlotDto>(saveMap,
+                e => HasDepartmentPermission((from c in Context.CourseFormats
+                                              where c.Id == e.CourseFormatId
+                                              from ctd in c.CourseType.CourseTypeDepartments
+                                              select ctd.DepartmentId).ToList())))
+                .Concat(PermissionErrors<CourseSlotActivityDto>(saveMap,
+                e => HasCoursePermission(e.CourseId)))
+                .Concat(PermissionErrors<CourseSlotManikinDto>(saveMap,
+                e => HasCoursePermission(e.CourseId)))
+                .Concat(PermissionErrors<CourseSlotPresenterDto>(saveMap,
+                e => HasCoursePermission(e.CourseId)))
+                .Concat(PermissionErrors<CourseTypeDto>(saveMap,
+                e => HasCourseTypePermission(e.Id)))
+                //issue of who can share a course type with others
+                //perhaps a primary creator property should be added
+                .Concat(PermissionErrors<CourseTypeDepartmentDto>(saveMap,
+                e => HasCourseTypePermission(e.CourseTypeId)))
+                .Concat(PermissionErrors<CourseTypeScenarioRoleDto>(saveMap,
+                e => HasCourseTypePermission(e.CourseTypeId)))
+                .Concat(PermissionErrors<DepartmentDto>(saveMap,
+                e => HasDepartmentPermission(e.Id)))
+                .Concat(PermissionErrors<FacultyScenarioRoleDto>(saveMap,
+                e => HasDepartmentPermission((from ctsr in Context.CourseTypeScenarioRoles
+                                              where ctsr.FacultyScenarioRoleId == e.Id
+                                              from ctd in ctsr.CourseType.CourseTypeDepartments
+                                              select ctd.DepartmentId).ToList())))
+                .Concat(PermissionErrors<HotDrinkDto>(saveMap,
+                e => AdminLevel == AdminLevels.InstitutionAdmin))
+                .Concat(PermissionErrors<InstitutionDto>(saveMap,
+                e => HasInstitutionPermission(e.Id)))
+                .Concat(PermissionErrors<ManikinDto>(saveMap,
+                e => HasDepartmentPermission(e.ModelId)))
+                .Concat(PermissionErrors<ManikinManufacturerDto>(saveMap,
+                e => AdminLevel == AdminLevels.InstitutionAdmin))
+                .Concat(PermissionErrors<ProfessionalRoleDto>(saveMap,
+                e => AdminLevel == AdminLevels.InstitutionAdmin))
+                .Concat(PermissionErrors<ProfessionalRoleInstitutionDto>(saveMap,
+                e => HasInstitutionPermission(e.InstitutionId)))
+                .Concat(PermissionErrors<RoleDto>(saveMap,
+                e => false))
+                .Concat(PermissionErrors<RoomDto>(saveMap,
+                e => HasDepartmentPermission(e.DepartmentId)))
+                .Concat(PermissionErrors<ScenarioDto>(saveMap,
+                e => HasDepartmentPermission(e.DepartmentId)))
+                .Concat(PermissionErrors<ScenarioResourceDto>(saveMap,
+                e => HasDepartmentPermission((from s in Context.Scenarios
+                                              where s.Id == e.ScenarioId
+                                              select s.DepartmentId).First())));
         }
 
         public static Dictionary<Type, List<EntityInfo>> MapDtoToServerType(Dictionary<Type, List<EntityInfo>> saveMap)

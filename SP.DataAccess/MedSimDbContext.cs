@@ -36,6 +36,7 @@ namespace SP.DataAccess
         public virtual DbSet<CourseSlotManikin> CourseSlotManikins { get; set; }
         public virtual DbSet<CourseSlotPresenter> CourseSlotPresenters { get; set; }
         public virtual DbSet<CourseType> CourseTypes { get; set; }
+        public virtual DbSet<CourseTypeDepartment> CourseTypeDepartments { get; set; }
         public virtual DbSet<CourseTypeScenarioRole> CourseTypeScenarioRoles { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<FacultyScenarioRole> FacultyScenarioRoles { get; set; }
