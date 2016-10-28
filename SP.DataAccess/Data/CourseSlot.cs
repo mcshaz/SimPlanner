@@ -23,16 +23,9 @@ namespace SP.DataAccess
         public virtual CourseActivity Activity { get; set; }
         public virtual CourseFormat CourseFormat { get; set; }
 
-
         public virtual ICollection<CourseSlotPresenter> CourseSlotPresenters { get; set; }
-
-
         public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
-
-
         public virtual ICollection<CourseSlotActivity> CourseSlotActivities { get; set; }
-
-
         public virtual ICollection<CourseSlotManikin> CourseSlotManikins { get; set; }
 
     }

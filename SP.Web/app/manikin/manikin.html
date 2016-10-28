@@ -109,7 +109,7 @@
                                 <th>Problem</th>
                                 <th>Estimate</th>
                                 <th>Cost</th>
-                                <td></td>
+                                <td>(Actions&hellip;)</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -136,14 +136,13 @@
                                     <button type="button" class="btn-link" ng-click="vm.editService(s)">
                                         <i class="fa fa-edit"></i>
                                     </button>
-                                    |
                                     <button type="button" class="btn btn-link" ng-click="s.entityAspect.setDeleted()"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save the manikin first" bs-tooltip bs-enabled="vm.manikin.entityAspect.entityState.isAdded()">
-                        <button type="button" ng-click="vm.createService()" class="btn btn-link"><i class="fa fa-plus-square"></i>Add Service</button>
+                    <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="{{vm.addServiceErrMsg()}}" bs-tooltip bs-enabled="!!vm.addServiceErrMsg()">
+                        <button type="button" ng-click="vm.createService()" class="btn btn-link" ng-disabled="!!vm.addServiceErrMsg()"><i class="fa fa-plus-square"></i>Add Service</button>
                     </div>
                     </fieldset>
             </form>

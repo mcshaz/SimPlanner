@@ -19,6 +19,7 @@
         var id = $routeParams.id;
         var isNew = id === 'new';
 
+        vm.addServiceErrMsg = addServiceErrMsg;
         vm.departments = [];
         vm.editService = editService;
         vm.createService = createService;
@@ -61,6 +62,18 @@
                     vm.notifyViewModelLoaded();
                     vm.log('Activated Department View');
                 });
+        }
+
+        function addServiceErrMsg() {
+            if (vm.manikin.entityAspect) {
+                if (vm.manikin.entityAspect.entityState.isAdded()) {
+                    return 'Please save manikin first';
+                }
+                if (vm.manikin.manikinServices.some(function (ms) { return !ms.Returned; })) {
+                    return 'Please enter date returned from prior service first';
+                }
+            }
+            return null;
         }
 
         function getIsoCurrency() {

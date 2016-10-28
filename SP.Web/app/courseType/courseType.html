@@ -274,8 +274,8 @@
     </td>
 </script>
 <script type="text/ng-template" id="buttons">
-    <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save first" bs-tooltip bs-enabled="cs.entityAspect.entityState.isAdded()" ng-if="!cs.isScenario">
-        <button class="btn-link" type="button" ng-click="vm.editChoices(cs)" aria-label="edit list of options for this slot">
+    <div class="disable-workaround" data-trigger="hover" data-type="danger" data-animation="am-flip-x" data-title="Please save first" bs-tooltip bs-enabled="cs.activity.entityAspect.entityState.isAdded()" ng-if="!cs.isScenario">
+        <button class="btn-link" type="button" ng-click="vm.editChoices(cs)" aria-label="edit list of options for this slot" ng-disabled="cs.activity.entityAspect.entityState.isAdded()">
             <i class="glyphicon glyphicon-list" aria-hidden="true"></i>
         </button>
     </div>
