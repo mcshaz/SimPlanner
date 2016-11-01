@@ -143,6 +143,7 @@ namespace SP.DataAccess.Migrations
                 context.ProfessionalRoles.Add(new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Educator, Description = "Educator" });
                 context.ProfessionalRoles.Add(new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Perfusionist, Description = "Perfusionist" });
             }
+            //context.Roles.AddOrUpdate(new AspNetRole { Id = Guid.ParseExact(RoleConstants.AdminApprovedId,RoleConstants.IdFormat), Name = RoleConstants.AdminApproved});
             context.SaveChanges();
         }
     }

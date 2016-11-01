@@ -380,7 +380,7 @@ namespace SP.Web.Controllers
 
             bool hasRegistered = user != null;
 
-            if (hasRegistered)
+            if (hasRegistered && user.AdminApproved)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
                 
@@ -396,20 +396,16 @@ namespace SP.Web.Controllers
                 return Ok();
             }
 
+            /*
             IEnumerable<Claim> claims = externalLogin.GetClaims();
             identity = new ClaimsIdentity(claims, OAuthDefaults.AuthenticationType);
 
             Authentication.SignIn(identity);
-
-            /*
-
-            redirectUri = string.Format("{0}#external_access_token={1}&provider={2}&haslocalaccount={3}",
-                                            redirectUri,
-                                            externalLogin.ExternalAccessToken,
-                                            externalLogin.LoginProvider,
-                                            hasRegistered.ToString());
             */
-            return Ok();
+
+            return Redirect($"{Url.Content("~/")}#provider={externalLogin.LoginProvider}&haslocalaccount={hasRegistered}&adminApproved={user?.AdminApproved ?? false}");
+
+            //return Ok();
         }
 
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true

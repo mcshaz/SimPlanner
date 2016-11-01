@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SP.Dto.ProcessBreezeRequests;
+using System;
 using System.Linq.Expressions;
 
 namespace SP.Dto.Maps
@@ -8,6 +9,7 @@ namespace SP.Dto.Maps
         Type TypeofDto { get; }
         Type TypeofServerObject { get; }
         LambdaExpression MapToDto { get; }
+        LambdaExpression GetWhereExpression(CurrentUser user);
         object MapFromDto(object dto);
     }
 

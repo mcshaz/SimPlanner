@@ -1,12 +1,12 @@
+using SP.DataAccess.Data.Interfaces;
 using SP.Metadata;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 namespace SP.Dto
 {
     [MetadataType(typeof(DepartmentMetadata))]
-    public class DepartmentDto
+    public class DepartmentDto : IAdminApproved
 	{
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -16,6 +16,7 @@ namespace SP.Dto
         public string CertificateFilename { get; set; }
         public string PrimaryColour { get; set; }
         public string SecondaryColour { get; set; }
+        public bool AdminApproved { get; set; }
         public InstitutionDto Institution { get; set; }
         public virtual ICollection<CourseTypeDepartmentDto> CourseTypeDepartments { get; set; }
         public virtual ICollection<ManikinDto> Manikins { get; set; }

@@ -43,6 +43,41 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="directions" class="col-md-2 control-label">Map</label>
+                        <div class="col-md-10">
+                            <div class="input-group" id="file-container">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary">
+                                        Browse&hellip;
+                                        <input type="file" accept="image/*" ng-model="vm.room.file" app-filereader ng-file-size="vm.room.fileSize" ng-file-name="vm.room.fileName" ng-last-modified="vm.room.fileModified" style="display:none!important;" />
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control" readonly ng-model="vm.room.fileName" z-validate z-append-to="#file-container">
+                            </div>
+                            <div class="row top-buffer">
+                                <label class="col-md-1 control-label">File Size</label>
+                                <div class="col-md-3" id="file-size">
+                                    <div class="input-group" >
+                                        <input class="form-control" disabled type="text" ng-value="vm.room.fileSize | sizeKib" />
+                                        <span class="input-group-addon">KiB</span>
+                                    </div>
+                                    <input type="hidden" ng-model="vm.room.fileSize" z-validate z-append-to="#file-size" />
+                                </div>
+                                <label class="col-md-1 control-label">File Modified</label>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input class="form-control" disabled type="text" ng-value="vm.room.fileModified | fileDate" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-link" ng-click="vm.clearFileData()"><i class="fa fa-times"></i>Remove File</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <button type="submit" ng-disabled="vm.disableSave()" class="btn btn-default">Save</button>
                         </div>

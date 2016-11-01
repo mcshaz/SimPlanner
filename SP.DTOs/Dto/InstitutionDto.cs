@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SP.Dto
 {
     [MetadataType(typeof(InstitutionMetadata))]
-    public class InstitutionDto : IAssociateFileOptional
+    public class InstitutionDto : IAssociateFileOptional, IAdminApproved
 	{
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -21,7 +21,7 @@ namespace SP.Dto
         public string LogoImageFileName { get; set; }
         public bool AdminApproved { get; set; }
         [NotMapped]
-        string IAssociateFile.FileName { get { return LogoImageFileName; } }
+        string IAssociateFile.FileName { get { return LogoImageFileName; } set { LogoImageFileName = value; } }
 
         public DateTime? FileModified { get; set; }
         public long? FileSize { get; set; }

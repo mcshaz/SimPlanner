@@ -15,11 +15,12 @@
             controllerId: controllerId,
             watchedEntityNames: 'institution',
             $scope: $scope
-        })
+        });
         var id = $routeParams.id;
-        var isNew = id == 'new';
+        var isNew = id === 'new';
 
         vm.institution = {};
+        vm.clearFileData = clearFileData;
         vm.cultureFormats=[];
         vm.timeZonesForCulture = [];
         vm.getCultureFormats = getCultureFormats;
@@ -66,8 +67,12 @@
                 });
         }
 
+        function clearFileData() {
+            vm.institution.logoImageFileName = vm.institution.fileSize = vm.institution.fileModified = vm.institution.file = null;
+        }
+
         function onLocaleSelected(key) {
-            vm.flagUrl = vm.cultureFormats.find(function (el) { return el.Key === key });
+            vm.flagUrl = vm.cultureFormats.find(function (el) { return el.Key === key; });
             if (vm.flagUrl) {
                 vm.flagUrl = vm.flagUrl.flagUrl;
                 $http({ method: 'GET', url: 'api/utilities/timeZones/' + key }).then(function (response) {
@@ -75,9 +80,8 @@
                     if (vm.timeZonesForCulture.length === 1) {
                         vm.institution.standardTimeZone = vm.timeZonesForCulture[0];
                     }
-                }, vm.log.error)
+                }, vm.log.error);
             }
-
         }
 
         function getCultureFormats(val) {

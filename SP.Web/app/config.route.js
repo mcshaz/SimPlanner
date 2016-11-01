@@ -8,7 +8,7 @@
         accessAllData:	'03fe7856-7b58-46b4-a1a5-1d70cf03bab2',
         accessDepartment: '75a4d6c3-9e20-4567-8b49-5d791db8f110',
         accessInstitution:	'2adedaf3-b215-4cc7-8692-1a8e58584306',
-        siteAdmin:	'e5fffe70-76ef-4cfd-8d58-089ba2198dc0'
+        siteAdmin: 'e5fffe70-76ef-4cfd-8d58-089ba2198dc0'
     };
 
     // Collect the routes

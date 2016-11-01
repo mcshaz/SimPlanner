@@ -197,6 +197,12 @@ namespace SP.Dto.Utilities
             }
         }
 
+        public static TValue ValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
+        {
+            TValue res;
+            dict.TryGetValue(key, out res);
+            return res;
+        }
 
         public static List<KeyValuePair<TKey,TValue>> ToKeyValuePairList<TSource, TKey, TValue>(
             this IEnumerable<TSource> source, Func<TSource,TKey> keySelector, Func<TSource,TValue> valueSelector)

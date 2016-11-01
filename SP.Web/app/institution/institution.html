@@ -69,7 +69,14 @@
                     <div class="form-group">
                         <label for="googleMapAddress" class="col-md-2 control-label">Google Map Address</label>
                         <div class="col-md-10">
-                            <input type="url" id="googleMapAddress" class="form-control" data-z-validate data-ng-model="vm.googleMapAddress" ng-change="vm.mapAddressChanged()" />
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success" ng-click="vm.mapAddressChanged()" ng-disabled="!vm.googleMapAddress">
+                                        <i class="fa fa-lg fa-globe"></i>
+                                    </button>
+                                </span>
+                                <input type="url" id="googleMapAddress" class="form-control" data-z-validate data-ng-model="vm.googleMapAddress" />
+                            </div>
                         </div>
                     </div>
 
@@ -77,6 +84,41 @@
                         <label for="about" class="col-md-2 control-label">About</label>
                         <div class="col-md-10">
                             <textarea type="text" id="about" class="form-control" ng-model="vm.institution.about" z-validate />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="directions" class="col-md-2 control-label">Logo Image</label>
+                        <div class="col-md-10">
+                            <div class="input-group" id="file-container">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary">
+                                        Browse&hellip;
+                                        <input type="file" accept="image/*" ng-model="vm.institution.file" app-filereader ng-file-size="vm.institution.fileSize" ng-file-name="vm.institution.logoImageFileName" ng-last-modified="vm.institution.fileModified" style="display:none!important;" />
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control" readonly ng-model="vm.institution.logoImageFileName" z-validate z-append-to="#file-container">
+                            </div>
+                            <div class="row top-buffer">
+                                <label class="col-md-1 control-label">File Size</label>
+                                <div class="col-md-3" id="file-size">
+                                    <div class="input-group">
+                                        <input class="form-control" disabled type="text" ng-value="vm.institution.fileSize | sizeKib" />
+                                        <span class="input-group-addon">KiB</span>
+                                    </div>
+                                    <input type="hidden" ng-model="vm.institution.fileSize" z-validate z-append-to="#file-size" />
+                                </div>
+                                <label class="col-md-1 control-label">File Modified</label>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input class="form-control" disabled type="text" ng-value="vm.institution.fileModified | fileDate" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-link" ng-click="vm.clearFileData()"><i class="fa fa-times"></i>Remove File</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                         

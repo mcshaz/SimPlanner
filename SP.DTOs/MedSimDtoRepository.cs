@@ -15,6 +15,7 @@ namespace SP.Dto
     {
         private readonly EFContextProvider<MedSimDbContext> _contextProvider;
         private readonly ValidateMedSim _validationHelper;
+        private readonly CurrentUser _currentUser;
         private readonly IPrincipal _user;
 
         public MedSimDbContext Context
@@ -22,11 +23,12 @@ namespace SP.Dto
             get { return _contextProvider.Context; }
         }
 
-        public MedSimDtoRepository(IPrincipal user)
+        public MedSimDtoRepository(IPrincipal user, MedSimDbContext validationContext = null)
         {
 
             _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
-            _validationHelper = new ValidateMedSim(user);
+            _currentUser = new CurrentUser(user, validationContext);
+            _validationHelper = new ValidateMedSim(_currentUser);
             _contextProvider.BeforeSaveEntitiesDelegate += BeforeSaveEntities; 
             _contextProvider.AfterSaveEntitiesDelegate += _validationHelper.AfterSave;
             _user = user;
@@ -49,7 +51,7 @@ namespace SP.Dto
 
         public IQueryable<ActivityDto> Activities(string[] includes, string[] selects, char sepChar)
         {
-            return Context.Activities.ProjectToDto<Activity, ActivityDto>(includes, selects, sepChar);
+            return Context.Activities.ProjectToDto<Activity, ActivityDto>(_currentUser, includes, selects, sepChar);
         }
 
         public SaveResult SaveChanges(JObject saveBundle)
@@ -60,29 +62,34 @@ namespace SP.Dto
             return returnVar;
         }
 
-        static void Remap(SaveResult result)
+        void Remap(SaveResult result)
         {
-            result.Entities = result.Entities.Select(o=> MapperConfig.GetToDtoLambda(MapperConfig.GetDtoType(o.GetType())).Compile().DynamicInvoke(o)).ToList();
+            result.Entities = result.Entities.Select(o=> {
+                var treeTop = MapperConfig.GetToDtoLambda(MapperConfig.GetDtoType(o.GetType()), _currentUser);
+                //possibly Assert(treeTop.WhereExpression.Compile().DynamicInvoke(o);)
+                //possible bottleneck - could cast to all the different types
+                return treeTop.SelectExpression.Compile().DynamicInvoke(o);
+            }).ToList();
         }
 
         public IQueryable<CourseFormatDto> GetCourseFormats(string[] includes, string[] selects, char sepChar)
         {
-            return Context.CourseFormats.ProjectToDto<CourseFormat, CourseFormatDto>(includes, selects, sepChar);
+            return Context.CourseFormats.ProjectToDto<CourseFormat, CourseFormatDto>(_currentUser, includes, selects, sepChar);
         }
 
         public IQueryable<CourseDayDto> GetCourseDays(string[] includes, string[] selects, char sepChar)
         {
-            return Context.CourseDays.ProjectToDto<CourseDay, CourseDayDto>(includes, selects, sepChar);
+            return Context.CourseDays.ProjectToDto<CourseDay, CourseDayDto>(_currentUser, includes, selects, sepChar);
         }
 
         public IQueryable<CourseSlotDto> GetCourseSlots(string[] includes, string[] selects, char sepChar)
         {
-            return Context.CourseSlots.ProjectToDto<CourseSlot, CourseSlotDto>(includes, selects, sepChar);
+            return Context.CourseSlots.ProjectToDto<CourseSlot, CourseSlotDto>(_currentUser, includes, selects, sepChar);
         }
 
         public IQueryable<ManikinDto> GetManikins(string[] includes, string[] selects, char sepChar)
         {
-            return Context.Manikins.ProjectToDto<Manikin, ManikinDto>(includes, selects, sepChar);
+            return Context.Manikins.ProjectToDto<Manikin, ManikinDto>(_currentUser, includes, selects, sepChar);
         }
 
         [Serializable]
@@ -101,12 +108,12 @@ namespace SP.Dto
                 returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
             }
             //currently allowing users to view all departmetns within their institution - but only edit thseir department
-            return returnVar.ProjectToDto<Institution,InstitutionDto>(includes, selects,sepChar);
+            return returnVar.ProjectToDto<Institution,InstitutionDto>(_currentUser, includes, selects,sepChar);
         }
 
         public IQueryable<ParticipantDto> GetParticipants(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
-            return Context.Users.ProjectToDto<Participant, ParticipantDto>(includes, selects, sepChar);
+            return Context.Users.ProjectToDto<Participant, ParticipantDto>(_currentUser, includes, selects, sepChar);
             /*
             if (include.Length > 0)
             {
@@ -119,79 +126,79 @@ namespace SP.Dto
 
         public IQueryable<CultureDto> GetCultures(string[] includes, string[] selects, char sepChar)
         {
-            return Context.Cultures.ProjectToDto<Culture, CultureDto>(includes, selects, sepChar);
+            return Context.Cultures.ProjectToDto<Culture, CultureDto>(_currentUser, includes, selects, sepChar);
         }
 
-        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.ProjectToDto<Department,DepartmentDto>(); } }
+        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.ProjectToDto<Department,DepartmentDto>(_currentUser); } }
 
-        public IQueryable<HotDrinkDto> HotDrinks { get { return Context.HotDrinks.ProjectToDto<HotDrink, HotDrinkDto>(); } }
+        public IQueryable<HotDrinkDto> HotDrinks { get { return Context.HotDrinks.ProjectToDto<HotDrink, HotDrinkDto>(_currentUser); } }
 
         public IQueryable<CourseTypeDto> GetCourseTypes(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
-            return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(includes, selects, sepChar);
+            return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(_currentUser, includes, selects, sepChar);
         }
 
         public IQueryable<ScenarioDto> GetScenarios(string[] includes, string[] selects, char sepChar = '.')
         {
-            return Context.Scenarios.ProjectToDto<Scenario, ScenarioDto>(includes, selects, sepChar);
+            return Context.Scenarios.ProjectToDto<Scenario, ScenarioDto>(_currentUser, includes, selects, sepChar);
         }
 
         public IQueryable<ManikinServiceDto> GetManikinServices(string[] includes, string[] selects, char sepChar = '.')
         {
-            return Context.ManikinServices.ProjectToDto<ManikinService, ManikinServiceDto>(includes, selects, sepChar);
+            return Context.ManikinServices.ProjectToDto<ManikinService, ManikinServiceDto>(_currentUser, includes, selects, sepChar);
 
         }
 
-        public IQueryable<FacultyScenarioRoleDto> SenarioRoles { get { return Context.FacultyScenarioRoles.ProjectToDto<FacultyScenarioRole,FacultyScenarioRoleDto>(); } }
+        public IQueryable<FacultyScenarioRoleDto> SenarioRoles { get { return Context.FacultyScenarioRoles.ProjectToDto<FacultyScenarioRole,FacultyScenarioRoleDto>(_currentUser); } }
 
-        public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.ProjectToDto<Institution,InstitutionDto>(); } }
+        public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.ProjectToDto<Institution,InstitutionDto>(_currentUser); } }
 
         public IQueryable<ManikinDto> Manikins
         {
             get
             {
                 IQueryable<Manikin> returnVar = Context.Manikins.Where(m => m.Department.Institution.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
-                return returnVar.ProjectToDto<Manikin, ManikinDto>();
+                return returnVar.ProjectToDto<Manikin, ManikinDto>(_currentUser);
             }
         }
 
-        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.ProjectToDto<ProfessionalRole,ProfessionalRoleDto>(); } }
+        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.ProjectToDto<ProfessionalRole,ProfessionalRoleDto>(_currentUser); } }
 
-        public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.ProjectToDto<ScenarioResource,ScenarioResourceDto>(); } }
+        public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.ProjectToDto<ScenarioResource,ScenarioResourceDto>(_currentUser); } }
 
         public IQueryable<ManikinManufacturerDto> ManikinManufacturers
         {
             get
             {
-                return Context.ManikinManufacturers.ProjectToDto<ManikinManufacturer, ManikinManufacturerDto>(includes: new[] { "ManikinModels" });
+                return Context.ManikinManufacturers.ProjectToDto<ManikinManufacturer, ManikinManufacturerDto>(_currentUser, includes: new[] { "ManikinModels" });
             }
         }
 
-        public IQueryable<ManikinModelDto> ManikinModels { get { return Context.ManikinModels.ProjectToDto<ManikinModel, ManikinModelDto>(); } }
+        public IQueryable<ManikinModelDto> ManikinModels { get { return Context.ManikinModels.ProjectToDto<ManikinModel, ManikinModelDto>(_currentUser); } }
 
-        public IQueryable<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get { return Context.ProfessionalRoleInstitutions.ProjectToDto<ProfessionalRoleInstitution, ProfessionalRoleInstitutionDto>(); } }
+        public IQueryable<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get { return Context.ProfessionalRoleInstitutions.ProjectToDto<ProfessionalRoleInstitution, ProfessionalRoleInstitutionDto>(_currentUser); } }
 
         public IQueryable<FacultyScenarioRoleDto> FacultyScenarioRoles { get {
-                return Context.FacultyScenarioRoles.ProjectToDto<FacultyScenarioRole, FacultyScenarioRoleDto>();
+                return Context.FacultyScenarioRoles.ProjectToDto<FacultyScenarioRole, FacultyScenarioRoleDto>(_currentUser);
         } }
 
         public IQueryable<CourseTypeScenarioRoleDto> CourseTypeScenarioRoles
         {
             get
             {
-                return Context.CourseTypeScenarioRoles.ProjectToDto<CourseTypeScenarioRole, CourseTypeScenarioRoleDto>();
+                return Context.CourseTypeScenarioRoles.ProjectToDto<CourseTypeScenarioRole, CourseTypeScenarioRoleDto>(_currentUser);
             }
         }
 
         public IQueryable<CourseActivityDto> GetCourseActivities(string[] includes = null, string[] selects = null, char sepChar = '.') {
-            return Context.CourseActivities.ProjectToDto<CourseActivity, CourseActivityDto>(includes, selects, sepChar);
+            return Context.CourseActivities.ProjectToDto<CourseActivity, CourseActivityDto>(_currentUser, includes, selects, sepChar);
         }
 
 
         //might eventually run the visitor like so: http://stackoverflow.com/questions/18879779/select-and-expand-break-odataqueryoptions-how-to-fix
         public IQueryable<CourseDto> GetCourses(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
-            return Context.Courses.ProjectToDto<Course,CourseDto>(includes, selects, sepChar);
+            return Context.Courses.ProjectToDto<Course,CourseDto>(_currentUser, includes, selects, sepChar);
             /*
             if (include.Length > 0)
             {
@@ -204,7 +211,7 @@ namespace SP.Dto
 
         public IQueryable<CourseTypeDto> GetCourseTypes()
         {
-            return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(includes: new[] { "CourseFormats" });
+            return Context.CourseTypes.ProjectToDto<CourseType, CourseTypeDto>(_currentUser, includes: new[] { "CourseFormats" });
         }
 
         public int IncrementEmail(Guid courseId)
@@ -238,7 +245,7 @@ namespace SP.Dto
                 // IDisposable only
                 _contextProvider.Context.Dispose();
                 //if (_validationHelper != null) {
-                _validationHelper.Dispose();
+                _currentUser.Dispose();
                 //}
             }
 

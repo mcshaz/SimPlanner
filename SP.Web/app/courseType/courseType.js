@@ -35,7 +35,6 @@
         vm.editChoices = editChoices;
         vm.emersionCategories = common.getEnumValues().emersion;
         vm.getCourseActivityNames = getCourseActivityNames;
-        vm.getSizeInKiB = getSizeInKiB;
         vm.instructorCourses = [];
         vm.isScenarioChanged = isScenarioChanged;
         vm.removeSlot = removeSlot;
@@ -183,9 +182,6 @@
             slot.activityId = slot.activity = null;
         }
         */
-        function getSizeInKiB(bytes) {
-            return $filter('number')(bytes / 1024, 1);
-        }
 
         function getCourseActivityNames(name) {
             name = name.toLowerCase();

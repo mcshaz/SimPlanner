@@ -12,9 +12,9 @@ namespace SP.Dto.Utilities
     {
         public static string GetServerPath(this IAssociateFile assocFile)
         {
-            const string activityPath = @"\App_Data\TeachingResources\{0}\{1}.zip";
-            const string scenarioResourcePath = @"\App_Data\Scenarios\{0}.zip"; 
-            const string prereadingPath = @"\App_Data\PreReading\{0}.zip";
+            const string activityPath = @"App_Data\TeachingResources\{0}\{1}.zip";
+            const string scenarioResourcePath = @"App_Data\Scenarios\{0}.zip"; 
+            const string prereadingPath = @"App_Data\PreReading\{0}.zip";
             Type t = assocFile.GetType();
             string returnVar;
             switch (t.Name)
@@ -37,11 +37,11 @@ namespace SP.Dto.Utilities
                     break;
                 case nameof(Room):
                 case nameof(RoomDto):
-                    returnVar = @"\Content\images\roomMaps\" + assocFile.Id + Path.GetExtension(assocFile.FileName);
+                    returnVar = @"Content\images\roomMaps\" + assocFile.Id + Path.GetExtension(assocFile.FileName);
                     break;
                 case nameof(Institution):
                 case nameof(InstitutionDto):
-                    returnVar = @"\Content\images\institutions\" + assocFile.Id + Path.GetExtension(assocFile.FileName);
+                    returnVar = @"Content\images\institutions\" + assocFile.Id + Path.GetExtension(assocFile.FileName);
                     break;
                 case nameof(CandidatePrereading):
                     var c = (CandidatePrereading)assocFile;
@@ -76,8 +76,9 @@ namespace SP.Dto.Utilities
 
         private static void CreateFile(byte[] file, string fileName, DateTime fileModified, string path)
         {
-            FileInfo fi = new FileInfo(path);
-            fi.Directory.Create(); // If the directory already exists, this method does nothing.
+            //FileInfo fi = new FileInfo(path);
+            var dir = Path.GetDirectoryName(path);
+            Directory.CreateDirectory(dir); // If the directory already exists, this method does nothing.
             if (path.EndsWith(FileDefaults._zipExt))
             {
                 using (var stream = new MemoryStream(file, false))
@@ -98,7 +99,6 @@ namespace SP.Dto.Utilities
             {
                 File.WriteAllBytes(Path.Combine(path, fileName), file);
             }
-
         }
 
         internal static void DeleteFile(this IAssociateFile resource)
@@ -149,7 +149,7 @@ namespace SP.Dto.Utilities
         {
             _assocFile = assocFile;
         }
-        string IAssociateFile.FileName { get { return _assocFile.FileName;  } }
+        string IAssociateFile.FileName { get { return _assocFile.FileName; } set { _assocFile.FileName = value; } }
         long? IAssociateFileOptional.FileSize { get { return _assocFile.FileSize; } }
         DateTime? IAssociateFileOptional.FileModified { get { return _assocFile.FileModified; } }
         Guid IAssociateFile.Id { get { return _assocFile.Id; } }

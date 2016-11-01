@@ -82,6 +82,7 @@ namespace SP.DataAccess
         public virtual CourseFormat CourseFormat { get; set; }
         public virtual Room Room { get; set; }
         public virtual Room FacultyMeetingRoom { get; set; }
+
         public virtual ICollection<CourseParticipant> CourseParticipants { get; set; }
         public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
         public virtual ICollection<CourseSlotManikin> CourseSlotManikins { get; set; }

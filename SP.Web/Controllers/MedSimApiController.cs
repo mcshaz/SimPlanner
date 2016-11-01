@@ -7,6 +7,8 @@ using Breeze.ContextProvider;
 using System.Web.Http.OData.Query;
 using SP.Web.Controllers.Helpers;
 using System.Collections.Generic;
+using System.Net.Http;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace SP.Web.Controllers
 {
@@ -20,7 +22,7 @@ namespace SP.Web.Controllers
         {
             get
             {
-                return _repository ?? (_repository = new MedSimDtoRepository(User));
+                return _repository ?? (_repository = new MedSimDtoRepository(User, Request.GetOwinContext().Get<DataAccess.MedSimDbContext>()));
             }
         }
 

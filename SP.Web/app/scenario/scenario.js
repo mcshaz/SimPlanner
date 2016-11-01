@@ -29,8 +29,7 @@
         vm.courseTypes = [];
         vm.complexities = enums.difficulty;
         vm.emersionCategories = enums.emersion;
-        vm.getFormattedDate = getFormattedDate;
-        vm.getSizeInKiB = getSizeInKiB;
+
         vm.sharingLevels = enums.sharingLevel.map(function (el) { return { value:el, display: common.toSeparateWords(el) }; });
 
         activate();
@@ -71,15 +70,6 @@
                 .then(function (url) {
                     vm.downloadFileUrl = url;
                 });
-        }
-
-        function getFormattedDate(date) {
-            var dt = moment(date);
-            return dt.format('L') + ' ' + dt.format('LT');
-        }
-
-        function getSizeInKiB(bytes) {
-            return $filter('number')(bytes/1024, 1);
         }
 
         function isResourceFilesOnServer() {

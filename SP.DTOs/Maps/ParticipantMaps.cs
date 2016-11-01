@@ -1,5 +1,6 @@
 ﻿using SP.DataAccess;
-
+using System;
+using System.Linq.Expressions;
 
 namespace SP.Dto.Maps
 {
@@ -16,7 +17,8 @@ namespace SP.Dto.Maps
                 DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
                 DrinkPreferenceId = m.DrinkPreferenceId,
                 DietNotes = m.DietNotes,
-                UserName = m.UserName ?? m.Email
+                UserName = m.UserName ?? m.Email,
+                AdminApproved = m.AdminApproved
                 //Department = m.Department,
 
                 //ProfessionalRole = m.ProfessionalRole,
@@ -35,7 +37,8 @@ namespace SP.Dto.Maps
                 DefaultProfessionalRoleId = m.DefaultProfessionalRoleId,
                 DrinkPreferenceId = m.DrinkPreferenceId,
                 DietNotes = m.DietNotes,
-                UserName = m.UserName
+                UserName = m.UserName,
+                AdminApproved = m.AdminApproved
                 //CourseSlotPresentations = null,
                 //Department = null,
 
@@ -45,6 +48,10 @@ namespace SP.Dto.Maps
 
                 //ScenarioFacultyRoles = null
             })
-        { }
+        {
+            WherePredicate = v => (v.AdminLevel == ProcessBreezeRequests.AdminLevels.None)
+                ? p => p.UserName == v.UserName
+                : (Expression<Func<Participant,bool>>)null;
+        }
     }
 }

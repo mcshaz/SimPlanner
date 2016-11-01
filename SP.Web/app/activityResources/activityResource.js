@@ -16,13 +16,11 @@
             controllerId: controllerId,
             watchedEntityNames: 'courseActivity.activityChoices',
             $scope: $scope
-        })
+        });
 
         vm.courseActivity = $scope.courseActivity;
         vm.createActivityResource = createActivityResource;
         vm.deleteResource = deleteResource;
-        vm.getFormattedDate = getFormattedDate;
-        vm.getSizeInKiB = getSizeInKiB;
 
         var baseSave = vm.save;
         vm.save = saveOverride;
@@ -59,15 +57,6 @@
             if (vm.selectedActivityResource === activityResource) {
                 vm.selectedActivityResource = null;
             }
-        }
-
-        function getFormattedDate(date) {
-            var dt = moment(date);
-            return dt.format('L') + ' ' + dt.format('LT');
-        }
-
-        function getSizeInKiB(bytes) {
-            return $filter('number')(bytes / 1024, 1);
         }
 
     }

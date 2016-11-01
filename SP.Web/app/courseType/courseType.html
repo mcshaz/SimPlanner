@@ -86,13 +86,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <input class="form-control" disabled type="text" ng-value="vm.getFormattedDate(cp.fileModified)" />
+                                        <input class="form-control" disabled type="text" ng-value="cp.fileModified | fileDate" />
                                     </td>
                                     <!--TO DO check validates on big files-->
                                     <td>
                                         <input type="hidden" ng-model="cp.fileSize" z-validate z-append-to="td" />
                                         <div class="input-group">
-                                            <input class="form-control" disabled type="text" ng-value="vm.getSizeInKiB(cp.fileSize)" />
+                                            <input class="form-control" disabled type="text" ng-value="cp.fileSize | sizeKib" />
                                             <span class="input-group-addon">KiB</span>
                                         </div>
                                     </td>

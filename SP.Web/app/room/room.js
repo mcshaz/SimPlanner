@@ -21,6 +21,7 @@
 
         vm.departments = [];
         vm.room = {};
+        vm.clearFileData = clearFileData;
 
         activate();
 
@@ -34,23 +35,26 @@
                     vm.room = $routeParams.departmentId
                         ? datacontext.rooms.create({ departmentId: $routeParams.departmentId })
                         :datacontext.rooms.create();
+                } else {
+                    promises.push(datacontext.rooms.fetchByKey(id).then(function (data) {
+                        vm.room = data;
+                        if (!vm.room) {
+                            vm.log.warning('Could not find room id = ' + id);
+                            return;
+                            //gotoCourses();
+                        }
+                    }));
                 }
             })];
-            if (!isNew) {
-                promises.push(datacontext.rooms.fetchByKey(id).then(function (data) {
-                    vm.room = data;
-                    if (!vm.room) {
-                        vm.log.warning('Could not find room id = ' + id);
-                        return;
-                        //gotoCourses();
-                    }
-                }));
-            }
             common.activateController(promises, controllerId)
                 .then(function () {
                     vm.notifyViewModelLoaded();
                     vm.log('Activated Room View');
                 });
+        }
+
+        function clearFileData() {
+            vm.room.fileName = vm.room.fileSize = vm.room.fileModified = vm.room.file = null;
         }
     }
 })();

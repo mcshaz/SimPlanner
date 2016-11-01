@@ -13,7 +13,8 @@ namespace SP.Dto.Maps
                 CertificateFilename = m.CertificateFilename,
                 Abbreviation = m.Abbreviation,
                 PrimaryColour = m.PrimaryColour,
-                SecondaryColour = m.SecondaryColour
+                SecondaryColour = m.SecondaryColour,
+                AdminApproved = m.AdminApproved
             },
             m => new DepartmentDto
             {
@@ -24,7 +25,8 @@ namespace SP.Dto.Maps
                 CertificateFilename = m.CertificateFilename,
                 Abbreviation = m.Abbreviation,
                 PrimaryColour = m.PrimaryColour,
-                SecondaryColour = m.SecondaryColour
+                SecondaryColour = m.SecondaryColour,
+                AdminApproved = m.AdminApproved
                 //CourseTypes = null,
                 //Institution = m.Institution,
                 //Manikins = m.Manikins,

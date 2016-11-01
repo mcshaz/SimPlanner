@@ -8,7 +8,7 @@ namespace SP.DataAccess
     using System.ComponentModel.DataAnnotations.Schema;
 
     [MetadataType(typeof(InstitutionMetadata))]
-    public class Institution : IAssociateFileOptional
+    public class Institution : IAssociateFileOptional, IAdminApproved
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -23,7 +23,7 @@ namespace SP.DataAccess
         [NotMapped]
         public byte[] File { get; set; }
         [NotMapped]
-        string IAssociateFile.FileName { get { return LogoImageFileName; } }
+        string IAssociateFile.FileName { get { return LogoImageFileName; } set { LogoImageFileName = value; } }
 
         public DateTime? FileModified { get; set; }
         public long? FileSize { get; set; }

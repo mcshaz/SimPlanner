@@ -17,17 +17,17 @@
   ],
   "dependencies": {
     "toastr": "*",
-    "angular-bootstrap-calendar": "*",
-    "angular-strap": "*",
+    "angular-bootstrap-calendar": "^0.25.0",
+    "angular-strap": "^2.3.10",
     "angular-moment": "*",
     "ckeditor": "*",
-    "angular-animate": "*",
-    "angular-cookies": "*",
-    "angular-messages": "*",
-    "angular-route": "*",
-    "angular-sanitize": "*",
+    "angular-animate": "^1.5.8",
+    "angular-cookies": "^1.5.8",
+    "angular-messages": "^1.5.8",
+    "angular-route": "^1.5.8",
+    "angular-sanitize": "^1.5.8",
     "angular-local-storage": "*",
-    "angular-ui-grid": "*",
+    "angular-ui-grid": "^3.2.9",
     "angular-ui-sortable": "*",
     "angular-drag-and-drop-lists": "*",
     "angular-dynamic-locale": "*",
@@ -42,11 +42,12 @@
     "angular-bootstrap": "*",
     "breeze-client": "*",
     "breeze-client-labs": "*",
-    "font-awesome": "*",
-    "angular": "*",
+    "font-awesome": "^4.7.0",
+    "angular": "^1.5.8",
     "moment": "*",
     "bootswatch-dist": "*",
-    "angular-multi-select-alexandernst": "*"
+    "angular-multi-select-alexandernst": "*",
+    "jquery": "^3.1.1"
   },
   "keywords": [
     "timetable",
@@ -55,7 +56,8 @@
   ],
   "private": true,
   "resolutions": {
-    "angular": "1.5.8",
-    "jquery": ">=1.6"
+    "angular": ">=1.2.x",
+    "jquery": ">=3.1.x",
+    "font-awesome": ">=4.7.0"
   }
 }

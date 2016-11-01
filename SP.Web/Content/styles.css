@@ -400,7 +400,10 @@ a {
   display:inline-block;
 }
 .aside{
-    width:33%;
+   width:33%;
+}
+.top-buffer{
+    margin-top:2em;
 }
 #nextApptDetails li {
     margin-left:1.5em;

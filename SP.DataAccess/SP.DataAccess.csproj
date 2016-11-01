@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Authentication\RoleConstants.cs" />
     <Compile Include="Data\CandidatePrereading.cs" />
     <Compile Include="Data\CourseDay.cs" />
     <Compile Include="Data\CourseActivity.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Data\CourseType.cs" />
     <Compile Include="Data\Enum\SharingLevel.cs" />
     <Compile Include="Data\HotDrink.cs" />
+    <Compile Include="Data\Interfaces\IAdminApproved.cs" />
     <Compile Include="Data\Interfaces\IAssociateFile.cs" />
     <Compile Include="Data\Interfaces\ICourseDay.cs" />
     <Compile Include="Data\Interfaces\IModified.cs" />
@@ -128,6 +130,10 @@
     <Compile Include="Migrations\201610270329166_prereadingFilenameNonNul.cs" />
     <Compile Include="Migrations\201610270329166_prereadingFilenameNonNul.Designer.cs">
       <DependentUpon>201610270329166_prereadingFilenameNonNul.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610312018366_IAdminApproved.cs" />
+    <Compile Include="Migrations\201610312018366_IAdminApproved.Designer.cs">
+      <DependentUpon>201610312018366_IAdminApproved.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
@@ -357,6 +363,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610270329166_prereadingFilenameNonNul.resx">
       <DependentUpon>201610270329166_prereadingFilenameNonNul.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610312018366_IAdminApproved.resx">
+      <DependentUpon>201610312018366_IAdminApproved.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

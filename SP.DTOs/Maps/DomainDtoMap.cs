@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SP.Dto.ProcessBreezeRequests;
+using System;
 using System.Linq.Expressions;
 
 namespace SP.Dto.Maps
@@ -13,6 +14,14 @@ namespace SP.Dto.Maps
 
         public Func<TDto, TDomain> TypedMapToDomain { get; private set; }
         public Expression<Func<TDomain, TDto>> TypedMapFromDomain { get; private set; }
+        internal Func<CurrentUser,Expression<Func<TDomain,bool>>> WherePredicate { get; set;}
+
+        public LambdaExpression GetWhereExpression(CurrentUser user)
+        {
+            return WherePredicate == null
+                ?null
+                :WherePredicate(user);
+        }
 
         public LambdaExpression MapToDto { get { return TypedMapFromDomain; } }
         public object MapFromDto(object dto)

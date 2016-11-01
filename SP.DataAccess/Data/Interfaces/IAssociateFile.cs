@@ -13,7 +13,7 @@ namespace SP.DataAccess.Data.Interfaces
     public interface IAssociateFile
     {
         Guid Id { get; }
-        string FileName { get; }
+        string FileName { get; set; }
         byte[] File { get; set; }
     }
 

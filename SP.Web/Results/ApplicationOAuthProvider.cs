@@ -36,6 +36,11 @@ namespace SP.Web.Providers
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
                 return;
             }
+            if (!user.AdminApproved)
+            {
+                context.SetError("invalid_grant", "Your account is waiting for administrator approval.");
+                return;
+            }
 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);

@@ -32,11 +32,11 @@
 
     /*Constants regarding user login defined here*/
     app.constant('AUTH_EVENTS', {
-            forbidden: 'event:auth-forbidden',
-            loginRequired: 'event:auth-loginRequired',
-            loginConfirmed: 'event:auth-loginConfirmed',
-            loginCancelled: 'event:auth-loginCancelled',
-            loginWidgetReady: 'event:auth-loginWidgetReady'
+        forbidden: 'event:auth-forbidden',
+        loginRequired: 'event:auth-loginRequired',
+        loginConfirmed: 'event:auth-loginConfirmed',
+        loginCancelled: 'event:auth-loginCancelled',
+        loginWidgetReady: 'event:auth-loginWidgetReady'
     })
     .constant('emptyGuid', window.emptyGuid)
     .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
@@ -51,55 +51,10 @@
     .config(['zDirectivesConfigProvider', configDirective])
     .config(['tmhDynamicLocaleProvider',
         function (tmhDynamicLocaleProvider) {
-        tmhDynamicLocaleProvider.useStorage('$cookies');
-        tmhDynamicLocaleProvider.localeLocationPattern("https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.2/angular-locale_{{locale}}.min.js");
-        }])
+            tmhDynamicLocaleProvider.useStorage('$cookies');
+            tmhDynamicLocaleProvider.localeLocationPattern("https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.2/angular-locale_{{locale}}.min.js");
+        }]);
     //http://stackoverflow.com/questions/25470475/angular-js-format-minutes-in-template
-    //usage {65 | timeFilter:'m':'hh:mm'}
-    .filter('timeFilter', function () {
-        var conversions = {
-            's': angular.identity,
-            'm': function(value) { return value * 60; },
-            'h': function(value) { return value * 3600; }
-        };
-        var testUiGridAggregateVals = /^([^\d]*)(\d+\.?\d*)$/;
-
-        return function (value, unit, format) {
-            var prefix = '';
-            if (value === angular.undefined) { return ''; }
-            if (typeof value === 'string') {
-                value = testUiGridAggregateVals.exec(value);
-                prefix = value[1];
-                value = value[2];
-            }
-            value = parseFloat(value);
-            var totalSeconds = conversions[(unit || 's')[0]](value);
-            format = format || 'hh:mm:ss';
-
-            return prefix + format.replace(/hh?/, function(capture){
-                var h = Math.floor(totalSeconds / 3600);
-                return capture.length === 1
-                    ? h
-                    : addPadding(h);
-            }).replace(/mm?/, function(capture){
-                var m = Math.floor(totalSeconds % 3600 / 60);
-                return capture.length === 1
-                    ? m
-                    : addPadding(m);
-            }).replace(/ss?/, function(capture){
-                var s = totalSeconds % 60;
-                return capture.length === 1
-                    ? s
-                    : addPadding(s);
-            });
-        };
-
-        function addPadding(value) {
-            return value < 10
-                ? '0' + value
-                : value;
-        }
-    });
 
     // Include $route to kick start the router.
     app.run(['tokenStorageService', 'entityManagerFactory', 'modelBuilder', '$rootScope', 'AUTH_EVENTS','$route',

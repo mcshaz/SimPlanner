@@ -9,58 +9,20 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-//using Ent = System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Security.Principal;
 
 namespace SP.Dto.ProcessBreezeRequests
 {
-    internal sealed class ValidateMedSim : IDisposable
+    internal sealed class ValidateMedSim
     {
-        private MedSimDbContext _context;
-        private readonly string _userName;
-        private Participant _user;
-
-        public ValidateMedSim(IPrincipal user)
+        public ValidateMedSim(CurrentUser currentUser)
         {
-            if (user.Identity.IsAuthenticated)
-            {
-                if (user.IsInRole(RoleConstants.AccessAllData))
-                {
-                    _adminLevel = AdminLevels.AllData;
-                }
-                else if (user.IsInRole(RoleConstants.AccessInstitution))
-                {
-                    _adminLevel = AdminLevels.InstitutionAdmin;
-                }
-                else if (user.IsInRole(RoleConstants.AccessDepartment))
-                {
-                    _adminLevel = AdminLevels.DepartmentAdmin;
-                }
-                _userName = user.Identity.Name;
-            }
+            CurrentUser = currentUser;
         }
-
-        private MedSimDbContext Context
-        {
-            get
-            {
-                return _context ?? (_context = new MedSimDbContext());
-            }
-        }
-        private Participant User
-        {
-            get
-            {
-                return _user ?? (_user = Context.Users.First(u=>u.UserName == _userName)); //?include("Department")
-            }
-        }
-
-        private enum AdminLevels { None = default(int), AllData, InstitutionAdmin, DepartmentAdmin };
-        private readonly AdminLevels _adminLevel;
-        private AdminLevels AdminLevel { get { return _adminLevel; } }
+        public CurrentUser CurrentUser { get; private set; }
+        public MedSimDbContext Context { get { return CurrentUser.Context; } }
 
         private static IEnumerable<PropertyInfo> _identityUserDbProperties;
         private static IEnumerable<PropertyInfo> IdentityUserDbProperties
@@ -114,63 +76,64 @@ namespace SP.Dto.ProcessBreezeRequests
         }
         bool HasCoursePermission(Guid courseId)
         {
-            return HasDepartmentPermission((from c in Context.Courses
-                                            where c.Id == courseId
-                                            select c.DepartmentId).First());
+            return HasDepartmentPermission(from c in Context.Courses
+                                           where c.Id == courseId
+                                           select c.DepartmentId);
         }
 
         bool HasCourseTypePermission(Guid courseTypeId)
         {
-            return HasDepartmentPermission((from c in Context.CourseTypeDepartments
-                                            where c.CourseTypeId == courseTypeId
-                                            select c.DepartmentId).ToList());
+            return HasDepartmentPermission(from c in Context.CourseTypeDepartments
+                                           where c.CourseTypeId == courseTypeId
+                                           select c.DepartmentId);
         }
         bool HasDepartmentPermission(Guid departmentId)
         {
-            return HasDepartmentPermission(new[] { departmentId });
+            return HasDepartmentPermission((new[] { departmentId }).AsQueryable());
         }
-
-        bool HasDepartmentPermission(IEnumerable<Guid> departmentIds)
+        bool HasDepartmentPermission(IQueryable<Guid> departmentIds)
         {
-            switch (AdminLevel)
+            switch (CurrentUser.AdminLevel)
             {
                 case AdminLevels.AllData:
                     return true;
                 case AdminLevels.None:
                     return false;
                 case AdminLevels.DepartmentAdmin:
-                    return departmentIds.Contains(User.DefaultDepartmentId);
                 case AdminLevels.InstitutionAdmin:
-                    return departmentIds.Contains(User.DefaultDepartmentId) || User.Department.Institution.Departments.Any(d=>d.InstitutionId == User.Department.InstitutionId && departmentIds.Contains(d.Id));
-            }
-                throw new UnauthorizedAccessException("Unknown Admin Level");
-        }
-
-        bool HasInstitutionPermission(Guid institutionId)
-        {
-            switch (AdminLevel)
-            {
-                case AdminLevels.AllData:
-                    return true;
-                case AdminLevels.None:
-                case AdminLevels.DepartmentAdmin:
-                    return false;
-                case AdminLevels.InstitutionAdmin:
-                    return User.Department.InstitutionId == institutionId;
+                    return departmentIds.Any(d=>CurrentUser.UserDepartmentAdminIds.Contains(d));
             }
             throw new UnauthorizedAccessException("Unknown Admin Level");
         }
 
+        bool HasInstitutionPermission(Guid institutionId)
+        {
+            switch (CurrentUser.AdminLevel)
+            {
+                case AdminLevels.AllData:
+                    return true;
+                case AdminLevels.None:
+                case AdminLevels.DepartmentAdmin:
+                    return false;
+                case AdminLevels.InstitutionAdmin:
+                    return CurrentUser.UserInstitutionId == institutionId;
+            }
+            throw new UnauthorizedAccessException("Unknown Admin Level");
+        }
 
-        private static IEnumerable<EntityError> PermissionErrors<T>(Dictionary<Type, List<EntityInfo>> saveMap, Func<T,bool> isPermitted, string propertyName = null)
+        private static IEnumerable<EntityError> PermissionErrors<T>(Dictionary<Type, List<EntityInfo>> saveMap, Func<T, bool> isPermitted, string propertyName = null)
+        {
+            return PermissionErrors<T>(saveMap, (t, e) => isPermitted(t));
+        }
+        private static IEnumerable<EntityError> PermissionErrors<T>(Dictionary<Type, List<EntityInfo>> saveMap, Func<T, EntityState,bool> isPermitted, string propertyName = null)
         {
             List<EntityInfo> eis;
             if (saveMap.TryGetValue(typeof(T), out eis))
             {
                 return (from ei in eis
                         let e = (T)ei.Entity
-                        where !isPermitted(e)
-                        select MappedEFEntityError.Create(e, "insufficientPermission","you do not have permission to update this property",propertyName));
+                        where !isPermitted(e, ei.EntityState)
+                        select MappedEFEntityError.Create(e, "insufficientPermission","you do not have permission to update this record",propertyName));
             }
             return Enumerable.Empty<EntityError>();
         }
@@ -178,14 +141,14 @@ namespace SP.Dto.ProcessBreezeRequests
         public IEnumerable<EntityError> ValidatePermission(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             return PermissionErrors<ActivityDto>(saveMap,
-                a => HasDepartmentPermission((from ca in Context.CourseActivities
-                                              where ca.Id == a.CourseActivityId
-                                              from ctd in ca.CourseType.CourseTypeDepartments
-                                              select ctd.DepartmentId).ToList()))
+                a => HasDepartmentPermission(from ca in Context.CourseActivities
+                                             where ca.Id == a.CourseActivityId
+                                             from ctd in ca.CourseType.CourseTypeDepartments
+                                             select ctd.DepartmentId))
                 .Concat(PermissionErrors<CandidatePrereadingDto>(saveMap,
                 c => HasCourseTypePermission(c.CourseTypeId)))
                 .Concat(PermissionErrors<CultureDto>(saveMap,
-                e => AdminLevel == AdminLevels.InstitutionAdmin))
+                e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
                 .Concat(PermissionErrors<CourseDto>(saveMap,
                 e => HasDepartmentPermission(e.DepartmentId)))
                 .Concat(PermissionErrors<CourseActivityDto>(saveMap,
@@ -197,10 +160,10 @@ namespace SP.Dto.ProcessBreezeRequests
                 .Concat(PermissionErrors<CourseScenarioFacultyRoleDto>(saveMap,
                 e => HasCoursePermission(e.CourseId)))
                 .Concat(PermissionErrors<CourseSlotDto>(saveMap,
-                e => HasDepartmentPermission((from c in Context.CourseFormats
-                                              where c.Id == e.CourseFormatId
-                                              from ctd in c.CourseType.CourseTypeDepartments
-                                              select ctd.DepartmentId).ToList())))
+                e => HasDepartmentPermission(from c in Context.CourseFormats
+                                             where c.Id == e.CourseFormatId
+                                             from ctd in c.CourseType.CourseTypeDepartments
+                                             select ctd.DepartmentId)))
                 .Concat(PermissionErrors<CourseSlotActivityDto>(saveMap,
                 e => HasCoursePermission(e.CourseId)))
                 .Concat(PermissionErrors<CourseSlotManikinDto>(saveMap,
@@ -215,23 +178,68 @@ namespace SP.Dto.ProcessBreezeRequests
                 e => HasCourseTypePermission(e.CourseTypeId)))
                 .Concat(PermissionErrors<CourseTypeScenarioRoleDto>(saveMap,
                 e => HasCourseTypePermission(e.CourseTypeId)))
+                //possibilities:
+                //unregistered user applying to join/register themself + department: set approved false
+                //department being modified - usual inst & dpt admin priveleges
+                //department being created - code should still work with iqueryable.contains
                 .Concat(PermissionErrors<DepartmentDto>(saveMap,
-                e => HasDepartmentPermission(e.Id)))
+                (e, state) => {
+                    if (state == EntityState.Added)
+                    {
+                        e.AdminApproved = e.AdminApproved && HasInstitutionPermission(e.InstitutionId);
+                        return true;
+                    }
+                    else
+                    {
+                        return HasDepartmentPermission(e.Id);
+                    }
+                }))
                 .Concat(PermissionErrors<FacultyScenarioRoleDto>(saveMap,
-                e => HasDepartmentPermission((from ctsr in Context.CourseTypeScenarioRoles
-                                              where ctsr.FacultyScenarioRoleId == e.Id
-                                              from ctd in ctsr.CourseType.CourseTypeDepartments
-                                              select ctd.DepartmentId).ToList())))
+                e => HasDepartmentPermission(from ctsr in Context.CourseTypeScenarioRoles
+                                             where ctsr.FacultyScenarioRoleId == e.Id
+                                             from ctd in ctsr.CourseType.CourseTypeDepartments
+                                             select ctd.DepartmentId)))
                 .Concat(PermissionErrors<HotDrinkDto>(saveMap,
-                e => AdminLevel == AdminLevels.InstitutionAdmin))
+                e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
                 .Concat(PermissionErrors<InstitutionDto>(saveMap,
-                e => HasInstitutionPermission(e.Id)))
+                (e, state) => {
+                    if (state == EntityState.Added)
+                    {
+                        e.AdminApproved = e.AdminApproved && CurrentUser.AdminLevel == AdminLevels.AllData;
+                        return true;
+                    }
+                    else
+                    {
+                        return HasInstitutionPermission(e.Id);
+                    }
+                }))
                 .Concat(PermissionErrors<ManikinDto>(saveMap,
-                e => HasDepartmentPermission(e.ModelId)))
+                e => HasDepartmentPermission(e.DepartmentId)))
                 .Concat(PermissionErrors<ManikinManufacturerDto>(saveMap,
-                e => AdminLevel == AdminLevels.InstitutionAdmin))
+                e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
+                //TODO: neaten up
+                //for now, any update or create operation
+                .Concat(PermissionErrors<ParticipantDto>(saveMap,
+                (e, state) => {
+                    if (state == EntityState.Deleted)
+                    {
+                        return CurrentUser.AdminLevel == AdminLevels.AllData || e.Id == CurrentUser.User.Id;
+                    }
+                    if (state == EntityState.Added)
+                    {
+                        return CurrentUser.AdminLevel != AdminLevels.None || !e.AdminApproved;
+                    } 
+                    if (state == EntityState.Modified)
+                    {
+                        if (CurrentUser.AdminLevel != AdminLevels.None) {
+                            return true;
+                        };
+                        return (e.Id == CurrentUser.User.Id && CurrentUser.User.AdminApproved);
+                    }
+                    return true;
+                }))
                 .Concat(PermissionErrors<ProfessionalRoleDto>(saveMap,
-                e => AdminLevel == AdminLevels.InstitutionAdmin))
+                e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
                 .Concat(PermissionErrors<ProfessionalRoleInstitutionDto>(saveMap,
                 e => HasInstitutionPermission(e.InstitutionId)))
                 .Concat(PermissionErrors<RoleDto>(saveMap,
@@ -241,23 +249,71 @@ namespace SP.Dto.ProcessBreezeRequests
                 .Concat(PermissionErrors<ScenarioDto>(saveMap,
                 e => HasDepartmentPermission(e.DepartmentId)))
                 .Concat(PermissionErrors<ScenarioResourceDto>(saveMap,
-                e => HasDepartmentPermission((from s in Context.Scenarios
-                                              where s.Id == e.ScenarioId
-                                              select s.DepartmentId).First())));
-        }
+                e => HasDepartmentPermission(from s in Context.Scenarios
+                                             where s.Id == e.ScenarioId
+                                             select s.DepartmentId)))
+                .Concat(PermissionErrors<UserRoleDto>(saveMap,
+                e => { switch (e.RoleId.ToString()) {
+                        case RoleConstants.SiteAdminId:
+                            return CurrentUser.IsSiteAdmin;
+                        case RoleConstants.AccessAllDataId:
+                            return CurrentUser.AdminLevel == AdminLevels.AllData;
+                        case RoleConstants.AccessInstitutionId:
+                            if (CurrentUser.AdminLevel == AdminLevels.AllData) {
+                                return true;
+                            }
+                            var departmentId = DepartmentForUser(e.UserId, saveMap);
+                            return CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin
+                                    && departmentId.HasValue && CurrentUser.UserDepartmentAdminIds.Contains(departmentId.Value);
+                        case RoleConstants.AccessDepartmentId:
+                            if (CurrentUser.AdminLevel == AdminLevels.AllData)
+                            {
+                                return true;
+                            }
+                            var dptId = DepartmentForUser(e.UserId, saveMap);
+                            return dptId.HasValue && (CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin
+                                        || CurrentUser.AdminLevel == AdminLevels.DepartmentAdmin)
+                                    && CurrentUser.UserDepartmentAdminIds.Contains(dptId.Value);
+                        default:
+                            throw new NotImplementedException("unknown role Id");
 
+                    } }));
+        }
+        private Guid? DepartmentForUser(Guid userId, Dictionary<Type, List<EntityInfo>> saveMap)
+        {
+            Guid? returnVar;
+            List<EntityInfo> ei;
+            if (saveMap.TryGetValue(typeof(ParticipantDto), out ei))
+            {
+                returnVar = (from e in ei
+                             let ent = (ParticipantDto)e.Entity
+                             where ent.Id == userId
+                             select (Guid?)ent.DefaultDepartmentId).FirstOrDefault();
+            } else
+            {
+                returnVar = null;
+            }
+            
+            if (!returnVar.HasValue)
+            {
+                returnVar = Context.Users.Find(userId)?.DefaultDepartmentId;
+            }
+            return returnVar;
+        }
         public static Dictionary<Type, List<EntityInfo>> MapDtoToServerType(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             var returnVar = new Dictionary<Type, List<EntityInfo>>();
 
             foreach (var kv in saveMap)
             {
-                Type serverType = MapperConfig.GetServerModelType(kv.Key);
                 var mapper = MapperConfig.GetFromDtoMapper(kv.Key);
-                var vals = kv.Value.Select(d => d.ContextProvider.CreateEntityInfo(mapper(d.Entity), d.EntityState)).ToList();
-                returnVar.Add(serverType, vals);
+                var vals = kv.Value.Select(d => {
+                    var rv = d.ContextProvider.CreateEntityInfo(mapper(d.Entity), d.EntityState);
+                    rv.OriginalValuesMap = d.OriginalValuesMap;
+                    return rv;
+                }).ToList();
+                returnVar.Add(MapperConfig.GetServerModelType(kv.Key), vals);
             }
-
             return returnVar;
         }
 
@@ -268,49 +324,75 @@ namespace SP.Dto.ProcessBreezeRequests
             {
                 UpdateICourseDays(ei.Select(e=> (CourseSlot)e.Entity));
             }
+            
             var iAssocFiles = (from s in saveMap
-                               where s.Key.IsAssignableFrom(typeof(IAssociateFile))
-                               from v in s.Value
-                               select v).ToLookup(k => k.EntityState, v => (IAssociateFile)v.Entity);
+                               where typeof(IAssociateFile).IsAssignableFrom(s.Key) 
+                               select TypedEntityInfo<IAssociateFile>.GetTyped(s.Value))
+                               .SelectMany(s=>s).ToLookup(k => k.Info.EntityState);
 
-            foreach (var i in iAssocFiles[EntityState.Deleted]) {
-                i.DeleteFile();
+            foreach (var i in iAssocFiles[Breeze.ContextProvider.EntityState.Deleted]) {
+                i.Entity.DeleteFile();
             }
 
-            foreach (var i in iAssocFiles[EntityState.Added].Concat(iAssocFiles[EntityState.Modified]))
+            foreach (var i in iAssocFiles[Breeze.ContextProvider.EntityState.Modified])
             {
-                if (i.File != null)
+                //? need to check lastmodified or size?
+                string originalFilename = (string)i.Info.OriginalValuesMap.TryGetValues(nameof(i.Entity.FileName), "LogoImageFileName").FirstOrDefault();
+                if (originalFilename != null && i.Entity.FileName != originalFilename)
                 {
-                    var o = i as IAssociateFileOptional;
+                    string fileName = i.Entity.FileName;
+                    //bit of a hack
+                    i.Entity.FileName = originalFilename;
+                    i.Entity.DeleteFile();
+                    i.Entity.FileName = fileName;
+                }
+            }
+
+            foreach (var i in iAssocFiles[Breeze.ContextProvider.EntityState.Added].Concat(iAssocFiles[Breeze.ContextProvider.EntityState.Modified]))
+            {
+                if (i.Entity.File != null)
+                {
+                    var o = i.Entity as IAssociateFileOptional;
                     if (o == null)
                     {
-                        ((IAssociateFileRequired)i).StoreFile();
+                        ((IAssociateFileRequired)i.Entity).StoreFile();
                     }
                     else
                     {
                         o.StoreFile();
                     }
-                    i.File = null;
+                    i.Entity.File = null;
                 }
             }
         }
+        /*
+        private void AddApprovedRole(List<EntityInfo> currentInfos)
+        {
+            var participants = from ci in currentInfos
+                                     where ci.EntityState == Breeze.ContextProvider.EntityState.Added
+                                     select ((Participant)ci.Entity).Id;
+            foreach (var p in participants)
+            {
+                Context.UserRoles.Add(new AspNetUserRole { UserId = p, RoleId = Guid.ParseExact(RoleConstants.AdminApprovedId, RoleConstants.IdFormat) });
+            }
+        }
+        */
 
         void MapIdentityUser(List<EntityInfo> currentInfos)
         {
             var breezeParticipants = from ci in currentInfos
-                                     where ci.EntityState == EntityState.Modified
+                                     where ci.EntityState == Breeze.ContextProvider.EntityState.Modified
                                      select (Participant)ci.Entity;
             var ids = breezeParticipants.Select(p => p.Id);
-            var usrs = Context.Users.Where(u => ids.Contains(u.Id)).ToDictionary(u=>u.Id);
+            var usrs = Context.Users.Where(u => ids.Contains(u.Id)).ToList(); //ToDictionary(u=>u.id) if realistic chance of having multiple users saved at once
             foreach (var p in breezeParticipants)
             {
-                Participant u = usrs[p.Id];
+                Participant u = usrs.First(dbu=>dbu.Id == p.Id);
                 foreach (var pi in IdentityUserDbProperties)
                 {
                     pi.SetValue(p, pi.GetValue(u));
                 }
             }
-
         }
 
         IEnumerable<EntityError> GetCourseFormatErrors(List<EntityInfo> currentInfos)
@@ -398,7 +480,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 {
                     var ci = CultureInfo.GetCultureInfo(i.Entity.LocaleCode);
                     //not great separation of concerns here- this is not a buisness logic problem
-                    if (i.Info.EntityState == EntityState.Added && !Context.Cultures.Any(c => c.LocaleCode == ci.Name))
+                    if (i.Info.EntityState == Breeze.ContextProvider.EntityState.Added && !Context.Cultures.Any(c => c.LocaleCode == ci.Name))
                     {
                         CreateCulture(ci);
                     }
@@ -480,7 +562,7 @@ namespace SP.Dto.ProcessBreezeRequests
         IEnumerable<EntityError> GetFileErrors<T>(byte[] file, TypedEntityInfo<T> entityInfo, Func<IAssociateFileRequired> getExistingEntity) where T : class, IAssociateFileRequired
         {
             var returnVar = GetBaseErrors(file, entityInfo, entityInfo.Entity.FileSize, entityInfo.Entity.FileModified, () => getExistingEntity().AsOptional());
-            if (entityInfo.Info.EntityState == EntityState.Added)
+            if (entityInfo.Info.EntityState == Breeze.ContextProvider.EntityState.Added)
             {
                 if (file == null)
                 {
@@ -511,24 +593,24 @@ namespace SP.Dto.ProcessBreezeRequests
                     $"The file modified must not be the default value for a date ({(default(DateTime)):D})",
                     "FileModified"));
             }
-            if (entityInfo.Info.EntityState == EntityState.Modified && file == null)
+            if (entityInfo.Info.EntityState == Breeze.ContextProvider.EntityState.Modified && file == null)
             {
                 var existingEntity = getExistingEntity();
-                if (entityInfo.Entity.FileName != existingEntity.FileName)
+                if (entityInfo.Entity.FileName != null && entityInfo.Entity.FileName != existingEntity.FileName)
                 {
                     returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
                     "FileNameDifferWithExisting",
                     "The filename is different to the existing filename, but no new file is being uploaded",
                     "FileName"));
                 }
-                if (fileModified != existingEntity.FileModified)
+                if (fileModified.HasValue && fileModified != existingEntity.FileModified)
                 {
                     returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
                     "FileModifiedDifferWithExisting",
                     "The file modified date is different to the existing date modified, but no new file is being uploaded",
                     "FileModified"));
                 }
-                if (fileSize != existingEntity.FileSize)
+                if (fileSize.HasValue && fileSize != existingEntity.FileSize)
                 {
                     returnVar.Add(MappedEFEntityError.Create(entityInfo.Entity,
                     "FileSizeDifferWithExisting",
@@ -697,20 +779,5 @@ namespace SP.Dto.ProcessBreezeRequests
 
             }
         }
-
-        #region IDisposable
-        public void Dispose() {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        ~ValidateMedSim() { Dispose(false); }
-        void Dispose(bool disposing)
-        { // would be protected virtual if not sealed 
-            if (disposing && _context!=null)
-            { // only run this logic when Dispose is called
-                _context.Dispose();
-            }
-        }
-        #endregion //IDisposable
     }
 }

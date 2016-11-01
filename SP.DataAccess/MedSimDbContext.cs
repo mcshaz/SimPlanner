@@ -51,6 +51,7 @@ namespace SP.DataAccess
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<Scenario> Scenarios { get; set; }
         public virtual DbSet<ScenarioResource> ScenarioResources { get; set; }
+        public DbSet<AspNetUserRole> UserRoles { get; set; }
 
         #region overrides //overriding to allow access without referencing aspnet.identity.entityframework assembly
         public override IDbSet<Participant> Users
@@ -477,6 +478,16 @@ namespace SP.DataAccess
                         }
                         ent.Property("CreatedUtc").IsModified = false;
                     }
+                    /*
+                    else if (ent.State == EntityState.Modified && t.GetInterface(nameof(IAdminApproved))!=null)
+                    {
+                        var aa = (IAdminApproved)ent.Entity;
+                        if (!aa.AdminApproved)
+                        {
+                            ent.Property(nameof(aa.AdminApproved)).IsModified = false;
+                        }
+                    }
+                    */
                 }
             }
         }

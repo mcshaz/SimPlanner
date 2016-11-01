@@ -90,20 +90,6 @@ namespace SimPlanner.Tests
             Assert.IsFalse(courses.Zip(courses.Skip(1), (a, b) => a.StartUtc < b.StartUtc).Contains(false));
         }
 
-        class MockIPrincipal: System.Security.Principal.IPrincipal
-        {
-            internal MockIPrincipal() { Identity = new MockIIdentity(); }
-            public System.Security.Principal.IIdentity Identity { get; private set; }
-            public bool IsInRole(string roleName) { return true; }
-
-            public class MockIIdentity : System.Security.Principal.IIdentity
-            {
-                public string Name { get { return "brentm@adhb.govt.nz"; } }
-                public bool IsAuthenticated {  get { return true; } }
-                public string AuthenticationType { get { return "Mock"; } }
-            }
-        }
-
         #region IDisposable
 
         bool _disposed;
@@ -137,5 +123,19 @@ namespace SimPlanner.Tests
             _disposed = true;
         }
         #endregion //IDisposable
+    }
+
+    class MockIPrincipal : System.Security.Principal.IPrincipal
+    {
+        internal MockIPrincipal() { Identity = new MockIIdentity(); }
+        public System.Security.Principal.IIdentity Identity { get; private set; }
+        public bool IsInRole(string roleName) { return true; }
+
+        public class MockIIdentity : System.Security.Principal.IIdentity
+        {
+            public string Name { get { return "brentm@adhb.govt.nz"; } }
+            public bool IsAuthenticated { get { return true; } }
+            public string AuthenticationType { get { return "Mock"; } }
+        }
     }
 }
