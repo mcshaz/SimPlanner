@@ -1,4 +1,5 @@
-﻿using SP.Dto.Utilities;
+﻿using SP.Dto.ProcessBreezeRequests;
+using SP.Dto.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -80,24 +81,40 @@ namespace SP.Dto.Maps
             return _dtoMapDictionary[dtoType].MapFromDto(obj);
         }
         const char defaultSepChar = '.';
-        public static IQueryable<TMap> ProjectToDto<T, TMap>(this IQueryable<T> queryable, string[] includes = null, string[] selects=null, char sepChar= defaultSepChar)
+        public static IQueryable<TMap> ProjectToDto<T, TMap>(this IQueryable<T> queryable, CurrentUser currentUser, string[] includes = null, string[] selects=null, char sepChar= defaultSepChar)
         {
-            return queryable.Select(GetToDtoLambda<T, TMap>(includes, selects, sepChar));
+            var returnVar = GetToDtoLambda(typeof(TMap), currentUser, includes, selects, sepChar);
+            if (returnVar.WhereExpression != null)
+            {
+                queryable = queryable.Where((Expression<Func<T, bool>>)returnVar.WhereExpression);
+            }
+            return queryable.Select((Expression<Func<T, TMap>>)returnVar.SelectExpression);
         }
 
-        public static Expression<Func<T,TMap>> GetToDtoLambda<T,TMap>(string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
+        /// <summary>
+        /// predominantly for unit testing
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TMap"></typeparam>
+        /// <param name="currentUser"></param>
+        /// <param name="includes"></param>
+        /// <param name="selects"></param>
+        /// <param name="sepChar"></param>
+        /// <returns></returns>
+        public static Expression<Func<T,TMap>> GetToDtoLambda<T,TMap>(CurrentUser currentUser, string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
         {
-            return (Expression<Func<T, TMap>>)GetToDtoLambda(typeof(TMap), includes, selects, sepChar);
+            var returnVar = GetToDtoLambda(typeof(TMap), currentUser, includes, selects, sepChar);
+            return (Expression<Func<T, TMap>>)returnVar.SelectExpression;
         }
 
-        public static LambdaExpression GetToDtoLambda(Type dtoType, string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
+        internal static Node GetToDtoLambda(Type dtoType, CurrentUser currentUser, string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
         {
-            var includeSelects = new IncludeSelectOptions(dtoType, includes, selects, sepChar);
+            var includeSelects = new IncludeSelectOptions(dtoType, currentUser,includes, selects, sepChar);
             VisitNodes(includeSelects.RequiredMappings);
-            return includeSelects.RequiredMappings.Lambda;
+            return includeSelects.RequiredMappings;
         }
 
-        private static void VisitNodes(IncludeSelectOptions.Node includeTree)
+        private static void VisitNodes(Node includeTree)
         {
             if (includeTree == null) { throw new ArgumentNullException("includeTree"); }
             
@@ -107,20 +124,22 @@ namespace SP.Dto.Maps
                 {
                     VisitNodes(n);
                 }
-                includeTree.Lambda = includeTree.Lambda.MapNavProperty(includeTree.Children.Select(c => new KeyValuePair<PropertyInfo, LambdaExpression>(c.PropertyInfo, c.Lambda)));  
+                includeTree.SelectExpression = includeTree.SelectExpression.MapNavProperty(includeTree.Children.Select(c => new NavProperty(c.PropertyInfo, c.SelectExpression) { Where = c.WhereExpression }));  
             }
         }
 
         private class IncludeSelectOptions
         {
             readonly char _sepChar;
+            readonly CurrentUser _currentUser;
             internal readonly Node RequiredMappings;
 
-            public IncludeSelectOptions(Type dtoType, IList<string> includes = null, IList<string> selects = null, char sepChar = '.')
+            public IncludeSelectOptions(Type dtoType, CurrentUser currentUser,IList<string> includes = null, IList<string> selects = null, char sepChar = '.')
             {
                 ValidateNoRepeats(includes, "includes");
                 ValidateNoRepeats(selects, "selects");
                 _sepChar = sepChar;
+                _currentUser = currentUser;
                 List<string[]> includeList = (includes == null) ? new List<string[]>() : new List<string[]>(includes.Select(i => i.Split(sepChar)));
                 List<string[]> selectList = (selects == null) ? new List<string[]>() : new List<string[]>(selects.Select(i => i.Split(sepChar)));
 
@@ -139,14 +158,18 @@ namespace SP.Dto.Maps
                     throw new ArgumentException("property [" + string.Join(",", repeats) + "] is repeated", paramName);
                 }
             }
-            private static Node GetRequiredMappings(Type dtoType, IList<string[]> includeList, IList<string[]> selectList )
+            private Node GetRequiredMappings(Type dtoType, IList<string[]> includeList, IList<string[]> selectList)
             {
-                Node node = new Node(dtoType) { Lambda = _dtoMapDictionary[dtoType].MapToDto };
+                var dict = _dtoMapDictionary[dtoType];
+                Node node = new Node(dtoType) {
+                    SelectExpression = dict.MapToDto,
+                    WhereExpression = dict.GetWhereExpression(_currentUser)
+                };
                 GetRequiredMappings(node, includeList, true);
                 GetRequiredMappings(node, selectList, false); 
                 return node;
             }
-            private static Node GetRequiredMappings(Node node, IList<string[]> mapList, bool throwIfLastNotFound)
+            private Node GetRequiredMappings(Node node, IList<string[]> mapList, bool throwIfLastNotFound)
             {
                 //build tree
                 for(int i=0;i< mapList.Count;i++)
@@ -160,6 +183,10 @@ namespace SP.Dto.Maps
                         if (matchingChild == null)
                         {
                             PropertyInfo includeInfo = match.Type.GetProperty(propertyName);
+                            if (includeInfo == null)
+                            {
+                                throw new ArgumentException($"could not find property {propertyName} on type {match.Type.FullName}");
+                            }
                             Type baseType = includeInfo.PropertyType.IsGenericType && includeInfo.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>)
                                 ?includeInfo.PropertyType.GenericTypeArguments[0]
                                 :includeInfo.PropertyType;
@@ -167,7 +194,8 @@ namespace SP.Dto.Maps
                             if (_dtoMapDictionary.TryGetValue(baseType, out map))
                             {
                                 matchingChild = new Node(baseType) {
-                                    Lambda = map.MapToDto,
+                                    SelectExpression = map.MapToDto,
+                                    WhereExpression = map.GetWhereExpression(_currentUser),
                                     PropertyInfo = includeInfo
                                 };
                                 match.Children.Add(matchingChild);
@@ -182,37 +210,38 @@ namespace SP.Dto.Maps
                 }
                 return node;
             }
+        }
 
-            internal class Node
+        internal class Node
+        {
+            public readonly List<Node> Children;
+            public Type Type { get; set; }
+            public PropertyInfo PropertyInfo { get; set; }
+            public LambdaExpression SelectExpression { get; set; }
+            public LambdaExpression WhereExpression { get; set; }
+            public Node(Type type)
             {
-                public readonly List<Node> Children;
-                public Type Type { get; set; }
-                public PropertyInfo PropertyInfo { get; set;}
-                public LambdaExpression Lambda { get; set; }
-                public Node(Type type)
+                Type = type;
+                Children = new List<Node>();
+            }
+            public void PrintPretty(string indent, bool last = false)
+            {
+                Debug.Write(indent);
+                if (last)
                 {
-                    Type = type;
-                    Children = new List<Node>();
+                    Debug.Write("\\-");
+                    indent += "  ";
                 }
-                public void PrintPretty(string indent, bool last=false)
+                else
                 {
-                    Debug.Write(indent);
-                    if (last)
-                    {
-                        Debug.Write("\\-");
-                        indent += "  ";
-                    }
-                    else
-                    {
-                        Debug.Write("|-");
-                        indent += "| ";
-                    }
-                    Debug.WriteLine(Type.Name);
+                    Debug.Write("|-");
+                    indent += "| ";
+                }
+                Debug.WriteLine(Type.Name);
 
-                    for (int i = 0; i < Children.Count; i++)
-                    {
-                        Children[i].PrintPretty(indent, i == Children.Count - 1);
-                    }
+                for (int i = 0; i < Children.Count; i++)
+                {
+                    Children[i].PrintPretty(indent, i == Children.Count - 1);
                 }
             }
         }

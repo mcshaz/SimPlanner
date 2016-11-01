@@ -8,7 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using SP.Dto.Maps;
 using SP.Dto;
-using System.Reflection;
+using SP.Dto.ProcessBreezeRequests;
 
 namespace SimPlanner.Tests
 {
@@ -16,9 +16,21 @@ namespace SimPlanner.Tests
     public class TestExpandNavigate
     {
 
-        Expression<Func<Bar, BarDto>> MapBar = b => new BarDto { BarId = b.BarId, BarString = b.BarString };
-        Expression<Func<Foo, FooDto>> MapFoo = f => new FooDto { FooId = f.FooId };
-        
+        static Expression<Func<Bar, BarDto>> MapBar = b => new BarDto { BarId = b.BarId, BarString = b.BarString };
+        static Expression<Func<Foo, FooDto>> MapFoo = f => new FooDto { FooId = f.FooId };
+        static readonly NavProperty[] _navProperties = new[] {
+                new NavProperty(typeof(FooDto).GetProperty("Bars") ,MapBar),
+                new NavProperty(typeof(FooDto).GetProperty("B"), MapBar)
+            };
+        CurrentUser _currentUser;
+        CurrentUser CurrentUser
+        {
+            get
+            {
+                return _currentUser ?? (_currentUser = new CurrentUser(new MockIPrincipal()));
+            }
+        }
+
         Expression<Func<Foo, FooDto>> target = f => new FooDto
         {
             FooId = f.FooId,
@@ -34,10 +46,7 @@ namespace SimPlanner.Tests
             var bar = new Bar { BarId = 12, BarString = "a" };
             var foo = new Foo { FooId = -1, B = bar, Bars =  new[] { bar, new Bar { BarId = 3, BarString = "b" } } };
 
-            var mapNavEx = MapFoo.MapNavProperty(new Dictionary<string,LambdaExpression> {
-                { "Bars",MapBar},
-                { "B", MapBar}
-            });
+            var mapNavEx = MapFoo.MapNavProperty(_navProperties);
 
             Console.WriteLine(mapNavEx.ToString());
             Func<Foo, FooDto> mapNav = mapNavEx.Compile();
@@ -67,16 +76,12 @@ namespace SimPlanner.Tests
         {
             //performance tests
 
-            var mapProperties = new Dictionary<string, LambdaExpression> {
-                { "Bars",MapBar},
-                { "B", MapBar}
-            };
             int count = 100; // add 0s as appropriate
             var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < count; i++)
             {
-                MapFoo.MapNavProperty(mapProperties);
+                MapFoo.MapNavProperty(_navProperties);
             }
             Console.WriteLine("Svick method elapsed: " + sw.Elapsed);
             /*
@@ -96,7 +101,7 @@ namespace SimPlanner.Tests
             using (MedSimDbContext db = new MedSimDbContext())
             {
 
-                var mapNavEx = MapperConfig.GetToDtoLambda<Participant, ParticipantDto>(new[] { propName });
+                var mapNavEx = MapperConfig.GetToDtoLambda<Participant, ParticipantDto>(CurrentUser, new[] { propName });
                 Console.WriteLine(mapNavEx.ToString());
                 var part = db.Users.Include(propName).AsNoTracking().First(p => p.UserName == testUserName);
 
@@ -116,7 +121,7 @@ namespace SimPlanner.Tests
             using (MedSimDbContext db = new MedSimDbContext())
             {
 
-                var mapNavEx = MapperConfig.GetToDtoLambda<Participant, ParticipantDto>(new[] { collectionPropName });
+                var mapNavEx = MapperConfig.GetToDtoLambda<Participant, ParticipantDto>(CurrentUser, new[] { collectionPropName });
                 Console.WriteLine(mapNavEx.ToString());
                 var part = db.Users.Include(collectionPropName).AsNoTracking().First(p => p.UserName == testUserName);
 
@@ -130,20 +135,26 @@ namespace SimPlanner.Tests
                 Assert.AreEqual(cp.CourseId, cpvm.CourseId);
             }
         }
-
+        [TestMethod]
+        public void TestTreeTopMapping()
+        {
+            using (MedSimDbContext db = new MedSimDbContext())
+            {
+                var u = db.Scenarios.ProjectToDto<Scenario, ScenarioDto>(CurrentUser).ToList();
+                Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(u,Newtonsoft.Json.Formatting.Indented));
+            }
+        }
         [TestMethod]
         public void TestComplexDtoTreeMapping()
         {
             //var test = MapperConfig.GetLambda<Participant, ParticipantDto>(new[] { "Department", "Department.Institution", "Department.Manikins", "Department.Manikins.CourseSlotScenarios", "ProfessionalRole.CourseParticipants" });
             //Console.WriteLine(test);
-
-            var test2 = MapperConfig.GetToDtoLambda<Course, CourseDto>(new[] {
+            var test2 = MapperConfig.GetToDtoLambda<Course, CourseDto>(CurrentUser, new[] {
                         "CourseParticipants",
                         "CourseFormat.CourseSlots.Activity.ActivityChoices",
-                        "CourseSlotScenarios",
+                        "CourseSlotActivities",
                         "CourseSlotPresenters",
                         "CourseScenarioFacultyRoles",
-                        "ChosenTeachingResources",
                         "CourseFormat.CourseType.Scenarios"});
 
 
@@ -183,6 +194,24 @@ namespace SimPlanner.Tests
                             */
                 Console.Write(Newtonsoft.Json.JsonConvert.SerializeObject(c, Newtonsoft.Json.Formatting.Indented));
 
+            }
+        }
+        [TestMethod]
+        public void TestNestedWhere()
+        {
+            using (MedSimDbContext db = new MedSimDbContext())
+            {
+                Expression<Func<Institution, InstitutionDto>> i = u => new InstitutionDto
+                {
+                    Id = u.Id,
+                    Departments = u.Departments.Where(d => d.Abbreviation == "ced").Select(d => new DepartmentDto { Id = d.Id, Abbreviation = d.Abbreviation }).ToList()
+                };
+                var insts = db.Institutions.Select(i);
+                //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(insts, Newtonsoft.Json.Formatting.Indented));
+                Console.WriteLine(i);
+                //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(i, Newtonsoft.Json.Formatting.Indented));
+
+               
             }
         }
     }

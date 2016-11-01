@@ -10,45 +10,45 @@ namespace SP.Dto.Maps
 {
     public static class ExpressionTreeExtensions
     {
-        public static Expression<Func<T, TMap>> MapNavProperty<T, TMap>(this Expression<Func<T, TMap>> parent, PropertyInfo propInfo, LambdaExpression nav)
+        public static Expression<Func<T, TMap>> MapNavProperty<T, TMap>(this Expression<Func<T, TMap>> parent, NavProperty navProperty)
         {
-            return MapNavProperty(parent, new[] { new KeyValuePair<PropertyInfo, LambdaExpression>(propInfo, nav) });
+            return MapNavProperty(parent, new[] { navProperty });
         }
-        public static Expression<Func<T, TMap>> MapNavProperty<T, TMap>(this Expression<Func<T, TMap>> parent, IEnumerable<KeyValuePair<string, LambdaExpression>> navs)
-        {
-            return (Expression<Func<T, TMap>>)MapNavProperty((LambdaExpression)parent, navs.Select(n=>new KeyValuePair<PropertyInfo, LambdaExpression>(typeof(TMap).GetProperty(n.Key), n.Value)));
-        }
-        public static Expression<Func<T, TMap>> MapNavProperty<T, TMap>(this Expression<Func<T, TMap>> parent, IEnumerable<KeyValuePair<PropertyInfo, LambdaExpression>> navs)
+        public static Expression<Func<T, TMap>> MapNavProperty<T, TMap>(this Expression<Func<T, TMap>> parent, IEnumerable<NavProperty> navs)
         {
             return (Expression<Func<T, TMap>>)MapNavProperty((LambdaExpression)parent, navs);
         }
         static ConstantExpression nullExpression = Expression.Constant(null, typeof(object));
-        public static LambdaExpression MapNavProperty(this LambdaExpression parent, IEnumerable<KeyValuePair<PropertyInfo, LambdaExpression>> navs)
+        public static LambdaExpression MapNavProperty(this LambdaExpression parent, IEnumerable<NavProperty> navs)
         {
             var parentParam = parent.Parameters[0];
             var bindings = new List<MemberBinding>();
             var tMapType = parent.Type.GenericTypeArguments[1];
             foreach (var nav in navs)
             {
-                var target = nav.Key;
-                var source = Expression.Property(parentParam, target.Name); //This is a weakness - assuming collection properties share the same name
+                var target = nav.PropertyInfo;
+                Expression source = Expression.Property(parentParam, target.Name); //This is a weakness - assuming collection properties share the same name
 
-                if (target.PropertyType.IsGenericType &&
-                   target.PropertyType.GetGenericTypeDefinition() == typeof(ICollection<>))
+                if (nav.IsICollection)
                 {
+                    if (nav.Where != null)
+                    {
+                        source = Expression.Call(typeof(Enumerable), "Where",
+                            new[] { nav.Where.Type.GenericTypeArguments[0] }, source, nav.Where);
+                    }
                     var selectCall = Expression.Call(typeof(Enumerable), "Select",
-                        nav.Value.Type.GenericTypeArguments, source, nav.Value);
+                        nav.Select.Type.GenericTypeArguments, source, nav.Select);
                     bindings.Add(Expression.Bind(target, Expression.Call(typeof(Enumerable), "ToList",
-                        new[] { nav.Value.Type.GenericTypeArguments[1] }, selectCall)));
+                        new[] { nav.Select.Type.GenericTypeArguments[1] }, selectCall)));
                 }
                 else
                 {
-                    var navParam = nav.Value.Parameters[0];
+                    var navParam = nav.Select.Parameters[0];
                     var mergeVisitor = new ReplaceVisitor(navParam, source);
-                    //TODO allow flag to bypass this step
-                    var isNull = Expression.Equal(navParam, nullExpression);
+
+                    Expression whereClause = (Expression)nav.Where ?? Expression.Equal(navParam, nullExpression);
                     //will see if creating default object (therefore id = guid.empty) stops OData error 'Cannot compare elements of type'
-                    var ternary = Expression.Condition(isNull, Expression.Constant(null, nav.Value.Body.Type), nav.Value.Body);
+                    var ternary = Expression.Condition(whereClause, Expression.Constant(null, nav.Select.Body.Type), nav.Select.Body);
                     //var ternary = Expression.Condition(isNull, Expression.Constant(null,nav.Value.Body.Type), nav.Value.Body);
                     var newNavBody = mergeVisitor.Visit(ternary);
                     bindings.Add(Expression.Bind(target, newNavBody));
