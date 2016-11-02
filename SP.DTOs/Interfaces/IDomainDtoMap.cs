@@ -9,7 +9,7 @@ namespace SP.Dto.Maps
         Type TypeofDto { get; }
         Type TypeofServerObject { get; }
         LambdaExpression MapToDto { get; }
-        LambdaExpression GetWhereExpression(CurrentUser user);
+        LambdaExpression GetWhereExpression(CurrentPrincipal user);
         object MapFromDto(object dto);
     }
 

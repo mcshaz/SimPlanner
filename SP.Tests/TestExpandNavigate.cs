@@ -22,12 +22,12 @@ namespace SimPlanner.Tests
                 new NavProperty(typeof(FooDto).GetProperty("Bars") ,MapBar),
                 new NavProperty(typeof(FooDto).GetProperty("B"), MapBar)
             };
-        CurrentUser _currentUser;
-        CurrentUser CurrentUser
+        CurrentPrincipal _currentUser;
+        CurrentPrincipal CurrentUser
         {
             get
             {
-                return _currentUser ?? (_currentUser = new CurrentUser(new MockIPrincipal()));
+                return _currentUser ?? (_currentUser = new CurrentPrincipal(new MockIPrincipal()));
             }
         }
 

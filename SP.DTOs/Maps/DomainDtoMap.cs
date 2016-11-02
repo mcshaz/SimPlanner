@@ -14,9 +14,9 @@ namespace SP.Dto.Maps
 
         public Func<TDto, TDomain> TypedMapToDomain { get; private set; }
         public Expression<Func<TDomain, TDto>> TypedMapFromDomain { get; private set; }
-        internal Func<CurrentUser,Expression<Func<TDomain,bool>>> WherePredicate { get; set;}
+        internal Func<CurrentPrincipal,Expression<Func<TDomain,bool>>> WherePredicate { get; set;}
 
-        public LambdaExpression GetWhereExpression(CurrentUser user)
+        public LambdaExpression GetWhereExpression(CurrentPrincipal user)
         {
             return WherePredicate == null
                 ?null

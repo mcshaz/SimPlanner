@@ -49,9 +49,6 @@ namespace SP.Dto.Maps
                 //ScenarioFacultyRoles = null
             })
         {
-            WherePredicate = v => (v.AdminLevel == ProcessBreezeRequests.AdminLevels.None)
-                ? p => p.UserName == v.UserName
-                : (Expression<Func<Participant,bool>>)null;
         }
     }
 }

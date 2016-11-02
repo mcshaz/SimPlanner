@@ -15,7 +15,7 @@ namespace SP.Dto
     {
         private readonly EFContextProvider<MedSimDbContext> _contextProvider;
         private readonly ValidateMedSim _validationHelper;
-        private readonly CurrentUser _currentUser;
+        private readonly CurrentPrincipal _currentUser;
         private readonly IPrincipal _user;
 
         public MedSimDbContext Context
@@ -27,7 +27,7 @@ namespace SP.Dto
         {
 
             _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
-            _currentUser = new CurrentUser(user, validationContext);
+            _currentUser = new CurrentPrincipal(user, validationContext);
             _validationHelper = new ValidateMedSim(_currentUser);
             _contextProvider.BeforeSaveEntitiesDelegate += BeforeSaveEntities; 
             _contextProvider.AfterSaveEntitiesDelegate += _validationHelper.AfterSave;
@@ -102,13 +102,8 @@ namespace SP.Dto
         //https://github.com/AutoMapper/AutoMapper/wiki/Queryable-Extensions
         public IQueryable<InstitutionDto> GetInstitutions(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
-            IQueryable<Institution> returnVar = Context.Institutions;
-            if (!_user.IsInRole(RoleConstants.AccessAllData))
-            {
-                returnVar = returnVar.Where(i => i.Departments.Any(d => d.Participants.Any(p => p.UserName == _user.Identity.Name)));
-            }
             //currently allowing users to view all departmetns within their institution - but only edit thseir department
-            return returnVar.ProjectToDto<Institution,InstitutionDto>(_currentUser, includes, selects,sepChar);
+            return Context.Institutions.ProjectToDto<Institution,InstitutionDto>(_currentUser, includes, selects,sepChar);
         }
 
         public IQueryable<ParticipantDto> GetParticipants(string[] includes = null, string[] selects = null, char sepChar = '.')

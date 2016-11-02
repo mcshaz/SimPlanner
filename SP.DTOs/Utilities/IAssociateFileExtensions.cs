@@ -97,7 +97,7 @@ namespace SP.Dto.Utilities
             }
             else
             {
-                File.WriteAllBytes(Path.Combine(path, fileName), file);
+                File.WriteAllBytes(path, file);
             }
         }
 

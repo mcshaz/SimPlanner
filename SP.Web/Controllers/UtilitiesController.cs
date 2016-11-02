@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using SP.Web.Models;
 using System.Web;
 using SP.Web.Controllers.Helpers;
-using SP.Dto;
 using System.Data.Entity;
 using SP.DataAccess;
 
@@ -78,7 +77,7 @@ namespace SP.Web.Controllers
                 //for using the logic to restrict access within our Dto layer
                 var appUser = await UserManager.FindByIdAsync(userId);
                 //hopefully changing this will not cause problems downstream - we do not want cookies going back and forward
-                User = new RequestOnlyPrincipal(appUser.UserName, await UserManager.GetRolesAsync(userId));
+                User = new BasicPrincipalImplementation(appUser.UserName, await UserManager.GetRolesAsync(userId));
             }
             return returnVar;
         }

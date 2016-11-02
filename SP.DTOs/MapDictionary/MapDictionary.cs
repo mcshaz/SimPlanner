@@ -81,7 +81,7 @@ namespace SP.Dto.Maps
             return _dtoMapDictionary[dtoType].MapFromDto(obj);
         }
         const char defaultSepChar = '.';
-        public static IQueryable<TMap> ProjectToDto<T, TMap>(this IQueryable<T> queryable, CurrentUser currentUser, string[] includes = null, string[] selects=null, char sepChar= defaultSepChar)
+        public static IQueryable<TMap> ProjectToDto<T, TMap>(this IQueryable<T> queryable, CurrentPrincipal currentUser, string[] includes = null, string[] selects=null, char sepChar= defaultSepChar)
         {
             var returnVar = GetToDtoLambda(typeof(TMap), currentUser, includes, selects, sepChar);
             if (returnVar.WhereExpression != null)
@@ -101,13 +101,13 @@ namespace SP.Dto.Maps
         /// <param name="selects"></param>
         /// <param name="sepChar"></param>
         /// <returns></returns>
-        public static Expression<Func<T,TMap>> GetToDtoLambda<T,TMap>(CurrentUser currentUser, string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
+        public static Expression<Func<T,TMap>> GetToDtoLambda<T,TMap>(CurrentPrincipal currentUser, string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
         {
             var returnVar = GetToDtoLambda(typeof(TMap), currentUser, includes, selects, sepChar);
             return (Expression<Func<T, TMap>>)returnVar.SelectExpression;
         }
 
-        internal static Node GetToDtoLambda(Type dtoType, CurrentUser currentUser, string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
+        internal static Node GetToDtoLambda(Type dtoType, CurrentPrincipal currentUser, string[] includes = null, string[] selects = null, char sepChar = defaultSepChar)
         {
             var includeSelects = new IncludeSelectOptions(dtoType, currentUser,includes, selects, sepChar);
             VisitNodes(includeSelects.RequiredMappings);
@@ -131,10 +131,10 @@ namespace SP.Dto.Maps
         private class IncludeSelectOptions
         {
             readonly char _sepChar;
-            readonly CurrentUser _currentUser;
+            readonly CurrentPrincipal _currentUser;
             internal readonly Node RequiredMappings;
 
-            public IncludeSelectOptions(Type dtoType, CurrentUser currentUser,IList<string> includes = null, IList<string> selects = null, char sepChar = '.')
+            public IncludeSelectOptions(Type dtoType, CurrentPrincipal currentUser,IList<string> includes = null, IList<string> selects = null, char sepChar = '.')
             {
                 ValidateNoRepeats(includes, "includes");
                 ValidateNoRepeats(selects, "selects");

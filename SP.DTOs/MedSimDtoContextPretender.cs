@@ -261,6 +261,18 @@ namespace SP.Dto
                 .WithRequired(e => e.Institution)
                 .HasForeignKey(e => e.InstitutionId);
 
+            modelBuilder.Entity<InstitutionDto>()
+                .HasMany(e => e.ResourceGivingInstitutions)
+                .WithRequired(e => e.InstitutionGiving)
+                .HasForeignKey(e => e.InstitutionGivingId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<InstitutionDto>()
+                .HasMany(e => e.ResourceReceivingInstitutions)
+                .WithRequired(e => e.InstitutionReceiving)
+                .HasForeignKey(e => e.InstitutionReceivingId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ManikinDto>()
                 .HasMany(e => e.ManikinServices)
                 .WithRequired(e => e.Manikin)

@@ -9,6 +9,7 @@ namespace SP.DataAccess.Migrations
         {
             AddColumn("dbo.AspNetUsers", "AdminApproved", c => c.Boolean(nullable: false));
             Sql("UPDATE dbo.AspNetUsers SET AdminApproved=1");
+            Sql(SqlHelpers.CreateUniqueConstraint<Participant>("AspNetUsers", p => p.FullName, p => p.DefaultDepartmentId, p => p.DefaultProfessionalRoleId));
         }
         
         public override void Down()

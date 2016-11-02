@@ -221,5 +221,18 @@ namespace SP.Dto.Utilities
                 }
             }
         }
+
+        public static TValue TryGetFirstValue<TKey, TValue>(this IDictionary<TKey, TValue> dict, params TKey[] keys)
+        {
+            foreach (var k in keys)
+            {
+                TValue val;
+                if (dict.TryGetValue(k, out val))
+                {
+                    return val;
+                }
+            }
+            return default(TValue);
+        }
     }
 }

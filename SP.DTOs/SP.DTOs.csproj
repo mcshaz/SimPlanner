@@ -161,6 +161,7 @@
     <Compile Include="Dto\ParticipantDto.cs" />
     <Compile Include="Dto\ProfessionalRoleDto.cs" />
     <Compile Include="Dto\ResourceDto.cs" />
+    <Compile Include="Dto\ResourceSharingInstitutionDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\RoomDto.cs" />
     <Compile Include="Dto\ScenarioDto.cs" />
@@ -214,7 +215,7 @@
     <Compile Include="ParticipantSummary\FacultySimRoleSummary.cs" />
     <Compile Include="ParticipantSummary\ParticipantSummary.cs" />
     <Compile Include="ParticipantSummary\ParticipantSummaryServices.cs" />
-    <Compile Include="ProcessBreezeRequests\CurrentUser.cs" />
+    <Compile Include="ProcessBreezeRequests\CurrentPrincipal.cs" />
     <Compile Include="ProcessBreezeRequests\ISO3166.cs" />
     <Compile Include="ProcessBreezeRequests\ValidateMedSim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Utilities\LinqExtensions.cs" />
     <Compile Include="Utilities\OpenXmlExtensions.cs" />
     <Compile Include="Utilities\IAssociateFileExtensions.cs" />
+    <Compile Include="Utilities\BasicPrincipalImplementation.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

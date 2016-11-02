@@ -17,12 +17,13 @@ namespace SP.Dto.ProcessBreezeRequests
 {
     internal sealed class ValidateMedSim
     {
-        public ValidateMedSim(CurrentUser currentUser)
+        public ValidateMedSim(CurrentPrincipal currentUser)
         {
             CurrentUser = currentUser;
         }
-        public CurrentUser CurrentUser { get; private set; }
+        public CurrentPrincipal CurrentUser { get; private set; }
         public MedSimDbContext Context { get { return CurrentUser.Context; } }
+        private const string AfterUpdateDelegate = "AfterUpdateDelegate";
 
         private static IEnumerable<PropertyInfo> _identityUserDbProperties;
         private static IEnumerable<PropertyInfo> IdentityUserDbProperties
@@ -39,38 +40,46 @@ namespace SP.Dto.ProcessBreezeRequests
 
         public IEnumerable<EntityError> ValidateDto(Dictionary<Type, List<EntityInfo>> saveMap)
         {
-            IEnumerable<EntityError> errors = new EntityError[0];
+            List<EntityError> errors = new List<EntityError>();
 
             List<EntityInfo> currentInfos;
-            if (saveMap.TryGetValue(typeof(CourseFormatDto), out currentInfos))
-            {
-                errors = errors.Concat(GetCourseFormatErrors(currentInfos));
-            }
 
-            if (saveMap.TryGetValue(typeof(InstitutionDto), out currentInfos))
+            if (saveMap.TryGetValue(typeof(ActivityDto), out currentInfos))
             {
-                errors = errors.Concat(GetInstitutionErrors(currentInfos));
+                errors.AddRange(GetActivityErrors(currentInfos));
             }
 
             if (saveMap.TryGetValue(typeof(CandidatePrereadingDto), out currentInfos))
             {
-                errors = errors.Concat(GetCandidatePrereadingErrors(currentInfos));
+                errors.AddRange(GetCandidatePrereadingErrors(currentInfos));
+            }
+
+            if (saveMap.TryGetValue(typeof(CourseFormatDto), out currentInfos))
+            {
+                errors.AddRange(GetCourseFormatErrors(currentInfos));
+            }
+
+            if (saveMap.TryGetValue(typeof(InstitutionDto), out currentInfos))
+            {
+                errors.AddRange(GetInstitutionErrors(currentInfos));
+            }
+
+            if (saveMap.TryGetValue(typeof(Participant), out currentInfos))
+            {
+                errors.AddRange(GetParticipantErrors(currentInfos));
             }
 
             if (saveMap.TryGetValue(typeof(RoomDto), out currentInfos))
             {
-                errors = errors.Concat(GetRoomErrors(currentInfos));
-            }
-
-            if (saveMap.TryGetValue(typeof(ActivityDto), out currentInfos))
-            {
-                errors = errors.Concat(GetActivityErrors(currentInfos));
+                errors.AddRange(GetRoomErrors(currentInfos));
             }
 
             if (saveMap.TryGetValue(typeof(ScenarioResourceDto), out currentInfos))
             {
-                errors = errors.Concat(GetScenarioResourceErrors(currentInfos));
+                errors.AddRange(GetScenarioResourceErrors(currentInfos));
             }
+
+            errors.AddRange(ValidatePermission(saveMap));
 
             return errors;
         }
@@ -223,7 +232,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 (e, state) => {
                     if (state == EntityState.Deleted)
                     {
-                        return CurrentUser.AdminLevel == AdminLevels.AllData || e.Id == CurrentUser.User.Id;
+                        return CurrentUser.AdminLevel == AdminLevels.AllData || e.Id == CurrentUser.Principal.Id;
                     }
                     if (state == EntityState.Added)
                     {
@@ -234,7 +243,7 @@ namespace SP.Dto.ProcessBreezeRequests
                         if (CurrentUser.AdminLevel != AdminLevels.None) {
                             return true;
                         };
-                        return (e.Id == CurrentUser.User.Id && CurrentUser.User.AdminApproved);
+                        return (e.Id == CurrentUser.Principal.Id && CurrentUser.Principal.AdminApproved);
                     }
                     return true;
                 }))
@@ -242,6 +251,8 @@ namespace SP.Dto.ProcessBreezeRequests
                 e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
                 .Concat(PermissionErrors<ProfessionalRoleInstitutionDto>(saveMap,
                 e => HasInstitutionPermission(e.InstitutionId)))
+                .Concat(PermissionErrors<ResourceSharingInstitutionDto>(saveMap,
+                e => HasInstitutionPermission(e.InstitutionGivingId)))
                 .Concat(PermissionErrors<RoleDto>(saveMap,
                 e => false))
                 .Concat(PermissionErrors<RoomDto>(saveMap,
@@ -253,19 +264,20 @@ namespace SP.Dto.ProcessBreezeRequests
                                              where s.Id == e.ScenarioId
                                              select s.DepartmentId)))
                 .Concat(PermissionErrors<UserRoleDto>(saveMap,
-                e => { switch (e.RoleId.ToString()) {
-                        case RoleConstants.SiteAdminId:
+                e => {
+                    switch ( RoleConstants.RoleNames[e.RoleId] ) {
+                        case RoleConstants.SiteAdmin:
                             return CurrentUser.IsSiteAdmin;
-                        case RoleConstants.AccessAllDataId:
+                        case RoleConstants.AccessAllData:
                             return CurrentUser.AdminLevel == AdminLevels.AllData;
-                        case RoleConstants.AccessInstitutionId:
+                        case RoleConstants.AccessInstitution:
                             if (CurrentUser.AdminLevel == AdminLevels.AllData) {
                                 return true;
                             }
                             var departmentId = DepartmentForUser(e.UserId, saveMap);
                             return CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin
                                     && departmentId.HasValue && CurrentUser.UserDepartmentAdminIds.Contains(departmentId.Value);
-                        case RoleConstants.AccessDepartmentId:
+                        case RoleConstants.AccessDepartment:
                             if (CurrentUser.AdminLevel == AdminLevels.AllData)
                             {
                                 return true;
@@ -324,6 +336,14 @@ namespace SP.Dto.ProcessBreezeRequests
             {
                 UpdateICourseDays(ei.Select(e=> (CourseSlot)e.Entity));
             }
+
+            foreach(var unm in saveMap.Values.SelectMany(e => e))
+            {
+                object pred;
+                if (unm.UnmappedValuesMap.TryGetValue(AfterUpdateDelegate, out pred)){
+                    ((Action)pred).Invoke();
+                }
+            }
             
             var iAssocFiles = (from s in saveMap
                                where typeof(IAssociateFile).IsAssignableFrom(s.Key) 
@@ -337,7 +357,7 @@ namespace SP.Dto.ProcessBreezeRequests
             foreach (var i in iAssocFiles[Breeze.ContextProvider.EntityState.Modified])
             {
                 //? need to check lastmodified or size?
-                string originalFilename = (string)i.Info.OriginalValuesMap.TryGetValues(nameof(i.Entity.FileName), "LogoImageFileName").FirstOrDefault();
+                string originalFilename = (string)i.Info.OriginalValuesMap.TryGetFirstValue(nameof(i.Entity.FileName), "LogoImageFileName");
                 if (originalFilename != null && i.Entity.FileName != originalFilename)
                 {
                     string fileName = i.Entity.FileName;
@@ -365,18 +385,24 @@ namespace SP.Dto.ProcessBreezeRequests
                 }
             }
         }
-        /*
-        private void AddApprovedRole(List<EntityInfo> currentInfos)
+
+        private void UpdateParticipantPermissions(IEnumerable<Participant> modifiedParticipants)
         {
-            var participants = from ci in currentInfos
-                                     where ci.EntityState == Breeze.ContextProvider.EntityState.Added
-                                     select ((Participant)ci.Entity).Id;
-            foreach (var p in participants)
-            {
-                Context.UserRoles.Add(new AspNetUserRole { UserId = p, RoleId = Guid.ParseExact(RoleConstants.AdminApprovedId, RoleConstants.IdFormat) });
-            }
+            
         }
-        */
+
+        /*
+private void AddApprovedRole(List<EntityInfo> currentInfos)
+{
+   var participants = from ci in currentInfos
+                            where ci.EntityState == Breeze.ContextProvider.EntityState.Added
+                            select ((Participant)ci.Entity).Id;
+   foreach (var p in participants)
+   {
+       Context.UserRoles.Add(new AspNetUserRole { UserId = p, RoleId = Guid.ParseExact(RoleConstants.AdminApprovedId, RoleConstants.IdFormat) });
+   }
+}
+*/
 
         void MapIdentityUser(List<EntityInfo> currentInfos)
         {
@@ -444,30 +470,51 @@ namespace SP.Dto.ProcessBreezeRequests
             }
             */
             List<EntityError> returnVar = new List<EntityError>();
+
             foreach (var p in ps)
             {
-                var dup = (from u in Context.Users
-                           where p.Entity.Id != u.Id &&
-                               p.Entity.FullName == u.FullName &&
-                               p.Entity.DefaultDepartmentId == u.DefaultDepartmentId
-                           select u.DefaultProfessionalRoleId).FirstOrDefault();
-                if (dup != default(Guid) 
-                    && ((dup == p.Entity.DefaultProfessionalRoleId 
-                        || (from r in Context.ProfessionalRoles
-                            where (new[] { dup, p.Entity.DefaultProfessionalRoleId}).Contains(r.Id)
-                            group r by r.Description into c
-                            select c).Count() == 1)))
-                { 
-                    returnVar.Add(MappedEFEntityError.Create(p.Entity,
-                        "DuplicateUser",
-                        "2 users with the same name, department and profession",
-                        "FullName"));
+                //if the user being modified does not have administrator priveleges for the new department we will have to remove 
+                //the administrator priveleges after successful save - otherwise would provide a back door in to change departments for which we
+                //should not have permission
+                if (p.Entity.DefaultDepartmentId != Context.Users.Find(p.Entity.Id).DefaultDepartmentId)
+                {
+                    var originalDepartmentAccess = CurrentUser.GetDepartmentAdminIdsForUser(p.Entity.Id);
+                    if (!originalDepartmentAccess.Contains(p.Entity.DefaultDepartmentId))
+                    {
+                        Guid userId = p.Entity.Id;
+                        Action pred = () => {
+                            var toRemove = Context.UserRoles.Where(ur => ur.UserId == userId);
+                            Context.UserRoles.RemoveRange(toRemove);
+                        };
+                        p.Info.UnmappedValuesMap.Add(AfterUpdateDelegate, pred);
+                    }
                 }
-
             }
             return returnVar;
+        }
+
+        /*
+         * use database unique constraint for this
+            var dup = (from u in Context.Users
+                       where p.Entity.Id != u.Id &&
+                           p.Entity.FullName == u.FullName &&
+                           p.Entity.DefaultDepartmentId == u.DefaultDepartmentId
+                       select u.DefaultProfessionalRoleId).FirstOrDefault();
+            if (dup != default(Guid) 
+                && ((dup == p.Entity.DefaultProfessionalRoleId 
+                    || (from r in Context.ProfessionalRoles
+                        where (new[] { dup, p.Entity.DefaultProfessionalRoleId}).Contains(r.Id)
+                        group r by r.Description into c
+                        select c).Count() == 1)))
+            { 
+                returnVar.Add(MappedEFEntityError.Create(p.Entity,
+                    "DuplicateUser",
+                    "2 users with the same name, department and profession",
+                    "FullName"));
+            }
 
         }
+        */
 
         IEnumerable<EntityError> GetInstitutionErrors(List<EntityInfo> currentInfos)
         {

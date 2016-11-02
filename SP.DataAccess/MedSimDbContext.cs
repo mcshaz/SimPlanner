@@ -51,7 +51,7 @@ namespace SP.DataAccess
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<Scenario> Scenarios { get; set; }
         public virtual DbSet<ScenarioResource> ScenarioResources { get; set; }
-        public DbSet<AspNetUserRole> UserRoles { get; set; }
+        public virtual DbSet<AspNetUserRole> UserRoles { get; set; }
 
         #region overrides //overriding to allow access without referencing aspnet.identity.entityframework assembly
         public override IDbSet<Participant> Users
@@ -292,7 +292,20 @@ namespace SP.DataAccess
             modelBuilder.Entity<Institution>()
                 .HasMany(e => e.ProfessionalRoleInstitutions)
                 .WithRequired(e => e.Institution)
-                .HasForeignKey(e => e.InstitutionId);
+                .HasForeignKey(e => e.InstitutionId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Institution>()
+                .HasMany(e => e.ResourceGivingInstitutions)
+                .WithRequired(e => e.InstitutionGiving)
+                .HasForeignKey(e => e.InstitutionGivingId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Institution>()
+                .HasMany(e => e.ResourceReceivingInstitutions)
+                .WithRequired(e => e.InstitutionReceiving)
+                .HasForeignKey(e => e.InstitutionReceivingId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Manikin>()
                 .HasMany(e => e.ManikinServices)

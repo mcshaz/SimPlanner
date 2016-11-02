@@ -17,7 +17,7 @@ namespace SP.Tests
         {
             using (var db = new MedSimDbContext())
             {
-                var bm = new RequestOnlyPrincipal("brentm@adhb.govt.nz", db.Roles.Select(r=>r.Name).ToList());
+                var bm = new BasicPrincipalImplementation("brentm@adhb.govt.nz", db.Roles.Select(r=>r.Name).ToList());
                 var course = db.Courses.Find(Guid.Parse("0ca5d24f-292e-4004-bb08-096db4b440ad"));
                 using (var appt = new AppointmentStream())
                 {

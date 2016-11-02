@@ -111,6 +111,7 @@
     <Compile Include="Data\CourseTypeScenarioRole.cs" />
     <Compile Include="Data\CourseTypeDepartment.cs" />
     <Compile Include="Data\Resource.cs" />
+    <Compile Include="Data\ResourceSharingInstitution.cs" />
     <Compile Include="Data\Room.cs" />
     <Compile Include="Data\CourseSlotActivity.cs" />
     <Compile Include="Data\CourseSlotPresenter.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Data\CourseFormat.cs" />
     <Compile Include="Data\Participant.cs" />
     <Compile Include="Data\CourseSlot.cs" />
+    <Compile Include="Metadata\ResourceSharingInstitutionMetadata.cs" />
     <Compile Include="Migrations\201610270329166_prereadingFilenameNonNul.cs" />
     <Compile Include="Migrations\201610270329166_prereadingFilenameNonNul.Designer.cs">
       <DependentUpon>201610270329166_prereadingFilenameNonNul.cs</DependentUpon>
@@ -134,6 +136,10 @@
     <Compile Include="Migrations\201610312018366_IAdminApproved.cs" />
     <Compile Include="Migrations\201610312018366_IAdminApproved.Designer.cs">
       <DependentUpon>201610312018366_IAdminApproved.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611020113171_resourceSharingInstitution.cs" />
+    <Compile Include="Migrations\201611020113171_resourceSharingInstitution.Designer.cs">
+      <DependentUpon>201611020113171_resourceSharingInstitution.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
@@ -366,6 +372,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610312018366_IAdminApproved.resx">
       <DependentUpon>201610312018366_IAdminApproved.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611020113171_resourceSharingInstitution.resx">
+      <DependentUpon>201611020113171_resourceSharingInstitution.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
