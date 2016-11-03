@@ -10,7 +10,7 @@ namespace SP.Dto.ParticipantSummary
 {
     public static class ParticipantSummaryServices
     {
-        public static ParticipantSummary GetParticipantSummary(MedSimDbContext context, Guid userId, DateTime? after=null)
+        public static ParticipantSummary GetParticipantSummary(MedSimDbContext context, Guid userId, DateTime? after = null)
         {
             var returnVar = new ParticipantSummary();
             if (!after.HasValue) { after = SqlDateTime.MinValue.Value; }
@@ -21,8 +21,8 @@ namespace SP.Dto.ParticipantSummary
                                        select new ParticipantCourseSummary
                                        {
                                            CourseName = cf.Key.CourseType.Abbreviation + " " + cf.Key.Description,
-                                           FacultyCount = cf.Count(c=>c.IsFaculty),
-                                           AtendeeCount = cf.Count(c=>!c.IsFaculty)
+                                           FacultyCount = cf.Count(c => c.IsFaculty),
+                                           AtendeeCount = cf.Count(c => !c.IsFaculty)
                                        }).ToList();
 
             returnVar.PresentationSummary = (from csp in context.CourseSlotPresenters
@@ -36,19 +36,19 @@ namespace SP.Dto.ParticipantSummary
                                                  Count = a.Count()
                                              }).ToList();
 
-            returnVar.SimRoleSummary = ( from csfr in context.CourseScenarioFacultyRoles
-                                         let course = csfr.Course
-                                         where csfr.ParticipantId == userId && !course.Cancelled && course.StartUtc >= after
-                                         group csfr by csfr.FacultyScenarioRole into fsr
-                                         select new FacultySimRoleSummary
-                                         {
-                                             RoleName = fsr.Key.Description,
-                                             Count = fsr.Count()
-                                         }).ToList();
+            returnVar.SimRoleSummary = (from csfr in context.CourseScenarioFacultyRoles
+                                        let course = csfr.Course
+                                        where csfr.ParticipantId == userId && !course.Cancelled && course.StartUtc >= after
+                                        group csfr by csfr.FacultyScenarioRole into fsr
+                                        select new FacultySimRoleSummary
+                                        {
+                                            RoleName = fsr.Key.Description,
+                                            Count = fsr.Count()
+                                        }).ToList();
             return returnVar;
         }
 
-        public static PriorExposures GetExposures(MedSimDbContext context ,Guid courseId, Guid userId)
+        public static PriorExposures GetExposures(MedSimDbContext context, Guid courseId, Guid userId)
         {
             //to do - check authorization
             var course = (from c in context.Courses.Include(co => co.CourseParticipants).Include(co => co.CourseFormat)
@@ -94,13 +94,21 @@ namespace SP.Dto.ParticipantSummary
             var refFinish = course.FinishCourseUtc();
             return (from csm in context.CourseSlotManikins
                     let c = csm.Course
-                    let lastDay = c.CourseDays.FirstOrDefault(cd=>cd.Day == c.CourseFormat.DaysDuration)
-                    let cFinish = lastDay == null 
-                        ? DbFunctions.AddMinutes(c.StartUtc,c.DurationMins)
+                    let lastDay = c.CourseDays.FirstOrDefault(cd => cd.Day == c.CourseFormat.DaysDuration)
+                    let cFinish = lastDay == null
+                        ? DbFunctions.AddMinutes(c.StartUtc, c.DurationMins)
                         : DbFunctions.AddMinutes(lastDay.StartUtc, lastDay.DurationMins)
-                    where c.Id!= course.Id && c.StartUtc < refFinish &&  refStart < cFinish 
+                    where c.Id != course.Id && c.StartUtc < refFinish && refStart < cFinish
                     select new { csm.ManikinId, c.CourseFormat.Description, c.Department.Abbreviation })
-                    .ToKeyValuePairList(a=>a.ManikinId, a=> a.Abbreviation + '-' + a.Description);
+                    .ToKeyValuePairList(a => a.ManikinId, a => a.Abbreviation + '-' + a.Description);
+        }
+
+        public static Dictionary<Guid, DateTime> GetManikinsInForRepair(MedSimDbContext context, string userName)
+        {
+            (from m in context.ManikinServices
+             let iId = m.Manikin.Department.InstitutionId
+             where 
+             select new { m.ManikinId, m.Sent }).ToDictionary(k => k.ManikinId, v => v.Sent);
         }
     }
     public class PriorExposures
@@ -108,5 +116,6 @@ namespace SP.Dto.ParticipantSummary
         public Dictionary<Guid, HashSet<Guid>> ScenarioParticipants { get; set; }
         public Dictionary<Guid, HashSet<Guid>> ActivityParticipants { get; set; }
         public IEnumerable<KeyValuePair<Guid,string>> BookedManikins { get; set; }
+        public Dictionary<Guid, DateTime> ManikinsInForRepair { get; set; }
     }
 }

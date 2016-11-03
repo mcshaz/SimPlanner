@@ -9,10 +9,6 @@ using SP.DataAccess;
                 CourseSlotId = m.CourseSlotId,
                 ManikinId = m.ManikinId,
                 StreamNumber = m.StreamNumber
-                //Course = m.Course,
-                //Scenario = m.Scenario,
-                //Role = m.Role,
-                //FacultyMember = m.FacultyMember
             },
             m => new CourseSlotManikinDto
             {
@@ -20,10 +16,6 @@ using SP.DataAccess;
                 CourseSlotId = m.CourseSlotId,
                 ManikinId = m.ManikinId,
                 StreamNumber = m.StreamNumber
-                //Course = m.Course,
-                //Scenario = m.Scenario,
-                //Role = m.Role,
-                //FacultyMember = m.FacultyMember
             })
         { }
     }

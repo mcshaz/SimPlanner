@@ -179,7 +179,7 @@
     <Compile Include="Maps\CourseSlotManikinMaps.cs" />
     <Compile Include="Maps\HotDrinkMaps.cs" />
     <Compile Include="Maps\CourseTypeScenarioRoleMaps.cs" />
-    <Compile Include="Maps\DomainDtoMap.cs" />
+    <Compile Include="MapDictionary\DomainDtoMap.cs" />
     <Compile Include="Interfaces\IDomainDtoMap.cs" />
     <Compile Include="Maps\ManikinManufacturerMaps.cs" />
     <Compile Include="Maps\ManikinMaps.cs" />

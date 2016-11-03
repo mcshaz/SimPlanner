@@ -1,5 +1,6 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
     internal class CourseScenarioFacultyRoleMaps: DomainDtoMap<CourseScenarioFacultyRole, CourseScenarioFacultyRoleDto>
     {
@@ -17,10 +18,6 @@ using SP.DataAccess;
                 CourseSlotId = m.CourseSlotId,
                 ParticipantId = m.ParticipantId,
                 FacultyScenarioRoleId = m.FacultyScenarioRoleId
-                //Course = m.Course,
-                //Scenario = m.Scenario,
-                //Role = m.Role,
-                //FacultyMember = m.FacultyMember
             })
         { }
     }

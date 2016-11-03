@@ -11,10 +11,6 @@ namespace SP.Dto.Maps
                 ScenarioId = m.ScenarioId,
                 ActivityId = m.ActivityId,
                 StreamNumber = m.StreamNumber
-                //Course = m.Course,
-                //Scenario = m.Scenario,
-                //Role = m.Role,
-                //FacultyMember = m.FacultyMember
             },
             m => new CourseSlotActivityDto
             {
@@ -23,10 +19,6 @@ namespace SP.Dto.Maps
                 ScenarioId = m.ScenarioId,
                 ActivityId = m.ActivityId,
                 StreamNumber = m.StreamNumber
-                //Course = m.Course,
-                //Scenario = m.Scenario,
-                //Role = m.Role,
-                //FacultyMember = m.FacultyMember
             })
         { }
     }

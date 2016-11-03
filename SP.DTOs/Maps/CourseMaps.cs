@@ -42,17 +42,5 @@ namespace SP.Dto.Maps
                 Cancelled = m.Cancelled
             })
         { }
-
-        static void IsAllowed(string[] includes,params string[] allowed)
-        {
-            var disallowed = includes.Except(includes);
-            if (disallowed.Any())
-            {
-                throw new ArgumentException(
-                    string.Format("the include parameter(s){0} are not allowed: allowed parameters include ({1})",
-                    string.Join(",", disallowed), string.Join(",", allowed)));
-            }
-        }
-
     }
 }

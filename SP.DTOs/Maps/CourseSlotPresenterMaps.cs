@@ -1,5 +1,6 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
     internal class CourseSlotPresenterMaps: DomainDtoMap<CourseSlotPresenter, CourseSlotPresenterDto>
     {
@@ -17,9 +18,6 @@ using SP.DataAccess;
                 CourseSlotId = m.CourseSlotId,
                 ParticipantId = m.ParticipantId,
                 StreamNumber = m.StreamNumber
-                //Course = m.Course,
-                //CourseSlot = m.CourseSlot,
-                //Presenter = m.Presenter
             })
         { }
     }

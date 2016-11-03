@@ -27,12 +27,6 @@ namespace SP.Dto.Maps
                 PrimaryColour = m.PrimaryColour,
                 SecondaryColour = m.SecondaryColour,
                 AdminApproved = m.AdminApproved
-                //CourseTypes = null,
-                //Institution = m.Institution,
-                //Manikins = m.Manikins,
-                //Courses = m.Courses,
-                //Scenarios = m.Scenarios,
-                //Departments = null
             })
         { }
     }
