@@ -83,11 +83,11 @@ namespace SP.Web.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<KeyValuePair<string, string>> CultureFormats() {
+        public IEnumerable<CultureFormatModel> CultureFormats() {
             return (from c in CultureInfo.GetCultures(CultureTypes.AllCultures)
                     let indx = c.Name.LastIndexOf('-')
                     where  indx != -1 && indx == c.Name.Length-3
-                    select new KeyValuePair<string, string>(c.Name, c.DisplayName));
+                    select new CultureFormatModel { LocaleCode = c.Name, DisplayName = c.DisplayName });
         }
 
         [HttpGet]

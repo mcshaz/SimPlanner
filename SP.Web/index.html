@@ -38,9 +38,11 @@
     <link href="wwwroot/lib/angular-motion/dist/angular-motion.min.css" rel="stylesheet" />
     <link href="wwwroot/lib/bootstrap-additions/dist/bootstrap-additions.min.css" rel="stylesheet" />
     <link href="wwwroot/lib/angular-ui-grid/ui-grid.min.css" rel="stylesheet" />
-    <link href="wwwroot/lib/angular-multi-select-alexandernst/dist/prod/angular-multi-select.min.css" rel="stylesheet" />
+    <link href="wwwroot/lib/angular-ui-select/dist/select.css" rel="stylesheet" />
     <link href="wwwroot/lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet" />
     <link href="wwwroot/lib/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css" rel="stylesheet" />
+    <link href="wwwroot/lib/world-flags-sprite/stylesheets/flags16.css" rel="stylesheet" />
+    <link href="wwwroot/lib/world-flags-sprite/stylesheets/flags32.css" rel="stylesheet" />
     <!--endbuild-->
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -95,10 +97,7 @@
     <!--utilities-->
     <script src="wwwroot/lib/angular-dynamic-locale/dist/tmhDynamicLocale.min.js"></script>
         <!--multi-select-->
-    <script src="wwwroot/lib/lokijs/build/lokijs.min.js"></script>
-    <script src="wwwroot/lib/angular-multi-select-alexandernst/dist/prod/angular-multi-select.min.js"></script>
-    <!--Will trigger a open/close or un/check when a click is performed on a node's or on a leaf's text label, respectively.-->
-    <script src="wwwroot/lib/angular-multi-select-alexandernst/dist/prod/mods/toggle-open-state-nodes-checked-state-leafs-on-label-click.min.js"></script>
+    <script src="wwwroot/lib/angular-ui-select/dist/select.js"></script>
         <!--end-multi-select-->
 
     <script src="wwwroot/lib/angular-location-update/angular-location-update.min.js"></script>
@@ -159,7 +158,6 @@
     <script src="app/common/collectionManager.js"></script>
     <script src="app/fileread.directive.js"></script>
 
-
     <!-- repo -->
     <script src="app/services/repository/modelBuilder.js"></script>
     <script src="app/services/entityManagerFactory.js"></script>
@@ -167,8 +165,11 @@
     <script src="app/services/repository.js"></script>
     <script src="app/services/datacontext.js"></script>
     <script src="app/services/utilities.js"></script>
+
+    <!-- filters -->>
     <script src="app/services/filters/fileFilters.js"></script>
     <script src="app/services/filters/timeFilter.js"></script>
+    <script src="app/services/filters/propsFilter.js"></script>
 
     <!-- app -->
     <script src="app/activityResources/activityResource.js"></script>

@@ -23,7 +23,6 @@
         vm.clearFileData = clearFileData;
         vm.cultureFormats=[];
         vm.timeZonesForCulture = [];
-        vm.getCultureFormats = getCultureFormats;
         vm.googleMapAddress="";
         vm.mapAddressChanged = mapAddressChanged;
         vm.onLocaleSelected = onLocaleSelected;
@@ -33,9 +32,10 @@
 
         function activate() {
             var promises = [common.fetchCultureFormats().then(function (data) {
+                data.sort(sortCulture);
                 vm.cultureFormats = data;
                 vm.cultureFormats.forEach(function (el) {
-                    el.searchString = el.Key.toLowerCase() + ' ' + el.Value.toLowerCase();
+                    el.searchString = el.culture.toLowerCase() + '#' + el.language.toLowerCase() + '#' + el.localeCode.toLowerCase();
                 });
             }, vm.log.error)];
             if (isNew) {
@@ -72,21 +72,12 @@
         }
 
         function onLocaleSelected(key) {
-            vm.flagUrl = vm.cultureFormats.find(function (el) { return el.Key === key; });
-            if (vm.flagUrl) {
-                vm.flagUrl = vm.flagUrl.flagUrl;
-                $http({ method: 'GET', url: 'api/utilities/timeZones/' + key }).then(function (response) {
-                    vm.timeZonesForCulture = response.data;
-                    if (vm.timeZonesForCulture.length === 1) {
-                        vm.institution.standardTimeZone = vm.timeZonesForCulture[0];
-                    }
-                }, vm.log.error);
-            }
-        }
-
-        function getCultureFormats(val) {
-            val = val.toLowerCase();
-            return vm.cultureFormats.filter(function (el) { return el.searchString.indexOf(val) !== -1; });
+            $http({ method: 'GET', url: 'api/utilities/timeZones/' + key }).then(function (response) {
+                vm.timeZonesForCulture = response.data;
+                if (vm.timeZonesForCulture.length === 1) {
+                    vm.institution.standardTimeZone = vm.timeZonesForCulture[0];
+                }
+            }, vm.log.error);
         }
 
         function mapAddressChanged() {
@@ -104,5 +95,20 @@
             }
         }
     }
-
+    function sortCulture(a, b) {
+        if (a.culture > b.culture) {
+            return 1;
+        }
+        if (a.culture < b.culture) {
+            return -1;
+        }
+        // a must be equal to b
+        if (a.language > b.language) {
+            return 1;
+        }
+        if (a.language < b.language) {
+            return -1;
+        }
+        return 0;
+    };
 })();

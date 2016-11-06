@@ -129,6 +129,21 @@ namespace SP.Dto
                                     {
                                         validators.Add(jsValidatorName, validatorsFromAttr);
                                     }
+                                    //ugly code alert
+                                    //maybe should write a custom breeze fixedlength validator
+                                    if (t == typeof(FixedLengthAttribute))
+                                    {
+                                        validatorsFromAttr = attrValDict[typeof(RequiredAttribute)](new RequiredAttribute());
+                                        jsValidatorName = (string)validatorsFromAttr["name"];
+                                        if (validators.TryGetValue(jsValidatorName, out existingVals))
+                                        {
+                                            existingVals.AddOrOverwrite(validatorsFromAttr);
+                                        }
+                                        else
+                                        {
+                                            validators.Add(jsValidatorName, validatorsFromAttr);
+                                        }
+                                    }
                                 }
                             }
                             else

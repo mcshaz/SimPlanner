@@ -502,6 +502,20 @@ div.time-accompany{
 .btn.btn-link{
     pointer-events:all;
 }
+.culture{
+    color:midnightblue;
+    font-weight:bold;
+}
+.language{
+    color:darkgreen;
+    font-style:italic;
+}
+.language::before{
+    content:'(';
+}
+.language::after{
+    content:')';
+}
 /*CourseRole*/
 .exposed,.booked{
     background-color:#FF7518;

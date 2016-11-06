@@ -1,4 +1,4 @@
-//201610312018366_IAdminApproved
+//201611032127162_ProfessionalRoleInstitutionsNotCascade
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -2654,6 +2654,9 @@
               "name": "stringLength",
               "minLength": 5,
               "maxLength": 5
+            },
+            {
+              "name": "required"
             }
           ],
           "displayName": "Locale Code"

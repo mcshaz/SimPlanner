@@ -24,10 +24,11 @@
             loginFactory.login(credentials).then(function (user) {
                 log.success({ msg: "logged in as " + user.fullName, data: user });
             }, function (response) {
-                if (!response.data || !response.data.error_description) {
+                if (response.data && response.data.error_description) {
+                    vm.errors = response.data.error_description;
+                } else {
                     log.error({ msg: "unhandled data returned after attempted login", data: response });
                 }
-                vm.errors = response.data.error_description;
             }).finally(function () { vm.isWaiting = false; });
         };
 

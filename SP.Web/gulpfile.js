@@ -24,6 +24,7 @@ gulp.task('html', function(cb){
     var cssFilter = filter("**/*.css", { restore: true });
     var fontFoldersToMove = ["./wwwroot/lib/*/fonts/*.*"];
     var fontFilesToMove = ["./wwwroot/lib/*/*.{eot,svg,ttf,woff,woff2}"];
+    var imageFilesToMove = ["./wwwroot/lib/world-flags-sprite/images/*.png"];
     var debugFilename = 'index_debug';
 
     pump([gulp.src(mainFile),
@@ -55,6 +56,10 @@ gulp.task('html', function(cb){
     gulp.src(fontFilesToMove)
         .pipe(rename({ dirname: '' }))
         .pipe(gulp.dest('dist/css'));
+
+    gulp.src(imageFilesToMove)
+    .pipe(rename({ dirname: '' }))
+    .pipe(gulp.dest('dist/images'));
 
     function replaceJsIfMap() {
         console.log(JSON.stringify(arguments));

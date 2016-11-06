@@ -1,5 +1,6 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
     internal class ProfessionalRoleMaps : DomainDtoMap<ProfessionalRole, ProfessionalRoleDto>
     {
@@ -9,8 +10,6 @@ using SP.DataAccess;
                 Description = m.Description,
                 Category = m.Category,
                 Order = m.Order
-                //Participants = m.Participants,
-                //cultures = m.cultures
             },
             m => new ProfessionalRoleDto
             {
@@ -18,8 +17,6 @@ using SP.DataAccess;
                 Description = m.Description,
                 Category = m.Category,
                 Order = m.Order
-                //Participants = m.Participants,
-                //cultures = m.cultures
             })
         { }
     }

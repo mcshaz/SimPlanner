@@ -25,7 +25,7 @@
         'ui.grid',
         'ui.grid.pagination',
         'ui.grid.grouping',
-        'angular-multi-select',
+        'ui.select',
         'ngLocationUpdate',
         'mwl.calendar'
     ]);
@@ -40,20 +40,26 @@
     })
     .constant('emptyGuid', window.emptyGuid)
     .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
-        localStorageServiceProvider
-            .setPrefix('loginApp')
+        localStorageServiceProvider.setPrefix('loginApp')
             .setStorageType('sessionStorage');
     }])
     .constant('ngAuthSettings', {
         apiServiceBaseUri: serviceBase,
         clientId: 'SimPlanner'
     })
-    .config(['zDirectivesConfigProvider', configDirective])
-    .config(['tmhDynamicLocaleProvider',
-        function (tmhDynamicLocaleProvider) {
-            tmhDynamicLocaleProvider.useStorage('$cookies');
-            tmhDynamicLocaleProvider.localeLocationPattern("https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.2/angular-locale_{{locale}}.min.js");
-        }]);
+    .config(['zDirectivesConfigProvider', function (zDirectivesConfigProvider) {
+        // Custom template with warning icon before the error message
+        zDirectivesConfigProvider.zRequiredTemplate = null;
+    }])
+    .config(['tmhDynamicLocaleProvider', function (tmhDynamicLocaleProvider) {
+        tmhDynamicLocaleProvider.useStorage('$cookies');
+        tmhDynamicLocaleProvider.localeLocationPattern("https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.2/angular-locale_{{locale}}.min.js");
+    }])
+    .config(['uiSelectConfig', function (uiSelectConfig) {
+        uiSelectConfig.theme = 'bootstrap';
+        //uiSelectConfig.resetSearchInput = true;
+        uiSelectConfig.appendToBody = true;
+    }]);
     //http://stackoverflow.com/questions/25470475/angular-js-format-minutes-in-template
 
     // Include $route to kick start the router.
@@ -74,12 +80,7 @@
             }
         });
     }]);
-
-    //Configure the Breeze Validation Directive for bootstrap 2
-    function configDirective(cfg) {
-        // Custom template with warning icon before the error message
-        cfg.zRequiredTemplate = null;
-    }
+    
 })();
 //polyfill https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
 if (!Array.prototype.find) {

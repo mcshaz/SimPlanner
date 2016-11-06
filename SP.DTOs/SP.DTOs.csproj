@@ -161,7 +161,6 @@
     <Compile Include="Dto\ParticipantDto.cs" />
     <Compile Include="Dto\ProfessionalRoleDto.cs" />
     <Compile Include="Dto\ResourceDto.cs" />
-    <Compile Include="Dto\ResourceSharingInstitutionDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\RoomDto.cs" />
     <Compile Include="Dto\ScenarioDto.cs" />

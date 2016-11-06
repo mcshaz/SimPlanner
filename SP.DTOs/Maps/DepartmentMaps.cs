@@ -1,4 +1,5 @@
 using SP.DataAccess;
+using SP.Dto.ProcessBreezeRequests;
 
 namespace SP.Dto.Maps
 {
@@ -28,6 +29,15 @@ namespace SP.Dto.Maps
                 SecondaryColour = m.SecondaryColour,
                 AdminApproved = m.AdminApproved
             })
-        { }
+        {
+            WherePredicate = v =>
+            {
+                if (v.AdminLevel == AdminLevels.AllData)
+                {
+                    return null;
+                }
+                return d => d.AdminApproved;
+            };
+        }
     }
 }

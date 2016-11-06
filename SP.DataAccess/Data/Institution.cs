@@ -30,8 +30,6 @@ namespace SP.DataAccess
         public virtual Culture Culture { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
         public virtual ICollection<ProfessionalRoleInstitution> ProfessionalRoleInstitutions { get; set; }
-        public virtual ICollection<ResourceSharingInstitution> ResourceGivingInstitutions { get; set; }
-        public virtual ICollection<ResourceSharingInstitution> ResourceReceivingInstitutions { get; set; }
 
         TimeZoneInfo _timeZone;
         [NotMapped]

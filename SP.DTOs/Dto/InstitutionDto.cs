@@ -30,7 +30,5 @@ namespace SP.Dto
         public CultureDto Culture { get; set; }
         public virtual ICollection<DepartmentDto> Departments { get; set; }
         public virtual ICollection<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get; set; }
-        public virtual ICollection<ResourceSharingInstitutionDto> ResourceGivingInstitutions { get; set; }
-        public virtual ICollection<ResourceSharingInstitutionDto> ResourceReceivingInstitutions { get; set; }
     }
 }

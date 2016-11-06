@@ -295,18 +295,6 @@ namespace SP.DataAccess
                 .HasForeignKey(e => e.InstitutionId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Institution>()
-                .HasMany(e => e.ResourceGivingInstitutions)
-                .WithRequired(e => e.InstitutionGiving)
-                .HasForeignKey(e => e.InstitutionGivingId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Institution>()
-                .HasMany(e => e.ResourceReceivingInstitutions)
-                .WithRequired(e => e.InstitutionReceiving)
-                .HasForeignKey(e => e.InstitutionReceivingId)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Manikin>()
                 .HasMany(e => e.ManikinServices)
                 .WithRequired(e => e.Manikin)

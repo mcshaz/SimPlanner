@@ -117,12 +117,6 @@ namespace SP.Web.Controllers
         }
 
         [HttpGet]
-		public IQueryable<ScenarioResourceDto> ScenarioResources()
-        {
-            return Repo.ScenarioResources;
-        }
-
-        [HttpGet]
         public IQueryable<CourseTypeScenarioRoleDto> CourseTypeScenarioRoles()
         {
             return Repo.CourseTypeScenarioRoles;

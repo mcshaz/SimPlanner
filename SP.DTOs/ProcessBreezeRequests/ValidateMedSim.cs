@@ -251,8 +251,6 @@ namespace SP.Dto.ProcessBreezeRequests
                 e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
                 .Concat(PermissionErrors<ProfessionalRoleInstitutionDto>(saveMap,
                 e => HasInstitutionPermission(e.InstitutionId)))
-                .Concat(PermissionErrors<ResourceSharingInstitutionDto>(saveMap,
-                e => HasInstitutionPermission(e.InstitutionGivingId)))
                 .Concat(PermissionErrors<RoleDto>(saveMap,
                 e => false))
                 .Concat(PermissionErrors<RoomDto>(saveMap,
@@ -337,10 +335,18 @@ namespace SP.Dto.ProcessBreezeRequests
                 UpdateICourseDays(ei.Select(e=> (CourseSlot)e.Entity));
             }
 
-            foreach(var unm in saveMap.Values.SelectMany(e => e))
+            /*
+             * *todo send emails if a manikin or room is booked by someone from
+             * 
+            if (saveMap.TryGetValue(typeof(CourseSlotManikin), out ei))
+            {
+            }
+            */
+
+            foreach (var mei in saveMap.Values.SelectMany(e => e))
             {
                 object pred;
-                if (unm.UnmappedValuesMap.TryGetValue(AfterUpdateDelegate, out pred)){
+                if (mei.UnmappedValuesMap != null && mei.UnmappedValuesMap.TryGetValue(AfterUpdateDelegate, out pred)){
                     ((Action)pred).Invoke();
                 }
             }

@@ -19,12 +19,6 @@ namespace SP.Dto.Maps
                 EmersionCategory = m.EmersionCategory,
                 CourseTypeId = m.CourseTypeId,
                 Access = m.Access
-                //Manikin = m.Manikin,
-                //CourseType = m.CourseType,
-                //Department = m.Department,
-                //Courses = m.Courses,
-                //Resources = m.Resources,
-                //ScenarioFacultyRoles = m.ScenarioFacultyRoles
             },
             m => new ScenarioDto
             {
@@ -36,12 +30,6 @@ namespace SP.Dto.Maps
                 EmersionCategory = m.EmersionCategory,
                 CourseTypeId = m.CourseTypeId,
                 Access = m.Access
-                //Manikin = m.Manikin,
-                //CourseType = m.CourseType,
-                //Department = m.Department,
-                //Courses = m.Courses,
-                //Resources = m.Resources,
-                //ScenarioFacultyRoles = m.ScenarioFacultyRoles
             })
         {
             WherePredicate = v => {

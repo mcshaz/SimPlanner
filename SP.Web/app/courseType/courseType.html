@@ -25,14 +25,12 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">Departments</label>
                             <div class="col-md-9">
-                                <div angular-multi-select
-                                     dropdown-label="<[ <# angularMultiSelectConstants.INTERNAL_STATS_CHECKED_LEAFS #> === 0 ? 'Please Select...' : ('<(abbrev)>' | outputModelIterator : this : ', ') ]>"
-                                     output-type="objects"
-                                     input-model="vm.departments"
-                                     output-model="vm.selectedDepartments"
-                                     node-label="<strong><[ name ]></strong>"
-                                     leaf-label="<[ name ]>">
-                                </div>
+                                <ui-select multiple ng-model="vm.selectedDepartmentIds" id="departments" title="Choose departments" on-select="vm.departmentSelected($model)" on-remove="vm.departmentRemoved($model)">
+                                    <ui-select-match placeholder="departments [type to narrow selection]" class="f16"><i ng-class="$item.flagClass"></i>{{$item.abbreviation}}</ui-select-match>
+                                    <ui-select-choices group-by="'institutionName'" repeat="department.id as department in vm.departments | propsFilter: {searchString: $select.search}">
+                                        <div ng-bind-html="department.name | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
                             </div>
                         </div>
 

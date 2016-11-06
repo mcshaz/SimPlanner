@@ -27,9 +27,6 @@ namespace SP.Dto.Maps
                 PurchaseDate = m.PurchaseDate,
                 PurchasedNew = m.PurchasedNew,
                 LocalCurrencyPurchasePrice = m.LocalCurrencyPurchasePrice
-                //Department = m.Department,
-                //Scenarios = m.Scenarios,
-                //Manufacturer = m.Manufacturer
             })
         { }
     }

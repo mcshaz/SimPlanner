@@ -30,6 +30,8 @@
         vm.createSlot = createSlot;
         vm.createNewFormat = createNewFormat;
         vm.deleteFormat = deleteFormat;
+        vm.departmentRemoved = common.removeCollectionItem.bind(null, datacontext.courseTypeDepartments, courseTypeDeparmentKey);
+        vm.departmentSelected = common.addCollectionItem.bind(null, datacontext.courseTypeDepartments, courseTypeDeparmentKey);
         vm.departments = [];
         vm.editSlot = editSlot;
         vm.editChoices = editChoices;
@@ -40,7 +42,7 @@
         vm.removeSlot = removeSlot;
         vm.resetExampleTimes = resetExampleTimes;
 
-        vm.selectedDepartments = [];
+        vm.selectedDepartmentIds = [];
         vm.title = 'Course Format';
 
         vm.sortableOptions = {
@@ -64,15 +66,25 @@
 
         function activate() {
             datacontext.ready().then(function () {
-                var institutions;
                 var promises = [
                         datacontext.courseTypes.find({ where: breeze.Predicate.create('instructorCourseId', '==', null).and('id', '!=', id) }).then(function (data) {
                             vm.instructorCourses = data;
                         }),
-                        datacontext.institutions.all(/*{expand:'departments'}*/).then(function (data) {
-                            institutions = data;
-                        })
-                ];
+                        datacontext.departments.all({ expand: 'institution.culture' }).then(function (data) {
+                            vm.departments = data.map(function (d) {
+                                var localeCode = d.institution.culture.localeCode;
+                                var countryCode = localeCode.substring(localeCode.length-2);
+                                return {
+                                    id: d.id,
+                                    name: d.name,
+                                    abbreviation: d.institution.abbreviation + ' ' + d.abbreviation,
+                                    searchString: countryCode + "#" + d.institution.culture.name + "#" + d.institution.name.toLowerCase() + "#" + d.institution.abbreviation.toLowerCase() + "#" + d.name.toLowerCase() + "#" + d.abbreviation.toLowerCase(),
+                                    institutionName: countryCode + '-' + d.institution.abbreviation,
+                                    flagClass: common.getFlagClassFromLocaleCode(localeCode)
+                                }
+                            }
+                        );
+                        })];
                 if (isNew) {
                     vm.courseType = datacontext.courseTypes.create();
                     datacontext.courseFormats.create({ courseType: vm.courseType });
@@ -83,6 +95,9 @@
                         expand: ["courseFormats.courseSlots.activity", "courseTypeDepartments"]
                     }).then(function (data) {
                         vm.courseType = data;
+                        vm.selectedDepartmentIds = vm.courseType.courseTypeDepartments.map(function (ctd) {
+                            return ctd.departmentId;
+                        });
                         vm.courseType.courseFormats.forEach(function (cf) {
                             resetExampleTimes(cf);
                             cf.sortableSlots = createCourseSlotSortableArray(cf.courseSlots);
@@ -90,44 +105,13 @@
                         vm.activeFormatIndex = vm.courseType.courseFormats.findIndex(function (cf) {
                             return cf.id === $routeParams.formatId;
                         });
+
                     }));
                 }
                 common.activateController(promises, controllerId)
                     .then(function () {
                         vm.notifyViewModelLoaded();
-                        var ctds = vm.courseType.courseTypeDepartments;
-                        var sortName = common.sortOnPropertyName('name');
-                        vm.departments = [];
-                        institutions.sort(sortName).forEach(function (inst) {
-                            if (inst.departments.length) {
-                                inst.departments.sort(sortName);
-                                vm.departments.push({
-                                    id: inst.id,
-                                    checked: false,
-                                    open: true,
-                                    name: inst.name,
-                                    abbrev: inst.abbreviation,
-                                    children: inst.departments.map(departmentMap)
-                                });
-                            }
-                        });
-
-                        function departmentMap(d) {
-                            return {
-                                id: d.id,
-                                checked: ctds.some(function (ctd) { return ctd.departmentId === d.id; }),
-                                open: true,
-                                name: d.name,
-                                abbrev: d.abbreviation
-                            };
-                        }
-                        $scope.$watchCollection(function () { return vm.selectedDepartments; }, common.manageCollectionChange(datacontext.courseTypeDepartments, 'id',
-                            function (member) {
-                                return {
-                                    departmentId: member.id,
-                                    courseTypeId: vm.courseType.id
-                                };
-                            }));
+                        
                         if (vm.courseType.courseFormats.length === 1) {
                             vm.activeFormatIndex = 0;
                         }
@@ -157,6 +141,13 @@
             slot.activity = datacontext.courseActivities.create({
                 courseTypeId: vm.courseType.id
             });
+        }
+
+        function courseTypeDeparmentKey(departmentId){
+            return {
+                departmentId: departmentId,
+                courseTypeId: vm.courseType.id
+            };
         }
 
         //we have fiddled with the entity model rather than create a view model (naughty/lazy) - tear down those mods here

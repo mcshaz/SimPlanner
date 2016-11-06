@@ -5,6 +5,7 @@ using SP.Web.UserEmails;
 using SP.Web.Controllers.Helpers;
 using System.Linq;
 using System.IO;
+using SP.Dto.Utilities;
 
 namespace SP.Tests
 {

@@ -36,10 +36,11 @@
             $timeout: $timeout,
             // generic
             activateController: activateController,
+            addCollectionItem : collectionManager.addItem,
             createSearchThrottle: createSearchThrottle,
             debouncedThrottle: debouncedThrottle,
             fetchCultureFormats: fetchCultureFormats,
-            getFlagUrlFromLocaleCode: getFlagUrlFromLocaleCode,
+            getFlagClassFromLocaleCode: getFlagClassFromLocaleCode,
             getEnumValues: window.medsimMetadata.getEnums,
             getRoleIcon: getRoleIcon,
             isEmptyObject: isEmptyObject,
@@ -47,6 +48,7 @@
             logger: logger, // for accessibility
             manageCollectionChange: collectionManager.manageCollectionChange,  // for accessibility
             mapToCamelCase: mapToCamelCase,
+            removeCollectionItem: collectionManager.removeItem,
             roleSymbols: {
                 Medical: 'stethoscope',
                 Tech: 'wrench',
@@ -147,16 +149,25 @@
 
         function fetchCultureFormats() {
             return $http({ method: 'GET', url: 'api/utilities/cultureFormats' }).then(function (response) {
-                response.data.forEach(function (el) {
-                    el.flagUrl = getFlagUrlFromLocaleCode(el.Key);
+                var parseLanguageCulture = /([\w ]+)\(([\w ,.]+)\)/;
+                return response.data.map(function (el) {
+                    var parsed = parseLanguageCulture.exec(el.DisplayName);
+                    if (!parsed || parsed.length < 3) {
+                        console.log(el);
+                        console.log(parsed);
+                    }
+                    return {
+                        localeCode: el.LocaleCode,
+                        flagClass: getFlagClassFromLocaleCode(el.LocaleCode),
+                        culture: parsed[2],
+                        language: parsed[1].trimRight()
+                    };
                 });
-
-                return response.data;
             });
         }
 
-        function getFlagUrlFromLocaleCode(localeCode) {
-            return 'Content/images/flags/gif/' + localeCode.substring(localeCode.length - 2).toLowerCase() + '.gif';
+        function getFlagClassFromLocaleCode(localeCode) {
+            return 'flag ' + localeCode.substring(localeCode.length - 2).toLowerCase();
         }
 
         function isNumber(val) {

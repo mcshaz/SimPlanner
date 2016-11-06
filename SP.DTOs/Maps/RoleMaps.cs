@@ -1,5 +1,6 @@
 using SP.DataAccess;
-namespace SP.Dto.Maps
+
+namespace SP.Dto.Maps
 {
     internal class RoleMaps: DomainDtoMap<AspNetRole, RoleDto>
     {

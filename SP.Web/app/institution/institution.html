@@ -21,23 +21,21 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="localeCode" class="col-md-2 control-label">Language-Culture</label>
+                        <label for="localeCode" class="col-md-2 control-label">Culture/Language</label>
                         <div class="col-md-10">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <img ng-src="{{vm.flagUrl}}" width="16"/>
-                                </span>
-                                <input class="form-control" id="localeCode" type="text" ng-model="vm.institution.localeCode" placeholder="e.g. New Zealand"
-                                       autocomplete="off" typeahead-select-on-exact="true" typeahead-showhint="true"
-                                       uib-typeahead="cf.Key for cf in vm.getCultureFormats($viewValue)"
-                                       typeahead-on-select="vm.onLocaleSelected($item.Key)" typeahead-template-url="institutionTemplate.html"
-                                       typeahead-loading="vm.loadingPeople" typeahead-no-results="vm.noResults"
-                                       typeahead-select-on-blur="true" data-z-validate /> <!--typeahead-show-hint="true" is off for now as will have to fiddle with the left ?margin/padding ?tt-typeahed class? in the error state-->
-                                <i ng-show="vm.loadingPeople" class="glyphicon glyphicon-refresh"></i>
-                                <div ng-show="vm.noResults">
-                                    <i class="glyphicon glyphicon-remove"></i> No Existing Participants
-                                </div>
-                            </div>
+                            <ui-select ng-model="vm.institution.localeCode" id="culture" title="Choose culture/language" 
+                                       on-select="vm.onLocaleSelected($model)" class="f16" z-validate>
+                                <ui-select-match placeholder="culture [type to narrow selection]">
+                                    <i ng-class="$select.selected.flagClass"></i>
+                                    <strong class="culture">{{$select.selected.culture}}</strong>
+                                    <em class="language">{{$select.selected.language}}</em>
+                                </ui-select-match>
+                                <ui-select-choices repeat="culture.localeCode as culture in vm.cultureFormats | propsFilter: {searchString: $select.search}">
+                                    <i ng-class="culture.flagClass"></i>
+                                    <span class="culture" ng-bind-html="culture.culture | highlight: $select.search"></span>
+                                    <em class="language" ng-bind-html="culture.language | highlight: $select.search"></em>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                     </div>
 

@@ -3,8 +3,8 @@
         <div class="container">
             <ul class="list-unstyled">
                 <li ng-repeat="c in vm.cultures track by c.id">
-                    <h3>
-                        <img width="16" ng-src="{{c.flagUrl}}"> {{c.name}} 
+                    <h3 class="f32">
+                        <i ng-class="c.flagClass"></i> {{c.name}} 
                     </h3> 
                         <a class="btn-link" href="#/institution/new?localeCode={{c.localeCode}}">(<i class="fa fa-plus-circle"></i> new institution in {{c.name}})</a>
 

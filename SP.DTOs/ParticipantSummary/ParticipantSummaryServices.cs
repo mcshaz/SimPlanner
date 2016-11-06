@@ -105,10 +105,8 @@ namespace SP.Dto.ParticipantSummary
 
         public static Dictionary<Guid, DateTime> GetManikinsInForRepair(MedSimDbContext context, string userName)
         {
-            (from m in context.ManikinServices
-             let iId = m.Manikin.Department.InstitutionId
-             where 
-             select new { m.ManikinId, m.Sent }).ToDictionary(k => k.ManikinId, v => v.Sent);
+            return (from m in context.ManikinServices
+                    select new { m.ManikinId, m.Sent }).ToDictionary(k => k.ManikinId, v => v.Sent);
         }
     }
     public class PriorExposures

@@ -28,6 +28,7 @@
     "angular-sanitize": "^1.5.8",
     "angular-local-storage": "*",
     "angular-ui-grid": "^3.2.9",
+    "angular-ui-select": "^0.19.6",
     "angular-ui-sortable": "*",
     "angular-drag-and-drop-lists": "*",
     "angular-dynamic-locale": "*",
@@ -46,8 +47,8 @@
     "angular": "^1.5.8",
     "moment": "*",
     "bootswatch-dist": "*",
-    "angular-multi-select-alexandernst": "*",
-    "jquery": "^3.1.1"
+    "jquery": "^3.1.1",
+    "world-flags-sprite": "*"
   },
   "keywords": [
     "timetable",

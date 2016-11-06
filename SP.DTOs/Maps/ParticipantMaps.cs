@@ -1,4 +1,5 @@
 ﻿using SP.DataAccess;
+using SP.Dto.ProcessBreezeRequests;
 using System;
 using System.Linq.Expressions;
 
@@ -19,13 +20,6 @@ namespace SP.Dto.Maps
                 DietNotes = m.DietNotes,
                 UserName = m.UserName ?? m.Email,
                 AdminApproved = m.AdminApproved
-                //Department = m.Department,
-
-                //ProfessionalRole = m.ProfessionalRole,
-
-                //CourseParticipants = m.CourseParticipants,
-
-                //ScenarioFacultyRoles = m.ScenarioFacultyRoles
             }, m => new ParticipantDto
             {
                 Id = m.Id,
@@ -39,16 +33,16 @@ namespace SP.Dto.Maps
                 DietNotes = m.DietNotes,
                 UserName = m.UserName,
                 AdminApproved = m.AdminApproved
-                //CourseSlotPresentations = null,
-                //Department = null,
-
-                //ProfessionalRole = null,
-
-                //CourseParticipants = null,
-
-                //ScenarioFacultyRoles = null
             })
         {
+            WherePredicate = v =>
+            {
+                if (v.AdminLevel == AdminLevels.AllData)
+                {
+                    return null;
+                }
+                return d => d.AdminApproved;
+            };
         }
     }
 }
