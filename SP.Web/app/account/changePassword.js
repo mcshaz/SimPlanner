@@ -13,6 +13,7 @@
             confirmPassword:''
         };
         vm.errors = '';
+        vm.passwordRequired = true;
         vm.submit = submit;
 
         activate();

@@ -450,6 +450,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\account\newPasswordTemplate.html" />
     <Content Include="app\account\updateMyDetails.html" />
     <Content Include="app\account\updateMyDetails.js" />
     <Content Include="app\activityResources\activityResource.html" />
@@ -457,6 +458,9 @@
     <Content Include="app\admin\admin.html" />
     <Content Include="app\admin\admin.js" />
     <Content Include="app\app.js" />
+    <Content Include="app\approval\approval.html" />
+    <Content Include="app\approval\approval.js" />
+    <Content Include="app\approval\finishedSubmission.html" />
     <Content Include="app\auth\tokenStorageService.js" />
     <Content Include="app\auth\getCredentials.html" />
     <Content Include="app\auth\getCredentials.js" />

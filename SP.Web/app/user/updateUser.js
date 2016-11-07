@@ -3,12 +3,12 @@
     var controllerId = 'updateUser';
     angular
         .module('app')
-        .controller(controllerId, updateDetails);
+        .controller(controllerId, updateUser);
 
-    updateDetails.$inject = ['common', 'datacontext', '$scope', 'controller.abstract', 'tokenStorageService', '$routeParams', 'USER_ROLES'];
+    updateUser.$inject = ['common', 'datacontext', '$scope', 'controller.abstract', 'tokenStorageService', '$routeParams', 'USER_ROLES'];
     //changed $uibModalInstance to $scope to get the events
 
-    function updateDetails(common, datacontext, $scope, abstractController, tokenStorageService, $routeParams, USER_ROLES) {
+    function updateUser(common, datacontext, $scope, abstractController, tokenStorageService, $routeParams, USER_ROLES) {
         /* jshint validthis:true */
         var vm = this;
         var principal = { roles:[] };

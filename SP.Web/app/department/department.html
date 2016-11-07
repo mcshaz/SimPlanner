@@ -9,7 +9,8 @@
                     <div class="form-group">
                         <label for="institutionId" class="col-md-2 control-label">Institution</label>
                         <div class="col-md-10">
-                            <select id="institutionId" class="form-control" data-z-validate data-ng-model="vm.department.institutionId" data-ng-options="i.id as i.name for i in vm.institutions">
+                            <select id="institutionId" class="form-control" data-z-validate data-ng-model="vm.department.institutionId" 
+                                    data-ng-options="i.id as i.name for i in vm.institutions" ng-disabled="!vm.department.entityAspect.entityState.isAdded()">
                                 <option disabled selected hidden value="">
                                     Select Institution...
                                 </option>
@@ -68,7 +69,7 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <button type="submit" value="Create" class="btn btn-success" ng-disabled="vm.disableSave()">Save</button>
+                            <button type="submit" value="Create" class="btn btn-success" ng-disabled="vm.disableSave()">{{vm.isLoggedIn?'Save':'Save and register yourself as administrator'}}</button>
                         </div>
                     </div>
                 </fieldset>

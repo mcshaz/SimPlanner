@@ -5,10 +5,10 @@
         .module('app')
         .controller(controllerId, courseTypesCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http'];
+    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http', 'tokenStorageService', '$location', 'USER_ROLES'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http) {
+    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http, tokenStorageService, $location, USER_ROLES) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -20,6 +20,7 @@
         var isNew = id === 'new';
 
         vm.institution = {};
+        vm.isLoggedIn = tokenStorageService.isLoggedIn();
         vm.clearFileData = clearFileData;
         vm.cultureFormats=[];
         vm.timeZonesForCulture = [];
@@ -27,6 +28,8 @@
         vm.mapAddressChanged = mapAddressChanged;
         vm.onLocaleSelected = onLocaleSelected;
         vm.flagUrl = '';
+        vm.baseSave = vm.save;
+        vm.save = save;
 
         activate();
 
@@ -39,7 +42,7 @@
                 });
             }, vm.log.error)];
             if (isNew) {
-                vm.institution = datacontext.institutions.create();
+                vm.institution = datacontext.institutions.create({ adminApproved: tokenStorageService.isAuthorized(USER_ROLES.accessAllData) });
                 if ($routeParams.localeCode) {
                     vm.institution.localeCode = $routeParams.localeCode;
                 }
@@ -93,6 +96,14 @@
                     vm.institution.longitude = float;
                 }
             }
+        }
+
+        function save() {
+            baseSave().then(function () {
+                if (!vm.isLoggedIn){
+                    $location.path('/department/new?institutionId=' + vm.institution.id);
+                }
+            });
         }
     }
     function sortCulture(a, b) {

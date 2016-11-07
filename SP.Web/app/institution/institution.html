@@ -124,17 +124,10 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-success" ng-disabled="vm.disableSave()">Save</button>
+                        <button type="submit" class="btn btn-success" ng-disabled="vm.disableSave()">{{vm.isLoggedIn?'Save':'Save and register department'}}</button>
                     </div>
                 </div>
             </form>
         </div>
     </section>
 </section>
-<script type="text/ng-template" id="institutionTemplate.html">
-    <a>
-        <img ng-src="{{match.model.flagUrl}}" width="16">
-        <span ng-bind-html="match.model.Key | uibTypeaheadHighlight:query"></span>
-        <small class="small">[<span ng-bind-html="match.model.Value | uibTypeaheadHighlight:query"></span>]</small>
-    </a>
-</script>

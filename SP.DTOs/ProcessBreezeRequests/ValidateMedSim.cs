@@ -200,7 +200,8 @@ namespace SP.Dto.ProcessBreezeRequests
                     }
                     else
                     {
-                        return HasDepartmentPermission(e.Id);
+                        var existingInstId = Context.Departments.Find(e.Id).InstitutionId;
+                        return HasDepartmentPermission(e.Id) && existingInstId == e.InstitutionId;
                     }
                 }))
                 .Concat(PermissionErrors<FacultyScenarioRoleDto>(saveMap,

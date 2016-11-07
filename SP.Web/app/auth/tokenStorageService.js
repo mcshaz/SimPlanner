@@ -2,8 +2,8 @@
     'use strict';
     var serviceId = 'tokenStorageService';
     angular.module('app')
-        .service(serviceId, ['authService', 'AUTH_EVENTS', '$http', 'localStorageService' , '$rootScope', 'common', 'tmhDynamicLocale', tokenStorageService]);
-    function tokenStorageService(authService, AUTH_EVENTS, $http, localStorage, $rootScope, common, tmhDynamicLocale) {
+        .service(serviceId, ['authService', 'AUTH_EVENTS', '$http', 'localStorageService' , '$rootScope', 'common', 'tmhDynamicLocale', 'USER_ROLES',tokenStorageService]);
+    function tokenStorageService(authService, AUTH_EVENTS, $http, localStorage, $rootScope, common, tmhDynamicLocale,USER_ROLES) {
         var currentUser = localStorage.get('currentUser');
         var token = localStorage.get('token');
         var unAuthUser = {
@@ -69,15 +69,19 @@
         //this function can be also used on element level
         //e.g. <p ng-if="isAuthorized(authorizedRoles)">show this only to admins</p>
         function isAuthorized(authorizedRoles) {
-            if (!isLoggedIn()) {return false;}
             if (typeof authorizedRoles === 'string') {
                 authorizedRoles = authorizedRoles.split(',');
             }
-            if (authorizedRoles.length === 1 && authorizedRoles[0] === '*') {
-                return true;
-            }
-            return authorizedRoles.some(function (el) {
-                currentUser.roles.indexOf(el) !== -1;
+            return authorizedRoles.some(function (rl) {
+                switch (rl) {
+                    case USER_ROLES.authenticated:
+                        return isLoggedIn();
+                    case USER_ROLES.anonymous:
+                        return !isLoggedIn();
+                    default:
+                        return currentUser.roles.indexOf(rl) > -1;
+                }
+                
             });
         }
 

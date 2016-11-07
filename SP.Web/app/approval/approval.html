@@ -1,0 +1,30 @@
+﻿<section id="course-view" class="mainbar" data-ng-controller="approval as vm">
+    <section class="matter">
+        <div class="container col-md-12">
+            <h2>Institution</h2>
+            <dl ng-repeat="(key,prop) in vm.institution track by key" class="dl-horizontal" ng-include="'detailsTemplate.html'">
+            </dl>
+            <hr/>
+            <h2>Department</h2>
+            <dl ng-repeat="(key,prop) in vm.department track by key" class="dl-horizontal" ng-include="'detailsTemplate.html'">
+
+            </dl>
+            <hr/>
+            <h2>User</h2>
+            <dl ng-repeat="(key,prop) in vm.user track by key" class="dl-horizontal" ng-include="'detailsTemplate.html'">
+
+            </dl>
+            <hr/>
+            <button type="button" class="btn btn-success" ng-click="vm.approve">Approve</button>
+            <button type="button" class="btn btn-danger" ng-click="vm.deleteAll">Delete</button>
+        </div>
+    </section>
+</section>
+<script type="text/ng-template" id="detailsTemplate.html">
+    <dt ng-if="vm.displayProp(prop)">
+        {{key}}
+    </dt>
+    <dd ng-if="vm.displayProp(prop)">
+        {{prop}}
+    </dd>
+</script>

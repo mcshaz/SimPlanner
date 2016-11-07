@@ -4,7 +4,8 @@
     var app = angular.module('app');
 
     var userRoles = {
-        all: '*',
+        authenticated: '*',
+        anonymous: '?',
         accessAllData:	'03fe7856-7b58-46b4-a1a5-1d70cf03bab2',
         accessDepartment: '75a4d6c3-9e20-4567-8b49-5d791db8f110',
         accessInstitution:	'2adedaf3-b215-4cc7-8692-1a8e58584306',
@@ -52,7 +53,7 @@
                             content: '<i class="fa fa-calendar"></i> Calendar'
                         },
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 },
@@ -80,7 +81,7 @@
                         },
                         reloadOnSearch:false,
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -93,7 +94,7 @@
                             content: 'All Courses' //<i class="fa fa-"></i> 
                         },
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -102,7 +103,7 @@
                         title: 'Courses',
                         templateUrl: 'app/course/courseRoles.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -115,7 +116,7 @@
                             content: 'Course Types' //<i class="fa fa-"></i> 
                         },
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -124,7 +125,7 @@
                         title: 'Course Type',
                         templateUrl: 'app/courseType/courseType.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -137,7 +138,7 @@
                             content: 'Resources <i class="fa fa-info-circle" title="Update or Create Institutions, Departments or department resources - comprising Manikins, Scenarios & Rooms"></i>'
                         },
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -146,7 +147,7 @@
                         title: 'Institutions',
                         templateUrl: 'app/institution/institution.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: [userRoles.anonymous, userRoles.accessAllData, userRoles.accessInstitution]
                         }
                     }
                 }, {
@@ -155,7 +156,7 @@
                         title: 'Department',
                         templateUrl: 'app/department/department.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: [userRoles.anonymous, userRoles.accessAllData, userRoles.accessDepartment,userRoles.accessInstitution]
                         }
                     }
                 }, {
@@ -168,7 +169,7 @@
                             content: 'Manikin Models' //<i class="fa fa-"></i> 
                         },
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -177,7 +178,7 @@
                         title: 'Scenario',
                         templateUrl: 'app/scenario/scenario.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -186,7 +187,7 @@
                         title: 'Manikin',
                         templateUrl: 'app/manikin/manikin.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -195,7 +196,7 @@
                         title: 'Room',
                         templateUrl: 'app/room/room.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -204,7 +205,7 @@
                         title: 'Professional Roles',
                         templateUrl: 'app/professionalRoles/professionalRoles.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -213,7 +214,7 @@
                         title: 'Course Roles',
                         templateUrl: 'app/scenarioRoles/scenarioRoles.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -226,7 +227,7 @@
                             content: 'Users' //<i class="fa fa-"></i> 
                         },
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -235,7 +236,7 @@
                         title: 'User',
                         templateUrl: 'app/user/updateUser.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -244,7 +245,7 @@
                         title: 'Update My Details',
                         templateUrl: 'app/account/updateMyDetails.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -253,7 +254,7 @@
                         title: 'Change Password',
                         templateUrl: 'app/account/changePassword.html',
                         access: {
-                            allowedRoles: userRoles.all
+                            allowedRoles: userRoles.authenticated
                         }
                     }
                 }, {
@@ -273,6 +274,24 @@
                     config: {
                         title: 'RSVP',
                         templateUrl: 'app/rsvp/rsvp.html'
+                    }
+                }, {
+                    url: '/approval',
+                    config: {
+                        title: 'Approve',
+                        templateUrl: 'app/approval/approval.html',
+                        access: {
+                            allowedRoles: userRoles.accessAllData
+                        }
+                    }
+                }, {
+                    url: '/finishedSubmission',
+                    config: {
+                        title: 'Finished Submission',
+                        templateUrl: 'app/approval/finishedSubmission.html',
+                        access: {
+                            allowedRoles: '?'
+                        }
                     }
                 }
         ];
