@@ -2,7 +2,7 @@
     <section class="matter">
         <div class="container col-md-12">
             <h2>Institution</h2>
-            <form class="form-horizontal" ng-submit="vm.save($event)" id="courseForm">
+            <form class="form-horizontal" ng-submit="vm.save($event)" name="institutionForm">
                 <div class="validationSummary"></div>
                 <fieldset class="col-md-9">
                     <legend>Required</legend>
@@ -67,13 +67,13 @@
                     <div class="form-group">
                         <label for="googleMapAddress" class="col-md-2 control-label">Google Map Address</label>
                         <div class="col-md-10">
-                            <div class="input-group">
+                            <div class="input-group" id="googleMaps">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-success" ng-click="vm.mapAddressChanged()" ng-disabled="!vm.googleMapAddress">
+                                    <button type="button" class="btn" ng-click="vm.mapAddressChanged()" ng-disabled="!vm.googleMapAddress" ng-class="{'btn-success':vm.googleMapAddress && !institutionForm.googleMapAddress.$invalid,'btn-danger':institutionForm.googleMapAddress.$invalid}">
                                         <i class="fa fa-lg fa-globe"></i>
                                     </button>
                                 </span>
-                                <input type="url" id="googleMapAddress" class="form-control" data-z-validate data-ng-model="vm.googleMapAddress" />
+                                <input type="url" id="googleMapAddress" name="googleMapAddress" class="form-control" data-z-validate data-ng-model="vm.googleMapAddress" z-append-to="#googleMaps"/>
                             </div>
                         </div>
                     </div>
