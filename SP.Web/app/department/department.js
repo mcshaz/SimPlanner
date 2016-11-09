@@ -67,8 +67,8 @@
 
         function userCanApprove(institutionId){
             return tokenStorageService.isAuthorized(USER_ROLES.accessAllData) ||
-                (tokenStorageService.isAuthorized(USER_ROLES.accessInstitution) 
-                    && datacontext.getByKey(tokenStorageService.getUserDepartmentId()).institutionId === institutionId);
+                tokenStorageService.isAuthorized(USER_ROLES.accessInstitution) 
+                    && datacontext.getByKey(tokenStorageService.getUserDepartmentId()).institutionId === institutionId;
         }
 
         function save() {

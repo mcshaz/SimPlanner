@@ -21,7 +21,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="localeCode" class="col-md-2 control-label">Culture/Language</label>
+                        <label for="localeCode" class="col-md-2 control-label">Culture/Language <i class="fa fa-info-circle" title="Used to format dates, numbers and currency symbols. Non-English language support may be added in future versions."></i></label>
                         <div class="col-md-10">
                             <ui-select ng-model="vm.institution.localeCode" id="culture" title="Choose culture/language" 
                                        on-select="vm.onLocaleSelected($model)" class="f16" z-validate>
@@ -39,11 +39,8 @@
                         </div>
                     </div>
 
-                </fieldset>
-                <fieldset class="col-md-9">
-                    <legend><small>Optional</small></legend>
                     <div class="form-group">
-                        <label for="standardTimeZone" class="col-md-2 control-label">Time Zone</label>
+                        <label for="standardTimeZone" class="col-md-2 control-label">Time Zone <i class="fa fa-info-circle" title="Required to ensure calendar appointments work appropriately for those attending your courses from other time zones"></i></label>
                         <div class="col-md-10">
                             <select id="standardTimeZone" class="form-control" data-z-validate data-ng-model="vm.institution.standardTimeZone" data-ng-options="tz for tz in vm.timeZonesForCulture"
                                     ng-disabled="!vm.institution.localeCode">
@@ -54,6 +51,9 @@
                         </div>
                     </div>
 
+                </fieldset>
+                <fieldset class="col-md-9">
+                    <legend><small>Optional</small></legend>
                     <div class="form-group">
                         <label for="lat" class="col-md-2 control-label">Lat/Long</label>
                         <div class="col-md-5">
@@ -79,9 +79,16 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="homePage" class="col-md-2 control-label">Home Page</label>
+                        <div class="col-md-10">
+                            <input type="text" id="homePage" class="form-control" ng-model="vm.institution.homepageUrl" z-validate />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="about" class="col-md-2 control-label">About</label>
                         <div class="col-md-10">
-                            <textarea type="text" id="about" class="form-control" ng-model="vm.institution.about" z-validate />
+                            <textarea id="about" class="form-control" ng-model="vm.institution.about" z-validate />
                         </div>
                     </div>
 
@@ -124,7 +131,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-success" ng-disabled="vm.disableSave()">{{vm.isLoggedIn?'Save':'Save and register department'}}</button>
+                        <button type="submit" class="btn btn-success" ng-disabled="vm.disableSave()">Save<span ng-if="!vm.isLoggedIn"> &amp; continue <i class="fa fa-arrow-right"></i></span></button>
                     </div>
                 </div>
             </form>

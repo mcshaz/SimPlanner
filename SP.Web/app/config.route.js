@@ -56,20 +56,6 @@
                             allowedRoles: userRoles.authenticated
                         }
                     }
-                },
-                {
-                    url: '/admin',
-                    config: {
-                        title: 'Admin',
-                        templateUrl: 'app/admin/admin.html',
-                        settings: {
-                            nav: 3,
-                            content: '<i class="fa fa-lock"></i> Admin'
-                        },
-                        access: {
-                            allowedRoles: userRoles.siteAdmin
-                        }
-                    }
                 }, {
                     url: '/course/:id',
                     config: {
@@ -240,7 +226,7 @@
                         }
                     }
                 }, {
-                    url: '/updateDetails',
+                    url: '/updateDetails/:id',
                     config: {
                         title: 'Update My Details',
                         templateUrl: 'app/account/updateMyDetails.html',
@@ -290,7 +276,19 @@
                         title: 'Finished Submission',
                         templateUrl: 'app/approval/finishedSubmission.html',
                         access: {
-                            allowedRoles: '?'
+                            allowedRoles: userRoles.anonymous
+                        }
+                    }
+                }, {
+                    url: '/register',
+                    config: {
+                        title: 'Register',
+                        templateUrl: 'app/approval/beginSubmission.html', settings: {
+                            nav: 10,
+                            content: '<i class="fa fa-user-plus"></i> Register'
+                        },
+                        access: {
+                            allowedRoles: userRoles.anonymous
                         }
                     }
                 }

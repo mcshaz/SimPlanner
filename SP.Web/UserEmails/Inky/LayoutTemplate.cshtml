@@ -1,0 +1,52 @@
+﻿@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.EmailBase *@
+@inherits SP.Web.UserEmails.EmailBase
+
+@functions {
+    public string Title{ get; set; }
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@Title</title>
+    <!-- <style> -->
+</head>
+<body>
+   <wrapper class="header">
+       <row>
+           <columns>
+               <img class="float-left" src="@(BaseUrl)images/sim-planner-icon-50x75.png" alt="sim-manager logo" height="50" />
+               <h1 class="text-center float-center">Sim-Planner</h1>
+               <img class="float-right" src="@(BaseUrl)Content/images/logo-starship.png" alt="Starship logo" height="50" style="background-color:#FFFFFF;" />
+           </columns>
+        </row>
+    </wrapper>
+    <container>
+        <spacer size="16"></spacer>
+        <h2 class="text-center">@Title</h2>
+        @RenderBody()
+    </container>
+    <wrapper class="secondary">
+        <spacer size="16"></spacer>
+        <row>
+            <columns large="6">
+                <h5>Connect With Us:</h5>
+                <button class="facebook expand" href="http://zurb.com">Facebook</button>
+                <button class="twitter expand" href="http://zurb.com">Twitter</button>
+                <button class="google expand" href="http://zurb.com">Google+</button>
+            </columns>
+            <columns large="6">
+                <h5>Contact Info:</h5>
+                <p>Phone: 408-341-0600</p>
+                <p>Email: <a href="mailto:foundation@zurb.com">foundation@zurb.com</a></p>
+            </columns>
+        </row>
+    </wrapper>
+    <!-- prevent Gmail on iOS font size manipulation -->
+    <div style="display:none; white-space:nowrap; font:15px courier; line-height:0;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </div>
+</body>
+</html>
+

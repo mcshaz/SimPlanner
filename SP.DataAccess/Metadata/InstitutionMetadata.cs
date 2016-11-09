@@ -21,10 +21,15 @@ namespace SP.Metadata
         [FixedLength(Length=5)]
         public string LocaleCode { get; set; }
 
+        [StringLength(256)]
+        [Url(ErrorMessage = "The home page must be a valid, fully qualified http:// or https:// URL.")]
+        public string HomepageUrl { get; set; }
+
         [Range(FileDefaults._minFileSize, FileDefaults._maxFileSize, ErrorMessage = FileDefaults._errMsg)]
         public long? FileSize { get; set; }
 
         [StringLength(40)]
+        [Required]
         public string StandardTimeZone { get; set; }
     }
 }

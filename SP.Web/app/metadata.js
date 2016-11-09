@@ -1,4 +1,4 @@
-//201611032127162_ProfessionalRoleInstitutionsNotCascade
+//201611072340546_institutionUrl
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -2664,8 +2664,13 @@
         {
           "name": "standardTimeZone",
           "dataType": "String",
+          "isNullable": false,
+          "defaultValue": "",
           "maxLength": 40,
           "validators": [
+            {
+              "name": "required"
+            },
             {
               "maxLength": 40,
               "name": "maxLength"
@@ -2692,6 +2697,22 @@
             }
           ],
           "displayName": "Longitude"
+        },
+        {
+          "name": "homepageUrl",
+          "dataType": "String",
+          "maxLength": 256,
+          "validators": [
+            {
+              "maxLength": 256,
+              "name": "maxLength"
+            },
+            {
+              "name": "url",
+              "messageTemplate": "The home page must be a valid, fully qualified http:// or https:// URL."
+            }
+          ],
+          "displayName": "Homepage Url"
         },
         {
           "name": "logoImageFileName",

@@ -560,6 +560,13 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                             "StandardTimeZone"));
                     }
                 }
+                if (!WebValidation.IsAccessible(i.Entity.HomepageUrl))
+                {
+                    returnVar.Add(MappedEFEntityError.Create(i.Entity,
+                        "InvalidWebPage",
+                        "The web page cannot be found",
+                        "HomepageUrl"));
+                }
                 returnVar.AddRange(GetFileErrors(i.Entity.File, i, () => Context.Institutions.Find(i.Entity.Id)));
             }
             return returnVar;

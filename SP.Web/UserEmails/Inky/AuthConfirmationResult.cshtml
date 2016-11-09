@@ -1,0 +1,36 @@
+﻿@* Generator : Template TypeVisibility : Internal GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
+@using SP.DataAccess
+@inherits SP.Web.UserEmails.CourseParticipantEmailBase
+
+@functions{
+    public Participant Auth { get; set; }
+    public bool IsChanged { get; set; }
+}
+
+<callout class="@(IsChanged?"success":"warning")">
+    <row>
+        <columns>
+            <p>@Auth.FullName has <strong>@(IsChanged?"accepted":"declined")</strong> your request to change confirmation status.</p>
+            <p>
+                @CourseParticipant.Participant.FullName @(IsChanged?"is now":"remains") registered as 
+                @(CourseParticipant.IsConfirmed.Value?"attending":"not attending").
+            </p>
+        </columns>
+    </row>
+</callout>
+
+
+@if(!IsChanged) { 
+    <row>
+        <columns>
+            <p>If you would like to discuss this further, you may wish to contact one of the organiser(s) below:</p>
+            <ul>
+                @foreach(var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant)){
+                    <li>
+                        <a href="mailto:@(o.Email)">@o.FullName</a> Tel: @o.PhoneNumber
+                    </li>
+                }
+            </ul>
+        </columns>
+    </row>
+} 

@@ -13,7 +13,7 @@ namespace SP.Dto.Maps
     public static class MapperConfig
     {
         private static readonly IReadOnlyDictionary<Type, IDomainDtoMap> _dtoMapDictionary;
-        private static readonly IReadOnlyDictionary<Type, Type> _serverDtoDictionary;
+        private static readonly IReadOnlyDictionary<Type, IDomainDtoMap> _serverDtoDictionary;
         static MapperConfig()
         {
             var maps = new IDomainDtoMap[]
@@ -52,8 +52,8 @@ namespace SP.Dto.Maps
             };
             _dtoMapDictionary = new ReadOnlyDictionary<Type, IDomainDtoMap>(
                 maps.ToDictionary(kv=>kv.TypeofDto));
-            _serverDtoDictionary = new ReadOnlyDictionary<Type, Type>(
-                maps.ToDictionary(kv => kv.TypeofServerObject, kv => kv.TypeofDto));
+            _serverDtoDictionary = new ReadOnlyDictionary<Type, IDomainDtoMap>(
+                maps.ToDictionary(kv => kv.TypeofServerObject));
         }
 
         public static Type GetServerModelType(Type dtoType)
@@ -66,9 +66,14 @@ namespace SP.Dto.Maps
             return _dtoMapDictionary[dtoType].MapFromDto;
         }
 
+        public static LambdaExpression GetWhereExpression(Type serverModelType, CurrentPrincipal user)
+        {
+            return _serverDtoDictionary[serverModelType].GetWhereExpression(user);
+        }
+
         public static Type GetDtoType(Type serverModelType)
         {
-            return _serverDtoDictionary[serverModelType];
+            return _serverDtoDictionary[serverModelType].TypeofDto;
         }
 
         public static object MapFromDto(object obj)

@@ -19,20 +19,20 @@
 	<table class="wrapper header" align="center"><tr><td class="wrapper-inner">
 		<table class="row collapse"><tbody><tr>
 			    <th class="small-12 large-12 columns">
-      <table>
-        <tr>
-		  <th width="75">
-				<img src="<#= BaseUrl #>images/sim-planner-icon-50x75.png" alt="sim-manager logo" height="50"/>
-		  </th>
-          <th align="center">
-				<h1 class="text-center">Simulation Planner</h1>
-		  </th>
-		  <th width="93">
-				<img src="<#= BaseUrl #>Content/images/logo-starship.png" alt="Starship logo" height="50" style="background-color:#FFFFFF;"/>
-		  </th>
-        </tr>
-      </table>
-    </th>
+				  <table>
+					<tr>
+					  <th width="75">
+							<img src="<#= BaseUrl #>images/sim-planner-icon-50x75.png" alt="sim-manager logo" height="50"/>
+					  </th>
+					  <th align="center">
+							<h1 class="text-center">Simulation Planner</h1>
+					  </th>
+					  <th width="93">
+							<img src="<#= BaseUrl #>Content/images/logo-starship.png" alt="Starship logo" height="50" style="background-color:#FFFFFF;"/>
+					  </th>
+					</tr>
+				  </table>
+				</th>
 		</tr></tbody></table>
 	</td></tr></table>
 	<table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 

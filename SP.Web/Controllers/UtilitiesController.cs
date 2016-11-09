@@ -16,6 +16,9 @@ using System.Web;
 using SP.Web.Controllers.Helpers;
 using System.Data.Entity;
 using SP.DataAccess;
+using SP.Dto.Maps;
+using System.Linq.Expressions;
+using SP.Dto.ProcessBreezeRequests;
 
 namespace SP.Web.Controllers
 {
@@ -41,6 +44,12 @@ namespace SP.Web.Controllers
         private MedSimDbContext Repo
         {
             get { return _repo ?? (_repo = HttpContext.Current.GetOwinContext().Get<MedSimDbContext>()); }
+        }
+
+        CurrentPrincipal _currentUser;
+        private CurrentPrincipal CurrentUser
+        {
+            get { return _currentUser ?? ( _currentUser = new CurrentPrincipal(User, Repo)); }
         }
         /*
         MedSimDtoRepository _repo;
@@ -139,8 +148,17 @@ namespace SP.Web.Controllers
                 return validation;
             }
 
-            var sr = await Repo.ScenarioResources.Include(s=>s.Scenario).FirstOrDefaultAsync(s=>s.ScenarioId == model.EntitySetId);
-            return StreamToResponse(new FileStream(sr.GetServerPath(), FileMode.Open), sr.Scenario.BriefDescription + ".zip");
+            var scenarios = GetPermittedEntity(Repo.Scenarios.Include(s => s.ScenarioResources));
+            var scenario = await scenarios.FirstAsync(c => c.Id == model.EntitySetId);
+
+            var sr = scenario.ScenarioResources.FirstOrDefault();
+            if (sr == null)
+            {
+                ModelState.AddModelError("EntitySetId", "no resources found for the provided key");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+            }
+
+            return StreamToResponse(new FileStream(sr.GetServerPath(), FileMode.Open), scenario.BriefDescription + ".zip");
         }
 
         [Route("GetTimetable")]
@@ -153,8 +171,9 @@ namespace SP.Web.Controllers
                 return validation;
             }
 
-            var course = await CreateDocxTimetable.GetCourseIncludes(Repo)
-                .FirstOrDefaultAsync(c => c.Id == model.EntitySetId);
+            var courses = GetPermittedEntity(CreateCertificates.GetCourseIncludes(Repo));
+            var course = await courses.FirstAsync(c => c.Id == model.EntitySetId);
+
             return StreamToResponse(
                 CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath),
                 CreateDocxTimetable.TimetableName(course));
@@ -169,14 +188,25 @@ namespace SP.Web.Controllers
             {
                 return validation;
             }
-            var course = await CreateCertificates.GetCourseIncludes(Repo)
-                    .FirstOrDefaultAsync(c => c.Id == model.EntitySetId);
+            
+            var courses = GetPermittedEntity(CreateCertificates.GetCourseIncludes(Repo));
+            var course = await courses.FirstAsync(c => c.Id == model.EntitySetId);
+
             return StreamToResponse(
                 CreateCertificates.CreatePptxCertificates(course, WebApiConfig.DefaultCertificateTemplatePath),
                 CreateCertificates.CertificateName(course));
         }
 
         #region Helpers
+        private IQueryable<T> GetPermittedEntity<T>(IQueryable<T> entitySet)
+        {
+            var permissionPredicate = (Expression<Func<T, bool>>)MapperConfig.GetWhereExpression(typeof(T), CurrentUser);
+            if (permissionPredicate != null)
+            {
+                entitySet = entitySet.Where(permissionPredicate);
+            }
+            return entitySet;
+        }
 
         readonly string[] _emptyString = new string[0];
         private async Task<HttpResponseMessage> ValidateInput(DowloadFileSetModel model)

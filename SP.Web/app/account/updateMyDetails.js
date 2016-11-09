@@ -5,10 +5,10 @@
         .module('app')
         .controller(controllerId, updateDetails);
 
-    updateDetails.$inject = ['common', 'datacontext', '$scope', 'controller.abstract', 'tokenStorageService'];
+    updateDetails.$inject = ['common', 'datacontext', '$scope', 'controller.abstract', 'tokenStorageService', '$routeParams'];
     //changed $uibModalInstance to $scope to get the events
 
-    function updateDetails(common, datacontext, $scope, abstractController, tokenStorageService) {
+    function updateDetails(common, datacontext, $scope, abstractController, tokenStorageService, $routeParams) {
         /* jshint validthis:true */
         var vm = this;
 

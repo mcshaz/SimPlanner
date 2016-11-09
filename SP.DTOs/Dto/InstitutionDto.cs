@@ -18,6 +18,7 @@ namespace SP.Dto
         public string StandardTimeZone { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
+        public string HomepageUrl { get; set; }
         public string LogoImageFileName { get; set; }
         public bool AdminApproved { get; set; }
         [NotMapped]

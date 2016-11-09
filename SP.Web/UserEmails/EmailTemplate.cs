@@ -43,19 +43,19 @@ namespace SP.Web.UserEmails
 	<table class=""wrapper header"" align=""center""><tr><td class=""wrapper-inner"">
 		<table class=""row collapse""><tbody><tr>
 			    <th class=""small-12 large-12 columns"">
-      <table>
-        <tr>
-		  <th width=""75"">
-				<img src=""");
+				  <table>
+					<tr>
+					  <th width=""75"">
+							<img src=""");
             
             #line 25 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(BaseUrl));
             
             #line default
             #line hidden
-            this.Write("images/sim-planner-icon-50x75.png\" alt=\"sim-manager logo\" height=\"50\"/>\r\n\t\t  </th" +
-                    ">\r\n          <th align=\"center\">\r\n\t\t\t\t<h1 class=\"text-center\">Simulation Planner" +
-                    "</h1>\r\n\t\t  </th>\r\n\t\t  <th width=\"93\">\r\n\t\t\t\t<img src=\"");
+            this.Write("images/sim-planner-icon-50x75.png\" alt=\"sim-manager logo\" height=\"50\"/>\r\n\t\t\t\t\t  <" +
+                    "/th>\r\n\t\t\t\t\t  <th align=\"center\">\r\n\t\t\t\t\t\t\t<h1 class=\"text-center\">Simulation Plan" +
+                    "ner</h1>\r\n\t\t\t\t\t  </th>\r\n\t\t\t\t\t  <th width=\"93\">\r\n\t\t\t\t\t\t\t<img src=\"");
             
             #line 31 "C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\UserEmails\EmailTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(BaseUrl));
@@ -63,10 +63,10 @@ namespace SP.Web.UserEmails
             #line default
             #line hidden
             this.Write(@"Content/images/logo-starship.png"" alt=""Starship logo"" height=""50"" style=""background-color:#FFFFFF;""/>
-		  </th>
-        </tr>
-      </table>
-    </th>
+					  </th>
+					</tr>
+				  </table>
+				</th>
 		</tr></tbody></table>
 	</td></tr></table>
 	<table class=""spacer""><tbody><tr><td height=""20px"" style=""font-size:20px;line-height:20px;"">&#xA0;</td></tr></tbody></table> 

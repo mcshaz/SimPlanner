@@ -16,6 +16,7 @@ namespace SP.Dto.Maps
             Latitude = m.Latitude,
             Longitude = m.Longitude,
             AdminApproved = m.AdminApproved,
+            HomepageUrl = m.HomepageUrl,
             FileModified = m.FileModified,
             LogoImageFileName = m.LogoImageFileName,
             FileSize = m.FileSize,
@@ -32,6 +33,7 @@ namespace SP.Dto.Maps
                 Latitude = m.Latitude,
                 Longitude = m.Longitude,
                 AdminApproved = m.AdminApproved,
+                HomepageUrl = m.HomepageUrl,
                 FileModified = m.FileModified,
                 LogoImageFileName = m.LogoImageFileName,
                 FileSize = m.FileSize

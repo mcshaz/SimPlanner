@@ -1,0 +1,74 @@
+﻿@* Generator : Template TypeVisibility : Internal GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
+@using SP.DataAccess
+@inherits SP.Web.UserEmails.CourseParticipantEmailBase
+
+@functions{
+    public string GetNotificationUrl(bool canAttend)
+    {
+        return  $"{BaseUrl}index.html#/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending=" + (canAttend ? "1" : "0");
+    }
+}
+@{ Layout = new SP.Web.UserEmails.LayoutTemplate { Title = "Course Invitation" }; }
+
+<callout class="primary">
+    <row>
+        <columns small="12" >
+            <p>
+                You have been added as a @(CourseParticipant.IsFaculty?"faculty member":"participant") to an upcoming 
+                @CourseParticipant.Course.CourseFormat.Description
+            </p>
+            <p>Please check the details below and then confirm your availability.</p>
+        </columns>
+    </row>
+</callout>
+
+<row>
+    <columns small="11" class="small-offset-1 large-offset-1">
+        <dl>
+            <dt>When</dt>
+            <dd>
+                @string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal)
+                <small>(finishing @CourseParticipant.Course.FinishCourseLocal().ToString("g",FormatProvider)</small>
+            </dd>
+
+            <dt>Department</dt>
+            <dd>
+                @CourseParticipant.Course.Department.Institution.Name  @CourseParticipant.Course.Department.Name 
+            </dd>
+
+            <dt>Where</dt>
+            <dd>
+                @CourseParticipant.Course.Room.ShortDescription
+                <small>(@CourseParticipant.Course.Room.FullDescription)</small>
+            </dd>
+        </dl>
+    </columns>
+</row>
+<row>
+    <columns small="11" class="small-offset-1 large-offset-1">
+        <h5>Organiser(s)</h5>
+        <ul>
+            @foreach (var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant))
+            {
+                <li>
+                    <a href="@GetMailTo(o)">@o.FullName</a> @o.PhoneNumber
+                </li>
+            }
+        </ul>
+    </columns>
+</row>
+
+<hr/>
+
+<row>
+    <columns>
+        <center>
+            <button class="success radius" href="@GetNotificationUrl(true)">Confirm</button>
+        </center>
+    </columns>
+    <columns>
+        <center>
+            <button class="alert radius" href="@GetNotificationUrl(false)">I'm Unavailable</button>
+        </center>
+    </columns>
+</row>

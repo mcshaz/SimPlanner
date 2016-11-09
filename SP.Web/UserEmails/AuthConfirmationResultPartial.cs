@@ -14,7 +14,7 @@ namespace SP.Web.UserEmails
             set
             {
                 _courseParticipant = value;
-                ToStringFormatProvider = _courseParticipant.Course.Department.Institution.Culture.CultureInfo;
+                ToStringFormatProvider = _courseParticipant.Department.Institution.Culture.CultureInfo;
             }
         }
         public Participant Auth { get; set; }

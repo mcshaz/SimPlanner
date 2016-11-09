@@ -1,0 +1,39 @@
+﻿<section id="course-view" class="mainbar" >
+    <section class="matter">
+        <div class="container col-md-12" ng-controller="htmlOnly as vm">
+            <h1>Begin Registration</h1>
+            <h4>
+                Thank you for your interest
+            </h4>
+            <p>
+                <strong>Before commencing please note</strong> that the registration process involves 3 steps, entering (in turn) details of:
+                <ol>
+                    <li>Your Institution <aside><strong>If your institution is already registered</strong>, please contact the institution administrator
+                        to register your department for you, rather than proceeding with this registration process.</aside>
+                    </li>
+                    <li>Your Department</li>
+                    <li>Yourself</li>
+                </ol>
+            </p>
+            <p>
+                The process of registering will take about 10 minutes, and it is somewhat easier to complete the 3 steps in 1 sitting. 
+                If you are interrupted, click <span class="btn btn-success disabled">Save &amp; continue <i class="fa fa-arrow-right"></i></span> 
+                <small class="small">
+                    (and fix any errors)
+                </small>, 
+                copy or bookmark the address (which contains a unique code for the data you have entered) and come back to that page when you have time. If you have not
+                completed the 3 steps within 7 days of commencing, any details you have entered will be automatically deleted. 
+            </p>
+            <p>
+                Subsequent to completing the registration process, the website administrators will be notified of your submission, 
+                and you will need to wait for approval before you may log in to the application 
+                (you will receive an email notifying you that you appplication has been approved). 
+                If the details submitted are from a bone-fide medical simulation programme
+                <small class="small">(as opposed to spam)</small>, you will be approved.
+            </p>
+            <p>
+                <button type="button" class="btn btn-info" ng-click="vm.linkTo('/institution/new')">Begin <i class="fa fa-arrow-right"></i></button>
+            </p>
+        </div>
+    </section>
+</section>

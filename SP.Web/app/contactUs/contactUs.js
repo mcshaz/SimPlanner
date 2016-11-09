@@ -14,9 +14,9 @@
             controllerId: controllerId,
             watchedEntityNames: 'course',
             $scope: $scope
-        })
+        });
         var id = $routeParams.id;
-        var isNew = id == 'new';
+        var isNew = id === 'new';
 
         vm.course = {};
         vm.courseFormats = [];
@@ -116,13 +116,13 @@
             var name = cp.participant.fullName;
             cp.entityAspect.setDeleted();
             datacontext.save(cp).then(function (data) { vm.log('removed ' + name + ' from course');},
-                function (error) { log.error({ msg: 'failed to remove ' + name + ' from course' }) })
+                function (error) { log.error({ msg: 'failed to remove ' + name + ' from course' }); })
         }
 
         function getCourseParticipant(participantId) {
             return vm.course.courseParticipants.find(function (cp) {
                 return cp.participantId === participantId;
-            })
+            });
         }
     }
 })();

@@ -48,7 +48,8 @@
     "moment": "*",
     "bootswatch-dist": "*",
     "jquery": "^3.1.1",
-    "world-flags-sprite": "*"
+    "world-flags-sprite": "*",
+    "foundation-emails": "^2.2.1"
   },
   "keywords": [
     "timetable",

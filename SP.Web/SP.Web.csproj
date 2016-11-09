@@ -115,12 +115,12 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Data.Edm, Version=5.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Edm.5.8.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    <Reference Include="Microsoft.Data.Edm, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.8.1\lib\net40\Microsoft.Data.Edm.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Data.OData, Version=5.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.OData.5.8.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    <Reference Include="Microsoft.Data.OData, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.8.1\lib\net40\Microsoft.Data.OData.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -172,115 +172,115 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.ArcGISOnline, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.ArcGISOnline.2.10.0\lib\net45\Owin.Security.Providers.ArcGISOnline.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.ArcGISOnline.2.11.0\lib\net45\Owin.Security.Providers.ArcGISOnline.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Asana, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Asana.2.10.0\lib\net45\Owin.Security.Providers.Asana.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Asana.2.11.0\lib\net45\Owin.Security.Providers.Asana.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Backlog, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Backlog.2.10.0\lib\net45\Owin.Security.Providers.Backlog.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Backlog.2.11.0\lib\net45\Owin.Security.Providers.Backlog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Baidu, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Baidu.2.10.0\lib\net45\Owin.Security.Providers.Baidu.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Baidu.2.11.0\lib\net45\Owin.Security.Providers.Baidu.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.BattleNet, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.BattleNet.2.10.0\lib\net45\Owin.Security.Providers.BattleNet.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.BattleNet.2.11.0\lib\net45\Owin.Security.Providers.BattleNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Bitbucket, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Bitbucket.2.10.0\lib\net45\Owin.Security.Providers.Bitbucket.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Bitbucket.2.11.0\lib\net45\Owin.Security.Providers.Bitbucket.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Box, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Box.2.10.0\lib\net45\Owin.Security.Providers.Box.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Box.2.11.0\lib\net45\Owin.Security.Providers.Box.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Buffer, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Buffer.2.10.0\lib\net45\Owin.Security.Providers.Buffer.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Buffer.2.11.0\lib\net45\Owin.Security.Providers.Buffer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Cosign, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Cosign.2.10.0\lib\net45\Owin.Security.Providers.Cosign.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Cosign.2.11.0\lib\net45\Owin.Security.Providers.Cosign.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.DeviantArt, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.DeviantArt.2.10.0\lib\net45\Owin.Security.Providers.DeviantArt.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.DeviantArt.2.11.0\lib\net45\Owin.Security.Providers.DeviantArt.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Discord, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Discord.2.10.0\lib\net45\Owin.Security.Providers.Discord.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Discord.2.11.0\lib\net45\Owin.Security.Providers.Discord.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.DoYouBuzz, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.DoYouBuzz.2.10.0\lib\net45\Owin.Security.Providers.DoYouBuzz.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.DoYouBuzz.2.11.0\lib\net45\Owin.Security.Providers.DoYouBuzz.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Dropbox, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Dropbox.2.10.0\lib\net45\Owin.Security.Providers.Dropbox.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Dropbox.2.11.0\lib\net45\Owin.Security.Providers.Dropbox.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.EVEOnline, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.EVEOnline.2.10.0\lib\net45\Owin.Security.Providers.EVEOnline.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.EVEOnline.2.11.0\lib\net45\Owin.Security.Providers.EVEOnline.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Fitbit, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Fitbit.2.10.0\lib\net45\Owin.Security.Providers.Fitbit.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Fitbit.2.11.0\lib\net45\Owin.Security.Providers.Fitbit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Flickr, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Flickr.2.10.0\lib\net45\Owin.Security.Providers.Flickr.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Flickr.2.11.0\lib\net45\Owin.Security.Providers.Flickr.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Foursquare, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Foursquare.2.10.0\lib\net45\Owin.Security.Providers.Foursquare.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Foursquare.2.11.0\lib\net45\Owin.Security.Providers.Foursquare.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Geni, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Geni.2.10.0\lib\net45\Owin.Security.Providers.Geni.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Geni.2.11.0\lib\net45\Owin.Security.Providers.Geni.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.GitHub, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.GitHub.2.10.0\lib\net45\Owin.Security.Providers.GitHub.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.GitHub.2.11.0\lib\net45\Owin.Security.Providers.GitHub.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Gitter, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Gitter.2.10.0\lib\net45\Owin.Security.Providers.Gitter.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Gitter.2.11.0\lib\net45\Owin.Security.Providers.Gitter.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.GooglePlus, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.GooglePlus.2.10.0\lib\net45\Owin.Security.Providers.GooglePlus.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.GooglePlus.2.11.0\lib\net45\Owin.Security.Providers.GooglePlus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.HealthGraph, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.HealthGraph.2.10.0\lib\net45\Owin.Security.Providers.HealthGraph.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.HealthGraph.2.11.0\lib\net45\Owin.Security.Providers.HealthGraph.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Imgur, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Imgur.2.10.0\lib\net45\Owin.Security.Providers.Imgur.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Imgur.2.11.0\lib\net45\Owin.Security.Providers.Imgur.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Instagram, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Instagram.2.10.0\lib\net45\Owin.Security.Providers.Instagram.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Instagram.2.11.0\lib\net45\Owin.Security.Providers.Instagram.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.LinkedIn, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.LinkedIn.2.10.0\lib\net45\Owin.Security.Providers.LinkedIn.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.LinkedIn.2.11.0\lib\net45\Owin.Security.Providers.LinkedIn.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.MyHeritage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.MyHeritage.2.10.0\lib\net45\Owin.Security.Providers.MyHeritage.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.MyHeritage.2.11.0\lib\net45\Owin.Security.Providers.MyHeritage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Onshape, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Onshape.2.10.0\lib\net45\Owin.Security.Providers.Onshape.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Onshape.2.11.0\lib\net45\Owin.Security.Providers.Onshape.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.OpenID, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.OpenID.2.10.0\lib\net45\Owin.Security.Providers.OpenID.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.OpenID.2.11.0\lib\net45\Owin.Security.Providers.OpenID.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.OpenIDBase, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -288,91 +288,91 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Orcid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Orcid.2.10.0\lib\net45\Owin.Security.Providers.Orcid.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Orcid.2.11.0\lib\net45\Owin.Security.Providers.Orcid.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.PayPal, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.PayPal.2.10.0\lib\net45\Owin.Security.Providers.PayPal.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.PayPal.2.11.0\lib\net45\Owin.Security.Providers.PayPal.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Reddit, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Reddit.2.10.0\lib\net45\Owin.Security.Providers.Reddit.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Reddit.2.11.0\lib\net45\Owin.Security.Providers.Reddit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Salesforce, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Salesforce.2.10.0\lib\net45\Owin.Security.Providers.Salesforce.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Salesforce.2.11.0\lib\net45\Owin.Security.Providers.Salesforce.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Shopify, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Shopify.2.10.0\lib\net45\Owin.Security.Providers.Shopify.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Shopify.2.11.0\lib\net45\Owin.Security.Providers.Shopify.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Slack, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.SlackProvider.2.10.0\lib\net45\Owin.Security.Providers.Slack.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.SlackProvider.2.11.0\lib\net45\Owin.Security.Providers.Slack.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.SoundCloud, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.SoundCloud.2.10.0\lib\net45\Owin.Security.Providers.SoundCloud.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.SoundCloud.2.11.0\lib\net45\Owin.Security.Providers.SoundCloud.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Spotify, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Spotify.2.10.0\lib\net45\Owin.Security.Providers.Spotify.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Spotify.2.11.0\lib\net45\Owin.Security.Providers.Spotify.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.StackExchange, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.StackExchange.2.10.0\lib\net45\Owin.Security.Providers.StackExchange.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.StackExchange.2.11.0\lib\net45\Owin.Security.Providers.StackExchange.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Steam, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Steam.2.10.0\lib\net45\Owin.Security.Providers.Steam.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Steam.2.11.0\lib\net45\Owin.Security.Providers.Steam.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.TripIt, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.TripIt.2.10.0\lib\net45\Owin.Security.Providers.TripIt.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.TripIt.2.11.0\lib\net45\Owin.Security.Providers.TripIt.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Twitch, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Twitch.2.10.0\lib\net45\Owin.Security.Providers.Twitch.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Twitch.2.11.0\lib\net45\Owin.Security.Providers.Twitch.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Untappd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Untappd.2.10.0\lib\net45\Owin.Security.Providers.Untappd.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Untappd.2.11.0\lib\net45\Owin.Security.Providers.Untappd.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Vimeo, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Vimeo.2.10.0\lib\net45\Owin.Security.Providers.Vimeo.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Vimeo.2.11.0\lib\net45\Owin.Security.Providers.Vimeo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.VisualStudio, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.VisualStudio.2.10.0\lib\net45\Owin.Security.Providers.VisualStudio.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.VisualStudio.2.11.0\lib\net45\Owin.Security.Providers.VisualStudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.VKontakte, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.VKontakte.2.10.0\lib\net45\Owin.Security.Providers.VKontakte.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.VKontakte.2.11.0\lib\net45\Owin.Security.Providers.VKontakte.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Wargaming, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Wargaming.2.10.0\lib\net45\Owin.Security.Providers.Wargaming.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Wargaming.2.11.0\lib\net45\Owin.Security.Providers.Wargaming.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.WordPress, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.WordPress.2.10.0\lib\net45\Owin.Security.Providers.WordPress.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.WordPress.2.11.0\lib\net45\Owin.Security.Providers.WordPress.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Xing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Xing.2.10.0\lib\net45\Owin.Security.Providers.Xing.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Xing.2.11.0\lib\net45\Owin.Security.Providers.Xing.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Yahoo, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Yahoo.2.10.0\lib\net45\Owin.Security.Providers.Yahoo.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Yahoo.2.11.0\lib\net45\Owin.Security.Providers.Yahoo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Yammer, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Yammer.2.10.0\lib\net45\Owin.Security.Providers.Yammer.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Yammer.2.11.0\lib\net45\Owin.Security.Providers.Yammer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PreMailer.Net, Version=1.5.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PreMailer.Net.1.5.4\lib\net45\PreMailer.Net.dll</HintPath>
+    <Reference Include="RazorGenerator.Templating, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorGenerator.Templating.2.4.7\lib\portable-Profile328\RazorGenerator.Templating.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.IO.Compression" />
@@ -380,8 +380,8 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Spatial, Version=5.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Spatial.5.8.0\lib\net40\System.Spatial.dll</HintPath>
+    <Reference Include="System.Spatial, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.8.1\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Transactions" />
@@ -455,12 +455,12 @@
     <Content Include="app\account\updateMyDetails.js" />
     <Content Include="app\activityResources\activityResource.html" />
     <Content Include="app\activityResources\activityResource.js" />
-    <Content Include="app\admin\admin.html" />
-    <Content Include="app\admin\admin.js" />
     <Content Include="app\app.js" />
     <Content Include="app\approval\approval.html" />
     <Content Include="app\approval\approval.js" />
+    <Content Include="app\approval\beginSubmission.html" />
     <Content Include="app\approval\finishedSubmission.html" />
+    <Content Include="app\approval\htmlOnly.js" />
     <Content Include="app\auth\tokenStorageService.js" />
     <Content Include="app\auth\getCredentials.html" />
     <Content Include="app\auth\getCredentials.js" />
@@ -547,6 +547,8 @@
     <Content Include="app\user\users.js" />
     <Content Include="Content\breeze.directives.css" />
     <Content Include="Content\customtheme.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\ie10mobile.css" />
     <Content Include="Content\images\logo-starship.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -593,30 +595,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="dist\testEmail.html" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="gulpfile.js" />
     <Content Include="Scripts\update-progress.js" />
     <Content Include="Scripts\updatebrowser.js" />
-    <Content Include="UserEmails\app.css" />
-    <Content Include="UserEmails\AuthConfirmationResult.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>AuthConfirmationResult.cs</LastGenOutput>
-    </Content>
-    <Content Include="UserEmails\ReverseConfirmation.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ReverseConfirmation.cs</LastGenOutput>
-    </Content>
-    <Content Include="UserEmails\CourseInvite.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>CourseInvite.cs</LastGenOutput>
-    </Content>
-    <Content Include="UserEmails\ForgotPasswordTemplate.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ForgotPasswordTemplate.cs</LastGenOutput>
-    </Content>
-    <Content Include="UserEmails\EmailTemplate.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>EmailTemplate.cs</LastGenOutput>
-    </Content>
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="app\auth\authComplete.js" />
@@ -625,6 +607,7 @@
     <Content Include="app\scenario\scenario.html" />
     <Content Include="sink.html" />
     <Content Include="app\services\controller.abstract.js" />
+    <Content Include="UserEmails\Inky\AuthConfirmationResult.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -652,40 +635,20 @@
     <Compile Include="Models\CoursePlanningBindingModel.cs" />
     <Compile Include="Models\CultureFormatModel.cs" />
     <Compile Include="Models\DowloadFileSetModel.cs" />
-    <Compile Include="UserEmails\AuthConfirmationResult.cs">
-      <DependentUpon>AuthConfirmationResult.tt</DependentUpon>
+    <Compile Include="SampleTemplate.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>SampleTemplate.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="UserEmails\AuthConfirmationResultPartial.cs" />
+    <Compile Include="Scripts\AuthConfirmationResult1.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuthConfirmationResult.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\CourseParticipantEmailBase.cs" />
     <Compile Include="UserEmails\CreateParticipantEmails.cs" />
-    <Compile Include="UserEmails\ReverseConfirmationPartial.cs" />
-    <Compile Include="UserEmails\ReverseConfirmation.cs">
-      <DependentUpon>ReverseConfirmation.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="UserEmails\CourseInvite.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CourseInvite.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserEmails\CourseInvitePartial.cs" />
+    <Compile Include="UserEmails\EmailBase.cs" />
     <Compile Include="UserEmails\CreateCourseAppointment.cs" />
-    <Compile Include="UserEmails\EmailTemplate.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EmailTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserEmails\ForgotPasswordTemplate.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ForgotPasswordTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserEmails\ForgotPasswordTemplatePartial.cs" />
-    <Compile Include="UserEmails\EmailTemplatePartial.cs" />
-    <Compile Include="UserEmails\HtmlToText.cs" />
-    <Compile Include="UserEmails\IMailBody.cs" />
     <Compile Include="UserEmails\MailExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -712,7 +675,40 @@
     <Content Include="App_Data\CertificateTemplate.pptx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Properties\PublishProfiles\OpenHost.pubxml" />
+    <Content Include="SampleTemplate.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>SampleTemplate.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\AuthConfirmationResult.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>AuthConfirmationResult1.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\CourseInvite.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>CourseInvite1.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\ForgotPasswordTemplate.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ForgotPasswordTemplate.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\LayoutTemplate.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LayoutTemplate1.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\ReverseConfirmation.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ReverseConfirmation1.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\ReverseConfirmation.cshtml" />
+    <Content Include="UserEmails\ForgotPasswordTemplate.cshtml" />
+    <Content Include="UserEmails\LayoutTemplate.cshtml" />
+    <Content Include="UserEmails\CourseInvite.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

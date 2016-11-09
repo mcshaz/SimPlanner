@@ -16,6 +16,7 @@ namespace SP.DataAccess
         public string Abbreviation { get; set; }
         public string LocaleCode { get; set; }
         public string StandardTimeZone { get; set; }
+        public string HomepageUrl { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public bool AdminApproved { get; set; }

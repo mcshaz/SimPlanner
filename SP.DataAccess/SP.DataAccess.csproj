@@ -139,6 +139,10 @@
     <Compile Include="Migrations\201611032127162_ProfessionalRoleInstitutionsNotCascade.Designer.cs">
       <DependentUpon>201611032127162_ProfessionalRoleInstitutionsNotCascade.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611072340546_institutionUrl.cs" />
+    <Compile Include="Migrations\201611072340546_institutionUrl.Designer.cs">
+      <DependentUpon>201611072340546_institutionUrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
@@ -373,6 +377,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611032127162_ProfessionalRoleInstitutionsNotCascade.resx">
       <DependentUpon>201611032127162_ProfessionalRoleInstitutionsNotCascade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611072340546_institutionUrl.resx">
+      <DependentUpon>201611072340546_institutionUrl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

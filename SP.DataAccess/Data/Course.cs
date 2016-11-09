@@ -6,6 +6,7 @@ namespace SP.DataAccess
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
     using Utilities;
 
     [MetadataType(typeof(CourseMetadata))]
@@ -97,6 +98,47 @@ namespace SP.DataAccess
             get { return 1; }
         }
 
+    }
+
+    public static class CourseExtensions
+    {
+
+        public static IEnumerable<ICourseDay> AllDays(this Course course)
+        {
+            return (new[] { (ICourseDay)course }).Concat(course.CourseDays).OrderBy(cd => cd.Day);
+        }
+
+        public static ICourseDay LastDay(this Course course)
+        {
+            var days = course.CourseFormat.DaysDuration;
+            return days > 1
+                ? course.CourseDays.First(cd => cd.Day == days)
+                : (ICourseDay)course;
+        }
+
+        public static DateTime FinishCourseUtc(this Course course)
+        {
+            var lastDay = course.LastDay();
+            return lastDay.StartUtc + TimeSpan.FromMinutes(lastDay.DurationMins);
+        }
+
+        public static DateTime FinishCourseLocal(this Course course)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(course.FinishCourseUtc(), course.Department.Institution.TimeZone);
+        }
+
+        public static DateTime FinishCourseDayUtc(this ICourseDay courseDay)
+        {
+            return courseDay.StartUtc + TimeSpan.FromMinutes(courseDay.DurationMins);
+        }
+
+        public static DateTime FinishCourseDayLocal(this ICourseDay courseDay)
+        {
+            var dpt = courseDay.Day == 1
+                ? ((Course)courseDay).Department
+                : ((CourseDay)courseDay).Course.Department;
+            return TimeZoneInfo.ConvertTimeFromUtc(courseDay.FinishCourseDayUtc(), dpt.Institution.TimeZone);
+        }
     }
 
 }

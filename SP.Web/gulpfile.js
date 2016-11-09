@@ -17,6 +17,16 @@ var inline = require('gulp-inline-source');
 var rename = require('gulp-rename');
 var replace = require('gulp-replace');
 
+var siphon = require('siphon-media-query');
+var inky = require('inky');
+var sass = require('gulp-sass');
+var inlineCss = require('gulp-inline-css');
+var lazypipe = require('lazypipe');
+var fs = require('fs');
+
+//var foundationEmailCss = 'wwwroot/lib/foundation-emails/_build/assets/css';
+
+
 gulp.task('html', function(cb){
     var mainFile = './index.html';
     //var glob primer - https://www.npmjs.com/package/glob
@@ -96,3 +106,48 @@ gulp.task('build', function (callback) {
       callback
   );
 });
+
+gulp.task('parseInky', function () {
+    gulp.src('UserEmails/Inky/**/*.cshtml')
+        .pipe(inky())
+        .pipe(inliner('wwwroot/lib/foundation-emails/dist/foundation-emails.css'))
+        .pipe(gulp.dest('UserEmails'));
+});
+
+// Compile Sass into CSS
+// Compiles Foundation-specific CSS
+/*
+gulp.task('sass:foundation', function () {
+    return gulp.src('wwwroot/lib/foundation-emails/scss/foundation-emails.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(gulp.dest('wwwroot/lib/foundation-emails/_build/assets/css'));
+});
+*/
+
+function inliner(css) {
+    var cssString = fs.readFileSync(css).toString();
+    var mqCss = siphon(cssString);
+    var pipe = lazypipe()
+      .pipe(inlineCss, {
+          extraCss: cssString,
+          applyStyleTags: true,
+          removeStyleTags: false,
+          removeLinkTags: false
+      })
+      .pipe(replace, '<!-- <style> -->', '<style>' + mqCss + '</style>');
+        /*
+      .pipe(htmlmin, {
+          collapseWhitespace: true,
+          minifyCSS: true,
+          conservativeCollapse: true,
+          decodeEntities: true,
+          html5: false,
+          quoteCharacter: "'",
+          ignoreCustomFragments: [/^@\*[\s\S]+</] 
+      })
+    //.pipe(replace, '@using ', '\r\n@using ')
+    //.pipe(replace, '@inherits ', '\r\n@inherits ')
+    //.pipe(replace, '@functions', '\r\n@functions');
+    */
+    return pipe();
+}
