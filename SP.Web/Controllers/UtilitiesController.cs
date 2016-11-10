@@ -19,6 +19,7 @@ using SP.DataAccess;
 using SP.Dto.Maps;
 using System.Linq.Expressions;
 using SP.Dto.ProcessBreezeRequests;
+using System.Security.Principal;
 
 namespace SP.Web.Controllers
 {
@@ -86,7 +87,7 @@ namespace SP.Web.Controllers
                 //for using the logic to restrict access within our Dto layer
                 var appUser = await UserManager.FindByIdAsync(userId);
                 //hopefully changing this will not cause problems downstream - we do not want cookies going back and forward
-                User = new BasicPrincipalImplementation(appUser.UserName, await UserManager.GetRolesAsync(userId));
+                User = new GenericPrincipal(new GenericIdentity(appUser.UserName), (await UserManager.GetRolesAsync(userId)).ToArray());
             }
             return returnVar;
         }

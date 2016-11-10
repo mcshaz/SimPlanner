@@ -1,4 +1,4 @@
-﻿@* Generator : Template TypeVisibility : Internal GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
+﻿@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
 @using SP.DataAccess
 @inherits SP.Web.UserEmails.CourseParticipantEmailBase
 
@@ -19,39 +19,45 @@
 
 <callout class="primary">
     <row>
-        <p>
-            @CourseParticipant.Participant.FullName
-            <small>
-                @CourseParticipant.Participant.ProfessionalRole.Description
-            </small>
-            had been confirmed as @(CourseParticipant.IsConfirmed.Value?"attending":"unable to attend")
-            as a @(CourseParticipant.IsFaculty?"faculty member":"participant")
-            in the @CourseName on the @CourseParticipant.Course.StartLocal.ToString("g",FormatProvider)
-        </p>
-        <p>
-            However, he/she would like to <strong>change this response</strong> to being 
-            @(CourseParticipant.IsConfirmed.Value?"unable":"able") to attend.
-        </p>
+        <columns>
+            <p>
+                @CourseParticipant.Participant.FullName
+                <small>
+                    @CourseParticipant.Participant.ProfessionalRole.Description
+                </small>
+                had been confirmed as @(CourseParticipant.IsConfirmed.Value?"attending":"unable to attend")
+                as a @(CourseParticipant.IsFaculty?"faculty member":"participant")
+                in the @CourseName on the @CourseParticipant.Course.StartLocal.ToString("g",FormatProvider)
+            </p>
+            <p>
+                However, he/she would like to <strong>change this response</strong> to being
+                @(CourseParticipant.IsConfirmed.Value?"unable":"able") to attend.
+            </p>
+        </columns>
     </row>
 </callout>
 <row>
-    <p class="small"><em>Note:</em> you can also change the confirmation status for any or all participants by logging in <a href="<#= GetCourseRef() #>">here</a></p>
+    <columns>
+        <p class="small"><em>Note:</em> you can also change the confirmation status for any or all participants by logging in <a href="<#= GetCourseRef() #>">here</a></p>
+    </columns>
 </row>
 <row>
-    <h3>Contact details for @CourseParticipant.Participant.FullName:</h3>
-    <dl>
-        <dt>Email</dt>
-        <dd><a href="@GetMailTo(CourseParticipant.Participant)">@CourseParticipant.Participant.Email</a></dd>
-        @if (CourseParticipant.Participant.PhoneNumber != null)
-        {
-            <dt>
-                Phone
-            </dt>
-            <dd>
-                CourseParticipant.Participant.PhoneNumber
-            </dd>
-        }
-    </dl>
+    <columns>
+        <h3>Contact details for @CourseParticipant.Participant.FullName:</h3>
+        <dl>
+            <dt>Email</dt>
+            <dd><a href="@GetMailTo(CourseParticipant.Participant)">@CourseParticipant.Participant.Email</a></dd>
+            @if (CourseParticipant.Participant.PhoneNumber != null)
+            {
+                <dt>
+                    Phone
+                </dt>
+                <dd>
+                    CourseParticipant.Participant.PhoneNumber
+                </dd>
+            }
+        </dl>
+    </columns>
 </row>
 
 <hr/>

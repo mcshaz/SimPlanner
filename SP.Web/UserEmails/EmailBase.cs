@@ -1,9 +1,5 @@
 ﻿using SP.DataAccess;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace SP.Web.UserEmails
@@ -13,7 +9,7 @@ namespace SP.Web.UserEmails
         private static object _lock = new object();
         private static string _baseUrl;
 
-        public IFormatProvider FormatProvider { get; protected set; }
+        protected IFormatProvider FormatProvider { get; set; }
         
         public string BaseUrl
         {

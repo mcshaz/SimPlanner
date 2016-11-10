@@ -6,19 +6,23 @@ using SP.Web.Controllers.Helpers;
 using System.Linq;
 using System.IO;
 using SP.Dto.Utilities;
+using System.Security.Principal;
 
 namespace SP.Tests
 {
     [TestClass]
     public class TestICal
     {
-
+        internal static IPrincipal GetTestAllRolesPrincipal()
+        {
+            return new GenericPrincipal(new GenericIdentity("brentm@adhb.govt.nz"), RoleConstants.RoleNames.Values.ToArray());
+        }
         [TestMethod]
         public void TestCreateIcal()
         {
             using (var db = new MedSimDbContext())
             {
-                var bm = new BasicPrincipalImplementation("brentm@adhb.govt.nz", db.Roles.Select(r=>r.Name).ToList());
+                var bm = GetTestAllRolesPrincipal();
                 var course = db.Courses.Find(Guid.Parse("0ca5d24f-292e-4004-bb08-096db4b440ad"));
                 using (var appt = new AppointmentStream())
                 {

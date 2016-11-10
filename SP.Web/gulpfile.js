@@ -126,13 +126,13 @@ gulp.task('sass:foundation', function () {
 
 function inliner(css) {
     var cssString = fs.readFileSync(css).toString();
-    var mqCss = siphon(cssString);
+    var mqCss = siphon(cssString).replace(/@/g, "@@");
     var pipe = lazypipe()
       .pipe(inlineCss, {
           extraCss: cssString,
           applyStyleTags: true,
-          removeStyleTags: false,
-          removeLinkTags: false
+          removeStyleTags: true,
+          removeLinkTags: true
       })
       .pipe(replace, '<!-- <style> -->', '<style>' + mqCss + '</style>');
         /*

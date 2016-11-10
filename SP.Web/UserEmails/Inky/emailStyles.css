@@ -1,0 +1,59 @@
+﻿  .header {
+    background-color: #000;
+  }
+
+  .header .columns {
+    padding-bottom: 0;
+  }
+
+  .header p, .header h1 {
+      color: #fff;
+  }
+
+  .header p {
+    padding-top: 15px;
+  }
+
+  .header .wrapper-inner {
+    padding: 20px;
+  }
+
+  .header .container, .footer, .footer .container {
+    background-color: transparent;
+  }
+
+
+  table.button.facebook table td {
+    background-color: #3b5998;
+    border-color: #3B5998;
+  }
+
+  table.button.twitter table td {
+    background-color: #55acee;
+    border-color: #55acee;
+  }
+
+  table.button.google table td {
+    background-color: #dd4b39;
+    border-color: #dd4b39;
+  }
+
+ table.button.linkedIn table td {
+    background-color: #007bb5;
+    border-color: #007bb5;
+  }
+
+  #007bb5
+
+  .wrapper.secondary {
+    background-color: #f3f3f3;
+  }
+
+  dt {
+      font-weight:bold;
+  }
+
+  .details{
+      color:#074E68;
+      font-size:12px;
+  }

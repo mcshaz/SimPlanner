@@ -1,4 +1,4 @@
-﻿@* Generator : Template TypeVisibility : Internal GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
+﻿@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
 @using SP.DataAccess
 @inherits SP.Web.UserEmails.CourseParticipantEmailBase
 
@@ -9,37 +9,44 @@
     }
 }
 @{ Layout = new SP.Web.UserEmails.LayoutTemplate { Title = "Course Invitation" }; }
-
+<link href="emailStyles.css" rel="stylesheet" />
 <callout class="primary">
     <row>
         <columns small="12" >
             <p>
                 You have been added as a @(CourseParticipant.IsFaculty?"faculty member":"participant") to an upcoming 
-                @CourseParticipant.Course.CourseFormat.Description
+                @CourseParticipant.Course.CourseFormat.CourseType.Description 
+                @if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", System.StringComparison.OrdinalIgnoreCase)){
+                    @:Course
+                }
             </p>
             <p>Please check the details below and then confirm your availability.</p>
         </columns>
     </row>
 </callout>
-
+<spacer size="16"></spacer>
 <row>
     <columns small="11" class="small-offset-1 large-offset-1">
         <dl>
             <dt>When</dt>
             <dd>
-                @string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal)
-                <small>(finishing @CourseParticipant.Course.FinishCourseLocal().ToString("g",FormatProvider)</small>
+                <p>
+                    @string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal)
+                </p>
+                <p class="details">
+                    (finishing @CourseParticipant.Course.FinishCourseLocal().ToString("g",FormatProvider))
+                </p>
             </dd>
 
             <dt>Department</dt>
             <dd>
-                @CourseParticipant.Course.Department.Institution.Name  @CourseParticipant.Course.Department.Name 
+                @CourseParticipant.Course.Department.Institution.Name - @CourseParticipant.Course.Department.Name 
             </dd>
 
             <dt>Where</dt>
             <dd>
-                @CourseParticipant.Course.Room.ShortDescription
-                <small>(@CourseParticipant.Course.Room.FullDescription)</small>
+                <p>@CourseParticipant.Course.Room.ShortDescription</p>
+                <p class="details">(@CourseParticipant.Course.Room.FullDescription)</p>
             </dd>
         </dl>
     </columns>

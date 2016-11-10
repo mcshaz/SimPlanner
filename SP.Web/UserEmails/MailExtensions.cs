@@ -2,29 +2,19 @@
 {
     using System.Net.Mail;
     using System.Text;
-    using PreMailer.Net;
-    using System.IO;
-    using System.Web;
     using System.Net.Mime;
-    using Dto.Utilities;
 
     public static class MailExtensions
     {
-        internal static void CreateHtmlBody(this MailMessage message, IMailBody template)
+        public static void CreateHtmlBody(this MailMessage message, EmailBase template)
         {
-            var mailTemplate = new EmailTemplate() { BodyTemplate = template };
+            var html = template.TransformText();
 
-            var pm = new PreMailer(mailTemplate.TransformText());
+            message.Subject = ((LayoutTemplate)template.Layout)?.Title ?? "Sim-planner email";
 
-            string output = pm.MoveCssInline(css: File.ReadAllText(HttpContext.Current.Server.MapPath(@"~/UserEmails/app.css"))).Html;
+            message.Body = message.Subject + new string('-', message.Subject.Length) + "\r\n\r\n" + HtmlToText.ConvertHtml(html);
 
-            var html = AlternateView.CreateAlternateViewFromString(output.MultiToSingleWhitespace(), Encoding.UTF8, MediaTypeNames.Text.Html);
-
-            message.Subject = mailTemplate.Title;
-
-            message.Body = mailTemplate.Title + new string('-', mailTemplate.Title.Length) + "\r\n\r\n" + HtmlToText.ConvertHtml(mailTemplate.Body);
-
-            message.AlternateViews.Add(html);
+            message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, Encoding.UTF8, MediaTypeNames.Text.Html));
         }
 
     }

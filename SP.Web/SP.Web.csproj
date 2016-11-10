@@ -607,7 +607,6 @@
     <Content Include="app\scenario\scenario.html" />
     <Content Include="sink.html" />
     <Content Include="app\services\controller.abstract.js" />
-    <Content Include="UserEmails\Inky\AuthConfirmationResult.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -645,10 +644,36 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AuthConfirmationResult.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="UserEmails\AuthConfirmationResult.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuthConfirmationResult.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\basic.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>basic.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\CourseInvite.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CourseInvite.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="UserEmails\CourseParticipantEmailBase.cs" />
     <Compile Include="UserEmails\CreateParticipantEmails.cs" />
     <Compile Include="UserEmails\EmailBase.cs" />
     <Compile Include="UserEmails\CreateCourseAppointment.cs" />
+    <Compile Include="UserEmails\ForgotPasswordTemplate.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ForgotPasswordTemplate.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\HtmlToText.cs" />
+    <Compile Include="UserEmails\LayoutTemplate.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LayoutTemplate.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="UserEmails\MailExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -661,6 +686,11 @@
     <Compile Include="Results\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UserEmails\ReverseConfirmation.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReverseConfirmation.cshtml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -689,26 +719,30 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AuthConfirmationResult1.generated.cs</LastGenOutput>
     </Content>
-    <Content Include="UserEmails\Inky\CourseInvite.cshtml">
+    <Content Include="UserEmails\ReverseConfirmation.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>CourseInvite1.generated.cs</LastGenOutput>
+      <LastGenOutput>ReverseConfirmation.generated.cs</LastGenOutput>
     </Content>
-    <Content Include="UserEmails\Inky\ForgotPasswordTemplate.cshtml">
+    <Content Include="UserEmails\ForgotPasswordTemplate.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ForgotPasswordTemplate.generated.cs</LastGenOutput>
     </Content>
-    <Content Include="UserEmails\Inky\LayoutTemplate.cshtml">
+    <Content Include="UserEmails\LayoutTemplate.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>LayoutTemplate1.generated.cs</LastGenOutput>
+      <LastGenOutput>LayoutTemplate.generated.cs</LastGenOutput>
     </Content>
-    <Content Include="UserEmails\Inky\ReverseConfirmation.cshtml">
+    <Content Include="UserEmails\CourseInvite.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>ReverseConfirmation1.generated.cs</LastGenOutput>
+      <LastGenOutput>CourseInvite.generated.cs</LastGenOutput>
     </Content>
-    <Content Include="UserEmails\ReverseConfirmation.cshtml" />
-    <Content Include="UserEmails\ForgotPasswordTemplate.cshtml" />
-    <Content Include="UserEmails\LayoutTemplate.cshtml" />
-    <Content Include="UserEmails\CourseInvite.cshtml" />
+    <Content Include="UserEmails\AuthConfirmationResult.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>AuthConfirmationResult.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\basic.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>basic.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -721,6 +755,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\tutorial\" />
+    <Folder Include="UserEmails\Inky\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\" />

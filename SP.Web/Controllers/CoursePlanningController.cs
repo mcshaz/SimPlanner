@@ -5,6 +5,7 @@ using SP.Web.Models;
 using SP.Web.UserEmails;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -39,8 +40,7 @@ namespace SP.Web.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> EmailAll(EmailAllBindingModel model)
         {
-            var course = await CreateDocxTimetable.GetCourseIncludes(Repo)
-                .Include("CourseParticipants.Department.Institution").Include("Room").Include("FacultyMeetingRoom")
+            var course = await GetCourseIncludes(Repo)
                 .FirstOrDefaultAsync(cp => cp.Id == model.CourseId);
             //Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(course.Department.Institution.LocaleCode);
 
@@ -59,6 +59,12 @@ namespace SP.Web.Controllers
             }
 
             return Ok(new { SuccessRecipients = result[true].Select(cp=>cp.ParticipantId), FailRecipients = result[false].Select(cp => cp.ParticipantId) });
+        }
+
+        public static DbQuery<Course> GetCourseIncludes(MedSimDbContext repo)
+        {
+            return CreateDocxTimetable.GetCourseIncludes(repo)
+                .Include("CourseParticipants.Department.Institution.Culture").Include("Room").Include("FacultyMeetingRoom");
         }
 
         [Route("Rsvp")]
@@ -129,7 +135,11 @@ namespace SP.Web.Controllers
                     using (var mail = new MailMessage())
                     {
                         mail.To.AddParticipants(org.Participant);
-                        var confirmEmail = new ReverseConfirmation(org.ParticipantId.ToString()) { CourseParticipant = part };
+                        var confirmEmail = new ReverseConfirmation
+                        {
+                            CourseParticipant = part,
+                            AuthorizationToken = org.ParticipantId.ToString("N")
+                        };
                         mail.CreateHtmlBody(confirmEmail);
                         await client.SendMailAsync(mail);
                     }

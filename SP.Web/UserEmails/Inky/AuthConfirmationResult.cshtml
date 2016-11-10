@@ -1,4 +1,4 @@
-﻿@* Generator : Template TypeVisibility : Internal GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
+﻿@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
 @using SP.DataAccess
 @inherits SP.Web.UserEmails.CourseParticipantEmailBase
 
@@ -6,11 +6,18 @@
     public Participant Auth { get; set; }
     public bool IsChanged { get; set; }
 }
+@{ Layout = new SP.Web.UserEmails.LayoutTemplate { Title = "Confirmation Changed" }; }
 
-<callout class="@(IsChanged?"success":"warning")">
+<callout class="info">
     <row>
-        <columns>
-            <p>@Auth.FullName has <strong>@(IsChanged?"accepted":"declined")</strong> your request to change confirmation status.</p>
+        <columns large="12">
+            <p>
+                @Auth.FullName has 
+                <strong>
+                    @(IsChanged?"accepted":"declined")
+                </strong> 
+                your request to change confirmation status.
+            </p>
             <p>
                 @CourseParticipant.Participant.FullName @(IsChanged?"is now":"remains") registered as 
                 @(CourseParticipant.IsConfirmed.Value?"attending":"not attending").
@@ -22,7 +29,7 @@
 
 @if(!IsChanged) { 
     <row>
-        <columns>
+        <columns large="12">
             <p>If you would like to discuss this further, you may wish to contact one of the organiser(s) below:</p>
             <ul>
                 @foreach(var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant)){

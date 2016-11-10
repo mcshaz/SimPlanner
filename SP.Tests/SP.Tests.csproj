@@ -169,6 +169,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmailTests.cs" />
     <Compile Include="CourseNamingTests.cs" />
     <Compile Include="DummyEntities.cs" />
     <Compile Include="JIntDateTests.cs" />
@@ -184,7 +185,6 @@
     <Compile Include="TestExpandNavigate.cs" />
     <Compile Include="TestLinqExtensions.cs" />
     <Compile Include="TestOdataOptionsParsing.cs" />
-    <Compile Include="TestPremailer.cs" />
     <Compile Include="TestWebConfig.cs" />
   </ItemGroup>
   <ItemGroup>

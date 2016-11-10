@@ -32,7 +32,7 @@ namespace SP.Dto.ProcessBreezeRequests
         internal AdminLevels GetAdminLevelForUser(Guid userId)
         {
             var usr = Context.Users.Include(u => u.Roles).First(u => u.Id == userId);
-            var p = new BasicPrincipalImplementation(usr.UserName, usr.Roles.Select(r => RoleConstants.RoleNames[r.RoleId]));
+            var p = new GenericPrincipal(new GenericIdentity(usr.UserName), usr.Roles.Select(r => RoleConstants.RoleNames[r.RoleId]).ToArray());
             return GetLevel(p);
         }
 
