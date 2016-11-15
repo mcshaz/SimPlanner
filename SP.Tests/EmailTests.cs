@@ -27,11 +27,6 @@ namespace SP.Tests
 
             WriteMail(new CourseInvite { CourseParticipant = course.CourseParticipants.First() });
         }
-        [TestMethod]
-        public void TestBasic()
-        {
-            WriteMail(new basic());
-        }
 
         public void WriteMail(EmailBase template)
         {

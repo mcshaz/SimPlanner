@@ -1,5 +1,4 @@
 ﻿using SP.DataAccess;
-using SP.Dto.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,6 +8,8 @@ using System.Security.Principal;
 namespace SP.Dto.ProcessBreezeRequests
 {
     internal enum AdminLevels { None = 0, DepartmentAdmin=1, InstitutionAdmin = 2, AllData = 3 };
+    [Flags]
+    internal enum AditionalRoles { None = 0, SiteAdmin = 1,  DptRoomBookings=2, DptManikinBookings=4 }
     public class CurrentPrincipal : IDisposable
     { 
         private IEnumerable<Guid> _userDepartmentAdminIds;
@@ -25,7 +26,7 @@ namespace SP.Dto.ProcessBreezeRequests
             {
                 AdminLevel = GetLevel(principal);
                 PrincipalName = principal.Identity.Name;
-                IsSiteAdmin = principal.IsInRole(RoleConstants.SiteAdmin);
+                OtherRoles = GetOtherRoles(principal);
             }
         }
 
@@ -52,9 +53,27 @@ namespace SP.Dto.ProcessBreezeRequests
             return AdminLevels.None;
         }
 
+        private static AditionalRoles GetOtherRoles(IPrincipal principal)
+        {
+            var returnVar = AditionalRoles.None;
+            if (principal.IsInRole(RoleConstants.SiteAdmin))
+            {
+                returnVar |= AditionalRoles.SiteAdmin;
+            }
+            else if (principal.IsInRole(RoleConstants.DptManikinBookings))
+            {
+                returnVar |= AditionalRoles.DptManikinBookings;
+            }
+            else if (principal.IsInRole(RoleConstants.DptRoomBookings))
+            {
+                returnVar |= AditionalRoles.DptRoomBookings;
+            }
+            return returnVar;
+        }
+
         public virtual MedSimDbContext Context { get { return _context ?? (_context = new MedSimDbContext()); } }
         internal virtual string PrincipalName { get; private set; }
-        internal virtual bool IsSiteAdmin { get; private set; }
+        
         internal virtual Guid UserInstitutionId
         {
             get
@@ -104,7 +123,7 @@ namespace SP.Dto.ProcessBreezeRequests
             }
         }
         internal virtual AdminLevels AdminLevel { get; private set; }
-
+        internal virtual AditionalRoles OtherRoles { get; private set; }
         #region IDisposable
         public void Dispose()
         {

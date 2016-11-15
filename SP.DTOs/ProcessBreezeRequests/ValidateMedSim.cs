@@ -38,6 +38,8 @@ namespace SP.Dto.ProcessBreezeRequests
             }
         }
 
+        public Action<IEnumerable<BookingChangeDetails>> AfterBookingChange { get; set; }
+
         public IEnumerable<EntityError> ValidateDto(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             List<EntityError> errors = new List<EntityError>();
@@ -266,7 +268,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 e => {
                     switch ( RoleConstants.RoleNames[e.RoleId] ) {
                         case RoleConstants.SiteAdmin:
-                            return CurrentUser.IsSiteAdmin;
+                            return (CurrentUser.OtherRoles & AditionalRoles.SiteAdmin)!=0;
                         case RoleConstants.AccessAllData:
                             return CurrentUser.AdminLevel == AdminLevels.AllData;
                         case RoleConstants.AccessInstitution:
@@ -336,13 +338,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 UpdateICourseDays(ei.Select(e=> (CourseSlot)e.Entity));
             }
 
-            /*
-             * *todo send emails if a manikin or room is booked by someone from
-             * 
-            if (saveMap.TryGetValue(typeof(CourseSlotManikin), out ei))
-            {
-            }
-            */
+            AfterBookingChange?.Invoke(GetChanges(saveMap));
 
             foreach (var mei in saveMap.Values.SelectMany(e => e))
             {
@@ -391,11 +387,6 @@ namespace SP.Dto.ProcessBreezeRequests
                     i.Entity.File = null;
                 }
             }
-        }
-
-        private void UpdateParticipantPermissions(IEnumerable<Participant> modifiedParticipants)
-        {
-            
         }
 
         /*
@@ -622,7 +613,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
 
         IEnumerable<EntityError> GetFileErrors<T>(byte[] file, TypedEntityInfo<T> entityInfo, Func<IAssociateFileRequired> getExistingEntity) where T : class, IAssociateFileRequired
         {
-            var returnVar = GetBaseErrors(file, entityInfo, entityInfo.Entity.FileSize, entityInfo.Entity.FileModified, () => getExistingEntity().AsOptional());
+            var returnVar = GetBaseFileErrors(file, entityInfo, entityInfo.Entity.FileSize, entityInfo.Entity.FileModified, () => getExistingEntity().AsOptional());
             if (entityInfo.Info.EntityState == Breeze.ContextProvider.EntityState.Added)
             {
                 if (file == null)
@@ -637,7 +628,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             return returnVar;
         }
 
-        List<EntityError> GetBaseErrors<T>(byte[] file, TypedEntityInfo<T> entityInfo, long? fileSize, DateTime? fileModified, Func<IAssociateFileOptional> getExistingEntity) where T:class, IAssociateFile
+        List<EntityError> GetBaseFileErrors<T>(byte[] file, TypedEntityInfo<T> entityInfo, long? fileSize, DateTime? fileModified, Func<IAssociateFileOptional> getExistingEntity) where T:class, IAssociateFile
         {
             var returnVar = new List<EntityError>();
             if (file != null && fileSize != file.Length)
@@ -684,7 +675,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
 
         IEnumerable<EntityError> GetFileErrors<T>(byte[] file, TypedEntityInfo<T> entityInfo, Func<IAssociateFileOptional> getExistingEntity) where T: class, IAssociateFileOptional
         {
-            var returnVar = GetBaseErrors(file, entityInfo, entityInfo.Entity.FileSize, entityInfo.Entity.FileModified, getExistingEntity);
+            var returnVar = GetBaseFileErrors(file, entityInfo, entityInfo.Entity.FileSize, entityInfo.Entity.FileModified, getExistingEntity);
 
             if ((entityInfo.Entity.FileModified == null) != (entityInfo.Entity.FileName == null) || (entityInfo.Entity.FileName == null) != (entityInfo.Entity.FileSize == null))
             {
@@ -778,6 +769,77 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             };
             Context.Cultures.Add(c);
             Context.SaveChanges();
+        }
+
+        internal IEnumerable<BookingChangeDetails> GetChanges(Dictionary<Type, List<EntityInfo>> saveMap)
+        {
+            //in reality, never going to be adding or updating more than 1 course at a time
+            List<EntityInfo> ei;
+            var bcd = new BookingChangeDetails();
+            IEnumerable<Guid> allRoomIds = null;
+            IEnumerable<Guid> manikinIds = null;
+            if (saveMap.TryGetValue(typeof(Course), out ei))
+            {
+                
+                var cs = TypedEntityInfo<Course>.GetTyped(ei).ToLookup(c => c.Info.EntityState);
+                object roomId = null;
+                var addedRoomIds = cs[EntityState.Added]
+                    .Concat(cs[EntityState.Modified].Where(m => m.Info.OriginalValuesMap.TryGetValue(nameof(m.Entity.RoomId), out roomId) &&
+                        !m.Entity.RoomId.Equals(roomId)))
+                    .ToHashSet(c => c.Entity.RoomId);
+
+                var removedRoomIds = cs[EntityState.Deleted].ToHashSet(c => c.Entity.RoomId)
+                    .AddRange(from c in cs[EntityState.Modified]
+                              where c.Info.OriginalValuesMap.TryGetValue(nameof(c.Entity.RoomId), out roomId) && !c.Entity.RoomId.Equals(roomId)
+                              select (Guid)roomId);
+
+                allRoomIds = addedRoomIds.Union(removedRoomIds);
+                var rooms = Context.Rooms.Where(r => allRoomIds.Contains(r.Id)).ToList();
+
+                bcd.AddedRoomBooking = rooms.Single(r => addedRoomIds.Contains(r.Id));
+                bcd.RemovedRoomBooking = rooms.Single(r => removedRoomIds.Contains(r.Id));
+                bcd.RelevantCourse = cs.Single().Single().Entity; //hmmm - this will actually be attached to a different entity manager
+            }
+            if (saveMap.TryGetValue(typeof(CourseSlotManikin), out ei))
+            {
+                //get manikins for which currentUser is not the manikin booking admin
+                var csm = TypedEntityInfo<CourseSlotManikin>.GetTyped(ei);
+                manikinIds = csm.Select(e => e.Entity.ManikinId);
+                var manikins = Context.Manikins.Where(m => manikinIds.Contains(m.Id))
+                    .ToDictionary(m => m.Id);
+                var entityStateMans = csm.ToLookup(k => k.Info.EntityState, v => manikins[v.Entity.ManikinId]);
+
+                bcd.AddedManikinBookings = entityStateMans[EntityState.Added].Except(entityStateMans[EntityState.Deleted]).ToList();
+                bcd.RemovedManikinBookings = entityStateMans[EntityState.Deleted].Except(entityStateMans[EntityState.Added]).ToList();
+                if (bcd.RelevantCourse == null)
+                {
+                    bcd.RelevantCourse = Context.Courses.Find(csm.First().Entity.CourseId);
+                }
+            }
+            if (bcd.AddedRoomBooking != null || bcd.RemovedRoomBooking != null 
+                || (bcd.AddedManikinBookings!=null && bcd.AddedManikinBookings.Any())
+                || (bcd.RemovedManikinBookings != null && bcd.RemovedManikinBookings.Any()))
+            {
+                var manikinAdminId = (from r in RoleConstants.RoleNames where r.Value == RoleConstants.DptManikinBookings select r.Key).First();
+                var roomAdminId = (from r in RoleConstants.RoleNames where r.Value == RoleConstants.DptRoomBookings select r.Key).First();
+                var manikinAdmins = Context.Users //include("Department.Institution.Culture")
+                    .Where(u => (u.Roles.Any(r => r.RoleId == manikinAdminId)
+                            && u.Department.Manikins.Any(m => manikinIds.Contains(m.Id)))
+                        || (u.Roles.Any(r => r.RoleId == roomAdminId)
+                            && u.Department.Rooms.Any(r => allRoomIds.Contains(r.Id))))
+                    .ToLookup(u=>u.DefaultDepartmentId, u=>u);
+                return manikinAdmins.Select(ma=>new BookingChangeDetails
+                {
+                    PersonBooking = CurrentUser.Principal,
+                    Notify = ma,
+                    RelevantCourse = bcd.RelevantCourse,
+                    AddedManikinBookings = bcd.AddedManikinBookings.Where(m=>m.DepartmentId == ma.Key).ToList(),
+                    RemovedManikinBookings = bcd.RemovedManikinBookings.Where(m => m.DepartmentId == ma.Key).ToList(),
+                    AddedRoomBooking = bcd.AddedRoomBooking?.DepartmentId == ma.Key ? bcd.AddedRoomBooking : null,
+                    RemovedRoomBooking = bcd.RemovedRoomBooking?.DepartmentId == ma.Key ? bcd.RemovedRoomBooking : null
+                });
+            }
+            return null;
         }
 
         [Serializable]

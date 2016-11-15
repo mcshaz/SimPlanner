@@ -32,6 +32,14 @@ namespace SP.Dto.Utilities
             }
             return returnVar;
         }
+        public static HashSet<TSource> AddRange<TSource>(this HashSet<TSource> source, IEnumerable<TSource> range)
+        {
+            foreach(var r in range)
+            {
+                source.Add(r);
+            }
+            return source;
+        }
 
         public static bool EachDistinct<T>(this IEnumerable<T> source)
         {

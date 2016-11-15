@@ -16,26 +16,25 @@
                                      CourseParticipant.Course.StartLocal)
     };
 }
-
-<callout class="primary">
-    <row>
-        <columns>
+<row>
+    <columns>
+        <callout class="primary">
             <p>
                 @CourseParticipant.Participant.FullName
                 <small>
                     @CourseParticipant.Participant.ProfessionalRole.Description
                 </small>
-                had been confirmed as @(CourseParticipant.IsConfirmed.Value?"attending":"unable to attend")
-                as a @(CourseParticipant.IsFaculty?"faculty member":"participant")
-                in the @CourseName on the @CourseParticipant.Course.StartLocal.ToString("g",FormatProvider)
+                had been confirmed as @(CourseParticipant.IsConfirmed.Value ? "attending" : "unable to attend")
+                as a @(CourseParticipant.IsFaculty ? "faculty member" : "participant")
+                in the @CourseName on the @CourseParticipant.Course.StartLocal.ToString("g", FormatProvider)
             </p>
             <p>
                 However, he/she would like to <strong>change this response</strong> to being
-                @(CourseParticipant.IsConfirmed.Value?"unable":"able") to attend.
+                @(CourseParticipant.IsConfirmed.Value ? "unable" : "able") to attend.
             </p>
-        </columns>
-    </row>
-</callout>
+        </callout>
+    </columns>
+</row>
 <row>
     <columns>
         <p class="small"><em>Note:</em> you can also change the confirmation status for any or all participants by logging in <a href="<#= GetCourseRef() #>">here</a></p>

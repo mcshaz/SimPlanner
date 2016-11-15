@@ -18,9 +18,12 @@
     padding: 20px;
   }
 
-  .header .container, .footer, .footer .container {
+  .header .container {
     background-color: transparent;
   }
+
+  .wrapper.footer {
+  background: #f3f3f3; }
 
 
   table.button.facebook table td {

@@ -46,7 +46,7 @@ WriteLiteral("\r\n");
             
             #line default
             #line hidden
-WriteLiteral("\r\n\r\n<table");
+WriteLiteral("\r\n<table");
 
 WriteLiteral(" class=\"callout\"");
 
@@ -65,60 +65,28 @@ WriteLiteral(" style=\"Margin: 0; background: #def0fc; border: 1px solid #444444
 "; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: norma" +
 "l; line-height: 1.3; margin: 0; padding: 10px; text-align: left; width: 100%;\"");
 
-WriteLiteral(">\r\n    <table");
-
-WriteLiteral(" class=\"row\"");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; position: relat" +
-"ive; text-align: left; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral(">\r\n        <th");
-
-WriteLiteral(" class=\"small-12 large-12 columns first last\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 16px; text-align: left; width: 564px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n            <p");
+WriteLiteral(">\r\n    <p");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
 
-WriteLiteral(">\r\n                You have been added as a ");
+WriteLiteral(">\r\n        You have been added as a ");
 
             
-            #line 17 "..\..\UserEmails\CourseInvite.cshtml"
-                                     Write(CourseParticipant.IsFaculty?"faculty member":"participant");
+            #line 14 "..\..\UserEmails\CourseInvite.cshtml"
+                             Write(CourseParticipant.IsFaculty?"faculty member":"participant");
 
             
             #line default
             #line hidden
 WriteLiteral(" to an upcoming \r\n");
 
-WriteLiteral("                ");
+WriteLiteral("        ");
 
             
-            #line 18 "..\..\UserEmails\CourseInvite.cshtml"
-           Write(CourseParticipant.Course.CourseFormat.CourseType.Description);
+            #line 15 "..\..\UserEmails\CourseInvite.cshtml"
+   Write(CourseParticipant.Course.CourseFormat.CourseType.Description);
 
             
             #line default
@@ -126,37 +94,39 @@ WriteLiteral("                ");
 WriteLiteral(" \r\n");
 
             
-            #line 19 "..\..\UserEmails\CourseInvite.cshtml"
-                
+            #line 16 "..\..\UserEmails\CourseInvite.cshtml"
+        
             
             #line default
             #line hidden
             
-            #line 19 "..\..\UserEmails\CourseInvite.cshtml"
-                 if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", System.StringComparison.OrdinalIgnoreCase)){
+            #line 16 "..\..\UserEmails\CourseInvite.cshtml"
+         if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", StringComparison.OrdinalIgnoreCase)){
 
             
             #line default
             #line hidden
-WriteLiteral("                    ");
+WriteLiteral("            ");
 
 WriteLiteral("Course\r\n");
 
             
-            #line 21 "..\..\UserEmails\CourseInvite.cshtml"
-                }
+            #line 18 "..\..\UserEmails\CourseInvite.cshtml"
+        }
 
             
             #line default
             #line hidden
-WriteLiteral("            </p>\r\n            <p");
+WriteLiteral("    </p>\r\n    <p");
+
+WriteLiteral(" class=\"lead\"");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
-"rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
+"rial, sans-serif; font-size: 20px; font-weight: normal; line-height: 1.6; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
 
-WriteLiteral(">Please check the details below and then confirm your availability.</p>\r\n        " +
-"</th>\n<th");
+WriteLiteral(">Please check the details below and then confirm your availability.</p>\r\n</th><th" +
+"");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -164,68 +134,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table></th>\r\n    </tr></tbody></table>\r\n</th><th");
-
-WriteLiteral(" class=\"expander\"");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
-"rtant; text-align: left; visibility: hidden; width: 0;\"");
-
-WriteLiteral("></th></tr></table>\r\n<table");
-
-WriteLiteral(" class=\"spacer\"");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><td");
-
-WriteLiteral(" height=\"16px\"");
-
-WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 16px; margin: 0; mso-line-height-rule: exactly; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;""");
-
-WriteLiteral(">&#xA0;</td></tr></tbody></table> \r\n<table");
-
-WriteLiteral(" class=\"row\"");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; position: relat" +
-"ive; text-align: left; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral(">\r\n    <th");
-
-WriteLiteral(" class=\"small-offset-1 large-offset-1 small-11 large-11 columns first last\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 64.33333px; padding-right: 16px; text-align: left; width: 515.66667px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n        <dl>\r\n            <dt");
-
-WriteLiteral(" style=\"font-weight: bold;\"");
-
-WriteLiteral(">When</dt>\r\n            <dd>\r\n                <p");
+WriteLiteral("></th></tr></table>\r\n<dl>\r\n    <dt>When</dt>\r\n    <dd>\r\n        <p");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
@@ -233,43 +142,39 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-fami
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("                    ");
+WriteLiteral("            ");
 
             
-            #line 35 "..\..\UserEmails\CourseInvite.cshtml"
-               Write(string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal));
+            #line 26 "..\..\UserEmails\CourseInvite.cshtml"
+       Write(string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                </p>\r\n                <p");
+WriteLiteral("\r\n        </p>\r\n        <p");
 
 WriteLiteral(" class=\"details\"");
 
-WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #074E68; font-family: Helvetica, A" +
-"rial, sans-serif; font-size: 12px; font-weight: normal; line-height: 1.3; margin" +
+WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
+"rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
 
-WriteLiteral(">\r\n                    (finishing ");
+WriteLiteral(">\r\n            (finishing ");
 
             
-            #line 38 "..\..\UserEmails\CourseInvite.cshtml"
-                          Write(CourseParticipant.Course.FinishCourseLocal().ToString("g",FormatProvider));
+            #line 29 "..\..\UserEmails\CourseInvite.cshtml"
+                  Write(CourseParticipant.Course.FinishCourseLocal().ToString("g",FormatProvider));
 
             
             #line default
             #line hidden
-WriteLiteral(")\r\n                </p>\r\n            </dd>\r\n\r\n            <dt");
+WriteLiteral(")\r\n        </p>\r\n    </dd>\r\n\r\n    <dt>Department</dt>\r\n    <dd>\r\n");
 
-WriteLiteral(" style=\"font-weight: bold;\"");
-
-WriteLiteral(">Department</dt>\r\n            <dd>\r\n");
-
-WriteLiteral("                ");
+WriteLiteral("        ");
 
             
-            #line 44 "..\..\UserEmails\CourseInvite.cshtml"
-           Write(CourseParticipant.Course.Department.Institution.Name);
+            #line 35 "..\..\UserEmails\CourseInvite.cshtml"
+   Write(CourseParticipant.Course.Department.Institution.Name);
 
             
             #line default
@@ -277,17 +182,13 @@ WriteLiteral("                ");
 WriteLiteral(" - ");
 
             
-            #line 44 "..\..\UserEmails\CourseInvite.cshtml"
-                                                                   Write(CourseParticipant.Course.Department.Name);
+            #line 35 "..\..\UserEmails\CourseInvite.cshtml"
+                                                           Write(CourseParticipant.Course.Department.Name);
 
             
             #line default
             #line hidden
-WriteLiteral(" \r\n            </dd>\r\n\r\n            <dt");
-
-WriteLiteral(" style=\"font-weight: bold;\"");
-
-WriteLiteral(">Where</dt>\r\n            <dd>\r\n                <p");
+WriteLiteral(" \r\n    </dd>\r\n\r\n    <dt>Where</dt>\r\n    <dd>\r\n        <p");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
@@ -296,94 +197,61 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-fami
 WriteLiteral(">");
 
             
-            #line 49 "..\..\UserEmails\CourseInvite.cshtml"
-                                                                                                                                                                                                                                       Write(CourseParticipant.Course.Room.ShortDescription);
+            #line 40 "..\..\UserEmails\CourseInvite.cshtml"
+                                                                                                                                                                                                                               Write(CourseParticipant.Course.Room.ShortDescription);
 
             
             #line default
             #line hidden
-WriteLiteral("</p>\r\n                <p");
+WriteLiteral("</p>\r\n        <p");
 
 WriteLiteral(" class=\"details\"");
 
-WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #074E68; font-family: Helvetica, A" +
-"rial, sans-serif; font-size: 12px; font-weight: normal; line-height: 1.3; margin" +
+WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
+"rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
 
 WriteLiteral(">(");
 
             
-            #line 50 "..\..\UserEmails\CourseInvite.cshtml"
-                                                                                                                                                                                                                                                        Write(CourseParticipant.Course.Room.FullDescription);
+            #line 41 "..\..\UserEmails\CourseInvite.cshtml"
+                                                                                                                                                                                                                                                Write(CourseParticipant.Course.Room.FullDescription);
 
             
             #line default
             #line hidden
-WriteLiteral(")</p>\r\n            </dd>\r\n        </dl>\r\n    </th></tr></table></th>\r\n</tr></tbod" +
-"y></table>\r\n<table");
-
-WriteLiteral(" class=\"row\"");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; position: relat" +
-"ive; text-align: left; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral(">\r\n    <th");
-
-WriteLiteral(" class=\"small-offset-1 large-offset-1 small-11 large-11 columns first last\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 64.33333px; padding-right: 16px; text-align: left; width: 515.66667px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n        <h5");
+WriteLiteral(")</p>\r\n    </dd>\r\n</dl>\r\n<h5");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: inherit; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 20px; font-weight: normal; line-height: 1.3; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left; word-wrap: normal;\"");
 
-WriteLiteral(">Organiser(s)</h5>\r\n        <ul>\r\n");
+WriteLiteral(">Organiser(s)</h5>\r\n<ul>\r\n");
 
             
-            #line 59 "..\..\UserEmails\CourseInvite.cshtml"
-            
+            #line 46 "..\..\UserEmails\CourseInvite.cshtml"
+    
             
             #line default
             #line hidden
             
-            #line 59 "..\..\UserEmails\CourseInvite.cshtml"
-             foreach (var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant))
-            {
+            #line 46 "..\..\UserEmails\CourseInvite.cshtml"
+     foreach (var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant))
+    {
 
             
             #line default
             #line hidden
-WriteLiteral("                <li>\r\n                    <a");
+WriteLiteral("        <li>\r\n            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8298), Tuple.Create("\"", 8318)
+WriteAttribute("href", Tuple.Create(" href=\"", 4153), Tuple.Create("\"", 4173)
             
-            #line 62 "..\..\UserEmails\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 8305), Tuple.Create<System.Object, System.Int32>(GetMailTo(o)
+            #line 49 "..\..\UserEmails\CourseInvite.cshtml"
+, Tuple.Create(Tuple.Create("", 4160), Tuple.Create<System.Object, System.Int32>(GetMailTo(o)
             
             #line default
             #line hidden
-, 8305), false)
+, 4160), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -393,8 +261,8 @@ WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial,
 WriteLiteral(">");
 
             
-            #line 62 "..\..\UserEmails\CourseInvite.cshtml"
-                                                                                                                                                                                                                            Write(o.FullName);
+            #line 49 "..\..\UserEmails\CourseInvite.cshtml"
+                                                                                                                                                                                                                    Write(o.FullName);
 
             
             #line default
@@ -402,23 +270,22 @@ WriteLiteral(">");
 WriteLiteral("</a> ");
 
             
-            #line 62 "..\..\UserEmails\CourseInvite.cshtml"
-                                                                                                                                                                                                                                            Write(o.PhoneNumber);
+            #line 49 "..\..\UserEmails\CourseInvite.cshtml"
+                                                                                                                                                                                                                                    Write(o.PhoneNumber);
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                </li>\r\n");
+WriteLiteral("\r\n        </li>\r\n");
 
             
-            #line 64 "..\..\UserEmails\CourseInvite.cshtml"
-            }
+            #line 51 "..\..\UserEmails\CourseInvite.cshtml"
+    }
 
             
             #line default
             #line hidden
-WriteLiteral("        </ul>\r\n    </th></tr></table></th>\r\n</tr></tbody></table>\r\n\r\n<hr>\r\n\r\n<tab" +
-"le");
+WriteLiteral("</ul>\r\n\r\n<hr>\r\n\r\n<table");
 
 WriteLiteral(" class=\"row\"");
 
@@ -487,14 +354,14 @@ WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; ba
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 10820), Tuple.Create("\"", 10852)
+WriteAttribute("href", Tuple.Create(" href=\"", 6599), Tuple.Create("\"", 6631)
             
-            #line 74 "..\..\UserEmails\CourseInvite.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                , Tuple.Create(Tuple.Create("", 10827), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
+            #line 59 "..\..\UserEmails\CourseInvite.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 , Tuple.Create(Tuple.Create("", 6606), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
             
             #line default
             #line hidden
-, 10827), false)
+, 6606), false)
 );
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #3adb76; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 1.3; margin: 0; padding: 8px 16px 8px 16px; text-align: left; text-decoration: none;""");
@@ -558,14 +425,14 @@ WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; ba
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 13171), Tuple.Create("\"", 13204)
+WriteAttribute("href", Tuple.Create(" href=\"", 8950), Tuple.Create("\"", 8983)
             
-            #line 79 "..\..\UserEmails\CourseInvite.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              , Tuple.Create(Tuple.Create("", 13178), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
+            #line 64 "..\..\UserEmails\CourseInvite.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               , Tuple.Create(Tuple.Create("", 8957), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
             
             #line default
             #line hidden
-, 13178), false)
+, 8957), false)
 );
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #ec5840; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 1.3; margin: 0; padding: 8px 16px 8px 16px; text-align: left; text-decoration: none;""");

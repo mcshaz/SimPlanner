@@ -1,0 +1,113 @@
+﻿@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
+@using SP.DataAccess
+@inherits SP.Web.UserEmails.EmailBase
+
+@functions{
+    public Participant PersonBooking { get; set; }
+    public Room RoomBooked { get; set; }
+    public Room RoomCancelled { get; set; }
+    public Course Course { get; set; }
+    public IEnumerable<Manikin> ManikinsBooked { get; set; }
+    public IEnumerable<Manikin> ManikinsCancelled { get; set; }
+}
+@{ 
+    Layout = new SP.Web.UserEmails.LayoutTemplate {
+        Title = "Booking Request"
+    };
+    if (ManikinsBooked == null)
+    {
+        ManikinsBooked = new Manikin[0];
+    }
+    if (ManikinsCancelled == null)
+    {
+        ManikinsCancelled = new Manikin[0];
+    }
+}
+
+
+<row>
+    <columns large="12">
+        <callout class="info">
+            <p>
+                <a href="@GetMailTo(PersonBooking)">@PersonBooking.FullName</a> has
+                @if (RoomBooked != null || ManikinsBooked.Any()) {
+                    @:requested use of
+                } else {
+                    @:<em>cancelled</em> the request for 
+                }
+                the following
+                <strong>
+                    @if (RoomBooked != null)
+                    {
+                        @:room
+                        if (ManikinsBooked.Any())
+                        {
+                            @:and
+                        }
+                    }
+                    @if (ManikinsBooked.Any())
+                    {
+                        @:manikin(s)
+                    }
+                </strong>
+                on the @Course.StartLocal.ToString("g", Course.Department.Institution.Culture.CultureInfo)
+                <span class="aside">
+                    finishing @Course.FinishCourseLocal().ToString("g", Course.Department.Institution.Culture.CultureInfo)
+                </span>
+            </p>
+        </callout>
+    </columns>
+</row>
+<row>
+    <columns large="12">
+        @if (ManikinsBooked.Any() || RoomBooked != null)
+        {
+            <p>
+                The booking is assumed active unless you cancel.
+            </p>
+            <h4>
+                Details:
+            </h4>
+            <ul>
+                @if (RoomBooked != null)
+                {
+                    <li>
+                        @RoomBooked.ShortDescription
+                    </li>
+
+                }
+                @foreach (var m in ManikinsBooked)
+                {
+                    <li>
+                        @m.Description
+                    </li>
+                }
+            </ul>
+            <p>
+                TODO - place button here to goto cancel bookings page
+            </p>
+        }
+        @if (ManikinsCancelled.Any() || RoomCancelled != null)
+        {
+            <hr />
+            <h5>
+                The following bookings have been cancelled
+            </h5>
+            <ul>
+                @if (RoomBooked != null)
+                {
+                    <li>
+                        @RoomBooked.ShortDescription
+                    </li>
+
+                }
+                @foreach (var m in ManikinsBooked)
+                {
+                    <li>
+                        @m.Description
+                    </li>
+                }
+            </ul>
+        }
+    </columns>
+</row>

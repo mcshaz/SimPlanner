@@ -1,0 +1,116 @@
+@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
+@using SP.DataAccess
+@inherits SP.Web.UserEmails.EmailBase
+
+@functions{
+    public Participant PersonBooking { get; set; }
+    public Room RoomBooked { get; set; }
+    public Room RoomCancelled { get; set; }
+    public Course Course { get; set; }
+    public IEnumerable<manikin> ManikinsBooked { get; set; }
+    public IEnumerable<manikin> ManikinsCancelled { get; set; }
+}
+@{ 
+    Layout = new SP.Web.UserEmails.LayoutTemplate {
+        Title = "Booking Request"
+    };
+    if (ManikinsBooked == null)
+    {
+        ManikinsBooked = new Manikin[0];
+    }
+    if (ManikinsCancelled == null)
+    {
+        ManikinsCancelled = new Manikin[0];
+    }
+}
+
+
+<table class="row" style="border-collapse: collapse; border-spacing: 0; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%;"><tbody><tr style="padding: 0; text-align: left; vertical-align: top;">
+    <th class="small-12 large-12 columns first last" style="Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 16px; text-align: left; width: 564px;"><table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%;"><tr style="padding: 0; text-align: left; vertical-align: top;"><th style="Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left;">
+        <table class="callout" style="Margin-bottom: 16px; border-collapse: collapse; border-spacing: 0; margin-bottom: 16px; padding: 0; text-align: left; vertical-align: top; width: 100%;"><tr style="padding: 0; text-align: left; vertical-align: top;"><th class="callout-inner info" style="Margin: 0; background: #fefefe; border: 1px solid #cbcbcb; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 10px; text-align: left; width: 100%;">
+            <p style="Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; margin-bottom: 10px; padding: 0; text-align: left;">
+                <a href="@GetMailTo(PersonBooking)" style="Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; text-decoration: none;">@PersonBooking.FullName</a> has
+                @if (RoomBooked != null || ManikinsBooked.Any()) {
+                    @:requested use of
+                } else {
+                    @:<em>cancelled</em> the request for 
+                }
+                the following
+                <strong>
+                    @if (RoomBooked != null)
+                    {
+                        @:room
+                        if (ManikinsBooked.Any())
+                        {
+                            @:and
+                        }
+                    }
+                    @if (ManikinsBooked.Any())
+                    {
+                        @:manikin(s)
+                    }
+                </strong>
+                on the @Course.StartLocal.ToString("g", Course.Department.Institution.Culture.CultureInfo)
+                <span class="aside">
+                    finishing @Course.FinishCourseLocal().ToString("g", Course.Department.Institution.Culture.CultureInfo)
+                </span>
+            </p>
+        </th><th class="expander" style="Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !important; text-align: left; visibility: hidden; width: 0;"></th></tr></table>
+    </th>
+<th class="expander" style="Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !important; text-align: left; visibility: hidden; width: 0;"></th></tr></table></th>
+</tr></tbody></table>
+<table class="row" style="border-collapse: collapse; border-spacing: 0; padding: 0; position: relative; text-align: left; vertical-align: top; width: 100%;"><tbody><tr style="padding: 0; text-align: left; vertical-align: top;">
+    <th class="small-12 large-12 columns first last" style="Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 16px; text-align: left; width: 564px;"><table style="border-collapse: collapse; border-spacing: 0; padding: 0; text-align: left; vertical-align: top; width: 100%;"><tr style="padding: 0; text-align: left; vertical-align: top;"><th style="Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left;">
+        @if (ManikinsBooked.Any() || RoomBooked != null)
+        {
+            <p style="Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; margin-bottom: 10px; padding: 0; text-align: left;">
+                The booking is assumed active unless you cancel.
+            </p>
+            <h4 style="Margin: 0; Margin-bottom: 10px; color: inherit; font-family: Helvetica, Arial, sans-serif; font-size: 24px; font-weight: normal; line-height: 1.3; margin: 0; margin-bottom: 10px; padding: 0; text-align: left; word-wrap: normal;">
+                Details:
+            </h4>
+            <ul>
+                @if (RoomBooked != null)
+                {
+                    <li>
+                        @RoomBooked.ShortDescription
+                    </li>
+
+                }
+                @foreach (var m in ManikinsBooked)
+                {
+                    <li>
+                        @m.Description
+                    </li>
+                }
+            </ul>
+            <p style="Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; margin-bottom: 10px; padding: 0; text-align: left;">
+                TODO - place button here to goto cancel bookings page
+            </p>
+        }
+        @if (ManikinsCancelled.Any() || RoomCancelled != null)
+        {
+            <hr>
+            <h5 style="Margin: 0; Margin-bottom: 10px; color: inherit; font-family: Helvetica, Arial, sans-serif; font-size: 20px; font-weight: normal; line-height: 1.3; margin: 0; margin-bottom: 10px; padding: 0; text-align: left; word-wrap: normal;">
+                The following bookings have been cancelled
+            </h5>
+            <ul>
+                @if (RoomBooked != null)
+                {
+                    <li>
+                        @RoomBooked.ShortDescription
+                    </li>
+
+                }
+                @foreach (var m in ManikinsBooked)
+                {
+                    <li>
+                        @m.Description
+                    </li>
+                }
+            </ul>
+        }
+    </th>
+<th class="expander" style="Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !important; text-align: left; visibility: hidden; width: 0;"></th></tr></table></th>
+</tr></tbody></table>
+</manikin></manikin>

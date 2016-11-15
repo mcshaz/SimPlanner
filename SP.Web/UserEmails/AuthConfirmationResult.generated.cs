@@ -23,7 +23,7 @@ namespace SP.Web.UserEmails
     #line hidden
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    internal partial class AuthConfirmationResult : SP.Web.UserEmails.CourseParticipantEmailBase
+    public partial class AuthConfirmationResult : SP.Web.UserEmails.CourseParticipantEmailBase
     {
 #line hidden
         #line 5 "..\..\UserEmails\AuthConfirmationResult.cshtml"
@@ -161,7 +161,7 @@ WriteLiteral("                ");
             
             #line default
             #line hidden
-WriteLiteral(".\r\n            </p>\r\n        </th>\r\n<th");
+WriteLiteral(".\r\n            </p>\r\n        </th>\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -242,15 +242,15 @@ WriteLiteral(">If you would like to discuss this further, you may wish to contac
             #line hidden
 WriteLiteral("                    <li>\r\n                        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4786), Tuple.Create("\"", 4810)
-, Tuple.Create(Tuple.Create("", 4793), Tuple.Create("mailto:", 4793), true)
+WriteAttribute("href", Tuple.Create(" href=\"", 4759), Tuple.Create("\"", 4783)
+, Tuple.Create(Tuple.Create("", 4766), Tuple.Create("mailto:", 4766), true)
             
             #line 38 "..\..\UserEmails\AuthConfirmationResult.cshtml"
-, Tuple.Create(Tuple.Create("", 4800), Tuple.Create<System.Object, System.Int32>(o.Email
+, Tuple.Create(Tuple.Create("", 4773), Tuple.Create<System.Object, System.Int32>(o.Email
             
             #line default
             #line hidden
-, 4800), false)
+, 4773), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -284,7 +284,7 @@ WriteLiteral("\r\n                    </li>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("            </ul>\r\n        </th>\r\n<th");
+WriteLiteral("            </ul>\r\n        </th>\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

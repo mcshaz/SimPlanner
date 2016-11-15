@@ -23,9 +23,16 @@ namespace SP.Dto
             get { return _contextProvider.Context; }
         }
 
+        public Action<IEnumerable<BookingChangeDetails>> AfterBookingChange
+        {
+            set
+            {
+                _validationHelper.AfterBookingChange = value;
+            }
+        }
+
         public MedSimDtoRepository(IPrincipal user, MedSimDbContext validationContext = null)
         {
-
             _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);
             _currentUser = new CurrentPrincipal(user, validationContext);
             _validationHelper = new ValidateMedSim(_currentUser);

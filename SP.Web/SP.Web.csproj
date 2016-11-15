@@ -607,6 +607,11 @@
     <Content Include="app\scenario\scenario.html" />
     <Content Include="sink.html" />
     <Content Include="app\services\controller.abstract.js" />
+    <Content Include="UserEmails\Inky\emailStyles.css" />
+    <Content Include="UserEmails\Inky\LayoutTemplate.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LayoutTemplate.generated.cs</LastGenOutput>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -649,11 +654,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AuthConfirmationResult.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="UserEmails\basic.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>basic.cshtml</DependentUpon>
-    </Compile>
     <Compile Include="UserEmails\CourseInvite.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -669,6 +669,31 @@
       <DependentUpon>ForgotPasswordTemplate.cshtml</DependentUpon>
     </Compile>
     <Compile Include="UserEmails\HtmlToText.cs" />
+    <Compile Include="UserEmails\Inky\AuthConfirmationResult.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuthConfirmationResult.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\Inky\CourseInvite.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CourseInvite.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\Inky\ForgotPasswordTemplate.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ForgotPasswordTemplate.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\Inky\LayoutTemplate.generated.cs">
+      <DependentUpon>LayoutTemplate.cshtml</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="UserEmails\Inky\NotifyBooking.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NotifyBooking.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="UserEmails\LayoutTemplate.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -686,6 +711,11 @@
     <Compile Include="Results\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UserEmails\NotifyBooking.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NotifyBooking.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="UserEmails\ReverseConfirmation.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -739,9 +769,26 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AuthConfirmationResult.generated.cs</LastGenOutput>
     </Content>
-    <Content Include="UserEmails\basic.cshtml">
+    <Content Include="UserEmails\Inky\NotifyBooking.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>basic.generated.cs</LastGenOutput>
+      <LastGenOutput>NotifyBooking.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\AuthConfirmationResult.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>AuthConfirmationResult.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\CourseInvite.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>CourseInvite.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\ForgotPasswordTemplate.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ForgotPasswordTemplate.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\ReverseConfirmation.cshtml" />
+    <Content Include="UserEmails\NotifyBooking.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>NotifyBooking.generated.cs</LastGenOutput>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -755,7 +802,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\tutorial\" />
-    <Folder Include="UserEmails\Inky\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\" />

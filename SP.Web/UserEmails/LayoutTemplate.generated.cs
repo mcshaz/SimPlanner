@@ -23,6 +23,7 @@ namespace SP.Web.UserEmails
         #line 4 "..\..\UserEmails\LayoutTemplate.cshtml"
             
     public string Title{ get; set; }
+    public string Description {get; set;}
 
         #line default
         #line hidden
@@ -31,8 +32,8 @@ namespace SP.Web.UserEmails
         {
 WriteLiteral("\r\n");
 
-WriteLiteral("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\r\n          \"http:/" +
-"/www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n\r\n<html");
+WriteLiteral("\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\r\n          \"http" +
+"://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n\r\n<html");
 
 WriteLiteral(" xmlns=\"http://www.w3.org/1999/xhtml\"");
 
@@ -40,7 +41,7 @@ WriteLiteral(" lang=\"en\"");
 
 WriteLiteral(" xml:lang=\"en\"");
 
-WriteLiteral(">\r\n<head>\r\n    <meta");
+WriteLiteral(">\r\n<head>\r\n    \r\n    <meta");
 
 WriteLiteral(" http-equiv=\"Content-Type\"");
 
@@ -55,13 +56,13 @@ WriteLiteral(" content=\"width=device-width\"");
 WriteLiteral(">\r\n    <title>");
 
             
-            #line 14 "..\..\UserEmails\LayoutTemplate.cshtml"
+            #line 17 "..\..\UserEmails\LayoutTemplate.cshtml"
       Write(Title);
 
             
             #line default
             #line hidden
-WriteLiteral("</title>\r\n    \r\n    <style>");
+WriteLiteral("</title>\r\n    <style>");
 
 WriteLiteral("@media only screen {\n  html {\n    min-height: 100%;\n    background: #f3f3f3;\n  }\n" +
 "}\n\n");
@@ -179,14 +180,58 @@ WriteLiteral("@media only screen and (max-width: 596px) {\n  table.body img {\n 
 
 WriteLiteral(@" style=""-moz-box-sizing: border-box; -ms-text-size-adjust: 100%; -webkit-box-sizing: border-box; -webkit-text-size-adjust: 100%; Margin: 0; box-sizing: border-box; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; min-width: 100%; padding: 0; text-align: left; width: 100% !important;""");
 
-WriteLiteral(">\r\n    <table");
+WriteLiteral(">\r\n    <span");
 
-WriteLiteral(" class=\"wrapper header\"");
+WriteLiteral(" class=\"preheader\"");
+
+WriteLiteral(" style=\"color: #f3f3f3; display: none !important; font-size: 1px; line-height: 1p" +
+"x; max-height: 0px; max-width: 0px; mso-hide: all !important; opacity: 0; overfl" +
+"ow: hidden; visibility: hidden;\"");
+
+WriteLiteral(">");
+
+            
+            #line 325 "..\..\UserEmails\LayoutTemplate.cshtml"
+                                                                                                                                                                                                                        Write(Description);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n    <table");
+
+WriteLiteral(" class=\"body\"");
+
+WriteLiteral(@" style=""Margin: 0; background: #f3f3f3; border-collapse: collapse; border-spacing: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; height: 100%; line-height: 1.3; margin: 0; padding: 0; text-align: left; vertical-align: top; width: 100%;""");
+
+WriteLiteral(">\r\n        <tr");
+
+WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
+
+WriteLiteral(">\r\n            <td");
+
+WriteLiteral(" class=\"center\"");
 
 WriteLiteral(" align=\"center\"");
 
-WriteLiteral(" style=\"background-color: #000; border-collapse: collapse; border-spacing: 0; pad" +
-"ding: 0; text-align: left; vertical-align: top; width: 100%;\"");
+WriteLiteral(" valign=\"top\"");
+
+WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;""");
+
+WriteLiteral(">\r\n                <center");
+
+WriteLiteral(" data-parsed=\"\"");
+
+WriteLiteral(" style=\"min-width: 580px; width: 100%;\"");
+
+WriteLiteral(">\r\n                    <table");
+
+WriteLiteral(" align=\"center\"");
+
+WriteLiteral(" class=\"wrapper header float-center\"");
+
+WriteLiteral(" style=\"Margin: 0 auto; background-color: #000; border-collapse: collapse; border" +
+"-spacing: 0; float: none; margin: 0 auto; padding: 0; text-align: center; vertic" +
+"al-align: top; width: 100%;\"");
 
 WriteLiteral("><tr");
 
@@ -198,7 +243,7 @@ WriteLiteral(" class=\"wrapper-inner\"");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 20px; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
-WriteLiteral(">\r\n            <table");
+WriteLiteral(">\r\n                        <table");
 
 WriteLiteral(" class=\"row collapse\"");
 
@@ -209,7 +254,7 @@ WriteLiteral("><tbody><tr");
 
 WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
 
-WriteLiteral(">\r\n                <th");
+WriteLiteral(">\r\n                            <th");
 
 WriteLiteral(" class=\"small-2 large-2 columns first\"");
 
@@ -230,17 +275,17 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                    <img");
+WriteLiteral(">\r\n                                <img");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 8778), Tuple.Create("\"", 8827)
+WriteAttribute("src", Tuple.Create(" src=\"", 10022), Tuple.Create("\"", 10071)
             
-            #line 326 "..\..\UserEmails\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 8784), Tuple.Create<System.Object, System.Int32>(BaseUrl
+            #line 333 "..\..\UserEmails\LayoutTemplate.cshtml"
+, Tuple.Create(Tuple.Create("", 10028), Tuple.Create<System.Object, System.Int32>(BaseUrl
             
             #line default
             #line hidden
-, 8784), false)
-, Tuple.Create(Tuple.Create("", 8794), Tuple.Create("images/sim-planner-icon-50x75.png", 8794), true)
+, 10028), false)
+, Tuple.Create(Tuple.Create("", 10038), Tuple.Create("images/sim-planner-icon-50x75.png", 10038), true)
 );
 
 WriteLiteral(" alt=\"sim-manager logo\"");
@@ -252,7 +297,8 @@ WriteLiteral(" width=\"75\"");
 WriteLiteral(" style=\"-ms-interpolation-mode: bicubic; clear: both; display: block; max-width: " +
 "100%; outline: none; text-decoration: none; width: auto;\"");
 
-WriteLiteral(">\r\n                </th></tr></table></th>\r\n                <th");
+WriteLiteral(">\r\n                            </th></tr></table></th>\r\n                         " +
+"   <th");
 
 WriteLiteral(" class=\"small-8 large-8 columns\"");
 
@@ -273,7 +319,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                    <h1");
+WriteLiteral(">\r\n                                <h1");
 
 WriteLiteral(" class=\"text-center\"");
 
@@ -281,7 +327,8 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #fff; font-family:
 "l, sans-serif; font-size: 34px; font-weight: normal; line-height: 1.3; margin: 0" +
 "; margin-bottom: 10px; padding: 0; text-align: center; word-wrap: normal;\"");
 
-WriteLiteral(">Sim-planner</h1>\r\n                </th></tr></table></th>\r\n                <th");
+WriteLiteral(">Sim-planner</h1>\r\n                            </th></tr></table></th>\r\n         " +
+"                   <th");
 
 WriteLiteral(" class=\"small-2 large-2 columns last\"");
 
@@ -302,19 +349,19 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                    <img");
+WriteLiteral(">\r\n                                <img");
 
 WriteLiteral(" class=\"float-right\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 10803), Tuple.Create("\"", 10851)
+WriteAttribute("src", Tuple.Create(" src=\"", 12119), Tuple.Create("\"", 12167)
             
-            #line 332 "..\..\UserEmails\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 10809), Tuple.Create<System.Object, System.Int32>(BaseUrl
+            #line 339 "..\..\UserEmails\LayoutTemplate.cshtml"
+, Tuple.Create(Tuple.Create("", 12125), Tuple.Create<System.Object, System.Int32>(BaseUrl
             
             #line default
             #line hidden
-, 10809), false)
-, Tuple.Create(Tuple.Create("", 10819), Tuple.Create("Content/images/logo-starship.png", 10819), true)
+, 12125), false)
+, Tuple.Create(Tuple.Create("", 12135), Tuple.Create("Content/images/logo-starship.png", 12135), true)
 );
 
 WriteLiteral(" alt=\"Starship logo\"");
@@ -327,16 +374,17 @@ WriteLiteral(" style=\"-ms-interpolation-mode: bicubic; clear: both; display: bl
 "t; max-width: 100%; outline: none; text-align: right; text-decoration: none; wid" +
 "th: auto;\"");
 
-WriteLiteral(">\r\n                </th></tr></table></th>\r\n            </tr></tbody></table>\r\n  " +
-"  </td></tr></table>\r\n    <table");
+WriteLiteral(">\r\n                            </th></tr></table></th>\r\n                        <" +
+"/tr></tbody></table>\r\n                    </td></tr></table>\r\n\r\n                " +
+"    <table");
 
 WriteLiteral(" align=\"center\"");
 
-WriteLiteral(" class=\"container\"");
+WriteLiteral(" class=\"container float-center\"");
 
 WriteLiteral(" style=\"Margin: 0 auto; background: #fefefe; border-collapse: collapse; border-sp" +
-"acing: 0; margin: 0 auto; padding: 0; text-align: inherit; vertical-align: top; " +
-"width: 580px;\"");
+"acing: 0; float: none; margin: 0 auto; padding: 0; text-align: center; vertical-" +
+"align: top; width: 580px;\"");
 
 WriteLiteral("><tbody><tr");
 
@@ -346,7 +394,7 @@ WriteLiteral("><td");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
-WriteLiteral(">\r\n        <table");
+WriteLiteral(">\r\n                        <table");
 
 WriteLiteral(" class=\"spacer\"");
 
@@ -363,7 +411,7 @@ WriteLiteral(" height=\"16px\"");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 16px; margin: 0; mso-line-height-rule: exactly; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
-WriteLiteral(">&#xA0;</td></tr></tbody></table> \r\n        <table");
+WriteLiteral(">&#xA0;</td></tr></tbody></table> \r\n                        <table");
 
 WriteLiteral(" class=\"row\"");
 
@@ -374,7 +422,7 @@ WriteLiteral("><tbody><tr");
 
 WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
 
-WriteLiteral(">\r\n            <th");
+WriteLiteral(">\r\n                            <th");
 
 WriteLiteral(" class=\"small-12 large-12 columns first last\"");
 
@@ -395,24 +443,18 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                <h2");
+WriteLiteral(">\r\n");
 
-WriteLiteral(" class=\"text-center\"");
-
-WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: inherit; font-family: Helvetica, A" +
-"rial, sans-serif; font-size: 30px; font-weight: normal; line-height: 1.3; margin" +
-": 0; margin-bottom: 10px; padding: 0; text-align: center; word-wrap: normal;\"");
-
-WriteLiteral(">");
+WriteLiteral("                                ");
 
             
-            #line 340 "..\..\UserEmails\LayoutTemplate.cshtml"
-                                                                                                                                                                                                                                                                                 Write(Title);
+            #line 348 "..\..\UserEmails\LayoutTemplate.cshtml"
+                           Write(RenderBody());
 
             
             #line default
             #line hidden
-WriteLiteral("</h2>\r\n            </th>\n<th");
+WriteLiteral("\r\n                            </th>\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -420,25 +462,15 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table></th>\r\n        </tr></tbody></table>\r\n        \r\n");
-
-WriteLiteral("        ");
-
-            
-            #line 345 "..\..\UserEmails\LayoutTemplate.cshtml"
-   Write(RenderBody());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n    </td></tr></tbody></table>\r\n\r\n    <table");
+WriteLiteral("></th></tr></table></th>\r\n                        </tr></tbody></table>\r\n\r\n      " +
+"                  <table");
 
 WriteLiteral(" class=\"wrapper footer\"");
 
 WriteLiteral(" align=\"center\"");
 
-WriteLiteral(" style=\"background-color: transparent; border-collapse: collapse; border-spacing:" +
-" 0; padding: 0; text-align: left; vertical-align: top; width: 100%;\"");
+WriteLiteral(" style=\"background: #f3f3f3; border-collapse: collapse; border-spacing: 0; paddin" +
+"g: 0; text-align: left; vertical-align: top; width: 100%;\"");
 
 WriteLiteral("><tr");
 
@@ -450,25 +482,7 @@ WriteLiteral(" class=\"wrapper-inner\"");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
-WriteLiteral(">\r\n        <table");
-
-WriteLiteral(" align=\"center\"");
-
-WriteLiteral(" class=\"container\"");
-
-WriteLiteral(" style=\"Margin: 0 auto; background: #fefefe; background-color: transparent; borde" +
-"r-collapse: collapse; border-spacing: 0; margin: 0 auto; padding: 0; text-align:" +
-" inherit; vertical-align: top; width: 580px;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><td");
-
-WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;""");
-
-WriteLiteral(">\r\n            <table");
+WriteLiteral(">\r\n                            <table");
 
 WriteLiteral(" class=\"spacer\"");
 
@@ -485,9 +499,9 @@ WriteLiteral(" height=\"16px\"");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 16px; margin: 0; mso-line-height-rule: exactly; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
-WriteLiteral(">&#xA0;</td></tr></tbody></table> \r\n            <table");
+WriteLiteral(">&#xA0;</td></tr></tbody></table> \r\n                            <table");
 
-WriteLiteral(" class=\"row\"");
+WriteLiteral(" class=\"row collapse\"");
 
 WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; display: table; padding: 0;" +
 " position: relative; text-align: left; vertical-align: top; width: 100%;\"");
@@ -496,11 +510,11 @@ WriteLiteral("><tbody><tr");
 
 WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
 
-WriteLiteral(">\r\n                <th");
+WriteLiteral(">\r\n                                <th");
 
 WriteLiteral(" class=\"small-12 large-6 columns first\"");
 
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 8px; text-align: left; width: 274px;""");
+WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0; padding-right: 0; text-align: left; width: 298px;""");
 
 WriteLiteral("><table");
 
@@ -517,19 +531,19 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                    <h5");
+WriteLiteral(">\r\n                                    <h5");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: inherit; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 20px; font-weight: normal; line-height: 1.3; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left; word-wrap: normal;\"");
 
-WriteLiteral(">Sim-planner contact info:</h5>\r\n                    <p");
+WriteLiteral(">Sim-planner contact info:</h5>\r\n                                    <p");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
 
-WriteLiteral(">Phone: +64 9 </p>\r\n                    <p");
+WriteLiteral(">Phone: +64 21 715 541</p>\r\n                                    <p");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
@@ -543,12 +557,12 @@ WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial,
 "t-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; tex" +
 "t-decoration: none;\"");
 
-WriteLiteral(">info@sim-planner.com</a></p>\r\n                </th></tr></table></th>\r\n         " +
-"       <th");
+WriteLiteral(">info@sim-planner.com</a></p>\r\n                                </th></tr></table>" +
+"</th>\r\n                                <th");
 
 WriteLiteral(" class=\"small-12 large-6 columns last\"");
 
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 8px; padding-right: 16px; text-align: left; width: 274px;""");
+WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0; padding-right: 0; text-align: left; width: 298px;""");
 
 WriteLiteral("><table");
 
@@ -565,7 +579,14 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                    <table");
+WriteLiteral(">\r\n                                    <h5");
+
+WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: inherit; font-family: Helvetica, A" +
+"rial, sans-serif; font-size: 20px; font-weight: normal; line-height: 1.3; margin" +
+": 0; margin-bottom: 10px; padding: 0; text-align: left; word-wrap: normal;\"");
+
+WriteLiteral(">\r\n                                        Connect With Us:\r\n                    " +
+"                </h5>\r\n                                    <table");
 
 WriteLiteral(" class=\"row\"");
 
@@ -576,41 +597,11 @@ WriteLiteral("><tbody><tr");
 
 WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
 
-WriteLiteral(">\r\n                        <th");
+WriteLiteral(">\r\n                                        <th");
 
-WriteLiteral(" class=\"small-12 large-12 columns first\"");
+WriteLiteral(" class=\"small-5 large-5 columns first\"");
 
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 564px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n                            Connect With Us:\r\n                        </th>\n<t" +
-"h");
-
-WriteLiteral(" class=\"expander\"");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
-"rtant; text-align: left; visibility: hidden; width: 0;\"");
-
-WriteLiteral("></th></tr></table></th>\r\n                        <th");
-
-WriteLiteral(" class=\"small-6 large-6 columns\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 274px;""");
+WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 41.66667%;""");
 
 WriteLiteral("><table");
 
@@ -627,12 +618,13 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                            <table");
+WriteLiteral(">\r\n                                            <table");
 
-WriteLiteral(" class=\"button facebook tiny\"");
+WriteLiteral(" class=\"button facebook tiny expand\"");
 
 WriteLiteral(" style=\"Margin: 0 0 16px 0; border-collapse: collapse; border-spacing: 0; margin:" +
-" 0 0 16px 0; padding: 0; text-align: left; vertical-align: top; width: auto;\"");
+" 0 0 16px 0; padding: 0; text-align: left; vertical-align: top; width: 100% !imp" +
+"ortant;\"");
 
 WriteLiteral("><tr");
 
@@ -655,18 +647,34 @@ WriteLiteral("><td");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; background: #2199e8; background-color: #3b5998; border: 2px solid #2199e8; border-collapse: collapse !important; border-color: #3B5998; color: #fefefe; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
+WriteLiteral("><center");
+
+WriteLiteral(" data-parsed=\"\"");
+
+WriteLiteral(" style=\"min-width: none !important; width: 100%;\"");
+
 WriteLiteral("><a");
 
 WriteLiteral(" href=\"http://sim-planner.com\"");
 
-WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; text-align: left; text-decoration: none;""");
+WriteLiteral(" align=\"center\"");
 
-WriteLiteral(">Facebook</a></td></tr></table></td></tr></table>\r\n                        </th><" +
-"/tr></table></th>\r\n                        <th");
+WriteLiteral(" class=\"float-center\"");
 
-WriteLiteral(" class=\"small-6 large-6 columns\"");
+WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; padding-left: 0; padding-right: 0; text-align: center; text-decoration: none; width: 100%;""");
 
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 274px;""");
+WriteLiteral(">Facebook</a></center></td></tr></table></td>\n<td");
+
+WriteLiteral(" class=\"expander\"");
+
+WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 0 !important; text-align: left; vertical-align: top; visibility: hidden; width: 0; word-wrap: break-word;""");
+
+WriteLiteral("></td></tr></table>\r\n                                        </th></tr></table></" +
+"th>\r\n                                        <th");
+
+WriteLiteral(" class=\"small-5 large-5 columns last\"");
+
+WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 41.66667%;""");
 
 WriteLiteral("><table");
 
@@ -683,12 +691,13 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                            <table");
+WriteLiteral(">\r\n                                            <table");
 
-WriteLiteral(" class=\"button twitter tiny\"");
+WriteLiteral(" class=\"button twitter tiny expand\"");
 
 WriteLiteral(" style=\"Margin: 0 0 16px 0; border-collapse: collapse; border-spacing: 0; margin:" +
-" 0 0 16px 0; padding: 0; text-align: left; vertical-align: top; width: auto;\"");
+" 0 0 16px 0; padding: 0; text-align: left; vertical-align: top; width: 100% !imp" +
+"ortant;\"");
 
 WriteLiteral("><tr");
 
@@ -711,18 +720,46 @@ WriteLiteral("><td");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; background: #2199e8; background-color: #55acee; border: 2px solid #2199e8; border-collapse: collapse !important; border-color: #55acee; color: #fefefe; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
+WriteLiteral("><center");
+
+WriteLiteral(" data-parsed=\"\"");
+
+WriteLiteral(" style=\"min-width: none !important; width: 100%;\"");
+
 WriteLiteral("><a");
 
 WriteLiteral(" href=\"http://sim-planner.com\"");
 
-WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; text-align: left; text-decoration: none;""");
+WriteLiteral(" align=\"center\"");
 
-WriteLiteral(">Twitter</a></td></tr></table></td></tr></table>\r\n                        </th></" +
-"tr></table></th>\r\n                        <th");
+WriteLiteral(" class=\"float-center\"");
 
-WriteLiteral(" class=\"small-6 large-6 columns\"");
+WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; padding-left: 0; padding-right: 0; text-align: center; text-decoration: none; width: 100%;""");
 
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 274px;""");
+WriteLiteral(">Twitter</a></center></td></tr></table></td>\n<td");
+
+WriteLiteral(" class=\"expander\"");
+
+WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 0 !important; text-align: left; vertical-align: top; visibility: hidden; width: 0; word-wrap: break-word;""");
+
+WriteLiteral("></td></tr></table>\r\n                                        </th></tr></table></" +
+"th>\r\n                                    </tr></tbody></table>\r\n                " +
+"                    <table");
+
+WriteLiteral(" class=\"row\"");
+
+WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; display: table; padding: 0;" +
+" position: relative; text-align: left; vertical-align: top; width: 100%;\"");
+
+WriteLiteral("><tbody><tr");
+
+WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
+
+WriteLiteral(">\r\n                                        <th");
+
+WriteLiteral(" class=\"small-5 large-5 columns first\"");
+
+WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 41.66667%;""");
 
 WriteLiteral("><table");
 
@@ -739,12 +776,13 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                            <table");
+WriteLiteral(">\r\n                                            <table");
 
-WriteLiteral(" class=\"button google tiny\"");
+WriteLiteral(" class=\"button google tiny expand\"");
 
 WriteLiteral(" style=\"Margin: 0 0 16px 0; border-collapse: collapse; border-spacing: 0; margin:" +
-" 0 0 16px 0; padding: 0; text-align: left; vertical-align: top; width: auto;\"");
+" 0 0 16px 0; padding: 0; text-align: left; vertical-align: top; width: 100% !imp" +
+"ortant;\"");
 
 WriteLiteral("><tr");
 
@@ -767,18 +805,34 @@ WriteLiteral("><td");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; background: #2199e8; background-color: #dd4b39; border: 2px solid #2199e8; border-collapse: collapse !important; border-color: #dd4b39; color: #fefefe; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
+WriteLiteral("><center");
+
+WriteLiteral(" data-parsed=\"\"");
+
+WriteLiteral(" style=\"min-width: none !important; width: 100%;\"");
+
 WriteLiteral("><a");
 
 WriteLiteral(" href=\"http://sim-planner.com\"");
 
-WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; text-align: left; text-decoration: none;""");
+WriteLiteral(" align=\"center\"");
 
-WriteLiteral(">Google+</a></td></tr></table></td></tr></table>\r\n                        </th></" +
-"tr></table></th>\r\n                        <th");
+WriteLiteral(" class=\"float-center\"");
 
-WriteLiteral(" class=\"small-6 large-6 columns last\"");
+WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; padding-left: 0; padding-right: 0; text-align: center; text-decoration: none; width: 100%;""");
 
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 274px;""");
+WriteLiteral(">Google+</a></center></td></tr></table></td>\n<td");
+
+WriteLiteral(" class=\"expander\"");
+
+WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 0 !important; text-align: left; vertical-align: top; visibility: hidden; width: 0; word-wrap: break-word;""");
+
+WriteLiteral("></td></tr></table>\r\n                                        </th></tr></table></" +
+"th>\r\n                                        <th");
+
+WriteLiteral(" class=\"small-5 large-5 columns last\"");
+
+WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 41.66667%;""");
 
 WriteLiteral("><table");
 
@@ -795,12 +849,13 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                            <table");
+WriteLiteral(">\r\n                                            <table");
 
-WriteLiteral(" class=\"button linkedIn tiny\"");
+WriteLiteral(" class=\"button linkedIn tiny expand\"");
 
 WriteLiteral(" style=\"Margin: 0 0 16px 0; border-collapse: collapse; border-spacing: 0; margin:" +
-" 0 0 16px 0; padding: 0; text-align: left; vertical-align: top; width: auto;\"");
+" 0 0 16px 0; padding: 0; text-align: left; vertical-align: top; width: 100% !imp" +
+"ortant;\"");
 
 WriteLiteral("><tr");
 
@@ -823,202 +878,47 @@ WriteLiteral("><td");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; background: #2199e8; background-color: #007bb5; border: 2px solid #2199e8; border-collapse: collapse !important; border-color: #007bb5; color: #fefefe; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
+WriteLiteral("><center");
+
+WriteLiteral(" data-parsed=\"\"");
+
+WriteLiteral(" style=\"min-width: none !important; width: 100%;\"");
+
 WriteLiteral("><a");
 
 WriteLiteral(" href=\"http://sim-planner.com\"");
 
-WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; text-align: left; text-decoration: none;""");
+WriteLiteral(" align=\"center\"");
 
-WriteLiteral(">LinkedIn</a></td></tr></table></td></tr></table>\r\n                        </th><" +
-"/tr></table></th>\r\n                    </tr></tbody></table>\r\n                </" +
-"th></tr></table></th>\r\n            </tr></tbody></table>\r\n            <table");
+WriteLiteral(" class=\"float-center\"");
 
-WriteLiteral(" class=\"row\"");
+WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; padding-left: 0; padding-right: 0; text-align: center; text-decoration: none; width: 100%;""");
 
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; display: table; padding: 0;" +
-" position: relative; text-align: left; vertical-align: top; width: 100%;\"");
+WriteLiteral(">LinkedIn</a></center></td></tr></table></td>\n<td");
 
-WriteLiteral("><tbody><tr");
+WriteLiteral(" class=\"expander\"");
 
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
+WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 0 !important; text-align: left; vertical-align: top; visibility: hidden; width: 0; word-wrap: break-word;""");
 
-WriteLiteral(">\r\n                <th");
-
-WriteLiteral(" class=\"small-12 large-5 columns first\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 8px; text-align: left; width: 225.66667px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n                    whatever\r\n                </th></tr></table></th>\r\n       " +
-"         <th");
-
-WriteLiteral(" class=\"small-12 large-7 columns last\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 8px; padding-right: 16px; text-align: left; width: 322.33333px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n                    <table");
-
-WriteLiteral(" class=\"row\"");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; display: table; padding: 0;" +
-" position: relative; text-align: left; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral(">\r\n                        <th");
-
-WriteLiteral(" class=\"small-6 large-6 columns first\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 274px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n                            <p");
-
-WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
-"rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
-": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
-
-WriteLiteral(">Hello</p>\r\n                        </th></tr></table></th>\r\n                    " +
-"    <th");
-
-WriteLiteral(" class=\"small-6 large-6 columns\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 274px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n                            <p");
-
-WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
-"rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
-": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
-
-WriteLiteral(">Hello</p>\r\n                        </th></tr></table></th>\r\n                    " +
-"    <th");
-
-WriteLiteral(" class=\"small-6 large-6 columns\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 274px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n                            <p");
-
-WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
-"rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
-": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
-
-WriteLiteral(">Hello</p>\r\n                        </th></tr></table></th>\r\n                    " +
-"    <th");
-
-WriteLiteral(" class=\"small-6 large-6 columns last\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 0 !important; padding-right: 0 !important; text-align: left; width: 274px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n                            <p");
-
-WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
-"rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
-": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
-
-WriteLiteral(@">Hello</p>
-                        </th></tr></table></th>
-                    </tr></tbody></table>
-                </th></tr></table></th>
-            </tr></tbody></table>
-        </td></tr></tbody></table>
-    </td></tr></table>
+WriteLiteral(@"></td></tr></table>
+                                        </th></tr></table></th>
+                                    </tr></tbody></table>
+                                </th></tr></table></th>
+                            </tr></tbody></table>
+                        </td></tr></table>
+                    </td></tr></tbody></table>
+                </center>
+            </td>
+        </tr>
+    </table>
     <!-- prevent Gmail on iOS font size manipulation -->
-</body>
-</html>
+    <div");
 
-");
+WriteLiteral(" style=\"display:none; white-space:nowrap; font:15px courier; line-height:0;\"");
+
+WriteLiteral("> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &n" +
+"bsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp" +
+"; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </div>\r\n</body>\r\n</html>");
 
         }
     }
