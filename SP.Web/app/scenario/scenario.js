@@ -18,7 +18,7 @@
         });
         var id = $routeParams.id;
         var isNew = id === 'new';
-        var enums = common.getEnumValues();
+        var enums = selectOptionMaps.getEnumValues();
         var added = breeze.EntityState.Added;
 
         vm.scenario = { scenarioResources:[] };

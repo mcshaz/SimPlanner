@@ -25,9 +25,9 @@
     });
 
     commonModule.factory('common',
-        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', '$http', 'collectionManager' /* 'dateUtilities', */, common]);
+        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', '$http', 'collectionManager', common]);
 
-    function common($q, $rootScope, $timeout, commonConfig, logger, $http, collectionManager /*, dateUtilities */) {
+    function common($q, $rootScope, $timeout, commonConfig, logger, $http, collectionManager) {
         var throttles = {};
 
         var service = {
@@ -36,32 +36,18 @@
             $timeout: $timeout,
             // generic
             activateController: activateController,
-            addCollectionItem : collectionManager.addItem,
+            addCollectionItem: collectionManager.addItem,
             createSearchThrottle: createSearchThrottle,
             debouncedThrottle: debouncedThrottle,
-            fetchCultureFormats: fetchCultureFormats,
-            getFlagClassFromLocaleCode: getFlagClassFromLocaleCode,
-            getEnumValues: window.medsimMetadata.getEnums,
-            getRoleIcon: getRoleIcon,
             isEmptyObject: isEmptyObject,
             isNumber: isNumber,
             logger: logger, // for accessibility
             manageCollectionChange: collectionManager.manageCollectionChange,  // for accessibility
             mapToCamelCase: mapToCamelCase,
             removeCollectionItem: collectionManager.removeItem,
-            roleSymbols: {
-                Medical: 'stethoscope',
-                Tech: 'wrench',
-                Perfusionist: 'cog',
-                Other: 'question',
-                Paramedic: 'ambulance',
-                Nursing: 'heartbeat',
-                Educator: 'graduation-cap'
-            },
             collectionChange: collectionManager.collectionChange,
             sortOnPropertyName: sortOnPropertyName,
             sortOnChildPropertyName: sortOnChildPropertyName,
-            
             textContains: textContains,
             toSeparateWords: toSeparateWords,
             alphaNumericEqual: alphaNumericEqual
@@ -147,29 +133,6 @@
             }
         }
 
-        function fetchCultureFormats() {
-            return $http({ method: 'GET', url: 'api/utilities/cultureFormats' }).then(function (response) {
-                var parseLanguageCulture = /([\w ]+)\(([\w ,.]+)\)/;
-                return response.data.map(function (el) {
-                    var parsed = parseLanguageCulture.exec(el.DisplayName);
-                    if (!parsed || parsed.length < 3) {
-                        console.log(el);
-                        console.log(parsed);
-                    }
-                    return {
-                        localeCode: el.LocaleCode,
-                        flagClass: getFlagClassFromLocaleCode(el.LocaleCode),
-                        culture: parsed[2],
-                        language: parsed[1].trimRight()
-                    };
-                });
-            });
-        }
-
-        function getFlagClassFromLocaleCode(localeCode) {
-            return 'flag ' + localeCode.substring(localeCode.length - 2).toLowerCase();
-        }
-
         function isNumber(val) {
             // negative or positive
             return /^[-]?\d+$/.test(val);
@@ -230,17 +193,6 @@
                 }
             }
             return returnVar;
-        }
-
-        var _roleIcons;
-        function getRoleIcon(roleName) {
-            if (!_roleIcons) {
-                _roleIcons = {};
-                angular.forEach(service.roleSymbols, function (val,key) {
-                    _roleIcons[key] = "fa fa-" + val;
-                });
-            }
-            return _roleIcons[roleName];
         }
     }
 })();

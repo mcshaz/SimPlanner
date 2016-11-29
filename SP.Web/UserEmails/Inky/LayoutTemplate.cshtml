@@ -3,97 +3,82 @@
 
 @functions {
     public string Title{ get; set; }
+    public string Description {get; set;}
 }
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="emailStyles.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@Title</title>
-    <link href="emailStyles.css" rel="stylesheet" />
     <!-- <style> -->
 </head>
 <body>
-    <wrapper class="header">
-            <row class="collapse">
-                <columns small="2">
-                    <img src="@(BaseUrl)images/sim-planner-icon-50x75.png" alt="sim-manager logo" height="50" width="75" />
-                </columns>
-                <columns small="8">
-                    <h1 class="text-center">Sim-planner</h1>
-                </columns>
-                <columns small="2">
-                    <img class="float-right" src="@(BaseUrl)Content/images/logo-starship.png" alt="Starship logo" height="50" width="93" />
-                </columns>
-            </row>
-    </wrapper>
-    <container>
-        <spacer size="16"></spacer>
-        <row>
-            <columns>
-                <h2 class="text-center">@Title</h2>
-            </columns>
-        </row>
-        
-        @RenderBody()
-    </container>
+    <span class="preheader">@Description</span>
+    <table class="body">
+        <tr>
+            <td class="center" align="center" valign="top">
+                <center>
+                    <wrapper class="header">
+                        <row class="collapse">
+                            <columns small="2">
+                                <img src="@(BaseUrl)images/sim-planner-icon-50x75.png" alt="sim-manager logo" height="50" width="75" />
+                            </columns>
+                            <columns small="8">
+                                <h1 class="text-center">Sim-planner</h1>
+                            </columns>
+                            <columns small="2">
+                                <img class="float-right" src="@(BaseUrl)Content/images/logo-starship.png" alt="Starship logo" height="50" width="93" />
+                            </columns>
+                        </row>
+                    </wrapper>
 
-    <wrapper class="footer">
-        <container>
-            <spacer size="16"></spacer>
-            <row>
-                <columns large="6">
-                    <h5>Sim-planner contact info:</h5>
-                    <p>Phone: +64 9 </p>
-                    <p>Email: <a href="mailto:info@sim-planner.com">info@sim-planner.com</a></p>
-                </columns>
-                <columns large="6">
-                    <row>
-                        <columns small="12">
-                            Connect With Us:
-                        </columns>
-                        <columns small="6">
-                            <button class="facebook tiny" href="http://sim-planner.com">Facebook</button>
-                        </columns>
-                        <columns small="6">
-                            <button class="twitter tiny" href="http://sim-planner.com">Twitter</button>
-                        </columns>
-                        <columns small="6">
-                            <button class="google tiny" href="http://sim-planner.com">Google+</button>
-                        </columns>
-                        <columns small="6">
-                            <button class="linkedIn tiny" href="http://sim-planner.com">LinkedIn</button>
-                        </columns>
-                    </row>
-                </columns>
-            </row>
-            <row>
-                <columns large="5">
-                    whatever
-                </columns>
-                <columns large="7">
-                    <row>
-                        <columns small="6" large="6">
-                            <p>Hello</p>
-                        </columns>
-                        <columns small="6" large="6">
-                            <p>Hello</p>
-                        </columns>
-                        <columns small="6" large="6">
-                            <p>Hello</p>
-                        </columns>
-                        <columns small="6" large="6">
-                            <p>Hello</p>
-                        </columns>
-                    </row>
-                </columns>
-            </row>
-        </container>
-    </wrapper>
+                    <container>
+                        <spacer size="16"></spacer>
+
+                        @RenderBody()
+
+                        <wrapper class="footer">
+                            <spacer size="16"></spacer>
+                            <row class="collapse">
+                                <columns large="6">
+                                    <h5>Sim-planner contact info:</h5>
+                                    <p>Phone: +64 21 715 541</p>
+                                    <p>Email: <a href="mailto:info@sim-planner.com">info@sim-planner.com</a></p>
+                                </columns>
+                                <columns large="6">
+                                    <h5>
+                                        Connect With Us:
+                                    </h5>
+                                    <row>
+                                        <columns small="5">
+                                            <button class="facebook tiny expand" href="http://sim-planner.com">Facebook</button>
+                                        </columns>
+                                        <columns small="5">
+                                            <button class="twitter tiny expand" href="http://sim-planner.com">Twitter</button>
+                                        </columns>
+                                    </row>
+                                    <row>
+                                        <columns small="5">
+                                            <button class="google tiny expand" href="http://sim-planner.com">Google+</button>
+                                        </columns>
+                                        <columns small="5">
+                                            <button class="linkedIn tiny expand" href="http://sim-planner.com">LinkedIn</button>
+                                        </columns>
+                                    </row>
+                                </columns>
+                            </row>
+                        </wrapper>
+                    </container>
+                </center>
+            </td>
+        </tr>
+    </table>
     <!-- prevent Gmail on iOS font size manipulation -->
     <div style="display:none; white-space:nowrap; font:15px courier; line-height:0;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </div>
 </body>
 </html>
-

@@ -12,7 +12,7 @@
 
         function getLogFunction(source) {
             var returnVar = function (argOpts) {
-                var logType = (typeof arguments[1] === 'string') ? arguments[1] : 'log';
+                var logType = typeof arguments[1] === 'string' ? arguments[1] : 'log';
                 log(argOpts,logType);
             };
             returnVar.warn = returnVar.warning = function (argOpts) {
@@ -54,7 +54,7 @@
         }
 
         function logIt(argOpts, logType) {
-            var showToast = argOpts.showToast === true || (argOpts.showToast === undefined && service.autoToast.indexOf(logType) > -1);
+            var showToast = argOpts.showToast === true || argOpts.showToast === undefined && service.autoToast.indexOf(logType) > -1;
             var toastType = logType;
             var msg = argOpts.message || argOpts.msg;
             var src = argOpts.source || argOpts.src;
@@ -91,16 +91,16 @@
         }
     }
     function prune(data) {
-        var type = typeof (data);
+        var type = typeof data;
         if (type === 'object' && data !== null) {
             var returnVar = {};
             for (var p in data) {
                 if (p) {
                     var v = data[p];
                     if (Array.isArray(v)) {
-                        returnVar[p] = 'Array[length:' + v.length + ']'
+                        returnVar[p] = 'Array[length:' + v.length + ']';
                     } else {
-                        type = typeof (v);
+                        type = typeof v;
                         if (type === 'boolean' || type === 'number' || type === 'string' || v instanceof RegExp) {
                             returnVar[p] = v;
                         } 

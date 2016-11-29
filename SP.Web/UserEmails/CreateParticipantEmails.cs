@@ -3,6 +3,7 @@ using SP.Dto;
 using SP.Dto.Maps;
 using SP.Dto.Utilities;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -20,7 +21,7 @@ namespace SP.Web.UserEmails
         /// <param name="course"></param>
         /// <param name="user"></param>
         /// <returns>a lookup true = successfully emailed, false = email failed</returns>
-        public static async Task<ILookup<bool, CourseParticipant>> SendEmail(Course course, IPrincipal user)
+        public static EmailResult SendEmail(Course course, IPrincipal user)
         {
             using (var cal = Appointment.CreateCourseAppointment(course, user.Identity))
             {
@@ -31,12 +32,13 @@ namespace SP.Web.UserEmails
                         .ToLookup(cp => cp.IsFaculty);
 
                     IEnumerable<Attachment> attachments = new Attachment[0];
-                    using (var client = new SmtpClient())
+
+                    var success = new ConcurrentBag<CourseParticipant>();
+                    var fail = new ConcurrentBag<CourseParticipant>();
+                    var sendMail = new Action<CourseParticipant>(cp =>
                     {
-                        var mailMessages = new List<ParticipantMail>();
-                        var sendMail = new Action<CourseParticipant>(cp =>
+                        using (var mail = new MailMessage())
                         {
-                            var mail = new MailMessage();
                             mail.To.AddParticipants(cp.Participant);
                             var confirmEmail = new CourseInvite { CourseParticipant = cp };
                             mail.CreateHtmlBody(confirmEmail);
@@ -46,33 +48,40 @@ namespace SP.Web.UserEmails
                                 a.ContentStream.Position = 0;
                                 mail.Attachments.Add(a);
                             }
-                            mailMessages.Add(new ParticipantMail { Message = mail, SendTask = client.SendMailAsync(mail), CourseParticipant = cp });
-                        });
-
-                        foreach (var cp in faculty[false])
-                        {
-                            sendMail(cp);
-                        }
-                        if (faculty[true].Any())
-                        {
-                            if (course.FacultyMeetingUtc.HasValue)
+                            using (var client = new SmtpClient())
                             {
-                                using (var fm = Appointment.CreateFacultyCalendar(course))
+                                try
                                 {
-                                    appt.Add(fm);
+                                    client.Send(mail);
+                                    success.Add(cp);
+                                }
+                                catch (SmtpFailedRecipientsException)
+                                {
+                                    fail.Add(cp);
                                 }
                             }
-                            attachments = GetFilePaths(course).Select(fp => new Attachment(fp.Value, System.Net.Mime.MediaTypeNames.Application.Zip) { Name = fp.Key })
-                                .Concat(new[] { new Attachment(CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath), OpenXmlDocxExtensions.DocxMimeType) { Name = CreateDocxTimetable.TimetableName(course)} });
-                            foreach (var cp in faculty[true])
+                        }
+                    });
+
+                    Parallel.ForEach(faculty[false], sendMail); //new ParallelOptions { MaxDegreeOfParallelism = 5 }
+
+                    if (faculty[true].Any())
+                    {
+                        if (course.FacultyMeetingUtc.HasValue)
+                        {
+                            using (var fm = Appointment.CreateFacultyCalendar(course))
                             {
-                                sendMail(cp);
+                                appt.Add(fm);
                             }
                         }
-                        await Task.WhenAll(mailMessages.Select(mm => mm.SendTask));
-                        mailMessages.ForEach(mm => mm.Message.Dispose());
-                        return mailMessages.ToLookup(k => k.SendTask.Status == TaskStatus.RanToCompletion, v => v.CourseParticipant);
+                        attachments = GetFilePaths(course).Select(fp => new Attachment(fp.Value, System.Net.Mime.MediaTypeNames.Application.Zip) { Name = fp.Key })
+                            .Concat(new[] { new Attachment(CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath), OpenXmlDocxExtensions.DocxMimeType) { Name = CreateDocxTimetable.TimetableName(course)} });
+                        Parallel.ForEach(faculty[true], sendMail);
                     }
+                    return new EmailResult {
+                        SuccessRecipients = success.ToArray(),
+                        FailRecipients = fail.ToArray()
+                    };
                 }
             }
         }
@@ -89,14 +98,14 @@ namespace SP.Web.UserEmails
                            select new KeyValuePair<string, string>(atr.Description, atr.GetServerPath()));
         }
     }
-
+    /*
     internal class ParticipantMail
     {
         public CourseParticipant CourseParticipant { get; set; }
-        public Task SendTask { get; set; }
-        public MailMessage Message { get; set; }
+        //public Task SendTask { get; set; }
+        //public MailMessage Message { get; set; }
     }
-
+    */
     public class EmailResult
     {
         public IEnumerable<CourseParticipant> SuccessRecipients { get; set; }

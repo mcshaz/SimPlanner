@@ -34,7 +34,7 @@
         activate();
 
         function activate() {
-            var promises = [common.fetchCultureFormats().then(function (data) {
+            var promises = [selectOptionMaps.fetchCultureFormats().then(function (data) {
                 data.sort(sortCulture);
                 vm.cultureFormats = data;
                 vm.cultureFormats.forEach(function (el) {

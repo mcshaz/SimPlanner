@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside','$q','$filter'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside', '$q', '$filter', 'selectOptionMaps'];
 
-    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside, $q, $filter) {
+    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside, $q, $filter, selectOptionMaps) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -35,7 +35,7 @@
         vm.departments = [];
         vm.editSlot = editSlot;
         vm.editChoices = editChoices;
-        vm.emersionCategories = common.getEnumValues().emersion;
+        vm.emersionCategories = selectOptionMaps.getEnumValues().emersion;
         vm.getCourseActivityNames = getCourseActivityNames;
         vm.instructorCourses = [];
         vm.isScenarioChanged = isScenarioChanged;
@@ -71,19 +71,7 @@
                             vm.instructorCourses = data;
                         }),
                         datacontext.departments.all({ expand: 'institution.culture' }).then(function (data) {
-                            vm.departments = data.map(function (d) {
-                                var localeCode = d.institution.culture.localeCode;
-                                var countryCode = localeCode.substring(localeCode.length-2);
-                                return {
-                                    id: d.id,
-                                    name: d.name,
-                                    abbreviation: d.institution.abbreviation + ' ' + d.abbreviation,
-                                    searchString: countryCode + "#" + d.institution.culture.name + "#" + d.institution.name.toLowerCase() + "#" + d.institution.abbreviation.toLowerCase() + "#" + d.name.toLowerCase() + "#" + d.abbreviation.toLowerCase(),
-                                    institutionName: countryCode + '-' + d.institution.abbreviation,
-                                    flagClass: common.getFlagClassFromLocaleCode(localeCode)
-                                }
-                            }
-                        );
+                            vm.departments = selectOptionMaps.sortAndMapDepartment(data);
                         })];
                 if (isNew) {
                     vm.courseType = datacontext.courseTypes.create();

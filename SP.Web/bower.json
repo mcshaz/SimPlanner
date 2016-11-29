@@ -17,15 +17,16 @@
   ],
   "dependencies": {
     "toastr": "*",
-    "angular-bootstrap-calendar": "^0.25.0",
+    "angular-bootstrap-calendar": "^0.27.1",
     "angular-strap": "^2.3.10",
     "angular-moment": "*",
     "ckeditor": "*",
-    "angular-animate": "^1.5.8",
-    "angular-cookies": "^1.5.8",
-    "angular-messages": "^1.5.8",
-    "angular-route": "^1.5.8",
-    "angular-sanitize": "^1.5.8",
+    "angular": "^1.5.9",
+    "angular-animate": "^1.5.9",
+    "angular-cookies": "^1.5.9",
+    "angular-messages": "^1.5.9",
+    "angular-route": "^1.5.9",
+    "angular-sanitize": "^1.5.9",
     "angular-local-storage": "*",
     "angular-ui-grid": "^3.2.9",
     "angular-ui-select": "^0.19.6",
@@ -44,7 +45,6 @@
     "breeze-client": "*",
     "breeze-client-labs": "*",
     "font-awesome": "^4.7.0",
-    "angular": "^1.5.8",
     "moment": "*",
     "bootswatch-dist": "*",
     "jquery": "^3.1.1",
@@ -58,8 +58,7 @@
   ],
   "private": true,
   "resolutions": {
-    "angular": ">=1.2.x",
-    "jquery": ">=3.1.x",
-    "font-awesome": ">=4.7.0"
+    "angular": ">=1.5.9",
+    "jquery": ">=3.1.x"
   }
 }

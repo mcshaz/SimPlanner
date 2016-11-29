@@ -136,12 +136,21 @@ namespace SP.DataAccess.Migrations
                         .Concat(new[] { "Long Black", "Short Black", "Ristretto" })
                         .Select(c=> new HotDrink { Description=c, Id=Guid.NewGuid() }));
             }
-            if (!context.ProfessionalRoles.Any(pr=>pr.Category == ProfessionalCategory.Actor))
+
+            var roles = new[] { new ProfessionalRole { Category = ProfessionalCategory.Actor, Description = "Actor" },
+                new ProfessionalRole { Category = ProfessionalCategory.Other, Description = "Other" },
+                new ProfessionalRole { Category = ProfessionalCategory.Educator, Description = "Educator" },
+                new ProfessionalRole { Category = ProfessionalCategory.Perfusionist, Description = "Perfusionist" },
+                new ProfessionalRole { Category = ProfessionalCategory.Administrative, Description = "Team Administrator" }
+            };
+
+            var roleNames = roles.Select(r => r.Description);
+            var existingRoles = new HashSet<string>(from r in context.ProfessionalRoles where roleNames.Contains(r.Description) select r.Description);
+
+            foreach (var r in roles.Where(r => !existingRoles.Contains(r.Description)))
             {
-                context.ProfessionalRoles.Add(new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Actor, Description = "Actor" });
-                context.ProfessionalRoles.Add(new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Other, Description = "Other" });
-                context.ProfessionalRoles.Add(new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Educator, Description = "Educator" });
-                context.ProfessionalRoles.Add(new ProfessionalRole { Id = Guid.NewGuid(), Category = ProfessionalCategory.Perfusionist, Description = "Perfusionist" });
+                r.Id = Guid.NewGuid();
+                context.ProfessionalRoles.Add(r);
             }
 
             foreach (var r in RoleConstants.RoleNames.Select(rn=>new AspNetRole { Id = rn.Key, Name = rn.Value}))

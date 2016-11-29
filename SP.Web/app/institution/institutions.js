@@ -38,7 +38,7 @@
                             i.departments.forEach(dptItemsSort);
                         }
                         function institutionSort(c) {
-                            c.flagClass = common.getFlagClassFromLocaleCode(c.localeCode);
+                            c.flagClass = selectOptionMaps.getFlagClassFromLocaleCode(c.localeCode);
                             c.institutions.sort(sortNameFn);
                             c.institutions.forEach(dptSort);
                         }

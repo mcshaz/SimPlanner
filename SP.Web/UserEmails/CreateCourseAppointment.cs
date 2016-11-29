@@ -309,7 +309,9 @@ namespace SP.Web.UserEmails
                 contentType.Parameters.Add("method", c.Method);
 
                 c.Data.Position = 0;
-                var attach = new System.Net.Mail.Attachment(c.Data, contentType); //System.Net.Mail.Attachment.CreateAttachmentFromString(s, calType);
+                var outStream = new MemoryStream((int)c.Data.Length);
+                c.Data.CopyTo(outStream);
+                var attach = new System.Net.Mail.Attachment(outStream, contentType); //System.Net.Mail.Attachment.CreateAttachmentFromString(s, calType);
 
                 msg.Attachments.Add(attach);
             }

@@ -1,0 +1,177 @@
+﻿<error errorId="23ea1e14-29ba-495d-9579-2a2d2016b453" application="/LM/W3SVC/2/ROOT" host="OEM-VAIO" type="Newtonsoft.Json.JsonSerializationException" message="Self referencing loop detected with type 'System.Data.Entity.DynamicProxies.Course_CC8F025FC168577FFC88D073789FABED412542EBD7D6D35C8ECC57C8169343A8'. Path 'SuccessRecipients[0].Course.CourseFormat.Courses'." source="Newtonsoft.Json" detail="System.Web.HttpUnhandledException (0x80004005): Self referencing loop detected with type 'System.Data.Entity.DynamicProxies.Course_CC8F025FC168577FFC88D073789FABED412542EBD7D6D35C8ECC57C8169343A8'. Path 'SuccessRecipients[0].Course.CourseFormat.Courses'. ---&gt; Newtonsoft.Json.JsonSerializationException: Self referencing loop detected with type 'System.Data.Entity.DynamicProxies.Course_CC8F025FC168577FFC88D073789FABED412542EBD7D6D35C8ECC57C8169343A8'. Path 'SuccessRecipients[0].Course.CourseFormat.Courses'.&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.CheckForCircularReference(JsonWriter writer, Object value, JsonProperty property, JsonContract contract, JsonContainerContract containerContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeList(JsonWriter writer, IEnumerable values, JsonArrayContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeList(JsonWriter writer, IEnumerable values, JsonArrayContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty)&#xD;&#xA;   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.Serialize(JsonWriter jsonWriter, Object value, Type objectType)&#xD;&#xA;   at Newtonsoft.Json.JsonSerializer.SerializeInternal(JsonWriter jsonWriter, Object value, Type objectType)&#xD;&#xA;   at System.Net.Http.Formatting.BaseJsonMediaTypeFormatter.WriteToStream(Type type, Object value, Stream writeStream, Encoding effectiveEncoding)&#xD;&#xA;   at System.Net.Http.Formatting.JsonMediaTypeFormatter.WriteToStream(Type type, Object value, Stream writeStream, Encoding effectiveEncoding)&#xD;&#xA;   at System.Net.Http.Formatting.BaseJsonMediaTypeFormatter.WriteToStream(Type type, Object value, Stream writeStream, HttpContent content)&#xD;&#xA;   at System.Net.Http.Formatting.BaseJsonMediaTypeFormatter.WriteToStreamAsync(Type type, Object value, Stream writeStream, HttpContent content, TransportContext transportContext, CancellationToken cancellationToken)&#xD;&#xA;--- End of stack trace from previous location where exception was thrown ---&#xD;&#xA;   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)&#xD;&#xA;   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)&#xD;&#xA;   at System.Web.Http.WebHost.HttpControllerHandler.&lt;WriteBufferedResponseContentAsync&gt;d__1b.MoveNext()" user="brentm@adhb.govt.nz" time="2016-11-29T21:51:20.2047122Z" statusCode="500" webHostHtmlMessage="&lt;!DOCTYPE html&gt;&#xD;&#xA;&lt;html&gt;&#xD;&#xA;    &lt;head&gt;&#xD;&#xA;        &lt;title&gt;Self referencing loop detected with type 'System.Data.Entity.DynamicProxies.Course_CC8F025FC168577FFC88D073789FABED412542EBD7D6D35C8ECC57C8169343A8'. Path 'SuccessRecipients[0].Course.CourseFormat.Courses'.&lt;/title&gt;&#xD;&#xA;        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot; /&gt;&#xD;&#xA;        &lt;style&gt;&#xD;&#xA;         body {font-family:&quot;Verdana&quot;;font-weight:normal;font-size: .7em;color:black;} &#xD;&#xA;         p {font-family:&quot;Verdana&quot;;font-weight:normal;color:black;margin-top: -5px}&#xD;&#xA;         b {font-family:&quot;Verdana&quot;;font-weight:bold;color:black;margin-top: -5px}&#xD;&#xA;         H1 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:18pt;color:red }&#xD;&#xA;         H2 { font-family:&quot;Verdana&quot;;font-weight:normal;font-size:14pt;color:maroon }&#xD;&#xA;         pre {font-family:&quot;Consolas&quot;,&quot;Lucida Console&quot;,Monospace;font-size:11pt;margin:0;padding:0.5em;line-height:14pt}&#xD;&#xA;         .marker {font-weight: bold; color: black;text-decoration: none;}&#xD;&#xA;         .version {color: gray;}&#xD;&#xA;         .error {margin-bottom: 10px;}&#xD;&#xA;         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:hand; }&#xD;&#xA;         @media screen and (max-width: 639px) {&#xD;&#xA;          pre { width: 440px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; }&#xD;&#xA;         }&#xD;&#xA;         @media screen and (max-width: 479px) {&#xD;&#xA;          pre { width: 280px; }&#xD;&#xA;         }&#xD;&#xA;        &lt;/style&gt;&#xD;&#xA;    &lt;/head&gt;&#xD;&#xA;&#xD;&#xA;    &lt;body bgcolor=&quot;white&quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;span&gt;&lt;H1&gt;Server Error in '/' Application.&lt;hr width=100% size=1 color=silver&gt;&lt;/H1&gt;&#xD;&#xA;&#xD;&#xA;            &lt;h2&gt; &lt;i&gt;Self referencing loop detected with type 'System.Data.Entity.DynamicProxies.Course_CC8F025FC168577FFC88D073789FABED412542EBD7D6D35C8ECC57C8169343A8'. Path 'SuccessRecipients[0].Course.CourseFormat.Courses'.&lt;/i&gt; &lt;/h2&gt;&lt;/span&gt;&#xD;&#xA;&#xD;&#xA;            &lt;font face=&quot;Arial, Helvetica, Geneva, SunSans-Regular, sans-serif &quot;&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Description: &lt;/b&gt;Self referencing loop detected with type 'System.Data.Entity.DynamicProxies.Course_CC8F025FC168577FFC88D073789FABED412542EBD7D6D35C8ECC57C8169343A8'. Path 'SuccessRecipients[0].Course.CourseFormat.Courses'.&#xD;&#xA;            &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt; Exception Details: &lt;/b&gt;Newtonsoft.Json.JsonSerializationException: Self referencing loop detected with type 'System.Data.Entity.DynamicProxies.Course_CC8F025FC168577FFC88D073789FABED412542EBD7D6D35C8ECC57C8169343A8'. Path 'SuccessRecipients[0].Course.CourseFormat.Courses'.&lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Source Error:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&#xD;&#xA;&#xD;&#xA;An unhandled exception was generated during the execution of the current web request. Information regarding the origin and location of the exception can be identified using the exception stack trace below.&lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;b&gt;Stack Trace:&lt;/b&gt; &lt;br&gt;&lt;br&gt;&#xD;&#xA;&#xD;&#xA;            &lt;table width=100% bgcolor=&quot;#ffffcc&quot;&gt;&#xD;&#xA;               &lt;tr&gt;&#xD;&#xA;                  &lt;td&gt;&#xD;&#xA;                      &lt;code&gt;&lt;pre&gt;&#xD;&#xA;&#xD;&#xA;[JsonSerializationException: Self referencing loop detected with type &amp;#39;System.Data.Entity.DynamicProxies.Course_CC8F025FC168577FFC88D073789FABED412542EBD7D6D35C8ECC57C8169343A8&amp;#39;. Path &amp;#39;SuccessRecipients[0].Course.CourseFormat.Courses&amp;#39;.]&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.CheckForCircularReference(JsonWriter writer, Object value, JsonProperty property, JsonContract contract, JsonContainerContract containerContract, JsonProperty containerProperty) +523&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeList(JsonWriter writer, IEnumerable values, JsonArrayContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty) +419&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty) +332&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty) +315&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty) +260&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty) +315&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty) +260&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty) +315&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty) +260&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeList(JsonWriter writer, IEnumerable values, JsonArrayContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty) +419&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty) +332&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty) +315&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty) +260&#xD;&#xA;   Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.Serialize(JsonWriter jsonWriter, Object value, Type objectType) +256&#xD;&#xA;   Newtonsoft.Json.JsonSerializer.SerializeInternal(JsonWriter jsonWriter, Object value, Type objectType) +785&#xD;&#xA;   System.Net.Http.Formatting.BaseJsonMediaTypeFormatter.WriteToStream(Type type, Object value, Stream writeStream, Encoding effectiveEncoding) +116&#xD;&#xA;   System.Net.Http.Formatting.JsonMediaTypeFormatter.WriteToStream(Type type, Object value, Stream writeStream, Encoding effectiveEncoding) +275&#xD;&#xA;   System.Net.Http.Formatting.BaseJsonMediaTypeFormatter.WriteToStream(Type type, Object value, Stream writeStream, HttpContent content) +54&#xD;&#xA;   System.Net.Http.Formatting.BaseJsonMediaTypeFormatter.WriteToStreamAsync(Type type, Object value, Stream writeStream, HttpContent content, TransportContext transportContext, CancellationToken cancellationToken) +110&#xD;&#xA;   System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task) +92&#xD;&#xA;   System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task) +58&#xD;&#xA;   System.Web.Http.WebHost.&amp;lt;WriteBufferedResponseContentAsync&amp;gt;d__1b.MoveNext() +289&#xD;&#xA;&lt;/pre&gt;&lt;/code&gt;&#xD;&#xA;&#xD;&#xA;                  &lt;/td&gt;&#xD;&#xA;               &lt;/tr&gt;&#xD;&#xA;            &lt;/table&gt;&#xD;&#xA;&#xD;&#xA;            &lt;br&gt;&#xD;&#xA;&#xD;&#xA;    &lt;/body&gt;&#xD;&#xA;&lt;/html&gt;&#xD;&#xA;">
+  <serverVariables>
+    <item name="ALL_HTTP">
+      <value string="HTTP_CONNECTION:keep-alive&#xD;&#xA;HTTP_CONTENT_LENGTH:51&#xD;&#xA;HTTP_CONTENT_TYPE:application/json;charset=UTF-8&#xD;&#xA;HTTP_ACCEPT:application/json, text/plain, */*&#xD;&#xA;HTTP_ACCEPT_ENCODING:gzip, deflate, br&#xD;&#xA;HTTP_ACCEPT_LANGUAGE:en-US,en;q=0.8&#xD;&#xA;HTTP_AUTHORIZATION:Bearer NwzfzQ2YVKEuIZ_KxAAkzhLC9QUgaUa74DT_lZ9pdPzJPkxkKsU9zY6RRS9i5QaOSn656xy7kmdSKUf69AZG__jUVIwXiNlAh_mVtXM6-FfPC6X4U_QqqcP4Umih4EDJ32NDknhtdPKwfywEOk6xIHKXXfQZwI2BekgdNQB7FyznsekWdYtrkVrFttD_AIcbPmZoBCN1xyUkbsTJ-tLneEniH1LKx_WdUJxddgHHOzSF_gkzpS4Pk_w6oBhe6vvLTjs9i7o9GNcDdqm3wc36dYZ4mssH4_WuJzxRgORXDX5lqDwP2UyG9E5bDBRT0uI1ZkpYXs3ZlzXeiAf-gsoJgvquqyDr0l3pIyf2VcmJqmKYexVcEXDjD64oMZelrnia0Wl6_hTVrCnIRmn4rjOXHOobDVfLQ9yaj0TbA4tSVdSWY0TQyt3wf8thsDf_yT-SEPV9pZ_E6uycWN1GDjaqKed-rI5ds889ROwsr6PRF6U-qoLFTkZ175pMVFg1Glf88bf90qw7SgkmS2U-d6zmiZzV4zMrtHAGdwkJOGOmAj49sAFNzDK5dc4yb1Mv-wZarmlUw6L0SncLCZ9OIS4c-jTDBIi0oZhHpXNSQob9cFGzkdU4Jvsb83lBMrLAXPL71DpDyz2h_KM-cT_CCD7TuQ&#xD;&#xA;HTTP_COOKIE:.AspNet.Cookies=9nIvQkWdTmQHtOS-iSwDdfrCR6B1IDtgMMMMxYldGpOverqMsgSgoMi3xxJe4rgNwYBOKyH8w4CQG7S38z_glEPcOAtxLEoXCaD6_P_68VlW2NPfA6_b3obs2FMWhDDQmmwiRndLG7B-S8NZBqeLAXK9dbdC7CI_bZSDLCL3jrejUIVT7Q5Nib3sAqJfDC-JHkiBD5oDg2iagSGeXQvWXTG70LobabU0S5yu7E1wNX4UMzHnFlA1MR7c0UEl0oBC0fDZYZwI99NCcZg-kiUGRijSbfbJNyJ7RajHxnITVBkppTk0gBRbgwsWZU_na88vyAaYb0yCzZ__SQI7PwYu00Al6PmJNh34RwX1FIGcn-OgVPBiLEmiUEGQwavPtXg0ozHGCwiGgLfGrZX04_bP7pntF0G1oudbwgeGCttfQyjTbA0TJnbW_WuWwEOOl8wCWb7Xw6h4axiBJMGjhRIxD0E93LvN2hV-hRIIRsJ34qMtmOXKAWlsUYoCn-kKrFaHTToO8afIoxdw7ktFj4N-pLhUeZFqkzEYb6i8WUEA3Tc; tmhDynamicLocale.locale=en-nz&#xD;&#xA;HTTP_HOST:localhost:44300&#xD;&#xA;HTTP_REFERER:https://localhost:44300/&#xD;&#xA;HTTP_USER_AGENT:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36&#xD;&#xA;HTTP_ORIGIN:https://localhost:44300&#xD;&#xA;" />
+    </item>
+    <item name="ALL_RAW">
+      <value string="Connection: keep-alive&#xD;&#xA;Content-Length: 51&#xD;&#xA;Content-Type: application/json;charset=UTF-8&#xD;&#xA;Accept: application/json, text/plain, */*&#xD;&#xA;Accept-Encoding: gzip, deflate, br&#xD;&#xA;Accept-Language: en-US,en;q=0.8&#xD;&#xA;Authorization: Bearer NwzfzQ2YVKEuIZ_KxAAkzhLC9QUgaUa74DT_lZ9pdPzJPkxkKsU9zY6RRS9i5QaOSn656xy7kmdSKUf69AZG__jUVIwXiNlAh_mVtXM6-FfPC6X4U_QqqcP4Umih4EDJ32NDknhtdPKwfywEOk6xIHKXXfQZwI2BekgdNQB7FyznsekWdYtrkVrFttD_AIcbPmZoBCN1xyUkbsTJ-tLneEniH1LKx_WdUJxddgHHOzSF_gkzpS4Pk_w6oBhe6vvLTjs9i7o9GNcDdqm3wc36dYZ4mssH4_WuJzxRgORXDX5lqDwP2UyG9E5bDBRT0uI1ZkpYXs3ZlzXeiAf-gsoJgvquqyDr0l3pIyf2VcmJqmKYexVcEXDjD64oMZelrnia0Wl6_hTVrCnIRmn4rjOXHOobDVfLQ9yaj0TbA4tSVdSWY0TQyt3wf8thsDf_yT-SEPV9pZ_E6uycWN1GDjaqKed-rI5ds889ROwsr6PRF6U-qoLFTkZ175pMVFg1Glf88bf90qw7SgkmS2U-d6zmiZzV4zMrtHAGdwkJOGOmAj49sAFNzDK5dc4yb1Mv-wZarmlUw6L0SncLCZ9OIS4c-jTDBIi0oZhHpXNSQob9cFGzkdU4Jvsb83lBMrLAXPL71DpDyz2h_KM-cT_CCD7TuQ&#xD;&#xA;Cookie: .AspNet.Cookies=9nIvQkWdTmQHtOS-iSwDdfrCR6B1IDtgMMMMxYldGpOverqMsgSgoMi3xxJe4rgNwYBOKyH8w4CQG7S38z_glEPcOAtxLEoXCaD6_P_68VlW2NPfA6_b3obs2FMWhDDQmmwiRndLG7B-S8NZBqeLAXK9dbdC7CI_bZSDLCL3jrejUIVT7Q5Nib3sAqJfDC-JHkiBD5oDg2iagSGeXQvWXTG70LobabU0S5yu7E1wNX4UMzHnFlA1MR7c0UEl0oBC0fDZYZwI99NCcZg-kiUGRijSbfbJNyJ7RajHxnITVBkppTk0gBRbgwsWZU_na88vyAaYb0yCzZ__SQI7PwYu00Al6PmJNh34RwX1FIGcn-OgVPBiLEmiUEGQwavPtXg0ozHGCwiGgLfGrZX04_bP7pntF0G1oudbwgeGCttfQyjTbA0TJnbW_WuWwEOOl8wCWb7Xw6h4axiBJMGjhRIxD0E93LvN2hV-hRIIRsJ34qMtmOXKAWlsUYoCn-kKrFaHTToO8afIoxdw7ktFj4N-pLhUeZFqkzEYb6i8WUEA3Tc; tmhDynamicLocale.locale=en-nz&#xD;&#xA;Host: localhost:44300&#xD;&#xA;Referer: https://localhost:44300/&#xD;&#xA;User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36&#xD;&#xA;Origin: https://localhost:44300&#xD;&#xA;" />
+    </item>
+    <item name="APPL_MD_PATH">
+      <value string="/LM/W3SVC/2/ROOT" />
+    </item>
+    <item name="APPL_PHYSICAL_PATH">
+      <value string="C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\" />
+    </item>
+    <item name="AUTH_TYPE">
+      <value string="Bearer" />
+    </item>
+    <item name="AUTH_USER">
+      <value string="brentm@adhb.govt.nz" />
+    </item>
+    <item name="AUTH_PASSWORD">
+      <value string="*****" />
+    </item>
+    <item name="LOGON_USER">
+      <value string="brentm@adhb.govt.nz" />
+    </item>
+    <item name="REMOTE_USER">
+      <value string="brentm@adhb.govt.nz" />
+    </item>
+    <item name="CERT_COOKIE">
+      <value string="" />
+    </item>
+    <item name="CERT_FLAGS">
+      <value string="" />
+    </item>
+    <item name="CERT_ISSUER">
+      <value string="" />
+    </item>
+    <item name="CERT_KEYSIZE">
+      <value string="256" />
+    </item>
+    <item name="CERT_SECRETKEYSIZE">
+      <value string="2048" />
+    </item>
+    <item name="CERT_SERIALNUMBER">
+      <value string="" />
+    </item>
+    <item name="CERT_SERVER_ISSUER">
+      <value string="CN=localhost" />
+    </item>
+    <item name="CERT_SERVER_SUBJECT">
+      <value string="CN=localhost" />
+    </item>
+    <item name="CERT_SUBJECT">
+      <value string="" />
+    </item>
+    <item name="CONTENT_LENGTH">
+      <value string="51" />
+    </item>
+    <item name="CONTENT_TYPE">
+      <value string="application/json;charset=UTF-8" />
+    </item>
+    <item name="GATEWAY_INTERFACE">
+      <value string="CGI/1.1" />
+    </item>
+    <item name="HTTPS">
+      <value string="on" />
+    </item>
+    <item name="HTTPS_KEYSIZE">
+      <value string="256" />
+    </item>
+    <item name="HTTPS_SECRETKEYSIZE">
+      <value string="2048" />
+    </item>
+    <item name="HTTPS_SERVER_ISSUER">
+      <value string="CN=localhost" />
+    </item>
+    <item name="HTTPS_SERVER_SUBJECT">
+      <value string="CN=localhost" />
+    </item>
+    <item name="INSTANCE_ID">
+      <value string="2" />
+    </item>
+    <item name="INSTANCE_META_PATH">
+      <value string="/LM/W3SVC/2" />
+    </item>
+    <item name="LOCAL_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="PATH_INFO">
+      <value string="/api/CoursePlanning/EmailAll/" />
+    </item>
+    <item name="PATH_TRANSLATED">
+      <value string="C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\api\CoursePlanning\EmailAll\" />
+    </item>
+    <item name="QUERY_STRING">
+      <value string="" />
+    </item>
+    <item name="REMOTE_ADDR">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_HOST">
+      <value string="::1" />
+    </item>
+    <item name="REMOTE_PORT">
+      <value string="54910" />
+    </item>
+    <item name="REQUEST_METHOD">
+      <value string="POST" />
+    </item>
+    <item name="SCRIPT_NAME">
+      <value string="/api/CoursePlanning/EmailAll/" />
+    </item>
+    <item name="SERVER_NAME">
+      <value string="localhost" />
+    </item>
+    <item name="SERVER_PORT">
+      <value string="44300" />
+    </item>
+    <item name="SERVER_PORT_SECURE">
+      <value string="1" />
+    </item>
+    <item name="SERVER_PROTOCOL">
+      <value string="HTTP/1.1" />
+    </item>
+    <item name="SERVER_SOFTWARE">
+      <value string="Microsoft-IIS/10.0" />
+    </item>
+    <item name="URL">
+      <value string="/api/CoursePlanning/EmailAll/" />
+    </item>
+    <item name="HTTP_CONNECTION">
+      <value string="keep-alive" />
+    </item>
+    <item name="HTTP_CONTENT_LENGTH">
+      <value string="51" />
+    </item>
+    <item name="HTTP_CONTENT_TYPE">
+      <value string="application/json;charset=UTF-8" />
+    </item>
+    <item name="HTTP_ACCEPT">
+      <value string="application/json, text/plain, */*" />
+    </item>
+    <item name="HTTP_ACCEPT_ENCODING">
+      <value string="gzip, deflate, br" />
+    </item>
+    <item name="HTTP_ACCEPT_LANGUAGE">
+      <value string="en-US,en;q=0.8" />
+    </item>
+    <item name="HTTP_AUTHORIZATION">
+      <value string="Bearer NwzfzQ2YVKEuIZ_KxAAkzhLC9QUgaUa74DT_lZ9pdPzJPkxkKsU9zY6RRS9i5QaOSn656xy7kmdSKUf69AZG__jUVIwXiNlAh_mVtXM6-FfPC6X4U_QqqcP4Umih4EDJ32NDknhtdPKwfywEOk6xIHKXXfQZwI2BekgdNQB7FyznsekWdYtrkVrFttD_AIcbPmZoBCN1xyUkbsTJ-tLneEniH1LKx_WdUJxddgHHOzSF_gkzpS4Pk_w6oBhe6vvLTjs9i7o9GNcDdqm3wc36dYZ4mssH4_WuJzxRgORXDX5lqDwP2UyG9E5bDBRT0uI1ZkpYXs3ZlzXeiAf-gsoJgvquqyDr0l3pIyf2VcmJqmKYexVcEXDjD64oMZelrnia0Wl6_hTVrCnIRmn4rjOXHOobDVfLQ9yaj0TbA4tSVdSWY0TQyt3wf8thsDf_yT-SEPV9pZ_E6uycWN1GDjaqKed-rI5ds889ROwsr6PRF6U-qoLFTkZ175pMVFg1Glf88bf90qw7SgkmS2U-d6zmiZzV4zMrtHAGdwkJOGOmAj49sAFNzDK5dc4yb1Mv-wZarmlUw6L0SncLCZ9OIS4c-jTDBIi0oZhHpXNSQob9cFGzkdU4Jvsb83lBMrLAXPL71DpDyz2h_KM-cT_CCD7TuQ" />
+    </item>
+    <item name="HTTP_COOKIE">
+      <value string=".AspNet.Cookies=9nIvQkWdTmQHtOS-iSwDdfrCR6B1IDtgMMMMxYldGpOverqMsgSgoMi3xxJe4rgNwYBOKyH8w4CQG7S38z_glEPcOAtxLEoXCaD6_P_68VlW2NPfA6_b3obs2FMWhDDQmmwiRndLG7B-S8NZBqeLAXK9dbdC7CI_bZSDLCL3jrejUIVT7Q5Nib3sAqJfDC-JHkiBD5oDg2iagSGeXQvWXTG70LobabU0S5yu7E1wNX4UMzHnFlA1MR7c0UEl0oBC0fDZYZwI99NCcZg-kiUGRijSbfbJNyJ7RajHxnITVBkppTk0gBRbgwsWZU_na88vyAaYb0yCzZ__SQI7PwYu00Al6PmJNh34RwX1FIGcn-OgVPBiLEmiUEGQwavPtXg0ozHGCwiGgLfGrZX04_bP7pntF0G1oudbwgeGCttfQyjTbA0TJnbW_WuWwEOOl8wCWb7Xw6h4axiBJMGjhRIxD0E93LvN2hV-hRIIRsJ34qMtmOXKAWlsUYoCn-kKrFaHTToO8afIoxdw7ktFj4N-pLhUeZFqkzEYb6i8WUEA3Tc; tmhDynamicLocale.locale=en-nz" />
+    </item>
+    <item name="HTTP_HOST">
+      <value string="localhost:44300" />
+    </item>
+    <item name="HTTP_REFERER">
+      <value string="https://localhost:44300/" />
+    </item>
+    <item name="HTTP_USER_AGENT">
+      <value string="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36" />
+    </item>
+    <item name="HTTP_ORIGIN">
+      <value string="https://localhost:44300" />
+    </item>
+  </serverVariables>
+  <cookies>
+    <item name=".AspNet.Cookies">
+      <value string="9nIvQkWdTmQHtOS-iSwDdfrCR6B1IDtgMMMMxYldGpOverqMsgSgoMi3xxJe4rgNwYBOKyH8w4CQG7S38z_glEPcOAtxLEoXCaD6_P_68VlW2NPfA6_b3obs2FMWhDDQmmwiRndLG7B-S8NZBqeLAXK9dbdC7CI_bZSDLCL3jrejUIVT7Q5Nib3sAqJfDC-JHkiBD5oDg2iagSGeXQvWXTG70LobabU0S5yu7E1wNX4UMzHnFlA1MR7c0UEl0oBC0fDZYZwI99NCcZg-kiUGRijSbfbJNyJ7RajHxnITVBkppTk0gBRbgwsWZU_na88vyAaYb0yCzZ__SQI7PwYu00Al6PmJNh34RwX1FIGcn-OgVPBiLEmiUEGQwavPtXg0ozHGCwiGgLfGrZX04_bP7pntF0G1oudbwgeGCttfQyjTbA0TJnbW_WuWwEOOl8wCWb7Xw6h4axiBJMGjhRIxD0E93LvN2hV-hRIIRsJ34qMtmOXKAWlsUYoCn-kKrFaHTToO8afIoxdw7ktFj4N-pLhUeZFqkzEYb6i8WUEA3Tc" />
+    </item>
+    <item name="tmhDynamicLocale.locale">
+      <value string="en-nz" />
+    </item>
+  </cookies>
+</error>

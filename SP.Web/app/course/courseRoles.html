@@ -26,26 +26,30 @@
                                 </div>
                                 <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                                     <div class="panel-body" ng-if="m.track">
-                                        <div class="row col-md-12">
-                                            <div class="form-group" ng-if="m.choices.length"> <!--m.choices only if !scenario-->
+                                        <div class="row">
+                                            <div class="form-group" ng-if="m.choices.length">
+                                                <!--m.choices only if !scenario-->
                                                 <label class="control-label col-md-1" for="activity">
                                                     Resource
                                                 </label>
                                                 <div class="col-md-5">
-                                                    id="activity"
-                                                    ng-model="m.selectedActivityId" 
-                                                    bs-options="a.id as a.html for a in m.choices" 
-                                                    ng-change="vm.changeActivityScenario(m)" 
-                                                    <ui-select multiple ng-model="ctrl.multipleDemo.selectedPeopleWithGroupBy" title="Choose a person">
-                                                        <ui-select-match placeholder="Select person...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match>
-                                                        <ui-select-choices group-by="'property'" repeat="person in ctrl.people | propsFilter: {name: $select.search, age: $select.search}">
-                                                            <div ng-bind-html="person.name | highlight: $select.search"></div>
-                                                            <small>
-                                                                email: {{person.email}}
-                                                                age: <span ng-bind-html="''+person.age | highlight: $select.search"></span>
-                                                            </small>
-                                                        </ui-select-choices>
-                                                    </ui-select>
+                                                    <div class="input-group">
+                                                        <ui-select ng-model="m.selectedActivityId" title="Choose resource"
+                                                                   id="activity" on-select="vm.changeActivityScenario(m)">
+                                                            <ui-select-match allow-clear="true" placeholder="Select resource...">{{$select.selected.name}}</ui-select-match>
+                                                            <ui-select-choices repeat="a.id as a in m.choices">
+                                                                <span ng-bind-html="item.html"></span>
+                                                            </ui-select-choices>
+                                                            <ui-select-no-choice>
+                                                                No Matches.
+                                                            </ui-select-no-choice>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button type="button" ng-click="m.selectedActivityId = ''" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group" ng-if="m.isScenario && (m.selectedActivityId || vm.scenarios.length)">
@@ -53,129 +57,136 @@
                                                     Scenario
                                                 </label>
                                                 <div class="col-md-5">
-                                                    id="scenario"
-                                                    ng-model="m.selectedActivityId" 
-                                                    bs-options="s.id as s.html for s in vm.scenarios"
-                                                             ng-change="vm.changeActivityScenario(m)" 
-
-                                                    <ui-select multiple ng-model="ctrl.multipleDemo.selectedPeopleWithGroupBy" theme="bootstrap" ng-disabled="ctrl.disabled" close-on-select="true" style="width: 800px;" title="Choose a person">
-                                                        <ui-select-match placeholder="Select person...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match>
-                                                        <ui-select-choices group-by="someGroupFn" repeat="person in ctrl.people | propsFilter: {name: $select.search, age: $select.search}">
-                                                            <div ng-bind-html="person.name | highlight: $select.search"></div>
-                                                            <small>
-                                                                email: {{person.email}}
-                                                                age: <span ng-bind-html="''+person.age | highlight: $select.search"></span>
-                                                            </small>
+                                                    <ui-select ng-model="m.selectedActivityId" title="Choose resource"
+                                                               id="scenario" on-select="vm.changeActivityScenario(m)">
+                                                        <ui-select-match allow-clear="true" placeholder="Select resource...">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="s.id as s in vm.scenarios">
+                                                            <span ng-bind-html="item.html"></span>
                                                         </ui-select-choices>
+                                                        <ui-select-no-choice>
+                                                            No Matches.
+                                                        </ui-select-no-choice>
                                                     </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button type="button" ng-click="m.selectedActivityId=''" class="btn btn-default">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </span>
                                                 </div>
                                                 <aside class="col-md-6">
                                                     {{m.scenario.fullDescription}}
                                                 </aside>
 
                                             </div>
-                                            <div class="form-group" ng-if="m.isScenario && m.manikins.length">
-                                                <label class="control-label col-md-1" for="manikin">
+                                            <div class="row" ng-if="m.isScenario">
+                                                <label class="control-label col-md-2" for="manikin">
                                                     Manikin(s)
                                                 </label>
-                                                <div class="col-md-5">
-                                                    <ui-select multiple ng-model="ctrl.multipleDemo.selectedPeopleWithGroupBy" theme="bootstrap" ng-disabled="ctrl.disabled" close-on-select="true" style="width: 800px;" title="Choose a person">
-                                                        <ui-select-match placeholder="Select person...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match>
-                                                        <ui-select-choices group-by="someGroupFn" repeat="person in ctrl.people | propsFilter: {name: $select.search, age: $select.search}">
-                                                            <div ng-bind-html="person.name | highlight: $select.search"></div>
-                                                            <small>
-                                                                email: {{person.email}}
-                                                                age: <span ng-bind-html="''+person.age | highlight: $select.search"></span>
-                                                            </small>
-                                                        </ui-select-choices>
-                                                    </ui-select>
-                                                        id=manikin
-                                                         input-model="m.manikins" 
-                                                         output-model="m.selectedManikins" 
+                                                <div class="col-md-10">
+                                                    <div class="col-md-6">
+                                                        <!--simple select will not do aswe need classes & titles applied to options-->
+                                                        <ui-select multiple ng-model="vm.manikinDptIds" id="departments" title="Departments from which you will be using manikins" 
+                                                                   on-select="vm.departmentSelected($model.id)" close-on-select="true">
+                                                            <ui-select-match placeholder="departments [type to narrow selection]">{{$item.abbreviation}}</ui-select-match>
+                                                            <ui-select-choices group-by="'institutionName'" repeat="department.id as department in vm.departments | propsFilter: {searchString: $select.search}">
+                                                                <div ng-bind-html="department.name | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <ui-select multiple ng-model="m.courseSlotManikinIds" id="manikin"
+                                                                   close-on-select="true" title="Choose manikin(s)">
+                                                            <ui-select-match placeholder="Select manikin(s)...">{{$item.description}}</ui-select-match>
+                                                            <ui-select-choices group-by="'departmentAbbreviation'"
+                                                                    repeat="manikin.id as manikin in vm.manikins | propsFilter: {description: $select.search }">
+                                                                <div ng-bind-html="manikin.description | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <span class="label" ng-class="m.isScenario?'label-info':'label-default'">
-                                                    Faculty
-                                                </span>
-
-                                                <ul class="col-md-12 faculty" ng-if="!m.isScenario" ng-model="m.assignedFaculty" ui-sortable="m.sortableOptions"
-                                                    ng-class="m.groupClass">
-                                                    <li class="list-group-item col-SP-6 clearfix" ng-repeat="r in m.assignedFaculty track by r.participantId"
-                                                        ng-class="{unavailableParticipant: r.isConfirmed===false}">
-                                                        <i ng-class="r.icon"></i> {{r.fullName}} <small class="small">({{r.departmentName}})</small>
-                                                        <span class="pull-right">
-                                                            <span class="badge badge-info">
-                                                                {{r.slotCount}}
-                                                            </span>
-                                                            <span class="badge badge-success">
-                                                                {{r.scenarioCount}}
-                                                            </span>
-                                                        </span>
-                                                    </li>
-                                                </ul>
-                                                <div ng-repeat="r in m.roles track by r.id" ng-if="m.isScenario" class="dl-horizontal">
-                                                    <div class="simRoleDescription col-md-3 control-label">
-                                                        {{r.description}}
-                                                    </div>
-                                                    <ul class="col-md-9 faculty" ng-model="r.assignedFaculty" ui-sortable="r.sortableOptions" ng-class="m.groupClass">
-                                                        <li class="list-group-item col-SP-6 clearfix" ng-repeat="p in r.assignedFaculty track by p.participantId"
-                                                            ng-class="{unavailableParticipant: p.isConfirmed===false}">
-                                                            <i ng-class="p.icon"></i> 
-                                                            {{p.fullName}} 
-                                                            <small class="small">
-                                                                ({{p.departmentName}})
-                                                            </small>
-                                                            <span class="col-SP-2">
+                                            <hr/>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <span class="label" ng-class="m.isScenario?'label-info col-md-offset-3':'label-default'">
+                                                        Faculty
+                                                    </span>
+                                                    <ul class="col-md-12 faculty" ng-if="!m.isScenario" ng-model="m.assignedFaculty" ui-sortable="m.sortableOptions"
+                                                        ng-class="m.groupClass">
+                                                        <li class="list-group-item col-sm-6 clearfix" ng-repeat="r in m.assignedFaculty track by r.participantId"
+                                                            ng-class="{unavailableParticipant: r.isConfirmed===false}">
+                                                            <i ng-class="r.icon"></i> {{r.fullName}} <small class="small">({{r.departmentName}})</small>
+                                                            <span class="pull-right">
                                                                 <span class="badge badge-info">
-                                                                    {{p.slotCount}}
+                                                                    {{r.slotCount}}
                                                                 </span>
                                                                 <span class="badge badge-success">
-                                                                    {{p.scenarioCount}}
+                                                                    {{r.scenarioCount}}
+                                                                </span>
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                    <div ng-repeat="r in m.roles track by r.id" ng-if="m.isScenario" class="row">
+                                                        <div class="simRoleDescription col-md-3 control-label">
+                                                            {{r.description}}
+                                                        </div>
+                                                        <ul class="col-md-9 faculty" ng-model="r.assignedFaculty" ui-sortable="r.sortableOptions" ng-class="m.groupClass">
+                                                            <li class="list-group-item col-sm-6 clearfix" ng-repeat="p in r.assignedFaculty track by p.participantId"
+                                                                ng-class="{unavailableParticipant: p.isConfirmed===false}">
+                                                                <i ng-class="p.icon"></i>
+                                                                {{p.fullName}}
+                                                                <small class="small">
+                                                                    ({{p.departmentName}})
+                                                                </small>
+                                                                <span class="pull-right">
+                                                                    <span class="badge badge-info">
+                                                                        {{p.slotCount}}
+                                                                    </span>
+                                                                    <span class="badge badge-success">
+                                                                        {{p.scenarioCount}}
+                                                                    </span>
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="label label-info" bs-enabled="m.isScenario" bs-tooltip data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Ctrl + drag to assign faculty member to multiple roles">
+                                                        Available Faculty
+                                                    </div>
+                                                    <ul class="list-group faculty" ng-model="m.availableFaculty" ui-sortable="m.availableFacultyOptions" ng-class="m.groupClass">
+                                                        <li ng-repeat="cp in m.availableFaculty track by cp.participantId" class="list-group-item clearfix"
+                                                            ng-class="{unavailableParticipant: cp.isConfirmed===false}">
+                                                            <i ng-class="cp.icon"></i> {{cp.fullName}} <small class="small">({{cp.departmentName}})</small>
+                                                            <span class="pull-right">
+                                                                <span class="badge badge-info">
+                                                                    {{cp.slotCount}}
+                                                                </span>
+                                                                <span class="badge badge-success">
+                                                                    {{cp.scenarioCount}}
                                                                 </span>
                                                             </span>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <div class="label label-info" bs-enabled="m.isScenario" bs-tooltip data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Ctrl + drag to assign faculty member to multiple roles">
-                                                    Available Faculty
-                                                </div>
-                                                <ul class="list-group faculty" ng-model="m.availableFaculty" ui-sortable="m.availableFacultyOptions" ng-class="m.groupClass">
-                                                    <li ng-repeat="cp in m.availableFaculty track by cp.participantId" class="list-group-item clearfix"
-                                                        ng-class="{unavailableParticipant: cp.isConfirmed===false}">
-                                                        <i ng-class="cp.icon"></i> {{cp.fullName}} <small class="small">({{cp.departmentName}})</small>
-                                                        <span class="pull-right">
-                                                            <span class="badge badge-info">
-                                                                {{cp.slotCount}}
-                                                            </span>
-                                                            <span class="badge badge-success">
-                                                                {{cp.scenarioCount}}
-                                                            </span>
-                                                        </span>
-</li>
-                                                </ul>
-                                            </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-6 col-md-6">
-                                <button type="submit" data-ng-disabled="vm.disableSave()" class="btn btn-success">Save</button>
-                                <a class="btn btn-info" ng-href="#course/{{vm.course.id}}">
-                                    <i class="fa fa-arrow-left"></i>course planner
-                                </a>
+                            <div class="form-group">
+                                <div class="col-md-offset-6 col-md-6">
+                                    <button type="submit" data-ng-disabled="vm.disableSave()" class="btn btn-success">Save</button>
+                                    <a class="btn btn-info" ng-href="#course/{{vm.course.id}}">
+                                        <i class="fa fa-arrow-left"></i>course planner
+                                    </a>
+                                </div>
                             </div>
+                        </div> <!--panel group-->
+                        <div class="panel-footer">
                         </div>
-                    </div>
-                    <div class="panel-footer">
-                    </div>
-                </div>
+                    </div><!--panel body-->
+                </div><!--panel-->
             </form>
         </div>
     </section>

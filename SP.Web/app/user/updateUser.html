@@ -36,21 +36,45 @@
                     </legend>
 
                     <div class="form-group">
-                        <label for="fullName" class="control-label col-md-2">Site Administrator</label>
+                        <label class="control-label col-md-2">Access</label>
                         <div class="col-md-10">
-                            <button type="button" class="btn btn-default" bs-checkbox ng-model="vm.permissions.siteAdmin" ng-disabled="vm.canAter('SiteAdmin')" ng-change="vm.changed()">
-                                Administrator
-                            </button>
+                            <div class="btn-group" ng-model="vm.permissions.adminLevel" bs-radio-group>
+                                <label class="btn btn-default" ng-if="vm.canAlter('AccessAllData')">
+                                    <input class="btn btn-default" value="accessAllData" type="radio" ng-change="vm.changed()">
+                                    All Data
+                                </label>
+                                <label class="btn btn-default" ng-if="vm.canAlter('AccessInstitution')">
+                                    <input class="btn btn-default" value="accessInstitution" type="radio" ng-change="vm.changed()">
+                                    Institution
+                                </label>
+                                <label class="btn btn-default" ng-if="vm.canAlter('AccessDepartment')">
+                                    <input class="btn btn-default" value="accessDepartment" type="radio" ng-change="vm.changed()">
+                                    Department
+                                </label>
+                                <label class="btn btn-default">
+                                    <input class="btn btn-default" value="" type="radio" ng-change="vm.changed()">
+                                    Participating Courses Only
+                                </label>
+                            </div>
                         </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="email" class="control-label col-md-2">Access</label>
+                        <label class="control-label col-md-2">Other Admin Roles</label>
                         <div class="col-md-10">
-                            <div class="btn-group" ng-model="vm.permissions.access" bs-radio-group>
-                                <label class="btn btn-default"><input class="btn btn-default" value="accessAllData" type="radio" ng-disabled="!vm.canAlter('AccessAllData')" ng-change="vm.changed()"> All Data</label>
-                                <label class="btn btn-default"><input class="btn btn-default" value="accessInstitution" type="radio" ng-disabled="!vm.canAlter('AccessInstitution')" ng-change="vm.changed()"> Institution</label>
-                                <label class="btn btn-default"><input class="btn btn-default" value="accessDepartment" type="radio" ng-disabled="!vm.canAlter('AccessDepartment')" ng-change="vm.changed()"> Department</label>
-                                <label class="btn btn-default"><input class="btn btn-default" value="" type="radio" ng-change="vm.changed()"> Participating Courses Only</label>
+                            <div class="btn-group" ng-model="vm.permissions" bs-checkbox-group>
+                                <label class="btn btn-default" ng-if="vm.canAlter('SiteAdmin')">
+                                    <input type="checkbox" value="siteAdmin" ng-change="vm.changed()" />
+                                    Website Admin
+                                </label>
+                                <label class="btn btn-default" ng-if="vm.canAlter('DptManikinBookings')">
+                                    <input type="checkbox" value="dptManikinBookings" ng-change="vm.changed()" />
+                                    Manikin Bookings
+                                </label>
+                                <label class="btn btn-default" ng-if="vm.canAlter('DptRoomBookings')">
+                                    <input type="checkbox" value="dptRoomBookings" ng-change="vm.changed()" />
+                                    Room Bookings
+                                </label>
                             </div>
                         </div>
                     </div>

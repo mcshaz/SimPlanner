@@ -34,7 +34,7 @@ namespace SP.Dto
         public virtual DbSet<ManikinManufacturerDto> ManikinManufacturers { get; set; }
         public virtual DbSet<ProfessionalRoleDto> ProfessionalRoles { get; set; }
         public virtual DbSet<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions { get; set; }
-        public virtual DbSet<RoleDto> Roles { get; set; }
+        //public virtual DbSet<RoleDto> Roles { get; set; }
         public virtual DbSet<RoomDto> Rooms { get; set; }
         public virtual DbSet<ScenarioDto> Scenarios { get; set; }
         public virtual DbSet<ScenarioResourceDto> ScenarioResources { get; set; }
@@ -325,13 +325,13 @@ namespace SP.Dto
                 .HasMany(e => e.ProfessionalRoleInstitutions)
                 .WithRequired(e => e.ProfessionalRole)
                 .HasForeignKey(e => e.ProfessionalRoleId);
-
+            /*
             modelBuilder.Entity<RoleDto>()
                 .HasMany(e => e.UserRoles)
                 .WithRequired(e => e.Role)
                 .HasForeignKey(e => e.RoleId)
                 .WillCascadeOnDelete(false);
-
+            */
             modelBuilder.Entity<RoomDto>()
                 .HasMany(e => e.Courses)
                 .WithRequired(e => e.Room)

@@ -1,4 +1,5 @@
 ﻿using Breeze.ContextProvider;
+using b= Breeze.ContextProvider;
 using LinqKit;
 using Microsoft.AspNet.Identity.EntityFramework;
 using SP.DataAccess;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -136,7 +138,7 @@ namespace SP.Dto.ProcessBreezeRequests
         {
             return PermissionErrors<T>(saveMap, (t, e) => isPermitted(t));
         }
-        private static IEnumerable<EntityError> PermissionErrors<T>(Dictionary<Type, List<EntityInfo>> saveMap, Func<T, EntityState,bool> isPermitted, string propertyName = null)
+        private static IEnumerable<EntityError> PermissionErrors<T>(Dictionary<Type, List<EntityInfo>> saveMap, Func<T, b.EntityState,bool> isPermitted, string propertyName = null)
         {
             List<EntityInfo> eis;
             if (saveMap.TryGetValue(typeof(T), out eis))
@@ -195,7 +197,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 //department being created - code should still work with iqueryable.contains
                 .Concat(PermissionErrors<DepartmentDto>(saveMap,
                 (e, state) => {
-                    if (state == EntityState.Added)
+                    if (state == b.EntityState.Added)
                     {
                         e.AdminApproved = e.AdminApproved && HasInstitutionPermission(e.InstitutionId);
                         return true;
@@ -215,7 +217,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
                 .Concat(PermissionErrors<InstitutionDto>(saveMap,
                 (e, state) => {
-                    if (state == EntityState.Added)
+                    if (state == b.EntityState.Added)
                     {
                         e.AdminApproved = e.AdminApproved && CurrentUser.AdminLevel == AdminLevels.AllData;
                         return true;
@@ -233,15 +235,15 @@ namespace SP.Dto.ProcessBreezeRequests
                 //for now, any update or create operation
                 .Concat(PermissionErrors<ParticipantDto>(saveMap,
                 (e, state) => {
-                    if (state == EntityState.Deleted)
+                    if (state == b.EntityState.Deleted)
                     {
                         return CurrentUser.AdminLevel == AdminLevels.AllData || e.Id == CurrentUser.Principal.Id;
                     }
-                    if (state == EntityState.Added)
+                    if (state == b.EntityState.Added)
                     {
                         return CurrentUser.AdminLevel != AdminLevels.None || !e.AdminApproved;
                     } 
-                    if (state == EntityState.Modified)
+                    if (state == b.EntityState.Modified)
                     {
                         if (CurrentUser.AdminLevel != AdminLevels.None) {
                             return true;
@@ -254,8 +256,6 @@ namespace SP.Dto.ProcessBreezeRequests
                 e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
                 .Concat(PermissionErrors<ProfessionalRoleInstitutionDto>(saveMap,
                 e => HasInstitutionPermission(e.InstitutionId)))
-                .Concat(PermissionErrors<RoleDto>(saveMap,
-                e => false))
                 .Concat(PermissionErrors<RoomDto>(saveMap,
                 e => HasDepartmentPermission(e.DepartmentId)))
                 .Concat(PermissionErrors<ScenarioDto>(saveMap,
@@ -287,6 +287,9 @@ namespace SP.Dto.ProcessBreezeRequests
                             return dptId.HasValue && (CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin
                                         || CurrentUser.AdminLevel == AdminLevels.DepartmentAdmin)
                                     && CurrentUser.UserDepartmentAdminIds.Contains(dptId.Value);
+                        case RoleConstants.DptManikinBookings:
+                        case RoleConstants.DptRoomBookings:
+                            return CurrentUser.AdminLevel != AdminLevels.None || CurrentUser.OtherRoles > AditionalRoles.None;
                         default:
                             throw new NotImplementedException("unknown role Id");
 
@@ -353,11 +356,11 @@ namespace SP.Dto.ProcessBreezeRequests
                                select TypedEntityInfo<IAssociateFile>.GetTyped(s.Value))
                                .SelectMany(s=>s).ToLookup(k => k.Info.EntityState);
 
-            foreach (var i in iAssocFiles[Breeze.ContextProvider.EntityState.Deleted]) {
+            foreach (var i in iAssocFiles[b.EntityState.Deleted]) {
                 i.Entity.DeleteFile();
             }
 
-            foreach (var i in iAssocFiles[Breeze.ContextProvider.EntityState.Modified])
+            foreach (var i in iAssocFiles[b.EntityState.Modified])
             {
                 //? need to check lastmodified or size?
                 string originalFilename = (string)i.Info.OriginalValuesMap.TryGetFirstValue(nameof(i.Entity.FileName), "LogoImageFileName");
@@ -371,7 +374,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 }
             }
 
-            foreach (var i in iAssocFiles[Breeze.ContextProvider.EntityState.Added].Concat(iAssocFiles[Breeze.ContextProvider.EntityState.Modified]))
+            foreach (var i in iAssocFiles[b.EntityState.Added].Concat(iAssocFiles[b.EntityState.Modified]))
             {
                 if (i.Entity.File != null)
                 {
@@ -393,7 +396,7 @@ namespace SP.Dto.ProcessBreezeRequests
 private void AddApprovedRole(List<EntityInfo> currentInfos)
 {
    var participants = from ci in currentInfos
-                            where ci.EntityState == Breeze.ContextProvider.EntityState.Added
+                            where ci.EntityState == b.EntityState.Added
                             select ((Participant)ci.Entity).Id;
    foreach (var p in participants)
    {
@@ -405,7 +408,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
         void MapIdentityUser(List<EntityInfo> currentInfos)
         {
             var breezeParticipants = from ci in currentInfos
-                                     where ci.EntityState == Breeze.ContextProvider.EntityState.Modified
+                                     where ci.EntityState == b.EntityState.Modified
                                      select (Participant)ci.Entity;
             var ids = breezeParticipants.Select(p => p.Id);
             var usrs = Context.Users.Where(u => ids.Contains(u.Id)).ToList(); //ToDictionary(u=>u.id) if realistic chance of having multiple users saved at once
@@ -525,7 +528,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                 {
                     var ci = CultureInfo.GetCultureInfo(i.Entity.LocaleCode);
                     //not great separation of concerns here- this is not a buisness logic problem
-                    if (i.Info.EntityState == Breeze.ContextProvider.EntityState.Added && !Context.Cultures.Any(c => c.LocaleCode == ci.Name))
+                    if (i.Info.EntityState == b.EntityState.Added && !Context.Cultures.Any(c => c.LocaleCode == ci.Name))
                     {
                         CreateCulture(ci);
                     }
@@ -614,7 +617,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
         IEnumerable<EntityError> GetFileErrors<T>(byte[] file, TypedEntityInfo<T> entityInfo, Func<IAssociateFileRequired> getExistingEntity) where T : class, IAssociateFileRequired
         {
             var returnVar = GetBaseFileErrors(file, entityInfo, entityInfo.Entity.FileSize, entityInfo.Entity.FileModified, () => getExistingEntity().AsOptional());
-            if (entityInfo.Info.EntityState == Breeze.ContextProvider.EntityState.Added)
+            if (entityInfo.Info.EntityState == b.EntityState.Added)
             {
                 if (file == null)
                 {
@@ -645,7 +648,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                     $"The file modified must not be the default value for a date ({(default(DateTime)):D})",
                     "FileModified"));
             }
-            if (entityInfo.Info.EntityState == Breeze.ContextProvider.EntityState.Modified && file == null)
+            if (entityInfo.Info.EntityState == b.EntityState.Modified && file == null)
             {
                 var existingEntity = getExistingEntity();
                 if (entityInfo.Entity.FileName != null && entityInfo.Entity.FileName != existingEntity.FileName)
@@ -783,13 +786,13 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                 
                 var cs = TypedEntityInfo<Course>.GetTyped(ei).ToLookup(c => c.Info.EntityState);
                 object roomId = null;
-                var addedRoomIds = cs[EntityState.Added]
-                    .Concat(cs[EntityState.Modified].Where(m => m.Info.OriginalValuesMap.TryGetValue(nameof(m.Entity.RoomId), out roomId) &&
+                var addedRoomIds = cs[b.EntityState.Added]
+                    .Concat(cs[b.EntityState.Modified].Where(m => m.Info.OriginalValuesMap.TryGetValue(nameof(m.Entity.RoomId), out roomId) &&
                         !m.Entity.RoomId.Equals(roomId)))
                     .ToHashSet(c => c.Entity.RoomId);
 
-                var removedRoomIds = cs[EntityState.Deleted].ToHashSet(c => c.Entity.RoomId)
-                    .AddRange(from c in cs[EntityState.Modified]
+                var removedRoomIds = cs[b.EntityState.Deleted].ToHashSet(c => c.Entity.RoomId)
+                    .AddRange(from c in cs[b.EntityState.Modified]
                               where c.Info.OriginalValuesMap.TryGetValue(nameof(c.Entity.RoomId), out roomId) && !c.Entity.RoomId.Equals(roomId)
                               select (Guid)roomId);
 
@@ -809,8 +812,8 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                     .ToDictionary(m => m.Id);
                 var entityStateMans = csm.ToLookup(k => k.Info.EntityState, v => manikins[v.Entity.ManikinId]);
 
-                bcd.AddedManikinBookings = entityStateMans[EntityState.Added].Except(entityStateMans[EntityState.Deleted]).ToList();
-                bcd.RemovedManikinBookings = entityStateMans[EntityState.Deleted].Except(entityStateMans[EntityState.Added]).ToList();
+                bcd.AddedManikinBookings = entityStateMans[b.EntityState.Added].Except(entityStateMans[b.EntityState.Deleted]).ToList();
+                bcd.RemovedManikinBookings = entityStateMans[b.EntityState.Deleted].Except(entityStateMans[b.EntityState.Added]).ToList();
                 if (bcd.RelevantCourse == null)
                 {
                     bcd.RelevantCourse = Context.Courses.Find(csm.First().Entity.CourseId);
@@ -822,21 +825,30 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             {
                 var manikinAdminId = (from r in RoleConstants.RoleNames where r.Value == RoleConstants.DptManikinBookings select r.Key).First();
                 var roomAdminId = (from r in RoleConstants.RoleNames where r.Value == RoleConstants.DptRoomBookings select r.Key).First();
-                var manikinAdmins = Context.Users //include("Department.Institution.Culture")
+                var manikinAdmins = Context.Users.Include("Department.Institution.Culture").Include(u=>u.Roles)
                     .Where(u => (u.Roles.Any(r => r.RoleId == manikinAdminId)
                             && u.Department.Manikins.Any(m => manikinIds.Contains(m.Id)))
                         || (u.Roles.Any(r => r.RoleId == roomAdminId)
                             && u.Department.Rooms.Any(r => allRoomIds.Contains(r.Id))))
-                    .ToLookup(u=>u.DefaultDepartmentId, u=>u);
-                return manikinAdmins.Select(ma=>new BookingChangeDetails
-                {
-                    PersonBooking = CurrentUser.Principal,
-                    Notify = ma,
-                    RelevantCourse = bcd.RelevantCourse,
-                    AddedManikinBookings = bcd.AddedManikinBookings.Where(m=>m.DepartmentId == ma.Key).ToList(),
-                    RemovedManikinBookings = bcd.RemovedManikinBookings.Where(m => m.DepartmentId == ma.Key).ToList(),
-                    AddedRoomBooking = bcd.AddedRoomBooking?.DepartmentId == ma.Key ? bcd.AddedRoomBooking : null,
-                    RemovedRoomBooking = bcd.RemovedRoomBooking?.DepartmentId == ma.Key ? bcd.RemovedRoomBooking : null
+                    .ToLookup(u=> new { DptId = u.DefaultDepartmentId, ManikinAdmin = u.Roles.Any(r=>r.RoleId==manikinAdminId), RoomAdmin = u.Roles.Any(r => r.RoleId == roomAdminId) }, u=>u);
+                return manikinAdmins.Select(ma=> {
+                    var returnVar = new BookingChangeDetails
+                    {
+                        PersonBooking = CurrentUser.Principal,
+                        Notify = ma,
+                        RelevantCourse = bcd.RelevantCourse,
+                    };
+                    if (ma.Key.ManikinAdmin)
+                    {
+                        returnVar.AddedManikinBookings = bcd.AddedManikinBookings.Where(m => m.DepartmentId == ma.Key.DptId).ToList();
+                        returnVar.RemovedManikinBookings = bcd.RemovedManikinBookings.Where(m => m.DepartmentId == ma.Key.DptId).ToList();
+                    }
+                    if (ma.Key.RoomAdmin)
+                    {
+                        returnVar.AddedRoomBooking = bcd.AddedRoomBooking?.DepartmentId == ma.Key.DptId ? bcd.AddedRoomBooking : null;
+                        returnVar.RemovedRoomBooking = bcd.RemovedRoomBooking?.DepartmentId == ma.Key.DptId ? bcd.RemovedRoomBooking : null;
+                    }
+                    return returnVar;
                 });
             }
             return null;

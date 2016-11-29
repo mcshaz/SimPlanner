@@ -9,6 +9,7 @@ using SP.Web.Controllers.Helpers;
 using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.AspNet.Identity.Owin;
+using SP.Web.UserEmails;
 
 namespace SP.Web.Controllers
 {
@@ -22,10 +23,9 @@ namespace SP.Web.Controllers
         {
             get
             {
-                return _repository ?? (_repository = new MedSimDtoRepository(User, Request.GetOwinContext().Get<DataAccess.MedSimDbContext>()));
+                return _repository ?? (_repository = new MedSimDtoRepository(User, Request.GetOwinContext().Get<DataAccess.MedSimDbContext>()) { AfterBookingChange = MailExtensions.SendBookingNotifications});
             }
         }
-
 
         [HttpPost]
         public SaveResult SaveChanges(JObject saveBundle)

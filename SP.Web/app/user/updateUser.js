@@ -11,9 +11,8 @@
     function updateUser(common, datacontext, $scope, abstractController, tokenStorageService, $routeParams, USER_ROLES) {
         /* jshint validthis:true */
         var vm = this;
+        var originalRoles;
         var principal = { roles:[] };
-        var isSiteAdmin;
-        var currentRole;
 
         abstractController.constructor.call(this, {
             controllerId: controllerId,
@@ -41,15 +40,17 @@
                 var promises = [
                     datacontext.participants.fetchByKey($routeParams.id, {expand:'roles'}).then(function (data) {
                         vm.participant = data;
-                        var ur = data.roles.find(function (ur) { return ur.roleId !== USER_ROLES.siteAdmin; });
-                        isSiteAdmin = data.roles.some(function (ur) { return ur.roleId === USER_ROLES.siteAdmin; });
-                        currentRole = ur
-                                ? getRoleName(ur.roleId)
-                                : '';
+                        var adminLevels = [USER_ROLES.accessDepartment, USER_ROLES.accessInstitution, USER_ROLES.accessAllData];
+                        var adminLevel = data.roles.find(function (r) { return adminLevels.indexOf(r.roleId) > -1; });
                         vm.permissions = {
-                            access: currentRole,
-                            siteAdmin: isSiteAdmin
+                            adminLevel: adminLevel
+                                ? getRoleName(adminLevel.roleId)
+                                : '',
+                            siteAdmin: data.roles.some(function (r) { return r.roleId === USER_ROLES.siteAdmin; }),
+                            dptManikinBookings: data.roles.some(function (r) { return r.roleId === USER_ROLES.dptManikinBookings; }),
+                            dptRoomBookings: data.roles.some(function (r) { return r.roleId === USER_ROLES.dptRoomBookings; })
                         };
+                        originalRoles = angular.copy(vm.permissions);
                     }),
                     datacontext.institutions.all({ expand: 'culture' }).then(function (data) {
                         vm.institutions = data;
@@ -81,6 +82,9 @@
                     return principal.roles.indexOf('AccessAllData') > -1;
                 case 'AccessDepartment':
                     return principal.roles.indexOf('AccessInstitution') > -1 || principal.roles.indexOf('AccessAllData') > -1;
+                case 'DptRoomBookings':
+                case 'DptManikinBookings':
+                    return principal.roles.length > 1; //?should check if it is the same department?
                 default:
                     throw new Error('Unknown role name:' + roleName);
             }
@@ -100,27 +104,34 @@
         }
 
         function submit() {
-            if (vm.permissions.siteAdmin !== isSiteAdmin) {
-                if (isSiteAdmin) {
-                    data.roles.find(function (ur) { return ur.roleId === USER_ROLES.siteAdmin; }).entityAspect.setDeleted();
-                } else {
-                    datacontext.userRoles.create({ 
-                        userId: vm.participant.id,
-                        roleId: USER_ROLES.siteAdmin
-                    });
+            ["siteAdmin", "dptManikinBookings", "dptRoomBookings"].forEach(alterPermission);
+
+            if (vm.permissions.adminLevel !== originalRoles.adminLevel) {
+                if (originalRoles.adminLevel) {
+                    var rId =  USER_ROLES[originalRoles.adminLevel];
+                    data.roles.find(function (ur) { return ur.roleId === rid; }).entityAspect.setDeleted();
                 }
-            }
-            if (vm.permissions.access !== currentRole) {
-                if (vm.permissions.access === '') {
-                    data.roles.find(function (ur) { return ur.roleId !== USER_ROLES.siteAdmin; }).entityAspect.setDeleted();
-                } else {
+                if (vm.permissions.adminLevel) {
                     datacontext.userRoles.create({
                         userId: vm.participant.id,
-                        roleId: USER_ROLES[vm.permissions.access]
+                        roleId: USER_ROLES[vm.permissions.adminLevel]
                     });
                 }
             }
             vm.save();
+
+            function alterPermission(permissionName) {
+                if (vm.permissions[permissionName] !== originalRoles[permissionName]) {
+                    if (originalRoles[permissionName]) {
+                        vm.participant.roles.find(function (ur) { return ur.roleId === USER_ROLES[permissionName]; }).entityAspect.setDeleted();
+                    } else {
+                        datacontext.userRoles.create({
+                            userId: vm.participant.id,
+                            roleId: USER_ROLES[permissionName]
+                        });
+                    }
+                }
+            }
         }
     }
 })();

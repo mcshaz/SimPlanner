@@ -5,11 +5,12 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$http'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$http', '$q', 'selectOptionMaps', 'tokenStorageService'];
 
-    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $http) {
+    function controller(abstractController, $routeParams, common, datacontext, $aside, breeze, $scope, $http, $q, selectOptionMaps, tokenStorageService) {
         /* jshint validthis:true */
         var vm = this;
+        var bookedManikins = {};
         abstractController.constructor.call(this, {
             controllerId: controllerId,
             $scope: $scope
@@ -17,6 +18,10 @@
         var id = $routeParams.id;
         vm.changeActivityScenario = changeActivityScenario;
         vm.course = {};
+        vm.departments = [];
+        vm.departmentSelected = departmentSelected;
+        vm.manikins = [];
+        vm.manikinDptIds = [];
         vm.scenarios = [];
 
         vm.title = 'course roles';
@@ -28,20 +33,14 @@
                 var priorExposure;
                 var faculty = [];
                 common.activateController([$http({ method: 'GET', url: '/api/ActivitySummary/PriorExposure?courseId=' + id }).then(function (response) {
-                    var bookedManikins = {};
                     priorExposure = response.data;
-                    priorExposure.BookedManikins.forEach(function (bm) {
-                        bookedManikins[bm.Key] = bm.Value;
-                    });
-                    priorExposure.BookedManikins = bookedManikins;
-                    
                 }, vm.log.error),
                 datacontext.courses.fetchByKey(id, {
                     expand: ['courseParticipants.participant',
                         'courseFormat.courseSlots.activity.activityChoices',
                         'courseSlotActivities',
                         'courseSlotPresenters',
-                        'courseSlotManikins',
+                        'courseSlotManikins.manikin',
                         'courseScenarioFacultyRoles',
                         'department.scenarios',
                         'courseFormat.courseType.courseTypeScenarioRoles.facultyScenarioRole']
@@ -64,15 +63,18 @@
                                                     participantId: el.participantId,
                                                     fullName: el.participant.fullName,
                                                     isConfirmed:el.isConfirmed,
-                                                    icon: common.getRoleIcon(el.participant.professionalRole.category),
+                                                    icon: selectOptionMaps.getRoleIcon(el.participant.professionalRole.category),
                                                     departmentName: el.participant.department.abbreviation
                                                 }));
                         }
                     });
                     //end region map faculty
+                    vm.manikinDptIds = Array.from(new Set(vm.course.courseSlotManikins.map(function (csm) { return csm.manikin.departmentId; }).concat([vm.course.departmentId, tokenStorageService.getUserDepartmentId()])));
+                    departmentSelected(vm.manikinDptIds);
                 }), //end datacontext.courses.findbykey
-                datacontext.manikins.all()
-                ], controllerId).then(function () { //all loaded
+                datacontext.departments.all().then(function (data) {
+                    vm.departments = selectOptionMaps.sortAndMapDepartment(data.filter(selectOptionMaps.filterLocalDepartments()));
+                })], controllerId).then(function () { //all loaded
                     var slotTime = vm.course.startUtc;
                     var slotCount = 0;
                     var scenarioCount = 0;
@@ -80,19 +82,7 @@
                     //so the following will work here
                     //if the institution and department data were to be loaded by a server call, this should go in the
                     //activateController.then method
-                    datacontext.institutions.all().then(function (institutions) {
-                        var sortName = common.sortOnPropertyName('name');
-                        var sortDescription = common.sortOnPropertyName('description');
-                        institutions.sort(sortName);
-                        var manikins = createMultiSelect(institutions, 'manikins', function (m) {
-                            return {
-                                id: m.id,
-                                checked: false,
-                                description: m.description,
-                                bookedCssClass: priorExposure.BookedManikins[m.id]?'booked':'',
-                                bookingDetails: priorExposure.BookedManikins[m.id] || ''
-                            };
-                        });
+
                         /*
                         vm.scenarios = createMultiSelect(institutions, 'scenarios', function (s) {
                             return {
@@ -167,25 +157,13 @@
 
                                 returnVar.availableFacultyOptions.start = startSortable;
                                 returnVar.availableFaculty.availableFaculty = true;
+                                returnVar.courseSlotManikins = vm.course.courseSlotManikins.filter(isThisSlot);
 
                                 var slotRoles = vm.course.courseScenarioFacultyRoles.filter(isThisSlot);
-                                var courseSlotManikins = vm.course.courseSlotManikins.filter(isThisSlot);
+                                
 
-                                returnVar.manikins = angular.copy(manikins);
                                 //manikin 
-                                if (courseSlotManikins) {
-                                    returnVar.manikins.forEach(function (i) {
-                                        i.children.forEach(function (d) {
-                                            d.children.forEach(function (m) {
-                                                m.checked = courseSlotManikins.some(function (csm) {
-                                                    return csm.manikinId === m.id;
-                                                });
-                                            });
-                                        });
-                                    });
-                                    returnVar.selectedManikins = [];
-                                    $scope.$watchCollection(function () {
-                                        return returnVar.selectedManikins;
+                                /*
                                     }, common.manageCollectionChange(datacontext.courseSlotManikins, 'id',
                                         function (member) {
                                             return {
@@ -194,7 +172,7 @@
                                                 courseId: vm.course.id
                                             };
                                         }));
-                                }
+                                */
                                 //end manikin
                                 vm.course.courseFormat.courseType.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole', 'order'));
                                 return angular.extend(returnVar, {
@@ -234,18 +212,17 @@
                                         };
                                     })
                                 });
-                            });//end map courseSlot
-                        vm.notifyViewModelLoaded();
+                        });//end map courseSlot
+                    vm.notifyViewModelLoaded();
                         
-                        function mapChoice(c) {
-                            return {
-                                id: c.id,
-                                html: createBsOptionHtml(c.description, participantIdsToName(priorExposure.ActivityParticipants[c.id]))
-                            };
-                        }
-                    });
-                });
-            }); // end datacontext.ready
+                    function mapChoice(c) {
+                        return {
+                            id: c.id,
+                            html: createBsOptionHtml(c.description, participantIdsToName(priorExposure.ActivityParticipants[c.id]))
+                        };
+                    }
+                });// end datacontext.ready
+            });
         }
         function changeActivityScenario(m) {
             var fk = m.isScenario ?'scenarioId':'activityId';
@@ -300,6 +277,35 @@
                 }
             });
             return returnVar;
+        }
+
+        function departmentSelected(departmentIds) {
+            var pred;
+            if (departmentIds === undefined) { return $q.when([]); }
+            if (!Array.isArray(departmentIds)) {
+                departmentIds = [departmentIds];
+            }
+            departmentIds = departmentIds.filter(function (dId) { return !vm.manikins.some(function (m) { return m.departmentId === dId; }); });
+            switch (departmentIds.length) {
+                case 0:
+                    return $q.when([]);
+                case 1:
+                    pred = breeze.Predicate.create('departmentId', '==', departmentIds[0]);
+                    break;
+                default:
+                    pred = breeze.Predicate.create({ 'departmentId': { 'in': departmentIds } });
+                    break;
+            }
+            return datacontext.manikins.find(pred).then(function (data) {
+                vm.manikins = vm.manikins.concat(data.map(function (m) {
+                    return {
+                        id: m.id,
+                        description: m.description,
+                        departmentAbbreviation: m.department.abbreviation,
+                        institutionAbbreviation: m.department.institution.abbreviation
+                    };
+                }));
+            });
         }
         //duplicate ctrl key windows/ubuntu, option[alt] key mac, 
         function startSortable(event, ui) {
@@ -374,66 +380,5 @@
             });
             return names.join(', ');
         }
-
-        /*
-        {
-		text: 'B', value: 'b', id: 2, checked: 1, open: true,
-		$ams_order: 2, $ams_parents_id: [], $ams_children_nodes: 0,
-		$ams_children_leafs: 1,$ams_level: 0, $ams_tree_visibility: true,  $ams_checked_children: 1
-	},
-	{
-		text: 'C', value: 'c', id: 3, checked: true, open: false,
-		$ams_order: 3, $ams_parents_id: [2], $ams_children_nodes: 0,
-		$ams_children_leafs: 0,$ams_level: 1, $ams_tree_visibility: true,  $ams_checked_children: 0
-	},
-        */
-        function createMultiSelect(institutions, dptPropertyName, dptPropertyMap) {
-            var returnVar = [];
-            institutions.forEach(function (inst) {
-                var dpts = departmentMap(inst.departments);
-                if (dpts.length) {
-                    returnVar.push({
-                        id: inst.id,
-                        checked: false,
-                        open: inst.id === vm.course.department.institution.id,
-                        name: inst.name,
-                        abbrev: inst.abbreviation,
-                        children: dpts
-                    });
-                }
-            });
-
-            function departmentMap(ds) {
-                var dpts = [];
-                ds.forEach(function (d) {
-                    if (d[dptPropertyName].length) {
-                        dpts.push({
-                            id: d.id,
-                            checked: false,
-                            open: d.id === vm.course.department.id,
-                            name: d.name,
-                            abbrev: d.abbreviation,
-                            children: d[dptPropertyName].map(dptPropertyMap)
-                        });
-                    }
-                });
-                return dpts;
-            }
-
-            return returnVar;
-        }
-    }
-    function sortManikins(man1, man2){
-        if (man1.department.name > man2.department.name)
-            return 1;
-        if (man1.department.name < man2.department.name)
-            return -1;
-
-        if (man1.description > man2.description)
-            return 1;
-        if (man1.description < man2.description)
-            return -1;
-
-        return 0;
     }
 })();

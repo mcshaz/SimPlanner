@@ -36,9 +36,10 @@
     "gulp-uglify": "*",
     "gulp-useref": "*",
     "pump": "*",
+    "gulp-sass": "^2.3.2",
     "run-sequence": "*"
   },
   "dependencies": {
-    "gulp-sass": "^2.3.2"
+    "cycle": "^1.0.3"
   }
 }

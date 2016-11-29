@@ -159,7 +159,7 @@
             baseArgs.where = breeze.Predicate.create('fullName', 'startsWith', val).and(_pred);
             return datacontext.participants.find(baseArgs).then(function (results) {
                 results.forEach(function (el) {
-                    el.class = common.getRoleIcon(el.professionalRole_Category);
+                    el.class = selectOptionMaps.getRoleIcon(el.professionalRole_Category);
                 });
                 _lastVal = val.toLowerCase();
                 return (_lastLookup = results);

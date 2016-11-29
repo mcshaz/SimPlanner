@@ -87,8 +87,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections" />
-    <Reference Include="System.ComponentModel.Annotations, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ComponentModel.Annotations.4.1.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.3.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -161,7 +161,6 @@
     <Compile Include="Dto\ParticipantDto.cs" />
     <Compile Include="Dto\ProfessionalRoleDto.cs" />
     <Compile Include="Dto\ResourceDto.cs" />
-    <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\RoomDto.cs" />
     <Compile Include="Dto\ScenarioDto.cs" />
     <Compile Include="Dto\CourseScenarioFacultyRoleDto.cs" />
@@ -204,7 +203,6 @@
     <Compile Include="Maps\CandidatePrereadingMaps.cs" />
     <Compile Include="Maps\ScenarioResourceMaps.cs" />
     <Compile Include="Maps\FacultyScenarioRoleMapsMaps.cs" />
-    <Compile Include="Maps\RoleMaps.cs" />
     <Compile Include="Maps\UserRoleMaps.cs" />
     <Compile Include="MedSimDtoContextPretender.cs" />
     <Compile Include="MedSimDtoRepository.cs" />

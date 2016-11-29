@@ -66,7 +66,6 @@ namespace SP.Dto.ParticipantSummary
             {
                 ScenarioParticipants = new Dictionary<Guid, HashSet<Guid>>(),
                 ActivityParticipants = new Dictionary<Guid, HashSet<Guid>>(),
-                BookedManikins = GetBookedManikins(context, course)
             };
 
             foreach (var oc in otherCourses)
@@ -113,7 +112,13 @@ namespace SP.Dto.ParticipantSummary
     {
         public Dictionary<Guid, HashSet<Guid>> ScenarioParticipants { get; set; }
         public Dictionary<Guid, HashSet<Guid>> ActivityParticipants { get; set; }
-        public IEnumerable<KeyValuePair<Guid,string>> BookedManikins { get; set; }
+    }
+
+    /*
+    public class ManikinsInUse
+    {
+        public IEnumerable<KeyValuePair<Guid, string>> BookedManikins { get; set; }
         public Dictionary<Guid, DateTime> ManikinsInForRepair { get; set; }
     }
+    */
 }

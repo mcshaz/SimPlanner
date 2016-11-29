@@ -51,7 +51,7 @@
 
         function mapRoles(allRoles, departmentRoles) {
             var dict = {};
-            var categoryNames = common.getEnumValues().professionalCategory;
+            var categoryNames = selectOptionMaps.getEnumValues().professionalCategory;
             var keyName;
             vm.categories = [];
             categoryNames.forEach(function (el) { dict[el] = { used: [], unused: [] }; });

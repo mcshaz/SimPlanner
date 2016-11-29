@@ -98,7 +98,7 @@
                     }),
                     datacontext.professionalRoles.all().then(function (data) {
                         var opts = [];
-                        for (var key in common.roleSymbols) {
+                        for (var key in selectOptionMaps.roleSymbols) {
                             if (key) {
                                 opts.push({
                                     label: 'All ' + key,

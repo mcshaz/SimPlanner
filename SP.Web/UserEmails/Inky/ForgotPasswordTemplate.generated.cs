@@ -67,19 +67,19 @@ WriteLiteral(" class=\"text-center\"");
 
 WriteLiteral(">Click the link below to reset your password.</p>\r\n        <button");
 
-WriteLiteral(" class=\"large expand radius\"");
+WriteLiteral(" class=\"large expand\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 798), Tuple.Create("\"", 823)
+WriteAttribute("href", Tuple.Create(" href=\"", 791), Tuple.Create("\"", 816)
             
             #line 24 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 805), Tuple.Create<System.Object, System.Int32>(AsQueryString()
+, Tuple.Create(Tuple.Create("", 798), Tuple.Create<System.Object, System.Int32>(AsQueryString()
             
             #line default
             #line hidden
-, 805), false)
+, 798), false)
 );
 
-WriteLiteral(">Reset Password</button>\r\n\r\n        <hr />\r\n    </columns>\r\n</row>\r\n");
+WriteLiteral(">Reset Password</button>\r\n\r\n    </columns>\r\n</row>\r\n");
 
         }
     }

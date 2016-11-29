@@ -11,6 +11,6 @@ namespace SP.Dto
         public Guid RoleId { get; set; }
 
         public virtual ParticipantDto User { get; set; }
-        public virtual RoleDto Role { get; set; }
+        //public virtual RoleDto Role { get; set; }
     }
 }

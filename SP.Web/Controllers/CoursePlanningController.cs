@@ -51,14 +51,18 @@ namespace SP.Web.Controllers
                 return Ok("The course finish must be after now");
             }
 
-            var result = await CreateParticipantEmails.SendEmail(course, User);
+            var result = CreateParticipantEmails.SendEmail(course, User);
 
             now = DateTime.UtcNow;
-            foreach (var cp in result[true]) {
+            foreach (var cp in result.SuccessRecipients) {
                 cp.EmailedUtc = now;
             }
 
-            return Ok(new { SuccessRecipients = result[true].Select(cp=>cp.ParticipantId), FailRecipients = result[false].Select(cp => cp.ParticipantId) });
+            return Ok(new
+            {
+                SuccessRecipients = result.SuccessRecipients.Select(sr=>sr.ParticipantId),
+                FailRecipients = result.FailRecipients.Select(sr => sr.ParticipantId)
+            });
         }
 
         public static DbQuery<Course> GetCourseIncludes(MedSimDbContext repo)

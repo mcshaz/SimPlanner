@@ -9,7 +9,9 @@
         accessAllData:	'03fe7856-7b58-46b4-a1a5-1d70cf03bab2',
         accessDepartment: '75a4d6c3-9e20-4567-8b49-5d791db8f110',
         accessInstitution:	'2adedaf3-b215-4cc7-8692-1a8e58584306',
-        siteAdmin: 'e5fffe70-76ef-4cfd-8d58-089ba2198dc0'
+        siteAdmin: 'e5fffe70-76ef-4cfd-8d58-089ba2198dc0',
+        dptRoomBookings: '1a04cee2-f3f0-4965-a223-a2eae7937637',
+        dptManikinBookings: 'e8149241-e33b-4510-a698-41b26b4b5d48'
     };
 
     // Collect the routes

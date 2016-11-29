@@ -44,6 +44,7 @@ gulp.task('html', function(cb){
         gulp.dest('dist')]);
 
     pump([gulp.src(mainFile),
+        replace(/<!--debug-->(.|[\r\n])*<!--enddebug-->/, ''),
         inline({ compress: true }),
         useref(),
         //uncss({ html: [mainFile, 'app/**/*.html'] }), //needs to have access to css, jss and html
