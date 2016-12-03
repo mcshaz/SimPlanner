@@ -68,8 +68,8 @@ else
 </ul>
 <row>
     <columns>
-        <a href="@BaseUrl/api/CoursePlanning/MyCalendar?@CourseParticipant.ParticipantId.ToString()">
-            <img alt="Add To Calendar" title="Update my calendar" src="@BaseImageUrl/Content/Images/AddToCalendar.jpg" width="166" height="58"/>
+        <a href="@BaseInsecureUrl/api/CoursePlanning/MyCalendar/@(CourseParticipant.ParticipantId.ToString()).ics">
+            <img alt="Add To Calendar" title="Update my calendar" src="@BaseInsecureUrl/Content/Images/AddToCalendar.jpg" width="166" height="58"/>
         </a>
     </columns>
 </row>

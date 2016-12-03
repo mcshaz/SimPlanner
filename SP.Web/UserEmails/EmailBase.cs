@@ -10,9 +10,24 @@ namespace SP.Web.UserEmails
         private static string _baseUrl;
 
         protected IFormatProvider FormatProvider { get; set; }
-        public string BaseImageUrl
+        string _baseInsecureUrl;
+        public string BaseInsecureUrl
         {
-            get { return "http://sim-planner.com"; }
+            get
+            {
+                if (_baseInsecureUrl == null)
+                {
+                    lock (_lock)
+                    {
+                        var url = HttpContext.Current.Request.Url;
+                        _baseInsecureUrl = "http://" +
+                            (url.Authority.StartsWith("localhost")
+                            ? "localhost:53099"
+                            : url.Authority);
+                    }
+                }
+                return _baseUrl;
+            }
         }
         public string BaseUrl
         {

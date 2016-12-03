@@ -112,7 +112,7 @@ WriteLiteral(">\r\n                                <img");
 WriteAttribute("src", Tuple.Create(" src=\"", 1072), Tuple.Create("\"", 1125)
             
             #line 29 "..\..\UserEmails\Inky\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 1078), Tuple.Create<System.Object, System.Int32>(BaseImageUrl
+, Tuple.Create(Tuple.Create("", 1078), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
             
             #line default
             #line hidden
@@ -147,7 +147,7 @@ WriteLiteral(" class=\"float-right\"");
 WriteAttribute("src", Tuple.Create(" src=\"", 1485), Tuple.Create("\"", 1537)
             
             #line 35 "..\..\UserEmails\Inky\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 1491), Tuple.Create<System.Object, System.Int32>(BaseImageUrl
+, Tuple.Create(Tuple.Create("", 1491), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
             
             #line default
             #line hidden

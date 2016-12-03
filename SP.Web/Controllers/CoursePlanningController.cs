@@ -149,11 +149,17 @@ namespace SP.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<HttpResponseMessage> MyCalendar(Guid id)
+        public async Task<HttpResponseMessage> MyCalendar(string id)
         {
+            const string calExt = ".ics";
+
+            if (!id.EndsWith(calExt)) {
+                id += calExt;
+            }
+            Guid userId = Guid.Parse(id.Substring(0, id.Length - calExt.Length));
             var courseParticipants = await (from cp in Repo.CourseParticipants.Include(cp=>cp.Course.Department.Institution.Culture)
                                             let c = cp.Course
-                                            where DbFunctions.AddDays(c.StartUtc, c.CourseFormat.DaysDuration + 1) > DateTime.UtcNow && cp.ParticipantId == id
+                                            where DbFunctions.AddDays(c.StartUtc, c.CourseFormat.DaysDuration + 1) > DateTime.UtcNow && cp.ParticipantId == userId
                                             select cp).ToListAsync();
 
             var evts = Appointment.MapCoursesToEvents(courseParticipants.Select(cp => cp.Course));
@@ -164,7 +170,7 @@ namespace SP.Web.Controllers
             var serializer = new CalendarSerializer();
             var stream = serializer.SerializeToString(cal).ToStream();
             //should work but truncating the stream at the moment - ? flush needed in the ical.net source code
-            return StreamToResponse(stream, "sim-planner.ics");
+            return StreamToResponse(stream, id);
         }
     }
 }

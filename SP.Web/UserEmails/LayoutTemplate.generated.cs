@@ -280,7 +280,7 @@ WriteLiteral(">\r\n                                <img");
 WriteAttribute("src", Tuple.Create(" src=\"", 10022), Tuple.Create("\"", 10075)
             
             #line 333 "..\..\UserEmails\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 10028), Tuple.Create<System.Object, System.Int32>(BaseImageUrl
+, Tuple.Create(Tuple.Create("", 10028), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
             
             #line default
             #line hidden
@@ -356,7 +356,7 @@ WriteLiteral(" class=\"float-right\"");
 WriteAttribute("src", Tuple.Create(" src=\"", 12123), Tuple.Create("\"", 12175)
             
             #line 339 "..\..\UserEmails\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 12129), Tuple.Create<System.Object, System.Int32>(BaseImageUrl
+, Tuple.Create(Tuple.Create("", 12129), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
             
             #line default
             #line hidden

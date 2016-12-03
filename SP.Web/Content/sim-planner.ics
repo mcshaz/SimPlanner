@@ -1,0 +1,5 @@
+BEGIN:VCALENDAR
+METHOD:PUBLISH
+PRODID:-//github.com/rianjs/ical.net//NONSGML ical.net 2.2//EN
+VERSION:2.0
+END:VCALENDAR
