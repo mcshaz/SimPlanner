@@ -277,15 +277,15 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 
 WriteLiteral(">\r\n                                <img");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 10022), Tuple.Create("\"", 10071)
+WriteAttribute("src", Tuple.Create(" src=\"", 10022), Tuple.Create("\"", 10075)
             
             #line 333 "..\..\UserEmails\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 10028), Tuple.Create<System.Object, System.Int32>(BaseUrl
+, Tuple.Create(Tuple.Create("", 10028), Tuple.Create<System.Object, System.Int32>(BaseImageUrl
             
             #line default
             #line hidden
 , 10028), false)
-, Tuple.Create(Tuple.Create("", 10038), Tuple.Create("images/sim-planner-icon-50x75.png", 10038), true)
+, Tuple.Create(Tuple.Create("", 10041), Tuple.Create("/images/sim-planner-icon-50x75.png", 10041), true)
 );
 
 WriteLiteral(" alt=\"sim-manager logo\"");
@@ -353,15 +353,15 @@ WriteLiteral(">\r\n                                <img");
 
 WriteLiteral(" class=\"float-right\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 12119), Tuple.Create("\"", 12167)
+WriteAttribute("src", Tuple.Create(" src=\"", 12123), Tuple.Create("\"", 12175)
             
             #line 339 "..\..\UserEmails\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 12125), Tuple.Create<System.Object, System.Int32>(BaseUrl
+, Tuple.Create(Tuple.Create("", 12129), Tuple.Create<System.Object, System.Int32>(BaseImageUrl
             
             #line default
             #line hidden
-, 12125), false)
-, Tuple.Create(Tuple.Create("", 12135), Tuple.Create("Content/images/logo-starship.png", 12135), true)
+, 12129), false)
+, Tuple.Create(Tuple.Create("", 12142), Tuple.Create("/Content/images/logo-starship.png", 12142), true)
 );
 
 WriteLiteral(" alt=\"Starship logo\"");
@@ -411,59 +411,18 @@ WriteLiteral(" height=\"16px\"");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 16px; margin: 0; mso-line-height-rule: exactly; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
-WriteLiteral(">&#xA0;</td></tr></tbody></table> \r\n                        <table");
+WriteLiteral(">&#xA0;</td></tr></tbody></table> \r\n\r\n");
 
-WriteLiteral(" class=\"row\"");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; display: table; padding: 0;" +
-" position: relative; text-align: left; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral(">\r\n                            <th");
-
-WriteLiteral(" class=\"small-12 large-12 columns first last\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 16px; text-align: left; width: 564px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("                                ");
+WriteLiteral("                        ");
 
             
-            #line 348 "..\..\UserEmails\LayoutTemplate.cshtml"
-                           Write(RenderBody());
+            #line 347 "..\..\UserEmails\LayoutTemplate.cshtml"
+                   Write(RenderBody());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                            </th>\n<th");
-
-WriteLiteral(" class=\"expander\"");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
-"rtant; text-align: left; visibility: hidden; width: 0;\"");
-
-WriteLiteral("></th></tr></table></th>\r\n                        </tr></tbody></table>\r\n\r\n      " +
-"                  <table");
+WriteLiteral("\r\n\r\n                        <table");
 
 WriteLiteral(" class=\"wrapper footer\"");
 

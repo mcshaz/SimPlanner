@@ -5,15 +5,15 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'selectOptionMaps'];
 
-    function controller(abstractController, $routeParams, common, datacontext, $scope) {
+    function controller(abstractController, $routeParams, common, datacontext, $scope, selectOptionMaps) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            $scope: $scope,
-        })
+            $scope: $scope
+        });
         var institutionId = $routeParams.id;
 
         vm.categories = [];
@@ -71,7 +71,7 @@
                         connectWith: '.' + keyName
                     }
                 };
-                $scope.$watchCollection((function () { return this.used; }).bind(returnVar), addUsed);
+                $scope.$watchCollection(function () { return this.used; }.bind(returnVar), addUsed);
                 returnVar.addRole = addRole.bind(returnVar);
                 vm.categories.push(returnVar);
             }

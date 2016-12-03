@@ -221,8 +221,10 @@
     <Compile Include="Utilities\CreateCertificates.cs" />
     <Compile Include="Utilities\CreateDocxTimetable.cs" />
     <Compile Include="Utilities\LinqExtensions.cs" />
+    <Compile Include="Utilities\MailAttachmentExtensions.cs" />
     <Compile Include="Utilities\OpenXmlExtensions.cs" />
     <Compile Include="Utilities\IAssociateFileExtensions.cs" />
+    <Compile Include="Utilities\ParallelSmtpEmails.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

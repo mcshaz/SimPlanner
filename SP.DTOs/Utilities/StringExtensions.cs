@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace SP.Dto.Utilities
 {
@@ -14,6 +16,11 @@ namespace SP.Dto.Utilities
         {
             if (string.IsNullOrEmpty(instr)) { return instr; }
             return char.ToUpperInvariant(instr[0]) + instr.Substring(1);
+        }
+
+        public static MemoryStream ToStream(this string value)
+        {
+            return new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""));
         }
 
         public static string ToSeparateWords(this string instr)

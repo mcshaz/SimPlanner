@@ -5,10 +5,10 @@
         .module('app')
         .controller(controllerId, courseParticipantCtrl);
 
-    courseParticipantCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope','controller.abstract'];
+    courseParticipantCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope','controller.abstract', 'selectOptionMaps'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseParticipantCtrl(common, datacontext, breeze, $scope, abstractController) {
+    function courseParticipantCtrl(common, datacontext, breeze, $scope, abstractController, selectOptionMaps) {
         /* jshint validthis:true */
         var vm = this;
         
@@ -16,7 +16,7 @@
             controllerId: controllerId,
             watchedEntityNames: 'participant',
             $scope: $scope
-        })
+        });
         
         vm.createCourseParticipant = createCourseParticipant;
         vm.createNewPerson = createNewPerson;
@@ -99,10 +99,10 @@
         }
 
         function createNewPerson() {
-            var match;
-            if (match = _lastLookup.find(function (ld) {
+            var match = _lastLookup.find(function (ld) {
                 return ld.fullName.startsWith(name);
-            })) {
+            });
+            if (match) {
                 if (!confirm("Are you sure you want to create a new person rather than select " + match.fullName)) {
                     onParticipantSelected(match);
                     return;
@@ -162,9 +162,9 @@
                     el.class = selectOptionMaps.getRoleIcon(el.professionalRole_Category);
                 });
                 _lastVal = val.toLowerCase();
-                return (_lastLookup = results);
+                delete baseArgs.where;
+                return _lastLookup = results;
             });
-            delete baseArgs.where;
         }
 
         function onParticipantSelected(item) {

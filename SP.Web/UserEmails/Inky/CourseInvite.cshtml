@@ -5,20 +5,36 @@
 @functions{
     public string GetNotificationUrl(bool canAttend)
     {
-        return  $"{BaseUrl}index.html#/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending=" + (canAttend ? "1" : "0");
+        return  $"{BaseUrl}/index.html#/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending=" + (canAttend ? "1" : "0");
     }
 }
 @{ Layout = new SP.Web.UserEmails.LayoutTemplate { Title = "Course Invitation" }; }
-<callout class="primary">
-    <p>
-        You have been added as a @(CourseParticipant.IsFaculty?"faculty member":"participant") to an upcoming 
-        @CourseParticipant.Course.CourseFormat.CourseType.Description 
-        @if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", StringComparison.OrdinalIgnoreCase)){
-            @:Course
-        }
-    </p>
-    <p class="lead">Please check the details below and then confirm your availability.</p>
-</callout>
+@if (CourseParticipant.Course.Cancelled)
+{
+    <callout class="warning">
+        <p class="lead">
+            A @CourseParticipant.Course.CourseFormat.CourseType.Description
+            @if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", StringComparison.OrdinalIgnoreCase))
+            {
+                @:Course
+            } 
+            for which you were a @(CourseParticipant.IsFaculty ? "faculty member" : "participant") has been <strong>CANCELLED</strong>.
+        </p>
+        <p>Details of the cancelled course are:</p>
+    </callout>
+
+}
+else
+{
+    <callout class="primary">
+        <p>
+            You have been added as a @(CourseParticipant.IsFaculty ? "faculty member" : "participant") to an upcoming 
+            @CourseParticipant.Course.CourseFormat.CourseType.Description 
+
+        </p>
+        <p class="lead">Please check the details below and then confirm your availability.</p>
+    </callout>
+}
 <dl>
     <dt>When</dt>
     <dd>
@@ -50,6 +66,13 @@
         </li>
     }
 </ul>
+<row>
+    <columns>
+        <a href="@BaseUrl/api/CoursePlanning/MyCalendar?@CourseParticipant.ParticipantId.ToString()">
+            <img alt="Add To Calendar" title="Update my calendar" src="@BaseImageUrl/Content/Images/AddToCalendar.jpg" width="166" height="58"/>
+        </a>
+    </columns>
+</row>
 
 <hr/>
 

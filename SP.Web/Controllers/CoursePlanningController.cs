@@ -1,4 +1,5 @@
-﻿using SP.DataAccess;
+﻿using Ical.Net.Serialization.iCalendar.Serializers;
+using SP.DataAccess;
 using SP.Dto;
 using SP.Dto.Utilities;
 using SP.Web.Models;
@@ -7,6 +8,7 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -15,16 +17,8 @@ namespace SP.Web.Controllers
 {
     [Authorize]
     [RoutePrefix("api/CoursePlanning")]
-    public class CoursePlanningController : ApiController
+    public class CoursePlanningController : StreamControllerBase
     {
-        private MedSimDbContext _repository; // not populating in constructor as I believe this may be too early
-        private MedSimDbContext Repo
-        {
-            get
-            {
-                return _repository ?? (_repository = new MedSimDbContext());
-            }
-        }
         /*
         private MedSimDtoRepository _repository; // not populating in constructor as I believe this may be too early
         private MedSimDtoRepository Repo
@@ -44,19 +38,19 @@ namespace SP.Web.Controllers
                 .FirstOrDefaultAsync(cp => cp.Id == model.CourseId);
             //Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(course.Department.Institution.LocaleCode);
 
-            var now = DateTime.UtcNow;
             if (course==null) { return NotFound(); }
-            if (course.LastDay().StartUtc < now)
+            if (course.LastDay().StartUtc < DateTime.UtcNow)
             {
                 return Ok("The course finish must be after now");
             }
 
-            var result = CreateParticipantEmails.SendEmail(course, User);
+            var result = await CreateParticipantEmails.SendEmail(course, User);
 
-            now = DateTime.UtcNow;
+            DateTime now = DateTime.UtcNow;
             foreach (var cp in result.SuccessRecipients) {
                 cp.EmailedUtc = now;
             }
+            await Repo.SaveChangesAsync();
 
             return Ok(new
             {
@@ -153,16 +147,24 @@ namespace SP.Web.Controllers
                 + ", but would like to change to being " + returnString + ". An email has been sent to the course organiser(s), who will be able to confirm this change.");
         }
 
-        protected override void Dispose(bool disposing)
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<HttpResponseMessage> MyCalendar(Guid id)
         {
-            if (disposing)
-            {
-                if (_repository != null)
-                {
-                    _repository.Dispose();
-                }
-            }
-            base.Dispose(disposing);
+            var courseParticipants = await (from cp in Repo.CourseParticipants.Include(cp=>cp.Course.Department.Institution.Culture)
+                                            let c = cp.Course
+                                            where DbFunctions.AddDays(c.StartUtc, c.CourseFormat.DaysDuration + 1) > DateTime.UtcNow && cp.ParticipantId == id
+                                            select cp).ToListAsync();
+
+            var evts = Appointment.MapCoursesToEvents(courseParticipants.Select(cp => cp.Course));
+            evts.AddRange(from cp in courseParticipants
+                          where cp.IsFaculty && cp.Course.FacultyMeetingUtc.HasValue
+                          select Appointment.CreateFacultyMeetingEvent(cp.Course));
+            var cal = Appointment.CreateCal(evts);
+            var serializer = new CalendarSerializer();
+            var stream = serializer.SerializeToString(cal).ToStream();
+            //should work but truncating the stream at the moment - ? flush needed in the ical.net source code
+            return StreamToResponse(stream, "sim-planner.ics");
         }
     }
 }

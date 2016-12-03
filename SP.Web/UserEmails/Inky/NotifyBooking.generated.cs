@@ -26,7 +26,7 @@ namespace SP.Web.UserEmails.Inky
     public partial class NotifyBooking : SP.Web.UserEmails.EmailBase
     {
 #line hidden
-        #line 5 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+        #line 4 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
            
     public Participant PersonBooking { get; set; }
     public Room RoomBooked { get; set; }
@@ -43,7 +43,7 @@ namespace SP.Web.UserEmails.Inky
 WriteLiteral("\r\n");
 
             
-            #line 13 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 12 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
    
     Layout = new SP.Web.UserEmails.LayoutTemplate {
         Title = "Booking Request"
@@ -60,7 +60,7 @@ WriteLiteral("\r\n");
             
             #line default
             #line hidden
-WriteLiteral("\r\n\r\n\r\n<row>\r\n    <columns");
+WriteLiteral("\r\n<row>\r\n    <columns");
 
 WriteLiteral(" large=\"12\"");
 
@@ -70,20 +70,20 @@ WriteLiteral(" class=\"info\"");
 
 WriteLiteral(">\r\n            <p>\r\n                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 887), Tuple.Create("\"", 919)
+WriteAttribute("href", Tuple.Create(" href=\"", 881), Tuple.Create("\"", 913)
             
-            #line 32 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
-, Tuple.Create(Tuple.Create("", 894), Tuple.Create<System.Object, System.Int32>(GetMailTo(PersonBooking)
+            #line 29 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+, Tuple.Create(Tuple.Create("", 888), Tuple.Create<System.Object, System.Int32>(GetMailTo(PersonBooking)
             
             #line default
             #line hidden
-, 894), false)
+, 888), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 32 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 29 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                                                Write(PersonBooking.FullName);
 
             
@@ -92,13 +92,13 @@ WriteLiteral(">");
 WriteLiteral("</a> has\r\n");
 
             
-            #line 33 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 30 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 33 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 30 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                  if (RoomBooked != null || ManikinsBooked.Any()) {
 
             
@@ -109,7 +109,7 @@ WriteLiteral("                    ");
 WriteLiteral("requested use of\r\n");
 
             
-            #line 35 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 32 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                 } else {
 
             
@@ -120,7 +120,7 @@ WriteLiteral("                    ");
 WriteLiteral("<em>cancelled</em> the request for \r\n");
 
             
-            #line 37 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 34 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                 }
 
             
@@ -129,13 +129,13 @@ WriteLiteral("<em>cancelled</em> the request for \r\n");
 WriteLiteral("                the following\r\n                <strong>\r\n");
 
             
-            #line 40 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 37 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 40 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 37 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                      if (RoomBooked != null)
                     {
 
@@ -147,7 +147,7 @@ WriteLiteral("                        ");
 WriteLiteral("room\r\n");
 
             
-            #line 43 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 40 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                         if (ManikinsBooked.Any())
                         {
 
@@ -159,7 +159,7 @@ WriteLiteral("                            ");
 WriteLiteral("and\r\n");
 
             
-            #line 46 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 43 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                         }
                     }
 
@@ -169,7 +169,7 @@ WriteLiteral("and\r\n");
 WriteLiteral("                    ");
 
             
-            #line 48 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 45 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                      if (ManikinsBooked.Any())
                     {
 
@@ -181,7 +181,7 @@ WriteLiteral("                        ");
 WriteLiteral("manikin(s)\r\n");
 
             
-            #line 51 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 48 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                     }
 
             
@@ -190,7 +190,7 @@ WriteLiteral("manikin(s)\r\n");
 WriteLiteral("                </strong>\r\n                on the ");
 
             
-            #line 53 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 50 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                   Write(Course.StartLocal.ToString("g", Course.Department.Institution.Culture.CultureInfo));
 
             
@@ -203,7 +203,7 @@ WriteLiteral(" class=\"aside\"");
 WriteLiteral(">\r\n                    finishing ");
 
             
-            #line 55 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 52 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                          Write(Course.FinishCourseLocal().ToString("g", Course.Department.Institution.Culture.CultureInfo));
 
             
@@ -217,13 +217,13 @@ WriteLiteral(" large=\"12\"");
 WriteLiteral(">\r\n");
 
             
-            #line 63 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 60 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 63 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 60 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
          if (ManikinsBooked.Any() || RoomBooked != null)
         {
 
@@ -238,13 +238,13 @@ WriteLiteral("            <h4>\r\n                Details:\r\n            </h4>\
 WriteLiteral("            <ul>\r\n");
 
             
-            #line 72 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 69 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 72 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 69 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                  if (RoomBooked != null)
                 {
 
@@ -256,7 +256,7 @@ WriteLiteral("                    <li>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 75 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 72 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                    Write(RoomBooked.ShortDescription);
 
             
@@ -265,7 +265,7 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </li>\r\n");
 
             
-            #line 77 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 74 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
 
                 }
 
@@ -275,7 +275,7 @@ WriteLiteral("\r\n                    </li>\r\n");
 WriteLiteral("                ");
 
             
-            #line 79 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 76 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                  foreach (var m in ManikinsBooked)
                 {
 
@@ -287,7 +287,7 @@ WriteLiteral("                    <li>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 82 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 79 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                    Write(m.Description);
 
             
@@ -296,7 +296,7 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </li>\r\n");
 
             
-            #line 84 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 81 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                 }
 
             
@@ -308,7 +308,7 @@ WriteLiteral("            <p>\r\n                TODO - place button here to got
 " page\r\n            </p>\r\n");
 
             
-            #line 89 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 86 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
         }
 
             
@@ -317,7 +317,7 @@ WriteLiteral("            <p>\r\n                TODO - place button here to got
 WriteLiteral("        ");
 
             
-            #line 90 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 87 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
          if (ManikinsCancelled.Any() || RoomCancelled != null)
         {
 
@@ -332,13 +332,13 @@ WriteLiteral("            <h5>\r\n                The following bookings have be
 WriteLiteral("            <ul>\r\n");
 
             
-            #line 97 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 94 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 97 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 94 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                  if (RoomBooked != null)
                 {
 
@@ -350,7 +350,7 @@ WriteLiteral("                    <li>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 100 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 97 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                    Write(RoomBooked.ShortDescription);
 
             
@@ -359,7 +359,7 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </li>\r\n");
 
             
-            #line 102 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 99 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
 
                 }
 
@@ -369,7 +369,7 @@ WriteLiteral("\r\n                    </li>\r\n");
 WriteLiteral("                ");
 
             
-            #line 104 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 101 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                  foreach (var m in ManikinsBooked)
                 {
 
@@ -381,7 +381,7 @@ WriteLiteral("                    <li>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 107 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 104 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                    Write(m.Description);
 
             
@@ -390,7 +390,7 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </li>\r\n");
 
             
-            #line 109 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 106 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
                 }
 
             
@@ -399,7 +399,7 @@ WriteLiteral("\r\n                    </li>\r\n");
 WriteLiteral("            </ul>\r\n");
 
             
-            #line 111 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
+            #line 108 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
         }
 
             

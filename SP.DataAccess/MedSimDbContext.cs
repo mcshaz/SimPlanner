@@ -443,14 +443,7 @@ namespace SP.DataAccess
                 if (t.GetInterface(nameof(IModified)) != null)
                 {
                     var im = (IModified)ent.Entity;
-                    if (ent.State == EntityState.Modified && im.Modified == default(DateTime))
-                    {
-                        ent.Property("Modified").IsModified = false;
-                    }
-                    else
-                    {
-                        im.Modified = now;
-                    }
+                    im.Modified = now;
                 }
                 else if (t == typeof(Course))//not IModified
                 {
@@ -478,6 +471,7 @@ namespace SP.DataAccess
                             ent.Property("FacultyMeetingDatesLastModified").IsModified = false;
                         }
                         ent.Property("CreatedUtc").IsModified = false;
+                        c.Version++;
                     }
                     /*
                     else if (ent.State == EntityState.Modified && t.GetInterface(nameof(IAdminApproved))!=null)

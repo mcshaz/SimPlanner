@@ -1,6 +1,4 @@
 using SP.DataAccess;
-using System;
-using System.Linq;
 namespace SP.Dto.Maps
 {
     internal class CourseMaps: DomainDtoMap<Course, CourseDto>
@@ -11,7 +9,7 @@ namespace SP.Dto.Maps
                 StartUtc = m.StartUtc,
                 DurationMins = m.DurationMins,
                 DepartmentId = m.DepartmentId,
-                EmailSequence = m.EmailSequence,
+                Version = m.Version,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
                 FacultyNoRequired = m.FacultyNoRequired,
                 ParticipantVideoFilename = m.ParticipantVideoFilename,
@@ -29,7 +27,7 @@ namespace SP.Dto.Maps
                 StartUtc = m.StartUtc,
                 DurationMins = m.DurationMins,
                 DepartmentId = m.DepartmentId,
-                EmailSequence = m.EmailSequence,
+                Version = m.Version,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
                 FacultyNoRequired = m.FacultyNoRequired,
                 ParticipantVideoFilename = m.ParticipantVideoFilename,

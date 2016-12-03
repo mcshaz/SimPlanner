@@ -851,7 +851,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                     return returnVar;
                 });
             }
-            return null;
+            return new BookingChangeDetails[0];
         }
 
         [Serializable]

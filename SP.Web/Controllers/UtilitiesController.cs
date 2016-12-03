@@ -8,14 +8,12 @@ using System;
 using SP.Dto.Utilities;
 using System.IO;
 using System.Net;
-using System.Net.Http.Headers;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using SP.Web.Models;
 using System.Web;
 using SP.Web.Controllers.Helpers;
 using System.Data.Entity;
-using SP.DataAccess;
 using SP.Dto.Maps;
 using System.Linq.Expressions;
 using SP.Dto.ProcessBreezeRequests;
@@ -24,10 +22,8 @@ using System.Security.Principal;
 namespace SP.Web.Controllers
 {
     [RoutePrefix("api/utilities")]
-    public class UtilitiesController : ApiController
+    public class UtilitiesController : StreamControllerBase
     {
-        private List<Stream> _streamsToDispose = new List<Stream>();
-
         private ApplicationUserManager _userManager;
         private ApplicationUserManager UserManager
         {
@@ -39,12 +35,6 @@ namespace SP.Web.Controllers
             {
                 _userManager = value;
             }
-        }
-
-        MedSimDbContext _repo;
-        private MedSimDbContext Repo
-        {
-            get { return _repo ?? (_repo = HttpContext.Current.GetOwinContext().Get<MedSimDbContext>()); }
         }
 
         CurrentPrincipal _currentUser;
@@ -223,36 +213,6 @@ namespace SP.Web.Controllers
             }
             return null;
         }
-
-        private HttpResponseMessage StreamToResponse(Stream stream, string fileName){
-            _streamsToDispose.Add(stream);
-            stream.Position = 0;
-            var result = new HttpResponseMessage()
-            {
-                Content = new StreamContent(stream)
-            };
-            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            {
-                //?urlencode
-                FileName = fileName
-            };
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-            result.Content.Headers.ContentLength = stream.Length;
-            return result;
-        }
         #endregion //Helpers
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_repo != null)
-                {
-                    _repo.Dispose();
-                }
-                _streamsToDispose.ForEach(s=>s.Dispose());
-            }
-            base.Dispose(disposing);
-        }
     }
 }

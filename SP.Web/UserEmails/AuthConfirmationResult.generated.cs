@@ -46,25 +46,6 @@ WriteLiteral("\r\n");
             #line hidden
 WriteLiteral("\r\n\r\n<table");
 
-WriteLiteral(" class=\"callout\"");
-
-WriteLiteral(" style=\"Margin-bottom: 16px; border-collapse: collapse; border-spacing: 0; margin" +
-"-bottom: 16px; padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" class=\"callout-inner info\"");
-
-WriteLiteral(" style=\"Margin: 0; background: #fefefe; border: 1px solid #cbcbcb; color: #0a0a0a" +
-"; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: norma" +
-"l; line-height: 1.3; margin: 0; padding: 10px; text-align: left; width: 100%;\"");
-
-WriteLiteral(">\r\n    <table");
-
 WriteLiteral(" class=\"row\"");
 
 WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; position: relat" +
@@ -74,7 +55,7 @@ WriteLiteral("><tbody><tr");
 
 WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
 
-WriteLiteral(">\r\n        <th");
+WriteLiteral(">\r\n    <th");
 
 WriteLiteral(" class=\"small-12 large-12 columns first last\"");
 
@@ -95,6 +76,25 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
+WriteLiteral(">\r\n        <table");
+
+WriteLiteral(" class=\"callout\"");
+
+WriteLiteral(" style=\"Margin-bottom: 16px; border-collapse: collapse; border-spacing: 0; margin" +
+"-bottom: 16px; padding: 0; text-align: left; vertical-align: top; width: 100%;\"");
+
+WriteLiteral("><tr");
+
+WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
+
+WriteLiteral("><th");
+
+WriteLiteral(" class=\"callout-inner info\"");
+
+WriteLiteral(" style=\"Margin: 0; background: #fefefe; border: 1px solid #cbcbcb; color: #0a0a0a" +
+"; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: norma" +
+"l; line-height: 1.3; margin: 0; padding: 10px; text-align: left; width: 100%;\"");
+
 WriteLiteral(">\r\n            <p");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
@@ -112,7 +112,7 @@ WriteLiteral("                ");
             
             #line default
             #line hidden
-WriteLiteral(" has \r\n                <strong>\r\n");
+WriteLiteral(" has\r\n                <strong>\r\n");
 
 WriteLiteral("                    ");
 
@@ -123,8 +123,8 @@ WriteLiteral("                    ");
             
             #line default
             #line hidden
-WriteLiteral("\r\n                </strong> \r\n                your request to change confirmation" +
-" status.\r\n            </p>\r\n            <p");
+WriteLiteral("\r\n                </strong>\r\n                your request to change confirmation " +
+"status.\r\n            </p>\r\n            <p");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
@@ -150,7 +150,7 @@ WriteLiteral(" ");
             
             #line default
             #line hidden
-WriteLiteral(" registered as \r\n");
+WriteLiteral(" registered as\r\n");
 
 WriteLiteral("                ");
 
@@ -161,7 +161,7 @@ WriteLiteral("                ");
             
             #line default
             #line hidden
-WriteLiteral(".\r\n            </p>\r\n        </th>\n<th");
+WriteLiteral(".\r\n            </p>\r\n        </th><th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -169,88 +169,54 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table></th>\r\n    </tr></tbody></table>\r\n</th><th");
-
-WriteLiteral(" class=\"expander\"");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
-"rtant; text-align: left; visibility: hidden; width: 0;\"");
-
-WriteLiteral("></th></tr></table>\r\n\r\n\r\n");
-
-            
-            #line 31 "..\..\UserEmails\AuthConfirmationResult.cshtml"
- if(!IsChanged) { 
-
-            
-            #line default
-            #line hidden
-WriteLiteral("    <table");
-
-WriteLiteral(" class=\"row\"");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; position: relat" +
-"ive; text-align: left; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral(">\r\n        <th");
-
-WriteLiteral(" class=\"small-12 large-12 columns first last\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 16px; text-align: left; width: 564px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n            <p");
+WriteLiteral("></th></tr></table>\r\n        <p");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
 
-WriteLiteral(">If you would like to discuss this further, you may wish to contact one of the or" +
-"ganiser(s) below:</p>\r\n            <ul>\r\n");
+WriteLiteral(">\r\n            If you would like to discuss this further, you may wish to contact" +
+" one of the organiser(s) below:\r\n        </p>\r\n");
 
             
-            #line 36 "..\..\UserEmails\AuthConfirmationResult.cshtml"
-                
+            #line 29 "..\..\UserEmails\AuthConfirmationResult.cshtml"
+        
             
             #line default
             #line hidden
             
-            #line 36 "..\..\UserEmails\AuthConfirmationResult.cshtml"
-                 foreach(var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant)){
+            #line 29 "..\..\UserEmails\AuthConfirmationResult.cshtml"
+         if(!IsChanged) {
 
             
             #line default
             #line hidden
-WriteLiteral("                    <li>\r\n                        <a");
+WriteLiteral("        <ul>\r\n");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4759), Tuple.Create("\"", 4783)
-, Tuple.Create(Tuple.Create("", 4766), Tuple.Create("mailto:", 4766), true)
             
-            #line 38 "..\..\UserEmails\AuthConfirmationResult.cshtml"
-, Tuple.Create(Tuple.Create("", 4773), Tuple.Create<System.Object, System.Int32>(o.Email
+            #line 31 "..\..\UserEmails\AuthConfirmationResult.cshtml"
+            
             
             #line default
             #line hidden
-, 4773), false)
+            
+            #line 31 "..\..\UserEmails\AuthConfirmationResult.cshtml"
+             foreach(var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant)){
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <li>\r\n                <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 3552), Tuple.Create("\"", 3576)
+, Tuple.Create(Tuple.Create("", 3559), Tuple.Create("mailto:", 3559), true)
+            
+            #line 33 "..\..\UserEmails\AuthConfirmationResult.cshtml"
+, Tuple.Create(Tuple.Create("", 3566), Tuple.Create<System.Object, System.Int32>(o.Email
+            
+            #line default
+            #line hidden
+, 3566), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -260,8 +226,8 @@ WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial,
 WriteLiteral(">");
 
             
-            #line 38 "..\..\UserEmails\AuthConfirmationResult.cshtml"
-                                                                                                                                                                                                                                    Write(o.FullName);
+            #line 33 "..\..\UserEmails\AuthConfirmationResult.cshtml"
+                                                                                                                                                                                                                            Write(o.FullName);
 
             
             #line default
@@ -269,22 +235,31 @@ WriteLiteral(">");
 WriteLiteral("</a> Tel: ");
 
             
-            #line 38 "..\..\UserEmails\AuthConfirmationResult.cshtml"
-                                                                                                                                                                                                                                                         Write(o.PhoneNumber);
+            #line 33 "..\..\UserEmails\AuthConfirmationResult.cshtml"
+                                                                                                                                                                                                                                                 Write(o.PhoneNumber);
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    </li>\r\n");
+WriteLiteral("\r\n            </li>\r\n");
 
             
-            #line 40 "..\..\UserEmails\AuthConfirmationResult.cshtml"
-                }
+            #line 35 "..\..\UserEmails\AuthConfirmationResult.cshtml"
+            }
 
             
             #line default
             #line hidden
-WriteLiteral("            </ul>\r\n        </th>\n<th");
+WriteLiteral("        </ul>\r\n");
+
+            
+            #line 37 "..\..\UserEmails\AuthConfirmationResult.cshtml"
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    </th>\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -292,15 +267,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table></th>\r\n    </tr></tbody></table>\r\n");
-
-            
-            #line 45 "..\..\UserEmails\AuthConfirmationResult.cshtml"
-}
-            
-            #line default
-            #line hidden
-WriteLiteral(" ");
+WriteLiteral("></th></tr></table></th>\r\n</tr></tbody></table>\r\n\r\n\r\n\r\n");
 
         }
     }

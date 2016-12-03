@@ -109,15 +109,15 @@ WriteLiteral(" small=\"2\"");
 
 WriteLiteral(">\r\n                                <img");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 1072), Tuple.Create("\"", 1121)
+WriteAttribute("src", Tuple.Create(" src=\"", 1072), Tuple.Create("\"", 1125)
             
             #line 29 "..\..\UserEmails\Inky\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 1078), Tuple.Create<System.Object, System.Int32>(BaseUrl
+, Tuple.Create(Tuple.Create("", 1078), Tuple.Create<System.Object, System.Int32>(BaseImageUrl
             
             #line default
             #line hidden
 , 1078), false)
-, Tuple.Create(Tuple.Create("", 1088), Tuple.Create("images/sim-planner-icon-50x75.png", 1088), true)
+, Tuple.Create(Tuple.Create("", 1091), Tuple.Create("/images/sim-planner-icon-50x75.png", 1091), true)
 );
 
 WriteLiteral(" alt=\"sim-manager logo\"");
@@ -144,15 +144,15 @@ WriteLiteral(">\r\n                                <img");
 
 WriteLiteral(" class=\"float-right\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 1481), Tuple.Create("\"", 1529)
+WriteAttribute("src", Tuple.Create(" src=\"", 1485), Tuple.Create("\"", 1537)
             
             #line 35 "..\..\UserEmails\Inky\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 1487), Tuple.Create<System.Object, System.Int32>(BaseUrl
+, Tuple.Create(Tuple.Create("", 1491), Tuple.Create<System.Object, System.Int32>(BaseImageUrl
             
             #line default
             #line hidden
-, 1487), false)
-, Tuple.Create(Tuple.Create("", 1497), Tuple.Create("Content/images/logo-starship.png", 1497), true)
+, 1491), false)
+, Tuple.Create(Tuple.Create("", 1504), Tuple.Create("/Content/images/logo-starship.png", 1504), true)
 );
 
 WriteLiteral(" alt=\"Starship logo\"");

@@ -5,10 +5,10 @@
         .module('app')
         .controller(controllerId, courseTypesCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope', 'uiGridConstants', 'USER_ROLES'];
+    courseTypesCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope', 'uiGridConstants', 'USER_ROLES', 'selectOptionMaps'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, breeze, $scope, uiGridConstants, USER_ROLES) {
+    function courseTypesCtrl(common, datacontext, breeze, $scope, uiGridConstants, USER_ROLES, selectOptionMaps) {
         /* jshint validthis:true */
         var vm = this;
         var filterPredicate = null;

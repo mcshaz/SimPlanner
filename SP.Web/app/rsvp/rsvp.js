@@ -22,7 +22,7 @@
             }, function (response) {
                 vm.serverMessage = "Appologies - an error has occured";
                 log.error(err);
-            })], controllerId);;
+            })], controllerId);
         }
 
     }

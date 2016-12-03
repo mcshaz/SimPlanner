@@ -23,15 +23,18 @@ namespace SP.DataAccess
         public Guid RoomId { get; set; }
         public Guid? FacultyMeetingRoomId { get; set; }
         public int? FacultyMeetingDuration { get; set; }
-        public byte EmailSequence { get; set; }
+        public int Version { get; set; }
         public byte FacultyNoRequired { get; set; }
         public string ParticipantVideoFilename { get; set; }
         public string FeedbackSummaryFilename { get; set; }
         public bool Cancelled { get; set; }
         public Guid CourseFormatId { get; set; }
-        public DateTime CreatedUtc { get; set; }
-        public DateTime CourseDatesLastModified { get; set; }
-        public DateTime FacultyMeetingDatesLastModified { get; set; }
+        private DateTime _createdUtc;
+        public DateTime CreatedUtc { get { return _createdUtc; } set { _createdUtc = value.AsUtc(); } }
+        private DateTime _courseDatesLastModified;
+        public DateTime CourseDatesLastModified { get { return _courseDatesLastModified; } set { _courseDatesLastModified = value.AsUtc(); } }
+        private DateTime _facultyMeetingDatesLastModified;
+        public DateTime FacultyMeetingDatesLastModified { get { return _facultyMeetingDatesLastModified; } set { _facultyMeetingDatesLastModified = value.AsUtc(); } }
 
         private DateTime _startUtc;
         public DateTime StartUtc

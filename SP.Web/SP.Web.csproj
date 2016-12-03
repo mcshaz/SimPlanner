@@ -553,6 +553,7 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\ie10mobile.css" />
+    <Content Include="Content\images\AddToCalendar.jpg" />
     <Content Include="Content\images\logo-starship.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -563,7 +564,7 @@
     <Content Include="dist\apple-touch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dist\css\main-a3797766ff.min.css" />
+    <Content Include="dist\css\main-9070f31f12.min.css" />
     <Content Include="dist\css\ui-grid.eot" />
     <Content Include="dist\css\ui-grid.svg" />
     <Content Include="dist\css\ui-grid.ttf" />
@@ -590,7 +591,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-76f8ab6812.min.js" />
+    <Content Include="dist\js\main-785533209d.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -636,6 +637,7 @@
     <Compile Include="Controllers\Helpers\TimeSpanTokenExtensions.cs" />
     <Compile Include="Controllers\LookupBundles.cs" />
     <Compile Include="Controllers\CoursePlanningController.cs" />
+    <Compile Include="Controllers\StreamControllerBase.cs" />
     <Compile Include="Controllers\UtilitiesController.cs" />
     <Compile Include="Controllers\MedSimApiController.cs" />
     <Compile Include="Controllers\SummaryDataController.cs" />
@@ -796,6 +798,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\tutorial\" />
+    <Folder Include="Content\images\institutions\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\" />

@@ -23,7 +23,7 @@ namespace SP.Web.UserEmails
     #line hidden
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    internal partial class ReverseConfirmation : SP.Web.UserEmails.CourseParticipantEmailBase
+    public partial class ReverseConfirmation : SP.Web.UserEmails.CourseParticipantEmailBase
     {
 #line hidden
         #line 5 "..\..\UserEmails\ReverseConfirmation.cshtml"
@@ -53,12 +53,44 @@ WriteLiteral("\r\n");
             
             #line default
             #line hidden
-WriteLiteral("\r\n\r\n<table");
+WriteLiteral("\r\n<table");
+
+WriteLiteral(" class=\"row\"");
+
+WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; position: relat" +
+"ive; text-align: left; vertical-align: top; width: 100%;\"");
+
+WriteLiteral("><tbody><tr");
+
+WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
+
+WriteLiteral(">\r\n    <th");
+
+WriteLiteral(" class=\"small-12 large-12 columns first last\"");
+
+WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 16px; text-align: left; width: 564px;""");
+
+WriteLiteral("><table");
+
+WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
+"t; vertical-align: top; width: 100%;\"");
+
+WriteLiteral("><tr");
+
+WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
+
+WriteLiteral("><th");
+
+WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
+"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
+"-align: left;\"");
+
+WriteLiteral(">\r\n        <table");
 
 WriteLiteral(" class=\"callout\"");
 
 WriteLiteral(" style=\"Margin-bottom: 16px; border-collapse: collapse; border-spacing: 0; margin" +
-"-bottom: 16px; padding: 0; text-align: left; vertical-align: top;\"");
+"-bottom: 16px; padding: 0; text-align: left; vertical-align: top; width: 100%;\"");
 
 WriteLiteral("><tr");
 
@@ -72,18 +104,7 @@ WriteLiteral(" style=\"Margin: 0; background: #def0fc; border: 1px solid #444444
 "; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: norma" +
 "l; line-height: 1.3; margin: 0; padding: 10px; text-align: left; width: 100%;\"");
 
-WriteLiteral(">\r\n    <table");
-
-WriteLiteral(" class=\"row\"");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; position: relat" +
-"ive; text-align: left; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral(">\r\n        <p");
+WriteLiteral(">\r\n            <p");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
@@ -91,53 +112,53 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-fami
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("            ");
+WriteLiteral("                ");
 
             
             #line 23 "..\..\UserEmails\ReverseConfirmation.cshtml"
-       Write(CourseParticipant.Participant.FullName);
+           Write(CourseParticipant.Participant.FullName);
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n            <small");
+WriteLiteral("\r\n                <small");
 
 WriteLiteral(" style=\"color: #cacaca; font-size: 80%;\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
             #line 25 "..\..\UserEmails\ReverseConfirmation.cshtml"
-           Write(CourseParticipant.Participant.ProfessionalRole.Description);
+               Write(CourseParticipant.Participant.ProfessionalRole.Description);
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n            </small>\r\n            had been confirmed as ");
+WriteLiteral("\r\n                </small>\r\n                had been confirmed as ");
 
             
             #line 27 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                              Write(CourseParticipant.IsConfirmed.Value?"attending":"unable to attend");
+                                  Write(CourseParticipant.IsConfirmed.Value ? "attending" : "unable to attend");
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n            as a ");
+WriteLiteral("\r\n                as a ");
 
             
             #line 28 "..\..\UserEmails\ReverseConfirmation.cshtml"
-             Write(CourseParticipant.IsFaculty?"faculty member":"participant");
+                 Write(CourseParticipant.IsFaculty ? "faculty member" : "participant");
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n            in the ");
+WriteLiteral("\r\n                in the ");
 
             
             #line 29 "..\..\UserEmails\ReverseConfirmation.cshtml"
-              Write(CourseName);
+                  Write(CourseName);
 
             
             #line default
@@ -146,30 +167,30 @@ WriteLiteral(" on the ");
 
             
             #line 29 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                 Write(CourseParticipant.Course.StartLocal.ToString("g",FormatProvider));
+                                     Write(CourseParticipant.Course.StartLocal.ToString("g", FormatProvider));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n        </p>\r\n        <p");
+WriteLiteral("\r\n            </p>\r\n            <p");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
 
-WriteLiteral(">\r\n            However, he/she would like to <strong>change this response</strong" +
-"> to being \r\n");
+WriteLiteral(">\r\n                However, he/she would like to <strong>change this response</st" +
+"rong> to being\r\n");
 
-WriteLiteral("            ");
+WriteLiteral("                ");
 
             
             #line 33 "..\..\UserEmails\ReverseConfirmation.cshtml"
-        Write(CourseParticipant.IsConfirmed.Value?"unable":"able");
+            Write(CourseParticipant.IsConfirmed.Value ? "unable" : "able");
 
             
             #line default
             #line hidden
-WriteLiteral(" to attend.\r\n        </p>\r\n    </tr></tbody></table>\r\n</th><th");
+WriteLiteral(" to attend.\r\n            </p>\r\n        </th><th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -177,7 +198,15 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table>\r\n<table");
+WriteLiteral("></th></tr></table>\r\n    </th>\n<th");
+
+WriteLiteral(" class=\"expander\"");
+
+WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
+"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
+"rtant; text-align: left; visibility: hidden; width: 0;\"");
+
+WriteLiteral("></th></tr></table></th>\r\n</tr></tbody></table>\r\n<table");
 
 WriteLiteral(" class=\"row\"");
 
@@ -188,7 +217,28 @@ WriteLiteral("><tbody><tr");
 
 WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
 
-WriteLiteral(">\r\n    <p");
+WriteLiteral(">\r\n    <th");
+
+WriteLiteral(" class=\"small-12 large-12 columns first last\"");
+
+WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 16px; text-align: left; width: 564px;""");
+
+WriteLiteral("><table");
+
+WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
+"t; vertical-align: top; width: 100%;\"");
+
+WriteLiteral("><tr");
+
+WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
+
+WriteLiteral("><th");
+
+WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
+"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
+"-align: left;\"");
+
+WriteLiteral(">\r\n        <p");
 
 WriteLiteral(" class=\"small\"");
 
@@ -205,7 +255,15 @@ WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial,
 "t-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; tex" +
 "t-decoration: none;\"");
 
-WriteLiteral(">here</a></p>\r\n</tr></tbody></table>\r\n<table");
+WriteLiteral(">here</a></p>\r\n    </th>\n<th");
+
+WriteLiteral(" class=\"expander\"");
+
+WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
+"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
+"rtant; text-align: left; visibility: hidden; width: 0;\"");
+
+WriteLiteral("></th></tr></table></th>\r\n</tr></tbody></table>\r\n<table");
 
 WriteLiteral(" class=\"row\"");
 
@@ -216,7 +274,28 @@ WriteLiteral("><tbody><tr");
 
 WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
 
-WriteLiteral(">\r\n    <h3");
+WriteLiteral(">\r\n    <th");
+
+WriteLiteral(" class=\"small-12 large-12 columns first last\"");
+
+WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 16px; text-align: left; width: 564px;""");
+
+WriteLiteral("><table");
+
+WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
+"t; vertical-align: top; width: 100%;\"");
+
+WriteLiteral("><tr");
+
+WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
+
+WriteLiteral("><th");
+
+WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
+"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
+"-align: left;\"");
+
+WriteLiteral(">\r\n        <h3");
 
 WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: inherit; font-family: Helvetica, A" +
 "rial, sans-serif; font-size: 28px; font-weight: normal; line-height: 1.3; margin" +
@@ -225,22 +304,22 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: inherit; font-fami
 WriteLiteral(">Contact details for ");
 
             
-            #line 41 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                                                                                                                                                                                                                                                   Write(CourseParticipant.Participant.FullName);
+            #line 47 "..\..\UserEmails\ReverseConfirmation.cshtml"
+                                                                                                                                                                                                                                                                       Write(CourseParticipant.Participant.FullName);
 
             
             #line default
             #line hidden
-WriteLiteral(":</h3>\r\n    <dl>\r\n        <dt>Email</dt>\r\n        <dd><a");
+WriteLiteral(":</h3>\r\n        <dl>\r\n            <dt>Email</dt>\r\n            <dd><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4490), Tuple.Create("\"", 4538)
+WriteAttribute("href", Tuple.Create(" href=\"", 7163), Tuple.Create("\"", 7211)
             
-            #line 44 "..\..\UserEmails\ReverseConfirmation.cshtml"
-, Tuple.Create(Tuple.Create("", 4497), Tuple.Create<System.Object, System.Int32>(GetMailTo(CourseParticipant.Participant)
+            #line 50 "..\..\UserEmails\ReverseConfirmation.cshtml"
+, Tuple.Create(Tuple.Create("", 7170), Tuple.Create<System.Object, System.Int32>(GetMailTo(CourseParticipant.Participant)
             
             #line default
             #line hidden
-, 4497), false)
+, 7170), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -250,8 +329,8 @@ WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial,
 WriteLiteral(">");
 
             
-            #line 44 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                                                                                                                                                                                                                                Write(CourseParticipant.Participant.Email);
+            #line 50 "..\..\UserEmails\ReverseConfirmation.cshtml"
+                                                                                                                                                                                                                                                    Write(CourseParticipant.Participant.Email);
 
             
             #line default
@@ -259,32 +338,40 @@ WriteLiteral(">");
 WriteLiteral("</a></dd>\r\n");
 
             
-            #line 45 "..\..\UserEmails\ReverseConfirmation.cshtml"
-        
+            #line 51 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            
             
             #line default
             #line hidden
             
-            #line 45 "..\..\UserEmails\ReverseConfirmation.cshtml"
-         if (CourseParticipant.Participant.PhoneNumber != null)
-        {
+            #line 51 "..\..\UserEmails\ReverseConfirmation.cshtml"
+             if (CourseParticipant.Participant.PhoneNumber != null)
+            {
 
             
             #line default
             #line hidden
-WriteLiteral("            <dt>\r\n                Phone\r\n            </dt>\r\n");
+WriteLiteral("                <dt>\r\n                    Phone\r\n                </dt>\r\n");
 
-WriteLiteral("            <dd>\r\n                CourseParticipant.Participant.PhoneNumber\r\n    " +
-"        </dd>\r\n");
+WriteLiteral("                <dd>\r\n                    CourseParticipant.Participant.PhoneNumb" +
+"er\r\n                </dd>\r\n");
 
             
-            #line 53 "..\..\UserEmails\ReverseConfirmation.cshtml"
-        }
+            #line 59 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            }
 
             
             #line default
             #line hidden
-WriteLiteral("    </dl>\r\n</tr></tbody></table>\r\n\r\n<hr>\r\n<table");
+WriteLiteral("        </dl>\r\n    </th>\n<th");
+
+WriteLiteral(" class=\"expander\"");
+
+WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
+"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
+"rtant; text-align: left; visibility: hidden; width: 0;\"");
+
+WriteLiteral("></th></tr></table></th>\r\n</tr></tbody></table>\r\n\r\n<hr>\r\n<table");
 
 WriteLiteral(" class=\"row\"");
 
@@ -353,14 +440,14 @@ WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; ba
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 7225), Tuple.Create("\"", 7257)
+WriteAttribute("href", Tuple.Create(" href=\"", 10210), Tuple.Create("\"", 10242)
             
-            #line 61 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 , Tuple.Create(Tuple.Create("", 7232), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
+            #line 69 "..\..\UserEmails\ReverseConfirmation.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                , Tuple.Create(Tuple.Create("", 10217), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
             
             #line default
             #line hidden
-, 7232), false)
+, 10217), false)
 );
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #3adb76; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 1.3; margin: 0; padding: 8px 16px 8px 16px; text-align: left; text-decoration: none;""");
@@ -424,14 +511,14 @@ WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; ba
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 9576), Tuple.Create("\"", 9609)
+WriteAttribute("href", Tuple.Create(" href=\"", 12561), Tuple.Create("\"", 12594)
             
-            #line 66 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               , Tuple.Create(Tuple.Create("", 9583), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
+            #line 74 "..\..\UserEmails\ReverseConfirmation.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              , Tuple.Create(Tuple.Create("", 12568), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
             
             #line default
             #line hidden
-, 9583), false)
+, 12568), false)
 );
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #ec5840; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 1.3; margin: 0; padding: 8px 16px 8px 16px; text-align: left; text-decoration: none;""");

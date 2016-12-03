@@ -5,10 +5,10 @@
         .module('app')
         .controller(controllerId, courseTypesCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http', 'tokenStorageService', '$location', 'USER_ROLES'];
+    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http', 'tokenStorageService', '$location', 'USER_ROLES', 'selectOptionMaps'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http, tokenStorageService, $location, USER_ROLES) {
+    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http, tokenStorageService, $location, USER_ROLES, selectOptionMaps) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {

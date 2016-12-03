@@ -5,6 +5,7 @@ using SP.Dto.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Mail;
@@ -21,69 +22,67 @@ namespace SP.Web.UserEmails
         /// <param name="course"></param>
         /// <param name="user"></param>
         /// <returns>a lookup true = successfully emailed, false = email failed</returns>
-        public static EmailResult SendEmail(Course course, IPrincipal user)
+        public static async Task<EmailResult> SendEmail(Course course, IPrincipal user)
         {
-            using (var cal = Appointment.CreateCourseAppointment(course, user.Identity))
+            var map = ((Expression<Func<CourseParticipant, CourseParticipantDto>>)new CourseParticipantMaps().MapToDto).Compile();
+            var faculty = course.CourseParticipants.Where(cp => !map(cp).IsEmailed)
+                .ToLookup(cp => cp.IsFaculty);
+
+            IEnumerable<Attachment> attachments = new Attachment[0];
+
+            var success = new ConcurrentBag<CourseParticipant>();
+            var fail = new ConcurrentBag<CourseParticipant>();
+
+            using (var parallelEmails = new ParallelSmtpEmails())
             {
-                using (var appt = new AppointmentStream(cal))
+                List<MailMessage> messages = new List<MailMessage>(course.CourseParticipants.Count);
+                var sendMail = new Action<CourseParticipant>(cp =>
                 {
-                    var map = ((Expression<Func<CourseParticipant, CourseParticipantDto>>)new CourseParticipantMaps().MapToDto).Compile();
-                    var faculty = course.CourseParticipants.Where(cp => !map(cp).IsEmailed)
-                        .ToLookup(cp => cp.IsFaculty);
-
-                    IEnumerable<Attachment> attachments = new Attachment[0];
-
-                    var success = new ConcurrentBag<CourseParticipant>();
-                    var fail = new ConcurrentBag<CourseParticipant>();
-                    var sendMail = new Action<CourseParticipant>(cp =>
+                    var mail = new MailMessage();
+                    messages.Add(mail);
+                    mail.To.AddParticipants(cp.Participant);
+                    var confirmEmail = new CourseInvite { CourseParticipant = cp };
+                    mail.CreateHtmlBody(confirmEmail);
+                    foreach (var a in attachments)
                     {
-                        using (var mail = new MailMessage())
+                        //a.ContentStream.Position = 0;
+                        mail.Attachments.Add(a);
+                    }
+                    parallelEmails.Send(mail, s=> {
+                        if (s == null)
                         {
-                            mail.To.AddParticipants(cp.Participant);
-                            var confirmEmail = new CourseInvite { CourseParticipant = cp };
-                            mail.CreateHtmlBody(confirmEmail);
-                            appt.AddAppointmentsTo(mail);
-                            foreach (var a in attachments)
-                            {
-                                a.ContentStream.Position = 0;
-                                mail.Attachments.Add(a);
-                            }
-                            using (var client = new SmtpClient())
-                            {
-                                try
-                                {
-                                    client.Send(mail);
-                                    success.Add(cp);
-                                }
-                                catch (SmtpFailedRecipientsException)
-                                {
-                                    fail.Add(cp);
-                                }
-                            }
+                            success.Add(cp);
+                        }
+                        else
+                        {
+                            fail.Add(cp);
                         }
                     });
+                });
 
-                    Parallel.ForEach(faculty[false], sendMail); //new ParallelOptions { MaxDegreeOfParallelism = 5 }
-
-                    if (faculty[true].Any())
-                    {
-                        if (course.FacultyMeetingUtc.HasValue)
-                        {
-                            using (var fm = Appointment.CreateFacultyCalendar(course))
-                            {
-                                appt.Add(fm);
-                            }
-                        }
-                        attachments = GetFilePaths(course).Select(fp => new Attachment(fp.Value, System.Net.Mime.MediaTypeNames.Application.Zip) { Name = fp.Key })
-                            .Concat(new[] { new Attachment(CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath), OpenXmlDocxExtensions.DocxMimeType) { Name = CreateDocxTimetable.TimetableName(course)} });
-                        Parallel.ForEach(faculty[true], sendMail);
-                    }
-                    return new EmailResult {
-                        SuccessRecipients = success.ToArray(),
-                        FailRecipients = fail.ToArray()
-                    };
+                foreach (var f in faculty[false])
+                {
+                    sendMail(f);
                 }
+                            
+
+                if (faculty[true].Any())
+                {
+                    attachments = GetFilePaths(course)
+                        .Select(fp => new Attachment(Stream.Synchronized(fp.Value.ToStream()), System.Net.Mime.MediaTypeNames.Application.Zip) { Name = fp.Key })
+                        .Concat(new[] { new Attachment(Stream.Synchronized(CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath)), OpenXmlDocxExtensions.DocxMimeType) { Name = CreateDocxTimetable.TimetableName(course) } }).ToList();
+                    foreach (var f in faculty[true])
+                    {
+                        sendMail(f);
+                    }
+                }
+                await parallelEmails.SendingComplete();
+                messages.ForEach(m=>m.Dispose());
             }
+            return new EmailResult {
+                SuccessRecipients = success.ToArray(),
+                FailRecipients = fail.ToArray()
+            };
         }
 
         private static IEnumerable<KeyValuePair<string, string>> GetFilePaths(Course course)

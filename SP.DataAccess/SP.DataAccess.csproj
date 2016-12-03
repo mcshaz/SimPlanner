@@ -143,6 +143,10 @@
     <Compile Include="Migrations\201611072340546_institutionUrl.Designer.cs">
       <DependentUpon>201611072340546_institutionUrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612020616350_CourseEmailSequenceToVersion.cs" />
+    <Compile Include="Migrations\201612020616350_CourseEmailSequenceToVersion.Designer.cs">
+      <DependentUpon>201612020616350_CourseEmailSequenceToVersion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
@@ -380,6 +384,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611072340546_institutionUrl.resx">
       <DependentUpon>201611072340546_institutionUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612020616350_CourseEmailSequenceToVersion.resx">
+      <DependentUpon>201612020616350_CourseEmailSequenceToVersion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

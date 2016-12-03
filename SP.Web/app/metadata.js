@@ -1,4 +1,4 @@
-//201611072340546_institutionUrl
+//201612020616350_CourseEmailSequenceToVersion
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -726,8 +726,8 @@
           "displayName": "Faculty No Required"
         },
         {
-          "name": "emailSequence",
-          "dataType": "Byte",
+          "name": "version",
+          "dataType": "Int32",
           "isNullable": false,
           "defaultValue": 0,
           "validators": [
@@ -735,12 +735,12 @@
               "name": "required"
             },
             {
-              "min": 0,
-              "max": 255,
-              "name": "byte"
+              "min": -2147483648,
+              "max": 2147483647,
+              "name": "int32"
             }
           ],
-          "displayName": "Email Sequence"
+          "displayName": "Version"
         },
         {
           "name": "courseFormatId",

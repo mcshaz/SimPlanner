@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
-using System.Security.Principal;
 using System.Text;
 using Ical.Net;
 using Ical.Net.DataTypes;
@@ -12,19 +11,34 @@ using Ical.Net.Serialization.iCalendar.Serializers;
 using Ical.Net.Interfaces.DataTypes;
 using System.Collections.Generic;
 using SP.Dto;
+using SP.Dto.Utilities;
 
 namespace SP.Web.UserEmails
 {
     public static class Appointment
     {
-        private static Calendar CreateCal(Course course)
+        public static Calendar CreateCal(IEnumerable<Event> events)
         {
             var currentCal = new Calendar
             {
-                Method = course.Cancelled ? CalendarMethods.Cancel : CalendarMethods.Request,
+                Method = CalendarMethods.Publish
             };
-            var timezone = VTimeZone.FromSystemTimeZone(course.Department.Institution.TimeZone);
-            currentCal.AddTimeZone(timezone);
+            var timezoneIds = new HashSet<string>();
+            foreach (var e in events)
+            {
+                if (!string.IsNullOrEmpty(e.Start.TimeZoneName))
+                {
+                    timezoneIds.Add(e.Start.TimeZoneName);
+                }
+                currentCal.Events.Add(e);
+            }
+
+            foreach (var tz in timezoneIds)
+            {
+                currentCal.AddTimeZone(new VTimeZone { TzId = tz });
+            }
+            //var timezone = VTimeZone.FromSystemTimeZone(course.Department.Institution.TimeZone);
+            //currentCal.AddTimeZone(timezone);
             return currentCal;
         }
         private static GeographicLocation GetGeoLocation(Course course)
@@ -42,66 +56,60 @@ namespace SP.Web.UserEmails
         }
 
         const string mailto = "mailto:";
-        static public Calendar CreateCourseAppointment(Course course, IIdentity currentUser)
+
+        public static List<Event> MapCoursesToEvents(IEnumerable<Course> courses)
         {
-            TimeZoneInfo tzi = course.Department.Institution.TimeZone;
-            var currentCal = CreateCal(course);
-            // Create the event, and add it to the iCalendar
-            //
-            Event courseEvt = new Event
+            var returnVar = new List<Event>();
+            foreach (var course in courses)
             {
-                Class = "PRIVATE",
-                Created = new CalDateTime(course.CreatedUtc),
-                LastModified = new CalDateTime(course.CourseDatesLastModified),
-                Sequence = course.EmailSequence,
-                Transparency = TransparencyType.Opaque,
-                Status = course.Cancelled ? EventStatus.Cancelled : EventStatus.Confirmed,
-                Uid = "course" + course.Id.ToString(),
-                Priority = 5,
-                Location = course.Room.ShortDescription,
-                Attendees = course.CourseParticipants.Select(MapCourseParticipantToAttendee).ToList(),
-                Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation,
-                IsAllDay = false,
-                Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description,
-                GeographicLocation = GetGeoLocation(course),
-                Organizer = GetOrganizer(course),
-                //DtStamp = - this is probably being inserted - check
-            };
-            System.Diagnostics.Debug.WriteLine(courseEvt.Organizer);
-            foreach (var cd in course.AllDays().Take(course.CourseFormat.DaysDuration))
-            {
-                var dayEvt = courseEvt.Copy<Event>();
-                dayEvt.Start = new CalDateTime(course.StartLocal, tzi.Id);
-                dayEvt.Description += " - " + course.StartLocal.ToString("g");
-                dayEvt.Duration = TimeSpan.FromMinutes(cd.DurationMins);
-                if (course.CourseFormat.DaysDuration > 1)
+                Event courseEvt = new Event
                 {
-                    string dayNo = $" (day {cd.Day})";
-                    dayEvt.Summary += dayNo;
-                    dayEvt.Description += dayNo;
+                    Class = "PUBLIC",
+                    Created = new CalDateTime(course.CreatedUtc),
+                    LastModified = new CalDateTime(course.CourseDatesLastModified),
+                    Sequence = course.Version,
+                    //pending fix
+                    Transparency = TransparencyType.Opaque,
+                    Status = course.Cancelled ? EventStatus.Cancelled : EventStatus.Confirmed,
+                    Uid = "course" + course.Id.ToString(),
+                    Priority = 5,
+                    Location = course.Room.ShortDescription,
+                    Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation,
+                    IsAllDay = false,
+                    Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description,
+                    GeographicLocation = GetGeoLocation(course)
+                    //DtStamp = - this is being inserted 
+                };
+                //now add aditional days
+                foreach (var cd in course.AllDays().Take(course.CourseFormat.DaysDuration))
+                {
+                    var dayEvt = cd.Day < course.CourseFormat.DaysDuration
+                        ? courseEvt.Copy<Event>()
+                        : courseEvt;
+                    dayEvt.Start = new CalDateTime(course.StartUtc);
+                    dayEvt.Description += " - " + course.StartLocal.ToString("g");
+                    dayEvt.Duration = TimeSpan.FromMinutes(cd.DurationMins);
+                    if (course.CourseFormat.DaysDuration > 1)
+                    {
+                        string dayNo = $" (day {cd.Day})";
+                        dayEvt.Summary += dayNo;
+                        dayEvt.Description += dayNo;
+                    }
+                    if (cd.Day == 1)
+                    {
+                        dayEvt.Alarms.Add(new Alarm
+                        {
+                            Action = AlarmAction.Display,
+                            Summary = course.Department.Abbreviation + ' ' + course.CourseFormat.CourseType.Abbreviation,
+                            Trigger = new Trigger(TimeSpan.FromHours(-24))
+                        });
+                    }
+                    returnVar.Add(dayEvt);
                 }
-                currentCal.Events.Add(dayEvt);
             }
 
-
-
-            // Create a serialization context and serializer factory.
-            // These will be used to build the serializer for our object.
-
-            //set alarm
-            Alarm alarm = new Alarm
-            {
-                Action = AlarmAction.Display,
-                Summary = course.Department.Abbreviation + ' ' + course.CourseFormat.CourseType.Abbreviation,
-                Trigger = new Trigger(TimeSpan.FromHours(-1))
-            };
-
-            // Add the alarm to the event
-            courseEvt.Alarms.Add(alarm);
-
-            return currentCal;
+            return returnVar;
         }
-
 
         private static IAttendee MapCourseParticipantToAttendee(CourseParticipant cp)
         {
@@ -124,14 +132,6 @@ namespace SP.Web.UserEmails
             };
         }
 
-        public static Calendar CreateFacultyCalendar(Course course)
-        {
-            var currentCal = CreateCal(course);
-            var facultyMeet = CreateFacultyMeetingEvent(course);
-            currentCal.Events.Add(facultyMeet);
-            return currentCal;
-        }
-
         public static void AppendFacultyMeetingEvent(Calendar cal, Course course)
         {
             if (!course.FacultyMeetingUtc.HasValue) { return; }
@@ -146,29 +146,30 @@ namespace SP.Web.UserEmails
         {
             Event meeting = new Event
             {
-                Class = "PRIVATE",
+                Class = "PUBLIC",
                 Created = new CalDateTime(course.CreatedUtc),
                 LastModified = new CalDateTime(course.FacultyMeetingDatesLastModified),
-                Sequence = course.EmailSequence,
+                Sequence = course.Version,
                 Uid = "planning" + course.Id.ToString(),
                 Priority = 5,
-                Organizer = GetOrganizer(course),
+                //pending ical.net fix
                 Transparency = TransparencyType.Opaque,
                 Status = course.Cancelled ? EventStatus.Cancelled : EventStatus.Confirmed,
                 Description = "planning meeting for " + course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + course.StartLocal.ToString("g"),
                 Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting for " + course.StartLocal.ToString("d"),
-                Attendees = course.CourseParticipants.Where(cp => cp.IsFaculty).Select(MapCourseParticipantToAttendee).ToList(),
-                Start = new CalDateTime(course.FacultyMeetingLocal.Value, course.Department.Institution.StandardTimeZone),
+                Start = new CalDateTime(course.FacultyMeetingUtc.Value), //, course.Department.Institution.StandardTimeZone),
                 GeographicLocation = GetGeoLocation(course)
             };
 
             // Set information about the event
-            if (course.FacultyMeetingDuration.HasValue)
-                meeting.Duration = TimeSpan.FromMinutes(course.FacultyMeetingDuration.Value);
+            meeting.Duration = TimeSpan.FromMinutes(course.FacultyMeetingDuration.Value);
+                
             //evt.Name = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation;
             //evt.Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description;
             if (course.FacultyMeetingRoom != null)
+            {
                 meeting.Location = course.FacultyMeetingRoom.ShortDescription;
+            }
 
             Alarm alarm = new Alarm
             {
@@ -199,15 +200,11 @@ namespace SP.Web.UserEmails
         public void Add(Calendar cal)
         {
             var evt = cal.Events.First();
-            var stream = new MemoryStream();
+            var stream = _serializer.SerializeToString(cal).ToStream();
             //should work but truncating the stream at the moment - ? flush needed in the ical.net source code
             //galaxy13
             //_serializer.Serialize(cal, stream, Encoding.UTF8);
             //stream.Flush();
-            using (var sw = new StreamWriter(stream, Encoding.UTF8, 2500, true))
-            {
-                sw.Write(_serializer.SerializeToString(cal));
-            }
                 
             _cals.Add(new CalendarInfo
             {
@@ -301,18 +298,20 @@ namespace SP.Web.UserEmails
             //hack alert - calendars could conceivably have different methods
             foreach (var c in _cals)
             {
-                var contentType = new ContentType("text/calendar")
+                var contentType = new ContentType("text/plain") //"text/calendar"
                 {
                     CharSet = Encoding.UTF8.HeaderName,
                     Name = c.Name
                 };
-                contentType.Parameters.Add("method", c.Method);
+                //contentType.Parameters.Add("method", c.Method);
 
                 c.Data.Position = 0;
-                var outStream = new MemoryStream((int)c.Data.Length);
+                var outStream = new MemoryStream((int)c.Data.Length); //should be able to wrap stream in Stream.Synchronized & 
                 c.Data.CopyTo(outStream);
+                outStream.Position = 0;
                 var attach = new System.Net.Mail.Attachment(outStream, contentType); //System.Net.Mail.Attachment.CreateAttachmentFromString(s, calType);
-
+                
+                attach.ContentDisposition.FileName = c.Name;
                 msg.Attachments.Add(attach);
             }
         }

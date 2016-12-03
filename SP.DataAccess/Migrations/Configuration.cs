@@ -159,6 +159,8 @@ namespace SP.DataAccess.Migrations
             }
             //context.Roles.AddOrUpdate(new AspNetRole { Id = Guid.ParseExact(RoleConstants.AdminApprovedId,RoleConstants.IdFormat), Name = RoleConstants.AdminApproved});
             context.SaveChanges();
+
+            context.Database.ExecuteSqlCommand("UPDATE [dbo].[Courses] SET[CourseDatesLastModified] = [CreatedUtc] ,[FacultyMeetingDatesLastModified] = [CreatedUtc] WHERE YEAR([CourseDatesLastModified]) = 1900");
         }
     }
 }

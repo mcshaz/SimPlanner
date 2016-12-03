@@ -21,7 +21,7 @@ namespace SP.Dto
         public Guid? FacultyMeetingRoomId { get; set; }
         public int? FacultyMeetingDuration { get; set; }
         public byte FacultyNoRequired { get; set; }
-        public byte EmailSequence { get; set; }
+        public int Version { get; set; }
         public Guid CourseFormatId { get; set; }
         public string ParticipantVideoFilename { get; set; }
         public string FeedbackSummaryFilename { get; set; }

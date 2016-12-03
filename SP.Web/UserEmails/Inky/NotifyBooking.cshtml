@@ -1,7 +1,6 @@
 ﻿@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
 @using SP.DataAccess
 @inherits SP.Web.UserEmails.EmailBase
-
 @functions{
     public Participant PersonBooking { get; set; }
     public Room RoomBooked { get; set; }
@@ -23,8 +22,6 @@
         ManikinsCancelled = new Manikin[0];
     }
 }
-
-
 <row>
     <columns large="12">
         <callout class="info">

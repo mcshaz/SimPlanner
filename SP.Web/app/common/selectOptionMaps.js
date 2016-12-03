@@ -54,7 +54,7 @@
 
         function filterLocalDepartments(ds) {
             var userCulture = tokenStorageService.getUserLocale();
-            return function (d) { return d.institution.culture.localeCode === userCulture; }
+            return function (d) { return d.institution.culture.localeCode === userCulture; };
         }
 
         function getFlagClassFromLocaleCode(localeCode) {
@@ -81,7 +81,7 @@
                 searchString: countryCode + "#" + d.institution.culture.name + "#" + d.institution.name.toLowerCase() + "#" + d.institution.abbreviation.toLowerCase() + "#" + d.name.toLowerCase() + "#" + d.abbreviation.toLowerCase(),
                 institutionName: countryCode + '-' + d.institution.abbreviation,
                 flagClass: getFlagClassFromLocaleCode(localeCode)
-            }
+            };
         }
 
         function sortAndMapDepartment(ds) {

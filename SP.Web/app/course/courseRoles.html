@@ -27,7 +27,7 @@
                                 <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                                     <div class="panel-body" ng-if="m.track">
                                         <div class="row">
-                                            <div class="form-group" ng-if="m.choices.length">
+                                            <div class="form-group row" ng-if="m.choices.length">
                                                 <!--m.choices only if !scenario-->
                                                 <label class="control-label col-md-1" for="activity">
                                                     Resource
@@ -52,13 +52,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group" ng-if="m.isScenario && (m.selectedActivityId || vm.scenarios.length)">
-                                                <label class="control-label col-md-1" for="scenario">
+                                            <div class="form-group row" ng-if="m.isScenario">
+                                                <label class="control-label col-md-2" for="scenario">
                                                     Scenario
                                                 </label>
                                                 <div class="col-md-5">
                                                     <ui-select ng-model="m.selectedActivityId" title="Choose resource"
-                                                               id="scenario" on-select="vm.changeActivityScenario(m)">
+                                                               id="scenario" on-select="vm.changeActivityScenario(m)" close-on-select="true" >
                                                         <ui-select-match allow-clear="true" placeholder="Select resource...">{{$select.selected.name}}</ui-select-match>
                                                         <ui-select-choices repeat="s.id as s in vm.scenarios">
                                                             <span ng-bind-html="item.html"></span>
@@ -67,11 +67,6 @@
                                                             No Matches.
                                                         </ui-select-no-choice>
                                                     </ui-select>
-                                                    <span class="input-group-btn">
-                                                        <button type="button" ng-click="m.selectedActivityId=''" class="btn btn-default">
-                                                            <span class="glyphicon glyphicon-trash"></span>
-                                                        </button>
-                                                    </span>
                                                 </div>
                                                 <aside class="col-md-6">
                                                     {{m.scenario.fullDescription}}
