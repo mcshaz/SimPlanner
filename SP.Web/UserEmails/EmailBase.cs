@@ -21,12 +21,12 @@ namespace SP.Web.UserEmails
                     {
                         var url = HttpContext.Current.Request.Url;
                         _baseInsecureUrl = "http://" +
-                            (url.Authority.StartsWith("localhost")
+                            (url.Host == "localhost"
                             ? "localhost:53099"
                             : url.Authority);
                     }
                 }
-                return _baseUrl;
+                return _baseInsecureUrl;
             }
         }
         public string BaseUrl
