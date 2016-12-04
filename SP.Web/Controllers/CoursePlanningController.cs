@@ -159,7 +159,7 @@ namespace SP.Web.Controllers
             Guid userId = Guid.Parse(id.Substring(0, id.Length - calExt.Length));
             var courseParticipants = await (from cp in Repo.CourseParticipants.Include(cp=>cp.Course.Department.Institution.Culture)
                                             let c = cp.Course
-                                            where DbFunctions.AddDays(c.StartUtc, c.CourseFormat.DaysDuration + 1) > DateTime.UtcNow && cp.ParticipantId == userId
+                                            where cp.ParticipantId == userId && cp.IsConfirmed != false && DbFunctions.AddDays(c.StartUtc, c.CourseFormat.DaysDuration + 1) > DateTime.UtcNow
                                             select cp).ToListAsync();
 
             var evts = Appointment.MapCoursesToEvents(courseParticipants.Select(cp => cp.Course));
