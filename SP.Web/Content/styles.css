@@ -313,7 +313,6 @@ table th > a {
 a {
     cursor: pointer;
 }
-
 /* #endregion */
 
 /*#region wrapper for angular ng-include and ng-view animations*/
@@ -517,9 +516,16 @@ div.time-accompany{
     content:')';
 }
 /*CourseRole*/
-.exposed,.booked{
-    background-color:#FF7518;
+.exposed, .booked, .inService{
     font-style:italic;
+}
+
+.exposed, .booked{
+    background-color:#FF7518;
+}
+
+.inService{
+    background-color:#DDDDDD;
 }
 
 /*Calendar overrides*/

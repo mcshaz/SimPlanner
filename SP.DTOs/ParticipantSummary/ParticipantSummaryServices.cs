@@ -5,6 +5,7 @@ using System.Data.SqlTypes;
 using System.Linq;
 using SP.Dto.Utilities;
 using System.Data.Entity;
+using System.Security.Principal;
 
 namespace SP.Dto.ParticipantSummary
 {
@@ -48,7 +49,7 @@ namespace SP.Dto.ParticipantSummary
             return returnVar;
         }
 
-        public static PriorExposures GetExposures(MedSimDbContext context, Guid courseId, Guid userId)
+        public static PriorExposures GetExposures(MedSimDbContext context, Guid courseId)
         {
             //to do - check authorization
             var course = (from c in context.Courses.Include(co => co.CourseParticipants).Include(co => co.CourseFormat)
@@ -87,25 +88,23 @@ namespace SP.Dto.ParticipantSummary
             return returnVar;
         }
 
-        public static IEnumerable<KeyValuePair<Guid, string>> GetBookedManikins(MedSimDbContext context, Course course)
+        public static ILookup<Guid, CourseDto> GetBookedManikins(IPrincipal user, Guid courseId, Guid[] departmentIds)
         {
-            var refStart = course.StartUtc;
-            var refFinish = course.FinishCourseUtc();
-            return (from csm in context.CourseSlotManikins
-                    let c = csm.Course
-                    let lastDay = c.CourseDays.FirstOrDefault(cd => cd.Day == c.CourseFormat.DaysDuration)
-                    let cFinish = lastDay == null
-                        ? DbFunctions.AddMinutes(c.StartUtc, c.DurationMins)
-                        : DbFunctions.AddMinutes(lastDay.StartUtc, lastDay.DurationMins)
-                    where c.Id != course.Id && c.StartUtc < refFinish && refStart < cFinish
-                    select new { csm.ManikinId, c.CourseFormat.Description, c.Department.Abbreviation })
-                    .ToKeyValuePairList(a => a.ManikinId, a => a.Abbreviation + '-' + a.Description);
-        }
-
-        public static Dictionary<Guid, DateTime> GetManikinsInForRepair(MedSimDbContext context, string userName)
-        {
-            return (from m in context.ManikinServices
-                    select new { m.ManikinId, m.Sent }).ToDictionary(k => k.ManikinId, v => v.Sent);
+            using (var repo = new MedSimDtoRepository(user))
+            {
+                var course = repo.Context.Courses.Include(c=>c.CourseDays).Include(c=>c.CourseFormat).AsNoTracking().First(c=>c.Id == courseId);
+                var start = course.StartUtc;
+                var finish = course.FinishCourseUtc();
+                return (from csm in repo.GetCourseSlotManikins(new[] { "Course.CourseFormat.CourseType", "Course.Department.Institution", "Course.CourseDays", "Manikin" }, new string[0],'.')
+                        let c = csm.Course
+                        let lastDay = c.CourseDays.FirstOrDefault(cd => cd.Day == c.CourseFormat.DaysDuration)
+                        let cFinish = lastDay == null
+                            ? DbFunctions.AddMinutes(c.StartUtc, c.DurationMins)
+                            : DbFunctions.AddMinutes(lastDay.StartUtc, lastDay.DurationMins)
+                        where departmentIds.Contains(csm.Manikin.DepartmentId) && c.Id != courseId && c.StartUtc < finish && cFinish > start
+                        select new { csm.ManikinId, c })
+                        .ToLookup(a => a.ManikinId, a => a.c);
+            }
         }
     }
     public class PriorExposures

@@ -5,17 +5,17 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$http', '$q', 'selectOptionMaps', 'tokenStorageService'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$http', '$q', 'selectOptionMaps', 'tokenStorageService', '$httpParamSerializerJQLike', 'moment'];
 
-    function controller(abstractController, $routeParams, common, datacontext, $aside, breeze, $scope, $http, $q, selectOptionMaps, tokenStorageService) {
+    function controller(abstractController, $routeParams, common, datacontext, $aside, breeze, $scope, $http, $q, selectOptionMaps, tokenStorageService, $httpParamSerializerJQLike, moment) {
         /* jshint validthis:true */
         var vm = this;
         var bookedManikins = {};
+        var id = $routeParams.id;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
             $scope: $scope
         });
-        var id = $routeParams.id;
         vm.changeActivityScenario = changeActivityScenario;
         vm.course = {};
         vm.departments = [];
@@ -43,6 +43,7 @@
                         'courseSlotManikins.manikin',
                         'courseScenarioFacultyRoles',
                         'department.scenarios',
+                        'courseDays',
                         'courseFormat.courseType.courseTypeScenarioRoles.facultyScenarioRole']
                 }).then(function (data) {
                     if (!data) {
@@ -95,7 +96,8 @@
                         */
                         vm.scenarios = vm.course.department.scenarios.map(function (s) {
                             return {
-                                html: createBsOptionHtml(s.briefDescription, participantIdsToName(priorExposure.ScenarioParticipants[s.id])),
+                                name: s.briefDescription,
+                                additional: createBsOptionHtml(participantIdsToName(priorExposure.ScenarioParticipants[s.id])),
                                 id: s.id
                             };
                         });
@@ -154,26 +156,21 @@
                                     });
                                 }
                                 //else if isScenario {
-
+                                var slotRoles = vm.course.courseScenarioFacultyRoles.filter(isThisSlot);
+                                var createManikinKey = function (manikinId) {
+                                    return {
+                                        manikinId: manikinId,
+                                        courseSlotId: returnVar.id,
+                                        courseId: id
+                                    };
+                                };
                                 returnVar.availableFacultyOptions.start = startSortable;
                                 returnVar.availableFaculty.availableFaculty = true;
-                                returnVar.courseSlotManikins = vm.course.courseSlotManikins.filter(isThisSlot);
-
-                                var slotRoles = vm.course.courseScenarioFacultyRoles.filter(isThisSlot);
+                                returnVar.courseSlotManikinIds = vm.course.courseSlotManikins.filter(isThisSlot).map(mapId);
                                 
+                                returnVar.manikinRemoved = common.removeCollectionItem.bind(null, datacontext.courseSlotManikins, createManikinKey);
+                                returnVar.manikinSelected = common.addCollectionItem.bind(null, datacontext.courseSlotManikins, createManikinKey);
 
-                                //manikin 
-                                /*
-                                    }, common.manageCollectionChange(datacontext.courseSlotManikins, 'id',
-                                        function (member) {
-                                            return {
-                                                manikinId: member.id,
-                                                courseSlotId: cs.id, //vm.map[indx].id,//slight hack because the collection is replaced by the isteven multiselect - not really sure why this works, but otherwise digest in progress error on change
-                                                courseId: vm.course.id
-                                            };
-                                        }));
-                                */
-                                //end manikin
                                 vm.course.courseFormat.courseType.courseTypeScenarioRoles.sort(common.sortOnChildPropertyName('facultyScenarioRole', 'order'));
                                 return angular.extend(returnVar, {
                                     selectedActivityId: returnVar.activityScenario
@@ -218,7 +215,8 @@
                     function mapChoice(c) {
                         return {
                             id: c.id,
-                            html: createBsOptionHtml(c.description, participantIdsToName(priorExposure.ActivityParticipants[c.id]))
+                            name: c.description,
+                            additional: createBsOptionHtml(participantIdsToName(priorExposure.ActivityParticipants[c.id]))
                         };
                     }
                 });// end datacontext.ready
@@ -280,7 +278,7 @@
         }
 
         function departmentSelected(departmentIds) {
-            var pred;
+            var pred, bookings;
             if (departmentIds === undefined) { return $q.when([]); }
             if (!Array.isArray(departmentIds)) {
                 departmentIds = [departmentIds];
@@ -296,16 +294,38 @@
                     pred = breeze.Predicate.create({ 'departmentId': { 'in': departmentIds } });
                     break;
             }
-            return datacontext.manikins.find(pred).then(function (data) {
+            $q.all([datacontext.manikins.find({ where:pred, expand:'manikinServices' }).then(function (data) {
                 vm.manikins = vm.manikins.concat(data.map(function (m) {
+                    var serviceDate = m.manikinServices.find(function (ms) { return !ms.returned; });
                     return {
                         id: m.id,
                         description: m.description,
                         departmentAbbreviation: m.department.abbreviation,
-                        institutionAbbreviation: m.department.institution.abbreviation
+                        institutionAbbreviation: m.department.institution.abbreviation,
+                        inService: serviceDate?("manikin sent for service on " + moment(serviceDate).format('l')):null 
                     };
                 }));
+            }), $http({ method: 'GET', url: '/api/ActivitySummary/ManikinBookings?' + $httpParamSerializerJQLike({
+                courseId: id, 
+                departmentIds: departmentIds
+            })
+            }).then(function (response) {
+                bookings = response.data;
+            })]).then(function () { //all complete
+                vm.manikins.forEach(function (m) {
+                    var courses = bookings[m.id];
+                    if (courses) {
+                        m.bookings = "booked for " + courses.map(bookingInfoString).join(',\r\n');
+                    }
+                });
             });
+            function bookingInfoString(c) {
+                return c.courseFormat.courseType.abbreviation + ' '
+                    + c.courseFormat.abbreviation + ' '
+                    + c.department.abbreviation + ' '
+                    + moment(c.startUtc).format('lll') + ' - '
+                    + moment(c.lastDay.finish).format('lll');
+            }
         }
         //duplicate ctrl key windows/ubuntu, option[alt] key mac, 
         function startSortable(event, ui) {
@@ -367,12 +387,6 @@
             angular.extend(sortable.model, calculateCourseRoles(key.participantId));
         }
 
-        function createBsOptionHtml(text, priorExp) {
-            return priorExp
-                ? '<div class="exposed" title="repeat for participant(s) ' + priorExp + '">' + text + '</div>' //<div data-trigger="hover" data-type="warn" data-animation="am-flip-x" data-title="xxxxxx" bs-tooltip ></div>
-                : '<div>' + text + '</div>';
-        }
-
         function participantIdsToName(ids) {
             if (!ids) {return ids;}
             var names = ids.map(function(id){
@@ -380,5 +394,15 @@
             });
             return names.join(', ');
         }
+    }
+
+    function createBsOptionHtml(priorExp) {
+        return priorExp
+            ? "repeat for participant(s) " + priorExp + "."  //<div data-trigger="hover" data-type="warn" data-animation="am-flip-x" data-title="xxxxxx" bs-tooltip ></div>
+            : null;
+    }
+
+    function mapId(el) {
+        return el.manikinId;
     }
 })();

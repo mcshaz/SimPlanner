@@ -37,10 +37,16 @@ namespace SP.Web.Controllers
         [HttpGet]
         public IHttpActionResult PriorExposure(Guid courseId)
         {
-            var userId = Guid.Parse(User.Identity.GetUserId());
-            return Ok(ParticipantSummaryServices.GetExposures(Context, courseId, userId));
+            return Ok(ParticipantSummaryServices.GetExposures(Context, courseId));
         }
 
+
+        [Route("ManikinBookings")]
+        [HttpGet]
+        public IHttpActionResult ManikinBookings([FromUri]Guid[] departmentIds, Guid courseId)
+        {
+            return Ok(ParticipantSummaryServices.GetBookedManikins(User, courseId, departmentIds));
+        }
     }
     public class ActivitySummary
     {

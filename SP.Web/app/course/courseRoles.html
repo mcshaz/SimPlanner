@@ -36,32 +36,35 @@
                                                     <div class="input-group">
                                                         <ui-select ng-model="m.selectedActivityId" title="Choose resource"
                                                                    id="activity" on-select="vm.changeActivityScenario(m)">
-                                                            <ui-select-match allow-clear="true" placeholder="Select resource...">{{$select.selected.name}}</ui-select-match>
+                                                            <ui-select-match allow-clear="true" placeholder="Select resource...">
+                                                                <span ng-attr-title="{{$select.selected.additional}}" ng-class="{exposed:$select.selected.additional}" >
+                                                                    {{$select.selected.name}}
+                                                                </span>
+                                                            </ui-select-match>
                                                             <ui-select-choices repeat="a.id as a in m.choices">
-                                                                <span ng-bind-html="item.html"></span>
+                                                                <span ng-attr-title="{{a.additional}}" ng-class="{exposed:a.additional}">{{a.name}}</span>
                                                             </ui-select-choices>
                                                             <ui-select-no-choice>
                                                                 No Matches.
                                                             </ui-select-no-choice>
                                                         </ui-select>
-                                                        <span class="input-group-btn">
-                                                            <button type="button" ng-click="m.selectedActivityId = ''" class="btn btn-default">
-                                                                <span class="glyphicon glyphicon-trash"></span>
-                                                            </button>
-                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group row" ng-if="m.isScenario">
+                                            <div class="form-group row" ng-if="m.isScenario && vm.scenarios.length">
                                                 <label class="control-label col-md-2" for="scenario">
                                                     Scenario
                                                 </label>
                                                 <div class="col-md-5">
                                                     <ui-select ng-model="m.selectedActivityId" title="Choose resource"
                                                                id="scenario" on-select="vm.changeActivityScenario(m)" close-on-select="true" >
-                                                        <ui-select-match allow-clear="true" placeholder="Select resource...">{{$select.selected.name}}</ui-select-match>
+                                                        <ui-select-match allow-clear="true" placeholder="Select resource...">
+                                                            <span ng-attr-title="{{$select.selected.additional}}" ng-class="{exposed:$select.selected.additional}">
+                                                                {{$select.selected.name}}
+                                                            </span>
+                                                        </ui-select-match>
                                                         <ui-select-choices repeat="s.id as s in vm.scenarios">
-                                                            <span ng-bind-html="item.html"></span>
+                                                            <span ng-attr-title="{{a.additional}}">{{a.name}}</span>
                                                         </ui-select-choices>
                                                         <ui-select-no-choice>
                                                             No Matches.
@@ -82,19 +85,28 @@
                                                         <!--simple select will not do aswe need classes & titles applied to options-->
                                                         <ui-select multiple ng-model="vm.manikinDptIds" id="departments" title="Departments from which you will be using manikins" 
                                                                    on-select="vm.departmentSelected($model.id)" close-on-select="true">
-                                                            <ui-select-match placeholder="departments [type to narrow selection]">{{$item.abbreviation}}</ui-select-match>
+                                                            <ui-select-match placeholder="departments [type to narrow selection]">
+                                                                {{$item.abbreviation}}
+                                                            </ui-select-match>
                                                             <ui-select-choices group-by="'institutionName'" repeat="department.id as department in vm.departments | propsFilter: {searchString: $select.search}">
-                                                                <div ng-bind-html="department.name | highlight: $select.search"></div>
+                                                                <div ng-bind-html="department.name | highlight: $select.search">
+                                                                </div>
                                                             </ui-select-choices>
                                                         </ui-select>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <ui-select multiple ng-model="m.courseSlotManikinIds" id="manikin"
-                                                                   close-on-select="true" title="Choose manikin(s)">
-                                                            <ui-select-match placeholder="Select manikin(s)...">{{$item.description}}</ui-select-match>
+                                                        <ui-select multiple ng-model="m.courseSlotManikinIds" id="manikin" on-select="m.manikinSelected($model)"
+                                                                   on-remove="m.manikinRemoved($model)" close-on-select="true" title="Choose manikin(s)">
+                                                            <ui-select-match placeholder="Select manikin(s)...">
+                                                                <span ng-attr-title="{{$item.bookings || $item.inService}}" ng-class="{exposed:$item.bookings, inService:$item.inService}">
+                                                                    {{$item.description}}
+                                                                </span>
+                                                            </ui-select-match>
                                                             <ui-select-choices group-by="'departmentAbbreviation'"
                                                                     repeat="manikin.id as manikin in vm.manikins | propsFilter: {description: $select.search }">
-                                                                <div ng-bind-html="manikin.description | highlight: $select.search"></div>
+                                                                <div ng-bind-html="manikin.description | highlight: $select.search"
+                                                                     ng-attr-title="{{manikin.bookings || manikin.inService}}" ng-class="{exposed:manikin.bookings, inService:$item.inService}">
+                                                                </div>
                                                             </ui-select-choices>
                                                         </ui-select>
                                                     </div>

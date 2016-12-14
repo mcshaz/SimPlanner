@@ -77,6 +77,10 @@ namespace SP.Dto
                 //possible bottleneck - could cast to all the different types
                 return treeTop.SelectExpression.Compile().DynamicInvoke(o);
             }).ToList();
+            foreach (var k in result.DeletedKeys)
+            {
+                k.EntityTypeName = k.EntityTypeName.Replace(":#SP.DataAccess", "Dto:#SP.Dto");
+            }
         }
 
         public IQueryable<CourseFormatDto> GetCourseFormats(string[] includes, string[] selects, char sepChar)
@@ -92,6 +96,11 @@ namespace SP.Dto
         public IQueryable<CourseSlotDto> GetCourseSlots(string[] includes, string[] selects, char sepChar)
         {
             return Context.CourseSlots.ProjectToDto<CourseSlot, CourseSlotDto>(_currentUser, includes, selects, sepChar);
+        }
+
+        public IQueryable<CourseSlotManikinDto> GetCourseSlotManikins(string[] includes, string[] selects, char sepChar)
+        {
+            return Context.CourseSlotManikins.ProjectToDto<CourseSlotManikin, CourseSlotManikinDto>(_currentUser, includes, selects, sepChar);
         }
 
         public IQueryable<ManikinDto> GetManikins(string[] includes, string[] selects, char sepChar)

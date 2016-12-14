@@ -54,12 +54,12 @@
       <HintPath>..\packages\Ical.Net.2.3.1\lib\portable-net45+netcore45+wpa81\antlr.runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Breeze.ContextProvider, Version=1.5.5.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
-      <HintPath>..\packages\Breeze.Server.ContextProvider.1.5.5\lib\Breeze.ContextProvider.dll</HintPath>
+    <Reference Include="Breeze.ContextProvider, Version=1.6.0.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Breeze.Server.ContextProvider.1.6.0\lib\Breeze.ContextProvider.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Breeze.WebApi2, Version=1.5.5.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
-      <HintPath>..\packages\Breeze.Server.WebApi2.1.5.5\lib\Breeze.WebApi2.dll</HintPath>
+    <Reference Include="Breeze.WebApi2, Version=1.6.0.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Breeze.Server.WebApi2.1.6.0\lib\Breeze.WebApi2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
@@ -172,115 +172,115 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.ArcGISOnline, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.ArcGISOnline.2.11.1\lib\net45\Owin.Security.Providers.ArcGISOnline.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.ArcGISOnline.2.12.0\lib\net45\Owin.Security.Providers.ArcGISOnline.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Asana, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Asana.2.11.1\lib\net45\Owin.Security.Providers.Asana.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Asana.2.12.0\lib\net45\Owin.Security.Providers.Asana.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Backlog, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Backlog.2.11.1\lib\net45\Owin.Security.Providers.Backlog.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Backlog.2.12.0\lib\net45\Owin.Security.Providers.Backlog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Baidu, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Baidu.2.11.1\lib\net45\Owin.Security.Providers.Baidu.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Baidu.2.12.0\lib\net45\Owin.Security.Providers.Baidu.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.BattleNet, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.BattleNet.2.11.1\lib\net45\Owin.Security.Providers.BattleNet.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.BattleNet.2.12.0\lib\net45\Owin.Security.Providers.BattleNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Bitbucket, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Bitbucket.2.11.1\lib\net45\Owin.Security.Providers.Bitbucket.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Bitbucket.2.12.0\lib\net45\Owin.Security.Providers.Bitbucket.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Box, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Box.2.11.1\lib\net45\Owin.Security.Providers.Box.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Box.2.12.0\lib\net45\Owin.Security.Providers.Box.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Buffer, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Buffer.2.11.1\lib\net45\Owin.Security.Providers.Buffer.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Buffer.2.12.0\lib\net45\Owin.Security.Providers.Buffer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Cosign, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Cosign.2.11.1\lib\net45\Owin.Security.Providers.Cosign.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Cosign.2.12.0\lib\net45\Owin.Security.Providers.Cosign.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.DeviantArt, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.DeviantArt.2.11.1\lib\net45\Owin.Security.Providers.DeviantArt.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.DeviantArt.2.12.0\lib\net45\Owin.Security.Providers.DeviantArt.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Discord, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Discord.2.11.1\lib\net45\Owin.Security.Providers.Discord.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Discord.2.12.0\lib\net45\Owin.Security.Providers.Discord.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.DoYouBuzz, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.DoYouBuzz.2.11.1\lib\net45\Owin.Security.Providers.DoYouBuzz.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.DoYouBuzz.2.12.0\lib\net45\Owin.Security.Providers.DoYouBuzz.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Dropbox, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Dropbox.2.11.1\lib\net45\Owin.Security.Providers.Dropbox.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Dropbox.2.12.0\lib\net45\Owin.Security.Providers.Dropbox.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.EVEOnline, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.EVEOnline.2.11.1\lib\net45\Owin.Security.Providers.EVEOnline.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.EVEOnline.2.12.0\lib\net45\Owin.Security.Providers.EVEOnline.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Fitbit, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Fitbit.2.11.1\lib\net45\Owin.Security.Providers.Fitbit.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Fitbit.2.12.0\lib\net45\Owin.Security.Providers.Fitbit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Flickr, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Flickr.2.11.1\lib\net45\Owin.Security.Providers.Flickr.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Flickr.2.12.0\lib\net45\Owin.Security.Providers.Flickr.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Foursquare, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Foursquare.2.11.1\lib\net45\Owin.Security.Providers.Foursquare.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Foursquare.2.12.0\lib\net45\Owin.Security.Providers.Foursquare.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Geni, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Geni.2.11.1\lib\net45\Owin.Security.Providers.Geni.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Geni.2.12.0\lib\net45\Owin.Security.Providers.Geni.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.GitHub, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.GitHub.2.11.1\lib\net45\Owin.Security.Providers.GitHub.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.GitHub.2.12.0\lib\net45\Owin.Security.Providers.GitHub.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Gitter, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Gitter.2.11.1\lib\net45\Owin.Security.Providers.Gitter.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Gitter.2.12.0\lib\net45\Owin.Security.Providers.Gitter.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.GooglePlus, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.GooglePlus.2.11.1\lib\net45\Owin.Security.Providers.GooglePlus.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.GooglePlus.2.12.0\lib\net45\Owin.Security.Providers.GooglePlus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.HealthGraph, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.HealthGraph.2.11.1\lib\net45\Owin.Security.Providers.HealthGraph.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.HealthGraph.2.12.0\lib\net45\Owin.Security.Providers.HealthGraph.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Imgur, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Imgur.2.11.1\lib\net45\Owin.Security.Providers.Imgur.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Imgur.2.12.0\lib\net45\Owin.Security.Providers.Imgur.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Instagram, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Instagram.2.11.1\lib\net45\Owin.Security.Providers.Instagram.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Instagram.2.12.0\lib\net45\Owin.Security.Providers.Instagram.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.LinkedIn, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.LinkedIn.2.11.1\lib\net45\Owin.Security.Providers.LinkedIn.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.LinkedIn.2.12.0\lib\net45\Owin.Security.Providers.LinkedIn.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.MyHeritage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.MyHeritage.2.11.1\lib\net45\Owin.Security.Providers.MyHeritage.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.MyHeritage.2.12.0\lib\net45\Owin.Security.Providers.MyHeritage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Onshape, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Onshape.2.11.1\lib\net45\Owin.Security.Providers.Onshape.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Onshape.2.12.0\lib\net45\Owin.Security.Providers.Onshape.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.OpenID, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.OpenID.2.11.1\lib\net45\Owin.Security.Providers.OpenID.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.OpenID.2.12.0\lib\net45\Owin.Security.Providers.OpenID.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.OpenIDBase, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -288,87 +288,91 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Orcid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Orcid.2.11.1\lib\net45\Owin.Security.Providers.Orcid.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Orcid.2.12.0\lib\net45\Owin.Security.Providers.Orcid.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.PayPal, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.PayPal.2.11.1\lib\net45\Owin.Security.Providers.PayPal.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.PayPal.2.12.0\lib\net45\Owin.Security.Providers.PayPal.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Reddit, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Reddit.2.11.1\lib\net45\Owin.Security.Providers.Reddit.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Reddit.2.12.0\lib\net45\Owin.Security.Providers.Reddit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Salesforce, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Salesforce.2.11.1\lib\net45\Owin.Security.Providers.Salesforce.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Salesforce.2.12.0\lib\net45\Owin.Security.Providers.Salesforce.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Shopify, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Shopify.2.11.1\lib\net45\Owin.Security.Providers.Shopify.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Shopify.2.12.0\lib\net45\Owin.Security.Providers.Shopify.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Slack, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.SlackProvider.2.11.1\lib\net45\Owin.Security.Providers.Slack.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.SlackProvider.2.12.0\lib\net45\Owin.Security.Providers.Slack.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.SoundCloud, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.SoundCloud.2.11.1\lib\net45\Owin.Security.Providers.SoundCloud.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.SoundCloud.2.12.0\lib\net45\Owin.Security.Providers.SoundCloud.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Spotify, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Spotify.2.11.1\lib\net45\Owin.Security.Providers.Spotify.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Spotify.2.12.0\lib\net45\Owin.Security.Providers.Spotify.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.StackExchange, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.StackExchange.2.11.1\lib\net45\Owin.Security.Providers.StackExchange.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.StackExchange.2.12.0\lib\net45\Owin.Security.Providers.StackExchange.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Steam, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Steam.2.11.1\lib\net45\Owin.Security.Providers.Steam.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Steam.2.12.0\lib\net45\Owin.Security.Providers.Steam.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.TripIt, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.TripIt.2.11.1\lib\net45\Owin.Security.Providers.TripIt.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.TripIt.2.12.0\lib\net45\Owin.Security.Providers.TripIt.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Twitch, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Twitch.2.11.1\lib\net45\Owin.Security.Providers.Twitch.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Twitch.2.12.0\lib\net45\Owin.Security.Providers.Twitch.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Untappd, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Untappd.2.11.1\lib\net45\Owin.Security.Providers.Untappd.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Untappd.2.12.0\lib\net45\Owin.Security.Providers.Untappd.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Vimeo, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Vimeo.2.11.1\lib\net45\Owin.Security.Providers.Vimeo.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Vimeo.2.12.0\lib\net45\Owin.Security.Providers.Vimeo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.VisualStudio, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.VisualStudio.2.11.1\lib\net45\Owin.Security.Providers.VisualStudio.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.VisualStudio.2.12.0\lib\net45\Owin.Security.Providers.VisualStudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.VKontakte, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.VKontakte.2.11.1\lib\net45\Owin.Security.Providers.VKontakte.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.VKontakte.2.12.0\lib\net45\Owin.Security.Providers.VKontakte.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Wargaming, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Wargaming.2.11.1\lib\net45\Owin.Security.Providers.Wargaming.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Wargaming.2.12.0\lib\net45\Owin.Security.Providers.Wargaming.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.WordPress, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.WordPress.2.11.1\lib\net45\Owin.Security.Providers.WordPress.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.WordPress.2.12.0\lib\net45\Owin.Security.Providers.WordPress.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OWin.Security.Providers.WSO2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.Security.Providers.WSO2.2.12.0\lib\net45\OWin.Security.Providers.WSO2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Xing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Xing.2.11.1\lib\net45\Owin.Security.Providers.Xing.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Xing.2.12.0\lib\net45\Owin.Security.Providers.Xing.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Yahoo, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Yahoo.2.11.1\lib\net45\Owin.Security.Providers.Yahoo.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Yahoo.2.12.0\lib\net45\Owin.Security.Providers.Yahoo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin.Security.Providers.Yammer, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.Security.Providers.Yammer.2.11.1\lib\net45\Owin.Security.Providers.Yammer.dll</HintPath>
+      <HintPath>..\packages\Owin.Security.Providers.Yammer.2.12.0\lib\net45\Owin.Security.Providers.Yammer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RazorGenerator.Templating, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
@@ -564,7 +568,7 @@
     <Content Include="dist\apple-touch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dist\css\main-9070f31f12.min.css" />
+    <Content Include="dist\css\main-573babfbf4.min.css" />
     <Content Include="dist\css\ui-grid.eot" />
     <Content Include="dist\css\ui-grid.svg" />
     <Content Include="dist\css\ui-grid.ttf" />
@@ -591,7 +595,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-785533209d.min.js" />
+    <Content Include="dist\js\main-1129df22b9.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

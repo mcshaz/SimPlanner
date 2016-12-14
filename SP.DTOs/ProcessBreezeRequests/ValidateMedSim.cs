@@ -779,8 +779,8 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             //in reality, never going to be adding or updating more than 1 course at a time
             List<EntityInfo> ei;
             var bcd = new BookingChangeDetails();
-            IEnumerable<Guid> allRoomIds = null;
-            IEnumerable<Guid> manikinIds = null;
+            IEnumerable<Guid> allRoomIds = new Guid[0];
+            IEnumerable<Guid> manikinIds = new Guid[0];
             if (saveMap.TryGetValue(typeof(Course), out ei))
             {
                 
@@ -799,8 +799,8 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                 allRoomIds = addedRoomIds.Union(removedRoomIds);
                 var rooms = Context.Rooms.Where(r => allRoomIds.Contains(r.Id)).ToList();
 
-                bcd.AddedRoomBooking = rooms.Single(r => addedRoomIds.Contains(r.Id));
-                bcd.RemovedRoomBooking = rooms.Single(r => removedRoomIds.Contains(r.Id));
+                bcd.AddedRoomBooking = rooms.FirstOrDefault(r => addedRoomIds.Contains(r.Id));
+                bcd.RemovedRoomBooking = rooms.FirstOrDefault(r => removedRoomIds.Contains(r.Id));
                 bcd.RelevantCourse = cs.Single().Single().Entity; //hmmm - this will actually be attached to a different entity manager
             }
             if (saveMap.TryGetValue(typeof(CourseSlotManikin), out ei))
