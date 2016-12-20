@@ -2042,7 +2042,7 @@
             },
             {
               "name": "emailAddress",
-              "messageTemplate": "The {0} field is not a valid e-mail address."
+              "messageTemplate": "%displayName% is not a valid e-mail address."
             }
           ],
           "displayName": "Work Email"

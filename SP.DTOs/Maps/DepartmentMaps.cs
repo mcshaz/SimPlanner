@@ -32,11 +32,11 @@ namespace SP.Dto.Maps
         {
             WherePredicate = v =>
             {
-                if (v.AdminLevel == AdminLevels.AllData)
+                if (v.AdminLevel == AdminLevels.AllData || v.AdminLevel == AdminLevels.None)
                 {
                     return null;
                 }
-                return d => d.AdminApproved;
+                return d => false;
             };
         }
     }

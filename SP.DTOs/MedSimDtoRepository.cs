@@ -122,6 +122,12 @@ namespace SP.Dto
             return Context.Institutions.ProjectToDto<Institution,InstitutionDto>(_currentUser, includes, selects,sepChar);
         }
 
+        public IQueryable<DepartmentDto> GetDepartments(string[] includes = null, string[] selects = null, char sepChar = '.')
+        {
+            //currently allowing users to view all departments within their institution - but only edit their department
+            return Context.Departments.ProjectToDto<Department, DepartmentDto>(_currentUser, includes, selects, sepChar);
+        }
+
         public IQueryable<ParticipantDto> GetParticipants(string[] includes = null, string[] selects = null, char sepChar = '.')
         {
             return Context.Users.ProjectToDto<Participant, ParticipantDto>(_currentUser, includes, selects, sepChar);
@@ -139,8 +145,6 @@ namespace SP.Dto
         {
             return Context.Cultures.ProjectToDto<Culture, CultureDto>(_currentUser, includes, selects, sepChar);
         }
-
-        public IQueryable<DepartmentDto> Departments { get { return Context.Departments.ProjectToDto<Department,DepartmentDto>(_currentUser); } }
 
         public IQueryable<HotDrinkDto> HotDrinks { get { return Context.HotDrinks.ProjectToDto<HotDrink, HotDrinkDto>(_currentUser); } }
 
@@ -160,6 +164,10 @@ namespace SP.Dto
 
         }
 
+        public IQueryable<ProfessionalRoleDto> GetProfessionalRoles(string[] includes, string[] selects, char sepChar = '.') {
+            return Context.ProfessionalRoles.ProjectToDto<ProfessionalRole, ProfessionalRoleDto>(_currentUser, includes, selects, sepChar);
+        }
+
         public IQueryable<FacultyScenarioRoleDto> SenarioRoles { get { return Context.FacultyScenarioRoles.ProjectToDto<FacultyScenarioRole,FacultyScenarioRoleDto>(_currentUser); } }
 
         public IQueryable<InstitutionDto> Hospitals { get { return Context.Institutions.ProjectToDto<Institution,InstitutionDto>(_currentUser); } }
@@ -172,8 +180,6 @@ namespace SP.Dto
                 return returnVar.ProjectToDto<Manikin, ManikinDto>(_currentUser);
             }
         }
-
-        public IQueryable<ProfessionalRoleDto> ProfessionalRoles { get { return Context.ProfessionalRoles.ProjectToDto<ProfessionalRole,ProfessionalRoleDto>(_currentUser); } }
 
         public IQueryable<ScenarioResourceDto> ScenarioResources { get { return Context.ScenarioResources.ProjectToDto<ScenarioResource,ScenarioResourceDto>(_currentUser); } }
 

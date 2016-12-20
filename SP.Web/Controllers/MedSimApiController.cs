@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.AspNet.Identity.Owin;
 using SP.Web.UserEmails;
+using System.Security.Authentication;
 
 namespace SP.Web.Controllers
 {
@@ -28,6 +29,7 @@ namespace SP.Web.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public SaveResult SaveChanges(JObject saveBundle)
         {
             return Repo.SaveChanges(saveBundle);
@@ -61,17 +63,25 @@ namespace SP.Web.Controllers
             var iso = new IncludeSelectOptions(options);
             return Repo.GetManikinServices(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
-        [HttpGet]
-		public IQueryable<DepartmentDto> Departments(){ return Repo.Departments; }
+        [HttpGet, EnableMappedBreezeQuery]
+        [AllowAnonymous]
+        public IQueryable<DepartmentDto> Departments(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            AllowedAnonIncludes(iso, "Institution/Culture");
+            return Repo.GetDepartments(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
 
         [HttpGet]
         [AllowAnonymous]
         public IQueryable<HotDrinkDto> HotDrinks() { return Repo.HotDrinks; }
 
         [HttpGet, EnableMappedBreezeQuery(MaxExpansionDepth = 4)]
+        [AllowAnonymous]
         public IQueryable<InstitutionDto> Institutions(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);
+            AllowedAnonIncludes(iso, "Departments");
             return Repo.GetInstitutions(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
         }
         [HttpGet]
@@ -85,7 +95,12 @@ namespace SP.Web.Controllers
         [HttpGet]
         public IQueryable<ManikinModelDto> ManikinModels() { return Repo.ManikinModels; }
         [HttpGet]
-		public IQueryable<ProfessionalRoleDto> ProfessionalRoles(){ return Repo.ProfessionalRoles; }
+        [AllowAnonymous]
+		public IQueryable<ProfessionalRoleDto> ProfessionalRoles(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetProfessionalRoles(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
         [HttpGet]
         public IQueryable<ProfessionalRoleInstitutionDto> ProfessionalRoleInstitutions() { return Repo.ProfessionalRoleInstitutions; }
         [HttpGet, EnableMappedBreezeQuery]
@@ -151,6 +166,16 @@ namespace SP.Web.Controllers
             return returnVar;
         }
 
+        private void AllowedAnonIncludes(IncludeSelectOptions iso, params string[] allowed)
+        {
+            var emptyString = new string[0];
+            if (!User.Identity.IsAuthenticated && ((iso.Includes ?? emptyString).Any(i => !allowed.Contains(i))) 
+                || (iso.Selects ?? emptyString).Any(s => !allowed.Contains(s)))
+            {
+                throw new AuthenticationException();
+            }
+        }
+
         private class IncludeSelectOptions
         {
             public IncludeSelectOptions(ODataQueryOptions options)
@@ -203,11 +228,12 @@ namespace SP.Web.Controllers
         [HttpGet]
         public LookupBundle Lookups()
         {
+            var emptyString = new string[0];
             return new LookupBundle
             {
-                Institutions = Repo.GetInstitutions(includes: new[] { "Departments.Rooms", "ProfessionalRoleInstitutions.ProfessionalRole", "Culture", "Departments.Manikins" }).ToList(),
+                Institutions = Repo.GetInstitutions(includes: new[] { "Departments.Rooms", "ProfessionalRoleInstitutions", "Culture", "Departments.Manikins" }).ToList(),
                 CourseTypes = Repo.GetCourseTypes(includes: new[] { "CourseFormats" }).ToList(),
-                ProfessionalRoles = Repo.ProfessionalRoles.ToList(),
+                ProfessionalRoles = Repo.GetProfessionalRoles(emptyString, emptyString).ToList(),
                 ManikinManufacturers = Repo.ManikinManufacturers.ToList(),
                 Manikins = Repo.Manikins.ToList()
             };

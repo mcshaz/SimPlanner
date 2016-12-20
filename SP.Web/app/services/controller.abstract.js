@@ -3,10 +3,15 @@
 
     var serviceId = 'controller.abstract';
     angular.module('app').factory(serviceId,
-        ['common', '$window', 'commonConfig', 'breeze', 'datacontext',AbstractRepository]);
+        ['common', '$window', 'commonConfig', 'breeze', 'datacontext', '$q', AbstractRepository]);
 
-    function AbstractRepository(common, $window, commonConfig, breeze, datacontext) {
+    function AbstractRepository(common, $window, commonConfig, breeze, datacontext, $q) {
         var confirmDiscardMsg = 'Are you sure you want to discard changes without saving?';
+
+        //no point instantiating above (as true factory method) as will only extend other methods
+        return {
+            constructor: Ctor
+        };
 
         //var provider = entityManagerFactory.manager;
 
@@ -18,7 +23,7 @@
             var manager = datacontext.provider;
             var unwatchers = [$on('$destroy', removeListeners)];
             var breezeWatcher;
-            var errorEntities = [];
+            var errorEntities = new Set;
             var isSaving = false;
 
             var watchedEntityNames;
@@ -106,7 +111,7 @@
             function notifyViewModelLoaded() {
                 var watched = getWatched(true);
                 vm.isEntityStateChanged = watched.some(isUserChanged);
-                errorEntities = watched.filter(filterHasValidationErrors);
+                errorEntities = new Set(watched.filter(filterHasValidationErrors));
                 //binding the watcher here as no point binding earlier - propertychanged will fire for every property as the entity is being hydrated
                 if (!breezeWatcher) {
                     breezeWatcher = manager.entityChanged.subscribe(entityChanged);
@@ -115,7 +120,6 @@
 
             function entityChanged(changeArgs) {
                 var ent = changeArgs.entity;
-                var indx;
                 //note, when creating entities, this will be called before the entity has been assigned to the viewmodel property.
                 //this can probaby be used to advantage
                 //console.log(changeArgs.entityAction.name + '\t-\t' + ent.entityType.shortName + '\t-\t' + ent.entityAspect.entityState.name);
@@ -126,10 +130,7 @@
                                 vm.isEntityStateChanged = isUserChanged(ent);
                             }
                             if (ent.entityAspect.entityState === breeze.EntityState.Deleted) {
-                                indx = errorEntities.indexOf(ent);
-                                if (indx !== -1) {
-                                    errorEntities.splice(indx, 1);
-                                }
+                                errorEntities.delete(ent);
                             }
                         }
                         break;
@@ -140,16 +141,14 @@
                         if (getWatched().indexOf(ent) === -1) {
                             return;
                         }
-                        indx = errorEntities.indexOf(ent);
-                        if (ent.entityAspect.entityState !== breeze.EntityState.Deleted  && ent.entityAspect.hasValidationErrors) { //?detached
-                            if (indx === -1) {
-                                errorEntities.push(ent);
-                            }
-   
+                        if (ent.entityAspect.entityState !== breeze.EntityState.Deleted 
+                                && ent.entityAspect.hasValidationErrors 
+                                && ent.entityAspect.getValidationErrors().some(function (e) {
+                                    return !(e.isServerError && e.propertyName === changeArgs.args.propertyName);
+                        })) { //detached - propertychange event is called before updating validation errors
+                            errorEntities.add(ent);
                         } else {
-                            if (indx !== -1) {
-                                errorEntities.splice(indx, 1);
-                            }
+                            errorEntities.delete(ent);
                         }
                         if (!vm.isEntityStateChanged) {
                             vm.isEntityStateChanged = isUserChanged(ent);
@@ -230,7 +229,7 @@
             }
             
             function disableSave() {
-                return isSaving || errorEntities.length || !vm.isEntityStateChanged;
+                return isSaving || errorEntities.size || !vm.isEntityStateChanged;
             }
 
             function save() {
@@ -253,7 +252,15 @@
                 toSave = toSave.filter(function (el) { return !!(el && el.entityAspect && el.entityAspect.entityState.isAddedModifiedOrDeleted()); });
                 return datacontext.save.apply(null, toSave).then(function () {
                     vm.isEntityStateChanged = false;
-                }).finally(function() {
+                }, function (response) {
+                    if (response.innerError && response.innerError.entityErrors && response.innerError.entityErrors.length) {
+                        response.innerError.entityErrors.forEach(function (e) {
+                            errorEntities.add(e.entity);
+                        });
+                        vm.isEntityStateChanged = false;
+                    }
+                    return $q.reject(response);
+                }).finally(function () { //avoiding finally as fail falthrough not working
                     isSaving = false;
                 });
             }
@@ -272,11 +279,6 @@
                 }
             }
         }
-
-        //no point instantiating above (as true factory method) as will only extend other methods
-        return { 
-            constructor: Ctor
-        };
 
         /* Implementation */
         /*

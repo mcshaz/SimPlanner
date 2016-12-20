@@ -238,3 +238,4 @@ SP.Web/wwwroot
 SP.Web/Web.openhost.config
 SP.Web/App_Data/TeachingResources
 SP.Web/App_Data/Scenarios
+/SP.Web/App_Data

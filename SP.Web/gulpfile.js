@@ -48,8 +48,8 @@ gulp.task('html', function(cb){
         inline({ compress: true }),
         useref(),
         //uncss({ html: [mainFile, 'app/**/*.html'] }), //needs to have access to css, jss and html
-        jsFilter ,
-        uglify(),
+        jsFilter,
+        uglify(), //if unable to uglify, note the line number of the error, comment out this line, gulp html & then view new .js file (in dist/js)
         rev(),
         jsFilter.restore,
         cssFilter,

@@ -11,7 +11,7 @@
                     <div class="form-group">
                         <label for="institution" class="control-label col-md-2">Institution</label>
                         <div class="col-md-10">
-                            <select id="institution" class="form-control" data-ng-model="vm.institution" 
+                            <select id="institution" class="form-control" data-ng-model="vm.institution"  ng-change="vm.filterRoles"
                                     ng-options="i as i.name group by i.culture.name for i in vm.institutions"></select>
                             <span class="text-danger" />
                         </div>

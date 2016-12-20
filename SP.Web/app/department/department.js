@@ -5,10 +5,10 @@
         .module('app')
         .controller(controllerId, courseTypesCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', 'tokenStorageService', '$location'];
+    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', 'tokenStorageService', '$location', 'USER_ROLES'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, tokenStorageService, $location) {
+    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, tokenStorageService, $location, USER_ROLES) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -20,11 +20,10 @@
         var isNew = id === 'new';
 
         vm.department = {};
-        vm.institutionChanged = institutionChanged;
+        //vm.institutionChanged = institutionChanged;
         vm.institutions = [];
         vm.isLoggedIn = tokenStorageService.isLoggedIn();
-        vm.baseSave = vm.save;
-        vm.save = save;
+        vm.submit = submit;
 
         activate();
 
@@ -33,12 +32,16 @@
             //before approval
             var promises;
             if (isNew) {
-                vm.department = $routeParams.institutionId
-                    ? datacontext.departments.create({ institutionId: $routeParams.institutionId, adminApproved: userCanApprove($routeParams.institutionId) })
-                    : datacontext.departments.create();
-                if (!vm.isLoggedIn) {
-                    promises = [datacontxt.institutions.fetchByKey($routeParams.institutionId).then(function(data){
+                vm.department = datacontext.departments.create({ adminApproved: $routeParams.institutionId
+                    ? userCanApprove($routeParams.institutionId)
+                    : false });
+                if (vm.isLoggedIn) {
+                    //institution will have already be downloaded
+                    vm.department.institutionId = $routeParams.institutionId;
+                } else {
+                    promises = [datacontext.institutions.fetchByKey($routeParams.institutionId).then(function(data){
                         vm.institutions = [data];
+                        vm.department.institution = data;
                     })];
                 }
             }
@@ -71,10 +74,10 @@
                     && datacontext.getByKey(tokenStorageService.getUserDepartmentId()).institutionId === institutionId;
         }
 
-        function save() {
-            baseSave().then(function () {
+        function submit() {
+            vm.save().then(function () {
                 if (!vm.isLoggedIn) {
-                    $location.path('/updateMyDetails/new?departmentId=' + vm.department.id);
+                    $location.path('/updateDetails/new').search({departmentId: vm.department.id });
                 }
             });
         }

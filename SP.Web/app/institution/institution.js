@@ -5,10 +5,10 @@
         .module('app')
         .controller(controllerId, courseTypesCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http', 'tokenStorageService', '$location', 'USER_ROLES', 'selectOptionMaps'];
+    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http', 'tokenStorageService', '$location', 'USER_ROLES', 'selectOptionMaps', 'googleTools'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http, tokenStorageService, $location, USER_ROLES, selectOptionMaps) {
+    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http, tokenStorageService, $location, USER_ROLES, selectOptionMaps, googleTools) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -18,17 +18,18 @@
         });
         var id = $routeParams.id;
         var isNew = id === 'new';
+        var baseSave = vm.save;
 
         vm.institution = {};
         vm.isLoggedIn = tokenStorageService.isLoggedIn();
         vm.clearFileData = clearFileData;
         vm.cultureFormats=[];
         vm.timeZonesForCulture = [];
-        vm.googleMapAddress="";
+        vm.googleMapAddress = "";
+        vm.googleMapsLink = "";
         vm.mapAddressChanged = mapAddressChanged;
         vm.onLocaleSelected = onLocaleSelected;
         vm.flagUrl = '';
-        vm.baseSave = vm.save;
         vm.save = save;
 
         activate();
@@ -66,6 +67,7 @@
             common.activateController(promises, controllerId)
                 .then(function () {
                     onLocaleSelected(vm.institution.localeCode);
+                    getGoogleLink();
                     vm.log('Activated Institution View');
                 });
         }
@@ -81,6 +83,7 @@
                     vm.institution.standardTimeZone = vm.timeZonesForCulture[0];
                 }
             }, vm.log.error);
+            getGoogleLink();
         }
 
         function mapAddressChanged() {
@@ -101,9 +104,20 @@
         function save() {
             baseSave().then(function () {
                 if (!vm.isLoggedIn){
-                    $location.path('/department/new?institutionId=' + vm.institution.id);
+                    $location.path('/department/new').search({institutionId: vm.institution.id });
                 }
             });
+        }
+
+        function getGoogleLink() {
+            var localeCode = vm.institution.localeCode;
+            localeCode = typeof localeCode === 'string' && localeCode.length >= 2 //potentially missing .cat
+                ?localeCode.substr(localeCode.length-2,2)
+                :'';
+            vm.googleMapsLink = googleTools.getLocaleHostname(localeCode) + '/maps' +
+                (vm.institution.name
+                    ?'/search/' + vm.institution.name.replace(/ /g,'+')
+                    :'');
         }
     }
     function sortCulture(a, b) {

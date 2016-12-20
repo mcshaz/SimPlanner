@@ -29,7 +29,7 @@
         }
 
         function eventClicked(calendarEvent) {
-            $location.path('course/' + calendarEvent.id);
+            $location.path('/course/' + calendarEvent.id);
         }
 
         function viewDateChanged() {

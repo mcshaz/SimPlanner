@@ -5,71 +5,41 @@
         .module('app')
         .controller(controllerId, updateUser);
 
-    updateUser.$inject = ['common', 'datacontext', '$scope', 'controller.abstract', 'tokenStorageService', '$routeParams', 'USER_ROLES'];
+    updateUser.$inject = ['datacontext', '$scope', 'userDetails.abstract', 'tokenStorageService', '$routeParams', 'USER_ROLES'];
     //changed $uibModalInstance to $scope to get the events
 
-    function updateUser(common, datacontext, $scope, abstractController, tokenStorageService, $routeParams, USER_ROLES) {
+    function updateUser(datacontext, $scope, abstractUserDetails, tokenStorageService, $routeParams, USER_ROLES) {
         /* jshint validthis:true */
         var vm = this;
         var originalRoles;
         var principal = { roles:[] };
 
-        abstractController.constructor.call(this, {
-            controllerId: controllerId,
-            watchedEntityNames: 'participant',
-            $scope: $scope
-        });
+        abstractUserDetails.constructor.call(this, { $scope:$scope, $routeParams:$routeParams, controllerId:controllerId });
 
         vm.canAlter = canAlter;
         vm.changed = changed;
-        vm.hotDrinks = [];
-        vm.institution = {};
-        vm.institutions = [];
-        vm.participant = {};
         vm.permissions = {
             access: null,
             siteAdmin: false
         };
-        vm.professionalRoles = [];
         vm.submit = submit;
 
-        activate();
+        vm.activate().then(activate);
 
-        function activate() {
-            datacontext.ready().then(function () {
-                var promises = [
-                    datacontext.participants.fetchByKey($routeParams.id, {expand:'roles'}).then(function (data) {
-                        vm.participant = data;
-                        var adminLevels = [USER_ROLES.accessDepartment, USER_ROLES.accessInstitution, USER_ROLES.accessAllData];
-                        var adminLevel = data.roles.find(function (r) { return adminLevels.indexOf(r.roleId) > -1; });
-                        vm.permissions = {
-                            adminLevel: adminLevel
-                                ? getRoleName(adminLevel.roleId)
-                                : '',
-                            siteAdmin: data.roles.some(function (r) { return r.roleId === USER_ROLES.siteAdmin; }),
-                            dptManikinBookings: data.roles.some(function (r) { return r.roleId === USER_ROLES.dptManikinBookings; }),
-                            dptRoomBookings: data.roles.some(function (r) { return r.roleId === USER_ROLES.dptRoomBookings; })
-                        };
-                        originalRoles = angular.copy(vm.permissions);
-                    }),
-                    datacontext.institutions.all({ expand: 'culture' }).then(function (data) {
-                        vm.institutions = data;
-                    }),
-                    datacontext.professionalRoles.all().then(function (data) {
-                        vm.professionalRoles = data;
-                    }),
-                    datacontext.hotDrinks.findServerIfCacheEmpty().then(function (data) {
-                        vm.hotDrinks = data;
-                    })
-                ];
-                common.activateController(promises, controllerId)
-                    .then(function () {
-                        vm.institution = vm.participant.department.institution;
-                        vm.notifyViewModelLoaded();
-                        vm.log('Activated Course Participant Dialog');
-                    });
-                principal.roles = tokenStorageService.getUserRoles();
-            });
+        function activate(){
+            var adminLevels = [USER_ROLES.accessDepartment, USER_ROLES.accessInstitution, USER_ROLES.accessAllData];
+            var roles = vm.participant.roles;
+            var adminLevel = roles.find(function (r) { return adminLevels.indexOf(r.roleId) > -1; });
+            vm.permissions = {
+                adminLevel: adminLevel
+                    ? getRoleName(adminLevel.roleId)
+                    : '',
+                siteAdmin: roles.some(function (r) { return r.roleId === USER_ROLES.siteAdmin; }),
+                dptManikinBookings: roles.some(function (r) { return r.roleId === USER_ROLES.dptManikinBookings; }),
+                dptRoomBookings: roles.some(function (r) { return r.roleId === USER_ROLES.dptRoomBookings; })
+            };
+            originalRoles = angular.copy(vm.permissions);
+            principal.roles = tokenStorageService.getUserRoles();
         }
 
         function canAlter(roleName) {

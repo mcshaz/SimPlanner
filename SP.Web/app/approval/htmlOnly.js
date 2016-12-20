@@ -15,8 +15,11 @@
             common.activateController([], vm.title);
         }
 
-        function linkTo(path) {
-            $location.path(path);
+        function linkTo(path, params) {
+            if (params) {
+                return $location.path(path).search(params);
+            }
+            return $location.path(path);
         }
     }
 

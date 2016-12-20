@@ -2,9 +2,9 @@
     'use strict';
     var serviceId = 'datacontext';
     angular.module('app')
-        .service(serviceId, ['$rootScope', 'entityManagerFactory', 'repository', 'common', 'config',service]);
+        .service(serviceId, ['$rootScope', 'entityManagerFactory', 'repository', 'common', 'config', '$q', service]);
 
-    function service($rootScope, entityManagerFactory, repository, common, config) {
+    function service($rootScope, entityManagerFactory, repository, common, config, $q) {
         var self = this;
         var log = common.logger.getLogFn(serviceId);
 
@@ -40,7 +40,13 @@
                     $rootScope.$broadcast('saved', saveResult.entities);
                     log.success({ msg: 'Saved changes', data: saveResult, showToast: true });
                     return saveResult;
-                }, saveFailed);
+                }, function saveFailed(error) {
+                    var msg = config.appErrorPrefix + 'Save failed: ' +
+                        breeze.saveErrorMessageService.getErrorMessage(error);
+                    error.message = msg;
+                    log.error({ msg: msg, data: error });
+                    return $q.reject(error);
+                });
         };
 
         self.activityResources = repository.create(self.provider, 'ActivityDto', 'Activities');
@@ -75,14 +81,6 @@
         self.scenarios = repository.create(self.provider, 'ScenarioDto', 'Scenarios');
         self.scenarioResources = repository.create(self.provider, 'ScenarioResourceDto', 'ScenarioResources');
         self.userRoles = repository.create(self.provider, 'UserRoleDto', 'UserRoles');
-
-        function saveFailed(error) {
-            var msg = config.appErrorPrefix + 'Save failed: ' +
-                breeze.saveErrorMessageService.getErrorMessage(error);
-            error.message = msg;
-            log.error({ msg: msg, data: error });
-            throw error;
-        }
 
         //Ward is a legend - http://stackoverflow.com/questions/20566093/breeze-create-entity-from-existing-one
         function cloneItem(item, collectionNames) {

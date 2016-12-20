@@ -554,7 +554,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                             "StandardTimeZone"));
                     }
                 }
-                if (!WebValidation.IsAccessible(i.Entity.HomepageUrl))
+                if (!string.IsNullOrEmpty(i.Entity.HomepageUrl) && !WebValidation.IsAccessible(i.Entity.HomepageUrl))
                 {
                     returnVar.Add(MappedEFEntityError.Create(i.Entity,
                         "InvalidWebPage",

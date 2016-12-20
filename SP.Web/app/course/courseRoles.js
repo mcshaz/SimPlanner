@@ -302,7 +302,9 @@
                         description: m.description,
                         departmentAbbreviation: m.department.abbreviation,
                         institutionAbbreviation: m.department.institution.abbreviation,
-                        inService: serviceDate?("manikin sent for service on " + moment(serviceDate).format('l')):null 
+                        inService: serviceDate
+                            ? "manikin sent for service on " + moment(serviceDate).format('l')
+                            : null
                     };
                 }));
             }), $http({ method: 'GET', url: '/api/ActivitySummary/ManikinBookings?' + $httpParamSerializerJQLike({
