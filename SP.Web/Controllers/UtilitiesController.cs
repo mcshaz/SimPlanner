@@ -162,7 +162,7 @@ namespace SP.Web.Controllers
                 return validation;
             }
 
-            var courses = GetPermittedEntity(CreateCertificates.GetCourseIncludes(Repo));
+            var courses = GetPermittedEntity(CreateDocxTimetable.GetCourseIncludes(Repo));
             var course = await courses.FirstAsync(c => c.Id == model.EntitySetId);
 
             return StreamToResponse(

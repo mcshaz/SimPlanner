@@ -5,10 +5,10 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['common', 'datacontext', '$q'];
+    controller.$inject = ['common', 'datacontext', '$q', 'selectOptionMaps'];
     //changed $uibModalInstance to $scope to get the events
 
-    function controller(common, datacontext, $q) {
+    function controller(common, datacontext, $q, selectOptionMaps) {
         /* jshint validthis:true */
         var vm = this;
         var log = common.logger.getLogFn(controllerId);

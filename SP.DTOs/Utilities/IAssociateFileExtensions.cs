@@ -15,7 +15,8 @@ namespace SP.Dto.Utilities
             const string activityPath = @"App_Data\TeachingResources\{0}\{1}.zip";
             const string scenarioResourcePath = @"App_Data\Scenarios\{0}.zip"; 
             const string prereadingPath = @"App_Data\PreReading\{0}.zip";
-            Type t = assocFile.GetType();
+            if (string.IsNullOrEmpty(assocFile.FileName)) { return null; }
+            Type t = System.Data.Entity.Core.Objects.ObjectContext.GetObjectType(assocFile.GetType()); //cover for dynamic proxies
             string returnVar;
             switch (t.Name)
             {
@@ -55,6 +56,12 @@ namespace SP.Dto.Utilities
                     throw new ArgumentException("unhandled type");
             }
             return HttpRuntime.AppDomainAppPath + returnVar;
+        }
+
+        public static string ServerPathToUrl(string serverPath)
+        {
+            if (string.IsNullOrEmpty(serverPath)) { return string.Empty; }
+            return serverPath.Substring(HttpRuntime.AppDomainAppPath.Length).Replace('\\', '/');
         }
 
         internal static IAssociateFileOptional AsOptional(this IAssociateFileRequired required)
@@ -103,6 +110,7 @@ namespace SP.Dto.Utilities
 
         internal static void DeleteFile(this IAssociateFile resource)
         {
+            if (string.IsNullOrWhiteSpace(resource.FileName)) { return; }
             var path = GetServerPath(resource);
             DeleteFile(path, resource.FileName);
         }

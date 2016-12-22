@@ -31,6 +31,22 @@ namespace SP.Dto
             }
         }
 
+        public Action<UserRequestingApproval> AfterNewUnapprovedUser
+        {
+            set
+            {
+                _validationHelper.AfterNewUnapprovedUser = value;
+            }
+        }
+
+        public Action<Participant> AfterUserApproved
+        {
+            set
+            {
+                _validationHelper.AfterUserApproved = value;
+            }
+        }
+
         public MedSimDtoRepository(IPrincipal user, MedSimDbContext validationContext = null)
         {
             _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);

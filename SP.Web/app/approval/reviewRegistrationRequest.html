@@ -1,0 +1,118 @@
+﻿<section id="course-view" class="mainbar" data-ng-controller="reviewRegistrationRequest as vm">
+    <section class="matter">
+        <div class="container col-md-12">
+            <h2>Review Registration Request</h2>
+            <form ng-submit="vm.approve()" name="reviewRequestForm">
+                <div class="row">
+                    <h3>
+                        Institution <a class="btn-link small" ng-href="#/institution/{{vm.personRequesting.department.institution.id}}"><i class="fa fa-edit"></i></a> 
+                    </h3>
+                    <dl class="row">
+                        <dt class="col-md-2">
+                            Name
+                        </dt>
+                        <dd class="col-md-10">
+                            {{ vm.personRequesting.department.institution.name }}
+                        </dd>
+                        <dt class="col-md-2">
+                            Abbreviation
+                        </dt>
+                        <dd class="col-md-10">
+                            {{ vm.personRequesting.department.institution.abbreviation }}
+                        </dd>
+                        <dt class="col-md-2">
+                            Locale Code
+                        </dt>
+                        <dd class="col-md-10">
+                            {{ vm.personRequesting.department.institution.localeCode }}
+                        </dd>
+                        <dt class="col-md-2">
+                            Time Zone
+                        </dt>
+                        <dd class="col-md-10">
+                            {{ vm.personRequesting.department.institution.standardTimeZone }}
+                        </dd>
+                        <dt class="col-md-2" ng-if="vm.personRequesting.department.institution.homepageUrl">
+                            URL
+                        </dt>
+                        <dd class="col-md-10"  ng-if="vm.personRequesting.department.institution.homepageUrl">
+                            <a href="{{ vm.personRequesting.department.institution.homepageUrl }}">{{ vm.personRequesting.department.institution.homepageUrl }}</a>
+                            <small>please examine URL carefully before clicking on the link</small>
+                        </dd>
+                        <dt class="col-md-2" ng-if="vm.personRequesting.department.institution.latitude && vm.personRequesting.department.institution.longitude">
+                            Location
+                        </dt>
+                        <dd class="col-md-10" ng-if="vm.personRequesting.department.institution.latitude && vm.personRequesting.department.institution.longitude">
+                            <a ng-href="https://www.google.com/maps/place/{{ vm.personRequesting.department.institution.latitude }},{{ vm.personRequesting.department.institution.longitude }}">Google Maps</a>
+                        </dd>
+                        <dt class="col-md-2" ng-if="vm.personRequesting.department.institution.logoImageFileName">
+                            Logo
+                        </dt>
+                        <dd class="col-md-10" ng-if="vm.personRequesting.department.institution.logoImageFileName">
+                            <img ng-src="{{vm.personRequesting.department.institution.logoImageSrc}}" width="200" alt="logo for {{ vm.personRequesting.department.institution.Name }}" />
+                        </dd>
+                        <dt class="col-md-2" ng-if="vm.personRequesting.department.institution.about">
+                            About
+                        </dt>
+                        <dd class="col-md-10" ng-if="vm.personRequesting.department.institution.about">
+                            {{ vm.personRequesting.department.institution.about }}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="row">
+                    <h3>
+                        Department <a class="btn-link small" ng-href="#/department/{{vm.personRequesting.department.id}}"><i class="fa fa-edit"></i></a> 
+                    </h3>
+                    <dl class="row">
+                        <dt class="col-md-2">
+                            Name
+                        </dt>
+                        <dd class="col-md-10">
+                            {{ vm.personRequesting.department.name }}
+                        </dd>
+                        <dt class="col-md-2">
+                            Abbreviation
+                        </dt>
+                        <dd class="col-md-10">
+                            {{ vm.personRequesting.department.abbreviation }}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="row">
+                    <h3>
+                        Proposed Administrator <a class="btn-link small" ng-href="#/updateUser/{{vm.personRequesting.id}}"><i class="fa fa-edit"></i></a> 
+                    </h3>
+                    <dl class="row">
+                        <dt class="col-md-2">
+                            Name
+                        </dt>
+                        <dd class="col-md-10">
+                            {{ vm.personRequesting.fullName }}
+                        </dd>
+                        <dt class="col-md-2">
+                            Email
+                        </dt>
+                        <dd class="col-md-10">
+                            <a href="{{ vm.personRequesting.mailto() }}">{{ vm.personRequesting.email }} {{ vm.personRequesting.alternateEmail }}</a>
+                        </dd>
+                        <dt class="col-md-2" ng-if="vm.personRequesting.phoneNumber">
+                            Phone Number
+                        </dt>
+                        <dd class="col-md-10" ng-if="vm.personRequesting.phoneNumber">
+                            {{ vm.personRequesting.phoneNumber }}
+                        </dd>
+                        <dt class="col-md-2">
+                            Professional Role
+                        </dt>
+                        <dd class="col-md-10">
+                            {{ vm.personRequesting.professionalRole.category }} - {{ vm.personRequesting.professionalRole.description }}
+                        </dd>
+                    </dl>
+                </div>
+
+                <button type="submit" class="btn btn-lge btn-success">Approve</button>
+                <button type="button" ng-click="vm.reject()" class="btn btn-lge btn-warning">Remove (spam)</button>
+            </form>
+        </div>
+    </section>
+</section>

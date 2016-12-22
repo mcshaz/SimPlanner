@@ -18,6 +18,8 @@
             extendDepartment(metadataStore);
             extendCourseSlot(metadataStore);
             extendValidators(metadataStore);
+            extendInstitution(metadataStore);
+            extendParticipant(metadataStore);
         }
 
         function extendCourse(metadataStore) {
@@ -108,6 +110,38 @@
             metadataStore.registerEntityTypeCtor('CourseDto', CourseCtor, courseInitializer);
         }
 
+        function extendParticipant(metadataStore) {
+            var ParticipantCtor = function () {
+            };
+
+            ParticipantCtor.prototype.mailto = function () {
+                var self = this;
+                var returnVar = "mailto:" + self.email;
+                if (self.alternateEmail) {
+                    returnVar += "?cc=" + self.alternateEmail;
+                }
+                return returnVar;
+            }
+            metadataStore.registerEntityTypeCtor('ParticipantDto', ParticipantCtor);
+        }
+
+        function extendInstitution(metadataStore) {
+            var InstCtor = function(){};
+
+            var instInitializer = function (inst) {
+                Object.defineProperty(InstCtor.prototype, 'logoImageSrc', {
+                    enumerable: false,
+                    configurable: true,
+                    get: function () {
+                        if (!this.logoImageFileName) { return ''; }
+                        return "/Content/images/institutions/" + this.id + this.logoImageFileName.substring(this.logoImageFileName.lastIndexOf('.'));
+                    }
+                });
+            }
+
+            metadataStore.registerEntityTypeCtor('InstitutionDto', InstCtor, instInitializer);
+        }
+
         function extendCourseParticipant(metadataStore) {
             var CourseParticipantCtor = function () {
                 this.isEmailed = false;
@@ -189,10 +223,10 @@
         }
 
         function extendDepartment(metadataStore) {
-            var dptCtor = function(){};
+            var DptCtor = function(){};
 
             var dptInitializer = function (department) {
-                Object.defineProperty(dptCtor.prototype, 'primaryColourHtml', {
+                Object.defineProperty(DptCtor.prototype, 'primaryColourHtml', {
                     enumerable: true,
                     configurable: true,
                     get: function () {
@@ -204,7 +238,7 @@
                         this.primaryColour = value.substr(1);
                     }
                 });
-                Object.defineProperty(dptCtor.prototype, 'secondaryColourHtml', {
+                Object.defineProperty(DptCtor.prototype, 'secondaryColourHtml', {
                     enumerable: true,
                     configurable: true,
                     get: function () {
@@ -216,7 +250,7 @@
                         this.secondaryColour = value.substr(1);
                     }
                 });
-                Object.defineProperty(dptCtor.prototype, 'institutionDptDescriptor', {
+                Object.defineProperty(DptCtor.prototype, 'institutionDptDescriptor', {
                     enumerable: true,
                     configurable: true,
                     get: function () {
@@ -225,7 +259,7 @@
                 });
             };
 
-            metadataStore.registerEntityTypeCtor('DepartmentDto', dptCtor, dptInitializer);
+            metadataStore.registerEntityTypeCtor('DepartmentDto', DptCtor, dptInitializer);
         }
 
         function ensureEntityType(obj, entityTypeName) {

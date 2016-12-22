@@ -1,0 +1,29 @@
+﻿@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.EmailBase *@
+@using SP.DataAccess
+@inherits SP.Web.UserEmails.EmailBase
+@functions{
+    public Participant PersonRequesting { get; set; }
+}
+@{
+    Layout = new SP.Web.UserEmails.LayoutTemplate
+    {
+        Title = "Administrator Application Approved"
+    };
+}
+<row>
+    <columns large="12">
+        <h3>Welcome @PersonRequesting.FullName</h3>
+        <callout class="primary">
+            <p class="lead">
+                An administrator has approved your application.
+            </p>
+        </callout>
+    </columns>
+</row>
+<row>
+    <columns>
+        <p>
+            You should now be able to <a href="@BaseUrl">login to sim-planner.com</a> (either with the password you supplied or a social media login associated with this email address).
+        </p>
+    </columns>
+</row>

@@ -41,6 +41,8 @@ namespace SP.Dto.ProcessBreezeRequests
         }
 
         public Action<IEnumerable<BookingChangeDetails>> AfterBookingChange { get; set; }
+        public Action<UserRequestingApproval> AfterNewUnapprovedUser { get; set; }
+        public Action<Participant> AfterUserApproved { get; set; }
 
         public IEnumerable<EntityError> ValidateDto(Dictionary<Type, List<EntityInfo>> saveMap)
         {
@@ -341,6 +343,38 @@ namespace SP.Dto.ProcessBreezeRequests
                 UpdateICourseDays(ei.Select(e=> (CourseSlot)e.Entity));
             }
 
+            if (saveMap.TryGetValue(typeof(Participant), out ei))
+            {
+                var participants = TypedEntityInfo<Participant>.GetTyped(ei);
+                if (AfterNewUnapprovedUser != null)
+                {
+                    Participant participant = participants.FirstOrDefault(e => e.Info.EntityState == b.EntityState.Added && !e.Entity.AdminApproved)?.Entity;
+                    if (participant != null)
+                    {
+                        //this is where having the breeze context and the validation cotext looks a little messy
+                        //could just get the department as an untracked entity and manually add it on to the participant, but that seems even messier
+                        participant = Context.Users.Include(u => u.Department.Institution).AsNoTracking().First(u => u.Id == participant.Id);
+                        var siteAdminId = (from r in RoleConstants.RoleNames where r.Value == RoleConstants.SiteAdmin select r.Key).First();
+                        var admins = Context.Users.Where(u => u.Roles.Any(r => r.RoleId == siteAdminId)).ToList();
+                        AfterNewUnapprovedUser.Invoke(new UserRequestingApproval {
+                            User = participant,
+                            Administrators = admins
+                        });
+                    }
+                }
+                if (AfterUserApproved != null)
+                {
+                    Participant participant;
+                    object oldAdminApprovedState;
+                    participant = participants.FirstOrDefault(e => e.Info.EntityState == b.EntityState.Modified 
+                        && e.Entity.AdminApproved && e.Info.OriginalValuesMap.TryGetValue(nameof(participant.AdminApproved), out oldAdminApprovedState) && oldAdminApprovedState.Equals(false))?.Entity;
+                    if (participant != null)
+                    {
+                        AfterUserApproved.Invoke(participant);
+                    }
+                }
+            }
+
             AfterBookingChange?.Invoke(GetChanges(saveMap));
 
             foreach (var mei in saveMap.Values.SelectMany(e => e))
@@ -350,6 +384,8 @@ namespace SP.Dto.ProcessBreezeRequests
                     ((Action)pred).Invoke();
                 }
             }
+
+            
             
             var iAssocFiles = (from s in saveMap
                                where typeof(IAssociateFile).IsAssignableFrom(s.Key) 

@@ -424,15 +424,15 @@ namespace SP.DataAccess
             //not sanitizing for the time being - at that point we will need a wysywig editor
             //SanitizeHtml.ForEntities(ChangeTracker);
             SetTimeTracking();
-            try
-            {
-                return base.SaveChanges();
-            }
+
+            return base.SaveChanges();
+            /*
             catch (DbEntityValidationException e)
             {
                 var de = new DetailedEntityValidationException(e);
                 throw de;
             }
+            */
         }
         private void SetTimeTracking()
         {
@@ -487,6 +487,7 @@ namespace SP.DataAccess
             }
         }
     }
+    /*
     [Serializable]
     public class DetailedEntityValidationException : Exception
     {
@@ -494,4 +495,5 @@ namespace SP.DataAccess
             : base(ve.Message + ":\r\n\t-" + string.Join(new string('-',20) + "\r\n\t-", ve.EntityValidationErrors.Select(ev=>string.Join("\r\n\t-",ev.ValidationErrors.Select(e=>e.ErrorMessage)))))
         {}
     }
+    */
 }

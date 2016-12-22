@@ -11,6 +11,7 @@ using System.Net.Http;
 using Microsoft.AspNet.Identity.Owin;
 using SP.Web.UserEmails;
 using System.Security.Authentication;
+using System.Net;
 
 namespace SP.Web.Controllers
 {
@@ -24,7 +25,12 @@ namespace SP.Web.Controllers
         {
             get
             {
-                return _repository ?? (_repository = new MedSimDtoRepository(User, Request.GetOwinContext().Get<DataAccess.MedSimDbContext>()) { AfterBookingChange = MailExtensions.SendBookingNotifications});
+                return _repository ?? (_repository = new MedSimDtoRepository(User, Request.GetOwinContext().Get<DataAccess.MedSimDbContext>())
+                {
+                    AfterBookingChange = MailExtensions.SendBookingNotifications,
+                    AfterNewUnapprovedUser = MailExtensions.SendNewUserRequest,
+                    AfterUserApproved = MailExtensions.SendNewUserApproved
+                });
             }
         }
 
@@ -172,7 +178,7 @@ namespace SP.Web.Controllers
             if (!User.Identity.IsAuthenticated && ((iso.Includes ?? emptyString).Any(i => !allowed.Contains(i))) 
                 || (iso.Selects ?? emptyString).Any(s => !allowed.Contains(s)))
             {
-                throw new AuthenticationException();
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
         }
 

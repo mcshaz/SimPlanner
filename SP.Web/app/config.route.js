@@ -264,12 +264,12 @@
                         templateUrl: 'app/rsvp/rsvp.html'
                     }
                 }, {
-                    url: '/approval',
+                    url: '/reviewRegistrationRequest/:id',
                     config: {
-                        title: 'Approve',
-                        templateUrl: 'app/approval/approval.html',
+                        title: 'Review Request',
+                        templateUrl: 'app/approval/reviewRegistrationRequest.html',
                         access: {
-                            allowedRoles: userRoles.accessAllData
+                            allowedRoles: userRoles.siteAdmin
                         }
                     }
                 }, {

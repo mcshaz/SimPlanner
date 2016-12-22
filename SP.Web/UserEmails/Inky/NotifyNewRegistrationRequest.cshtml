@@ -1,0 +1,160 @@
+﻿@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.EmailBase *@
+@using SP.DataAccess
+@using SP.Dto.Utilities
+@inherits SP.Web.UserEmails.EmailBase
+@functions{
+    public Participant PersonRequesting { get; set; }
+}
+@{
+    Layout = new SP.Web.UserEmails.LayoutTemplate
+    {
+        Title = "Registration Request"
+    };
+}
+<row>
+    <columns large="12">
+        <callout class="primary">
+            <p class="lead">
+                A request has been submitted to register a new institution, department &amp; user - details below.
+            </p>
+        </callout>
+    </columns>
+</row>
+<row>
+    <columns>
+        <h3>
+            Institution
+        </h3>
+        <dl>
+            <dt>
+                Name
+            </dt>
+            <dd>
+                @PersonRequesting.Department.Institution.Name
+            </dd>
+            <dt>
+                Abbreviation
+            </dt>
+            <dd>
+                @PersonRequesting.Department.Institution.Abbreviation
+            </dd>
+            <dt>
+                Locale Code
+            </dt>
+            <dd>
+                @PersonRequesting.Department.Institution.LocaleCode
+            </dd>
+            <dt>
+                Time Zone
+            </dt>
+            <dd>
+                @PersonRequesting.Department.Institution.TimeZone.DisplayName
+            </dd>
+            @if (!string.IsNullOrEmpty(PersonRequesting.Department.Institution.HomepageUrl))
+            {
+                <dt>
+                    URL
+                </dt>
+                <dd>
+                    <a href="@PersonRequesting.Department.Institution.HomepageUrl">@PersonRequesting.Department.Institution.HomepageUrl</a>
+                    <small>please examine URL carefully before clicking on the link</small>
+                </dd>
+            }
+            @if (PersonRequesting.Department.Institution.Latitude.HasValue && PersonRequesting.Department.Institution.Longitude.HasValue)
+            {
+                <dt>
+                    Location
+                </dt>
+                <dd>
+                    <a href="https://www.google.com/maps/place/@PersonRequesting.Department.Institution.Latitude.ToString(),@PersonRequesting.Department.Institution.Longitude.ToString()">Google Maps</a>
+                </dd>
+            }
+            @if (!string.IsNullOrWhiteSpace(PersonRequesting.Department.Institution.LogoImageFileName))
+            {
+                <dt>
+                    Logo
+                </dt>
+                <dd>
+                    <img src="@(BaseInsecureUrl + '/' + IAssociateFileTools.ServerPathToUrl(PersonRequesting.Department.Institution.GetServerPath()))" width="200" alt="logo for @PersonRequesting.Department.Institution.Name"/>
+                </dd>
+            }
+            @if (!string.IsNullOrWhiteSpace(PersonRequesting.Department.Institution.About))
+            {
+                <dt>
+                    About
+                </dt>
+                <dd>
+                    @PersonRequesting.Department.Institution.About
+                </dd>
+            }
+        </dl>
+    </columns>
+</row>
+<row>
+    <columns>
+        <h3>
+            Department
+        </h3>
+        <dl>
+            <dt>
+                Name
+            </dt>
+            <dd>
+                @PersonRequesting.Department.Name
+            </dd>
+            <dt>
+                Abbreviation
+            </dt>
+            <dd>
+                @PersonRequesting.Department.Abbreviation
+            </dd>
+        </dl>
+    </columns>
+</row>
+<row>
+    <columns>
+        <h3>
+            Proposed administrator
+        </h3>
+        <dl>
+            <dt>
+                Name
+            </dt>
+            <dd>
+                @PersonRequesting.FullName
+            </dd>
+            <dt>
+                Email
+            </dt>
+            <dd>
+                <a href="@GetMailTo(PersonRequesting)">@PersonRequesting.Email @PersonRequesting.AlternateEmail</a>
+            </dd>
+            @if (!string.IsNullOrEmpty(PersonRequesting.PhoneNumber))
+            {
+                <dt>
+                    Phone Number
+                </dt>
+                <dd>
+                    @PersonRequesting.PhoneNumber
+                </dd>
+            }
+            <dt>
+                Professional Role
+            </dt>
+            <dd>
+                <strong>@PersonRequesting.ProfessionalRole.Category.ToString()</strong> - @PersonRequesting.ProfessionalRole.Description
+            </dd>
+        </dl>
+        
+    </columns>
+</row>
+<row>
+    <columns>
+        <hr />
+        <callout class="secondary">
+            <p>
+                In order to approve or delete this request, please go to the <a href="@BaseUrl/#/reviewRegistrationRequest/@PersonRequesting.Department.Institution.Id.ToString()">Review Registration Requests</a> page (will require login details).
+            </p>
+        </callout>
+    </columns>
+</row>

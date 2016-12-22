@@ -259,7 +259,6 @@ namespace SP.Dto.Utilities
                 var scenarioRoles = roles[sre.SlotId].OrderBy(csfr => csfr.FacultyScenarioRole.Order)
                     .ToLookup(csfr => csfr.FacultyScenarioRole);
 
-
                 if (scenarioRoles.Count == 0)
                 {
                     sre.Row.FindFirstAncestor<Table>().Remove();

@@ -68,7 +68,7 @@
                 .then(function () {
                     onLocaleSelected(vm.institution.localeCode);
                     getGoogleLink();
-                    vm.log('Activated Institution View');
+                    vm.log.info('Activated Institution View');
                 });
         }
 

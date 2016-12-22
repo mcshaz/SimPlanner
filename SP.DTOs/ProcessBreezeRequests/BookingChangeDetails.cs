@@ -1,9 +1,5 @@
 ﻿using SP.DataAccess;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SP.Dto.ProcessBreezeRequests
 {
@@ -16,5 +12,11 @@ namespace SP.Dto.ProcessBreezeRequests
         public Room RemovedRoomBooking { get; set; }
         public IEnumerable<Manikin> AddedManikinBookings { get; set; }
         public IEnumerable<Manikin> RemovedManikinBookings { get; set; }
+    }
+
+    public class UserRequestingApproval
+    {
+        public Participant User { get; set; }
+        public IEnumerable<Participant> Administrators { get; set; }
     }
 }

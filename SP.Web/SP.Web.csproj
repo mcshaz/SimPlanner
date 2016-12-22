@@ -460,8 +460,6 @@
     <Content Include="app\activityResources\activityResource.html" />
     <Content Include="app\activityResources\activityResource.js" />
     <Content Include="app\app.js" />
-    <Content Include="app\approval\approval.html" />
-    <Content Include="app\approval\approval.js" />
     <Content Include="app\approval\beginSubmission.html" />
     <Content Include="app\approval\finishedSubmission.html" />
     <Content Include="app\approval\htmlOnly.js" />
@@ -521,6 +519,8 @@
     <Content Include="app\layout\sidebar.js" />
     <Content Include="app\layout\topnav.html" />
     <Content Include="app\metadata.js" />
+    <Content Include="app\approval\reviewRegistrationRequest.html" />
+    <Content Include="app\approval\reviewRegistrationRequest.js" />
     <Content Include="app\room\room.html" />
     <Content Include="app\room\room.js" />
     <Content Include="app\rsvp\rsvp.html" />
@@ -655,6 +655,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SampleTemplate.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="UserEmails\ApplicationApproved.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ApplicationApproved.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="UserEmails\AuthConfirmationResult.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -700,6 +705,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NotifyBooking.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="UserEmails\Inky\NotifyNewRegistrationRequest.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NotifyNewRegistrationRequest.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="UserEmails\LayoutTemplate.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -721,6 +731,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NotifyBooking.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\NotifyNewRegistrationRequest.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NotifyNewRegistrationRequest.cshtml</DependentUpon>
     </Compile>
     <Compile Include="UserEmails\ReverseConfirmation.generated.cs">
       <AutoGen>True</AutoGen>
@@ -791,6 +806,19 @@
     <Content Include="UserEmails\NotifyBooking.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>NotifyBooking.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\NotifyNewRegistrationRequest.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>NotifyNewRegistrationRequest.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\ApplicationApproved.cshtml" />
+    <Content Include="UserEmails\ApplicationApproved.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ApplicationApproved.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\NotifyNewRegistrationRequest.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>NotifyNewRegistrationRequest.generated.cs</LastGenOutput>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

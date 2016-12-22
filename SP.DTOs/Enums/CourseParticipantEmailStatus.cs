@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SP.DTOs.Enums
+namespace SP.Dto.Enums
 {
     [Flags]
     public enum CourseParticipantEmailStatus

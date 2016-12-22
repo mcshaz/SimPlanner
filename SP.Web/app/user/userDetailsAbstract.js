@@ -84,6 +84,8 @@
 
                 if (vm.professionalRoles.length === 0) {
                     vm.professionalRoles = professionalRoles;
+                } else if (vm.professionalRoles.indexOf(vm.participant.professionalRole) === -1){
+                    vm.professionalRoles.push(vm.participant.professionalRole);
                 }
 
                 function isCurrentInstitution(pri) {
