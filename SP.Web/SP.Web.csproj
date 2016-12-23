@@ -551,6 +551,7 @@
     <Content Include="app\user\updateUser.html" />
     <Content Include="app\user\updateUser.js" />
     <Content Include="app\user\userDetails.html" />
+    <Content Include="app\user\participantBaseAbstract.js" />
     <Content Include="app\user\userDetailsAbstract.js" />
     <Content Include="app\user\users.html" />
     <Content Include="app\user\users.js" />
@@ -570,7 +571,7 @@
     <Content Include="dist\apple-touch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dist\css\main-573babfbf4.min.css" />
+    <Content Include="dist\css\main-bd4f92807d.min.css" />
     <Content Include="dist\css\ui-grid.eot" />
     <Content Include="dist\css\ui-grid.svg" />
     <Content Include="dist\css\ui-grid.ttf" />
@@ -597,7 +598,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-1129df22b9.min.js" />
+    <Content Include="dist\js\main-4c7deaf312.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

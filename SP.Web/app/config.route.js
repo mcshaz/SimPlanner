@@ -228,7 +228,7 @@
                         }
                     }
                 }, {
-                    url: '/updateDetails/:id',
+                    url: '/updateDetails',
                     config: {
                         title: 'Update My Details',
                         templateUrl: 'app/account/updateMyDetails.html',

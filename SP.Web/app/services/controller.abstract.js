@@ -154,7 +154,9 @@
                             vm.isEntityStateChanged = isUserChanged(ent);
                         }
                         break;
-                    //case breeze.EntityAction.MergeOnSave: //TODO check this works - we should be adding to watched collection on add, not on mergeOnSave
+                    case breeze.EntityAction.MergeOnSave: //TODO check this works - we should be adding to watched collection on add, not on mergeOnSave
+                        vm.isEntityStateChanged = getWatched().some(isUserChanged);
+                        break;
                     case breeze.EntityAction.Attach:
                     case breeze.EntityAction.Detach:
                         notifyViewModelLoaded();

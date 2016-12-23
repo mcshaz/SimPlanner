@@ -3,9 +3,9 @@
 
     var serviceId = 'userDetails.abstract';
     angular.module('app').factory(serviceId,
-        ['common', 'datacontext', '$q', 'controller.abstract', AbstractUserDetails]);
+        ['common', 'datacontext', '$q', 'participantBase.abstract', 'tokenStorageService', AbstractUserDetails]);
 
-    function AbstractUserDetails(common, datacontext, $q, abstractController) {
+    function AbstractUserDetails(common, datacontext, $q, abstractController, tokenStorageService) {
 
         return {
             constructor: Ctor
@@ -25,20 +25,15 @@
 
             vm.activate = activate;
             vm.hotDrinks = [];
-            vm.filterRoles = filterRoles;
-            vm.institution = {};
             vm.institutions = [];
             vm.isNew = id === 'new';
-            vm.participant = {};
-            vm.professionalRoles = [];
 
             function activate() {
                 var alertMessage;
-                var promises = [datacontext.professionalRoles.findServerIfCacheEmpty({ expand: 'professionalRoleInstitutions' }).then(function (data) {
-                    professionalRoles = data;
-                }), datacontext.hotDrinks.findServerIfCacheEmpty().then(function (data) {
+                var promises = vm.getPromises();
+                promises.push(datacontext.hotDrinks.findServerIfCacheEmpty().then(function (data) {
                     vm.hotDrinks = data;
-                })];
+                }));
                 if (vm.isNew) {
                     vm.participant = datacontext.participants.create({ departmentId: argObj.$routeParams.departmentId });
                     promises.push(datacontext.departments.fetchByKey(argObj.$routeParams.departmentId, { expand: 'institution.culture' })
@@ -48,13 +43,13 @@
                         }));
                     alertMessage = "Register User";
                     return common.activateController(promises, controllerId).then(loaded);
-                } // else
+                } // else {
+                var defer = $q.defer();
                 datacontext.ready().then(function () {
-                    var defer = $q.defer();
                     alertMessage = id ? "Update User" : "Update My Details";
                     promises.push(datacontext.participants.fetchByKey(id || tokenStorageService.getUserId(), { expand: 'roles' }).then(function (data) {
-                        vm.participant = data;
-                    }),
+                            vm.participant = data;
+                        }),
                         datacontext.institutions.all({ expand: 'culture' }).then(function (data) {
                             vm.institutions = data;
                         }));
@@ -68,28 +63,13 @@
                             $q.reject.apply(this, arguments);
                         });
                 });
+                return defer.promise;
 
                 function loaded() {
                     vm.institution = vm.participant.department.institution;
-                    filterRoles();
+                    vm.filterRoles();
                     vm.notifyViewModelLoaded();
                     vm.log(alertMessage + ' Activated');
-                }
-            }
-
-            function filterRoles() {
-                vm.professionalRoles = professionalRoles.filter(function (pr) {
-                    return pr.professionalRoleInstitutions.some(isCurrentInstitution);
-                });
-
-                if (vm.professionalRoles.length === 0) {
-                    vm.professionalRoles = professionalRoles;
-                } else if (vm.professionalRoles.indexOf(vm.participant.professionalRole) === -1){
-                    vm.professionalRoles.push(vm.participant.professionalRole);
-                }
-
-                function isCurrentInstitution(pri) {
-                    return pri.institutionId === vm.institution.id;
                 }
             }
         }

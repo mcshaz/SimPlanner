@@ -36,28 +36,28 @@
         }
 
         function reject() {
+            //a bit of a hack - the changes won't be saved as a bundle because department is a required property of participant
+            //really solution might be to alter the required atribute to the key rather than the object
+            //however this would have significant downstream effects
             if (confirm("DELETE this user, department and institution?")) {
-                var inst = datacontext.institutions.getByKey($routeParams.id);
-                var dpts = inst.departments.slice();
-                var participants = dpts.reduce(function (a, dpt) {
-                    return a.concat(dpt.participants);
-                }, []);
-                participants.forEach(function (p) {
-                    var dpt = p.department;
-                    p.entityAspect.setDeleted();
-                    p.department = dpt;
-                });
-                dpts.forEach(function (d) {
+                var inst = datacontext.institutions.getByKey($routeParams.id, {expand:'departments.participants'});
+                var i = 0;
+                var j = 0;
+                var d,p;
+
+                for (i = inst.departments.length; i--; i >= 0){
+                    d = inst.departments[i];
+                    for (j = d.participants.length; j--; j >= 0){
+                        p = d.participants[j];
+                        p.entityAspect.setDeleted();
+                        p.department = d;
+                    }
                     d.entityAspect.setDeleted();
                     d.institution = inst;
-                });
+                }
                 inst.entityAspect.setDeleted();
                 
                 datacontext.save();
-            }
-
-            function deleteEntity(e) {
-                e.entityAspect.setDeleted();
             }
         }
 

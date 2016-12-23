@@ -13,7 +13,8 @@
 {
     <table class="callout" style="Margin-bottom: 16px; border-collapse: collapse; border-spacing: 0; margin-bottom: 16px; padding: 0; text-align: left; vertical-align: top;"><tr style="padding: 0; text-align: left; vertical-align: top;"><th class="callout-inner warning" style="Margin: 0; background: #fff3d9; border: 1px solid #996800; color: #fefefe; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 10px; text-align: left; width: 100%;">
         <p class="lead" style="Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 20px; font-weight: normal; line-height: 1.6; margin: 0; margin-bottom: 10px; padding: 0; text-align: left;">
-            A @CourseParticipant.Course.CourseFormat.CourseType.Description
+            A @CourseParticipant.Course.CourseFormat.Description
+            (@CourseParticipant.Course.CourseFormat.CourseType.Description)
             @if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", StringComparison.OrdinalIgnoreCase))
             {
                 @:Course
@@ -29,8 +30,12 @@ else
     <table class="callout" style="Margin-bottom: 16px; border-collapse: collapse; border-spacing: 0; margin-bottom: 16px; padding: 0; text-align: left; vertical-align: top;"><tr style="padding: 0; text-align: left; vertical-align: top;"><th class="callout-inner primary" style="Margin: 0; background: #def0fc; border: 1px solid #444444; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 10px; text-align: left; width: 100%;">
         <p style="Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; margin-bottom: 10px; padding: 0; text-align: left;">
             You have been added as a @(CourseParticipant.IsFaculty ? "faculty member" : "participant") to an upcoming 
-            @CourseParticipant.Course.CourseFormat.CourseType.Description 
-
+            @CourseParticipant.Course.CourseFormat.Description
+            (@CourseParticipant.Course.CourseFormat.CourseType.Description)
+            @if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", StringComparison.OrdinalIgnoreCase))
+            {
+                @:Course
+            }
         </p>
         <p class="lead" style="Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 20px; font-weight: normal; line-height: 1.6; margin: 0; margin-bottom: 10px; padding: 0; text-align: left;">Please check the details below and then confirm your availability.</p>
     </th><th class="expander" style="Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !important; text-align: left; visibility: hidden; width: 0;"></th></tr></table>

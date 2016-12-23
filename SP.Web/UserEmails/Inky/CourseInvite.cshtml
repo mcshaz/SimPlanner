@@ -13,7 +13,8 @@
 {
     <callout class="warning">
         <p class="lead">
-            A @CourseParticipant.Course.CourseFormat.CourseType.Description
+            A @CourseParticipant.Course.CourseFormat.Description
+            (@CourseParticipant.Course.CourseFormat.CourseType.Description)
             @if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", StringComparison.OrdinalIgnoreCase))
             {
                 @:Course
@@ -29,8 +30,12 @@ else
     <callout class="primary">
         <p>
             You have been added as a @(CourseParticipant.IsFaculty ? "faculty member" : "participant") to an upcoming 
-            @CourseParticipant.Course.CourseFormat.CourseType.Description 
-
+            @CourseParticipant.Course.CourseFormat.Description
+            (@CourseParticipant.Course.CourseFormat.CourseType.Description)
+            @if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", StringComparison.OrdinalIgnoreCase))
+            {
+                @:Course
+            }
         </p>
         <p class="lead">Please check the details below and then confirm your availability.</p>
     </callout>

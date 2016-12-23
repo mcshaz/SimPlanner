@@ -5,16 +5,15 @@
         .module('app')
         .controller(controllerId, courseParticipantCtrl);
 
-    courseParticipantCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope','controller.abstract', 'selectOptionMaps'];
+    courseParticipantCtrl.$inject = ['common', 'datacontext', 'breeze', '$scope', 'participantBase.abstract', 'selectOptionMaps'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseParticipantCtrl(common, datacontext, breeze, $scope, abstractController, selectOptionMaps) {
+    function courseParticipantCtrl(common, datacontext, breeze, $scope, participantBaseAbstract, selectOptionMaps) {
         /* jshint validthis:true */
         var vm = this;
         
-        abstractController.constructor.call(this, {
+        participantBaseAbstract.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: 'participant',
             $scope: $scope
         });
         
@@ -22,7 +21,6 @@
         vm.createNewPerson = createNewPerson;
         vm.disableAdd = disableAdd;
         vm.getPeople = getPeople;
-        vm.institution = {};
         vm.institutionChanged = institutionChanged;
         vm.institutions = [];
         vm.isFaculty = $scope.isFaculty;
@@ -33,18 +31,17 @@
         vm.participant = vm.isNew
             ? datacontext.participants.create(breeze.EntityState.Detached)
             : $scope.courseParticipant.participant;
-        vm.professionalRoles = [];
 
         activate();
 
         function activate() {
             datacontext.ready().then(function () {
-                var promises = [datacontext.institutions.all({expand:'culture'}).then(function (data) {
+                var promises = vm.getPromises();
+                promises.push(datacontext.institutions.all({ expand: 'culture' }).then(function (data) {
                     vm.institutions = data;
                     vm.institution = vm.isNew
                         ? $scope.course.department.institution
                         : $scope.courseParticipant.department.institution;
-                    institutionChanged();
                     /*
                     vm.institutions.forEach(function (el) {
                         if (!el.culture.flagUrl) {
@@ -52,12 +49,10 @@
                         }
                     });
                     */
-                }),
-                datacontext.professionalRoles.all().then(function (data) {
-                    vm.professionalRoles = data;
-                })];
+                }));
                 common.activateController(promises, controllerId)
                     .then(function () {
+                        institutionChanged();
                         vm.notifyViewModelLoaded();
                         vm.log('Activated Course Participant Dialog');
                     });
@@ -141,7 +136,7 @@
         function institutionChanged() {
             _pred = notThisCourse.and('department.institutionId', '==', vm.institution.id);
             _lastVal = _lastLookup = null;
-
+            vm.filterRoles();
         }
 
         var baseArgs = {
