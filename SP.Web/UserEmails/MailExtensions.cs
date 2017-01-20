@@ -8,10 +8,20 @@
     //using System.Threading.Tasks;
     using DataAccess;
     using System.Linq;
-    using System;
+    using System.Data.Entity.Infrastructure;
+    using Dto.Utilities;
 
     public static class MailExtensions
     {
+        public static DbQuery<Course> GetCourseIncludes(MedSimDbContext repo)
+        {
+            return CreateDocxTimetable.GetCourseIncludes(repo)
+                .Include("CourseParticipants.Department.Institution.Culture")
+                .Include("Room")
+                .Include("FacultyMeetingRoom")
+                .Include("CourseFormat.CourseType.CandidatePrereadings");
+        }
+
         public static void CreateHtmlBody(this MailMessage message, EmailBase template)
         {
             var html = template.TransformText();

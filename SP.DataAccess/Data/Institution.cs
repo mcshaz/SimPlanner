@@ -21,6 +21,7 @@ namespace SP.DataAccess
         public double? Longitude { get; set; }
         public bool AdminApproved { get; set; }
         public string LogoImageFileName { get; set; }
+        public DateTime CreatedUtc { get; set; }
         [NotMapped]
         public byte[] File { get; set; }
         [NotMapped]

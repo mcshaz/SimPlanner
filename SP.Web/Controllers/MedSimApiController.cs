@@ -32,7 +32,7 @@ namespace SP.Web.Controllers
                     AfterNewUnapprovedUser = MailExtensions.SendNewUserRequest,
                     AfterUserApproved = MailExtensions.SendNewUserApproved,
                     AfterCourseDateChange = (courseId, oldDate) => {
-                        var course = CoursePlanningController.GetCourseIncludes(_repository.Context)
+                        var course = MailExtensions.GetCourseIncludes(_repository.Context)
                             .First(c=>c.Id == courseId);
                         if (oldDate.HasValue)
                         {

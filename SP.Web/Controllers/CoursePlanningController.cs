@@ -6,7 +6,6 @@ using SP.Web.Models;
 using SP.Web.UserEmails;
 using System;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mail;
@@ -34,7 +33,7 @@ namespace SP.Web.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> EmailAll(EmailAllBindingModel model)
         {
-            var course = await GetCourseIncludes(Repo)
+            var course = await MailExtensions.GetCourseIncludes(Repo)
                 .FirstOrDefaultAsync(cp => cp.Id == model.CourseId);
             //Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(course.Department.Institution.LocaleCode);
 
@@ -57,15 +56,6 @@ namespace SP.Web.Controllers
                 SuccessRecipients = result.SuccessRecipients.Select(sr=>sr.ParticipantId),
                 FailRecipients = result.FailRecipients.Select(sr => sr.ParticipantId)
             });
-        }
-
-        public static DbQuery<Course> GetCourseIncludes(MedSimDbContext repo)
-        {
-            return CreateDocxTimetable.GetCourseIncludes(repo)
-                .Include("CourseParticipants.Department.Institution.Culture")
-                .Include("Room")
-                .Include("FacultyMeetingRoom")
-                .Include("CourseFormat.CourseType.CandidatePrereading");
         }
 
         [Route("Rsvp")]

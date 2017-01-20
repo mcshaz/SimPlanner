@@ -638,6 +638,7 @@
     <Content Include="wwwroot\images\sim-planner-icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\HangfireBootstrapper.cs" />
     <Compile Include="App_Start\BreezeWebApiConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\HangfireAuthorizationFilter.cs" />

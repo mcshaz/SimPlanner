@@ -9,7 +9,7 @@ using System.Net.Mail;
 namespace SP.Dto
 {
     [MetadataType(typeof(ParticipantDtoMetadata))]
-    public class ParticipantDto : IAdminApproved
+    public class ParticipantDto //: IAdminApproved
     {
         public Guid Id { get; set; }
         public string Email { get; set; }

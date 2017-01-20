@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace SP.Dto
 {
     [MetadataType(typeof(DepartmentMetadata))]
-    public class DepartmentDto : IAdminApproved
+    public class DepartmentDto //: IAdminApproved
 	{
         public Guid Id { get; set; }
         public string Name { get; set; }

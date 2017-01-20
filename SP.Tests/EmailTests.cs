@@ -21,7 +21,7 @@ namespace SP.Tests
             Course course;
             using (var context = new MedSimDbContext())
             {
-                var courseQueryable = CoursePlanningController.GetCourseIncludes(context);
+                var courseQueryable = MailExtensions.GetCourseIncludes(context);
                 course = courseQueryable.AsNoTracking().First(c => c.CourseParticipants.Any(cp=>cp.IsFaculty) && c.CourseParticipants.Any(cp => !cp.IsFaculty));
             }
 

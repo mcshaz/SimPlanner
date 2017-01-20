@@ -2,6 +2,7 @@
 using Hangfire.Dashboard;
 using Microsoft.Owin;
 using Owin;
+using SP.DTOs.Utilities;
 
 [assembly: OwinStartup(typeof(SP.Web.Startup))]
 
@@ -11,7 +12,7 @@ namespace SP.Web
     {
         public void Configuration(IAppBuilder app)
         {
-            
+
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
             app.UseHangfireServer();
 
@@ -22,6 +23,13 @@ namespace SP.Web
                 Authorization = new[] { new HangfireAuthorizationFilter() }
             };
             app.UseHangfireDashboard("/hangfire", options);
+
+            InitializeJobs();
+        }
+
+        public static void InitializeJobs()
+        {
+            RecurringJob.AddOrUpdate(() => AutomatedDbMaintenance.DeleteOrphans(), Cron.Daily(12));
         }
     }
 }

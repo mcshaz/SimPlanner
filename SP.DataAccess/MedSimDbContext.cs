@@ -443,41 +443,40 @@ namespace SP.DataAccess
         }
         private void SetTimeTracking()
         {
-            var now = DateTime.UtcNow;
+            var nowUtc = DateTime.UtcNow;
             foreach (var ent in ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added))
             {
                 var t = ent.Entity.GetType();
                 if (t.GetInterface(nameof(IModified)) != null)
                 {
                     var im = (IModified)ent.Entity;
-                    im.Modified = now;
+                    im.Modified = nowUtc;
                 }
                 else if (t == typeof(Course))//not IModified
                 {
                     var c = (Course)ent.Entity;
                     if (ent.State == EntityState.Added)
                     {
-                        c.CourseDatesLastModified = c.CreatedUtc = c.FacultyMeetingDatesLastModified = now;
+                        c.CourseDatesLastModified = c.FacultyMeetingDatesLastModified = nowUtc;
                     }
                     else if (ent.State == EntityState.Modified)
                     {
-                        if (ent.Property("StartUtc").IsModified)
+                        if (ent.Property(nameof(c.StartUtc)).IsModified)
                         {
-                            c.CourseDatesLastModified = now;
+                            c.CourseDatesLastModified = nowUtc;
                         }
                         else
                         {
-                            ent.Property("CourseDatesLastModified").IsModified = false;
+                            ent.Property(nameof(c.CourseDatesLastModified)).IsModified = false;
                         }
-                        if (ent.Property("FacultyMeetingUtc").IsModified)
+                        if (ent.Property(nameof(c.FacultyMeetingUtc)).IsModified)
                         {
-                            c.FacultyMeetingDatesLastModified = now;
+                            c.FacultyMeetingDatesLastModified = nowUtc;
                         }
                         else
                         {
-                            ent.Property("FacultyMeetingDatesLastModified").IsModified = false;
+                            ent.Property(nameof(c.FacultyMeetingDatesLastModified)).IsModified = false;
                         }
-                        ent.Property("CreatedUtc").IsModified = false;
                         c.Version++;
                     }
                     /*
@@ -490,6 +489,18 @@ namespace SP.DataAccess
                         }
                     }
                     */
+                }
+                if (t.GetInterface(nameof(Data.Interfaces.ICreated)) != null)
+                {
+                    var ic = (Data.Interfaces.ICreated)ent.Entity;
+                    if (ent.State == EntityState.Added)
+                    {
+                        ic.CreatedUtc = nowUtc;
+                    }
+                    else if (ent.State == EntityState.Modified)
+                    {
+                        ent.Property(nameof(ic.CreatedUtc)).IsModified = false;
+                    }
                 }
             }
         }

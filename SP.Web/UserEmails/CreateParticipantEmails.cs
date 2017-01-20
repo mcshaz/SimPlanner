@@ -1,5 +1,4 @@
 ﻿using Hangfire;
-using Hangfire.Annotations;
 using Hangfire.Server;
 using SP.DataAccess;
 using SP.Dto;
@@ -13,7 +12,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Mail;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace SP.Web.UserEmails
@@ -106,11 +104,11 @@ namespace SP.Web.UserEmails
             return GetPrereadings(relevantReadings);
         }
 
-        public static IEnumerable<Attachment> GetSupplementReadings(Course course)
+        public static IEnumerable<Attachment> GetSupplementReadings(Course course, DateTime schedule)
         {
-            var today = DateTime.UtcNow.Date;
+            var scheduleDay = schedule.Date;
             var relevantReadings = course.CourseFormat.CourseType.CandidatePrereadings
-                .Where(cp => cp.SendRelativeToCourse.HasValue && (course.StartUtc.Date.AddDays(cp.SendRelativeToCourse.Value) == today));
+                .Where(cp => cp.SendRelativeToCourse.HasValue && (course.StartUtc.Date.AddDays(cp.SendRelativeToCourse.Value) == scheduleDay));
             return GetPrereadings(relevantReadings);
         }
 
@@ -167,21 +165,21 @@ namespace SP.Web.UserEmails
             {
                 returnVar.Add(new CourseHangfireJob
                 {
-                    HangfireId = BackgroundJob.Schedule(() => SendReading(course.Id, null), d),
+                    HangfireId = BackgroundJob.Schedule(() => SendReading(course.Id, d, null), d),
                     CourseId = course.Id
                 });
             }
             return returnVar;
         }
 
-        public static void SendReading(Guid courseId, PerformContext context)
+        public static void SendReading(Guid courseId, DateTime schedule,PerformContext context)
         {
             using (var db = new MedSimDbContext())
             {
                 var course = db.Courses.Include("CourseFormat.CourseType.CandidatePrereadings").Include("CourseParticipants.Participant").Include("HangfireJobs")
                     .First(c=>c.Id == courseId);
 
-                var readings = GetSupplementReadings(course);
+                var readings = GetSupplementReadings(course, schedule);
                 using (var mail = new MailMessage())
                 {
                     mail.To.AddParticipants(from cp in course.CourseParticipants
@@ -192,7 +190,7 @@ namespace SP.Web.UserEmails
                         Course = course,
                     };
                     mail.CreateHtmlBody(confirmEmail);
-                    foreach (var a in GetSupplementReadings(course))
+                    foreach (var a in GetSupplementReadings(course, schedule))
                     {
                         mail.Attachments.Add(a);
                     }

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SP.Dto
 {
     [MetadataType(typeof(InstitutionMetadata))]
-    public class InstitutionDto : IAssociateFileOptional, IAdminApproved
+    public class InstitutionDto : IAssociateFileOptional //, IAdminApproved
 	{
         public Guid Id { get; set; }
         public string Name { get; set; }

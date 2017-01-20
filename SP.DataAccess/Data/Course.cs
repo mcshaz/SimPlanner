@@ -10,7 +10,7 @@ namespace SP.DataAccess
     using Utilities;
 
     [MetadataType(typeof(CourseMetadata))]
-    public class Course : ICourseDay
+    public class Course : ICourseDay, ICreated
     {
         public Guid Id { get; set; }
 

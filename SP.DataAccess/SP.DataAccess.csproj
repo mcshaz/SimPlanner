@@ -101,6 +101,7 @@
     <Compile Include="Data\Interfaces\IAdminApproved.cs" />
     <Compile Include="Data\Interfaces\IAssociateFile.cs" />
     <Compile Include="Data\Interfaces\ICourseDay.cs" />
+    <Compile Include="Data\Interfaces\ICreated.cs" />
     <Compile Include="Data\Interfaces\IModified.cs" />
     <Compile Include="Data\Manikin.cs" />
     <Compile Include="Data\ManikinManufacturer.cs" />
@@ -151,6 +152,10 @@
     <Compile Include="Migrations\201701200121405_EmailScheduling.cs" />
     <Compile Include="Migrations\201701200121405_EmailScheduling.Designer.cs">
       <DependentUpon>201701200121405_EmailScheduling.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701200436124_ICreated.cs" />
+    <Compile Include="Migrations\201701200436124_ICreated.Designer.cs">
+      <DependentUpon>201701200436124_ICreated.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
@@ -395,6 +400,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701200121405_EmailScheduling.resx">
       <DependentUpon>201701200121405_EmailScheduling.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701200436124_ICreated.resx">
+      <DependentUpon>201701200436124_ICreated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

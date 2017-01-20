@@ -23,6 +23,17 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="ctDescription" class="col-md-3 control-label">
+                                Timetable
+                            </label>
+                            <div class="col-md-9">
+                                <button type="button" class="btn btn-default" bs-checkbox id="timetable" ng-model="vm.courseType.sendCandidateTimetable">
+                                    {{vm.courseType.sendCandidateTimetable?'Include Candidates':'Faculty Only'}}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-md-3 control-label">Departments</label>
                             <div class="col-md-9">
                                 <ui-select multiple ng-model="vm.selectedDepartmentIds" id="departments" title="Choose departments" on-select="vm.departmentSelected($model)" on-remove="vm.departmentRemoved($model)">
@@ -59,19 +70,19 @@
                                 </select>
                             </div>
                         </div>
-
-                        <h4>Candidate Pre-reading</h4>
+                        <h4>Candidate Reading</h4>
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>File</th>
                                     <th>Modified</th>
                                     <th>Size</th>
+                                    <th>Send <small>(days)</small><i class="fa fa-info-circle" title="Emailed (as attachment) to participants on which day +ve is after course start, -ve before and empty is with course invite"></i></th>
                                     <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="cp in vm.courseType.candidatePrereading">
+                                <tr ng-repeat="cp in vm.courseType.candidatePrereadings">
                                     <td>
                                         <div class="input-group">
                                             <label class="input-group-btn">
@@ -93,6 +104,9 @@
                                             <input class="form-control" disabled type="text" ng-value="cp.fileSize | sizeKib" />
                                             <span class="input-group-addon">KiB</span>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <input type="number" step="1" ng-model="cp.sendRelativeToCourse" z-validate>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-link" ng-click="sr.entityAspect.setDeleted()"><i class="fa fa-trash"></i></button>

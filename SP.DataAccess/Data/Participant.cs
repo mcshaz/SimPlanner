@@ -29,6 +29,7 @@ namespace SP.DataAccess
         public string FullName { get; set; }
         public string DietNotes { get; set; }
         public bool AdminApproved { get; set; }
+        public DateTime CreatedUtc { get; set; }
 
         public Guid DefaultDepartmentId { get; set; }
         public Guid DefaultProfessionalRoleId { get; set; }
