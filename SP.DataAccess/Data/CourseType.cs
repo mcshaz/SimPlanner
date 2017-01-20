@@ -13,6 +13,7 @@ namespace SP.DataAccess
         public string Description { get; set; }
         public string Abbreviation { get; set; }
         public Emersion? EmersionCategory { get; set; }
+        public bool SendCandidateTimetable { get; set; }
 
         public Guid? InstructorCourseId { get; set; }
 

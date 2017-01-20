@@ -81,127 +81,186 @@ namespace SP.Dto.Utilities
             return returnVar;
         }
 
+        public static void InsertBasicTimeTable(MainDocumentPart mainPart, Course course)
+        {
+            IFormatProvider prov = course.Department.Institution.Culture.CultureInfo;
 
+
+            var mergeFields = mainPart.HeaderParts.Cast<OpenXmlPart>()
+                .Concat(mainPart.FooterParts.Cast<OpenXmlPart>())
+                .Concat(new OpenXmlPart[] { mainPart })
+                .Select(x => x.RootElement)
+                .GetMergeFieldDict();
+
+            var mergeClassDict = Enum.GetValues(typeof(MergeClassification))
+                .Cast<MergeClassification>()
+                .ToDictionary(k => k.ToString());
+            var names = mergeClassDict.Keys.OrderByDescending(k => k).ToList(); //descending so that longer (more precise) names come first
+
+            var defaultType = MergeClassification.General.ToString();
+            names.Remove(defaultType);
+
+            var classifiedMergeFields = mergeFields
+                .ToLookup(fc => mergeClassDict[names.FirstOrDefault(n => fc.Key.StartsWith(n)) ?? defaultType]);
+
+            var faculty = course.CourseParticipants.ToLookup(cp => cp.IsFaculty);
+
+            foreach (var mf in classifiedMergeFields[MergeClassification.General])
+            {
+                string replaceVal;
+                switch (mf.Key.Replace(".", string.Empty).Replace(" ", string.Empty))
+                {
+                    case "CourseFormatDescription":
+                        replaceVal = course.CourseFormat.Description;
+                        break;
+                    case "CourseStart":
+                        replaceVal = course.StartLocal.ToString("D", prov);
+                        break;
+                    case "CourseTypeAbbreviation":
+                        replaceVal = course.CourseFormat.CourseType.Abbreviation;
+                        break;
+                    case "CourseTypeDescription":
+                        replaceVal = course.CourseFormat.CourseType.Description;
+                        break;
+                    case "Department":
+                    case "DepartmentAbbreviation":
+                        replaceVal = course.Department.Abbreviation;
+                        break;
+                    case "DepartmentName":
+                        replaceVal = course.Department.Name;
+                        break;
+                    case "Faculty":
+                        replaceVal = string.Join("\t", faculty[true].Select(cp => cp.Participant.FullName));
+                        break;
+                    case "Institution":
+                    case "InstitutionAbbreviation":
+                        replaceVal = course.Department.Institution.Abbreviation;
+                        break;
+                    case "InstitutionName":
+                        replaceVal = course.Department.Institution.Name;
+                        break;
+                    case "Participants":
+                        replaceVal = string.Join("\t", faculty[false].Select(cp => cp.Participant.FullName));
+                        break;
+                    default:
+                        replaceVal = $"[Value Not Found - \'{ mf.Key }\']";
+                        break;
+                }
+                foreach (var m in mf)
+                {
+                    m.InsertMergeFieldText(replaceVal);
+                }
+            }
+
+            //the first first() will be any of the elements starting with the name slot
+            //the second first is assuming each slot, eg slotStart only occurs once in the doc
+            //could at a later date come up with some fancy ancestors() to find matching subgroup
+            TableRow slotRow = classifiedMergeFields[MergeClassification.Slot].First().First().FindFirstAncestor<TableRow>();
+            var ttrs = GetTimeTableRows(course);
+
+            slotRow.CloneElement(ttrs, (mergeFieldName, ttr) =>
+            {
+                switch (mergeFieldName)
+                {
+                    case "SlotStart":
+                        return ttr.LocalStart.ToString("t", prov);
+                    case "SlotActivity":
+                        return ttr.SlotActivity ?? string.Empty;
+                    case "SlotName":
+                        return ttr.SlotName;
+                    case "SlotFaculty":
+                        return string.Join("\n", ttr.Faculty);
+                    default:
+                        return $"[Value Not Found - \'{ mergeFieldName }\']";
+                }
+            });
+        }
         //--------------------------------------------
         enum MergeClassification { General, Slot, /* Faculty, Participants, */ Scenario, ScenarioRole }
-        public static MemoryStream CreateTimetableDocx(Course course, string sourceFile)
+
+        public static WordprocessingDocument CreateDoc(string sourceFile, out MemoryStream stream)
         {
             byte[] byteArray = File.ReadAllBytes(sourceFile);
-            MemoryStream stream = new MemoryStream();
+            stream = new MemoryStream();
             stream.Write(byteArray, 0, byteArray.Length);
-            using (WordprocessingDocument document = WordprocessingDocument.Open(stream, true))
-            {
-                IFormatProvider prov = course.Department.Institution.Culture.CultureInfo;
-
+            WordprocessingDocument document = WordprocessingDocument.Open(stream, true);
                 // If your sourceFile is a different type (e.g., .DOTX), you will need to change the target type like so:
-                document.ChangeDocumentType(WordprocessingDocumentType.Document);
+            document.ChangeDocumentType(WordprocessingDocumentType.Document);
 
                 // Get the MainPart of the document
-                MainDocumentPart mainPart = document.MainDocumentPart;
-
-                var mergeFields = mainPart.HeaderParts.Cast<OpenXmlPart>()
-                    .Concat(mainPart.FooterParts.Cast<OpenXmlPart>())
-                    .Concat(new OpenXmlPart[] { mainPart })
-                    .Select(x => x.RootElement)
-                    .GetMergeFieldDict();
-
-                var mergeClassDict = Enum.GetValues(typeof(MergeClassification))
-                    .Cast<MergeClassification>()
-                    .ToDictionary(k => k.ToString());
-                var names = mergeClassDict.Keys.OrderByDescending(k => k).ToList(); //descending so that longer (more precise) names come first
-
-                var defaultType = MergeClassification.General.ToString();
-                names.Remove(defaultType);
-
-                var classifiedMergeFields = mergeFields
-                    .ToLookup(fc => mergeClassDict[names.FirstOrDefault(n => fc.Key.StartsWith(n)) ?? defaultType]);
-
-                var faculty = course.CourseParticipants.ToLookup(cp => cp.IsFaculty);
-
-                foreach (var mf in classifiedMergeFields[MergeClassification.General])
+            return document;
+        }
+        public static DualTimetable CreateBothTimetables(Course course, string sourceFile)
+        {
+            MemoryStream facultyStream;
+            using (var facultyDoc = CreateDoc(sourceFile, out facultyStream))
+            {
+                var mainFacultyPart = facultyDoc.MainDocumentPart;
+                InsertBasicTimeTable(mainFacultyPart, course);
+                var participantStream = new MemoryStream((int)facultyStream.Length);
+                facultyStream.CopyTo(participantStream);
+                using (var participantDoc = WordprocessingDocument.Open(participantStream, true))
                 {
-                    string replaceVal;
-                    switch (mf.Key.Replace(".",string.Empty).Replace(" ", string.Empty))
-                    {
-                        case "CourseFormatDescription":
-                            replaceVal = course.CourseFormat.Description ;
-                            break;
-                        case "CourseStart":
-                            replaceVal = course.StartLocal.ToString("D", prov) ;
-                            break;
-                        case "CourseTypeAbbreviation":
-                            replaceVal = course.CourseFormat.CourseType.Abbreviation ;
-                            break;
-                        case "CourseTypeDescription":
-                            replaceVal = course.CourseFormat.CourseType.Description ;
-                            break;
-                        case "Department":
-                        case "DepartmentAbbreviation":
-                            replaceVal = course.Department.Abbreviation ;
-                            break;
-                        case "DepartmentName":
-                            replaceVal = course.Department.Name ;
-                            break;
-                        case "Faculty":
-                            replaceVal = string.Join("\t",faculty[true].Select(cp => cp.Participant.FullName));
-                            break;
-                        case "Institution":
-                        case "InstitutionAbbreviation":
-                            replaceVal = course.Department.Institution.Abbreviation ;
-                            break;
-                        case "InstitutionName":
-                            replaceVal = course.Department.Institution.Name ;
-                            break;
-                        case "Participants":
-                            replaceVal = string.Join("\t",faculty[false].Select(cp => cp.Participant.FullName));
-                            break;
-                        default:
-                            replaceVal = $"[Value Not Found - \'{ mf.Key }\']" ;
-                            break;
-                    }
-                    foreach (var m in mf)
-                    {
-                        m.InsertMergeFieldText(replaceVal);
-                    }
+                    RemoveScenarios(participantDoc.MainDocumentPart);
                 }
 
-                //the first first() will be any of the elements starting with the name slot
-                //the second first is assuming each slot, eg slotStart only occurs once in the doc
-                //could at a later date come up with some fancy ancestors() to find matching subgroup
-                TableRow slotRow = classifiedMergeFields[MergeClassification.Slot].First().First().FindFirstAncestor<TableRow>();
-                var ttrs = GetTimeTableRows(course);
+                AddScenarios(mainFacultyPart, course);
 
-                slotRow.CloneElement(ttrs, (mergeFieldName, ttr) =>
-                {
-                    switch (mergeFieldName)
-                    {
-                        case "SlotStart":
-                            return ttr.LocalStart.ToString("t", prov);
-                        case "SlotActivity":
-                            return ttr.SlotActivity ?? string.Empty;
-                        case "SlotName":
-                            return ttr.SlotName;
-                        case "SlotFaculty":
-                            return string.Join("\n", ttr.Faculty);
-                        default:
-                            return $"[Value Not Found - \'{ mergeFieldName }\']";
-                    }
-                });
-
-                AddScenarios(mainPart, course);
-                return stream; 
+                return new DualTimetable {
+                    FacultyTimetable = facultyStream,
+                    ParticipantTimetable = participantStream
+                };
             }
         }
 
-        private static void AddScenarios(MainDocumentPart doc, Course course)
+        public static MemoryStream CreateFullTimetableDocx(Course course, string sourceFile)
+        {
+            MemoryStream stream;
+            using (var doc = CreateDoc(sourceFile, out stream))
+            {
+                var mainPart = doc.MainDocumentPart;
+                InsertBasicTimeTable(mainPart, course);
+                AddScenarios(mainPart, course);
+                return stream;
+            }
+        }
+
+        public static MemoryStream CreateTimetableEventsDocx(Course course, string sourceFile)
+        {
+            MemoryStream stream;
+            using (var doc = CreateDoc(sourceFile, out stream))
+            {
+                var mainPart = doc.MainDocumentPart;
+                InsertBasicTimeTable(mainPart, course);
+                RemoveScenarios(mainPart);
+                return stream;
+            }
+        }
+
+
+        private static List<OpenXmlElement> GetScenarioEls(MainDocumentPart doc)
         {
             var firstParaWithSectionBreak = doc.RootElement.Descendants<Paragraph>()
                 .First(p => p.Descendants<SectionProperties>().Any());
 
-            var allScenarioEls = firstParaWithSectionBreak.Parent.ChildElements
+            return firstParaWithSectionBreak.Parent.ChildElements
                 .SkipWhile(c => c != firstParaWithSectionBreak)
                 .TakeWhile(c => c.GetType() != typeof(SectionProperties))
                 .ToList();
+        }
+
+        public static void RemoveScenarios(MainDocumentPart doc)
+        {
+            var allScenarioEls = GetScenarioEls(doc);
+            foreach (var el in allScenarioEls)
+            {
+                el.Remove();
+            }
+        }
+
+        public static void AddScenarios(MainDocumentPart doc, Course course)
+        {
+            var allScenarioEls = GetScenarioEls(doc);
 
             var csas = course.CourseSlotActivities
                 .Where(ca => ca.ScenarioId != null)

@@ -15,6 +15,10 @@ namespace SP.DataAccess
         public long FileSize { get; set; }
         [NotMapped]
         public byte[] File { get; set; }
+        /// <summary>
+        /// Days -ve = prior
+        /// </summary>
+        public short? SendRelativeToCourse { get; set; }
 
         public Guid CourseTypeId { get; set; }
 

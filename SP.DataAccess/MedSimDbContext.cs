@@ -29,6 +29,7 @@ namespace SP.DataAccess
         public virtual DbSet<CourseActivity> CourseActivities { get; set; }
         public virtual DbSet<CourseDay> CourseDays { get; set; }
         public virtual DbSet<CourseFormat> CourseFormats { get; set; }
+        public virtual DbSet<CourseHangfireJob> CourseHangfireJobs { get; set; }
         public virtual DbSet<CourseParticipant> CourseParticipants { get; set; } 
         public virtual DbSet<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
         public virtual DbSet<CourseSlot> CourseSlots { get; set; }
@@ -125,6 +126,12 @@ namespace SP.DataAccess
 
             modelBuilder.Entity<Course>()
                 .HasMany(e => e.CourseDays)
+                .WithRequired(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Course>()
+                .HasMany(e => e.HangfireJobs)
                 .WithRequired(e => e.Course)
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);

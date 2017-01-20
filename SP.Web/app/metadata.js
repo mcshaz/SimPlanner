@@ -1,4 +1,4 @@
-//201612020616350_CourseEmailSequenceToVersion
+//201701200121405_EmailScheduling
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -1559,6 +1559,21 @@
             }
           ],
           "displayName": "Instructor Course Id"
+        },
+        {
+          "name": "sendCandidateTimetable",
+          "dataType": "Boolean",
+          "isNullable": false,
+          "defaultValue": false,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "bool"
+            }
+          ],
+          "displayName": "Send Candidate Timetable"
         }
       ],
       "navigationProperties": [
@@ -1718,6 +1733,18 @@
             }
           ],
           "displayName": "File"
+        },
+        {
+          "name": "sendRelativeToCourse",
+          "dataType": "Int16",
+          "validators": [
+            {
+              "min": -32768,
+              "max": 32767,
+              "name": "int16"
+            }
+          ],
+          "displayName": "Send Relative To Course"
         },
         {
           "name": "courseTypeId",
@@ -2042,7 +2069,7 @@
             },
             {
               "name": "emailAddress",
-              "messageTemplate": "%displayName% is not a valid e-mail address."
+              "messageTemplate": "The '%displayName%' field is not a valid e-mail address."
             }
           ],
           "displayName": "Work Email"
@@ -2058,7 +2085,7 @@
             },
             {
               "name": "phone",
-              "messageTemplate": "The {0} field is not a valid phone number."
+              "messageTemplate": "The '%displayName%' field is not a valid phone number."
             }
           ],
           "displayName": "Phone Number"
@@ -2074,7 +2101,7 @@
             },
             {
               "name": "emailAddress",
-              "messageTemplate": "The {0} field is not a valid e-mail address."
+              "messageTemplate": "The '%displayName%' field is not a valid e-mail address."
             }
           ],
           "displayName": "Personal Email"

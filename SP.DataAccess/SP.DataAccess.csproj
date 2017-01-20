@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AngleSharp, Version=0.9.8.1, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
-      <HintPath>..\packages\AngleSharp.0.9.8.1\lib\net45\AngleSharp.dll</HintPath>
+    <Reference Include="AngleSharp, Version=0.9.9.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\packages\AngleSharp.0.9.9\lib\net45\AngleSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
@@ -47,7 +47,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlSanitizer, Version=3.0.0.0, Culture=neutral, PublicKeyToken=61c49a1a9e79cc28, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlSanitizer.3.3.142\lib\net45\HtmlSanitizer.dll</HintPath>
+      <HintPath>..\packages\HtmlSanitizer.3.4.156\lib\net45\HtmlSanitizer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CourseHangfireJob.cs" />
     <Compile Include="Data\Authentication\RoleConstants.cs" />
     <Compile Include="Data\CandidatePrereading.cs" />
     <Compile Include="Data\CourseDay.cs" />
@@ -146,6 +147,10 @@
     <Compile Include="Migrations\201612020616350_CourseEmailSequenceToVersion.cs" />
     <Compile Include="Migrations\201612020616350_CourseEmailSequenceToVersion.Designer.cs">
       <DependentUpon>201612020616350_CourseEmailSequenceToVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701200121405_EmailScheduling.cs" />
+    <Compile Include="Migrations\201701200121405_EmailScheduling.Designer.cs">
+      <DependentUpon>201701200121405_EmailScheduling.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
@@ -387,6 +392,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612020616350_CourseEmailSequenceToVersion.resx">
       <DependentUpon>201612020616350_CourseEmailSequenceToVersion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701200121405_EmailScheduling.resx">
+      <DependentUpon>201701200121405_EmailScheduling.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

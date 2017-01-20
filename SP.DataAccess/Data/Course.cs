@@ -28,6 +28,7 @@ namespace SP.DataAccess
         public string ParticipantVideoFilename { get; set; }
         public string FeedbackSummaryFilename { get; set; }
         public bool Cancelled { get; set; }
+
         public Guid CourseFormatId { get; set; }
         private DateTime _createdUtc;
         public DateTime CreatedUtc { get { return _createdUtc; } set { _createdUtc = value.AsUtc(); } }
@@ -93,6 +94,7 @@ namespace SP.DataAccess
         public virtual ICollection<CourseSlotActivity> CourseSlotActivities { get; set; }
         public virtual ICollection<CourseSlotPresenter> CourseSlotPresenters { get; set; }
         public virtual ICollection<CourseDay> CourseDays { get; set; }
+        public virtual ICollection<CourseHangfireJob> HangfireJobs { get; set; }
 
         [NotMapped]
         //ICourseDay implementation

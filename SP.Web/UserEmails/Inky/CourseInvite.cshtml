@@ -3,6 +3,7 @@
 @inherits SP.Web.UserEmails.CourseParticipantEmailBase
 
 @functions{
+    public DateTime? OldStart { get; set; }
     public string GetNotificationUrl(bool canAttend)
     {
         return  $"{BaseUrl}/index.html#/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending=" + (canAttend ? "1" : "0");
@@ -23,10 +24,23 @@
         </p>
         <p>Details of the cancelled course are:</p>
     </callout>
-
 }
 else
 {
+    if (OldStart.HasValue)
+    {
+        <callout class="danger">
+            <p class="lead">
+                Please note the <em>change in schedule</em> for this event!
+                <strong>
+                    The new start is
+                    @string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal)
+                </strong>.
+            </p>
+            <p><small>(Note the change from the <strong>old</strong> start of @string.Format(FormatProvider, "{0:D} at {0:t}", OldStart.Value))</small></p>
+        </callout>
+        <hr />
+    }
     <callout class="primary">
         <p>
             You have been added as a @(CourseParticipant.IsFaculty ? "faculty member" : "participant") to an upcoming 

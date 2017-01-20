@@ -21,7 +21,7 @@ namespace SP.Tests
                 var testId = Guid.Parse("f1afbbbb-b72f-43f4-8b36-7837fe8d1b80");
                 course = CreateDocxTimetable.GetCourseIncludes(db).First(c=>c.Id == testId);
                 
-                using (var stream = CreateDocxTimetable.CreateTimetableDocx(course, templ))
+                using (var stream = CreateDocxTimetable.CreateFullTimetableDocx(course, templ))
                 {
                     using (var fileStream = new FileStream("testCourseTimetable.docx", FileMode.Create))
                     {

@@ -166,7 +166,7 @@ namespace SP.Web.Controllers
             var course = await courses.FirstAsync(c => c.Id == model.EntitySetId);
 
             return StreamToResponse(
-                CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath),
+                CreateDocxTimetable.CreateFullTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath),
                 CreateDocxTimetable.TimetableName(course));
         }
 

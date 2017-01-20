@@ -43,6 +43,10 @@ namespace SP.Dto.ProcessBreezeRequests
         public Action<IEnumerable<BookingChangeDetails>> AfterBookingChange { get; set; }
         public Action<UserRequestingApproval> AfterNewUnapprovedUser { get; set; }
         public Action<Participant> AfterUserApproved { get; set; }
+        /// <summary>
+        /// courseId, originalStart - null if newly created course
+        /// </summary>
+        public Action<Guid, DateTime?> AfterCourseDateChange { get; set; }
 
         public IEnumerable<EntityError> ValidateDto(Dictionary<Type, List<EntityInfo>> saveMap)
         {
@@ -375,7 +379,29 @@ namespace SP.Dto.ProcessBreezeRequests
                 }
             }
 
-            AfterBookingChange?.Invoke(GetChanges(saveMap));
+            AfterBookingChange?.Invoke(GetBookingChanges(saveMap));
+
+            if (AfterCourseDateChange != null 
+                && saveMap.TryGetValue(typeof(Course), out ei))
+            {
+                var te = TypedEntityInfo<Course>.GetTyped(ei);
+                foreach (var e in te)
+                {
+                    if (e.Info.EntityState == b.EntityState.Modified)
+                    {
+                        object originalStart;
+                        if (e.Info.OriginalValuesMap.TryGetValue(nameof(e.Entity.StartUtc), out originalStart)
+                            && !originalStart.Equals(e.Entity.StartUtc))
+                        {
+                            AfterCourseDateChange(e.Entity.Id, (DateTime)originalStart);
+                        }
+                    }
+                    else if (e.Info.EntityState == b.EntityState.Added)
+                    {
+                        AfterCourseDateChange(e.Entity.Id, null);
+                    }
+                }
+            }
 
             foreach (var mei in saveMap.Values.SelectMany(e => e))
             {
@@ -810,13 +836,13 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             Context.SaveChanges();
         }
 
-        internal IEnumerable<BookingChangeDetails> GetChanges(Dictionary<Type, List<EntityInfo>> saveMap)
+        internal IEnumerable<BookingChangeDetails> GetBookingChanges(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             //in reality, never going to be adding or updating more than 1 course at a time
-            List<EntityInfo> ei;
             var bcd = new BookingChangeDetails();
             IEnumerable<Guid> allRoomIds = new Guid[0];
             IEnumerable<Guid> manikinIds = new Guid[0];
+            List<EntityInfo> ei;
             if (saveMap.TryGetValue(typeof(Course), out ei))
             {
                 

@@ -31,6 +31,14 @@ namespace SP.Dto
             }
         }
 
+        public Action<Guid, DateTime?> AfterCourseDateChange
+        {
+            set
+            {
+                _validationHelper.AfterCourseDateChange = value;
+            }
+        }
+
         public Action<UserRequestingApproval> AfterNewUnapprovedUser
         {
             set

@@ -12,8 +12,8 @@ namespace SP.Dto
         public string FileName { get; set; }
         public DateTime FileModified { get; set; }
         public long FileSize { get; set; }
-
         public byte[] File { get; set; }
+        public short? SendRelativeToCourse { get; set; }
 
         public Guid CourseTypeId { get; set; }
 

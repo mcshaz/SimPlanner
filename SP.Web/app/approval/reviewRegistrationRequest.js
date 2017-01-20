@@ -45,9 +45,9 @@
                 var j = 0;
                 var d,p;
 
-                for (i = inst.departments.length; i--; i >= 0){
+                for (i = inst.departments.length - 1; i >= 0; i--){
                     d = inst.departments[i];
-                    for (j = d.participants.length; j--; j >= 0){
+                    for (j = d.participants.length - 1; j >= 0; j--){
                         p = d.participants[j];
                         p.entityAspect.setDeleted();
                         p.department = d;

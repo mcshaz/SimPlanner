@@ -44,7 +44,7 @@ namespace SP.Web.Controllers
                 return Ok("The course finish must be after now");
             }
 
-            var result = await CreateParticipantEmails.SendEmail(course, User);
+            var result = await CreateParticipantEmails.SendEmail(course /*, User */);
 
             DateTime now = DateTime.UtcNow;
             foreach (var cp in result.SuccessRecipients) {
@@ -62,7 +62,10 @@ namespace SP.Web.Controllers
         public static DbQuery<Course> GetCourseIncludes(MedSimDbContext repo)
         {
             return CreateDocxTimetable.GetCourseIncludes(repo)
-                .Include("CourseParticipants.Department.Institution.Culture").Include("Room").Include("FacultyMeetingRoom");
+                .Include("CourseParticipants.Department.Institution.Culture")
+                .Include("Room")
+                .Include("FacultyMeetingRoom")
+                .Include("CourseFormat.CourseType.CandidatePrereading");
         }
 
         [Route("Rsvp")]

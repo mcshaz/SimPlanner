@@ -11,6 +11,7 @@ namespace SP.Dto.Maps
                 Description = m.Description,
                 InstructorCourseId = m.InstructorCourseId, 
                 EmersionCategory = m.EmersionCategory, 
+                SendCandidateTimetable = m.SendCandidateTimetable
             },
             m => new CourseTypeDto
             {
@@ -19,6 +20,7 @@ namespace SP.Dto.Maps
                 Description = m.Description,
                 InstructorCourseId = m.InstructorCourseId,
                 EmersionCategory = m.EmersionCategory,
+                SendCandidateTimetable = m.SendCandidateTimetable
             })
         { }
     }

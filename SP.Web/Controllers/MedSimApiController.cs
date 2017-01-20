@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.Owin;
 using SP.Web.UserEmails;
 using System.Security.Authentication;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace SP.Web.Controllers
 {
@@ -29,7 +30,16 @@ namespace SP.Web.Controllers
                 {
                     AfterBookingChange = MailExtensions.SendBookingNotifications,
                     AfterNewUnapprovedUser = MailExtensions.SendNewUserRequest,
-                    AfterUserApproved = MailExtensions.SendNewUserApproved
+                    AfterUserApproved = MailExtensions.SendNewUserApproved,
+                    AfterCourseDateChange = (courseId, oldDate) => {
+                        var course = CoursePlanningController.GetCourseIncludes(_repository.Context)
+                            .First(c=>c.Id == courseId);
+                        if (oldDate.HasValue)
+                        {
+                            Task.Run(() => CreateParticipantEmails.SendEmail(course, oldDate));
+                        }
+                        CreateParticipantEmails.RescheduleReadings(course, _repository.Context);
+                    }
                 });
             }
         }

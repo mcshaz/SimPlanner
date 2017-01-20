@@ -1,0 +1,59 @@
+﻿@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.CourseParticipantEmailBase *@
+@using SP.DataAccess
+@inherits SP.Web.UserEmails.EmailBase
+
+@functions{
+    public Course Course { get; set; }
+}
+
+@{ 
+    Layout = new SP.Web.UserEmails.LayoutTemplate
+    {
+        Title = "Candidate Reading"
+    };
+    var afterCourse = Course.StartUtc < DateTime.UtcNow;
+}
+<row>
+    <columns large = "12" >
+        <callout class="success">
+            <p>
+                Additional reading for the
+                @Course.CourseFormat.Description
+                (@Course.CourseFormat.CourseType.Description)
+                @if (!Course.CourseFormat.CourseType.Description.EndsWith("course", StringComparison.OrdinalIgnoreCase))
+                {
+                    @:Course
+                }
+                you 
+                @if (afterCourse) {
+                    @:attended
+                } else {
+                    @:are scheduled to attend
+                }
+                on @Course.StartLocal.ToString(afterCourse ? "D":"f",FormatProvider) is attached to this email.
+            </p>
+        </callout>
+    </columns>
+</row>
+<row>
+    <columns large = "12" >
+        @if (afterCourse)
+        {
+            <p>
+                Thank you for attending, and we hope you have gained something useful for future practice.
+            </p>
+        }
+        <p>
+            Please take the time to read through the attachments
+            @if (afterCourse)
+            {
+                @:while the course is still fresh in your mind
+            }
+            else
+            {
+                @:prior to attending the course
+            }
+            .
+        </p>
+    </columns>
+</row>

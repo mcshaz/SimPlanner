@@ -46,8 +46,8 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AngleSharp, Version=0.9.8.1, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
-      <HintPath>..\packages\AngleSharp.0.9.8.1\lib\net45\AngleSharp.dll</HintPath>
+    <Reference Include="AngleSharp, Version=0.9.9.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\packages\AngleSharp.0.9.9\lib\net45\AngleSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="antlr.runtime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -84,6 +84,14 @@
     </Reference>
     <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
       <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.Core, Version=1.6.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.6.8\lib\net45\Hangfire.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.6.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SqlServer.1.6.8\lib\net45\Hangfire.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
@@ -598,7 +606,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-4c7deaf312.min.js" />
+    <Content Include="dist\js\main-fd343463ee.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -632,6 +640,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BreezeWebApiConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\HangfireAuthorizationFilter.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\MetadataScriptWriter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -665,6 +674,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AuthConfirmationResult.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\CandidateReadingMessage.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CandidateReadingMessage.cshtml</DependentUpon>
     </Compile>
     <Compile Include="UserEmails\CourseInvite.generated.cs">
       <AutoGen>True</AutoGen>
@@ -700,6 +714,11 @@
       <DependentUpon>LayoutTemplate.cshtml</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="UserEmails\Inky\CandidateReadingMessage.generated.cs">
+      <DependentUpon>CandidateReadingMessage.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="UserEmails\Inky\NotifyBooking.generated.cs">
       <AutoGen>True</AutoGen>
@@ -820,6 +839,14 @@
     <Content Include="UserEmails\NotifyNewRegistrationRequest.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>NotifyNewRegistrationRequest.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\CandidateReadingMessage.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>CandidateReadingMessage.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\CandidateReadingMessage.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>CandidateReadingMessage.generated.cs</LastGenOutput>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

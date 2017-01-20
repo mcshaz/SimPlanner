@@ -11,7 +11,8 @@ namespace SP.Dto.Maps
                 FileName = m.FileName,
                 FileModified = m.FileModified,
                 FileSize = m.FileSize,
-                File = m.File
+                File = m.File,
+                SendRelativeToCourse = m.SendRelativeToCourse
             },
             m => new CandidatePrereadingDto
             {
@@ -19,7 +20,8 @@ namespace SP.Dto.Maps
                 CourseTypeId = m.CourseTypeId,
                 FileName = m.FileName,
                 FileModified = m.FileModified,
-                FileSize = m.FileSize
+                FileSize = m.FileSize,
+                SendRelativeToCourse = m.SendRelativeToCourse
             })
         { }
     }

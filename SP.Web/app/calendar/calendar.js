@@ -6,7 +6,7 @@
     function calendar(common, moment, $q, breeze, datacontext,$scope, $location) {
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
-        var _retrieved = []; //a sparse array - relying on javascript engine making htis a dictionary 
+        var _retrieved = new Set();  
 
         vm.calendarView = 'month';
         vm.events = [];
@@ -40,29 +40,24 @@
             }
         }
 		
-		function retrieveAppointments(year, month){
-			var yearData = _retrieved[year] || 0;
-			var newlyRetrieved = 0;
-			var requiredMonths;
-			if (month === undefined){
-                requiredMonths = Array.apply(null, { length: 12 }).map(Number.call, Number);
-			} else {
-				var startMonth = month-1;
-				requiredMonths = Array.apply(null, { length: 3 }).map(function (el, indx) { return startMonth + indx; });
-			}
-			
-			var dtRanges = createDateRanges();
-
-			requiredMonths.forEach(function(el){
-				var bitMonth = 1 << el+1;
-				if ((bitMonth & yearData) === 0) {
-					dtRanges.includeMonth(year, el);
-					newlyRetrieved |= bitMonth;
-				}
-			});
-
-            //a bit of a hack putting it befor the ajax request has returned!
-			_retrieved[year] |= newlyRetrieved;
+        function retrieveAppointments(year, month) {
+            year *= 12;
+            var getMonthYear = function (monthYear) {
+                var yr = Math.floor(monthYear / 12)
+                return {
+                    year: yr,
+                    month: monthYear - yr * 12
+                };
+            }
+            var startMonth = month === undefined ? year : year + month - 1;
+            var finishMonth = month === undefined ? year + 11 : year + month + 1;
+            var dtRanges = createDateRanges();
+            for (; startMonth <= finishMonth; startMonth++) {
+                if (!_retrieved.has(startMonth)) {
+                    dtRanges.includeMonth(getMonthYear(startMonth));
+                    _retrieved.add(startMonth);
+                }
+            }
 
 			if (!dtRanges.length){
 				return $q.when();
@@ -82,9 +77,9 @@
                 }).then(function (data) {
                     returnedCourses = data;
                 })]).then(function () {
-                    Array.prototype.push.apply(vm.events, returnedCourses.map(mapCourse).reduce(function (a, b) {
+                    vm.events = returnedCourses.map(mapCourse).reduce(function (a, b) {
                         return a.concat(b);
-                    },[]));
+                    }, vm.events);
                 });
 		}
     }
@@ -96,17 +91,17 @@
 
         return returnVar;
 
-        function includeMonth(year, month) {
+        function includeMonth(argObj /*{year, month}*/) {
             if (returnVar.length) {
                 var last = returnVar[returnVar.length - 1];
-                if (last.finish.getMonth() === month) {
-                    last.finish = new Date(year, month + 1, 1);
+                if (last.finish.getMonth() === argObj.month) {
+                    last.finish = new Date(argObj.year, argObj.month + 1, 1);
                     return;
                 }
             }
             returnVar.push({
-                start: new Date(year, month, 1),
-                finish: new Date(year, month + 1, 1)
+                start: new Date(argObj.year, argObj.month, 1),
+                finish: new Date(argObj.year, argObj.month + 1, 1)
             });
         }
     }

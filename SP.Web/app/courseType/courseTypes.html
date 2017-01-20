@@ -5,7 +5,7 @@
             <a class="btn-link" href="#/courseType/new"><i class="fa fa-plus-circle"></i> New Course Type</a>
             <ul>
                 <li ng-repeat="ct in vm.courseTypes track by ct.id">
-                    <h3>{{ct.description}}</h3>
+                    <h3>{{ct.description}} <a class="btn-link btn-sm" ng-href="#/courseType/{{ct.id}}"><i class="fa fa-edit"></i></a></h3> 
                     <ul>
                         <li ng-repeat="cf in ct.courseFormats track by cf.id">
                             {{cf.courseType.description + ' ' + cf.description}} <a class="btn-link" ng-href="#/courseType/{{cf.courseType.id}}?formatId={{cf.id}}"><i class="fa fa-edit"></i></a>

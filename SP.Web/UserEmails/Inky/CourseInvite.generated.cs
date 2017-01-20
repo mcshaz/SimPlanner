@@ -28,6 +28,7 @@ namespace SP.Web.UserEmails.Inky
 #line hidden
         #line 5 "..\..\UserEmails\Inky\CourseInvite.cshtml"
            
+    public DateTime? OldStart { get; set; }
     public string GetNotificationUrl(bool canAttend)
     {
         return  $"{BaseUrl}/index.html#/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending=" + (canAttend ? "1" : "0");
@@ -41,7 +42,7 @@ namespace SP.Web.UserEmails.Inky
 WriteLiteral("\r\n");
 
             
-            #line 11 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 12 "..\..\UserEmails\Inky\CourseInvite.cshtml"
    Layout = new SP.Web.UserEmails.LayoutTemplate { Title = "Course Invitation" }; 
             
             #line default
@@ -49,7 +50,7 @@ WriteLiteral("\r\n");
 WriteLiteral("\r\n");
 
             
-            #line 12 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 13 "..\..\UserEmails\Inky\CourseInvite.cshtml"
  if (CourseParticipant.Course.Cancelled)
 {
 
@@ -67,7 +68,7 @@ WriteLiteral(" class=\"lead\"");
 WriteLiteral(">\r\n            A ");
 
             
-            #line 16 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 17 "..\..\UserEmails\Inky\CourseInvite.cshtml"
          Write(CourseParticipant.Course.CourseFormat.Description);
 
             
@@ -76,7 +77,7 @@ WriteLiteral(">\r\n            A ");
 WriteLiteral("\r\n            (");
 
             
-            #line 17 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 18 "..\..\UserEmails\Inky\CourseInvite.cshtml"
         Write(CourseParticipant.Course.CourseFormat.CourseType.Description);
 
             
@@ -85,13 +86,13 @@ WriteLiteral("\r\n            (");
 WriteLiteral(")\r\n");
 
             
-            #line 18 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 19 "..\..\UserEmails\Inky\CourseInvite.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 18 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 19 "..\..\UserEmails\Inky\CourseInvite.cshtml"
              if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", StringComparison.OrdinalIgnoreCase))
             {
 
@@ -103,7 +104,7 @@ WriteLiteral("                ");
 WriteLiteral("Course\r\n");
 
             
-            #line 21 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 22 "..\..\UserEmails\Inky\CourseInvite.cshtml"
             } 
 
             
@@ -112,7 +113,7 @@ WriteLiteral("Course\r\n");
 WriteLiteral("            for which you were a ");
 
             
-            #line 22 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 23 "..\..\UserEmails\Inky\CourseInvite.cshtml"
                              Write(CourseParticipant.IsFaculty ? "faculty member" : "participant");
 
             
@@ -122,11 +123,53 @@ WriteLiteral(" has been <strong>CANCELLED</strong>.\r\n        </p>\r\n        <
 "ncelled course are:</p>\r\n    </callout>\r\n");
 
             
-            #line 26 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-
+            #line 27 "..\..\UserEmails\Inky\CourseInvite.cshtml"
 }
 else
 {
+    if (OldStart.HasValue)
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <callout");
+
+WriteLiteral(" class=\"danger\"");
+
+WriteLiteral(">\r\n            <p");
+
+WriteLiteral(" class=\"lead\"");
+
+WriteLiteral(">\r\n                Please note the <em>change in schedule</em> for this event!\r\n " +
+"               <strong>\r\n                    The new start is\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 37 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+               Write(string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                </strong>.\r\n            </p>\r\n            <p><small>(Note the c" +
+"hange from the <strong>old</strong> start of ");
+
+            
+            #line 40 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+                                                                         Write(string.Format(FormatProvider, "{0:D} at {0:t}", OldStart.Value));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(")</small></p>\r\n        </callout>\r\n");
+
+WriteLiteral("        <hr />\r\n");
+
+            
+            #line 43 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+    }
 
             
             #line default
@@ -138,7 +181,7 @@ WriteLiteral(" class=\"primary\"");
 WriteLiteral(">\r\n        <p>\r\n            You have been added as a ");
 
             
-            #line 32 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 46 "..\..\UserEmails\Inky\CourseInvite.cshtml"
                                  Write(CourseParticipant.IsFaculty ? "faculty member" : "participant");
 
             
@@ -149,7 +192,7 @@ WriteLiteral(" to an upcoming \r\n");
 WriteLiteral("            ");
 
             
-            #line 33 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 47 "..\..\UserEmails\Inky\CourseInvite.cshtml"
        Write(CourseParticipant.Course.CourseFormat.Description);
 
             
@@ -158,7 +201,7 @@ WriteLiteral("            ");
 WriteLiteral("\r\n            (");
 
             
-            #line 34 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 48 "..\..\UserEmails\Inky\CourseInvite.cshtml"
         Write(CourseParticipant.Course.CourseFormat.CourseType.Description);
 
             
@@ -167,13 +210,13 @@ WriteLiteral("\r\n            (");
 WriteLiteral(")\r\n");
 
             
-            #line 35 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 49 "..\..\UserEmails\Inky\CourseInvite.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 35 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 49 "..\..\UserEmails\Inky\CourseInvite.cshtml"
              if (!CourseParticipant.Course.CourseFormat.CourseType.Description.EndsWith("course", StringComparison.OrdinalIgnoreCase))
             {
 
@@ -185,7 +228,7 @@ WriteLiteral("                ");
 WriteLiteral("Course\r\n");
 
             
-            #line 38 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 52 "..\..\UserEmails\Inky\CourseInvite.cshtml"
             }
 
             
@@ -199,7 +242,7 @@ WriteLiteral(">Please check the details below and then confirm your availability
 "llout>\r\n");
 
             
-            #line 42 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 56 "..\..\UserEmails\Inky\CourseInvite.cshtml"
 }
 
             
@@ -210,7 +253,7 @@ WriteLiteral("<dl>\r\n    <dt>When</dt>\r\n    <dd>\r\n        <p>\r\n");
 WriteLiteral("            ");
 
             
-            #line 47 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 61 "..\..\UserEmails\Inky\CourseInvite.cshtml"
        Write(string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal));
 
             
@@ -223,7 +266,7 @@ WriteLiteral(" class=\"details\"");
 WriteLiteral(">\r\n            (finishing ");
 
             
-            #line 50 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 64 "..\..\UserEmails\Inky\CourseInvite.cshtml"
                   Write(CourseParticipant.Course.FinishCourseLocal().ToString("g",FormatProvider));
 
             
@@ -234,7 +277,7 @@ WriteLiteral(")\r\n        </p>\r\n    </dd>\r\n\r\n    <dt>Department</dt>\r\n 
 WriteLiteral("        ");
 
             
-            #line 56 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 70 "..\..\UserEmails\Inky\CourseInvite.cshtml"
    Write(CourseParticipant.Course.Department.Institution.Name);
 
             
@@ -243,7 +286,7 @@ WriteLiteral("        ");
 WriteLiteral(" - ");
 
             
-            #line 56 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 70 "..\..\UserEmails\Inky\CourseInvite.cshtml"
                                                            Write(CourseParticipant.Course.Department.Name);
 
             
@@ -252,7 +295,7 @@ WriteLiteral(" - ");
 WriteLiteral(" \r\n    </dd>\r\n\r\n    <dt>Where</dt>\r\n    <dd>\r\n        <p>");
 
             
-            #line 61 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 75 "..\..\UserEmails\Inky\CourseInvite.cshtml"
       Write(CourseParticipant.Course.Room.ShortDescription);
 
             
@@ -265,7 +308,7 @@ WriteLiteral(" class=\"details\"");
 WriteLiteral(">(");
 
             
-            #line 62 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 76 "..\..\UserEmails\Inky\CourseInvite.cshtml"
                        Write(CourseParticipant.Course.Room.FullDescription);
 
             
@@ -274,13 +317,13 @@ WriteLiteral(">(");
 WriteLiteral(")</p>\r\n    </dd>\r\n</dl>\r\n<h5>Organiser(s)</h5>\r\n<ul>\r\n");
 
             
-            #line 67 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 81 "..\..\UserEmails\Inky\CourseInvite.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 67 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 81 "..\..\UserEmails\Inky\CourseInvite.cshtml"
      foreach (var o in (from cp in CourseParticipant.Course.CourseParticipants where cp.IsOrganiser select cp.Participant))
     {
 
@@ -289,20 +332,20 @@ WriteLiteral(")</p>\r\n    </dd>\r\n</dl>\r\n<h5>Organiser(s)</h5>\r\n<ul>\r\n")
             #line hidden
 WriteLiteral("        <li>\r\n            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2683), Tuple.Create("\"", 2703)
+WriteAttribute("href", Tuple.Create(" href=\"", 3319), Tuple.Create("\"", 3339)
             
-            #line 70 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 2690), Tuple.Create<System.Object, System.Int32>(GetMailTo(o)
+            #line 84 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+, Tuple.Create(Tuple.Create("", 3326), Tuple.Create<System.Object, System.Int32>(GetMailTo(o)
             
             #line default
             #line hidden
-, 2690), false)
+, 3326), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 70 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 84 "..\..\UserEmails\Inky\CourseInvite.cshtml"
                                Write(o.FullName);
 
             
@@ -311,7 +354,7 @@ WriteLiteral(">");
 WriteLiteral("</a> ");
 
             
-            #line 70 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 84 "..\..\UserEmails\Inky\CourseInvite.cshtml"
                                                Write(o.PhoneNumber);
 
             
@@ -320,7 +363,7 @@ WriteLiteral("</a> ");
 WriteLiteral("\r\n        </li>\r\n");
 
             
-            #line 72 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+            #line 86 "..\..\UserEmails\Inky\CourseInvite.cshtml"
     }
 
             
@@ -328,23 +371,23 @@ WriteLiteral("\r\n        </li>\r\n");
             #line hidden
 WriteLiteral("</ul>\r\n<row>\r\n    <columns>\r\n        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2798), Tuple.Create("\"", 2901)
+WriteAttribute("href", Tuple.Create(" href=\"", 3434), Tuple.Create("\"", 3537)
             
-            #line 76 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 2805), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
-            
-            #line default
-            #line hidden
-, 2805), false)
-, Tuple.Create(Tuple.Create("", 2821), Tuple.Create("/api/CoursePlanning/MyCalendar/", 2821), true)
-            
-            #line 76 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 2852), Tuple.Create<System.Object, System.Int32>(CourseParticipant.ParticipantId.ToString()
+            #line 90 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+, Tuple.Create(Tuple.Create("", 3441), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
             
             #line default
             #line hidden
-, 2852), false)
-, Tuple.Create(Tuple.Create("", 2897), Tuple.Create(".ics", 2897), true)
+, 3441), false)
+, Tuple.Create(Tuple.Create("", 3457), Tuple.Create("/api/CoursePlanning/MyCalendar/", 3457), true)
+            
+            #line 90 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+, Tuple.Create(Tuple.Create("", 3488), Tuple.Create<System.Object, System.Int32>(CourseParticipant.ParticipantId.ToString()
+            
+            #line default
+            #line hidden
+, 3488), false)
+, Tuple.Create(Tuple.Create("", 3533), Tuple.Create(".ics", 3533), true)
 );
 
 WriteLiteral(">\r\n            <img");
@@ -353,15 +396,15 @@ WriteLiteral(" alt=\"Add To Calendar\"");
 
 WriteLiteral(" title=\"Update my calendar\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 2970), Tuple.Create("\"", 3025)
+WriteAttribute("src", Tuple.Create(" src=\"", 3606), Tuple.Create("\"", 3661)
             
-            #line 77 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 2976), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
+            #line 91 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+, Tuple.Create(Tuple.Create("", 3612), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
             
             #line default
             #line hidden
-, 2976), false)
-, Tuple.Create(Tuple.Create("", 2992), Tuple.Create("/Content/Images/AddToCalendar.jpg", 2992), true)
+, 3612), false)
+, Tuple.Create(Tuple.Create("", 3628), Tuple.Create("/Content/Images/AddToCalendar.jpg", 3628), true)
 );
 
 WriteLiteral(" width=\"166\"");
@@ -376,14 +419,14 @@ WriteLiteral(">\r\n        <center>\r\n            <button");
 
 WriteLiteral(" class=\"success radius\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3195), Tuple.Create("\"", 3227)
+WriteAttribute("href", Tuple.Create(" href=\"", 3831), Tuple.Create("\"", 3863)
             
-            #line 87 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 3202), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
+            #line 101 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+, Tuple.Create(Tuple.Create("", 3838), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
             
             #line default
             #line hidden
-, 3202), false)
+, 3838), false)
 );
 
 WriteLiteral(">Confirm</button>\r\n        </center>\r\n    </columns>\r\n    <columns");
@@ -394,14 +437,14 @@ WriteLiteral(">\r\n        <center>\r\n            <button");
 
 WriteLiteral(" class=\"alert radius\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3365), Tuple.Create("\"", 3398)
+WriteAttribute("href", Tuple.Create(" href=\"", 4001), Tuple.Create("\"", 4034)
             
-            #line 92 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 3372), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
+            #line 106 "..\..\UserEmails\Inky\CourseInvite.cshtml"
+, Tuple.Create(Tuple.Create("", 4008), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
             
             #line default
             #line hidden
-, 3372), false)
+, 4008), false)
 );
 
 WriteLiteral(">I\'m Unavailable</button>\r\n        </center>\r\n    </columns>\r\n</row>");
