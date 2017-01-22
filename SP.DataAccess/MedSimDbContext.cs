@@ -444,6 +444,10 @@ namespace SP.DataAccess
         private void SetTimeTracking()
         {
             var nowUtc = DateTime.UtcNow;
+            foreach (var ent in ChangeTracker.Entries())
+            {
+                System.Diagnostics.Debug.WriteLine(ent);
+            }
             foreach (var ent in ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added))
             {
                 var t = ent.Entity.GetType();

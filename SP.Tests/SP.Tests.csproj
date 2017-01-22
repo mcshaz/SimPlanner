@@ -186,6 +186,7 @@
     <Compile Include="TestExpandNavigate.cs" />
     <Compile Include="TestLinqExtensions.cs" />
     <Compile Include="TestOdataOptionsParsing.cs" />
+    <Compile Include="TestValidation.cs" />
     <Compile Include="TestWebConfig.cs" />
   </ItemGroup>
   <ItemGroup>

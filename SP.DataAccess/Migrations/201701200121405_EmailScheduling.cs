@@ -19,8 +19,8 @@ namespace SP.DataAccess.Migrations
                 //.ForeignKey("HangFire.Server", t=>t.HangfireId)
                 .Index(t => t.CourseId);
 
-            Sql("CREATE INDEX [IX_HangfireId] ON [dbo].[CourseHangfireJobs]([HangfireId])");
-            Sql("ALTER TABLE [dbo].[CourseHangfireJobs] ADD CONSTRAINT[FK_dbo.CourseHangfireJobs_HangFire.Server_HangfireId] FOREIGN KEY([HangfireId]) REFERENCES [HangFire].[Server]([Id])");
+            //Sql("CREATE INDEX [IX_HangfireId] ON [dbo].[CourseHangfireJobs]([HangfireId])");
+            //Sql("ALTER TABLE [dbo].[CourseHangfireJobs] ADD CONSTRAINT[FK_dbo.CourseHangfireJobs_HangFire.Server_HangfireId] FOREIGN KEY([HangfireId]) REFERENCES [HangFire].[Server]([Id])");
 
             AddColumn("dbo.CourseTypes", "SendCandidateTimetable", c => c.Boolean(nullable: false));
             AddColumn("dbo.CandidatePrereadings", "SendRelativeToCourse", c => c.Short());

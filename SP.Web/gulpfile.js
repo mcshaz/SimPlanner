@@ -41,6 +41,7 @@ gulp.task('html', function(cb){
         rename({ basename: debugFilename }),
         replace('<base href="/">', '<base href="/'+debugFilename+'.html">'),
         inline({ compress: false }),
+        //useref({noconcat:true}),
         gulp.dest('dist')]);
 
     pump([gulp.src(mainFile),
