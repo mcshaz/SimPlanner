@@ -152,6 +152,29 @@ namespace SP.Web.Controllers
             return StreamToResponse(new FileStream(sr.GetServerPath(), FileMode.Open), scenario.BriefDescription + ".zip");
         }
 
+        [Route("CandidateReading")]
+        [HttpGet]
+        public async Task<HttpResponseMessage> GetCandidateReading([FromUri]DowloadFileSetModel model)
+        {
+            var validation = await ValidateInput(model);
+            if (validation != null)
+            {
+                return validation;
+            }
+
+            var courseTypes = GetPermittedEntity(Repo.CourseTypes.Include(s => s.CandidatePrereadings));
+            var courseType = await courseTypes.FirstAsync(c => c.Id == model.EntitySetId);
+
+            var read = courseType.CandidatePrereadings.FirstOrDefault();
+            if (read == null)
+            {
+                ModelState.AddModelError("EntitySetId", "no resources found for the provided key");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+            }
+
+            return StreamToResponse(new FileStream(read.GetServerPath(), FileMode.Open), courseType.Abbreviation + " Reading.zip");
+        }
+
         [Route("GetTimetable")]
         [HttpGet]
         public async Task<HttpResponseMessage> GetTimetableForCourse([FromUri]DowloadFileSetModel model)

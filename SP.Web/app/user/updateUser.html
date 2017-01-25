@@ -1,7 +1,7 @@
 ﻿<section id="course-view" class="mainbar" data-ng-controller="updateUser as vm">
     <section class="matter">
         <div class="container col-md-12">
-            <h2>Update User Details</h2>
+            <h2>{{vm.isNew?'Enter New':'Update'}} User Details</h2>
             <form ng-submit="vm.submit()" name="updateDetailsForm" class="form-horizontal col-md-9">
                 
                 <fieldset>

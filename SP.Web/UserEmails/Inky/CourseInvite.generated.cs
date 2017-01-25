@@ -371,23 +371,23 @@ WriteLiteral("\r\n        </li>\r\n");
             #line hidden
 WriteLiteral("</ul>\r\n<row>\r\n    <columns>\r\n        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3434), Tuple.Create("\"", 3537)
+WriteAttribute("href", Tuple.Create(" href=\"", 3434), Tuple.Create("\"", 3529)
             
             #line 90 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 3441), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
+, Tuple.Create(Tuple.Create("", 3441), Tuple.Create<System.Object, System.Int32>(BaseUrl
             
             #line default
             #line hidden
 , 3441), false)
-, Tuple.Create(Tuple.Create("", 3457), Tuple.Create("/api/CoursePlanning/MyCalendar/", 3457), true)
+, Tuple.Create(Tuple.Create("", 3449), Tuple.Create("/api/CoursePlanning/MyCalendar/", 3449), true)
             
             #line 90 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 3488), Tuple.Create<System.Object, System.Int32>(CourseParticipant.ParticipantId.ToString()
+, Tuple.Create(Tuple.Create("", 3480), Tuple.Create<System.Object, System.Int32>(CourseParticipant.ParticipantId.ToString()
             
             #line default
             #line hidden
-, 3488), false)
-, Tuple.Create(Tuple.Create("", 3533), Tuple.Create(".ics", 3533), true)
+, 3480), false)
+, Tuple.Create(Tuple.Create("", 3525), Tuple.Create(".ics", 3525), true)
 );
 
 WriteLiteral(">\r\n            <img");
@@ -396,15 +396,15 @@ WriteLiteral(" alt=\"Add To Calendar\"");
 
 WriteLiteral(" title=\"Update my calendar\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 3606), Tuple.Create("\"", 3661)
+WriteAttribute("src", Tuple.Create(" src=\"", 3598), Tuple.Create("\"", 3653)
             
             #line 91 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 3612), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
+, Tuple.Create(Tuple.Create("", 3604), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
             
             #line default
             #line hidden
-, 3612), false)
-, Tuple.Create(Tuple.Create("", 3628), Tuple.Create("/Content/Images/AddToCalendar.jpg", 3628), true)
+, 3604), false)
+, Tuple.Create(Tuple.Create("", 3620), Tuple.Create("/Content/Images/AddToCalendar.jpg", 3620), true)
 );
 
 WriteLiteral(" width=\"166\"");
@@ -419,14 +419,14 @@ WriteLiteral(">\r\n        <center>\r\n            <button");
 
 WriteLiteral(" class=\"success radius\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3831), Tuple.Create("\"", 3863)
+WriteAttribute("href", Tuple.Create(" href=\"", 3823), Tuple.Create("\"", 3855)
             
             #line 101 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 3838), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
+, Tuple.Create(Tuple.Create("", 3830), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
             
             #line default
             #line hidden
-, 3838), false)
+, 3830), false)
 );
 
 WriteLiteral(">Confirm</button>\r\n        </center>\r\n    </columns>\r\n    <columns");
@@ -437,14 +437,14 @@ WriteLiteral(">\r\n        <center>\r\n            <button");
 
 WriteLiteral(" class=\"alert radius\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4001), Tuple.Create("\"", 4034)
+WriteAttribute("href", Tuple.Create(" href=\"", 3993), Tuple.Create("\"", 4026)
             
             #line 106 "..\..\UserEmails\Inky\CourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 4008), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
+, Tuple.Create(Tuple.Create("", 4000), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
             
             #line default
             #line hidden
-, 4008), false)
+, 4000), false)
 );
 
 WriteLiteral(">I\'m Unavailable</button>\r\n        </center>\r\n    </columns>\r\n</row>");

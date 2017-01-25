@@ -118,7 +118,15 @@
                             <button type="button" ng-click="vm.addPrereading()" class="btn btn-link" ng-disabled="vm.courseType.entityAspect.entityState.isAdded()"><i class="fa fa-plus-square"></i>Add Candidate Pre-reading</button>
                         </div>
 
+                        <button class="btn-link" ng-click="vm.downloadReadings()" type="button" ng-disabled="vm.isNoReadingsOnServer()">
+                            <i class="fa fa-download"></i>
+                            Download Reading Material
+                            <i class="fa fa-book"></i>
+                        </button>
+                        <iframe style="display:none;" ng-src="{{vm.downloadFileUrl}}"></iframe>
+
                         <button class="btn-link" ng-click="vm.createNewFormat()" type="button"><i class="fa fa-plus-square"></i> New Format</button>
+                        
                     </fieldset>
                 </div>
                 <div class="panel-group" ng-model="vm.activeFormatIndex" role="tablist" aria-multiselectable="true" bs-collapse data-allow-multiple="false">

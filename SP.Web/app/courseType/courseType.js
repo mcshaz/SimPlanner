@@ -5,14 +5,14 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside', '$q', '$filter', 'selectOptionMaps'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside', '$q', '$filter', 'selectOptionMaps', 'loginFactory'];
 
-    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside, $q, $filter, selectOptionMaps) {
+    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside, $q, $filter, selectOptionMaps, loginFactory) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
             controllerId: controllerId,
-            watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseSlots', 'courseType.courseFormats.courseSlots.activity', 'courseType.courseTypeDepartments', 'candidatePrereadings'],
+            watchedEntityNames: ['courseType', 'courseType.courseFormats', 'courseType.courseFormats.courseSlots', 'courseType.courseFormats.courseSlots.activity', 'courseType.courseTypeDepartments', 'courseType.candidatePrereadings'],
             $scope: $scope
         });
         var id = $routeParams.id;
@@ -33,12 +33,14 @@
         vm.departmentRemoved = common.removeCollectionItem.bind(null, datacontext.courseTypeDepartments, courseTypeDeparmentKey);
         vm.departmentSelected = common.addCollectionItem.bind(null, datacontext.courseTypeDepartments, courseTypeDeparmentKey);
         vm.departments = [];
+        vm.downloadReadings = downloadReadings;
         vm.editSlot = editSlot;
         vm.editChoices = editChoices;
         vm.emersionCategories = selectOptionMaps.getEnumValues().emersion;
         vm.getCourseActivityNames = getCourseActivityNames;
         vm.instructorCourses = [];
         vm.isScenarioChanged = isScenarioChanged;
+        vm.isNoReadingsOnServer = vm.isReadingsOnServer;
         vm.removeSlot = removeSlot;
         vm.resetExampleTimes = resetExampleTimes;
 
@@ -161,6 +163,12 @@
             slot.activityId = slot.activity = null;
         }
         */
+        function downloadReadings() {
+            loginFactory.downloadFileLink('CandidateReading', vm.courseType.id)
+                .then(function (url) {
+                    vm.downloadFileUrl = url;
+                });
+        }
 
         function getCourseActivityNames(name) {
             name = name.toLowerCase();
@@ -323,6 +331,10 @@
                 }
             });
             return returnVar;
+        }
+
+        vm.isNoReadingsOnServer = function () {
+            return !(vm.courseType.candidatePrereadings && vm.courseType.candidatePrereadings.some(function (el) { return el.entityAspect.entityState.isUnchanged(); }));
         }
 
         function alterDayMarkers(cf) {

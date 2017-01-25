@@ -501,8 +501,10 @@
     <Content Include="app\course\courseRoles.js" />
     <Content Include="app\course\course.html" />
     <Content Include="app\course\course.js" />
+    <Content Include="app\facultyInvites\facultyInvites.js" />
     <Content Include="app\fileread.directive.js" />
     <Content Include="app\institution\googleTools.js" />
+    <Content Include="app\facultyInvites\facultyInvites.html" />
     <Content Include="app\manikinModels\manikinManufacturer.html" />
     <Content Include="app\manikinModels\manikinManufacturer.js" />
     <Content Include="app\manikinModels\manikinModel.html" />
@@ -560,6 +562,7 @@
     <Content Include="app\user\updateUser.js" />
     <Content Include="app\user\userDetails.html" />
     <Content Include="app\user\participantBaseAbstract.js" />
+    <Content Include="app\user\usersAbstract.js" />
     <Content Include="app\user\userDetailsAbstract.js" />
     <Content Include="app\user\users.html" />
     <Content Include="app\user\users.js" />

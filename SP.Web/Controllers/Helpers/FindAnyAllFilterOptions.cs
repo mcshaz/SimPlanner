@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.OData.Query;
 using Microsoft.Data.OData.Query.SemanticAst;
+using SP.Dto.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,89 +8,149 @@ using System.Web.Http.OData.Query;
 
 namespace SP.Web.Controllers.Helpers
 {
-    public class FindNavigationFilterOptions
+    public static class FindNavigationFilterOptions
     {
-        public FindNavigationFilterOptions()
+        public static IEnumerable<string> GetPaths(FilterQueryOption filterOption, string separator = ".")
         {
-            _paths = new List<IList<string>>();
-            addPath();
+            var v = new MyVisitor();
+            IEnumerable<string> returnVar;
+            var expr = filterOption.FilterClause.Expression;
+            var t = expr.GetType();
+            if (t == typeof(BinaryOperatorNode))
+            {
+                returnVar = v.Visit((BinaryOperatorNode)expr);
+            }
+            else if (t == typeof(AnyNode))
+            {
+                returnVar = v.Visit((AnyNode)expr);
+            }
+            else
+            {
+                throw new TypeAccessException(t.FullName);
+            }
+            return returnVar.ToHashSet();
         }
-        public static IList<string> GetPaths(FilterQueryOption filterOption, string separator = ".")
-        {
-            var findAnyAll = new FindNavigationFilterOptions();
-            findAnyAll.Find(filterOption.FilterClause.Expression);
 
-            return findAnyAll.GetPaths(separator);
-        }
-        readonly IList<IList<string>> _paths;
-        void addPath()
-        {
-            _paths.Add(new List<string>());
-        }
-        void AddNav(string navName)
-        {
-            _paths[_paths.Count - 1].Add(navName);
-        }
-        public List<string> GetPaths(string separator = ".")
+        /*
+        public static List<string> GetPaths(string separator = ".")
         {
             return (from p in _paths
                     where p.Count > 0
                     select string.Join(separator, p)).ToList();
         }
-        public void Find(QueryNode node)
+        */
+        private class MyVisitor : QueryNodeVisitor<IEnumerable<string>>
         {
-            switch (node.Kind)
+            public MyVisitor() : base()
             {
-                case QueryNodeKind.All:
-                case QueryNodeKind.Any:
-                    var l = (LambdaNode)node;
-                    Find(l.Source);
-                    Find(l.Body);
-                    break;
-                case QueryNodeKind.BinaryOperator:
-                    var bo = (BinaryOperatorNode)node;
-                    Find(bo.Left);
-                    addPath();
-                    Find(bo.Right);
-                    break;
+                BaseString = string.Empty;
+            }
+            private string BaseString { get; set; }
+            private readonly static string[] _emptyString = new string[0];
+            private string Concat(params string[] strings)
+            {
+                return string.Join(".", strings.Where(s => !string.IsNullOrEmpty(s)));
+            }
+            public override IEnumerable<string> Visit(CollectionPropertyAccessNode nodeIn)
+            {
+                return nodeIn.Source.Accept(this);
+            }
+            public override IEnumerable<string> Visit(SingleNavigationNode nodeIn)
+            {
+                return new[] {
+                    Concat(BaseString,nodeIn.Source.Accept(this).FirstOrDefault(),nodeIn.NavigationProperty.Name)
+                };
+            }
+            public override IEnumerable<string> Visit(CollectionNavigationNode nodeIn)
+            {
+                return new[] 
+                {
+                    Concat(BaseString, nodeIn.Source.Accept(this).FirstOrDefault(),nodeIn.NavigationProperty.Name)
+                };
+            }
+            public override IEnumerable<string> Visit(SingleValuePropertyAccessNode nodeIn)
+            {
+                return nodeIn.Source.Accept(this);//nodeIn.GetType().Name + ' ' + nodeIn.Property.Name + Environment.NewLine;
+            }
+            public override IEnumerable<string> Visit(BinaryOperatorNode nodeIn)
+            {
+                return nodeIn.Left.Accept(this)
+                    .Concat(nodeIn.Right.Accept(this));
+            }
+            private IEnumerable<string> VisitLambda(LambdaNode nodeIn)
+            {
+                var oldBase = BaseString;
+                BaseString += nodeIn.Source.Accept(this).FirstOrDefault();
+                var returnVar = nodeIn.Body.Accept(this);
+                if (!returnVar.Any() && BaseString != oldBase)
+                {
+                    returnVar = new[] { BaseString };
+                }
+                BaseString = oldBase;
+                return returnVar;
+            }
+            public override IEnumerable<string> Visit(AllNode nodeIn)
+            {
+                return VisitLambda(nodeIn);
+            }
+            public override IEnumerable<string> Visit(AnyNode nodeIn)
+            {
+                return VisitLambda(nodeIn);
+            }
+            public override IEnumerable<string> Visit(CollectionFunctionCallNode nodeIn)
+            {
+                return nodeIn.Source.Accept(this);
+            }
+            public override IEnumerable<string> Visit(ConstantNode nodeIn)
+            {
+                return _emptyString;
+            }
+            public override IEnumerable<string> Visit(ConvertNode nodeIn)
+            {
+                return nodeIn.Source.Accept(this);
+            }
+            public override IEnumerable<string> Visit(EntityCollectionCastNode nodeIn)
+            {
+                return nodeIn.Source.Accept(this);
+            }
+            public override IEnumerable<string> Visit(EntityCollectionFunctionCallNode nodeIn)
+            {
+                return nodeIn.Source.Accept(this);
+            }
+            public override IEnumerable<string> Visit(EntityRangeVariableReferenceNode nodeIn)
+            {
+                return _emptyString;
+            }
+            public override IEnumerable<string> Visit(NamedFunctionParameterNode nodeIn)
+            {
+                return _emptyString;
+            }
+            public override IEnumerable<string> Visit(NonentityRangeVariableReferenceNode nodeIn)
+            {
+                return _emptyString;
+            }
+            public override IEnumerable<string> Visit(SingleValueFunctionCallNode nodeIn)
+            {
+                return _emptyString;
+            }
+            public override IEnumerable<string> Visit(SingleEntityCastNode nodeIn)
+            {
+                return nodeIn.Source.Accept(this);
+            }
+            public override IEnumerable<string> Visit(SingleEntityFunctionCallNode nodeIn)
+            {
+                return nodeIn.Source.Accept(this);
+            }
 
-                case QueryNodeKind.Convert:
-                    Find(((ConvertNode)node).Source);
-                    break;
-                case QueryNodeKind.NonentityRangeVariableReference:
-                case QueryNodeKind.UnaryOperator:
-                    var uo = (UnaryOperatorNode)node;
-                    Find(uo.Operand);
-                    break;
+            public override IEnumerable<string> Visit(SingleValueOpenPropertyAccessNode nodeIn)
+            {
+                return nodeIn.Source.Accept(this);
+            }
 
-                case QueryNodeKind.SingleValuePropertyAccess:
-                    var sv = (SingleValuePropertyAccessNode)node;
-                    Find(sv.Source);
-                    break;
-                /*
-        case QueryNodeKind.CollectionPropertyAccess:
-            var cpa = (CollectionPropertyAccessNode)node;
-            Paths[Paths.Count-1] += '.' + cpa.Property.Name;
-            break;    
-                                    */
-                case QueryNodeKind.CollectionNavigationNode:
-                    var cnn = (CollectionNavigationNode)node;
-                    Find(cnn.Source);
-                    AddNav(cnn.NavigationProperty.Name);
-                    break;
-                case QueryNodeKind.SingleNavigationNode:
-                    var snn = (SingleNavigationNode)node;
-                    AddNav(snn.NavigationProperty.Name);
-                    break;
-                //case QueryNodeKind.SingleValueOpenPropertyAccess:        
-                //case QueryNodeKind.SingleEntityCast:        
-
-                //case QueryNodeKind.EntityCollectionCast:             
-                case QueryNodeKind.NamedFunctionParameter:
-                    Console.WriteLine(node.GetType());
-                    break;
+            public override IEnumerable<string> Visit(UnaryOperatorNode nodeIn)
+            {
+                return nodeIn.Operand.Accept(this);
             }
         }
-
     }
 }

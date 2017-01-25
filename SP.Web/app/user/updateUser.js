@@ -88,6 +88,7 @@
                     });
                 }
             }
+
             vm.save();
 
             function alterPermission(permissionName) {

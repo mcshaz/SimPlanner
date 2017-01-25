@@ -1,0 +1,44 @@
+﻿<section id="dashboard-view" class="mainbar" ng-controller="facultyInvites as vm">
+    <section class="matter">
+        <div class="container">
+            <h4>Upcoming courses for which you are an organiser:</h4>
+            <form >
+                <div class="form-group">
+                    <label for="courseType" class="control-label col-md-2">Course Type</label>
+                    <div class="col-md-8">
+                        <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypes track by ct.id"
+                                data-ng-model="vm.selectedCourseType"></select>
+                    </div>
+                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Confirmed Faculty</th>
+                            <th>Desired Faculty</th>
+                            <th>Invite</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="course in vm.courses track by course.id" >
+                            <td>{{course.startUtc | amDateFormat:'llll'}}</td>
+                            <td>{{course.facultyCount}}</td>
+                            <td><input type="number" step="1" ng-model="course.facultyNoRequired" min="1" /></td>
+                            <td><input type="checkbox" ng-model="course.invite" ng-disabled="course.facultyCount >= course.facultyNoRequired" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" id="limitToRegistered" type="checkbox" ng-model="vm.limitToInstructors" ng-disabled="!(vm.selectedCourseType && vm.selectedCourseType.instructorCourseId)"/>
+                        Show Registered {{vm.selectedCourseType.abbreviation}} Instructors Only
+                    </label>
+                </div>
+            </form>
+            <div ui-grid="vm.gridOptions" ui-grid-pagination></div>
+
+            <button>Send Invitations</button>
+        </div>
+    </section>
+</section>

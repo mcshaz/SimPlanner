@@ -293,6 +293,19 @@
                             allowedRoles: userRoles.anonymous
                         }
                     }
+                }, {
+                    url: '/facultyInvites',
+                    config: {
+                        title: 'Invite Faculty',
+                        templateUrl: 'app/facultyInvites/facultyInvites.html',
+                        settings: {
+                            nav: 11,
+                            content: '<i class="fa fa-binoculars"></i> Find Faculty'
+                        },
+                        access: {
+                            allowedRoles: [userRoles.accessAllData, userRoles.accessDepartment, userRoles.accessInstitution]
+                        }
+                    }
                 }
         ];
     }

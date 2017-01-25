@@ -1,6 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Data.OData.Query;
+using Microsoft.Data.OData.Query.SemanticAst;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SP.Web.Controllers.Helpers;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Builder;
 using System.Web.Http.OData.Query;
@@ -70,36 +74,30 @@ namespace SimPlanner.Tests
             //ODataQueryOptions<Customer> query = new ODataQueryOptions<Customer>(context, new HttpRequestMessage(HttpMethod.Get, "http://server/?$top=10"));
 
             FilterQueryOption f = new FilterQueryOption("startswith(BarString,'b') eq true", context);
-            var fo = new FindNavigationFilterOptions();
-            fo.Find(f.FilterClause.Expression);
-            List<string> pathsString = fo.GetPaths();
+            var pathsString = FindNavigationFilterOptions.GetPaths(f).ToList();
             CollectionAssert.AreEqual(pathsString, new string[0]);
 
             f = new FilterQueryOption("F/FooId eq 1", context);
-            fo = new FindNavigationFilterOptions();
-            fo.Find(f.FilterClause.Expression);
-            pathsString = fo.GetPaths();
+            pathsString = FindNavigationFilterOptions.GetPaths(f).ToList();
             CollectionAssert.AreEqual(pathsString, new[] { "F" });
 
-            f = new FilterQueryOption("(startswith(BarString,'b') eq true) and (not (Foos/any(x1: x1/B/BarId eq 1)))", context);
-            fo = new FindNavigationFilterOptions();
-            fo.Find(f.FilterClause.Expression);
-            pathsString = fo.GetPaths();
+            f = new FilterQueryOption("Foos/any(x1: x1/B/BarId eq 1)", context);
+            pathsString = FindNavigationFilterOptions.GetPaths(f).ToList();
             CollectionAssert.AreEqual(pathsString, new[] { "Foos.B" });
 
-            f = new FilterQueryOption("Foos/any(x1: x1/B/BarId eq 1)", context);
-            fo = new FindNavigationFilterOptions();
-            fo.Find(f.FilterClause.Expression);
-            pathsString = fo.GetPaths();
+            f = new FilterQueryOption("(startswith(BarString,'b') eq true) and (not (Foos/any(x1: x1/B/BarId eq 1)))", context);
+            pathsString = FindNavigationFilterOptions.GetPaths(f).ToList();
             CollectionAssert.AreEqual(pathsString, new[] { "Foos.B" });
 
             f = new FilterQueryOption("F/Bars/any(x1: x1/BarId eq 1)", context);
-            fo = new FindNavigationFilterOptions();
-            fo.Find(f.FilterClause.Expression);
-            pathsString = fo.GetPaths();
+            pathsString = FindNavigationFilterOptions.GetPaths(f).ToList();
             CollectionAssert.AreEqual(pathsString, new[] { "F.Bars" });
 
-
+            f = new FilterQueryOption("F/Bars/any(x1: ((x1/BarId eq 1) and (x1/BarString eq 'abc')) and (x1/F/FooId lt 3))", context);
+            pathsString = FindNavigationFilterOptions.GetPaths(f).ToList();
+            CollectionAssert.AreEqual(pathsString, new[] { "F.Bars.F" });
         }
     }
+
+
 }

@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.AspNet.Identity.Owin;
 using SP.Web.UserEmails;
-using System.Security.Authentication;
 using System.Net;
 using System.Threading.Tasks;
 

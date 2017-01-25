@@ -9,6 +9,7 @@
         var unAuthUser = {
             name: '',
             roles: [],
+            roleIds: [],
             id: null,
             departmentId:null
         };
@@ -79,7 +80,7 @@
                     case USER_ROLES.anonymous:
                         return !isLoggedIn();
                     default:
-                        return currentUser.roles.indexOf(rl) > -1;
+                        return currentUser.roles.indexOf(rl) > -1 || currentUser.roleIds.indexOf(rl) > -1;
                 }
                 
             });
@@ -111,6 +112,7 @@
                     locale: data.locale,
                     departmentId: data.departmentId
                 };
+                currentUser.roleIds = currentUser.roles.map(function (r) { return USER_ROLES[r[0].toLowerCase() + r.substring(1)];});
                 localStorage.set('currentUser', currentUser);
                 //now broadcast
                 setLocaleThenConfirmLogin();

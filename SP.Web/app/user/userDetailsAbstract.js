@@ -3,9 +3,9 @@
 
     var serviceId = 'userDetails.abstract';
     angular.module('app').factory(serviceId,
-        ['common', 'datacontext', '$q', 'participantBase.abstract', 'tokenStorageService', AbstractUserDetails]);
+        ['common', 'datacontext', '$q', 'participantBase.abstract', 'tokenStorageService', '$routeParams', AbstractUserDetails]);
 
-    function AbstractUserDetails(common, datacontext, $q, abstractController, tokenStorageService) {
+    function AbstractUserDetails(common, datacontext, $q, abstractController, tokenStorageService, $routeParams) {
 
         return {
             constructor: Ctor
@@ -34,25 +34,32 @@
                 promises.push(datacontext.hotDrinks.findServerIfCacheEmpty().then(function (data) {
                     vm.hotDrinks = data;
                 }));
-                if (vm.isNew) {
-                    vm.participant = datacontext.participants.create({ departmentId: argObj.$routeParams.departmentId });
-                    promises.push(datacontext.departments.fetchByKey(argObj.$routeParams.departmentId, { expand: 'institution.culture' })
-                        .then(function (data) {
-                            vm.participant.department = data;
-                            vm.institutions = [vm.participant.department.institution];
-                        }));
+                if (vm.isNew && $routeParams.departmentId) {
+                        vm.participant = datacontext.participants.create({ departmentId: argObj.$routeParams.departmentId });
+                        promises.push(datacontext.departments.fetchByKey(argObj.$routeParams.departmentId, { expand: 'institution.culture' })
+                            .then(function (data) {
+                                vm.participant.department = data;
+                                vm.institutions = [vm.participant.department.institution];
+                            }));
+
                     alertMessage = "Register User";
                     return common.activateController(promises, controllerId).then(loaded);
                 } // else {
+               
                 var defer = $q.defer();
                 datacontext.ready().then(function () {
-                    alertMessage = id ? "Update User" : "Update My Details";
-                    promises.push(datacontext.participants.fetchByKey(id || tokenStorageService.getUserId(), { expand: 'roles' }).then(function (data) {
+                    promises.push(datacontext.institutions.all({ expand: 'culture' }).then(function (data) {
+                        vm.institutions = data;
+                    }))
+                    if (vm.isNew) {
+                        vm.participant = datacontext.participants.create({adminApproved:true, emailOnCreate:true});
+                        alertMessage = "Create User";
+                    } else {
+                        alertMessage = id ? "Update User" : "Update My Details";
+                        promises.push(datacontext.participants.fetchByKey(id || tokenStorageService.getUserId(), { expand: 'roles' }).then(function (data) {
                             vm.participant = data;
-                        }),
-                        datacontext.institutions.all({ expand: 'culture' }).then(function (data) {
-                            vm.institutions = data;
                         }));
+                    }
                     common.activateController(promises, controllerId).then(
                         function () {
                             loaded();
@@ -66,7 +73,7 @@
                 return defer.promise;
 
                 function loaded() {
-                    vm.institution = vm.participant.department.institution;
+                    if (vm.participant.department) { vm.institution = vm.participant.department.institution; }
                     vm.filterRoles();
                     vm.notifyViewModelLoaded();
                     vm.log(alertMessage + ' Activated');
