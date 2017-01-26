@@ -41,6 +41,7 @@ namespace SP.Dto
         public virtual ICollection<CourseSlotManikinDto> CourseSlotManikins { get; set; }
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresenters { get; set; }
         public virtual ICollection<CourseDayDto> CourseDays { get; set; }
+        public virtual ICollection<CourseFacultyInviteDto> FacultyInvites { get; set; }
 
         //ICourseDay implementation
         int ICourseDay.Day

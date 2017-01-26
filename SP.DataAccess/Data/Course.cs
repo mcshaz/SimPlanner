@@ -94,6 +94,7 @@ namespace SP.DataAccess
         public virtual ICollection<CourseSlotActivity> CourseSlotActivities { get; set; }
         public virtual ICollection<CourseSlotPresenter> CourseSlotPresenters { get; set; }
         public virtual ICollection<CourseDay> CourseDays { get; set; }
+        public virtual ICollection<CourseFacultyInvite> FacultyInvites { get; set; } 
         public virtual ICollection<CourseHangfireJob> HangfireJobs { get; set; }
 
         [NotMapped]

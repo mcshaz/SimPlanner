@@ -7,11 +7,13 @@ using SP.Dto.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Mail;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace SP.Web.UserEmails
@@ -23,7 +25,7 @@ namespace SP.Web.UserEmails
         /// </summary>
         /// <param name="course"></param>
         /// <returns>a lookup true = successfully emailed, false = email failed</returns>
-        public static async Task<EmailResult> SendEmail(Course course, DateTime? originalDate = null)
+        public static async Task<EmailResult<CourseParticipant>> SendCourseEmail(Course course, DateTime? originalDate = null)
         {
             var map = ((Expression<Func<CourseParticipant, CourseParticipantDto>>)new CourseParticipantMaps().MapToDto).Compile();
             var faculty = course.CourseParticipants.Where(cp => map(cp).IsEmailed == originalDate.HasValue)
@@ -43,11 +45,9 @@ namespace SP.Web.UserEmails
 
             using (var parallelEmails = new ParallelSmtpEmails())
             {
-                List<MailMessage> messages = new List<MailMessage>(course.CourseParticipants.Count);
                 var sendMail = new Action<CourseParticipant>(cp =>
                 {
                     var mail = new MailMessage();
-                    messages.Add(mail);
                     mail.To.AddParticipants(cp.Participant);
                     var confirmEmail = new CourseInvite { CourseParticipant = cp, OldStart = originalDate };
                     mail.CreateHtmlBody(confirmEmail);
@@ -87,10 +87,81 @@ namespace SP.Web.UserEmails
                     }
                 }
                 await parallelEmails.SendingComplete();
-                messages.ForEach(m=>m.Dispose());
             }
             timetables.FacultyTimetable.Dispose();
-            return new EmailResult {
+            return new EmailResult<CourseParticipant> {
+                SuccessRecipients = success.ToArray(),
+                FailRecipients = fail.ToArray()
+            };
+        }
+
+        public static async Task<EmailResult<CourseFacultyInvite>> SendMultiInvites(ICollection<Guid> courseIds, ICollection<Guid> participantIds, IPrincipal currentPrincipal, MedSimDbContext repo)
+        {
+            var existing = await repo.CourseFacultyInvites.Where(cfi => courseIds.Contains(cfi.CourseId) && participantIds.Contains(cfi.ParticipantId))
+                .ToHashSetAsync(cfi => Tuple.Create(cfi.CourseId, cfi.ParticipantId));
+            existing.UnionWith((await repo.CourseParticipants
+                .Where(cp => courseIds.Contains(cp.CourseId) && participantIds.Contains(cp.ParticipantId)).ToListAsync())
+                .Select(cfi => Tuple.Create(cfi.CourseId, cfi.ParticipantId)));
+            var allInvites = new List<CourseFacultyInvite>(courseIds.Count * participantIds.Count - existing.Count);
+            foreach (var c in courseIds)
+            {
+                foreach (var p in participantIds)
+                {
+                    if (!existing.Contains(Tuple.Create(c, p)))
+                    {
+                        allInvites.Add(new CourseFacultyInvite { CourseId = c, ParticipantId = p });
+                    }
+                }
+            }
+            var success = new ConcurrentBag<CourseFacultyInvite>();
+            var fail = new ConcurrentBag<CourseFacultyInvite>();
+
+            var allCourseIds = allInvites.ToHashSet(i => i.CourseId);
+            await repo.Courses.Include("CourseFormat.CourseType").Where(c => allCourseIds.Contains(c.Id)).ToListAsync();
+            var allInvitees = allInvites.ToLookup(i => i.ParticipantId);
+            var allInviteeIds = allInvitees.Select(i=>i.Key);
+            var userRepo = (DbSet<Participant>)repo.Users;
+            await userRepo.Include("Department.Institution.Culture").Where(p => allInviteeIds.Contains(p.Id)).ToListAsync();
+
+            var currentUser = await userRepo.Include("Department").Include("ProfessionalRole")
+                .SingleAsync(u => u.UserName == currentPrincipal.Identity.Name);
+
+            using (var parallelEmails = new ParallelSmtpEmails())
+            {
+                foreach (var g in allInvitees)
+                {
+                    var mail = new MailMessage();
+
+                    var recipient = repo.Users.Find(g.Key);
+                    mail.To.AddParticipants(recipient);
+                    var requestEmail = new MultiCourseInvite
+                    {
+                        PersonRequesting = currentUser,
+                        Courses = g.Select(c => repo.Courses.Find(c.CourseId)),
+                        Recipient = recipient
+                    };
+                    mail.CreateHtmlBody(requestEmail);
+                    parallelEmails.Send(mail, s => {
+                        if (s == null)
+                        {
+                            foreach (var ci in g)
+                            {
+                                success.Add(ci);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var ci in g)
+                            {
+                                fail.Add(ci);
+                            }
+                        }
+                    });
+                }
+                await parallelEmails.SendingComplete();
+            }
+            return new EmailResult<CourseFacultyInvite>
+            {
                 SuccessRecipients = success.ToArray(),
                 FailRecipients = fail.ToArray()
             };
@@ -225,9 +296,9 @@ namespace SP.Web.UserEmails
         //public MailMessage Message { get; set; }
     }
     */
-    public class EmailResult
+    public class EmailResult<T>
     {
-        public IEnumerable<CourseParticipant> SuccessRecipients { get; set; }
-        public IEnumerable<CourseParticipant> FailRecipients { get; set; }
+        public IEnumerable<T> SuccessRecipients { get; set; }
+        public IEnumerable<T> FailRecipients { get; set; }
     }
 }

@@ -2,15 +2,14 @@
     <section class="matter">
         <div class="container">
             <h4>Upcoming courses for which you are an organiser:</h4>
-            <form >
+            <form class="form-horizontal" ng-submit="vm.sendInvites()">
                 <div class="form-group">
                     <label for="courseType" class="control-label col-md-2">Course Type</label>
                     <div class="col-md-8">
-                        <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypes track by ct.id"
+                        <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypesForPrincipal track by ct.id"
                                 data-ng-model="vm.selectedCourseType"></select>
                     </div>
                 </div>
-
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -21,7 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="course in vm.courses track by course.id" >
+                        <tr ng-repeat="course in vm.courses track by course.id">
                             <td>{{course.startUtc | amDateFormat:'llll'}}</td>
                             <td>{{course.facultyCount}}</td>
                             <td><input type="number" step="1" ng-model="course.facultyNoRequired" min="1" /></td>
@@ -29,16 +28,25 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label">
-                        <input class="form-check-input" id="limitToRegistered" type="checkbox" ng-model="vm.limitToInstructors" ng-disabled="!(vm.selectedCourseType && vm.selectedCourseType.instructorCourseId)"/>
-                        Show Registered {{vm.selectedCourseType.abbreviation}} Instructors Only
-                    </label>
+                <fieldset id="selectedParticipants">
+                    <legend>Email these participants:</legend>
+                    <ul class="list-group">
+                        <li class="list-group-item pull-left" ng-repeat="si in vm.selectedInvitees track by si.id">{{si.fullName}}</li>
+                    </ul>
+                </fieldset>
+                <h5>All Users</h5>
+                <div class="form-group">
+                    <label for="courseType" class="control-label col-md-2">Show those who have completed</label>
+                    <div class="col-md-8">
+                        <select id="courseType" class="form-control" data-z-validate data-ng-options="ct.id as ct.description for ct in vm.allCourseTypes"
+                                data-ng-model="vm.completedCourseTypeId" ng-change="vm.completedCourseTypeChange()"></select>
+                    </div>
                 </div>
-            </form>
-            <div ui-grid="vm.gridOptions" ui-grid-pagination></div>
 
-            <button>Send Invitations</button>
+                <div ui-grid="vm.gridOptions" ui-grid-pagination></div>
+
+                <button type="submit">Send Invitations</button>
+            </form>
         </div>
     </section>
 </section>

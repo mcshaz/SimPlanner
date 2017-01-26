@@ -1,0 +1,73 @@
+﻿@* Generator : Template GeneratePrettyNames : true BaseType: SP.Web.UserEmails.EmailBase *@
+@using SP.DataAccess
+@inherits SP.Web.UserEmails.EmailBase
+@functions{
+    public Participant PersonRequesting { get; set; }
+    public Participant Recipient { get; set; }
+    public IEnumerable<Course> Courses { get; set; }
+}
+@{
+    Layout = new SP.Web.UserEmails.LayoutTemplate
+    {
+        Title = "Upcoming Courses"
+    };
+    FormatProvider = Recipient.Department.Institution.Culture.CultureInfo;
+}
+<row>
+    <columns large="12">
+        <callout class="primary">
+            <p class="lead">
+                <a href="@GetMailTo(PersonRequesting)">@PersonRequesting.FullName</a>
+                (@PersonRequesting.Department.Abbreviation @PersonRequesting.ProfessionalRole.Description)
+                is looking for faculty to help run the courses as listed below.
+            </p>
+        </callout>
+    </columns>
+</row>
+<row>
+    <columns>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Course Type
+                    </th>
+                    <th>
+                        Required Faculty
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Courses)
+                {
+                    <tr>
+                        <td>
+                            @string.Format(FormatProvider, "{0:d} {0:t}", c.StartLocal)
+                        </td>
+                        <td>
+                            @c.CourseFormat.Description
+                            (@c.CourseFormat.CourseType.Description)
+                        </td>
+                        <td>
+                            @(c.FacultyNoRequired - c.CourseParticipants.Count(cp => cp.IsFaculty && cp.IsConfirmed != false) )
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </columns>
+</row>
+<row>
+    <columns large="12">
+        <p>
+            If you are able to help by attending as faculty, please log in to <a href="@BaseUrl/#/myCourseInvites" >Sim Planner Course Invitations</a> 
+            and select which course(s) you can attend. 
+        </p>
+        <p>
+            Thank you.
+        </p>
+    </columns>
+</row>

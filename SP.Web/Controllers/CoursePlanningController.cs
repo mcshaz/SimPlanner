@@ -5,6 +5,7 @@ using SP.Dto.Utilities;
 using SP.Web.Models;
 using SP.Web.UserEmails;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net.Http;
@@ -43,7 +44,7 @@ namespace SP.Web.Controllers
                 return Ok("The course finish must be after now");
             }
 
-            var result = await CreateParticipantEmails.SendEmail(course /*, User */);
+            var result = await CreateParticipantEmails.SendCourseEmail(course /*, User */);
 
             DateTime now = DateTime.UtcNow;
             foreach (var cp in result.SuccessRecipients) {
@@ -56,6 +57,15 @@ namespace SP.Web.Controllers
                 SuccessRecipients = result.SuccessRecipients.Select(sr=>sr.ParticipantId),
                 FailRecipients = result.FailRecipients.Select(sr => sr.ParticipantId)
             });
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> MultiInvite(MultiInviteBindingModel model)
+        {
+            var result = await CreateParticipantEmails.SendMultiInvites(model.Courses, model.Invitees, User, Repo);
+            Repo.CourseFacultyInvites.AddRange(result.SuccessRecipients);
+            await Repo.SaveChangesAsync();
+            return Ok(result.SuccessRecipients);
         }
 
         [Route("Rsvp")]

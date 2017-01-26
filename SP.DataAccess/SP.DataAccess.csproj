@@ -94,6 +94,7 @@
     <Compile Include="Data\Authentication\AspNetUserClaim.cs" />
     <Compile Include="Data\Authentication\AspNetUserLogin.cs" />
     <Compile Include="Data\Authentication\AspNetUserRole.cs" />
+    <Compile Include="Data\CourseFacultyInvite.cs" />
     <Compile Include="Data\CourseSlotManikin.cs" />
     <Compile Include="Data\CourseType.cs" />
     <Compile Include="Data\Enum\SharingLevel.cs" />
@@ -156,6 +157,10 @@
     <Compile Include="Migrations\201701200436124_ICreated.cs" />
     <Compile Include="Migrations\201701200436124_ICreated.Designer.cs">
       <DependentUpon>201701200436124_ICreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701260349189_CourseFacultyInvites.cs" />
+    <Compile Include="Migrations\201701260349189_CourseFacultyInvites.Designer.cs">
+      <DependentUpon>201701260349189_CourseFacultyInvites.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
@@ -403,6 +408,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701200436124_ICreated.resx">
       <DependentUpon>201701200436124_ICreated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701260349189_CourseFacultyInvites.resx">
+      <DependentUpon>201701260349189_CourseFacultyInvites.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

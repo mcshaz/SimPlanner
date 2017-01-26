@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.OData.Query;
 using Microsoft.Data.OData.Query.SemanticAst;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SP.DataAccess;
 using SP.Web.Controllers.Helpers;
 using System;
 using System.Collections.Generic;
@@ -89,6 +90,10 @@ namespace SimPlanner.Tests
             pathsString = FindNavigationFilterOptions.GetPaths(f).ToList();
             CollectionAssert.AreEqual(pathsString, new[] { "Foos.B" });
 
+            f = new FilterQueryOption("Foos/any(x1: x1/B/F/FooId eq 1)", context);
+            pathsString = FindNavigationFilterOptions.GetPaths(f).ToList();
+            CollectionAssert.AreEqual(pathsString, new[] { "Foos.B.F" });
+
             f = new FilterQueryOption("F/Bars/any(x1: x1/BarId eq 1)", context);
             pathsString = FindNavigationFilterOptions.GetPaths(f).ToList();
             CollectionAssert.AreEqual(pathsString, new[] { "F.Bars" });
@@ -96,6 +101,9 @@ namespace SimPlanner.Tests
             f = new FilterQueryOption("F/Bars/any(x1: ((x1/BarId eq 1) and (x1/BarString eq 'abc')) and (x1/F/FooId lt 3))", context);
             pathsString = FindNavigationFilterOptions.GetPaths(f).ToList();
             CollectionAssert.AreEqual(pathsString, new[] { "F.Bars.F" });
+
+
+
         }
     }
 

@@ -9,6 +9,7 @@ namespace SP.DataAccess
     using System.Data.Entity.ModelConfiguration.Conventions;
     using System.Data.Entity.Validation;
     using System.Linq;
+    using System.Threading.Tasks;
 
     public partial class MedSimDbContext : IdentityDbContext<Participant, AspNetRole,
         Guid, AspNetUserLogin,AspNetUserRole, AspNetUserClaim>
@@ -28,6 +29,7 @@ namespace SP.DataAccess
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<CourseActivity> CourseActivities { get; set; }
         public virtual DbSet<CourseDay> CourseDays { get; set; }
+        public virtual DbSet<CourseFacultyInvite> CourseFacultyInvites { get; set; }
         public virtual DbSet<CourseFormat> CourseFormats { get; set; }
         public virtual DbSet<CourseHangfireJob> CourseHangfireJobs { get; set; }
         public virtual DbSet<CourseParticipant> CourseParticipants { get; set; } 
@@ -132,6 +134,12 @@ namespace SP.DataAccess
 
             modelBuilder.Entity<Course>()
                 .HasMany(e => e.HangfireJobs)
+                .WithRequired(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Course>()
+                .HasMany(e => e.FacultyInvites)
                 .WithRequired(e => e.Course)
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);
@@ -344,6 +352,12 @@ namespace SP.DataAccess
                 .HasForeignKey(e => e.ParticipantId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Participant>()
+                .HasMany(e => e.CourseInvites)
+                .WithRequired(e => e.Faculty)
+                .HasForeignKey(e => e.ParticipantId)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ProfessionalRole>()
                 .HasMany(e => e.Participants)
                 .WithRequired(e => e.ProfessionalRole)
@@ -425,6 +439,12 @@ namespace SP.DataAccess
             get { return _sanitizeHtml ?? (_sanitizeHtml = new SanitizeStringProperties()); }
         }
         */
+        public override Task<int> SaveChangesAsync()
+        {
+            SetTimeTracking();
+
+            return base.SaveChangesAsync();
+        }
 
         public override int SaveChanges()
         {

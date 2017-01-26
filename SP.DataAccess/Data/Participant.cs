@@ -42,5 +42,6 @@ namespace SP.DataAccess
         public virtual ICollection<CourseParticipant> CourseParticipants { get; set; }
         public virtual ICollection<CourseScenarioFacultyRole> CourseScenarioFacultyRoles { get; set; }
         public virtual ICollection<CourseSlotPresenter> CourseSlotPresentations { get; set; }
+        public virtual ICollection<CourseFacultyInvite> CourseInvites { get; set; }
     }
 }

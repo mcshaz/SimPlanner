@@ -10,16 +10,18 @@ namespace SP.Dto.Utilities
     //idea derived from http://stackoverflow.com/questions/11148586/why-does-parallel-foreach-create-endless-threads
     public class ParallelSmtpEmails : IDisposable
     {
-        BlockingCollection<MailTask> _workList;
-        List<Task> _tasks;
-        int _maxClientCount;
+        readonly BlockingCollection<MailTask> _workList;
+        readonly List<Task> _tasks;
+        readonly int _maxClientCount;
+        readonly bool _disposeMsgOnComplete;
 
-        public ParallelSmtpEmails(int maxSmtpClients = 5)
+        public ParallelSmtpEmails(int maxSmtpClients = 5, bool disposeMsgOnComplete = true)
         {
             //create worklist, filled with initial work
             _workList = new BlockingCollection<MailTask>(new ConcurrentQueue<MailTask>());
             _tasks = new List<Task>(maxSmtpClients);
-            _maxClientCount = maxSmtpClients;        
+            _maxClientCount = maxSmtpClients;
+            _disposeMsgOnComplete = disposeMsgOnComplete;
         }
 
         public void CompletedAdding()
@@ -70,6 +72,13 @@ namespace SP.Dto.Utilities
                         catch (SmtpException ex)
                         {
                             m.OnComplete?.Invoke(ex);
+                        }
+                        finally
+                        {
+                            if (_disposeMsgOnComplete)
+                            {
+                                m.Message.Dispose();
+                            }
                         }
                     }
                 } while (!_workList.IsCompleted);

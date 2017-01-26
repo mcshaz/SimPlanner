@@ -17,6 +17,7 @@ namespace SP.Dto
         public virtual DbSet<CultureDto> cultures { get; set; }
         public virtual DbSet<CourseDto> Courses { get; set; }
         public virtual DbSet<CourseActivityDto> CourseActivities { get; set; }
+        public virtual DbSet<CourseFacultyInviteDto> CourseFacultyInvites { get; set; }
         public virtual DbSet<CourseFormatDto> CourseFormats { get; set; }
         public virtual DbSet<CourseParticipantDto> CourseParticipants { get; set; }
         public virtual DbSet<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
@@ -89,6 +90,12 @@ namespace SP.Dto
 
             modelBuilder.Entity<CourseDto>()
                 .HasMany(e => e.CourseDays)
+                .WithRequired(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CourseDto>()
+                .HasMany(e => e.FacultyInvites)
                 .WithRequired(e => e.Course)
                 .HasForeignKey(e => e.CourseId)
                 .WillCascadeOnDelete(false);
@@ -307,6 +314,12 @@ namespace SP.Dto
                 .HasMany(e => e.Roles)
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ParticipantDto>()
+                .HasMany(e => e.CourseInvites)
+                .WithRequired(e => e.Faculty)
+                .HasForeignKey(e => e.ParticipantId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ProfessionalRoleDto>()

@@ -21,9 +21,10 @@
             //"		<i class=\"ui-grid-icon-cancel\" ui-grid-one-bind-aria-label=\"aria.removeFilter\">&nbsp;</i>" +
             //"	</div>";
             var defer = $q.defer();
+            var filterPredicate = null;
 
-            vm.filterChanged = null;
-            vm.filterPredicate = null;
+            vm.additionalFilters = null;
+            vm.filterChanged = filterChangedNotBound;
 
             vm.orderBy = 'fullName asc';
             vm.baseReady = defer.promise;
@@ -54,8 +55,9 @@
                 ],
                 onRegisterApi: function (gridApi) {
                     gridApi.core.on.sortChanged($scope, sortChanged);
-                    gridApi.core.on.filterChanged($scope, privateFilterChanged);
+                    gridApi.core.on.filterChanged($scope, filterChanged);
                     gridApi.pagination.on.paginationChanged($scope, updateData);
+                    vm.filterChanged = filterChanged.bind(gridApi);
                 }
             };
             vm.map = null;
@@ -93,8 +95,11 @@
                 });
             }
 
+            function filterChangedNotBound() {
+                throw new Error("filterChanged called before grid is ready");
+            }
 
-            function privateFilterChanged() {
+            function filterChanged() {
                 var cols = this.grid.columns;
                 var predicates = [];
                 var createIdPredicate = function (propNames, id) {
@@ -112,11 +117,11 @@
 
                 createIdPredicate({ p: 'defaultProfessionalRoleId', c: 'professionalRole.category' }, cols[2].filters[0].term);
 
-                if (vm.filterChanged) {
-                    predicates = predicates.concat(vm.filterChanged(cols));
+                if (vm.additionalFilters) {
+                    predicates = predicates.concat(vm.additionalFilters(cols));
                 }
 
-                vm.filterPredicate = predicates.length ? breeze.Predicate.and(predicates) : null;
+                filterPredicate = predicates.length ? breeze.Predicate.and(predicates) : null;
 
                 updateData();
             }
@@ -158,7 +163,7 @@
                     inlineCount: true,
                     skip: (vm.gridOptions.paginationCurrentPage || 1) - 1
                 };
-                if (vm.filterPredicate) { options.where = vm.filterPredicate; }
+                if (filterPredicate) { options.where = filterPredicate; }
                 if (vm.expand) { options.expand = vm.expand; }
                 if (vm.orderBy) { options.orderBy = vm.orderBy; }
                 return datacontext.participants.find(options).then(function (data) {

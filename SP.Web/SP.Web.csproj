@@ -724,6 +724,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="UserEmails\Inky\MultiCourseInvite.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MultiCourseInvite.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="UserEmails\Inky\NotifyBooking.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -751,6 +756,11 @@
     <Compile Include="Results\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UserEmails\MultiCourseInvite.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MultiCourseInvite.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="UserEmails\NotifyBooking.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -851,6 +861,14 @@
     <Content Include="UserEmails\CandidateReadingMessage.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>CandidateReadingMessage.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\MultiCourseInvite.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>MultiCourseInvite.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\MultiCourseInvite.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>MultiCourseInvite.generated.cs</LastGenOutput>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

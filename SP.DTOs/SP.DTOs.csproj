@@ -143,6 +143,7 @@
   <ItemGroup>
     <Compile Include="Dto\CourseDayDto.cs" />
     <Compile Include="Dto\CandidatePrereadingDto.cs" />
+    <Compile Include="Dto\CourseFacultyInviteDto.cs" />
     <Compile Include="Dto\CourseSlotManikinDto.cs" />
     <Compile Include="Dto\CourseTypeScenarioRoleDto.cs" />
     <Compile Include="Dto\FacultyScenarioRoleDto.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Maps\CourseActivityMaps.cs" />
     <Compile Include="Maps\CourseFormatMaps.cs" />
     <Compile Include="Maps\CourseDayMaps.cs" />
+    <Compile Include="Maps\CourseFacultyInviteMaps.cs" />
     <Compile Include="Maps\CourseSlotManikinMaps.cs" />
     <Compile Include="Maps\HotDrinkMaps.cs" />
     <Compile Include="Maps\CourseTypeScenarioRoleMaps.cs" />

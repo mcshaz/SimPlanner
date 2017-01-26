@@ -32,6 +32,7 @@ namespace SP.Dto
         public virtual ICollection<CourseScenarioFacultyRoleDto> CourseScenarioFacultyRoles { get; set; }
         public virtual ICollection<CourseSlotPresenterDto> CourseSlotPresentations { get; set; }
         public virtual ICollection<UserRoleDto> Roles { get; set; }
+        public virtual ICollection<CourseFacultyInviteDto> CourseInvites { get; set; }
     }
 
     public static class ParticipantExtensions

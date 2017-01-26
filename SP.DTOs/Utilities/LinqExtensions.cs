@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SP.Dto.Utilities
 {
@@ -17,6 +19,12 @@ namespace SP.Dto.Utilities
             {
                 returnVar.Add(map(s));
             }
+            return returnVar;
+        }
+        public static async Task<HashSet<TKey>> ToHashSetAsync<TSource, TKey>(this IQueryable<TSource> source, Func<TSource, TKey> map)
+        {
+            HashSet<TKey> returnVar = new HashSet<TKey>();
+            await source.ForEachAsync(s => returnVar.Add(map(s)));
             return returnVar;
         }
         public static HashSet<TKey> ToHashSet<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> map, out List<TKey> repeats)

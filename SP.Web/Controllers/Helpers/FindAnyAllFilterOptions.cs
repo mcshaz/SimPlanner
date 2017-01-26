@@ -12,7 +12,8 @@ namespace SP.Web.Controllers.Helpers
     {
         public static IEnumerable<string> GetPaths(FilterQueryOption filterOption, string separator = ".")
         {
-            var v = new MyVisitor();
+            Console.WriteLine("------");
+            var v = new MyVisitor(separator);
             IEnumerable<string> returnVar;
             var expr = filterOption.FilterClause.Expression;
             var t = expr.GetType();
@@ -41,15 +42,24 @@ namespace SP.Web.Controllers.Helpers
         */
         private class MyVisitor : QueryNodeVisitor<IEnumerable<string>>
         {
-            public MyVisitor() : base()
+            public MyVisitor(string seperator=".") : base()
             {
                 BaseString = string.Empty;
+                _seperator = seperator;
             }
+            private string _seperator;
             private string BaseString { get; set; }
             private readonly static string[] _emptyString = new string[0];
-            private string Concat(params string[] strings)
+
+            private string Combine(QueryNode source, string name = null)
             {
-                return string.Join(".", strings.Where(s => !string.IsNullOrEmpty(s)));
+                var sourceString = source.Accept(this).FirstOrDefault();
+                if (!string.IsNullOrEmpty(sourceString) && BaseString.Length > 0 && sourceString.StartsWith(BaseString))
+                {
+                    sourceString = sourceString.Substring(BaseString.Length + 1);
+                }
+                var stringList = (new[] { BaseString, sourceString, name}).Where(s => !string.IsNullOrEmpty(s));
+                return string.Join(_seperator, stringList);
             }
             public override IEnumerable<string> Visit(CollectionPropertyAccessNode nodeIn)
             {
@@ -57,15 +67,17 @@ namespace SP.Web.Controllers.Helpers
             }
             public override IEnumerable<string> Visit(SingleNavigationNode nodeIn)
             {
+                Console.WriteLine("SNN");
                 return new[] {
-                    Concat(BaseString,nodeIn.Source.Accept(this).FirstOrDefault(),nodeIn.NavigationProperty.Name)
+                    Combine(nodeIn.Source,nodeIn.NavigationProperty.Name)
                 };
             }
             public override IEnumerable<string> Visit(CollectionNavigationNode nodeIn)
             {
+                Console.WriteLine("CNN");
                 return new[] 
                 {
-                    Concat(BaseString, nodeIn.Source.Accept(this).FirstOrDefault(),nodeIn.NavigationProperty.Name)
+                    Combine(nodeIn.Source,nodeIn.NavigationProperty.Name)
                 };
             }
             public override IEnumerable<string> Visit(SingleValuePropertyAccessNode nodeIn)
@@ -80,7 +92,7 @@ namespace SP.Web.Controllers.Helpers
             private IEnumerable<string> VisitLambda(LambdaNode nodeIn)
             {
                 var oldBase = BaseString;
-                BaseString += nodeIn.Source.Accept(this).FirstOrDefault();
+                BaseString = Combine(nodeIn.Source);
                 var returnVar = nodeIn.Body.Accept(this);
                 if (!returnVar.Any() && BaseString != oldBase)
                 {

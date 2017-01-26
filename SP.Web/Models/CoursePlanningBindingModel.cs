@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SP.Web.Models
 {
@@ -15,5 +16,11 @@ namespace SP.Web.Models
     public class EmailAllBindingModel
     {
         public Guid CourseId { get; set; }
+    }
+
+    public class MultiInviteBindingModel
+    {
+        public ICollection<Guid> Invitees { get; set; }
+        public ICollection<Guid> Courses { get; set; }
     }
 }

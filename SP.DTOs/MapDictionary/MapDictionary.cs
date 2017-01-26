@@ -24,6 +24,7 @@ namespace SP.Dto.Maps
                 new CourseMaps(),
                 new CourseActivityMaps(),
                 new CourseDayMaps(),
+                new CourseFacultyInviteMaps(),
                 new CourseFormatMaps(),
                 new CourseParticipantMaps(),
                 new CourseScenarioFacultyRoleMaps(),
