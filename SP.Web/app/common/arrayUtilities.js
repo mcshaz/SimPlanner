@@ -8,7 +8,7 @@
             toLookup: toLookup
         };
     }
-
+    //use set now!
     function toLookup(array, lookupFunction, outputFunction) {
         var returnVar = {};
         if (!outputFunction) {

@@ -27,7 +27,7 @@ namespace SP.Dto
         {
             set
             {
-                _validationHelper.AfterBookingChange = value;
+                _validationHelper.AfterBookingChange += value;
             }
         }
 
@@ -35,7 +35,7 @@ namespace SP.Dto
         {
             set
             {
-                _validationHelper.AfterCourseDateChange = value;
+                _validationHelper.AfterCourseDateChange += value;
             }
         }
 
@@ -43,7 +43,7 @@ namespace SP.Dto
         {
             set
             {
-                _validationHelper.AfterNewUnapprovedUser = value;
+                _validationHelper.AfterNewUnapprovedUser += value;
             }
         }
 
@@ -51,7 +51,15 @@ namespace SP.Dto
         {
             set
             {
-                _validationHelper.AfterUserApproved = value;
+                _validationHelper.AfterUserApproved += value;
+            }
+        }
+
+        public Action<IEnumerable<CourseParticipant>> AfterNewCourseParticipant
+        {
+            set
+            {
+                _validationHelper.AfterNewCourseParticipant += value;
             }
         }
 

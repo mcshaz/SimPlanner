@@ -59,20 +59,16 @@ WriteLiteral(">\r\n        <callout");
 
 WriteLiteral(" class=\"primary\"");
 
-WriteLiteral(">\r\n            <p");
+WriteLiteral(">\r\n            <p>\r\n                <a");
 
-WriteLiteral(" class=\"lead\"");
-
-WriteLiteral(">\r\n                <a");
-
-WriteAttribute("href", Tuple.Create(" href=\"", 628), Tuple.Create("\"", 663)
+WriteAttribute("href", Tuple.Create(" href=\"", 615), Tuple.Create("\"", 650)
             
             #line 20 "..\..\UserEmails\Inky\MultiCourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 635), Tuple.Create<System.Object, System.Int32>(GetMailTo(PersonRequesting)
+, Tuple.Create(Tuple.Create("", 622), Tuple.Create<System.Object, System.Int32>(GetMailTo(PersonRequesting)
             
             #line default
             #line hidden
-, 635), false)
+, 622), false)
 );
 
 WriteLiteral(">");
@@ -84,11 +80,11 @@ WriteLiteral(">");
             
             #line default
             #line hidden
-WriteLiteral("</a>\r\n                (");
+WriteLiteral("</a>\r\n                <small>(");
 
             
             #line 21 "..\..\UserEmails\Inky\MultiCourseInvite.cshtml"
-            Write(PersonRequesting.Department.Abbreviation);
+                   Write(PersonRequesting.Department.Abbreviation);
 
             
             #line default
@@ -97,12 +93,12 @@ WriteLiteral(" ");
 
             
             #line 21 "..\..\UserEmails\Inky\MultiCourseInvite.cshtml"
-                                                      Write(PersonRequesting.ProfessionalRole.Description);
+                                                             Write(PersonRequesting.ProfessionalRole.Description);
 
             
             #line default
             #line hidden
-WriteLiteral(@")
+WriteLiteral(@")</small>
                 is looking for faculty to help run the courses as listed below.
             </p>
         </callout>
@@ -117,10 +113,10 @@ WriteLiteral(@")
                         Date
                     </th>
                     <th>
-                        Course Type
+                        Course
                     </th>
                     <th>
-                        Required Faculty
+                        Reqd.
                     </th>
                 </tr>
             </thead>
@@ -178,7 +174,7 @@ WriteLiteral("                            ");
 
             
             #line 55 "..\..\UserEmails\Inky\MultiCourseInvite.cshtml"
-                        Write(c.FacultyNoRequired - c.CourseParticipants.Count(cp => cp.IsFaculty && cp.IsConfirmed != false) );
+                        Write(c.FacultyNoRequired - c.CourseParticipants.Count(cp => cp.IsFaculty && cp.IsConfirmed != false));
 
             
             #line default
@@ -197,23 +193,23 @@ WriteLiteral("            </tbody>\r\n        </table>\r\n    </columns>\r\n</ro
 
 WriteLiteral(" large=\"12\"");
 
-WriteLiteral(">\r\n        <p>\r\n            If you are able to help by attending as faculty, plea" +
-"se log in to <a");
+WriteLiteral(">\r\n        <p>\r\n            If you are able to help by attending as faculty <smal" +
+"l>(or require further details)</small>, please log in to <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2218), Tuple.Create("\"", 2251)
+WriteAttribute("href", Tuple.Create(" href=\"", 2247), Tuple.Create("\"", 2280)
             
             #line 66 "..\..\UserEmails\Inky\MultiCourseInvite.cshtml"
-       , Tuple.Create(Tuple.Create("", 2225), Tuple.Create<System.Object, System.Int32>(BaseUrl
+                                                   , Tuple.Create(Tuple.Create("", 2254), Tuple.Create<System.Object, System.Int32>(BaseUrl
             
             #line default
             #line hidden
-, 2225), false)
-, Tuple.Create(Tuple.Create("", 2233), Tuple.Create("/#/myCourseInvites", 2233), true)
+, 2254), false)
+, Tuple.Create(Tuple.Create("", 2262), Tuple.Create("/#/myCourseInvites", 2262), true)
 );
 
 WriteLiteral(" >Sim Planner Course Invitations</a> \r\n            and select which course(s) you" +
-" can attend. \r\n        </p>\r\n        <p>\r\n            Thank you.\r\n        </p>\r\n" +
-"    </columns>\r\n</row>");
+" are able to help with. \r\n        </p>\r\n    </columns>\r\n</row>\r\n<row>\r\n    <colu" +
+"mns>\r\n        <p>\r\n            Thank you.\r\n        </p>\r\n    </columns>\r\n</row>");
 
         }
     }

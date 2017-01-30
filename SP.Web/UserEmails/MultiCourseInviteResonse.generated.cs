@@ -16,20 +16,19 @@ namespace SP.Web.UserEmails
     using System.Linq;
     using System.Text;
     
-    #line 2 "..\..\UserEmails\MultiCourseInvite.cshtml"
+    #line 2 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
     using SP.DataAccess;
     
     #line default
     #line hidden
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    public partial class MultiCourseInvite : SP.Web.UserEmails.EmailBase
+    public partial class MultiCourseInviteResonse : SP.Web.UserEmails.EmailBase
     {
 #line hidden
-        #line 4 "..\..\UserEmails\MultiCourseInvite.cshtml"
+        #line 4 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
            
-    public Participant PersonRequesting { get; set; }
-    public Participant Recipient { get; set; }
+    public Participant PersonResponding { get; set; }
     public IEnumerable<Course> Courses { get; set; }
 
         #line default
@@ -40,13 +39,13 @@ namespace SP.Web.UserEmails
 WriteLiteral("\r\n");
 
             
-            #line 9 "..\..\UserEmails\MultiCourseInvite.cshtml"
+            #line 8 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
   
     Layout = new SP.Web.UserEmails.LayoutTemplate
     {
-        Title = "Upcoming Courses"
+        Title = "Invitation Response"
     };
-    FormatProvider = Recipient.Department.Institution.Culture.CultureInfo;
+    FormatProvider = Courses.First().Department.Institution.Culture.CultureInfo;
 
             
             #line default
@@ -110,14 +109,14 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-fami
 
 WriteLiteral(">\r\n                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2206), Tuple.Create("\"", 2241)
+WriteAttribute("href", Tuple.Create(" href=\"", 2167), Tuple.Create("\"", 2202)
             
-            #line 20 "..\..\UserEmails\MultiCourseInvite.cshtml"
-, Tuple.Create(Tuple.Create("", 2213), Tuple.Create<System.Object, System.Int32>(GetMailTo(PersonRequesting)
+            #line 19 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
+, Tuple.Create(Tuple.Create("", 2174), Tuple.Create<System.Object, System.Int32>(GetMailTo(PersonResponding)
             
             #line default
             #line hidden
-, 2213), false)
+, 2174), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -127,8 +126,8 @@ WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial,
 WriteLiteral(">");
 
             
-            #line 20 "..\..\UserEmails\MultiCourseInvite.cshtml"
-                                                                                                                                                                                                                                       Write(PersonRequesting.FullName);
+            #line 19 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
+                                                                                                                                                                                                                                       Write(PersonResponding.FullName);
 
             
             #line default
@@ -140,8 +139,8 @@ WriteLiteral(" style=\"color: #cacaca; font-size: 80%;\"");
 WriteLiteral(">(");
 
             
-            #line 21 "..\..\UserEmails\MultiCourseInvite.cshtml"
-                                                           Write(PersonRequesting.Department.Abbreviation);
+            #line 20 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
+                                                           Write(PersonResponding.Department.Abbreviation);
 
             
             #line default
@@ -149,14 +148,14 @@ WriteLiteral(">(");
 WriteLiteral(" ");
 
             
-            #line 21 "..\..\UserEmails\MultiCourseInvite.cshtml"
-                                                                                                     Write(PersonRequesting.ProfessionalRole.Description);
+            #line 20 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
+                                                                                                     Write(PersonResponding.ProfessionalRole.Description);
 
             
             #line default
             #line hidden
-WriteLiteral(")</small>\r\n                is looking for faculty to help run the courses as list" +
-"ed below.\r\n            </p>\r\n        </th><th");
+WriteLiteral(")</small>\r\n                has responded to your invitation.\r\n            </p>\r\n " +
+"       </th><th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -164,7 +163,14 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table>\r\n    </th>\n<th");
+WriteLiteral("></th></tr></table>\r\n        <p");
+
+WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
+"rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
+": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
+
+WriteLiteral(">\r\n            Listed below are your upcoming courses\r\n        </p>\r\n    </th>\n<t" +
+"h");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -233,17 +239,35 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
 "-align: left;\"");
 
-WriteLiteral(">\r\n                        Reqd.\r\n                    </th>\r\n                </tr" +
-">\r\n            </thead>\r\n            <tbody>\r\n");
+WriteLiteral(">\r\n                        Reqd.\r\n                    </th>\r\n                    " +
+"<th");
+
+WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
+"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
+"-align: left;\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("                        ");
 
             
-            #line 45 "..\..\UserEmails\MultiCourseInvite.cshtml"
+            #line 45 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
+                   Write(PersonResponding.FullName.Substring(0,PersonResponding.FullName.IndexOf(' ')));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    </th>\r\n                </tr>\r\n            </thead>\r\n       " +
+"     <tbody>\r\n");
+
+            
+            #line 50 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 45 "..\..\UserEmails\MultiCourseInvite.cshtml"
+            #line 50 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
                  foreach (var c in Courses)
                 {
 
@@ -263,7 +287,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 49 "..\..\UserEmails\MultiCourseInvite.cshtml"
+            #line 54 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
                        Write(string.Format(FormatProvider, "{0:d} {0:t}", c.StartLocal));
 
             
@@ -278,7 +302,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 52 "..\..\UserEmails\MultiCourseInvite.cshtml"
+            #line 57 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
                        Write(c.CourseFormat.Description);
 
             
@@ -287,7 +311,7 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n                            (");
 
             
-            #line 53 "..\..\UserEmails\MultiCourseInvite.cshtml"
+            #line 58 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
                         Write(c.CourseFormat.CourseType.Description);
 
             
@@ -302,136 +326,64 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 56 "..\..\UserEmails\MultiCourseInvite.cshtml"
-                        Write(c.FacultyNoRequired - c.CourseParticipants.Count(cp => cp.IsFaculty && cp.IsConfirmed != false));
+            #line 61 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
+                        Write(c.CourseParticipants.Count(cp => cp.IsFaculty && cp.IsConfirmed != false));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                        </td>\r\n                    </tr>\r\n");
+WriteLiteral("/");
 
             
-            #line 59 "..\..\UserEmails\MultiCourseInvite.cshtml"
+            #line 61 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
+                                                                                                     Write(c.FacultyNoRequired);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                        </td>\r\n                        <td");
+
+WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;""");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 64 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 64 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
+                             if (c.CourseParticipants.Any(cp=>cp.ParticipantId == PersonResponding.Id))
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <span");
+
+WriteLiteral(" class=\"label success round\"");
+
+WriteLiteral(">&#x2713;</span>\r\n");
+
+            
+            #line 67 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </td>\r\n                    </tr>\r\n");
+
+            
+            #line 70 "..\..\UserEmails\MultiCourseInviteResonse.cshtml"
                 }
 
             
             #line default
             #line hidden
 WriteLiteral("            </tbody>\r\n        </table>\r\n    </th>\n<th");
-
-WriteLiteral(" class=\"expander\"");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
-"rtant; text-align: left; visibility: hidden; width: 0;\"");
-
-WriteLiteral("></th></tr></table></th>\r\n</tr></tbody></table>\r\n<table");
-
-WriteLiteral(" class=\"row\"");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; position: relat" +
-"ive; text-align: left; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral(">\r\n    <th");
-
-WriteLiteral(" class=\"small-12 large-12 columns first last\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 16px; text-align: left; width: 564px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n        <p");
-
-WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
-"rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
-": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
-
-WriteLiteral(">\r\n            If you are able to help by attending as faculty <small");
-
-WriteLiteral(" style=\"color: #cacaca; font-size: 80%;\"");
-
-WriteLiteral(">(or require further details)</small>, please log in to <a");
-
-WriteAttribute("href", Tuple.Create(" href=\"", 8585), Tuple.Create("\"", 8618)
-            
-            #line 68 "..\..\UserEmails\MultiCourseInvite.cshtml"
-                                                                                           , Tuple.Create(Tuple.Create("", 8592), Tuple.Create<System.Object, System.Int32>(BaseUrl
-            
-            #line default
-            #line hidden
-, 8592), false)
-, Tuple.Create(Tuple.Create("", 8600), Tuple.Create("/#/myCourseInvites", 8600), true)
-);
-
-WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; tex" +
-"t-decoration: none;\"");
-
-WriteLiteral(">Sim Planner Course Invitations</a> \r\n            and select which course(s) you " +
-"are able to help with. \r\n        </p>\r\n    </th>\n<th");
-
-WriteLiteral(" class=\"expander\"");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
-"rtant; text-align: left; visibility: hidden; width: 0;\"");
-
-WriteLiteral("></th></tr></table></th>\r\n</tr></tbody></table>\r\n<table");
-
-WriteLiteral(" class=\"row\"");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; position: relat" +
-"ive; text-align: left; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tbody><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral(">\r\n    <th");
-
-WriteLiteral(" class=\"small-12 large-12 columns first last\"");
-
-WriteLiteral(@" style=""Margin: 0 auto; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0 auto; padding: 0; padding-bottom: 16px; padding-left: 16px; padding-right: 16px; text-align: left; width: 564px;""");
-
-WriteLiteral("><table");
-
-WriteLiteral(" style=\"border-collapse: collapse; border-spacing: 0; padding: 0; text-align: lef" +
-"t; vertical-align: top; width: 100%;\"");
-
-WriteLiteral("><tr");
-
-WriteLiteral(" style=\"padding: 0; text-align: left; vertical-align: top;\"");
-
-WriteLiteral("><th");
-
-WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; fon" +
-"t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0; text" +
-"-align: left;\"");
-
-WriteLiteral(">\r\n        <p");
-
-WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-family: Helvetica, A" +
-"rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
-": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
-
-WriteLiteral(">\r\n            Thank you.\r\n        </p>\r\n    </th>\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

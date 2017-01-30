@@ -111,7 +111,7 @@ gulp.task('build', function (callback) {
 
 gulp.task('parseInky', function () {
     gulp.src('UserEmails/Inky/**/*.cshtml')
-        .pipe(inky())
+        .pipe(inky()) //NOT WORKING { cheerio: { lowerCaseTags: false } }
         .pipe(inliner('wwwroot/lib/foundation-emails/dist/foundation-emails.css'))
         .pipe(gulp.dest('UserEmails'));
 });

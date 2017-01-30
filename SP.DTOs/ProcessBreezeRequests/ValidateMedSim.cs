@@ -43,6 +43,7 @@ namespace SP.Dto.ProcessBreezeRequests
         public Action<IEnumerable<BookingChangeDetails>> AfterBookingChange { get; set; }
         public Action<UserRequestingApproval> AfterNewUnapprovedUser { get; set; }
         public Action<Participant> AfterUserApproved { get; set; }
+        public Action<IEnumerable<CourseParticipant>> AfterNewCourseParticipant { get; set; }
         /// <summary>
         /// courseId, originalStart - null if newly created course
         /// </summary>
@@ -174,8 +175,10 @@ namespace SP.Dto.ProcessBreezeRequests
                 e => HasCourseTypePermission(e.CourseTypeId)))
                 .Concat(PermissionErrors<CourseFormatDto>(saveMap,
                 e => HasCourseTypePermission(e.CourseTypeId)))
-                .Concat(PermissionErrors<CourseParticipantDto>(saveMap,
+                .Concat(PermissionErrors<CourseFacultyInviteDto>(saveMap,
                 e => HasCoursePermission(e.CourseId)))
+                .Concat(PermissionErrors<CourseParticipantDto>(saveMap,
+                e => HasCoursePermission(e.CourseId) || (e.ParticipantId == CurrentUser.Principal.Id && Context.CourseFacultyInvites.Any(cfi=>cfi.CourseId == e.CourseId && cfi.ParticipantId == e.ParticipantId))))
                 .Concat(PermissionErrors<CourseScenarioFacultyRoleDto>(saveMap,
                 e => HasCoursePermission(e.CourseId)))
                 .Concat(PermissionErrors<CourseSlotDto>(saveMap,
@@ -401,6 +404,17 @@ namespace SP.Dto.ProcessBreezeRequests
                     {
                         AfterCourseDateChange(e.Entity.Id, null);
                     }
+                }
+            }
+
+            if (AfterNewCourseParticipant != null && saveMap.TryGetValue(typeof(CourseParticipant), out ei))
+            {
+                var cps = (from cp in TypedEntityInfo<CourseParticipant>.GetTyped(ei)
+                           where cp.Info.EntityState == b.EntityState.Added
+                           select cp.Entity).ToList();
+                if (cps.Count > 0)
+                {
+                    AfterNewCourseParticipant.Invoke(cps);
                 }
             }
 

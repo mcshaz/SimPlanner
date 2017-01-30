@@ -12,6 +12,8 @@ using Microsoft.AspNet.Identity.Owin;
 using SP.Web.UserEmails;
 using System.Net;
 using System.Threading.Tasks;
+using System;
+using Microsoft.AspNet.Identity;
 
 namespace SP.Web.Controllers
 {
@@ -30,6 +32,7 @@ namespace SP.Web.Controllers
                     AfterBookingChange = MailExtensions.SendBookingNotifications,
                     AfterNewUnapprovedUser = MailExtensions.SendNewUserRequest,
                     AfterUserApproved = MailExtensions.SendNewUserApproved,
+                    AfterNewCourseParticipant = cps => MailExtensions.SendNewCourseParticipantNotifications(cps, _repository.Context, User),
                     AfterCourseDateChange = (courseId, oldDate) => {
                         var course = MailExtensions.GetCourseIncludes(_repository.Context)
                             .First(c=>c.Id == courseId);

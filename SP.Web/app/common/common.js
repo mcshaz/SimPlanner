@@ -50,7 +50,9 @@
             sortOnChildPropertyName: sortOnChildPropertyName,
             textContains: textContains,
             toSeparateWords: toSeparateWords,
-            alphaNumericEqual: alphaNumericEqual
+            alphaNumericEqual: alphaNumericEqual,
+            removeFromArray: removeFromArray,
+            windowOrigin: windowOrigin
         };
 
         return service;
@@ -193,6 +195,23 @@
                 }
             }
             return returnVar;
+        }
+
+        function removeFromArray(arr /*,elements to remove*/) {
+            var indx;
+            var i = 1;
+            for(; i<arguments.length; i++){
+                indx = arr.indexOf(arguments[i]);
+                if (indx > -1) {
+                    arr.splice(indx, 1);
+                }
+            }
+            return arr;
+        }
+
+        function windowOrigin() {
+            var location = window.location;
+            return location.origin || location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
         }
     }
 })();

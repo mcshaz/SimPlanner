@@ -2,26 +2,28 @@
 @using SP.DataAccess
 @inherits SP.Web.UserEmails.EmailBase
 @functions{
-    public Participant PersonRequesting { get; set; }
-    public Participant Recipient { get; set; }
+    public Participant PersonResponding { get; set; }
     public IEnumerable<Course> Courses { get; set; }
 }
 @{
     Layout = new SP.Web.UserEmails.LayoutTemplate
     {
-        Title = "Upcoming Courses"
+        Title = "Invitation Response"
     };
-    FormatProvider = Recipient.Department.Institution.Culture.CultureInfo;
+    FormatProvider = Courses.First().Department.Institution.Culture.CultureInfo;
 }
 <row>
     <columns large="12">
         <callout class="primary">
             <p>
-                <a href="@GetMailTo(PersonRequesting)">@PersonRequesting.FullName</a>
-                <small>(@PersonRequesting.Department.Abbreviation @PersonRequesting.ProfessionalRole.Description)</small>
-                is looking for faculty to help run the courses as listed below.
+                <a href="@GetMailTo(PersonResponding)">@PersonResponding.FullName</a>
+                <small>(@PersonResponding.Department.Abbreviation @PersonResponding.ProfessionalRole.Description)</small>
+                has responded to your invitation.
             </p>
         </callout>
+        <p>
+            Listed below are your upcoming courses
+        </p>
     </columns>
 </row>
 <row>
@@ -38,6 +40,9 @@
                     <th>
                         Reqd.
                     </th>
+                    <th>
+                        @PersonResponding.FullName.Substring(0,PersonResponding.FullName.IndexOf(' '))
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -52,26 +57,17 @@
                             (@c.CourseFormat.CourseType.Description)
                         </td>
                         <td>
-                            @(c.FacultyNoRequired - c.CourseParticipants.Count(cp => cp.IsFaculty && cp.IsConfirmed != false))
+                            @(c.CourseParticipants.Count(cp => cp.IsFaculty && cp.IsConfirmed != false))/@(c.FacultyNoRequired)
+                        </td>
+                        <td>
+                            @if (c.CourseParticipants.Any(cp=>cp.ParticipantId == PersonResponding.Id))
+                            {
+                                <span class="label success round">&#x2713;</span>
+                            }
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-    </columns>
-</row>
-<row>
-    <columns large="12">
-        <p>
-            If you are able to help by attending as faculty <small>(or require further details)</small>, please log in to <a href="@BaseUrl/#/myCourseInvites" >Sim Planner Course Invitations</a> 
-            and select which course(s) you are able to help with. 
-        </p>
-    </columns>
-</row>
-<row>
-    <columns>
-        <p>
-            Thank you.
-        </p>
     </columns>
 </row>

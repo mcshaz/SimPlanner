@@ -63,7 +63,7 @@
                     Token: response.data,
                     UserId: tokenStorageService.getUserId()
                 };
-                var location = window.location.origin + '/api/utilities/' + actionName 
+                var location = common.windowOrigin() + '/api/utilities/' + actionName 
                     + '?' + $httpParamSerializerJQLike(params);
                 return $sce.trustAsResourceUrl(location);
             }, log.error);

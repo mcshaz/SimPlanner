@@ -43,11 +43,13 @@ namespace SP.Web.UserEmails
             var success = new ConcurrentBag<CourseParticipant>();
             var fail = new ConcurrentBag<CourseParticipant>();
 
-            using (var parallelEmails = new ParallelSmtpEmails())
+            using (var parallelEmails = new ParallelSmtpEmails(disposeMsgOnComplete:false))
             {
+                List<MailMessage> messages = new List<MailMessage>(course.CourseParticipants.Count);
                 var sendMail = new Action<CourseParticipant>(cp =>
                 {
                     var mail = new MailMessage();
+                    messages.Add(mail);
                     mail.To.AddParticipants(cp.Participant);
                     var confirmEmail = new CourseInvite { CourseParticipant = cp, OldStart = originalDate };
                     mail.CreateHtmlBody(confirmEmail);
@@ -87,6 +89,7 @@ namespace SP.Web.UserEmails
                     }
                 }
                 await parallelEmails.SendingComplete();
+                messages.ForEach(m=>m.Dispose());
             }
             timetables.FacultyTimetable.Dispose();
             return new EmailResult<CourseParticipant> {
@@ -117,11 +120,11 @@ namespace SP.Web.UserEmails
             var fail = new ConcurrentBag<CourseFacultyInvite>();
 
             var allCourseIds = allInvites.ToHashSet(i => i.CourseId);
-            await repo.Courses.Include("CourseFormat.CourseType").Where(c => allCourseIds.Contains(c.Id)).ToListAsync();
+            var courses = await repo.Courses.Include("CourseFormat.CourseType").Where(c => allCourseIds.Contains(c.Id)).ToDictionaryAsync(u=>u.Id);
             var allInvitees = allInvites.ToLookup(i => i.ParticipantId);
             var allInviteeIds = allInvitees.Select(i=>i.Key);
             var userRepo = (DbSet<Participant>)repo.Users;
-            await userRepo.Include("Department.Institution.Culture").Where(p => allInviteeIds.Contains(p.Id)).ToListAsync();
+            var users = await userRepo.Include("Department.Institution.Culture").Where(p => allInviteeIds.Contains(p.Id)).ToDictionaryAsync(u=>u.Id);
 
             var currentUser = await userRepo.Include("Department").Include("ProfessionalRole")
                 .SingleAsync(u => u.UserName == currentPrincipal.Identity.Name);
@@ -132,12 +135,12 @@ namespace SP.Web.UserEmails
                 {
                     var mail = new MailMessage();
 
-                    var recipient = repo.Users.Find(g.Key);
+                    var recipient = users[g.Key];
                     mail.To.AddParticipants(recipient);
                     var requestEmail = new MultiCourseInvite
                     {
                         PersonRequesting = currentUser,
-                        Courses = g.Select(c => repo.Courses.Find(c.CourseId)),
+                        Courses = g.Select(c => courses[c.CourseId]),
                         Recipient = recipient
                     };
                     mail.CreateHtmlBody(requestEmail);

@@ -5,16 +5,20 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['common', '$scope', 'users.abstract', 'datacontext', 'tokenStorageService', 'breeze', '$http'];
+    controller.$inject = ['common', '$scope', 'controller.abstract', 'users.abstract', 'datacontext', 'tokenStorageService', 'breeze', '$http'];
 
-    function controller(common, $scope, abstractUserDetails, datacontext, tokenStorageService, breeze, $http) {
+    function controller(common, $scope, abstractController, abstractUserDetails, datacontext, tokenStorageService, breeze, $http) {
         /* jshint validthis:true */
         var vm = this;
         var facultyLimitPred = [];
-        var log = common.logger.getLogFn(controllerId);
+        abstractController.constructor.call(this, {
+            controllerId: controllerId,
+            watchedEntityNames: ['courses'], //watching if faculty required changed & removing invite property
+            $scope: $scope
+        });
 
         abstractUserDetails.constructor.call(this, $scope);
-        vm.title = 'Faculty Invites';
+        vm.title = 'Send Faculty Invitations';
         vm.addPerson = addPerson;
         vm.allCourseTypes = [];
         vm.completedCourseTypeId = null;
@@ -22,7 +26,7 @@
         vm.courses = [];
         vm.courseTypesForPrincipal = [];
         vm.additionalFilters = filterChanged;
-
+        vm.removePerson = removePerson;
         vm.selectedCourseType = {};
         vm.selectedInvitees = [];
         vm.sendInvites = sendInvites;
@@ -98,7 +102,7 @@
                 vm.selectedInvitees.length = 0;
                 
                 vm.courses.forEach(deleteInvite);
-            }, log.error);
+            }, vm.log.error);
             function filterMap(arr) {
                 var returnVar = [];
                 arr.forEach(function (el) {
@@ -108,9 +112,13 @@
                 });
                 return returnVar;
             }
-            function deleteInvite(i) {
-                delete i.invite;
-            }
         }
+
+        function removePerson(person) {
+            common.removeFromArray(vm.selectedInvitees, person);
+        }
+    }
+    function deleteInvite(i) {
+        delete i.invite;
     }
 })();

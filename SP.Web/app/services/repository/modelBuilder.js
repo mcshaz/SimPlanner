@@ -121,7 +121,7 @@
                     returnVar += "?cc=" + self.alternateEmail;
                 }
                 return returnVar;
-            }
+            };
             metadataStore.registerEntityTypeCtor('ParticipantDto', ParticipantCtor);
         }
 
@@ -137,7 +137,7 @@
                         return "/Content/images/institutions/" + this.id + this.logoImageFileName.substring(this.logoImageFileName.lastIndexOf('.'));
                     }
                 });
-            }
+            };
 
             metadataStore.registerEntityTypeCtor('InstitutionDto', InstCtor, instInitializer);
         }

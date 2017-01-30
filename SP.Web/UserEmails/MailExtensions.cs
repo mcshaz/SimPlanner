@@ -10,6 +10,9 @@
     using System.Linq;
     using System.Data.Entity.Infrastructure;
     using Dto.Utilities;
+    using Dto;
+    using System;
+    using System.Security.Principal;
 
     public static class MailExtensions
     {
@@ -48,8 +51,38 @@
                     using (var mail = new MailMessage())
                     {
                         mail.CreateHtmlBody(n);
+                        mail.To.AddParticipants(d.Notify);
                         client.Send(mail);
                     }
+                }
+            }
+        }
+
+        public static void SendNewCourseParticipantNotifications(IEnumerable<CourseParticipant> courseParticipants, MedSimDbContext repo, IPrincipal principal)
+        {
+            //logic:
+            //get all courses hapening after now where the currentUser is not an organiser, and group by each organiser
+            var currentUser = repo.Users.Local.FirstOrDefault(u => u.UserName == principal.Identity.Name) ?? repo.Users.First(u => u.UserName == principal.Identity.Name);
+            var courseIds = courseParticipants.ToHashSet(cp => cp.CourseId);
+            var organisers = repo.CourseParticipants.Include("Course.CourseFormat.CourseType")
+                            .Include("Participant")
+                            .Include("Course.Department.Institution.Culture")
+                            .Where(cp => courseIds.Contains(cp.CourseId) && cp.IsOrganiser && !cp.Course.CourseParticipants.Any(ap=>ap.IsOrganiser && ap.ParticipantId == currentUser.Id))
+                            .ToLookup(cp => cp.Participant);
+            
+            using (var client = new ParallelSmtpEmails())
+            {
+                foreach (var o in organisers)
+                {
+                    var n = new MultiCourseInviteResonse
+                    {
+                        Courses = o.Select(cp=>cp.Course),
+                        PersonResponding = currentUser
+                    };
+                    var mail = new MailMessage();
+                    mail.To.AddParticipants(o.Key);
+                    mail.CreateHtmlBody(n);
+                    client.Send(mail);
                 }
             }
         }
@@ -64,16 +97,7 @@
             {
                 using (var mail = new MailMessage())
                 {
-                    foreach (var ad in newUser.Administrators.Select(a=>new MailAddress(a.Email, a.FullName)))
-                    {
-                        mail.To.Add(ad);
-                    }
-                    foreach (var ad in from a in newUser.Administrators
-                                       where !string.IsNullOrEmpty(a.AlternateEmail)
-                                       select new MailAddress(a.AlternateEmail, a.FullName))
-                    {
-                        mail.CC.Add(ad);
-                    }
+                    mail.To.AddParticipants(newUser.Administrators);
                     mail.CreateHtmlBody(n);
                     client.Send(mail);
                 }
@@ -90,11 +114,7 @@
             {
                 using (var mail = new MailMessage())
                 {
-                    mail.To.Add(new MailAddress(newUser.Email, newUser.FullName));
-                    if (!string.IsNullOrEmpty(newUser.AlternateEmail))
-                    {
-                        mail.CC.Add(new MailAddress(newUser.AlternateEmail, newUser.FullName));
-                    }
+                    mail.To.AddParticipants(newUser);
                     mail.CreateHtmlBody(n);
                     client.Send(mail);
                 }

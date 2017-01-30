@@ -478,7 +478,6 @@
     <Content Include="app\auth\loginFactory.js" />
     <Content Include="app\calendar\calendar.html" />
     <Content Include="app\calendar\calendar.js" />
-    <Content Include="app\common\arrayUtilities.js" />
     <Content Include="app\common\common.js" />
     <Content Include="app\common\logger.js" />
     <Content Include="app\common\collectionManager.js" />
@@ -501,6 +500,8 @@
     <Content Include="app\course\courseRoles.js" />
     <Content Include="app\course\course.html" />
     <Content Include="app\course\course.js" />
+    <Content Include="app\myCourseInvites\myCourseInvites.html" />
+    <Content Include="app\myCourseInvites\myCourseInvites.js" />
     <Content Include="app\facultyInvites\facultyInvites.js" />
     <Content Include="app\fileread.directive.js" />
     <Content Include="app\institution\googleTools.js" />
@@ -724,6 +725,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="UserEmails\Inky\MultiCourseInviteResonse.generated.cs">
+      <DependentUpon>MultiCourseInviteResonse.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="UserEmails\Inky\MultiCourseInvite.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -760,6 +766,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MultiCourseInvite.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="UserEmails\MultiCourseInviteResonse.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MultiCourseInviteResonse.cshtml</DependentUpon>
     </Compile>
     <Compile Include="UserEmails\NotifyBooking.generated.cs">
       <AutoGen>True</AutoGen>
@@ -869,6 +880,14 @@
     <Content Include="UserEmails\MultiCourseInvite.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>MultiCourseInvite.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\Inky\MultiCourseInviteResonse.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>MultiCourseInviteResonse.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserEmails\MultiCourseInviteResonse.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>MultiCourseInviteResonse.generated.cs</LastGenOutput>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

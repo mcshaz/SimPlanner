@@ -306,6 +306,19 @@
                             allowedRoles: [userRoles.accessAllData, userRoles.accessDepartment, userRoles.accessInstitution]
                         }
                     }
+                }, {
+                    url: '/myInvites',
+                    config: {
+                        title: 'My Invitations',
+                        templateUrl: 'app/myCourseInvites/myCourseInvites.html',
+                        settings: {
+                            nav: 12,
+                            content: 'Pending Invites'
+                        },
+                        access: {
+                            allowedRoles: userRoles.authenticated
+                        }
+                    }
                 }
         ];
     }

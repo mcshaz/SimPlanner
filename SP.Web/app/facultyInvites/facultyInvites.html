@@ -1,51 +1,60 @@
 ﻿<section id="dashboard-view" class="mainbar" ng-controller="facultyInvites as vm">
     <section class="matter">
         <div class="container">
-            <h4>Upcoming courses for which you are an organiser:</h4>
             <form class="form-horizontal" ng-submit="vm.sendInvites()">
-                <div class="form-group">
-                    <label for="courseType" class="control-label col-md-2">Course Type</label>
-                    <div class="col-md-8">
-                        <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypesForPrincipal track by ct.id"
-                                data-ng-model="vm.selectedCourseType"></select>
+                <fieldset id="courses">
+                    <legend>Courses:</legend>
+                    <div class="form-group">
+                        <label for="courseType" class="control-label col-md-2">Course Type</label>
+                        <div class="col-md-8">
+                            <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypesForPrincipal track by ct.id"
+                                    data-ng-model="vm.selectedCourseType"></select>
+                        </div>
                     </div>
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Confirmed Faculty</th>
-                            <th>Desired Faculty</th>
-                            <th>Invite</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="course in vm.courses track by course.id">
-                            <td>{{course.startUtc | amDateFormat:'llll'}}</td>
-                            <td>{{course.facultyCount}}</td>
-                            <td><input type="number" step="1" ng-model="course.facultyNoRequired" min="1" /></td>
-                            <td><input type="checkbox" ng-model="course.invite" ng-disabled="course.facultyCount >= course.facultyNoRequired" /></td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Confirmed Faculty</th>
+                                <th>Desired Faculty</th>
+                                <th>Invite</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="course in vm.courses track by course.id">
+                                <td>{{course.startUtc | amDateFormat:'llll'}}</td>
+                                <td>{{course.facultyCount}}</td>
+                                <td><input type="number" step="1" ng-model="course.facultyNoRequired" min="1" /></td>
+                                <td><input type="checkbox" ng-model="course.invite" ng-disabled="course.facultyCount >= course.facultyNoRequired" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+
+                <fieldset>
+                    <legend>All Users</legend>
+                    <div class="form-group">
+                        <label for="courseType" class="control-label col-md-2">Show those who have completed</label>
+                        <div class="col-md-8">
+                            <select id="courseType" class="form-control" data-z-validate data-ng-options="ct.id as ct.description for ct in vm.allCourseTypes"
+                                    data-ng-model="vm.completedCourseTypeId" ng-change="vm.completedCourseTypeChange()"></select>
+                        </div>
+                    </div>
+
+                    <div ui-grid="vm.gridOptions" ui-grid-pagination></div>
+                </fieldset>
+
                 <fieldset id="selectedParticipants">
-                    <legend>Email these participants:</legend>
+                    <legend>People to email:</legend>
                     <ul class="list-group">
-                        <li class="list-group-item pull-left" ng-repeat="si in vm.selectedInvitees track by si.id">{{si.fullName}}</li>
+                        <li class="list-group-item pull-left" ng-repeat="si in vm.selectedInvitees track by si.id">
+                            <a class="pull-right" ng-click="vm.removePerson(si)"><i class="fa fa-close"></i></a>
+                            {{si.fullName}}&nbsp;
+                        </li>
                     </ul>
                 </fieldset>
-                <h5>All Users</h5>
-                <div class="form-group">
-                    <label for="courseType" class="control-label col-md-2">Show those who have completed</label>
-                    <div class="col-md-8">
-                        <select id="courseType" class="form-control" data-z-validate data-ng-options="ct.id as ct.description for ct in vm.allCourseTypes"
-                                data-ng-model="vm.completedCourseTypeId" ng-change="vm.completedCourseTypeChange()"></select>
-                    </div>
-                </div>
 
-                <div ui-grid="vm.gridOptions" ui-grid-pagination></div>
-
-                <button type="submit">Send Invitations</button>
+                <button type="submit" class="btn btn-success">Send Invitations</button>
             </form>
         </div>
     </section>
