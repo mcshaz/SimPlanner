@@ -55,8 +55,7 @@
                 return c.accept && course.facultyCount >= course.facultyNoRequired;
             });
             var courseParticipants = selectedCourses.map(function (c) {
-                var cp = c.addParticipant(user);
-                cp.isConfirmed = cp.isFaculty = true;
+                var cp = c.addParticipant(user, {isConfirmed:true, isFaculty: true});
                 return cp;
             });
             datacontext.save(courseParticipants).then(function () {

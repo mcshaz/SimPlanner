@@ -488,12 +488,14 @@
     <Content Include="app\config.route.js" />
     <Content Include="app\contactUs\contactUs.html" />
     <Content Include="app\contactUs\contactUs.js" />
+    <Content Include="app\courseType\deleteCourseType.js" />
     <Content Include="app\courseType\courseTypes.html" />
     <Content Include="app\courseType\courseTypes.js" />
     <Content Include="app\courseType\courseType.html" />
     <Content Include="app\courseType\courseType.js" />
     <Content Include="app\courseParticipant\courseParticipant.html" />
     <Content Include="app\courseParticipant\courseParticipant.js" />
+    <Content Include="app\courseType\deleteCourseType.tpl.html" />
     <Content Include="app\course\courses.html" />
     <Content Include="app\course\courses.js" />
     <Content Include="app\course\courseRoles.html" />
@@ -583,7 +585,7 @@
     <Content Include="dist\apple-touch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dist\css\main-bd4f92807d.min.css" />
+    <Content Include="dist\css\main-a119d517e0.min.css" />
     <Content Include="dist\css\ui-grid.eot" />
     <Content Include="dist\css\ui-grid.svg" />
     <Content Include="dist\css\ui-grid.ttf" />
@@ -610,7 +612,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-a1babfcc8d.min.js" />
+    <Content Include="dist\js\main-676463e5ec.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

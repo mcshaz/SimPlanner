@@ -39,7 +39,7 @@
                 columnDefs: [
                     {
                         name: 'Name', field: 'fullName',
-                        //cellTemplate: '<div class="ui-grid-cell-contents"><a href="#course/{{COL_FIELD}}" class="btn-link"><i class="fa fa-edit"></i><a></div>'
+                        //cellTemplate: '<div class="ui-grid-cell-contents"><a href="#!/course/{{COL_FIELD}}" class="btn-link"><i class="fa fa-edit"></i><a></div>'
                         filter: { type: uiGridConstants.filter.CONTAINS }
                     },
                     {

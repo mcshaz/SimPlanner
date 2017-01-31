@@ -5,7 +5,7 @@
     angular.module('app').factory(serviceId,
         ['common', 'datacontext', '$q', 'participantBase.abstract', 'tokenStorageService', '$routeParams', AbstractUserDetails]);
 
-    function AbstractUserDetails(common, datacontext, $q, abstractController, tokenStorageService, $routeParams) {
+    function AbstractUserDetails(common, datacontext, $q, abstractParticipantBase, tokenStorageService, $routeParams) {
 
         return {
             constructor: Ctor
@@ -14,7 +14,7 @@
         function Ctor(argObj) {
             var vm = this;
             var controllerId = argObj.controllerId;
-            abstractController.constructor.call(this, {
+            abstractParticipantBase.constructor.call(this, {
                 controllerId: controllerId,
                 watchedEntityNames: 'participant',
                 $scope: argObj.$scope
@@ -63,11 +63,11 @@
                     common.activateController(promises, controllerId).then(
                         function () {
                             loaded();
-                            $q.resolve.apply(this, arguments);
+                            defer.resolve();
                         },
                         function () {
                             vm.log.error({ msg: 'Failed to load user data', data: arguments[0] });
-                            $q.reject.apply(this, arguments);
+                            defer.reject();
                         });
                 });
                 return defer.promise;

@@ -57,7 +57,8 @@
                 }
                 if (!_watched || force) {
                     //var oldWatched = _watched ? _watched.slice() : []; // DEBUG
-                    _watched = (_watched || []).filter(filterDeletedEnts); //keep a hold of these
+                    var watched = (_watched || []).filter(filterDeletedEnts); //keep a hold of these
+
                     watchedEntityNames.forEach(function (wen) {
                         var ent = vm[wen[0]];
                         var currentLevel;
@@ -71,13 +72,13 @@
                             ent.forEach(function (el) {
                                 var child = el[wen[i]];
                                 if (child === undefined) {
-                                    var errorMsg = 'watched entity child is undefined - ' + wen[i] + ' (' + wen.join(',') + ') entity ';
+                                    var errorMsg = 'watched entity child is undefined - ' + wen[i] + ' (' + wen.join('.') + ') entity ';
                                     if (el.entityType){
                                         errorMsg += typeName + ' [available options =(' + el.entityType.navigationProperties.map(function (dp) { return dp.name; }).join(',') + ')]';
                                     } else {
                                         errorMsg += ' el.entityType is also undefined';
                                     }
-                                    vm.log.error({msg:errorMsg, data:el});
+                                    vm.log.debug({msg:errorMsg, data:el});
                                          
                                 }
                                 if (Array.isArray(child)) {
@@ -89,9 +90,10 @@
                             ent = currentLevel;
                         }
 
-                        _watched = _watched.concat(ent.filter(filterEnts));
+                        watched = watched.concat(ent.filter(filterEnts));
                     });
 
+                    _watched = Array.from(new Set(watched));
                     //var dif = _watched.filter(function (el) { return oldWatched.indexOf(el) === -1; })
                     //vm.log.debug({ msg: "+" + dif.length + " to watch", data: dif }) //DEBUG
                 }
@@ -103,7 +105,7 @@
             }
 
             function filterDeletedEnts(ent) {
-                return !!(ent && ent.entityAspect && ent.entityAspect.entityState === breeze.EntityState.Deleted);
+                return ent && ent.entityAspect && ent.entityAspect.entityState === breeze.EntityState.Deleted;
             }
 
             function filterHasValidationErrors(el) { return el.entityAspect.hasValidationErrors && el.entityAspect.entityState !== breeze.EntityState.Deleted; }

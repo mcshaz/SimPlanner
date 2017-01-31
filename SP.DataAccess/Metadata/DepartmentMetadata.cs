@@ -20,9 +20,9 @@ namespace SP.Metadata
         public string InvitationLetterFilename { get; set; }
         [StringLength(256)]
         public string CertificateFilename { get; set; }
-        [FixedLength(Length = 6), RegularExpression(@"\d+"), Required, DefaultValue("000000")]
+        [FixedLength(Length = 6), RegularExpression(@"[0-9a-f]+"), Required, DefaultValue("000000")]
         public string PrimaryColour { get; set; }
-        [FixedLength(Length = 6), RegularExpression(@"\d+"), Required, DefaultValue("000000")]
+        [FixedLength(Length = 6), RegularExpression(@"[0-9a-f]+"), Required, DefaultValue("000000")]
         public string SecondaryColour { get; set; }
     }
 }

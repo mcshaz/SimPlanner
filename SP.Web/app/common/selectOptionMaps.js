@@ -35,7 +35,7 @@
 
         function fetchCultureFormats() {
             return $http({ method: 'GET', url: 'api/utilities/cultureFormats' }).then(function (response) {
-                var parseLanguageCulture = /([\w ]+)\(([\w ,.]+)\)/;
+                var parseLanguageCulture = /([\w ]+)\((.+)\)/;
                 return response.data.map(function (el) {
                     var parsed = parseLanguageCulture.exec(el.DisplayName);
                     if (!parsed || parsed.length < 3) {

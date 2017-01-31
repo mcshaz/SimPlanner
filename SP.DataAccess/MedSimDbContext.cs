@@ -452,22 +452,26 @@ namespace SP.DataAccess
             //SanitizeHtml.ForEntities(ChangeTracker);
             SetTimeTracking();
 
-            return base.SaveChanges();
-            /*
+            try
+            {
+                return base.SaveChanges();
+            }
             catch (DbEntityValidationException e)
             {
                 var de = new DetailedEntityValidationException(e);
                 throw de;
             }
-            */
+
         }
         private void SetTimeTracking()
         {
             var nowUtc = DateTime.UtcNow;
+            /*
             foreach (var ent in ChangeTracker.Entries())
             {
                 System.Diagnostics.Debug.WriteLine(ent);
             }
+            */
             foreach (var ent in ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added))
             {
                 var t = ent.Entity.GetType();
@@ -529,7 +533,7 @@ namespace SP.DataAccess
             }
         }
     }
-    /*
+
     [Serializable]
     public class DetailedEntityValidationException : Exception
     {
@@ -537,5 +541,4 @@ namespace SP.DataAccess
             : base(ve.Message + ":\r\n\t-" + string.Join(new string('-',20) + "\r\n\t-", ve.EntityValidationErrors.Select(ev=>string.Join("\r\n\t-",ev.ValidationErrors.Select(e=>e.ErrorMessage)))))
         {}
     }
-    */
 }

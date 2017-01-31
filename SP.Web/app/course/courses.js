@@ -95,7 +95,7 @@
             },
               {
                   name: 'Edit', field:'id',
-                  cellTemplate: '<div class="ui-grid-cell-contents" ng-if="!row.groupHeader"><a href="#course/{{COL_FIELD}}" class="btn-link"><i class="fa fa-edit"></i><a></div>',
+                  cellTemplate: '<div class="ui-grid-cell-contents" ng-if="!row.groupHeader"><a href="#!/course/{{COL_FIELD}}" class="btn-link"><i class="fa fa-edit"></i><a></div>',
                   enableFiltering: false,
                   enableSorting:false
               }

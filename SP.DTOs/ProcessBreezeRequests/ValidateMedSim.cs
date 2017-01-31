@@ -504,14 +504,19 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             var cfs = TypedEntityInfo<CourseFormatDto>.GetTyped(currentInfos);
 
             //multiple individual queries may be the way to go here
-            var pred = cfs.Aggregate(PredicateBuilder.New<CourseFormat>(), (prev, cur) => prev.Or(
-                c => cur.Entity.Id == c.Id && 
-                    c.CourseTypeId != cur.Entity.CourseTypeId));
-            if (Context.CourseFormats.Any(pred.Compile()))
+            //this query makes courseFormats courseType navigation property immutable - i.e. it cannot be changed once set
+            var modified = cfs.Where(c => c.Info.EntityState == b.EntityState.Modified).ToList();
+            if (modified.Any())
             {
-                throw new InvalidDataException();
+                var pred = modified.Aggregate(PredicateBuilder.New<CourseFormat>(), (prev, cur) => prev.Or(
+                c => cur.Entity.Id == c.Id &&
+                    c.CourseTypeId != cur.Entity.CourseTypeId));
+                if (Context.CourseFormats.Any(pred.Compile()))
+                {
+                    throw new InvalidDataException();
+                }
             }
-
+            
             var ids = cfs.Select(cf => cf.Entity.Id).ToList();
             var courseTypeIds = cfs.Select(cf => cf.Entity.CourseTypeId);
 

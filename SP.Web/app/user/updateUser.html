@@ -59,7 +59,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" ng-if="vm.canAlter('SiteAdmin') || vm.canAlter('DptManikinBookings') || vm.canAlter('DptRoomBookings')">
                         <label class="control-label col-md-2">Other Admin Roles</label>
                         <div class="col-md-10">
                             <div class="btn-group" ng-model="vm.permissions" bs-checkbox-group>

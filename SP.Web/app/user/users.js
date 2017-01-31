@@ -40,7 +40,7 @@
             },
             {
                 name: 'Edit', field: 'id',
-                cellTemplate: '<div class="ui-grid-cell-contents"><a href="#/user/{{COL_FIELD}}" class="btn-link"><i class="fa fa-edit"></i><a></div>',
+                cellTemplate: '<div class="ui-grid-cell-contents"><a href="#!/user/{{COL_FIELD}}" class="btn-link"><i class="fa fa-edit"></i><a></div>',
                 enableFiltering: false,
                 enableSorting: false
             });

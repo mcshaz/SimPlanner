@@ -102,7 +102,7 @@
         // Usage:
         // <a data-cc-widget-close></a>
         // Creates:
-        // <a data-cc-widget-close="" href="#" class="wclose">
+        // <a data-cc-widget-close="" href="#!/" class="wclose">
         //     <i class="fa fa-remove"></i>
         // </a>
         var directive = {
@@ -128,7 +128,7 @@
         // Usage:
         // <a data-cc-widget-minimize></a>
         // Creates:
-        // <a data-cc-widget-minimize="" href="#"><i class="fa fa-chevron-up"></i></a>
+        // <a data-cc-widget-minimize="" href="#!/"><i class="fa fa-chevron-up"></i></a>
         var directive = {
             link: link,
             template: '<i class="fa fa-chevron-up"></i>',

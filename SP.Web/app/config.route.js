@@ -19,8 +19,8 @@
         .constant('routes', getRoutes());
     
     // Configure the routes and route resolvers
-    app.config(['$routeProvider', 'routes' /*, '$locationProvider' */, routeConfigurator]);
-    function routeConfigurator($routeProvider, routes /*, $locationProvider */) {
+    app.config(['$routeProvider', 'routes' ,'$locationProvider' , routeConfigurator]);
+    function routeConfigurator($routeProvider, routes, $locationProvider ) {
 
         routes.forEach(function (r) {
             $routeProvider.when(r.url, r.config);
@@ -29,6 +29,7 @@
 
         // use the HTML5 History API
         //$locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix('!');
     }
 
     // Define the routes 
@@ -313,7 +314,7 @@
                         templateUrl: 'app/myCourseInvites/myCourseInvites.html',
                         settings: {
                             nav: 12,
-                            content: 'Pending Invites'
+                            content: '<i class="fa fa-envelope">Pending Invites'
                         },
                         access: {
                             allowedRoles: userRoles.authenticated

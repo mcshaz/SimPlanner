@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside', '$q', '$filter', 'selectOptionMaps', 'loginFactory'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$scope', 'breeze', '$aside', '$q', '$filter', 'selectOptionMaps', 'loginFactory', '$modal', '$location'];
 
-    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside, $q, $filter, selectOptionMaps, loginFactory) {
+    function controller(abstractController, $routeParams, common, datacontext, $scope, breeze, $aside, $q, $filter, selectOptionMaps, loginFactory, $modal, $location) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -45,6 +45,7 @@
         vm.resetExampleTimes = resetExampleTimes;
 
         vm.selectedDepartmentIds = [];
+        vm.submit = submit;
         vm.title = 'Course Format';
 
         vm.sortableOptions = {
@@ -84,6 +85,11 @@
                     {
                         expand: ["courseFormats.courseSlots.activity", "courseTypeDepartments"]
                     }).then(function (data) {
+                        if (!data) {
+                            vm.log.warning('Could not find courseType id = ' + id);
+                            $location.path('/courseTypes');
+                            return;
+                        }
                         vm.courseType = data;
                         vm.selectedDepartmentIds = vm.courseType.courseTypeDepartments.map(function (ctd) {
                             return ctd.departmentId;
@@ -335,7 +341,7 @@
 
         vm.isNoReadingsOnServer = function () {
             return !(vm.courseType.candidatePrereadings && vm.courseType.candidatePrereadings.some(function (el) { return el.entityAspect.entityState.isUnchanged(); }));
-        }
+        };
 
         function alterDayMarkers(cf) {
             if (cf.daysDuration <= 0) { return; }
@@ -360,11 +366,36 @@
 
         function alterObsoleteFormat(cf) {
             if (cf.obsolete) {
-                deletableFormat(cf).then(function (forDelete) {
-                    if (forDelete.length && confirm('this course appears to have never been run - would you like to delete it')) {
-                        forDelete.forEach(function (el) { el.entityAspect.setDeleted(); });
+                var forDelete;
+                var modal;
+                var options = {
+                    canDeleteType: vm.courseType.courseFormats.length <= 1,
+                    deleteFormat: function() {
+                        forDelete.forEach(deleteCollection);
+
+                    },
+                    deleteType: function () {
+                        vm.courseType.courseTypeDepartments.forEach(deleteCollection);
+                        forDelete.forEach(deleteCollection);
+                        vm.courseType.entityAspect.setDeleted();
+                    }
+                };
+                modal = $modal({
+                    templateUrl: '/app/courseType/deleteCourseType.tpl.html',
+                    show: false,
+                    controller: 'deleteCourseTypeCtrl',
+                    resolve: { options: function () { return options; } }
+                });
+                $q.all([deletableFormat(cf).then(function (data) {
+                    forDelete = data;
+                }), modal.$promise]).then(function () {
+                    if (forDelete.length) {
+                        modal.show();
                     }
                 });
+            }
+            function deleteCollection(el) {
+                el.entityAspect.setDeleted();
             }
         }
 
@@ -461,6 +492,14 @@
             } else {
                 cs.isActive = false;
             }
+        }
+
+        function submit(){
+            vm.save().then(function () {
+                if (vm.courseType.entityAspect.entityState.isDetached()) {
+                    $location.path('/courseTypes');
+                }
+            });
         }
     }
 })();
