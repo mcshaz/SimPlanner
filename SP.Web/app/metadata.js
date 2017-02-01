@@ -1295,7 +1295,7 @@
             },
             {
               "name": "regularExpression",
-              "expression": "\\d+"
+              "expression": "[0-9a-f]+"
             }
           ],
           "displayName": "Primary Colour"
@@ -1317,7 +1317,7 @@
             },
             {
               "name": "regularExpression",
-              "expression": "\\d+"
+              "expression": "[0-9a-f]+"
             }
           ],
           "displayName": "Secondary Colour"

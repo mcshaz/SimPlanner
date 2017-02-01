@@ -35,7 +35,8 @@
                     <div class="form-group">
                         <label for="primaryColour" class="col-md-2 control-label">Primary Colour</label>
                         <div class="col-md-10">
-                            <input type="color" id="primaryColour" class="form-control" ng-model="vm.department.primaryColourHtml" z-validate />
+                            <input type="color" id="primaryColour" class="form-control" ng-model="vm.department.primaryColourHtml"  />
+                            <input type="hidden" ng-model="vm.department.primaryColourHtml" z-validate z-append-to="#primaryColour" />
                         </div>
                     </div>
 
@@ -43,6 +44,7 @@
                         <label for="secondaryColour" class="col-md-2 control-label">Secondary Colour</label>
                         <div class="col-md-10">
                             <input type="color" id="secondaryColour" class="form-control" ng-model="vm.department.secondaryColourHtml" z-validate />
+                            <input type="hidden" ng-model="vm.department.secondaryColour" z-validate z-append-to="#secondaryColour" />
                             <aside>
                                 <small>(should be lighter than primary colour)</small>
                             </aside>

@@ -314,7 +314,7 @@
                         templateUrl: 'app/myCourseInvites/myCourseInvites.html',
                         settings: {
                             nav: 12,
-                            content: '<i class="fa fa-envelope">Pending Invites'
+                            content: '<i class="fa fa-envelope"> Pending Invites'
                         },
                         access: {
                             allowedRoles: userRoles.authenticated
