@@ -372,10 +372,10 @@ namespace SP.Dto.ProcessBreezeRequests
                 if (AfterUserApproved != null)
                 {
                     Participant participant;
-                    object obj;
+                    object obj = null;
                     participant = participants.FirstOrDefault(e => (e.Info.EntityState == b.EntityState.Modified 
                             && e.Entity.AdminApproved && e.Info.OriginalValuesMap.TryGetValue(nameof(participant.AdminApproved), out obj) && obj.Equals(false))
-                        || (e.Info.EntityState == b.EntityState.Added && e.Info.UnmappedValuesMap.TryGetValue("emailOnCreate", out obj) && obj.Equals(true)))?.Entity;
+                        || (e.Info.EntityState == b.EntityState.Added && e.Info.UnmappedValuesMap?.TryGetValue("emailOnCreate", out obj) == true && obj.Equals(true)))?.Entity;
                     if (participant != null)
                     {
                         AfterUserApproved.Invoke(participant);

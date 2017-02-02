@@ -3,17 +3,18 @@
         <div class="container col-md-12">
             <h2>{{vm.isNew?'Enter New':'Update'}} User Details</h2>
             <form ng-submit="vm.submit()" name="updateDetailsForm" class="form-horizontal col-md-9">
-                
                 <fieldset>
                     <legend>Details</legend>
-                    <div ng-include="'app/user/userDetails.html'"></div>
-
                     <div class="form-group">
                         <label for="institution" class="control-label col-md-2">Institution</label>
                         <div class="col-md-10">
-                            <select id="institution" class="form-control" data-ng-model="vm.institution"  ng-change="vm.filterRoles"
-                                    ng-options="i as i.name group by i.culture.name for i in vm.institutions"></select>
-                            <span class="text-danger" />
+                            <select name="institution" class="form-control" ng-model="vm.institution" ng-change="vm.filterRoles"
+                                    ng-options="i as i.name group by i.culture.name for i in vm.institutions" required>
+                                <option value="" disabled>Select Institution...</option>
+                            </select>
+                            <div ng-messages="updateDetailsForm.institution.$error" role="alert" class="z-decorator">
+                                <span class="invalid" ng-message="required">'Institution' is required</span>
+                            </div>
                         </div>
                     </div>
 
@@ -21,13 +22,15 @@
                         <label for="cpDepartment" class="control-label col-md-2">Department</label>
                         <div class="col-md-10">
                             <select id="cpDepartment" class="form-control" data-z-validate data-ng-options="d as d.name for d in vm.institution.departments"
-                                    data-ng-model="vm.participant.department" >
+                                    data-ng-model="vm.participant.department" ng-disabled="!vm.institution.id">
                                 <option value="" disabled="disabled">
                                     Select Department...
                                 </option>
                             </select>
                         </div>
                     </div>
+
+                    <div ng-include="'app/user/userDetails.html'"></div>
                 </fieldset>
                 
                 <fieldset>

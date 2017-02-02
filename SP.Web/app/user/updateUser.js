@@ -18,6 +18,7 @@
 
         vm.canAlter = canAlter;
         vm.changed = changed;
+        vm.institution = '';
         vm.permissions = {
             access: null,
             siteAdmin: false
