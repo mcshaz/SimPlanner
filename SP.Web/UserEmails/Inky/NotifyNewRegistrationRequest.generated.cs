@@ -433,7 +433,7 @@ WriteLiteral(" class=\"secondary\"");
 WriteLiteral(">\r\n            <p>\r\n                In order to approve or delete this request, p" +
 "lease go to the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4842), Tuple.Create("\"", 4940)
+WriteAttribute("href", Tuple.Create(" href=\"", 4842), Tuple.Create("\"", 4938)
             
             #line 156 "..\..\UserEmails\Inky\NotifyNewRegistrationRequest.cshtml"
       , Tuple.Create(Tuple.Create("", 4849), Tuple.Create<System.Object, System.Int32>(BaseUrl
@@ -441,14 +441,14 @@ WriteAttribute("href", Tuple.Create(" href=\"", 4842), Tuple.Create("\"", 4940)
             #line default
             #line hidden
 , 4849), false)
-, Tuple.Create(Tuple.Create("", 4857), Tuple.Create("/#/reviewRegistrationRequest/", 4857), true)
+, Tuple.Create(Tuple.Create("", 4857), Tuple.Create("/reviewRegistrationRequest/", 4857), true)
             
             #line 156 "..\..\UserEmails\Inky\NotifyNewRegistrationRequest.cshtml"
-                                           , Tuple.Create(Tuple.Create("", 4886), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Id.ToString()
+                                         , Tuple.Create(Tuple.Create("", 4884), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Id.ToString()
             
             #line default
             #line hidden
-, 4886), false)
+, 4884), false)
 );
 
 WriteLiteral(">Review Registration Requests</a> page (will require login details).\r\n           " +

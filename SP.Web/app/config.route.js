@@ -238,6 +238,15 @@
                         }
                     }
                 }, {
+                    url: '/updateDetails/:id',
+                    config: {
+                        title: 'Update My Details',
+                        templateUrl: 'app/account/updateMyDetails.html',
+                        access: {
+                            allowedRoles: userRoles.anonymous
+                        }
+                    }
+                }, {
                     url: '/changePassword',
                     config: {
                         title: 'Change Password',

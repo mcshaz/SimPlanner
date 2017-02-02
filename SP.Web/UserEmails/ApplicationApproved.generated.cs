@@ -179,7 +179,7 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-fami
 
 WriteLiteral(">\r\n            You should now be able to <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4161), Tuple.Create("\"", 4176)
+WriteAttribute("href", Tuple.Create(" href=\"", 4161), Tuple.Create("\"", 4177)
             
             #line 27 "..\..\UserEmails\ApplicationApproved.cshtml"
 , Tuple.Create(Tuple.Create("", 4168), Tuple.Create<System.Object, System.Int32>(BaseUrl
@@ -187,14 +187,16 @@ WriteAttribute("href", Tuple.Create(" href=\"", 4161), Tuple.Create("\"", 4176)
             #line default
             #line hidden
 , 4168), false)
+, Tuple.Create(Tuple.Create("", 4176), Tuple.Create("/", 4176), true)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
 "t-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; tex" +
 "t-decoration: none;\"");
 
-WriteLiteral(">login to sim-planner.com</a> (either with the password you supplied or a social " +
-"media login associated with this email address).\r\n        </p>\r\n    </th>\n<th");
+WriteLiteral(">login to sim-planner.com</a> (either with a password if you supplied one, a soci" +
+"al media login associated with this email address or by clicking Login and then " +
+"\'Forgot Password\').\r\n        </p>\r\n    </th>\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

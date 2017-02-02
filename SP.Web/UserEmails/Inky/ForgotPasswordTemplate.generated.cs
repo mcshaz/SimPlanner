@@ -27,7 +27,7 @@ namespace SP.Web.UserEmails.Inky
 
     public string AsQueryString()
     {
-        return BaseUrl + "index.html#/resetPassword?token=" + System.Web.HttpUtility.UrlEncode(Token) + "&userId=" + UserId.ToString();
+        return BaseUrl + "/resetPassword?token=" + System.Web.HttpUtility.UrlEncode(Token) + "&userId=" + UserId.ToString();
     }
 
         #line default
@@ -69,14 +69,14 @@ WriteLiteral(">Click the link below to reset your password.</p>\r\n        <butt
 
 WriteLiteral(" class=\"large expand\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 791), Tuple.Create("\"", 816)
+WriteAttribute("href", Tuple.Create(" href=\"", 780), Tuple.Create("\"", 805)
             
             #line 24 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 798), Tuple.Create<System.Object, System.Int32>(AsQueryString()
+, Tuple.Create(Tuple.Create("", 787), Tuple.Create<System.Object, System.Int32>(AsQueryString()
             
             #line default
             #line hidden
-, 798), false)
+, 787), false)
 );
 
 WriteLiteral(">Reset Password</button>\r\n\r\n    </columns>\r\n</row>\r\n");

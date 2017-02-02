@@ -6,7 +6,7 @@
     public DateTime? OldStart { get; set; }
     public string GetNotificationUrl(bool canAttend)
     {
-        return  $"{BaseUrl}/index.html#/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending=" + (canAttend ? "1" : "0");
+        return  $"{BaseUrl}/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending=" + (canAttend ? "1" : "0");
     }
 }
 @{ Layout = new SP.Web.UserEmails.LayoutTemplate { Title = "Course Invitation" }; }

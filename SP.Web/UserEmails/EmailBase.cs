@@ -38,7 +38,7 @@ namespace SP.Web.UserEmails
                     lock (_lock)
                     {
                         var url = HttpContext.Current.Request.Url;
-                        _baseUrl = url.Scheme + "://" + url.Authority;
+                        _baseUrl = url.Scheme + "://" + url.Authority + "/#!";
                     }
                 }
                 return _baseUrl;

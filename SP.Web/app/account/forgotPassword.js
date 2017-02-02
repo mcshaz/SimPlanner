@@ -12,6 +12,8 @@
         };
         vm.errors = '';
         vm.submit = submit;
+        vm.successMsg = '';
+        vm.serverRespondedTime = null;
 
         activate();
 
@@ -29,7 +31,9 @@
                 url: 'api/Account/ForgotPassword',
                 data: mapObjectToPascalCase(credentials)
             }).then(function (data) {
-                log.success('email sent (IF it is on our system)');
+                vm.successMsg = 'email sent (IF it is on our system)';
+                log.success(vm.successMsg);
+                vm.serverRespondedTime = new Date();
             }, function (data) {
                 log.error({ msg: 'change password error', data: data });
                 vm.errors = ''; //todo here

@@ -335,7 +335,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table></th>\r\n</tr></tbody></table>");
+WriteLiteral("></th></tr></table></th>\r\n</tr></tbody></table>\r\n");
 
         }
     }

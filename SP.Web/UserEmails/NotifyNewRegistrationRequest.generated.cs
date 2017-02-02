@@ -689,7 +689,7 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-fami
 WriteLiteral(">\r\n                In order to approve or delete this request, please go to the <" +
 "a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 13468), Tuple.Create("\"", 13566)
+WriteAttribute("href", Tuple.Create(" href=\"", 13468), Tuple.Create("\"", 13564)
             
             #line 160 "..\..\UserEmails\NotifyNewRegistrationRequest.cshtml"
      , Tuple.Create(Tuple.Create("", 13475), Tuple.Create<System.Object, System.Int32>(BaseUrl
@@ -697,14 +697,14 @@ WriteAttribute("href", Tuple.Create(" href=\"", 13468), Tuple.Create("\"", 13566
             #line default
             #line hidden
 , 13475), false)
-, Tuple.Create(Tuple.Create("", 13483), Tuple.Create("/#/reviewRegistrationRequest/", 13483), true)
+, Tuple.Create(Tuple.Create("", 13483), Tuple.Create("/reviewRegistrationRequest/", 13483), true)
             
             #line 160 "..\..\UserEmails\NotifyNewRegistrationRequest.cshtml"
-                                          , Tuple.Create(Tuple.Create("", 13512), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Id.ToString()
+                                        , Tuple.Create(Tuple.Create("", 13510), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Id.ToString()
             
             #line default
             #line hidden
-, 13512), false)
+, 13510), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +

@@ -31,7 +31,7 @@ namespace SP.Web.UserEmails
     public string AuthorizationToken { get; set; }
     public string GetNotificationUrl(bool canAttend)
     {
-        return BaseUrl + $"#/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending={(canAttend ? '1' : '0')}&Auth=" + AuthorizationToken;
+        return BaseUrl + $"/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending={(canAttend ? '1' : '0')}&Auth=" + AuthorizationToken;
     }
 
         #line default
@@ -312,14 +312,14 @@ WriteLiteral(">Contact details for ");
             #line hidden
 WriteLiteral(":</h3>\r\n        <dl>\r\n            <dt>Email</dt>\r\n            <dd><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 7163), Tuple.Create("\"", 7211)
+WriteAttribute("href", Tuple.Create(" href=\"", 7162), Tuple.Create("\"", 7210)
             
             #line 50 "..\..\UserEmails\ReverseConfirmation.cshtml"
-, Tuple.Create(Tuple.Create("", 7170), Tuple.Create<System.Object, System.Int32>(GetMailTo(CourseParticipant.Participant)
+, Tuple.Create(Tuple.Create("", 7169), Tuple.Create<System.Object, System.Int32>(GetMailTo(CourseParticipant.Participant)
             
             #line default
             #line hidden
-, 7170), false)
+, 7169), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -440,14 +440,14 @@ WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; ba
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 10210), Tuple.Create("\"", 10242)
+WriteAttribute("href", Tuple.Create(" href=\"", 10209), Tuple.Create("\"", 10241)
             
             #line 69 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                , Tuple.Create(Tuple.Create("", 10217), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                , Tuple.Create(Tuple.Create("", 10216), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
             
             #line default
             #line hidden
-, 10217), false)
+, 10216), false)
 );
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #3adb76; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 1.3; margin: 0; padding: 8px 16px 8px 16px; text-align: left; text-decoration: none;""");
@@ -511,14 +511,14 @@ WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; ba
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 12561), Tuple.Create("\"", 12594)
+WriteAttribute("href", Tuple.Create(" href=\"", 12560), Tuple.Create("\"", 12593)
             
             #line 74 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              , Tuple.Create(Tuple.Create("", 12568), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              , Tuple.Create(Tuple.Create("", 12567), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
             
             #line default
             #line hidden
-, 12568), false)
+, 12567), false)
 );
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #ec5840; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 1.3; margin: 0; padding: 8px 16px 8px 16px; text-align: left; text-decoration: none;""");

@@ -6,7 +6,7 @@
     public string AuthorizationToken { get; set; }
     public string GetNotificationUrl(bool canAttend)
     {
-        return BaseUrl + $"#/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending={(canAttend ? '1' : '0')}&Auth=" + AuthorizationToken;
+        return BaseUrl + $"/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending={(canAttend ? '1' : '0')}&Auth=" + AuthorizationToken;
     }
 }
 @{ Layout = new SP.Web.UserEmails.LayoutTemplate
