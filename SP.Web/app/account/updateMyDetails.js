@@ -19,12 +19,17 @@
 
         vm.activate();
 
-        function submit() {
-            vm.save().then(function () {
-                if (vm.isNew) {
-                    $location.path('/finishedSubmission').search({});
+        function submit(form) {
+            if (form.$valid) {
+                if (vm.user.password) {
+                    vm.participant.password = user.password;
                 }
-            });
+                vm.save().then(function () {
+                    if (vm.isNew) {
+                        $location.path('/finishedSubmission').search({});
+                    }
+                });
+            }
         }
     }
 })();

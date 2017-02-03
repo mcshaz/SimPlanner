@@ -41,9 +41,17 @@ namespace SP.Web.Controllers
                             Task.Run(() => CreateParticipantEmails.SendCourseEmail(course, oldDate));
                         }
                         CreateParticipantEmails.RescheduleReadings(course, _repository.Context);
-                    }
+                    },
+                    PasswordHasher = PasswordHasher
                 });
             }
+        }
+
+        ApplicationUserManager _userManager;
+        private string PasswordHasher(string plainTextPwd)
+        {
+            return (_userManager ?? (_userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>()))
+                .PasswordHasher.HashPassword(plainTextPwd);
         }
 
         [HttpPost]

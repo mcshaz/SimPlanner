@@ -40,6 +40,7 @@ namespace SP.Dto.ProcessBreezeRequests
             }
         }
 
+        public Func<string, string> PasswordHasher { get; set; }
         public Action<IEnumerable<BookingChangeDetails>> AfterBookingChange { get; set; }
         public Action<UserRequestingApproval> AfterNewUnapprovedUser { get; set; }
         public Action<Participant> AfterUserApproved { get; set; }
@@ -484,18 +485,26 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
 
         void MapIdentityUser(List<EntityInfo> currentInfos)
         {
-            var breezeParticipants = from ci in currentInfos
-                                     where ci.EntityState == b.EntityState.Modified
-                                     select (Participant)ci.Entity;
-            var ids = breezeParticipants.Select(p => p.Id);
-            var usrs = Context.Users.Where(u => ids.Contains(u.Id)).ToList(); //ToDictionary(u=>u.id) if realistic chance of having multiple users saved at once
-            foreach (var p in breezeParticipants)
+            var breezeParticipants = TypedEntityInfo<Participant>.GetTyped(currentInfos)
+                .ToLookup(p=>p.Info.EntityState);
+            var ids = breezeParticipants.SelectMany(p=>p).Select(p => p.Entity.Id);
+            var usrs = Context.Users.Where(u => ids.Contains(u.Id)).ToDictionary(u=>u.Id); //ToDictionary(u=>u.id) if realistic chance of having multiple users saved at once
+            foreach (var p in breezeParticipants[b.EntityState.Modified])
             {
-                Participant u = usrs.First(dbu=>dbu.Id == p.Id);
+                Participant u = usrs[p.Entity.Id];
                 foreach (var pi in IdentityUserDbProperties)
                 {
                     pi.SetValue(p, pi.GetValue(u));
                 }
+            }
+            foreach (var p in breezeParticipants[b.EntityState.Added])
+            {
+                object obj = null;
+                if (p.Info.OriginalValuesMap?.TryGetValue("password", out obj) == true)
+                {
+                    p.Entity.PasswordHash = PasswordHasher((string)obj);
+                }
+                
             }
         }
 

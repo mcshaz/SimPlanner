@@ -63,6 +63,14 @@ namespace SP.Dto
             }
         }
 
+        public Func<string, string> PasswordHasher
+        {
+            set
+            {
+                _validationHelper.PasswordHasher += value;
+            }
+        }
+
         public MedSimDtoRepository(IPrincipal user, MedSimDbContext validationContext = null)
         {
             _contextProvider = new EFContextProvider<MedSimDbContext>(/*user , allowedRoles: new[] { RoleConstants.AccessAllData } */);

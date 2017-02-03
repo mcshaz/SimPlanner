@@ -26,6 +26,7 @@
             vm.activate = activate;
             vm.hotDrinks = [];
             vm.institutions = [];
+            vm.isLoggedIn = tokenStorageService.isLoggedIn();
             vm.isNew = id === 'new';
 
             function activate() {

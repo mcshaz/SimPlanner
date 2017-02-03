@@ -5,7 +5,7 @@
             <div ng-if="vm.isLoggedIn">
                 <a href="#!/changePassword">Click here</a> to change password
             </div>
-            <form ng-submit="vm.submit()" name="updateDetailsForm" class="form-horizontal col-md-9">
+            <form ng-submit="vm.submit(updateDetailsForm)" name="updateDetailsForm" class="form-horizontal col-md-9">
                 
                 <div ng-include="'app/user/userDetails.html'"></div>
 
