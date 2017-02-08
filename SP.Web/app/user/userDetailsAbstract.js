@@ -28,6 +28,7 @@
             vm.institutions = [];
             vm.isLoggedIn = tokenStorageService.isLoggedIn();
             vm.isNew = id === 'new';
+            vm.emailChanged = vm.isNew ? emailChanged : angular.noop;
 
             function activate() {
                 var alertMessage;
@@ -78,6 +79,12 @@
                     vm.filterRoles();
                     vm.notifyViewModelLoaded();
                     vm.log(alertMessage + ' Activated');
+                }
+            }
+
+            function emailChanged(usrNameFormEl){
+                if (usrNameFormEl.$pristine) {
+                    vm.participant.userName = vm.participant.email;
                 }
             }
         }

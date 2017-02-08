@@ -2,7 +2,7 @@
     <section class="matter">
         <div class="container col-md-12">
             <h2>{{vm.isNew?'Enter New':'Update'}} User Details</h2>
-            <form ng-submit="vm.submit()" name="updateDetailsForm" class="form-horizontal col-md-9">
+            <form ng-submit="vm.submit()" name="userDetailsForm" class="form-horizontal col-md-9">
                 <fieldset>
                     <legend>Details</legend>
                     <div class="form-group">
@@ -12,7 +12,7 @@
                                     ng-options="i as i.name group by i.culture.name for i in vm.institutions" required>
                                 <option value="" disabled>Select Institution...</option>
                             </select>
-                            <div ng-messages="updateDetailsForm.institution.$error" role="alert" class="z-decorator">
+                            <div ng-messages="userDetailsForm.institution.$error" role="alert" class="z-decorator">
                                 <span class="invalid" ng-message="required">'Institution' is required</span>
                             </div>
                         </div>

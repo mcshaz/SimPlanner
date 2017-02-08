@@ -67,6 +67,11 @@ namespace SP.Dto.Maps
             return _dtoMapDictionary[dtoType].MapFromDto;
         }
 
+        internal static DomainDtoMap<TDomain, TDto> GetMap<TDomain, TDto>()
+        {
+            return (DomainDtoMap<TDomain, TDto>)_dtoMapDictionary[typeof(TDto)];
+        }
+
         public static LambdaExpression GetWhereExpression(Type serverModelType, CurrentPrincipal user)
         {
             return _serverDtoDictionary[serverModelType].GetWhereExpression(user);

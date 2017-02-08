@@ -79,7 +79,7 @@ namespace SP.Web.Controllers
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
             return Ok();
         }
-
+        /*
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         [Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
@@ -119,7 +119,7 @@ namespace SP.Web.Controllers
                 ExternalLoginProviders = GetExternalLogins(returnUrl, generateState)
             };
         }
-
+        */
         // POST api/Account/ChangePassword
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
@@ -257,6 +257,7 @@ namespace SP.Web.Controllers
         }
 
         // POST api/Account/AddExternalLogin
+        /*
         [Route("AddExternalLogin")]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
         {
@@ -292,6 +293,7 @@ namespace SP.Web.Controllers
 
             return Ok();
         }
+        */
 
         // POST api/Account/RemoveLogin
         [Route("RemoveLogin")]
@@ -409,6 +411,7 @@ namespace SP.Web.Controllers
         }
 
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
+        /*
         [AllowAnonymous]
         [Route("ExternalLogins")]
         public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
@@ -512,6 +515,7 @@ namespace SP.Web.Controllers
             }
             return Ok();
         }
+        */
 
         protected override void Dispose(bool disposing)
         {

@@ -63,11 +63,11 @@ namespace SP.Dto
             }
         }
 
-        public Func<string, string> PasswordHasher
+        public Func<Participant, string, IEnumerable<string>> CreateUser
         {
             set
             {
-                _validationHelper.PasswordHasher += value;
+                _validationHelper.CreateUser += value;
             }
         }
 
@@ -83,12 +83,9 @@ namespace SP.Dto
 
         Dictionary<Type, List<EntityInfo>> BeforeSaveEntities(Dictionary<Type, List<EntityInfo>> dtos)
         {
-            var errors = _validationHelper.ValidateDto(dtos);
-            if (errors.Any())
-            {
-                throw new EntityErrorsException(errors);
-            }
-            return ValidateMedSim.MapDtoToServerType(dtos);
+            _validationHelper.ValidateDto(dtos);
+
+            return _validationHelper.MapDtoToServerType(dtos);
         }
 
         public static string GetEdmxMetadata()

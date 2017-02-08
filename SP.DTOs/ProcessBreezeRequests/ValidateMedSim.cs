@@ -1,7 +1,6 @@
 ﻿using Breeze.ContextProvider;
-using b= Breeze.ContextProvider;
+using b = Breeze.ContextProvider;
 using LinqKit;
-using Microsoft.AspNet.Identity.EntityFramework;
 using SP.DataAccess;
 using SP.DataAccess.Data.Interfaces;
 using SP.Dto.Maps;
@@ -13,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
+using System.Data.Entity.Validation;
 
 namespace SP.Dto.ProcessBreezeRequests
 {
@@ -27,6 +26,7 @@ namespace SP.Dto.ProcessBreezeRequests
         public MedSimDbContext Context { get { return CurrentUser.Context; } }
         private const string AfterUpdateDelegate = "AfterUpdateDelegate";
 
+        /*
         private static IEnumerable<PropertyInfo> _identityUserDbProperties;
         private static IEnumerable<PropertyInfo> IdentityUserDbProperties
         {
@@ -39,8 +39,9 @@ namespace SP.Dto.ProcessBreezeRequests
                                            BindingFlags.Instance));
             }
         }
+        */
 
-        public Func<string, string> PasswordHasher { get; set; }
+        public Func<Participant, string, IEnumerable<string>> CreateUser { get; set; }
         public Action<IEnumerable<BookingChangeDetails>> AfterBookingChange { get; set; }
         public Action<UserRequestingApproval> AfterNewUnapprovedUser { get; set; }
         public Action<Participant> AfterUserApproved { get; set; }
@@ -50,7 +51,7 @@ namespace SP.Dto.ProcessBreezeRequests
         /// </summary>
         public Action<Guid, DateTime?> AfterCourseDateChange { get; set; }
 
-        public IEnumerable<EntityError> ValidateDto(Dictionary<Type, List<EntityInfo>> saveMap)
+        public void ValidateDto(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             List<EntityError> errors = new List<EntityError>();
 
@@ -93,7 +94,10 @@ namespace SP.Dto.ProcessBreezeRequests
 
             errors.AddRange(ValidatePermission(saveMap));
 
-            return errors;
+            if (errors.Any())
+            {
+                throw new EntityErrorsException(errors);
+            }
         }
         bool HasCoursePermission(Guid courseId)
         {
@@ -326,18 +330,28 @@ namespace SP.Dto.ProcessBreezeRequests
             }
             return returnVar;
         }
-        public static Dictionary<Type, List<EntityInfo>> MapDtoToServerType(Dictionary<Type, List<EntityInfo>> saveMap)
+        public Dictionary<Type, List<EntityInfo>> MapDtoToServerType(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             var returnVar = new Dictionary<Type, List<EntityInfo>>();
 
             foreach (var kv in saveMap)
             {
-                var mapper = MapperConfig.GetFromDtoMapper(kv.Key);
-                var vals = kv.Value.Select(d => {
-                    var rv = d.ContextProvider.CreateEntityInfo(mapper(d.Entity), d.EntityState);
-                    rv.OriginalValuesMap = d.OriginalValuesMap;
-                    return rv;
-                }).ToList();
+                List<EntityInfo> vals;
+                if (kv.Key == typeof(ParticipantDto))
+                {
+                    vals = kv.Value.Select(d => UserManager(d)).ToList();
+                }
+                else
+                {
+                    var mapper = MapperConfig.GetFromDtoMapper(kv.Key);
+                    vals = kv.Value.Select(d =>
+                    {
+                        var rv = d.ContextProvider.CreateEntityInfo(mapper(d.Entity), d.EntityState);
+                        rv.OriginalValuesMap = d.OriginalValuesMap;
+                        rv.UnmappedValuesMap = d.UnmappedValuesMap;
+                        return rv;
+                    }).ToList();
+                }
                 returnVar.Add(MapperConfig.GetServerModelType(kv.Key), vals);
             }
             return returnVar;
@@ -376,7 +390,7 @@ namespace SP.Dto.ProcessBreezeRequests
                     object obj = null;
                     participant = participants.FirstOrDefault(e => (e.Info.EntityState == b.EntityState.Modified 
                             && e.Entity.AdminApproved && e.Info.OriginalValuesMap.TryGetValue(nameof(participant.AdminApproved), out obj) && obj.Equals(false))
-                        || (e.Info.EntityState == b.EntityState.Added && e.Info.UnmappedValuesMap?.TryGetValue("emailOnCreate", out obj) == true && obj.Equals(true)))?.Entity;
+                        || (e.Info.EntityState == b.EntityState.Added && e.Info.UnmappedValuesMap?.TryGetValue("emailOnCreate", out obj)==true && obj.Equals(true)))?.Entity;
                     if (participant != null)
                     {
                         AfterUserApproved.Invoke(participant);
@@ -421,8 +435,8 @@ namespace SP.Dto.ProcessBreezeRequests
 
             foreach (var mei in saveMap.Values.SelectMany(e => e))
             {
-                object pred;
-                if (mei.UnmappedValuesMap != null && mei.UnmappedValuesMap.TryGetValue(AfterUpdateDelegate, out pred)){
+                object pred = null;
+                if (mei.UnmappedValuesMap?.TryGetValue(AfterUpdateDelegate, out pred) == true){
                     ((Action)pred).Invoke();
                 }
             }
@@ -483,29 +497,79 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
 }
 */
 
-        void MapIdentityUser(List<EntityInfo> currentInfos)
+        EntityInfo UserManager(EntityInfo currentInfo)
         {
-            var breezeParticipants = TypedEntityInfo<Participant>.GetTyped(currentInfos)
-                .ToLookup(p=>p.Info.EntityState);
-            var ids = breezeParticipants.SelectMany(p=>p).Select(p => p.Entity.Id);
-            var usrs = Context.Users.Where(u => ids.Contains(u.Id)).ToDictionary(u=>u.Id); //ToDictionary(u=>u.id) if realistic chance of having multiple users saved at once
-            foreach (var p in breezeParticipants[b.EntityState.Modified])
+            //List<EntityError> errors = new List<EntityError>();
+            //var breezeParticipants = TypedEntityInfo<ParticipantDto>.GetTyped(currentInfos)
+            //    .ToLookup(p=>p.Info.EntityState);
+            //var ids = breezeParticipants[b.EntityState.Modified].Select(p => p.Entity.Id);
+            //var usrs = Context.Users.Where(u => ids.Contains(u.Id)).ToDictionary(u=>u.Id); 
+            //realistically usually only 1 of these at a time
+            var pMap = (ParticipantMaps)MapperConfig.GetMap<Participant, ParticipantDto>();
+            var p = (ParticipantDto)currentInfo.Entity;
+            Participant u;
+            bool changed = false;
+            if (currentInfo.EntityState == b.EntityState.Modified)
             {
-                Participant u = usrs[p.Entity.Id];
-                foreach (var pi in IdentityUserDbProperties)
+                u = Context.Users.Find(p.Id);
+                pMap.UpdateParticipant(u, p);
+                changed = true;
+                try
                 {
-                    pi.SetValue(p, pi.GetValue(u));
+                    Context.SaveChanges();
+                }
+                catch(DbEntityValidationException ex)
+                {
+                    throw new EntityErrorsException(MapErrors(ex,p));
                 }
             }
-            foreach (var p in breezeParticipants[b.EntityState.Added])
+            else 
             {
-                object obj = null;
-                if (p.Info.OriginalValuesMap?.TryGetValue("password", out obj) == true)
+                u = pMap.TypedMapToDomain(p);
+                if (currentInfo.EntityState == b.EntityState.Added)
                 {
-                    p.Entity.PasswordHash = PasswordHasher((string)obj);
+                    object o = null;
+                    currentInfo.UnmappedValuesMap?.TryGetValue("Password", out o);
+                    IEnumerable<MappedEFEntityError> errs;
+                    try
+                    {
+                        errs = CreateUser(u, (string)o)
+                            .Select(e => MappedEFEntityError.Create(p, userValErrName,e ,PropName(e))).ToList();
+                    }
+                    catch(DbEntityValidationException ex)
+                    {
+                        errs = MapErrors(ex,p);
+                    }
+                    if (errs.Any())
+                    {
+                        throw new EntityErrorsException(errs);
+                    }
+                    changed = true;
                 }
-                
             }
+            var rv = currentInfo.ContextProvider.CreateEntityInfo(u, changed ? b.EntityState.Unchanged : currentInfo.EntityState);
+            rv.OriginalValuesMap = currentInfo.OriginalValuesMap;
+            rv.UnmappedValuesMap = currentInfo.UnmappedValuesMap;
+            return rv;
+        }
+        const string userValErrName = "User Validation";
+        static IEnumerable<MappedEFEntityError> MapErrors(DbEntityValidationException ex, ParticipantDto participant)
+        {
+            return ex.EntityValidationErrors.SelectMany(e => e.ValidationErrors)
+                .Select(e => {
+                    return MappedEFEntityError.Create(participant, userValErrName, e.ErrorMessage, PropName(e.PropertyName));
+                });
+        }
+
+        static string PropName(string name)
+        {
+            int spacePos = name.IndexOf(' ');
+            if (spacePos > -1)
+            {
+                name = name.Substring(0, spacePos);
+            }
+            return name.Equals("name", StringComparison.InvariantCultureIgnoreCase)
+                        ? "UserName" : name;
         }
 
         IEnumerable<EntityError> GetCourseFormatErrors(List<EntityInfo> currentInfos)
@@ -578,7 +642,8 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                             var toRemove = Context.UserRoles.Where(ur => ur.UserId == userId);
                             Context.UserRoles.RemoveRange(toRemove);
                         };
-                        p.Info.UnmappedValuesMap.Add(AfterUpdateDelegate, pred);
+                        (p.Info.UnmappedValuesMap ?? (p.Info.UnmappedValuesMap = new Dictionary<string, object>()))
+                            .Add(AfterUpdateDelegate, pred);
                     }
                 }
             }

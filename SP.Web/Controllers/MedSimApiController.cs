@@ -42,16 +42,31 @@ namespace SP.Web.Controllers
                         }
                         CreateParticipantEmails.RescheduleReadings(course, _repository.Context);
                     },
-                    PasswordHasher = PasswordHasher
+                    CreateUser = CreateUser
                 });
             }
         }
 
         ApplicationUserManager _userManager;
-        private string PasswordHasher(string plainTextPwd)
+        private ApplicationUserManager UserManager
         {
-            return (_userManager ?? (_userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>()))
-                .PasswordHasher.HashPassword(plainTextPwd);
+            get
+            {
+                return _userManager ?? (_userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>());
+            }
+        }
+
+        private IEnumerable<string> CreateUser(DataAccess.Participant participant, string password)
+        {
+            var errs = Task.Run(() => UserManager.UserValidator.ValidateAsync(participant)).Result.Errors;
+            if (errs.Any()) { return errs; }
+            if (string.IsNullOrEmpty(password))
+            {
+                return UserManager.Create(participant).Errors;
+            }
+            errs = Task.Run(()=>UserManager.PasswordValidator.ValidateAsync(password)).Result.Errors;
+            if (errs.Any()) { return errs; }
+            return UserManager.Create(participant, password).Errors;
         }
 
         [HttpPost]

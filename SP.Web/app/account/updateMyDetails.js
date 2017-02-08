@@ -14,15 +14,20 @@
 
         abstractUserDetails.constructor.call(this, { $scope: $scope, $routeParams: $routeParams, controllerId: controllerId });
 
-        vm.passwordRequired = false;
+        vm.passwordRequired = vm.isLoggedIn;
         vm.submit = submit;
+
+        vm.user = {
+            newPassword: '',
+            confirmPassword: ''
+        };
 
         vm.activate();
 
         function submit(form) {
             if (form.$valid) {
-                if (vm.user.password) {
-                    vm.participant.password = user.password;
+                if (vm.user.newPassword) {
+                    vm.participant.password = vm.user.newPassword;
                 }
                 vm.save().then(function () {
                     if (vm.isNew) {

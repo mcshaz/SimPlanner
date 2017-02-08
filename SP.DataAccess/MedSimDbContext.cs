@@ -443,7 +443,15 @@ namespace SP.DataAccess
         {
             SetTimeTracking();
 
-            return base.SaveChangesAsync();
+            try
+            {
+                return base.SaveChangesAsync();
+            }
+            catch (DbEntityValidationException e)
+            {
+                var de = new DetailedEntityValidationException(e);
+                throw de;
+            }
         }
 
         public override int SaveChanges()
@@ -535,10 +543,11 @@ namespace SP.DataAccess
     }
 
     [Serializable]
-    public class DetailedEntityValidationException : Exception
+    public class DetailedEntityValidationException : DbEntityValidationException
     {
         public DetailedEntityValidationException(DbEntityValidationException ve)
-            : base(ve.Message + ":\r\n\t-" + string.Join(new string('-',20) + "\r\n\t-", ve.EntityValidationErrors.Select(ev=>string.Join("\r\n\t-",ev.ValidationErrors.Select(e=>e.ErrorMessage)))))
-        {}
+            : base(string.Join(new string('-',10) + "\r\n", ve.EntityValidationErrors.Select(ev=>string.Join("\r\n",ev.ValidationErrors.Select(e=>e.ErrorMessage)))), ve.EntityValidationErrors)
+        {
+        }
     }
 }

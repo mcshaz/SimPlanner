@@ -112,6 +112,7 @@
 
         function extendParticipant(metadataStore) {
             var ParticipantCtor = function () {
+                this.password = null;
             };
 
             ParticipantCtor.prototype.mailto = function () {

@@ -20,6 +20,9 @@ namespace SP.Metadata
         public string AlternateEmail { get; set; }
         [Required]
         [StringLength(256)]
+        public string UserName { get; set; }
+        [Required]
+        [StringLength(256)]
         [PersonFullName]
         public string FullName { get; set; }
         [StringLength(256)]

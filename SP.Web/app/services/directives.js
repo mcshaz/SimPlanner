@@ -87,6 +87,7 @@
             link: function (scope, element, attributes, ngModel) {
 
                 ngModel.$validators.validPassword = function (modelValue) {
+                    if (!modelValue) { return true; }//job of required validaor
                     var containsDigit = /[0-9]/.test(modelValue);
                     var containsLC = /[a-z]/.test(modelValue);
                     var containsUC = /[A-Z]/.test(modelValue);

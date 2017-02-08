@@ -6,16 +6,16 @@
 </div>
 
 <div class="form-group">
-    <label for="username" class="control-label col-md-2">Username</label>
+    <label for="email" class="control-label col-md-2">Work Email</label>
     <div class="col-md-10">
-        <input class="form-control" id="username" type="text" ng-model="vm.participant.userName" data-z-validate />
+        <input class="form-control" type="text" id="email" data-z-validate ng-model="vm.participant.email" ng-change="vm.emailChanged(userDetailsForm.username)"/>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="email" class="control-label col-md-2">Work Email</label>
+    <label for="username" class="control-label col-md-2">Username</label>
     <div class="col-md-10">
-        <input class="form-control" type="text" id="email" data-z-validate ng-model="vm.participant.email" />
+        <input class="form-control" id="username" type="text" ng-model="vm.participant.userName" name="username" data-z-validate />
     </div>
 </div>
 
