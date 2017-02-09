@@ -7,13 +7,13 @@
         return function (object, option) {
             if (typeof object === 'object') {
                 if (Array.isArray(object)) {
-                    object = object.map(el => topOfObject(el, option.objectProperties));
+                    object = object.map(function (el) { topOfObject(el, option.objectProperties); });
                 } else {
                     object = topOfObject(object, option.objectProperties);
                 }
             }
             if (option.pretty){
-                return JSON.stringify(object, null, '\t').replace(/\t/g, '&nbsp;').replace(/\n/g, '<br>')
+                return JSON.stringify(object, null, '\t').replace(/\t/g, '&nbsp;').replace(/\n/g, '<br>');
             }
             return JSON.stringify(object);
         };
@@ -33,7 +33,7 @@
                     returnVar[p] = v;
                 }
             }
-        };
+        }
         return returnVar;
     }
 })();

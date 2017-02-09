@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "toastr": "*",
-    "angular-bootstrap-calendar": "^0.27.5",
+    "angular-bootstrap-calendar": "^0.28.0",
     "angular-strap": "^2.3.12",
     "angular-moment": "*",
     "ckeditor": "*",
