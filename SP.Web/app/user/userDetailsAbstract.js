@@ -52,7 +52,7 @@
                 datacontext.ready().then(function () {
                     promises.push(datacontext.institutions.all({ expand: 'culture' }).then(function (data) {
                         vm.institutions = data;
-                    }))
+                    }));
                     if (vm.isNew) {
                         vm.participant = datacontext.participants.create({adminApproved:true, emailOnCreate:true});
                         alertMessage = "Create User";

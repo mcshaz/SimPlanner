@@ -14,8 +14,8 @@
             DOMTokenList.prototype.remove.apply(_progressDiv.classList, ["active"].concat(levels));
             return;
         }
-        var newLevel = levels[Math.trunc(levels.length * percent / 100)];
-
+        var newLevel = levels[Math.floor(levels.length * percent / 100)];
+        //note math.trunc not supported in ie
         _progressDiv.style.width = percent + '%';
         _progressDiv.setAttribute('aria-valuenow', percent);
         _progressDiv.classList.add("active");
