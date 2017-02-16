@@ -27,7 +27,12 @@ namespace SP.Web
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
+            /*
+            config.Routes.MapHttpRoute(
+                name: "DefaultVideo",
+                routeTemplate: "api/{controller}/{ext}/{filename}"
+            );
+            */
             config.Routes.MapHttpRoute(
                 name: "NotFound",
                 routeTemplate: "{*path}",

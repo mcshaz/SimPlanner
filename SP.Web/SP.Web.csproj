@@ -561,6 +561,8 @@
     <Content Include="app\account\forgotPassword.js" />
     <Content Include="app\account\changePassword.html" />
     <Content Include="app\account\changePassword.js" />
+    <Content Include="app\tutorials\videos.html" />
+    <Content Include="app\tutorials\videos.js" />
     <Content Include="app\user\updateUser.html" />
     <Content Include="app\user\updateUser.js" />
     <Content Include="app\user\userDetails.html" />
@@ -579,13 +581,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\styles.css" />
+    <Content Include="Content\videogular.css" />
     <Content Include="dist\android-chrome-192x192.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="dist\apple-touch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dist\css\main-a119d517e0.min.css" />
+    <Content Include="dist\css\main-744ff04612.min.css" />
     <Content Include="dist\css\ui-grid.eot" />
     <Content Include="dist\css\ui-grid.svg" />
     <Content Include="dist\css\ui-grid.ttf" />
@@ -612,7 +615,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-5d37c50ee9.min.js" />
+    <Content Include="dist\js\main-100d40e756.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -636,6 +639,9 @@
     <Content Include="UserEmails\Inky\LayoutTemplate.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>LayoutTemplate.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="VideoStreaming\How to register on sim-planner website.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -664,6 +670,7 @@
     <Compile Include="Controllers\UtilitiesController.cs" />
     <Compile Include="Controllers\MedSimApiController.cs" />
     <Compile Include="Controllers\SummaryDataController.cs" />
+    <Compile Include="Controllers\VideosController.cs" />
     <Compile Include="Models\CoursePlanningBindingModel.cs" />
     <Compile Include="Models\CultureFormatModel.cs" />
     <Compile Include="Models\DowloadFileSetModel.cs" />
@@ -789,6 +796,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReverseConfirmation.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="VideoStreaming\VideoStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -902,7 +910,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="app\tutorial\" />
     <Folder Include="Content\images\institutions\" />
     <Folder Include="Content\videos\" />
     <Folder Include="wwwroot\css\" />

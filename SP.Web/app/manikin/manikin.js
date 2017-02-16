@@ -3,12 +3,12 @@
     var controllerId = 'manikin';
     angular
         .module('app')
-        .controller(controllerId, courseTypesCtrl);
+        .controller(controllerId, manikinCtrl);
 
-    courseTypesCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http', '$locale', '$modal'];
+    manikinCtrl.$inject = ['common', 'datacontext', '$routeParams', 'controller.abstract', '$scope', '$http', '$locale', '$modal'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, datacontext, $routeParams, abstractController, $scope, $http, $locale,$modal) {
+    function manikinCtrl(common, datacontext, $routeParams, abstractController, $scope, $http, $locale, $modal) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {

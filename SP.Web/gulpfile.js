@@ -32,8 +32,8 @@ gulp.task('html', function(cb){
     //var glob primer - https://www.npmjs.com/package/glob
     var jsFilter = filter("**/*.js", { restore: true });
     var cssFilter = filter("**/*.css", { restore: true });
-    var fontFoldersToMove = ["./wwwroot/lib/*/fonts/*.*"];
-    var fontFilesToMove = ["./wwwroot/lib/*/*.{eot,svg,ttf,woff,woff2}"];
+    var fontFoldersToMove = ["./wwwroot/lib/*/fonts/*.*",""];
+    var fontFilesToMove = ["./wwwroot/lib/*/*.{eot,svg,ttf,woff,woff2}", "./wwwroot/lib/videogular-themes-default/videogular.min.css"];
     var imageFilesToMove = ["./wwwroot/lib/world-flags-sprite/images/*.png"];
     var debugFilename = 'index_debug';
 
@@ -67,6 +67,7 @@ gulp.task('html', function(cb){
 
     gulp.src(fontFilesToMove)
         .pipe(rename({ dirname: '' }))
+        .pipe(replace(/\bfonts\/videogular\./g, '../fonts/videogular.'))
         .pipe(gulp.dest('dist/css'));
 
     gulp.src(imageFilesToMove)

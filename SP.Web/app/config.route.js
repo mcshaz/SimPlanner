@@ -291,12 +291,22 @@
                             allowedRoles: userRoles.anonymous
                         }
                     }
+                },{
+                    url: '/tutorials',
+                    config: {
+                        templateUrl: 'app/tutorials/videos.html',
+                        title: 'Tutorials',
+                        settings: {
+                            nav: 10,
+                            content: '<i class="fa fa-graduation-cap"></i> Tutorials'
+                        }
+                    }
                 }, {
                     url: '/register',
                     config: {
                         title: 'Register',
                         templateUrl: 'app/approval/beginSubmission.html', settings: {
-                            nav: 10,
+                            nav: 11,
                             content: '<i class="fa fa-user-plus"></i> Register'
                         },
                         access: {
@@ -309,7 +319,7 @@
                         title: 'Invite Faculty',
                         templateUrl: 'app/facultyInvites/facultyInvites.html',
                         settings: {
-                            nav: 11,
+                            nav: 12,
                             content: '<i class="fa fa-binoculars"></i> Find Faculty'
                         },
                         access: {
@@ -322,7 +332,7 @@
                         title: 'My Invitations',
                         templateUrl: 'app/myCourseInvites/myCourseInvites.html',
                         settings: {
-                            nav: 12,
+                            nav: 13,
                             content: '<i class="fa fa-envelope"> Pending Invites'
                         },
                         access: {

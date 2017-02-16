@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 
 namespace SP.Web.VideoStreaming
 {
@@ -11,12 +14,12 @@ namespace SP.Web.VideoStreaming
     {
         private readonly string _filename;
 
-        public VideoStream(string filename, string ext)
+        public VideoStream(string filename, string ext = "mp4")
         {
-            _filename = @"C:UsersFilipDownloads" + filename + "." + ext;
+            _filename = HostingEnvironment.MapPath(@"~/VideoStreaming/").Replace('/','\\')
+                + filename + "." + ext;
         }
-
-        public async void WriteToStream(Stream outputStream, HttpContent content, TransportContext context)
+        public async Task WriteToStream(Stream outputStream, HttpContent content, TransportContext context)
         {
             try
             {

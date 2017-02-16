@@ -2142,13 +2142,8 @@
         {
           "name": "userName",
           "dataType": "String",
-          "isNullable": false,
-          "defaultValue": "",
           "maxLength": 256,
           "validators": [
-            {
-              "name": "required"
-            },
             {
               "maxLength": 256,
               "name": "maxLength"
