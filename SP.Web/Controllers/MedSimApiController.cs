@@ -152,6 +152,13 @@ namespace SP.Web.Controllers
         }
 
         [HttpGet, EnableMappedBreezeQuery]
+        public IQueryable<ScenarioResourceDto> ScenarioResources(ODataQueryOptions options)
+        {
+            var iso = new IncludeSelectOptions(options);
+            return Repo.GetScenarioResources(iso.Includes, iso.Selects, IncludeSelectOptions.Seperator);
+        }
+
+        [HttpGet, EnableMappedBreezeQuery]
         public IQueryable<CourseSlotDto> CourseSlots(ODataQueryOptions options)
         {
             var iso = new IncludeSelectOptions(options);

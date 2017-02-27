@@ -2,7 +2,7 @@
     <section class="matter">
         <div class="container">
             <ul class="list-unstyled">
-                <li ng-repeat="c in vm.cultures track by c.id">
+                <li ng-repeat="c in vm.cultures track by c.localeCode">
                     <h3 class="f32">
                         <i ng-class="c.flagClass"></i> {{c.name}} 
                     </h3> 

@@ -195,6 +195,11 @@ namespace SP.Dto
             return Context.Scenarios.ProjectToDto<Scenario, ScenarioDto>(_currentUser, includes, selects, sepChar);
         }
 
+        public IQueryable<ScenarioResourceDto> GetScenarioResources(string[] includes, string[] selects, char sepChar = '.')
+        {
+            return Context.ScenarioResources.ProjectToDto<ScenarioResource, ScenarioResourceDto>(_currentUser, includes, selects, sepChar);
+        }
+
         public IQueryable<ManikinServiceDto> GetManikinServices(string[] includes, string[] selects, char sepChar = '.')
         {
             return Context.ManikinServices.ProjectToDto<ManikinService, ManikinServiceDto>(_currentUser, includes, selects, sepChar);
