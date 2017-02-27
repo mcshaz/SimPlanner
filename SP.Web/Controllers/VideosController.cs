@@ -23,5 +23,18 @@ namespace SP.Web.Controllers
 
             return response;
         }
+        /*
+        [HttpGet]
+        [ActionName("dash")]
+        public HttpResponseMessage Dash(string id)
+        {
+            var video = new VideoStream(id);
+
+            var response = Request.CreateResponse();
+            response.Content = new PushStreamContent(video.WriteToStream, new MediaTypeHeaderValue("video/mp4"));
+
+            return response;
+        }
+        */
     }
 }

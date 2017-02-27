@@ -7,8 +7,14 @@
                     <div class="form-group">
                         <label for="courseType" class="control-label col-md-2">Course Type</label>
                         <div class="col-md-8">
-                            <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypesForPrincipal track by ct.id"
-                                    data-ng-model="vm.selectedCourseType"></select>
+                           <select id="courseType" class="form-control" data-z-validate data-ng-options="ct as ct.description for ct in vm.courseTypesForPrincipal track by ct.id"
+                                        data-ng-model="vm.selectedCourseType">
+
+                               <option ng-if="!vm.courseTypesForPrincipal.length" value="" selected>
+                                   You are not a course organiser for any upcoming courses
+                               </option>
+                           </select>
+
                         </div>
                     </div>
                     <table class="table table-striped">

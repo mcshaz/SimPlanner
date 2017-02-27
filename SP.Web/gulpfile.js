@@ -90,6 +90,13 @@ gulp.task('images', function () {
       .pipe(gulp.dest('dist/images'));
 });
 
+gulp.task('videos', function () {
+    return gulp.src('VideoStreaming/*.mpd')
+      // Caching images that ran through imagemin
+      .pipe(replace(/<BaseURL>(.*)\.mp4<\/BaseURL>/, '<BaseURL>api/videos/dash/$1</BaseURL>'))
+      .pipe(gulp.dest('dist/videos'));
+});
+
 // Copying fonts 
 gulp.task('fonts', function () {
     return gulp.src('app/fonts/**/*')

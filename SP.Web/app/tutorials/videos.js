@@ -55,13 +55,24 @@
             $timeout(api.play.bind(api), 100);
         }
 
+        //http://stackoverflow.com/questions/9582463/vlc-how-to-convert-from-mp4-to-webm#28629749
+        //https://msdn.microsoft.com/en-us/library/dn551368(v=vs.85).aspx
+        //admin 
+        //cd C:\Program Files\GPAC
+        //https://www.radiantmediaplayer.com/guides/working-with-ffmpeg.html#ffmpeg-h264
+        //
+        //https://www.radiantmediaplayer.com/guides/working-with-mp4box.html
+        //"C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\VideoStreaming\How to register on sim-planner website.mp4"
+        // -profile dashavc264:onDemand
         function createSources(sourceArray) {
             return sourceArray.map(function (el) {
-                var src = "api/videos/stream/" + encodeURIComponent(el) + "?ext=";
+                var encoded = encodeURIComponent(el);
+                var src = "api/videos/stream/" + encoded + "?ext=";
                 return {
-                    sources: ["mp4"].map(function(vf){
-                        return { src: $sce.trustAsResourceUrl(src + vf), type: "video/" + vf }
-                    })
+                    sources: //[{ src: "videos/" + encoded + "_dash.mpd" }].concat(
+                        ["mp4","webm","ogv"].map(function(vf){
+                            return { src: $sce.trustAsResourceUrl(src + vf), type: "video/" + vf }
+                        })
                 };
             });
         }

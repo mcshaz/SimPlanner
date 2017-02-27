@@ -588,7 +588,7 @@
     <Content Include="dist\apple-touch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dist\css\main-744ff04612.min.css" />
+    <Content Include="dist\css\main-3a5f4059a4.min.css" />
     <Content Include="dist\css\ui-grid.eot" />
     <Content Include="dist\css\ui-grid.svg" />
     <Content Include="dist\css\ui-grid.ttf" />
@@ -615,7 +615,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-100d40e756.min.js" />
+    <Content Include="dist\js\main-4002e7901e.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -898,6 +898,12 @@
     <Content Include="UserEmails\MultiCourseInviteResonse.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>MultiCourseInviteResonse.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="VideoStreaming\How to register on sim-planner website.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VideoStreaming\How to register on sim-planner website.webm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

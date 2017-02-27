@@ -173,7 +173,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 .Concat(PermissionErrors<CandidatePrereadingDto>(saveMap,
                 c => HasCourseTypePermission(c.CourseTypeId)))
                 .Concat(PermissionErrors<CultureDto>(saveMap,
-                e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
+                e => CurrentUser.AdminLevel >= AdminLevels.InstitutionAdmin))
                 .Concat(PermissionErrors<CourseDto>(saveMap,
                 e => HasDepartmentPermission(e.DepartmentId)))
                 .Concat(PermissionErrors<CourseActivityDto>(saveMap,
@@ -228,7 +228,7 @@ namespace SP.Dto.ProcessBreezeRequests
                                              from ctd in ctsr.CourseType.CourseTypeDepartments
                                              select ctd.DepartmentId)))
                 .Concat(PermissionErrors<HotDrinkDto>(saveMap,
-                e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
+                e => CurrentUser.AdminLevel >= AdminLevels.InstitutionAdmin))
                 .Concat(PermissionErrors<InstitutionDto>(saveMap,
                 (e, state) => {
                     if (state == b.EntityState.Added)
@@ -244,7 +244,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 .Concat(PermissionErrors<ManikinDto>(saveMap,
                 e => HasDepartmentPermission(e.DepartmentId)))
                 .Concat(PermissionErrors<ManikinManufacturerDto>(saveMap,
-                e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
+                e => CurrentUser.AdminLevel >= AdminLevels.InstitutionAdmin))
                 //TODO: neaten up
                 //for now, any update or create operation
                 .Concat(PermissionErrors<ParticipantDto>(saveMap,
@@ -267,7 +267,7 @@ namespace SP.Dto.ProcessBreezeRequests
                     return true;
                 }))
                 .Concat(PermissionErrors<ProfessionalRoleDto>(saveMap,
-                e => CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin))
+                e => CurrentUser.AdminLevel >= AdminLevels.InstitutionAdmin))
                 .Concat(PermissionErrors<ProfessionalRoleInstitutionDto>(saveMap,
                 e => HasInstitutionPermission(e.InstitutionId)))
                 .Concat(PermissionErrors<RoomDto>(saveMap,
@@ -290,7 +290,7 @@ namespace SP.Dto.ProcessBreezeRequests
                                 return true;
                             }
                             var departmentId = DepartmentForUser(e.UserId, saveMap);
-                            return CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin
+                            return CurrentUser.AdminLevel >= AdminLevels.InstitutionAdmin
                                     && departmentId.HasValue && CurrentUser.UserDepartmentAdminIds.Contains(departmentId.Value);
                         case RoleConstants.AccessDepartment:
                             if (CurrentUser.AdminLevel == AdminLevels.AllData)
@@ -298,7 +298,7 @@ namespace SP.Dto.ProcessBreezeRequests
                                 return true;
                             }
                             var dptId = DepartmentForUser(e.UserId, saveMap);
-                            return dptId.HasValue && (CurrentUser.AdminLevel == AdminLevels.InstitutionAdmin
+                            return dptId.HasValue && (CurrentUser.AdminLevel >= AdminLevels.InstitutionAdmin
                                         || CurrentUser.AdminLevel == AdminLevels.DepartmentAdmin)
                                     && CurrentUser.UserDepartmentAdminIds.Contains(dptId.Value);
                         case RoleConstants.DptManikinBookings:
