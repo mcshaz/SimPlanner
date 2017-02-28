@@ -46,12 +46,12 @@
                 var pred = breeze.Predicate.create('isOrganiser', '==', true)
                     .and(breeze.Predicate.create('participantId', '==', tokenStorageService.getUserId()));
                 pred = breeze.Predicate.create('courseParticipants', 'any', pred)
-                    .and(breeze.Predicate.create('startUtc', '>', new Date()));
+                    .and(breeze.Predicate.create('startFacultyUtc', '>', new Date()));
                 common.activateController([vm.baseReady,
                     datacontext.courseTypes.all().then(function (data) {
                         vm.allCourseTypes = data;
                     }),
-                    datacontext.courses.find({ where: pred, expand: 'courseParticipants', orderBy: 'startUtc' }).then(function (data) {
+                    datacontext.courses.find({ where: pred, expand: 'courseParticipants', orderBy: 'startFacultyUtc' }).then(function (data) {
                         vm.courses = data;
                         var cts = new Set(data.map(function (c) {
                             return c.courseFormat.courseType;
@@ -80,7 +80,7 @@
             if (vm.completedCourseTypeId) {
                 var pred = breeze.Predicate.create('course.courseFormat.courseTypeId', '==', vm.completedCourseTypeId)
                     .and('isConfirmed', '!=', 'false')
-                    .and('course.startUtc', '<', new Date());
+                    .and('course.startFacultyUtc', '<', new Date());
                 facultyLimitPred = [breeze.Predicate.create('courseParticipants', 'any', pred)];
             } else {
                 facultyLimitPred = [];

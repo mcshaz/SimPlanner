@@ -27,11 +27,11 @@
         function activate() {
             datacontext.ready().then(function () {
                 userId = tokenStorageService.getUserId();
-                var pred = breeze.Predicate.create('startUtc', '>', new Date())
+                var pred = breeze.Predicate.create('startFacultyUtc', '>', new Date())
                     .and('facultyInvites', 'any', 'participantId', '==', userId)
                     .and(breeze.Predicate.create('courseParticipants', 'any', 'participantId', '==', userId).not());
                 common.activateController([
-                    datacontext.courses.find({ where: pred, expand: 'courseParticipants', orderBy: 'startUtc' }).then(function (data) {
+                    datacontext.courses.find({ where: pred, expand: 'courseParticipants', orderBy: 'startFacultyUtc' }).then(function (data) {
                         var trackedCourseIds;
                         var stop;
                         vm.courses = data;

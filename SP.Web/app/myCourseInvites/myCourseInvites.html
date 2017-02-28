@@ -16,7 +16,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="course in vm.courses track by course.id">
-                                <td>{{course.startUtc | amDateFormat:'llll'}} - {{course.finish | amDateFormat:'llll'}}</td>
+                                <td>{{course.startFacultyUtc | amDateFormat:'llll'}} - {{course.finish | amDateFormat:'llll'}}</td>
                                 <td>{{course.courseFormat.typeFormatDescriptor}}</td>
                                 <td>{{course.department.abbreviation}}</td>
                                 <td>{{course.facultyCount}}/{{course.facultyNoRequired}}</td>

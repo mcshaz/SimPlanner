@@ -42,8 +42,8 @@
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </span>
-                                        <input id="startDate" class="form-control" ng-model="cd.startUtc" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
-                                               data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" ng-change="vm.dateChanged(cd.startUtc,'startUtc',cd)" />
+                                        <input id="startDate" class="form-control" ng-model="cd.startFacultyUtc" data-autoclose="1" placeholder="Date" bs-datepicker type="text"
+                                               data-min-date="{{vm.minDate}}" data-max-date="{{vm.maxDate}}" z-validate z-append-to="#startTimeGroup" ng-change="vm.dateChanged(cd.startFacultyUtc,'startFacultyUtc',cd)" />
                                     </div>
                                 </div>
                                 <div class="col-md-5">
@@ -51,7 +51,7 @@
                                         <span class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </span>
-                                        <input class="form-control" ng-model="cd.startUtc" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" ng-change="vm.timeUpdated(cd)"/>
+                                        <input class="form-control" ng-model="cd.startFacultyUtc" data-time-format="shortTime" data-autoclose="1" placeholder="Time" bs-timepicker type="text" ng-change="vm.timeUpdated(cd)"/>
                                     </div>
                                 </div>
                             </div>

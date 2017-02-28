@@ -141,11 +141,11 @@
                 var msOffset = vm.course.courseFormat.defaultStartMsOffset();
                 dateInst.setHours(Math.floor(msOffset / 3600000), msOffset % 3600000 / 60000);
             }
-            if (propName === 'startUtc') {
-                if (courseDay === vm.courseDays[0] && vm.courseDays.every(function(cd,indx){return indx===1 || !cd.startUtc;})){
-                    var date = vm.courseDays[0].startUtc;
+            if (propName === 'startFacultyUtc') {
+                if (courseDay === vm.courseDays[0] && vm.courseDays.every(function(cd,indx){return indx===1 || !cd.startFacultyUtc;})){
+                    var date = vm.courseDays[0].startFacultyUtc;
                     for (var i=1; i<vm.courseDays.length; i++){
-                        vm.courseDays[i].startUtc = new Date(date).setDate(date.getDate() + i);
+                        vm.courseDays[i].startFacultyUtc = new Date(date).setDate(date.getDate() + i);
                     }
                 }
             } else if (propName === 'facultyMeeting') {
@@ -185,10 +185,10 @@
                 return;
             }
             adjustCourseDays();
-            if (vm.course.startUtc) {
-                dateChanged(vm.course.startUtc, "startUtc", vm.course);
+            if (vm.course.startFacultyUtc) {
+                dateChanged(vm.course.startFacultyUtc, "startFacultyUtc", vm.course);
                 //not updating in the UI at present
-                vm.course.startUtc = new Date(vm.course.startUtc);
+                vm.course.startFacultyUtc = new Date(vm.course.startFacultyUtc);
             }
         }
 

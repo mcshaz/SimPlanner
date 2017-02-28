@@ -76,7 +76,7 @@
                 datacontext.departments.all().then(function (data) {
                     vm.departments = selectOptionMaps.sortAndMapDepartment(data.filter(selectOptionMaps.filterLocalDepartments()));
                 })], controllerId).then(function () { //all loaded
-                    var slotTime = vm.course.startUtc;
+                    var slotTime = vm.course.startFacultyUtc;
                     var slotCount = 0;
                     var scenarioCount = 0;
                     //at the moment, department and institution are loaded at datacontex.ready,
@@ -326,7 +326,7 @@
                 return c.courseFormat.courseType.abbreviation + ' '
                     + c.courseFormat.abbreviation + ' '
                     + c.department.abbreviation + ' '
-                    + moment(c.startUtc).format('lll') + ' - '
+                    + moment(c.startFacultyUtc).format('lll') + ' - '
                     + moment(c.lastDay.finish).format('lll');
             }
         }

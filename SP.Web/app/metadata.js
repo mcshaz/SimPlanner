@@ -797,7 +797,7 @@
           "displayName": "Cancelled"
         },
         {
-          "name": "startUtc",
+          "name": "startFacultyUtc",
           "dataType": "DateTime",
           "isNullable": false,
           "defaultValue": "",
@@ -986,7 +986,7 @@
           "displayName": "Day"
         },
         {
-          "name": "startUtc",
+          "name": "startFacultyUtc",
           "dataType": "DateTime",
           "isNullable": false,
           "defaultValue": "",

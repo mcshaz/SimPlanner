@@ -64,7 +64,7 @@
 			}
 			
 			var predicate = dtRanges.map(function (el) {
-                return new breeze.Predicate.create('startUtc', '>=', el.start).and('startUtc','<=',el.finish);
+                return new breeze.Predicate.create('startFacultyUtc', '>=', el.start).and('startFacultyUtc','<=',el.finish);
 			}).reduce(function(a,b){ 
 				return a.or(b); 
 			});
@@ -116,7 +116,7 @@
                 secondary: course.department.secondaryColourHtml // the secondary event color (should be lighter than primary)
             },
             //safeClassName(course.department.abbreviation),
-            startsAt: course.startUtc,
+            startsAt: course.startFacultyUtc,
             endsAt: course.finish,
             draggable: true,
             resizable: true
@@ -127,7 +127,7 @@
         }
         return [day1].concat(course.courseDays.map(function (el) {
             var clone = angular.copy(day1);
-            clone.startsAt = el.startUtc;
+            clone.startsAt = el.startFacultyUtc;
             clone.endsAt = el.finish;
             clone.title += ' day '+ el.day;
             return clone;

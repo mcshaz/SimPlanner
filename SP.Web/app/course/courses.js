@@ -157,11 +157,11 @@
             };
             var term = grid.columns[7].filters[0].term;
             if (term) {
-                predicates.push(breeze.Predicate.create('startUtc', '>=', term));
+                predicates.push(breeze.Predicate.create('startFacultyUtc', '>=', term));
             }
             term = grid.columns[7].filters[1].term;
             if (term) {
-                predicates.push(breeze.Predicate.create('startUtc', '<=', term));
+                predicates.push(breeze.Predicate.create('startFacultyUtc', '<=', term));
             }
             var dptHash = { d: 'departmentId', i: 'department.institutionId' };
             createIdPredicate(dptHash, grid.columns[1].filters[0].term);
@@ -234,7 +234,7 @@
                         totalDurationMins: el.totalDurationMins,
                         participantCount: el.participantCount,
                         facultyCount: el.facultyCount,
-                        start: el.startUtc,
+                        start: el.startFacultyUtc,
                         id: el.id
                     };
                 });

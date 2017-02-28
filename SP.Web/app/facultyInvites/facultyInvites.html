@@ -28,7 +28,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="course in vm.courses track by course.id">
-                                <td>{{course.startUtc | amDateFormat:'llll'}}</td>
+                                <td>{{course.startFacultyUtc | amDateFormat:'llll'}}</td>
                                 <td>{{course.facultyCount}}</td>
                                 <td><input type="number" step="1" ng-model="course.facultyNoRequired" min="1" /></td>
                                 <td><input type="checkbox" ng-model="course.invite" ng-disabled="course.facultyCount >= course.facultyNoRequired" /></td>

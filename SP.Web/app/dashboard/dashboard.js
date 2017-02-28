@@ -44,8 +44,8 @@
             return $q.all([
                 datacontext.ready(),
                 datacontext.courses.find({
-                    where: breeze.Predicate.create('startUtc', '>', now),
-                    orderBy: 'startUtc',
+                    where: breeze.Predicate.create('startFacultyUtc', '>', now),
+                    orderBy: 'startFacultyUtc',
                     take: 5,
                     expand: 'courseParticipants'
                     //select: 'id,startTime,courseParticipants,roomId'

@@ -285,7 +285,7 @@
 
             //comes after
             var courseEntity = metadataStore.getEntityType('CourseDto');
-            var comesBeforeStart = validator.comesBeforeValidatorFactory(courseEntity.getProperty('startUtc'));
+            var comesBeforeStart = validator.comesBeforeValidatorFactory(courseEntity.getProperty('startFacultyUtc'));
             courseEntity.getProperty('facultyMeeting').validators.push(comesBeforeStart);
 
             //no repeat activity name
@@ -295,10 +295,10 @@
         }
 
         function getFinish() {
-            if (!this.startUtc) {
-                return this.startUtc;
+            if (!this.startFacultyUtc) {
+                return this.startFacultyUtc;
             }
-            return new Date(this.startUtc.getTime() + this.durationMins * 60000);
+            return new Date(this.startFacultyUtc.getTime() + this.durationMins * 60000);
         }
 
     }
