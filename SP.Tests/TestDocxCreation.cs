@@ -10,26 +10,33 @@ namespace SP.Tests
     [TestClass]
     public class TestDocxCreation
     {
-        [TestMethod]
-        public void TestCreateTimetableDocx()
-        {
-            const string templ = @"C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\App_Data\CourseTimeTableTemplate.docx";
+        const string templ = @"C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web\App_Data\CourseTimeTableTemplate.docx";
 
+        [TestMethod]
+        public void TestCreateTimetablesDocx()
+        {
             Course course;
             using (var db = new MedSimDbContext())
             {
-                var testId = Guid.Parse("f1afbbbb-b72f-43f4-8b36-7837fe8d1b80");
+                var testId = Guid.Parse("0237b617-022c-4bed-8ce3-48356a86e63f");//"f1afbbbb-b72f-43f4-8b36-7837fe8d1b80"
                 course = CreateDocxTimetable.GetCourseIncludes(db).First(c=>c.Id == testId);
                 
-                using (var stream = CreateDocxTimetable.CreateFullTimetableDocx(course, templ))
+                using (var stream = CreateDocxTimetable.CreateTimetableDocx(course, templ, true))
                 {
-                    using (var fileStream = new FileStream("testCourseTimetable.docx", FileMode.Create))
+                    using (var fileStream = new FileStream("testCourseFacultyTimetable.docx", FileMode.Create))
+                    {
+                        stream.WriteTo(fileStream);
+                    }
+                }
+
+                using (var stream = CreateDocxTimetable.CreateTimetableDocx(course, templ, false))
+                {
+                    using (var fileStream = new FileStream("testCourseParticipantTimetable.docx", FileMode.Create))
                     {
                         stream.WriteTo(fileStream);
                     }
                 }
             }
-
         }
 
         [TestMethod]

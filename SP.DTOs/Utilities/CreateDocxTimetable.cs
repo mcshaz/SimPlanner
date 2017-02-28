@@ -43,7 +43,7 @@ namespace SP.Dto.Utilities
 
         static IList<TimetableRow> GetTimeTableRows(Course course)
         {
-            var start = course.StartLocal;
+            var start = course.StartFacultyLocal;
             int scenarioCount = 0;
             var csps = course.CourseSlotPresenters.ToLookup(c=>c.CourseSlotId);
             //var csfrs = course.CourseScenarioFacultyRoles.ToLookup(c => c.CourseSlotId);
@@ -55,6 +55,7 @@ namespace SP.Dto.Utilities
                     var ttr = new TimetableRow
                     {
                         LocalStart = start,
+                        IsFacultyOnly = cs.FacultyOnly
                     };
                     CourseSlotActivity activity;
                     csas.TryGetValue(cs.Id, out activity);
@@ -81,7 +82,7 @@ namespace SP.Dto.Utilities
             return returnVar;
         }
 
-        public static void InsertBasicTimeTable(MainDocumentPart mainPart, Course course)
+        public static void InsertBasicTimeTable(MainDocumentPart mainPart, Course course, bool isFaculty)
         {
             IFormatProvider prov = course.Department.Institution.Culture.CultureInfo;
 
@@ -114,7 +115,7 @@ namespace SP.Dto.Utilities
                         replaceVal = course.CourseFormat.Description;
                         break;
                     case "CourseStart":
-                        replaceVal = course.StartLocal.ToString("D", prov);
+                        replaceVal = (isFaculty?course.StartFacultyLocal:course.StartParticpantLocal).ToString("D", prov);
                         break;
                     case "CourseTypeAbbreviation":
                         replaceVal = course.CourseFormat.CourseType.Abbreviation;
@@ -158,6 +159,11 @@ namespace SP.Dto.Utilities
             TableRow slotRow = classifiedMergeFields[MergeClassification.Slot].First().First().FindFirstAncestor<TableRow>();
             var ttrs = GetTimeTableRows(course);
 
+            if (!isFaculty)
+            {
+                ttrs = ttrs.Where(r => !r.IsFacultyOnly).ToList();
+            }
+
             slotRow.CloneElement(ttrs, (mergeFieldName, ttr) =>
             {
                 switch (mergeFieldName)
@@ -165,7 +171,7 @@ namespace SP.Dto.Utilities
                     case "SlotStart":
                         return ttr.LocalStart.ToString("t", prov);
                     case "SlotActivity":
-                        return ttr.SlotActivity ?? string.Empty;
+                        return isFaculty ? (ttr.SlotActivity ?? string.Empty) : string.Empty;
                     case "SlotName":
                         return ttr.SlotName;
                     case "SlotFaculty":
@@ -190,53 +196,21 @@ namespace SP.Dto.Utilities
                 // Get the MainPart of the document
             return document;
         }
-        public static DualTimetable CreateBothTimetables(Course course, string sourceFile)
+
+        public static MemoryStream CreateTimetableDocx(Course course, string sourceFile, bool isFaculty)
         {
-            MemoryStream facultyStream;
-            using (var facultyDoc = CreateDoc(sourceFile, out facultyStream))
+            MemoryStream stream;
+            using (var doc = CreateDoc(sourceFile, out stream))
             {
-                var mainFacultyPart = facultyDoc.MainDocumentPart;
-                InsertBasicTimeTable(mainFacultyPart, course);
-                var participantStream = new MemoryStream((int)facultyStream.Length);
-                facultyStream.CopyTo(participantStream);
-                using (var participantDoc = WordprocessingDocument.Open(participantStream, true))
+                var mainPart = doc.MainDocumentPart;
+                InsertBasicTimeTable(mainPart, course, isFaculty);
+                if (isFaculty)
                 {
-                    RemoveScenarios(participantDoc.MainDocumentPart);
+                    AddScenarios(mainPart, course);
                 }
-
-                AddScenarios(mainFacultyPart, course);
-
-                return new DualTimetable {
-                    FacultyTimetable = facultyStream,
-                    ParticipantTimetable = participantStream
-                };
-            }
-        }
-
-        public static MemoryStream CreateFullTimetableDocx(Course course, string sourceFile)
-        {
-            MemoryStream stream;
-            using (var doc = CreateDoc(sourceFile, out stream))
-            {
-                var mainPart = doc.MainDocumentPart;
-                InsertBasicTimeTable(mainPart, course);
-                AddScenarios(mainPart, course);
                 return stream;
             }
         }
-
-        public static MemoryStream CreateTimetableEventsDocx(Course course, string sourceFile)
-        {
-            MemoryStream stream;
-            using (var doc = CreateDoc(sourceFile, out stream))
-            {
-                var mainPart = doc.MainDocumentPart;
-                InsertBasicTimeTable(mainPart, course);
-                RemoveScenarios(mainPart);
-                return stream;
-            }
-        }
-
 
         private static List<OpenXmlElement> GetScenarioEls(MainDocumentPart doc)
         {
@@ -341,7 +315,7 @@ namespace SP.Dto.Utilities
         }
         internal static string CourseNameWithoutExt(Course course)
         {
-            string dateString = course.StartLocal.ToString("d", course.Department.Institution.Culture.CultureInfo).Replace('/', '-');
+            string dateString = course.StartFacultyLocal.ToString("d", course.Department.Institution.Culture.CultureInfo).Replace('/', '-');
             return $"{course.Department.Abbreviation} {course.CourseFormat.CourseType.Abbreviation} - {dateString}";
         }
         public static string TimetableName(Course course)
@@ -363,6 +337,7 @@ namespace SP.Dto.Utilities
         public string SlotName { get; set; }
         public string SlotActivity { get; set; }
         public bool IsScenario { get; set; }
+        public bool IsFacultyOnly { get; set; }
         public IEnumerable<string> Faculty { get; set; }
     }
 

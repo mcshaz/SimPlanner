@@ -14,7 +14,8 @@ namespace SP.Dto
     public class CourseDto : ICourseDay
     {
         public Guid Id { get; set; }
-        public int DurationMins { get; set; }
+        public int DurationFacultyMins { get; set; }
+        public int DurationParticipantMins { get; set; }
         public Guid DepartmentId { get; set; }
         public Guid? OutreachingDepartmentId { get; set; }
         public Guid RoomId { get; set; }
@@ -26,7 +27,8 @@ namespace SP.Dto
         public string ParticipantVideoFilename { get; set; }
         public string FeedbackSummaryFilename { get; set; }
         public bool Cancelled { get; set; }
-        public DateTime StartUtc { get; set; }
+        public DateTime StartFacultyUtc { get; set; }
+        public DateTime StartParticipantUtc { get; set; }
         public DateTime? FacultyMeeting { get; set; }
 
         public DepartmentDto Department { get; set; }

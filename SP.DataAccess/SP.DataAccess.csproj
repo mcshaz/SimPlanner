@@ -162,6 +162,10 @@
     <Compile Include="Migrations\201701260349189_CourseFacultyInvites.Designer.cs">
       <DependentUpon>201701260349189_CourseFacultyInvites.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702280842371_ParticipantStart.cs" />
+    <Compile Include="Migrations\201702280842371_ParticipantStart.Designer.cs">
+      <DependentUpon>201702280842371_ParticipantStart.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
@@ -411,6 +415,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701260349189_CourseFacultyInvites.resx">
       <DependentUpon>201701260349189_CourseFacultyInvites.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702280842371_ParticipantStart.resx">
+      <DependentUpon>201702280842371_ParticipantStart.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

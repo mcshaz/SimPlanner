@@ -31,11 +31,11 @@ namespace SP.Web.UserEmails
             var faculty = course.CourseParticipants.Where(cp => map(cp).IsEmailed == originalDate.HasValue)
                 .ToLookup(cp => cp.IsFaculty);
             var attachments = new List<Attachment>();
-            var timetables = CreateDocxTimetable.CreateBothTimetables(course, WebApiConfig.DefaultTimetableTemplatePath);
             string timetableName = CreateDocxTimetable.TimetableName(course);
+            var participantTimetable = CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath,false);
             if (course.CourseFormat.CourseType.SendCandidateTimetable)
             {
-                attachments.Add(new Attachment(Stream.Synchronized(timetables.ParticipantTimetable), OpenXmlDocxExtensions.DocxMimeType) { Name = timetableName });
+                attachments.Add(new Attachment(Stream.Synchronized(participantTimetable), OpenXmlDocxExtensions.DocxMimeType) { Name = timetableName });
             }
             
             attachments.AddRange(GetInviteReadings(course));
@@ -43,7 +43,7 @@ namespace SP.Web.UserEmails
             var success = new ConcurrentBag<CourseParticipant>();
             var fail = new ConcurrentBag<CourseParticipant>();
 
-            using (var parallelEmails = new ParallelSmtpEmails(disposeMsgOnComplete:false))
+            using (var parallelEmails = new ParallelSmtpEmails(disposeMsgOnComplete: false))
             {
                 List<MailMessage> messages = new List<MailMessage>(course.CourseParticipants.Count);
                 var sendMail = new Action<CourseParticipant>(cp =>
@@ -58,7 +58,8 @@ namespace SP.Web.UserEmails
                         //a.ContentStream.Position = 0;
                         mail.Attachments.Add(a);
                     }
-                    parallelEmails.Send(mail, s=> {
+                    parallelEmails.Send(mail, s =>
+                    {
                         if (s == null)
                         {
                             success.Add(cp);
@@ -74,13 +75,14 @@ namespace SP.Web.UserEmails
                 {
                     sendMail(f);
                 }
-                timetables.ParticipantTimetable.Dispose();
 
+                MemoryStream facultyTimetable = null;
                 if (faculty[true].Any())
                 {
                     attachments = new List<Attachment>();
-                    attachments.Add(new Attachment(Stream.Synchronized(timetables.FacultyTimetable), OpenXmlDocxExtensions.DocxMimeType) { Name = timetableName });
-                    
+                    facultyTimetable = CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath, true);
+                    attachments.Add(new Attachment(Stream.Synchronized(participantTimetable), OpenXmlDocxExtensions.DocxMimeType) { Name = timetableName });
+
                     attachments.AddRange(GetFilePaths(course)
                         .Select(fp => new Attachment(Stream.Synchronized(fp.Value.ToStream()), System.Net.Mime.MediaTypeNames.Application.Zip) { Name = fp.Key }));
                     foreach (var f in faculty[true])
@@ -89,9 +91,10 @@ namespace SP.Web.UserEmails
                     }
                 }
                 await parallelEmails.SendingComplete();
-                messages.ForEach(m=>m.Dispose());
+                messages.ForEach(m => m.Dispose());
+                participantTimetable.Dispose();
+                facultyTimetable?.Dispose();
             }
-            timetables.FacultyTimetable.Dispose();
             return new EmailResult<CourseParticipant> {
                 SuccessRecipients = success.ToArray(),
                 FailRecipients = fail.ToArray()
@@ -174,7 +177,7 @@ namespace SP.Web.UserEmails
         {
             var now = DateTime.UtcNow;
             var relevantReadings = course.CourseFormat.CourseType.CandidatePrereadings
-                .Where(cp => !cp.SendRelativeToCourse.HasValue || (course.StartUtc.AddDays(cp.SendRelativeToCourse.Value) <= now));
+                .Where(cp => !cp.SendRelativeToCourse.HasValue || (course.StartFacultyUtc.AddDays(cp.SendRelativeToCourse.Value) <= now));
             return GetPrereadings(relevantReadings);
         }
 
@@ -182,7 +185,7 @@ namespace SP.Web.UserEmails
         {
             var scheduleDay = schedule.Date;
             var relevantReadings = course.CourseFormat.CourseType.CandidatePrereadings
-                .Where(cp => cp.SendRelativeToCourse.HasValue && (course.StartUtc.Date.AddDays(cp.SendRelativeToCourse.Value) == scheduleDay));
+                .Where(cp => cp.SendRelativeToCourse.HasValue && (course.StartFacultyUtc.Date.AddDays(cp.SendRelativeToCourse.Value) == scheduleDay));
             return GetPrereadings(relevantReadings);
         }
 
@@ -230,7 +233,7 @@ namespace SP.Web.UserEmails
             var now = DateTime.UtcNow;
             var dates = (from cp in course.CourseFormat.CourseType.CandidatePrereadings
                          where cp.SendRelativeToCourse.HasValue
-                         let d = course.StartUtc.AddDays(cp.SendRelativeToCourse.Value)
+                         let d = course.StartFacultyUtc.AddDays(cp.SendRelativeToCourse.Value)
                          where d > now
                          select d).ToHashSet();
 

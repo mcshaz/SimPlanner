@@ -497,7 +497,7 @@ namespace SP.DataAccess
                     }
                     else if (ent.State == EntityState.Modified)
                     {
-                        if (ent.Property(nameof(c.StartUtc)).IsModified)
+                        if (ent.Property(nameof(c.StartFacultyUtc)).IsModified)
                         {
                             c.CourseDatesLastModified = nowUtc;
                         }

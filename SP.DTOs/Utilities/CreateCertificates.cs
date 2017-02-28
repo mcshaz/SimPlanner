@@ -138,7 +138,7 @@ var replaceDict = new Dictionary<string, string>() {
                     .SlideLayoutParts.First();
 
                 #region MasterSlide
-                var formattedDate = course.StartLocal.ToString("dddd, MMMM dd, yyyy", course.Department.Institution.Culture.CultureInfo);
+                var formattedDate = course.StartFacultyLocal.ToString("dddd, MMMM dd, yyyy", course.Department.Institution.Culture.CultureInfo);
 
                 var organisers = course.CourseParticipants.Where(cp => cp.IsOrganiser).ToList();
                 var organiserCells = new List<OrganiserXml>(organisers.Count);

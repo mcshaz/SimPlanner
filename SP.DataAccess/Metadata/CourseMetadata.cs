@@ -21,6 +21,9 @@ namespace SP.Metadata
         public int? FacultyMeetingDuration { get; set; }
 
         [DisplayName("Course Start")]
-        public DateTime StartUtc { get; set; }
+        public DateTime StartFacultyUtc { get; set; }
+
+        [DisplayName("Course Start (participant)")]
+        public DateTime StartParticipantUtc { get; set; }
     }
 }

@@ -47,7 +47,7 @@ WriteLiteral("\r\n");
     {
         Title = string.Format(FormatProvider, "participant request to alter confirmation for {0} on {1:d}",
                                      CourseParticipant.Course.CourseFormat.CourseType.Abbreviation,
-                                     CourseParticipant.Course.StartLocal)
+                                     CourseParticipant.Course.StartFacultyLocal)
     };
 
             
@@ -167,7 +167,7 @@ WriteLiteral(" on the ");
 
             
             #line 29 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                     Write(CourseParticipant.Course.StartLocal.ToString("g", FormatProvider));
+                                     Write(CourseParticipant.Course.StartFacultyLocal.ToString("g", FormatProvider));
 
             
             #line default

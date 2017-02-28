@@ -264,7 +264,7 @@ WriteLiteral("                            ");
 
             
             #line 49 "..\..\UserEmails\MultiCourseInvite.cshtml"
-                       Write(string.Format(FormatProvider, "{0:d} {0:t}", c.StartLocal));
+                       Write(string.Format(FormatProvider, "{0:d} {0:t}", c.StartFacultyLocal));
 
             
             #line default

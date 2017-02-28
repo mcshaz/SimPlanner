@@ -17,7 +17,7 @@ namespace SP.Dto.ParticipantSummary
             if (!after.HasValue) { after = SqlDateTime.MinValue.Value; }
             returnVar.CourseSummary = (from cp in context.CourseParticipants
                                        let course = cp.Course
-                                       where cp.ParticipantId == userId && !course.Cancelled && course.StartUtc >= after
+                                       where cp.ParticipantId == userId && !course.Cancelled && course.StartFacultyUtc >= after
                                        group cp by course.CourseFormat into cf
                                        select new ParticipantCourseSummary
                                        {
@@ -28,7 +28,7 @@ namespace SP.Dto.ParticipantSummary
 
             returnVar.PresentationSummary = (from csp in context.CourseSlotPresenters
                                              let course = csp.Course
-                                             where csp.ParticipantId == userId && !course.Cancelled && course.StartUtc >= after
+                                             where csp.ParticipantId == userId && !course.Cancelled && course.StartFacultyUtc >= after
                                                 && csp.CourseSlot.Activity != null
                                              group csp by csp.CourseSlot.Activity into a
                                              select new FacultyPresentationRoleSummary
@@ -39,7 +39,7 @@ namespace SP.Dto.ParticipantSummary
 
             returnVar.SimRoleSummary = (from csfr in context.CourseScenarioFacultyRoles
                                         let course = csfr.Course
-                                        where csfr.ParticipantId == userId && !course.Cancelled && course.StartUtc >= after
+                                        where csfr.ParticipantId == userId && !course.Cancelled && course.StartFacultyUtc >= after
                                         group csfr by csfr.FacultyScenarioRole into fsr
                                         select new FacultySimRoleSummary
                                         {
@@ -93,15 +93,15 @@ namespace SP.Dto.ParticipantSummary
             using (var repo = new MedSimDtoRepository(user))
             {
                 var course = repo.Context.Courses.Include(c=>c.CourseDays).Include(c=>c.CourseFormat).AsNoTracking().First(c=>c.Id == courseId);
-                var start = course.StartUtc;
-                var finish = course.FinishCourseUtc();
+                var start = course.StartFacultyUtc;
+                var finish = course.FinishCourseFacultyUtc();
                 return (from csm in repo.GetCourseSlotManikins(new[] { "Course.CourseFormat.CourseType", "Course.Department.Institution", "Course.CourseDays", "Manikin" }, new string[0],'.')
                         let c = csm.Course
                         let lastDay = c.CourseDays.FirstOrDefault(cd => cd.Day == c.CourseFormat.DaysDuration)
                         let cFinish = lastDay == null
-                            ? DbFunctions.AddMinutes(c.StartUtc, c.DurationMins)
-                            : DbFunctions.AddMinutes(lastDay.StartUtc, lastDay.DurationMins)
-                        where departmentIds.Contains(csm.Manikin.DepartmentId) && c.Id != courseId && c.StartUtc < finish && cFinish > start
+                            ? DbFunctions.AddMinutes(c.StartFacultyUtc, c.DurationFacultyMins)
+                            : DbFunctions.AddMinutes(lastDay.StartFacultyUtc, lastDay.DurationFacultyMins)
+                        where departmentIds.Contains(csm.Manikin.DepartmentId) && c.Id != courseId && c.StartFacultyUtc < finish && cFinish > start
                         select new { csm.ManikinId, c })
                         .ToLookup(a => a.ManikinId, a => a.c);
             }

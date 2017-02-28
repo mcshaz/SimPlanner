@@ -6,8 +6,8 @@ namespace SP.Dto.Maps
         public CourseMaps() : base(m => new Course
             {
                 Id = m.Id,
-                StartUtc = m.StartUtc,
-                DurationMins = m.DurationMins,
+                StartFacultyUtc = m.StartFacultyUtc,
+                DurationFacultyMins = m.DurationFacultyMins,
                 DepartmentId = m.DepartmentId,
                 Version = m.Version,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
@@ -19,13 +19,15 @@ namespace SP.Dto.Maps
                 RoomId = m.RoomId,
                 FacultyMeetingRoomId = m.FacultyMeetingRoomId,
                 FacultyMeetingDuration = m.FacultyMeetingDuration,
-                FacultyMeetingUtc = m.FacultyMeeting
+                FacultyMeetingUtc = m.FacultyMeeting,
+                DurationParticipantMins = m.DurationParticipantMins,
+                StartParticipantUtc = m.StartParticipantUtc
         },
             m => new CourseDto
             {
                 Id = m.Id,
-                StartUtc = m.StartUtc,
-                DurationMins = m.DurationMins,
+                StartFacultyUtc = m.StartFacultyUtc,
+                DurationFacultyMins = m.DurationFacultyMins,
                 DepartmentId = m.DepartmentId,
                 Version = m.Version,
                 OutreachingDepartmentId = m.OutreachingDepartmentId,
@@ -37,7 +39,9 @@ namespace SP.Dto.Maps
                 FacultyMeetingRoomId = m.FacultyMeetingRoomId,
                 FacultyMeetingDuration = m.FacultyMeetingDuration,
                 FacultyMeeting = m.FacultyMeetingUtc,
-                Cancelled = m.Cancelled
+                Cancelled = m.Cancelled,
+                DurationParticipantMins = m.DurationParticipantMins,
+                StartParticipantUtc = m.StartParticipantUtc
             })
         { }
     }

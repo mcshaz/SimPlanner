@@ -191,7 +191,7 @@ WriteLiteral("                </strong>\r\n                on the ");
 
             
             #line 50 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
-                  Write(Course.StartLocal.ToString("g", Course.Department.Institution.Culture.CultureInfo));
+                  Write(Course.StartFacultyLocal.ToString("g", Course.Department.Institution.Culture.CultureInfo));
 
             
             #line default
@@ -204,7 +204,7 @@ WriteLiteral(">\r\n                    finishing ");
 
             
             #line 52 "..\..\UserEmails\Inky\NotifyBooking.cshtml"
-                         Write(Course.FinishCourseLocal().ToString("g", Course.Department.Institution.Culture.CultureInfo));
+                         Write(Course.FinishCourseFacultyLocal().ToString("g", Course.Department.Institution.Culture.CultureInfo));
 
             
             #line default

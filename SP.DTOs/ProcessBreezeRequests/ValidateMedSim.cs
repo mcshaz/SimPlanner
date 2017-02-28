@@ -409,8 +409,8 @@ namespace SP.Dto.ProcessBreezeRequests
                     if (e.Info.EntityState == b.EntityState.Modified)
                     {
                         object originalStart;
-                        if (e.Info.OriginalValuesMap.TryGetValue(nameof(e.Entity.StartUtc), out originalStart)
-                            && !originalStart.Equals(e.Entity.StartUtc))
+                        if (e.Info.OriginalValuesMap.TryGetValue(nameof(e.Entity.StartFacultyUtc), out originalStart)
+                            && !originalStart.Equals(e.Entity.StartFacultyUtc))
                         {
                             AfterCourseDateChange(e.Entity.Id, (DateTime)originalStart);
                         }
@@ -860,14 +860,13 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
         void UpdateICourseDays(IEnumerable<CourseSlot> alteredSlots)
         {
             var courseFormatIds = alteredSlots.Select(c => c.CourseFormatId).Distinct().ToList();
-            var slotDays = (from cs in Context.CourseSlots
-                            where courseFormatIds.Contains(cs.CourseFormatId) && cs.IsActive
-                            group cs by cs.Day into g
-                            select new { day = g.Key, minutes = g.Sum(m => m.MinutesDuration) })
-                            .ToDictionary(d=>d.day,d=>d.minutes);
+            var slotDays = Context.CourseSlots
+                            .Where(cs => courseFormatIds.Contains(cs.CourseFormatId) && cs.IsActive)
+                            .OrderBy(cs=>cs.Order)
+                            .ToLookup(cs=>cs.Day,cs=>cs);
 
             foreach (var course in Context.Courses.Include("CourseDays").Include("CourseFormat")
-                    .Where(c=>c.StartUtc > DateTime.UtcNow && courseFormatIds.Contains(c.CourseFormatId)))
+                    .Where(c=>c.StartFacultyUtc > DateTime.UtcNow && courseFormatIds.Contains(c.CourseFormatId)))
             {
                 var days = course.AllDays().ToDictionary(k=>k.Day);
 
@@ -878,18 +877,22 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                         icd = new CourseDay {
                             Day=i,
                             Course = course,
-                            StartUtc = days[i-1].StartUtc
+                            StartFacultyUtc = days[i-1].StartFacultyUtc
                         };
                         Context.CourseDays.Add((CourseDay)icd);
                         days.Add(i, icd);
                     }
-                    int duration;
-                    slotDays.TryGetValue((byte)i,out duration);
-                    icd.DurationMins = duration;
+                    var slots = slotDays[(byte)i] ?? Enumerable.Empty<CourseSlot>();
+                    icd.DurationFacultyMins = slots.Sum(s=>s.MinutesDuration);
+                    var minsToParticipantStart = slots.TakeWhile(s => s.FacultyOnly).Sum(s => s.MinutesDuration);
+                    icd.StartParticipantUtc = icd.StartFacultyUtc +
+                        TimeSpan.FromMinutes(minsToParticipantStart);
+                    var minsFromParticipantEnd = slots.Reverse().TakeWhile(s => s.FacultyOnly).Sum(s => s.MinutesDuration);
+                    icd.DurationParticipantMins = icd.DurationFacultyMins - minsToParticipantStart - minsFromParticipantEnd;
                 }
-                foreach (var k in days.Keys.Where(d=>d> course.CourseFormat.DaysDuration))
+                foreach (var k in days.Keys.Where(d=> d > course.CourseFormat.DaysDuration))
                 {
-                    days[k].DurationMins = 0;
+                    days[k].DurationFacultyMins = days[k].DurationParticipantMins = 0;
                 }
             }
             Context.SaveChanges();

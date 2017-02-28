@@ -11,17 +11,30 @@ namespace SP.DataAccess
     {
         public Guid CourseId { get; set; }
         public int Day { get; set; }
-        public int DurationMins { get; set; }
-        DateTime _startUtc;
-        public DateTime StartUtc
+        public int DurationFacultyMins { get; set; }
+        public int DurationParticipantMins { get; set; }
+        DateTime _startFacultyUtc;
+        public DateTime StartFacultyUtc
         {
             get
             {
-                return _startUtc;
+                return _startFacultyUtc;
             }
             set
             {
-                _startUtc = value.AsUtc();
+                _startFacultyUtc = value.AsUtc();
+            }
+        }
+        DateTime _startParticipantUtc;
+        public DateTime StartParticipantUtc
+        {
+            get
+            {
+                return _startParticipantUtc;
+            }
+            set
+            {
+                _startParticipantUtc = value.AsUtc();
             }
         }
 

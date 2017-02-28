@@ -187,9 +187,9 @@ namespace SP.Web.Controllers
 
             var courses = GetPermittedEntity(CreateDocxTimetable.GetCourseIncludes(Repo));
             var course = await courses.FirstAsync(c => c.Id == model.EntitySetId);
-
+            //todo - check if a faculty member, otherwise download participant timetable
             return StreamToResponse(
-                CreateDocxTimetable.CreateFullTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath),
+                CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath,true),
                 CreateDocxTimetable.TimetableName(course));
         }
 

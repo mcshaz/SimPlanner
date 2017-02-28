@@ -57,11 +57,13 @@ namespace SP.Web.UserEmails
 
         const string mailto = "mailto:";
 
-        public static List<Event> MapCoursesToEvents(IEnumerable<Course> courses)
+        public static List<Event> MapCoursesToEvents(IEnumerable<CourseParticipant> courseParticipants)
         {
             var returnVar = new List<Event>();
-            foreach (var course in courses)
+            foreach (var cp in courseParticipants)
             {
+                var course = cp.Course;
+
                 Event courseEvt = new Event
                 {
                     Class = "PUBLIC",
@@ -76,7 +78,7 @@ namespace SP.Web.UserEmails
                     Location = course.Room.ShortDescription,
                     Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation,
                     IsAllDay = false,
-                    Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description,
+                    Description = course.Department.Name + " " + course.CourseFormat.CourseType.Description + (cp.IsFaculty?" [Faculty]":" [Participant]"),
                     GeographicLocation = GetGeoLocation(course)
                     //DtStamp = - this is being inserted 
                 };
@@ -86,9 +88,8 @@ namespace SP.Web.UserEmails
                     var dayEvt = cd.Day < course.CourseFormat.DaysDuration
                         ? courseEvt.Copy<Event>()
                         : courseEvt;
-                    dayEvt.Start = new CalDateTime(course.StartUtc);
-                    dayEvt.Description += " - " + course.StartLocal.ToString("g");
-                    dayEvt.Duration = TimeSpan.FromMinutes(cd.DurationMins);
+                    dayEvt.Start = new CalDateTime(cp.IsFaculty?cd.StartFacultyUtc:cd.StartParticipantUtc);
+                    dayEvt.Duration = TimeSpan.FromMinutes(cp.IsFaculty ? cd.DurationFacultyMins: cd.DurationParticipantMins);
                     if (course.CourseFormat.DaysDuration > 1)
                     {
                         string dayNo = $" (day {cd.Day})";
@@ -155,8 +156,8 @@ namespace SP.Web.UserEmails
                 //pending ical.net fix
                 Transparency = TransparencyType.Opaque,
                 Status = course.Cancelled ? EventStatus.Cancelled : EventStatus.Confirmed,
-                Description = "planning meeting for " + course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + course.StartLocal.ToString("g"),
-                Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting for " + course.StartLocal.ToString("d"),
+                Description = "planning meeting for " + course.Department.Name + " " + course.CourseFormat.CourseType.Description + " - " + course.StartFacultyLocal.ToString("g"),
+                Summary = course.Department.Abbreviation + " " + course.CourseFormat.CourseType.Abbreviation + " planning meeting for " + course.StartFacultyLocal.ToString("d"),
                 Start = new CalDateTime(course.FacultyMeetingUtc.Value), //, course.Department.Institution.StandardTimeZone),
                 GeographicLocation = GetGeoLocation(course)
             };

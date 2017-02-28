@@ -38,7 +38,7 @@ namespace SP.Dto.Maps
                     || ((s.Access == SharingLevel.DepartmentOnly || s.Access == SharingLevel.DepartmentAndExParticipants) && s.DepartmentId == v.Principal.DefaultDepartmentId && isAdmin)
                     || (s.Access == SharingLevel.InstitutionWide && s.Department.InstitutionId == v.UserInstitutionId)
                     //todo - not accounting for the length of the last day - available 24 hours after start of last day
-                    || (s.Access == SharingLevel.DepartmentAndExParticipants && s.CourseSlotScenarios.Any(css => DbFunctions.AddDays(css.Course.StartUtc,css.Course.CourseFormat.DaysDuration + 1) > DateTime.UtcNow && css.Course.CourseParticipants.Any(cp=>cp.ParticipantId == v.Principal.Id && cp.IsConfirmed == true)));
+                    || (s.Access == SharingLevel.DepartmentAndExParticipants && s.CourseSlotScenarios.Any(css => DbFunctions.AddDays(css.Course.StartFacultyUtc,css.Course.CourseFormat.DaysDuration + 1) > DateTime.UtcNow && css.Course.CourseParticipants.Any(cp=>cp.ParticipantId == v.Principal.Id && cp.IsConfirmed == true)));
             };
         }
     }

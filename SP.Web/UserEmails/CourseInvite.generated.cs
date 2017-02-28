@@ -199,7 +199,7 @@ WriteLiteral("                    ");
 
             
             #line 37 "..\..\UserEmails\CourseInvite.cshtml"
-               Write(string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal));
+               Write(string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartFacultyLocal));
 
             
             #line default
@@ -361,7 +361,7 @@ WriteLiteral("            ");
 
             
             #line 61 "..\..\UserEmails\CourseInvite.cshtml"
-       Write(string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartLocal));
+       Write(string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.Course.StartFacultyLocal));
 
             
             #line default
@@ -378,7 +378,7 @@ WriteLiteral(">\r\n            (finishing ");
 
             
             #line 64 "..\..\UserEmails\CourseInvite.cshtml"
-                  Write(CourseParticipant.Course.FinishCourseLocal().ToString("g",FormatProvider));
+                  Write(CourseParticipant.Course.FinishCourseFacultyLocal().ToString("g",FormatProvider));
 
             
             #line default

@@ -10,15 +10,19 @@ namespace SP.Dto.Maps
         {
             CourseId = m.CourseId,
             Day = m.Day,
-            DurationMins =m.DurationMins,
-            StartUtc = m.StartUtc
+            DurationFacultyMins =m.DurationFacultyMins,
+            StartFacultyUtc = m.StartFacultyUtc,
+            DurationParticipantMins = m.DurationParticipantMins,
+            StartParticipantUtc = m.StartParticipantUtc
         },
         m => new CourseDayDto
         {
             CourseId = m.CourseId,
             Day = m.Day,
-            DurationMins = m.DurationMins,
-            StartUtc = m.StartUtc
+            DurationFacultyMins = m.DurationFacultyMins,
+            StartFacultyUtc = m.StartFacultyUtc,
+            DurationParticipantMins = m.DurationParticipantMins,
+            StartParticipantUtc = m.StartParticipantUtc
         })
         { }
 

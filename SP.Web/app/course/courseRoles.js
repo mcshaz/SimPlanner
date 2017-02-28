@@ -115,6 +115,7 @@
                                         : 'Simulation ' + ++scenarioCount,
                                     track: cs.trackParticipants
                                 };
+                                slotTime = new Date(start.getTime() + cs.minutesDuration * 60000);
                                 if (!cs.trackParticipants) {
                                     return returnVar;
                                 }
@@ -128,7 +129,7 @@
                                 returnVar.availableFacultyOptions = angular.extend({
                                     update: updateSortable
                                 }, sortableOptions);
-                                slotTime = new Date(start.getTime() + cs.minutesDuration * 60000);
+                                
                                 if (cs.activity) {
                                     var assignedFaculty = [];
                                     vm.course.courseSlotPresenters.forEach(function (csp) {

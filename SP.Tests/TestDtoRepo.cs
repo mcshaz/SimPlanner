@@ -83,11 +83,11 @@ namespace SimPlanner.Tests
         {
             var courses = (from c in _repo.GetCourses(new[] { "CourseParticipants", "CourseDays" })
                            let firstDay = c.CourseDays.FirstOrDefault(cd => cd.Day == 2)
-                           where firstDay.StartUtc > DateTime.UtcNow
-                           orderby firstDay.StartUtc
-                           select new { firstDay.StartUtc, c.CourseParticipants }).ToList();
-            Console.WriteLine(string.Join("\r\n",courses.Select(a => a.StartUtc.ToString("s"))));
-            Assert.IsFalse(courses.Zip(courses.Skip(1), (a, b) => a.StartUtc < b.StartUtc).Contains(false));
+                           where firstDay.StartFacultyUtc > DateTime.UtcNow
+                           orderby firstDay.StartFacultyUtc
+                           select new { firstDay.StartFacultyUtc, c.CourseParticipants }).ToList();
+            Console.WriteLine(string.Join("\r\n",courses.Select(a => a.StartFacultyUtc.ToString("s"))));
+            Assert.IsFalse(courses.Zip(courses.Skip(1), (a, b) => a.StartFacultyUtc < b.StartFacultyUtc).Contains(false));
         }
 
         #region IDisposable

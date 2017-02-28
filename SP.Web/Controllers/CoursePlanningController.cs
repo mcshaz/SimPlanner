@@ -39,7 +39,7 @@ namespace SP.Web.Controllers
             //Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(course.Department.Institution.LocaleCode);
 
             if (course==null) { return NotFound(); }
-            if (course.LastDay().StartUtc < DateTime.UtcNow)
+            if (course.LastDay().StartFacultyUtc < DateTime.UtcNow)
             {
                 return Ok("The course finish must be after now");
             }
@@ -86,7 +86,7 @@ namespace SP.Web.Controllers
                 auth = cps.First(cp => cp.ParticipantId == model.Auth && cp.IsOrganiser);
             }
 
-            if (part.Course.StartUtc < DateTime.UtcNow)
+            if (part.Course.StartFacultyUtc < DateTime.UtcNow)
             {
                 return Ok("Confirmation status cannot be changed after the course has commenced.");
             }
@@ -162,10 +162,10 @@ namespace SP.Web.Controllers
             Guid userId = Guid.Parse(id.Substring(0, id.Length - calExt.Length));
             var courseParticipants = await (from cp in Repo.CourseParticipants.Include(cp=>cp.Course.Department.Institution.Culture)
                                             let c = cp.Course
-                                            where cp.ParticipantId == userId && cp.IsConfirmed != false && DbFunctions.AddDays(c.StartUtc, c.CourseFormat.DaysDuration + 1) > DateTime.UtcNow
+                                            where cp.ParticipantId == userId && cp.IsConfirmed != false && DbFunctions.AddDays(c.StartFacultyUtc, c.CourseFormat.DaysDuration + 1) > DateTime.UtcNow
                                             select cp).ToListAsync();
 
-            var evts = Appointment.MapCoursesToEvents(courseParticipants.Select(cp => cp.Course));
+            var evts = Appointment.MapCoursesToEvents(courseParticipants);
             evts.AddRange(from cp in courseParticipants
                           where cp.IsFaculty && cp.Course.FacultyMeetingUtc.HasValue
                           select Appointment.CreateFacultyMeetingEvent(cp.Course));

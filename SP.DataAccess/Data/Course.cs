@@ -17,7 +17,8 @@ namespace SP.DataAccess
         /// <summary>
         /// To implement ICourseDay - refers to duration in minutes for day 1.
         /// </summary>
-        public int DurationMins { get; set; }
+        public int DurationFacultyMins { get; set; }
+        public int DurationParticipantMins { get; set; }
         public Guid DepartmentId { get; set; }
         public Guid? OutreachingDepartmentId { get; set; }
         public Guid RoomId { get; set; }
@@ -37,12 +38,26 @@ namespace SP.DataAccess
         private DateTime _facultyMeetingDatesLastModified;
         public DateTime FacultyMeetingDatesLastModified { get { return _facultyMeetingDatesLastModified; } set { _facultyMeetingDatesLastModified = value.AsUtc(); } }
 
-        private DateTime _startUtc;
-        public DateTime StartUtc
+        private DateTime _startFacultyUtc;
+        public DateTime StartFacultyUtc
         {
-            get { return _startUtc; }
-            set { _startUtc = value.AsUtc(); _startLocal = default(DateTime); }
+            get { return _startFacultyUtc; }
+            set { _startFacultyUtc = value.AsUtc(); _startFacultyLocal = default(DateTime); }
         }
+
+        DateTime _startParticipantUtc;
+        public DateTime StartParticipantUtc
+        {
+            get
+            {
+                return _startParticipantUtc;
+            }
+            set
+            {
+                _startParticipantUtc = value.AsUtc(); _startParticpantLocal = default(DateTime);
+            }
+        }
+
         private DateTime? _facultyMeetingUtc;
         public DateTime? FacultyMeetingUtc
         {
@@ -56,15 +71,27 @@ namespace SP.DataAccess
                 _facultyMeetingLocal = default(DateTime);
             }
         }
-        DateTime _startLocal;
+        DateTime _startFacultyLocal;
         [NotMapped]
-        public DateTime StartLocal
+        public DateTime StartFacultyLocal
         {
             get
             {
-                return _startLocal == default(DateTime)
-                    ? (_startLocal = TimeZoneInfo.ConvertTimeFromUtc(StartUtc, Department.Institution.TimeZone))
-                    : _startLocal;
+                return _startFacultyLocal == default(DateTime)
+                    ? (_startFacultyLocal = TimeZoneInfo.ConvertTimeFromUtc(StartFacultyUtc, Department.Institution.TimeZone))
+                    : _startFacultyLocal;
+            }
+        }
+
+        DateTime _startParticpantLocal;
+        [NotMapped]
+        public DateTime StartParticpantLocal
+        {
+            get
+            {
+                return _startParticpantLocal == default(DateTime)
+                    ? (_startParticpantLocal = TimeZoneInfo.ConvertTimeFromUtc(StartParticipantUtc, Department.Institution.TimeZone))
+                    : _startParticpantLocal;
             }
         }
 
@@ -121,30 +148,56 @@ namespace SP.DataAccess
                 ? course.CourseDays.First(cd => cd.Day == days)
                 : (ICourseDay)course;
         }
-
-        public static DateTime FinishCourseUtc(this Course course)
+        #region FacultyTimes
+        public static DateTime FinishCourseFacultyUtc(this Course course)
         {
             var lastDay = course.LastDay();
-            return lastDay.StartUtc + TimeSpan.FromMinutes(lastDay.DurationMins);
+            return lastDay.StartFacultyUtc + TimeSpan.FromMinutes(lastDay.DurationFacultyMins);
         }
 
-        public static DateTime FinishCourseLocal(this Course course)
+        public static DateTime FinishCourseFacultyLocal(this Course course)
         {
-            return TimeZoneInfo.ConvertTimeFromUtc(course.FinishCourseUtc(), course.Department.Institution.TimeZone);
+            return TimeZoneInfo.ConvertTimeFromUtc(course.FinishCourseFacultyUtc(), course.Department.Institution.TimeZone);
         }
 
-        public static DateTime FinishCourseDayUtc(this ICourseDay courseDay)
+        public static DateTime FinishCourseDayFacultyUtc(this ICourseDay courseDay)
         {
-            return courseDay.StartUtc + TimeSpan.FromMinutes(courseDay.DurationMins);
+            return courseDay.StartFacultyUtc + TimeSpan.FromMinutes(courseDay.DurationFacultyMins);
         }
 
-        public static DateTime FinishCourseDayLocal(this ICourseDay courseDay)
+        public static DateTime FinishCourseDayFacultyLocal(this ICourseDay courseDay)
         {
             var dpt = courseDay.Day == 1
                 ? ((Course)courseDay).Department
                 : ((CourseDay)courseDay).Course.Department;
-            return TimeZoneInfo.ConvertTimeFromUtc(courseDay.FinishCourseDayUtc(), dpt.Institution.TimeZone);
+            return TimeZoneInfo.ConvertTimeFromUtc(courseDay.FinishCourseDayFacultyUtc(), dpt.Institution.TimeZone);
         }
+        #endregion //FacultyTimes
+        #region ParticipantTimes
+        public static DateTime FinishCourseParticipantUtc(this Course course)
+        {
+            var lastDay = course.LastDay();
+            return lastDay.StartParticipantUtc + TimeSpan.FromMinutes(lastDay.DurationParticipantMins);
+        }
+
+        public static DateTime FinishCourseParticipantLocal(this Course course)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(course.FinishCourseParticipantUtc(), course.Department.Institution.TimeZone);
+        }
+
+        public static DateTime FinishCourseDayParticipantUtc(this ICourseDay courseDay)
+        {
+            return courseDay.StartParticipantUtc + TimeSpan.FromMinutes(courseDay.DurationParticipantMins);
+        }
+
+        public static DateTime FinishCourseDayParticipantLocal(this ICourseDay courseDay)
+        {
+            var dpt = courseDay.Day == 1
+                ? ((Course)courseDay).Department
+                : ((CourseDay)courseDay).Course.Department;
+            return TimeZoneInfo.ConvertTimeFromUtc(courseDay.FinishCourseDayParticipantUtc(), dpt.Institution.TimeZone);
+        }
+        #endregion // ParticipantTimes
     }
 
 }

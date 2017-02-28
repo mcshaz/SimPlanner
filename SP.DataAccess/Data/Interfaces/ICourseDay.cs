@@ -4,8 +4,10 @@ namespace SP.DataAccess.Data.Interfaces
 {
     public interface ICourseDay
     {
-        DateTime StartUtc {get;}
-        int DurationMins { get; set; }
+        DateTime StartFacultyUtc {get;}
+        int DurationFacultyMins { get; set; }
+        DateTime StartParticipantUtc { get; set; }
+        int DurationParticipantMins { get; set; }
         int Day { get; }
     }
 }
