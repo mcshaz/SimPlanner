@@ -94,8 +94,8 @@
                     enumerable: true,
                     configurable: true,
                     get: function () {
-                        //.filter(function (cd) { return cd.day <= this.courseFormat.daysDuration; }) - unnecesasry as server setting course day to 0 in such cases
-                        return this.courseDays.reduce(function (a, b) { return a + b.durationMins; }, this.durationMins);
+                        //.filter(function (cd) { return cd.day <= this.courseFormat.daysDuration; }) - unnecesary as server setting course day to 0 in such cases
+                        return this.courseDays.reduce(function (a, b) { return a + b.durationFacultyMins; }, this.durationFacultyMins);
                     }
                 });
 
@@ -298,7 +298,7 @@
             if (!this.startFacultyUtc) {
                 return this.startFacultyUtc;
             }
-            return new Date(this.startFacultyUtc.getTime() + this.durationMins * 60000);
+            return new Date(this.startFacultyUtc.getTime() + this.durationFacultyMins * 60000);
         }
 
     }

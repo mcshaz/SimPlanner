@@ -593,6 +593,7 @@
     <Content Include="dist\css\ui-grid.svg" />
     <Content Include="dist\css\ui-grid.ttf" />
     <Content Include="dist\css\ui-grid.woff" />
+    <Content Include="dist\css\videogular.min.css" />
     <Content Include="dist\favicon-16x16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -615,7 +616,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-4002e7901e.min.js" />
+    <Content Include="dist\js\main-0889d2767d.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

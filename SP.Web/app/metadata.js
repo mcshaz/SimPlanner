@@ -1,4 +1,4 @@
-//201701260349189_CourseFacultyInvites
+//201702280842371_ParticipantStart
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -348,6 +348,21 @@
           "displayName": "Track Participants"
         },
         {
+          "name": "facultyOnly",
+          "dataType": "Boolean",
+          "isNullable": false,
+          "defaultValue": false,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "bool"
+            }
+          ],
+          "displayName": "Faculty Only"
+        },
+        {
           "name": "activityId",
           "dataType": "Guid",
           "validators": [
@@ -625,7 +640,7 @@
           "displayName": "Id"
         },
         {
-          "name": "durationMins",
+          "name": "durationFacultyMins",
           "dataType": "Int32",
           "isNullable": false,
           "defaultValue": 0,
@@ -639,7 +654,24 @@
               "name": "int32"
             }
           ],
-          "displayName": "Duration Mins"
+          "displayName": "Duration Faculty Mins"
+        },
+        {
+          "name": "durationParticipantMins",
+          "dataType": "Int32",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": -2147483648,
+              "max": 2147483647,
+              "name": "int32"
+            }
+          ],
+          "displayName": "Duration Participant Mins"
         },
         {
           "name": "departmentId",
@@ -810,6 +842,21 @@
             }
           ],
           "displayName": "Course Start"
+        },
+        {
+          "name": "startParticipantUtc",
+          "dataType": "DateTime",
+          "isNullable": false,
+          "defaultValue": "",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "date"
+            }
+          ],
+          "displayName": "Course Start (participant)"
         },
         {
           "name": "facultyMeeting",
@@ -998,10 +1045,10 @@
               "name": "date"
             }
           ],
-          "displayName": "Start Utc"
+          "displayName": "Start Faculty Utc"
         },
         {
-          "name": "durationMins",
+          "name": "durationFacultyMins",
           "dataType": "Int32",
           "isNullable": false,
           "defaultValue": 0,
@@ -1015,7 +1062,39 @@
               "name": "int32"
             }
           ],
-          "displayName": "Duration Mins"
+          "displayName": "Duration Faculty Mins"
+        },
+        {
+          "name": "startParticipantUtc",
+          "dataType": "DateTime",
+          "isNullable": false,
+          "defaultValue": "",
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "name": "date"
+            }
+          ],
+          "displayName": "Start Participant Utc"
+        },
+        {
+          "name": "durationParticipantMins",
+          "dataType": "Int32",
+          "isNullable": false,
+          "defaultValue": 0,
+          "validators": [
+            {
+              "name": "required"
+            },
+            {
+              "min": -2147483648,
+              "max": 2147483647,
+              "name": "int32"
+            }
+          ],
+          "displayName": "Duration Participant Mins"
         }
       ],
       "navigationProperties": [

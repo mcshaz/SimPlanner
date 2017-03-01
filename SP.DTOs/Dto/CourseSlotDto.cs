@@ -14,6 +14,7 @@ namespace SP.Dto
         public byte Day { get; set; }
         public byte SimultaneousStreams { get; set; }
         public bool TrackParticipants { get; set; }
+        public bool FacultyOnly { get; set; }
         /// <summary>
         /// if activity/activityId is null, must be a scenario
         /// </summary>

@@ -196,15 +196,15 @@ WriteLiteral(" large=\"12\"");
 WriteLiteral(">\r\n        <p>\r\n            If you are able to help by attending as faculty <smal" +
 "l>(or require further details)</small>, please log in to <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2247), Tuple.Create("\"", 2278)
+WriteAttribute("href", Tuple.Create(" href=\"", 2254), Tuple.Create("\"", 2285)
             
             #line 66 "..\..\UserEmails\Inky\MultiCourseInvite.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 2254), Tuple.Create<System.Object, System.Int32>(BaseUrl
+                                                   , Tuple.Create(Tuple.Create("", 2261), Tuple.Create<System.Object, System.Int32>(BaseUrl
             
             #line default
             #line hidden
-, 2254), false)
-, Tuple.Create(Tuple.Create("", 2262), Tuple.Create("/myCourseInvites", 2262), true)
+, 2261), false)
+, Tuple.Create(Tuple.Create("", 2269), Tuple.Create("/myCourseInvites", 2269), true)
 );
 
 WriteLiteral(" >Sim Planner Course Invitations</a> \r\n            and select which course(s) you" +

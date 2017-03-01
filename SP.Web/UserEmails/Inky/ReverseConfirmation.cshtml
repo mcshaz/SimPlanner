@@ -13,7 +13,7 @@
     {
         Title = string.Format(FormatProvider, "participant request to alter confirmation for {0} on {1:d}",
                                      CourseParticipant.Course.CourseFormat.CourseType.Abbreviation,
-                                     CourseParticipant.Course.StartLocal)
+                                     CourseParticipant.Course.StartFacultyLocal)
     };
 }
 <row>
@@ -26,7 +26,7 @@
                 </small>
                 had been confirmed as @(CourseParticipant.IsConfirmed.Value ? "attending" : "unable to attend")
                 as a @(CourseParticipant.IsFaculty ? "faculty member" : "participant")
-                in the @CourseName on the @CourseParticipant.Course.StartLocal.ToString("g", FormatProvider)
+                in the @CourseName on the @CourseParticipant.Course.StartFacultyLocal.ToString("g", FormatProvider)
             </p>
             <p>
                 However, he/she would like to <strong>change this response</strong> to being

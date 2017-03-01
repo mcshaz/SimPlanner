@@ -369,15 +369,15 @@ WriteLiteral(" style=\"color: #cacaca; font-size: 80%;\"");
 
 WriteLiteral(">(or require further details)</small>, please log in to <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8585), Tuple.Create("\"", 8616)
+WriteAttribute("href", Tuple.Create(" href=\"", 8592), Tuple.Create("\"", 8623)
             
             #line 68 "..\..\UserEmails\MultiCourseInvite.cshtml"
-                                                                                           , Tuple.Create(Tuple.Create("", 8592), Tuple.Create<System.Object, System.Int32>(BaseUrl
+                                                                                           , Tuple.Create(Tuple.Create("", 8599), Tuple.Create<System.Object, System.Int32>(BaseUrl
             
             #line default
             #line hidden
-, 8592), false)
-, Tuple.Create(Tuple.Create("", 8600), Tuple.Create("/myCourseInvites", 8600), true)
+, 8599), false)
+, Tuple.Create(Tuple.Create("", 8607), Tuple.Create("/myCourseInvites", 8607), true)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +

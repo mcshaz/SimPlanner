@@ -149,7 +149,7 @@
                         <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                             <div class="panel-body">
                                 <div class="row col-lg-12">
-                                    <div class="col-lg-3">
+                                    <div class="row">
                                         <div class="form-group">
                                             <label for="cfDescription" class="col-md-3 control-label">
                                                 Course Format
@@ -207,7 +207,7 @@
                                         </div>
                                     </div>
 
-                                    <fieldset class="col-lg-9">
+                                    <fieldset class="row">
                                         <!--ng-disabled="!cf.selectedSlot"-->
                                         <table class="table table-bordered table-striped">
                                             <thead>
@@ -218,9 +218,9 @@
                                                     </th>
                                                     <th>Minutes</th>
                                                     <td><small>default finish</small></td>
+                                                    <td>faculty</td>
                                                     <th>Streams</th>
-                                                    <th>Track<i class="fa fa-info-circle" data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Keep a track of which faculty members lead this activity" bs-tooltip></i>
-                                                     </th>
+                                                    <th>Track<i class="fa fa-info-circle" data-trigger="hover" data-type="info" data-animation="am-flip-x" data-title="Keep a track of which faculty members lead this activity" bs-tooltip></i></th>
                                                     <td>(Actions...)</td>
                                                 </tr>
                                             </thead>
@@ -274,7 +274,9 @@
     <td>
         {{cs.exampleFinish | amDateFormat:'LT'}}
     </td>
-
+    <td>
+        <input type="checkbox" ng-checked="cs.facultyOnly" disabled="disabled" />
+    </td>
     <td>
         {{cs.simultaneousStreams}}
     </td>
@@ -325,6 +327,11 @@
     </td>
     <td>
         {{cs.exampleFinish | amDateFormat:'LT'}}
+    </td>
+    <td class="form-group">
+        <label class="control-label">
+            <input type="checkbox" ng-model="cs.facultyOnly" class="checkbox-inline" />
+        </label>
     </td>
     <td class="form-group">
         <input class="form-control" type="number" step="1" z-validate ng-model="cs.simultaneousStreams" >

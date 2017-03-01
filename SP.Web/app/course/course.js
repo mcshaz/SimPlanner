@@ -178,7 +178,7 @@
         function formatChanged() {
             if (!vm.course.courseFormat) {
                 //_courseLength = null;
-                vm.course.durationMins = null;
+                vm.course.durationFacultyMins = null;
                 vm.course.courseDays.forEach(function (cd) {
                     cd.entityAspect.setDeleted();
                 });
@@ -225,7 +225,7 @@
                 }
                 vm.courseDays = concatCourseDays();
                 vm.courseDays.forEach(function (cd) {
-                    cd.durationMins = courseLength[cd.day];
+                    cd.durationFacultyMins = courseLength[cd.day];
                 });
 
             });

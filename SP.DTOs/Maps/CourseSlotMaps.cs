@@ -14,7 +14,8 @@ namespace SP.Dto.Maps
                 CourseFormatId = m.CourseFormatId,
                 Order = m.Order,
                 SimultaneousStreams = m.SimultaneousStreams,
-                TrackParticipants = m.TrackParticipants
+                TrackParticipants = m.TrackParticipants, 
+                FacultyOnly = m.FacultyOnly
             },
             m => new CourseSlotDto
             {
@@ -26,7 +27,8 @@ namespace SP.Dto.Maps
                 CourseFormatId = m.CourseFormatId,
                 Order = m.Order,
                 SimultaneousStreams = m.SimultaneousStreams,
-                TrackParticipants = m.TrackParticipants
+                TrackParticipants = m.TrackParticipants,
+                FacultyOnly = m.FacultyOnly
             })
         { }
     }

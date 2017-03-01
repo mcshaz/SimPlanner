@@ -81,7 +81,7 @@ namespace SP.Web.UserEmails
                 {
                     attachments = new List<Attachment>();
                     facultyTimetable = CreateDocxTimetable.CreateTimetableDocx(course, WebApiConfig.DefaultTimetableTemplatePath, true);
-                    attachments.Add(new Attachment(Stream.Synchronized(participantTimetable), OpenXmlDocxExtensions.DocxMimeType) { Name = timetableName });
+                    attachments.Add(new Attachment(Stream.Synchronized(facultyTimetable), OpenXmlDocxExtensions.DocxMimeType) { Name = timetableName });
 
                     attachments.AddRange(GetFilePaths(course)
                         .Select(fp => new Attachment(Stream.Synchronized(fp.Value.ToStream()), System.Net.Mime.MediaTypeNames.Application.Zip) { Name = fp.Key }));
@@ -285,12 +285,13 @@ namespace SP.Web.UserEmails
         private static IEnumerable<KeyValuePair<string, string>> GetFilePaths(Course course)
         {
             return (from s in course.CourseSlotActivities
+                    where s.ScenarioId.HasValue
                     let sr = s.Scenario.ScenarioResources.FirstOrDefault(ssr => ssr.FileName != null)
                     where sr != null
                     select new KeyValuePair<string, string>(s.Scenario.BriefDescription, sr.GetServerPath()))
                    .Concat(from ctr in course.CourseSlotActivities
                            let atr = ctr.Activity
-                           where atr.FileName != null
+                           where atr?.FileName != null
                            select new KeyValuePair<string, string>(atr.Description, atr.GetServerPath()));
         }
     }

@@ -61,7 +61,7 @@
                 filter: { /* type: uiGridConstants.filter.SELECT */ }
             },
             {
-                name: 'Hr:Min', field: 'totalDurationMins', 
+                name: 'Hr:Min', field: 'durationMins',
                 treeAggregationType: vm.aggregateType,
                 enableFiltering: false,
                 enableSorting: false,
@@ -231,7 +231,7 @@
                         outreachingDepartment: el.outreachingDepartment 
                             ?el.outreachingDepartment.institutionDptDescriptor
                             :'',
-                        totalDurationMins: el.totalDurationMins,
+                        durationMins: el.totalDurationMins,
                         participantCount: el.participantCount,
                         facultyCount: el.facultyCount,
                         start: el.startFacultyUtc,

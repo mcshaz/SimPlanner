@@ -69,7 +69,7 @@ namespace SP.Dto.Utilities
                     }
                     else
                     {
-                        ttr.IsScenario = false;
+                        ttr.IsScenario = true;
                         ttr.SlotName = "Scenario " + (++scenarioCount).ToString();
                         ttr.SlotActivity = activity?.Scenario?.BriefDescription;
                         ttr.Faculty = emptyStringArray;//csfrs[cs.Id]?.Select(csfr => csfr.Participant.FullName)
@@ -208,6 +208,10 @@ namespace SP.Dto.Utilities
                 {
                     AddScenarios(mainPart, course);
                 }
+                else
+                {
+                    RemoveScenarios(mainPart);
+                }
                 return stream;
             }
         }
@@ -247,9 +251,8 @@ namespace SP.Dto.Utilities
                 .ToLookup(k => k.CourseSlotId);
             int i = 0;
             var csss = (from cs in course.CourseFormat.CourseSlots.OrderBy(c=>c.Order)
-                        let scenarioNo = ++i
                         where cs.IsActive && (csas.ContainsKey(cs.Id) || manikins[cs.Id].Any() || roles[cs.Id].Any())
-                        select new { cs, scenarioNo}).ToList();
+                        select new { cs, scenarioNo = ++i}).ToList();
 
             var roleFacultyEls = new List<ScenarioRoleEl>();
             allScenarioEls.CloneElements(csss, (mergeFieldName, css, elements) =>

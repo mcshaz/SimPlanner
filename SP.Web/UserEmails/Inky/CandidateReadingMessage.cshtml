@@ -11,7 +11,7 @@
     {
         Title = "Candidate Reading"
     };
-    var afterCourse = Course.StartUtc < DateTime.UtcNow;
+    var afterCourse = Course.StartParticipantUtc < DateTime.UtcNow;
 }
 <row>
     <columns large = "12" >
@@ -30,7 +30,7 @@
                 } else {
                     @:are scheduled to attend
                 }
-                on @Course.StartLocal.ToString(afterCourse ? "D":"f",FormatProvider) is attached to this email.
+                on @Course.StartParticpantLocal.ToString(afterCourse ? "D":"f",FormatProvider) is attached to this email.
             </p>
         </callout>
     </columns>

@@ -43,12 +43,12 @@
         function retrieveAppointments(year, month) {
             year *= 12;
             var getMonthYear = function (monthYear) {
-                var yr = Math.floor(monthYear / 12)
+                var yr = Math.floor(monthYear / 12);
                 return {
                     year: yr,
                     month: monthYear - yr * 12
                 };
-            }
+            };
             var startMonth = month === undefined ? year : year + month - 1;
             var finishMonth = month === undefined ? year + 11 : year + month + 1;
             var dtRanges = createDateRanges();
