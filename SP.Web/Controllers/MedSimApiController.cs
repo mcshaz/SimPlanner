@@ -62,11 +62,13 @@ namespace SP.Web.Controllers
             if (errs.Any()) { return errs; }
             if (string.IsNullOrEmpty(password))
             {
-                return UserManager.Create(participant).Errors;
+                errs = UserManager.Create(participant).Errors;
             }
-            errs = Task.Run(()=>UserManager.PasswordValidator.ValidateAsync(password)).Result.Errors;
-            if (errs.Any()) { return errs; }
-            return UserManager.Create(participant, password).Errors;
+            //errs = Task.Run(()=>UserManager.PasswordValidator.ValidateAsync(password)).Result.Errors;
+            //if (errs.Any()) { return errs; }
+            errs = UserManager.Create(participant, password).Errors;
+            _repository.Context.Entry(participant).State = System.Data.Entity.EntityState.Detached;
+            return errs;
         }
 
         [HttpPost]

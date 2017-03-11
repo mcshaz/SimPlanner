@@ -5,9 +5,9 @@
         .module('app')
         .controller(controllerId, controller);
 
-    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$location', '$http', '$q', 'commonConfig', 'moment', 'loginFactory'];
+    controller.$inject = ['controller.abstract', '$routeParams', 'common', 'datacontext', '$aside', 'breeze', '$scope', '$location', '$http', '$q', 'commonConfig', 'moment', 'loginFactory', 'tokenStorageService'];
 
-    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $location, $http, $q, commonConfig, moment, loginFactory) {
+    function controller(abstractController, $routeParams, common, datacontext,  $aside, breeze, $scope, $location, $http, $q, commonConfig, moment, loginFactory, tokenStorageService) {
         /* jshint validthis:true */
         var vm = this;
         abstractController.constructor.call(this, {
@@ -51,17 +51,16 @@
                 datacontext.courseFormats.find({
                     where: breeze.Predicate.create('obsolete', '==', false)
                 }).then(function (data) {
-                    vm.courseFormats = data;
+                    vm.courseFormats = data.sort(common.sortOnPropertyName('description'));
                 }), datacontext.departments.all().then(function (data) {
-                    vm.departments = data;
-                    vm.departments.sort(sortDepartments);
+                    vm.departments = data.sort(sortDepartments);
                 }), datacontext.rooms.all().then(function (data) {
-                    vm.rooms = data;
+                    vm.rooms = data.sort(common.sortOnPropertyName('shortDescription'));
                 });
             })];
             if (isNew) {
                 var now = new Date();
-                vm.course = datacontext.courses.create({created:now, lastModified:now});
+                vm.course = datacontext.courses.create({ created: now, lastModified: now, departmentId: tokenStorageService.getUserDepartmentId()});
                 vm.course.entityAspect.markNavigationPropertyAsLoaded('courseParticipants');
                 vm.course.entityAspect.markNavigationPropertyAsLoaded('courseDays');
                 vm.courseDays = [vm.course];

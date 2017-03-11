@@ -51,7 +51,10 @@
                 var defer = $q.defer();
                 datacontext.ready().then(function () {
                     promises.push(datacontext.institutions.all({ expand: 'culture' }).then(function (data) {
-                        vm.institutions = data;
+                        vm.institutions = data.sort(common.sortOnPropertyName('name'));
+                        data.forEach(function (i) {
+                            i.departments.sort(common.sortOnPropertyName('name'));
+                        });
                     }));
                     if (vm.isNew) {
                         vm.participant = datacontext.participants.create({adminApproved:true, emailOnCreate:true});

@@ -53,6 +53,7 @@
                     }
 
                     vm.course = data;
+
                     data.courseFormat.courseSlots.sort(common.sortOnPropertyName('order'));
                     data.courseParticipants.sort(common.sortOnChildPropertyName('participant', 'fullName'));
 

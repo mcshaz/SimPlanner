@@ -79,6 +79,10 @@ namespace SP.Dto.Maps
 
         public static Type GetDtoType(Type serverModelType)
         {
+            if (serverModelType.Namespace == "System.Data.Entity.DynamicProxies")
+            {
+                serverModelType = serverModelType.BaseType;
+            }
             return _serverDtoDictionary[serverModelType].TypeofDto;
         }
 

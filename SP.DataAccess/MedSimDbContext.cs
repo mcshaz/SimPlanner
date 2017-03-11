@@ -56,20 +56,23 @@ namespace SP.DataAccess
         public virtual DbSet<ScenarioResource> ScenarioResources { get; set; }
         public virtual DbSet<AspNetUserRole> UserRoles { get; set; }
 
-        #region overrides //overriding to allow access without referencing aspnet.identity.entityframework assembly
-        public override IDbSet<Participant> Users
-        {
-            get
-            {
-                return base.Users;
-            }
+        /*
+#region overrides //overriding to allow access without referencing aspnet.identity.entityframework assembly
 
-            set
-            {
-                base.Users = value;
-            }
-        }
-        #endregion //ovrerides
+public override IDbSet<Participant> Users
+{
+    get
+    {
+        return base.Users;
+    }
+
+    set
+    {
+        base.Users = value;
+    }
+}
+#endregion //ovrerides
+    */
 
 
         public static MedSimDbContext Create()
@@ -439,6 +442,7 @@ namespace SP.DataAccess
             get { return _sanitizeHtml ?? (_sanitizeHtml = new SanitizeStringProperties()); }
         }
         */
+
         public override Task<int> SaveChangesAsync()
         {
             SetTimeTracking();

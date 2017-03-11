@@ -23,7 +23,9 @@ namespace SP.Dto.ProcessBreezeRequests
             CurrentUser = currentUser;
         }
         public CurrentPrincipal CurrentUser { get; private set; }
-        public MedSimDbContext Context { get { return CurrentUser.Context; } }
+        public MedSimDbContext Context { get {
+                return CurrentUser.Context;
+            } }
         private const string AfterUpdateDelegate = "AfterUpdateDelegate";
 
         /*
@@ -339,7 +341,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 List<EntityInfo> vals;
                 if (kv.Key == typeof(ParticipantDto))
                 {
-                    vals = kv.Value.Select(d => UserManager(d)).ToList();
+                    vals = kv.Value.Select(v=>UserManager(v)).ToList();
                 }
                 else
                 {
@@ -496,7 +498,11 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
    }
 }
 */
-
+/// <summary>
+/// 
+/// </summary>
+/// <param name="currentInfo"></param>
+/// <returns>null if managed outside breeze context</returns>
         EntityInfo UserManager(EntityInfo currentInfo)
         {
             //List<EntityError> errors = new List<EntityError>();
@@ -508,22 +514,12 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             var pMap = (ParticipantMaps)MapperConfig.GetMap<Participant, ParticipantDto>();
             var p = (ParticipantDto)currentInfo.Entity;
             Participant u;
-            bool changed = false;
             if (currentInfo.EntityState == b.EntityState.Modified)
             {
-                u = Context.Users.Find(p.Id);
+                u = Context.Users.AsNoTracking().Single(ui=>ui.Id == p.Id);
                 pMap.UpdateParticipant(u, p);
-                changed = true;
-                try
-                {
-                    Context.SaveChanges();
-                }
-                catch(DbEntityValidationException ex)
-                {
-                    throw new EntityErrorsException(MapErrors(ex,p));
-                }
             }
-            else 
+            else
             {
                 u = pMap.TypedMapToDomain(p);
                 if (currentInfo.EntityState == b.EntityState.Added)
@@ -534,20 +530,21 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                     try
                     {
                         errs = CreateUser(u, (string)o)
-                            .Select(e => MappedEFEntityError.Create(p, userValErrName,e ,PropName(e))).ToList();
+                            .Select(e => MappedEFEntityError.Create(p, userValErrName, e, PropName(e))).ToList();
                     }
-                    catch(DbEntityValidationException ex)
+                    catch (DbEntityValidationException ex)
                     {
-                        errs = MapErrors(ex,p);
+                        errs = MapErrors(ex, p);
                     }
                     if (errs.Any())
                     {
                         throw new EntityErrorsException(errs);
                     }
-                    changed = true;
                 }
             }
-            var rv = currentInfo.ContextProvider.CreateEntityInfo(u, changed ? b.EntityState.Unchanged : currentInfo.EntityState);
+            var rv = currentInfo.ContextProvider.CreateEntityInfo(u, currentInfo.EntityState == b.EntityState.Added
+                ? b.EntityState.Unchanged
+                : currentInfo.EntityState);
             rv.OriginalValuesMap = currentInfo.OriginalValuesMap;
             rv.UnmappedValuesMap = currentInfo.UnmappedValuesMap;
             return rv;

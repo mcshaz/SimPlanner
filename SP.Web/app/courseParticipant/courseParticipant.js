@@ -37,8 +37,11 @@
         function activate() {
             datacontext.ready().then(function () {
                 var promises = vm.getPromises();
-                promises.push(datacontext.institutions.all({ expand: 'culture' }).then(function (data) {
-                    vm.institutions = data;
+                promises.push(datacontext.institutions.all({ expand: 'culture' /*,departments*/ }).then(function (data) {
+                    vm.institutions = data.sort(common.sortOnPropertyName('name'));
+                    vm.institutions.forEach(function (i) {
+                        i.departments.sort(common.sortOnPropertyName('name'));
+                    });
                     vm.institution = vm.isNew
                         ? $scope.course.department.institution
                         : $scope.courseParticipant.department.institution;
@@ -103,6 +106,7 @@
                     return;
                 }
             }
+            vm.participant.department = $scope.course.department;
             datacontext.addEntity(vm.participant);
             //todo check event fires
         }
