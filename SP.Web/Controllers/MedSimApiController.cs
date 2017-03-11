@@ -66,7 +66,10 @@ namespace SP.Web.Controllers
             }
             //errs = Task.Run(()=>UserManager.PasswordValidator.ValidateAsync(password)).Result.Errors;
             //if (errs.Any()) { return errs; }
-            errs = UserManager.Create(participant, password).Errors;
+            else
+            {
+                errs = UserManager.Create(participant, password).Errors;
+            }
             _repository.Context.Entry(participant).State = System.Data.Entity.EntityState.Detached;
             return errs;
         }
