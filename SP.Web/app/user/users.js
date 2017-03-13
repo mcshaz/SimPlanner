@@ -8,11 +8,11 @@
     courseTypesCtrl.$inject = ['common','$scope','users.abstract', 'uiGridConstants', 'USER_ROLES', 'breeze'];
     //changed $uibModalInstance to $scope to get the events
 
-    function courseTypesCtrl(common, $scope, abstractUserDetails, uiGridConstants, USER_ROLES, breeze) {
+    function courseTypesCtrl(common, $scope, abstractUsers, uiGridConstants, USER_ROLES, breeze) {
         /* jshint validthis:true */
         var vm = this;
 
-        abstractUserDetails.constructor.call(this, $scope);
+        abstractUsers.constructor.call(this, $scope);
         var _roles = getRoles();
 
         vm.expand = 'roles';
@@ -48,7 +48,7 @@
         activate();
 
         function activate() {
-            common.activateController([vm.baseReady, vm.updateData()], controllerId);
+            common.activateController([vm.baseReady.then(function () { vm.updateData(); })], controllerId);
         }
 
         function filterChanged(cols) {

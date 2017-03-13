@@ -15,7 +15,10 @@
 <div class="form-group">
     <label for="username" class="control-label col-md-2">Username</label>
     <div class="col-md-10">
-        <input class="form-control" id="username" type="text" ng-model="vm.participant.userName" name="username" data-z-validate />
+        <input class="form-control" id="username" type="text" ng-model="vm.participant.userName" name="username" data-z-validate required/>
+        <div ng-messages="userDetailsForm.username.$error" role="alert" class="z-decorator">
+            <span class="invalid" ng-message="required">'Username' is required</span>
+        </div>
     </div>
 </div>
 

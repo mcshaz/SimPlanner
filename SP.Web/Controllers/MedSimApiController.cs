@@ -70,7 +70,8 @@ namespace SP.Web.Controllers
             {
                 errs = UserManager.Create(participant, password).Errors;
             }
-            _repository.Context.Entry(participant).State = System.Data.Entity.EntityState.Detached;
+           
+            //_repository.Context.Entry(participant).State = System.Data.Entity.EntityState.Detached;
             return errs;
         }
 

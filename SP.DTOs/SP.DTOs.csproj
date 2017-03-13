@@ -232,6 +232,7 @@
     <Compile Include="Utilities\CreateCertificates.cs" />
     <Compile Include="Utilities\CreateDocxTimetable.cs" />
     <Compile Include="Utilities\AutomatedDbMaintenance.cs" />
+    <Compile Include="Utilities\CultureExtensions.cs" />
     <Compile Include="Utilities\LinqExtensions.cs" />
     <Compile Include="Utilities\MailAttachmentExtensions.cs" />
     <Compile Include="Utilities\OpenXmlExtensions.cs" />

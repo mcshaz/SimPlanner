@@ -517,6 +517,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             if (currentInfo.EntityState == b.EntityState.Modified)
             {
                 u = Context.Users.AsNoTracking().Single(ui=>ui.Id == p.Id);
+                Context.Entry(u).State = System.Data.Entity.EntityState.Detached;
                 pMap.UpdateParticipant(u, p);
             }
             else

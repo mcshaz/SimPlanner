@@ -7,7 +7,7 @@
 
     controller.$inject = ['common', '$scope', 'controller.abstract', 'users.abstract', 'datacontext', 'tokenStorageService', 'breeze', '$http'];
 
-    function controller(common, $scope, abstractController, abstractUserDetails, datacontext, tokenStorageService, breeze, $http) {
+    function controller(common, $scope, abstractController, abstractUsers, datacontext, tokenStorageService, breeze, $http) {
         /* jshint validthis:true */
         var vm = this;
         var facultyLimitPred = [];
@@ -17,7 +17,7 @@
             $scope: $scope
         });
 
-        abstractUserDetails.constructor.call(this, $scope);
+        abstractUsers.constructor.call(this, $scope);
         vm.title = 'Send Faculty Invitations';
         vm.addPerson = addPerson;
         vm.allCourseTypes = [];
