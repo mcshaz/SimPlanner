@@ -10,16 +10,16 @@ namespace SP.DTOs.Utilities
         public static string GetCountryFullName(CultureInfo ci)
         {
             var name = Regex.Match(ci.DisplayName, @"(.*) \((.*)?\)");
-            var cc = getCountry(ci.Name);
+            var cc = GetCountry(ci.Name);
             var cultureCount = CultureInfo.GetCultures(CultureTypes.AllCultures)
-                .Count(c=> cc == getCountry(c.Name));
+                .Count(c=> cc == GetCountry(c.Name));
             return cultureCount > 1
                 ? $"{name.Groups[2].Value} ({name.Groups[1].Value})"
                 : name.Groups[2].Value;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static string getCountry(string cultureCode)
+        private static string GetCountry(string cultureCode)
         {
             var i = cultureCode.IndexOf('-');
             if (i == -1) { return null; }
@@ -27,7 +27,7 @@ namespace SP.DTOs.Utilities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static string getLanguage(string cultureCode)
+        private static string GetLanguage(string cultureCode)
         {
             var i = cultureCode.IndexOf('-');
             if (i == -1) { return null; }

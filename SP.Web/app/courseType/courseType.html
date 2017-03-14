@@ -34,7 +34,7 @@
                                             <input type="file" accept=".pptx" ng-model="vm.courseType.file" app-filereader ng-file-size="vm.courseType.fileSize" ng-file-name="vm.courseType.certificateFileName" ng-last-modified="vm.courseType.fileModified" style="display:none!important;" />
                                         </span>
                                     </label>
-                                    <input type="text" name="certFN" class="form-control" readonly ng-model="vm.courseType.certificateFileName" z-validate z-append-to="#file-container">
+                                    <input type="text" name="certFN" class="form-control" readonly ng-model="vm.courseType.certificateFileName" placeholder="[Generic Template]" z-validate z-append-to="#file-container">
                                 </div>
                                 <div class="row top-buffer">
                                     <label class="col-md-1 control-label">File Size</label>
@@ -53,8 +53,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <button type="button" class="btn btn-link" ng-click="vm.clearFileData()"><i class="fa fa-times"></i>Remove File</button>
-                                        <button class="btn-link" ng-click="vm.downloadCertificate()" type="button" ng-disabled="vm.courseType.entityAspect.entityState.isAdded && vm.courseType.certificateFileName">
+                                        <button type="button" class="btn btn-link" ng-click="vm.clearFileData()" ng-disabled="!vm.courseType.certificateFileName"><i class="fa fa-times"></i>Remove File</button>
+                                        <button class="btn-link" ng-click="vm.downloadCertificate()" type="button" ng-disabled="vm.courseType.entityAspect.entityState.isAdded() && vm.courseType.certificateFileName">
                                             <i class="fa fa-download"></i>
                                             Download
                                             <i class="fa fa-certificate"></i>

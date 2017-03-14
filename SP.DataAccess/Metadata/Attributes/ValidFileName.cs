@@ -13,7 +13,8 @@ namespace SP.DataAccess.Metadata.Attributes
         public ValidFileNameAttribute()
         {
             RequireExtension = true;
-            ErrorMessage = "Invalid Filename";
+            ErrorMessage = "{0} is an Invalid Filename";
+            MaxLength = 255; //superseeded in modern windows environments
         }
         public override bool IsValid(object value)
         {
@@ -22,33 +23,27 @@ namespace SP.DataAccess.Metadata.Attributes
             if (string.IsNullOrEmpty(fileName)) { return true;  }
             if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1 ||
                 (!AllowHidden && fileName[0] == '.') ||
-                fileName[fileName.Length - 1]== '.')
+                fileName[fileName.Length - 1]== '.' ||
+                fileName.Length > MaxLength)
             {
                 return false;
             }
-            FileInfo fi = null;
-            try
-            {
-                fi = new FileInfo(fileName);
-            }
-            catch (ArgumentException) { }
-            catch (PathTooLongException) { }
-            catch (NotSupportedException) { }
-            return fi != null 
-                && (!RequireExtension || fi.Extension != string.Empty)
-                && (ExtensionList==null || ExtensionList.Contains(fi.Extension));
+            string extension = Path.GetExtension(fileName);
+            return (!RequireExtension || extension != string.Empty)
+                && (ExtensionList==null || ExtensionList.Contains(extension));
         }
-        private const string sepChar = ",";
+        private const string _sepChar = ",";
         private IEnumerable<string> ExtensionList { get; set; }
         public bool AllowHidden { get; set; }
         public bool RequireExtension { get; set; }
+        public int MaxLength { get; set; }
         public string AllowedExtensions {
-            get { return string.Join(sepChar, ExtensionList); } 
+            get { return string.Join(_sepChar, ExtensionList); } 
             set {
                 if (string.IsNullOrEmpty(value))
                 { ExtensionList = null; }
                 else {
-                    ExtensionList = value.Split(new char[] { sepChar[0] })
+                    ExtensionList = value.Split(new char[] { _sepChar[0] })
                         .Select(s => s[0] == '.' ? s : ('.' + s))
                         .ToList();
                 }
