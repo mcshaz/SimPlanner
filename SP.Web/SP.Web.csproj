@@ -673,9 +673,6 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>LayoutTemplate.generated.cs</LastGenOutput>
     </Content>
-    <Content Include="VideoStreaming\How to register on sim-planner website.mp4">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -703,7 +700,6 @@
     <Compile Include="Controllers\UtilitiesController.cs" />
     <Compile Include="Controllers\MedSimApiController.cs" />
     <Compile Include="Controllers\SummaryDataController.cs" />
-    <Compile Include="Controllers\VideosController.cs" />
     <Compile Include="Models\CoursePlanningBindingModel.cs" />
     <Compile Include="Models\CultureFormatModel.cs" />
     <Compile Include="Models\DowloadFileSetModel.cs" />
@@ -829,7 +825,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReverseConfirmation.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="VideoStreaming\VideoStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -931,12 +926,6 @@
     <Content Include="UserEmails\MultiCourseInviteResonse.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>MultiCourseInviteResonse.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="VideoStreaming\How to register on sim-planner website.ogg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VideoStreaming\How to register on sim-planner website.webm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

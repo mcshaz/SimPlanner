@@ -16,7 +16,7 @@ angular.module('app').directive('appFilereader', ['$q', function ($q) {
             element.bind('change', function(e) {
                 var file = e.target.files[0];
                 scope.ngFileName = file.name;
-                scope.ngLastModified = file.lastModifiedDate;
+                scope.ngLastModified = file.lastModified;
                 scope.ngFileSize = file.size;
                 readFile(file)
                     .then(function(values) {

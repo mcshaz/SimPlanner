@@ -91,9 +91,9 @@ gulp.task('images', function () {
 });
 
 gulp.task('videos', function () {
-    return gulp.src('VideoStreaming/*.mpd')
+    return gulp.src('videos/*.+(mp4|ogg|webm)')
       // Caching images that ran through imagemin
-      .pipe(replace(/<BaseURL>(.*)\.mp4<\/BaseURL>/, '<BaseURL>api/videos/dash/$1</BaseURL>'))
+      //.pipe(replace(/<BaseURL>(.*)\.mp4<\/BaseURL>/, '<BaseURL>api/videos/dash/$1</BaseURL>'))
       .pipe(gulp.dest('dist/videos'));
 });
 
