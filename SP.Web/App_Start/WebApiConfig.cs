@@ -60,6 +60,7 @@ namespace SP.Web
             }    
         }
 
+        /*
         static string _defaultCertificateTemplatePath;
         internal static string DefaultCertificateTemplatePath
         {
@@ -69,5 +70,6 @@ namespace SP.Web
                     ?? (_defaultCertificateTemplatePath = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data/CertificateTemplate.pptx"));
             }
         }
+        */
     }
 }

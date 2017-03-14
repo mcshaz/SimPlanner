@@ -130,6 +130,7 @@
     <Compile Include="Data\CourseFormat.cs" />
     <Compile Include="Data\Participant.cs" />
     <Compile Include="Data\CourseSlot.cs" />
+    <Compile Include="Metadata\Attributes\ValidFileName.cs" />
     <Compile Include="Migrations\201610270329166_prereadingFilenameNonNul.cs" />
     <Compile Include="Migrations\201610270329166_prereadingFilenameNonNul.Designer.cs">
       <DependentUpon>201610270329166_prereadingFilenameNonNul.cs</DependentUpon>
@@ -165,6 +166,10 @@
     <Compile Include="Migrations\201702280842371_ParticipantStart.cs" />
     <Compile Include="Migrations\201702280842371_ParticipantStart.Designer.cs">
       <DependentUpon>201702280842371_ParticipantStart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703140123126_CourseCertificateTemplate.cs" />
+    <Compile Include="Migrations\201703140123126_CourseCertificateTemplate.Designer.cs">
+      <DependentUpon>201703140123126_CourseCertificateTemplate.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
@@ -418,6 +423,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702280842371_ParticipantStart.resx">
       <DependentUpon>201702280842371_ParticipantStart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703140123126_CourseCertificateTemplate.resx">
+      <DependentUpon>201703140123126_CourseCertificateTemplate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

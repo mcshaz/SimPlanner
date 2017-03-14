@@ -1,4 +1,4 @@
-//201702280842371_ParticipantStart
+//201703140123126_CourseCertificateTemplate
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -1663,6 +1663,56 @@
             }
           ],
           "displayName": "Send Candidate Timetable"
+        },
+        {
+          "name": "certificateFileName",
+          "dataType": "String",
+          "validators": [
+            {
+              "name": "string"
+            },
+            {
+              "name": "regularExpression",
+              "expression": "\\.pptx$"
+            }
+          ],
+          "displayName": "Certificate File Name"
+        },
+        {
+          "name": "fileModified",
+          "dataType": "DateTime",
+          "validators": [
+            {
+              "name": "date"
+            }
+          ],
+          "displayName": "File Modified"
+        },
+        {
+          "name": "fileSize",
+          "dataType": "Int64",
+          "validators": [
+            {
+              "name": "integer"
+            },
+            {
+              "name": "numericRange",
+              "min": 1.0,
+              "max": 256000.0,
+              "messageTemplate": "File Size must be 1 byte to 250 KiB"
+            }
+          ],
+          "displayName": "File Size"
+        },
+        {
+          "name": "file",
+          "dataType": "Binary",
+          "validators": [
+            {
+              "name": "none"
+            }
+          ],
+          "displayName": "File"
         }
       ],
       "navigationProperties": [

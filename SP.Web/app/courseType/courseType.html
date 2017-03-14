@@ -5,6 +5,7 @@
                 <div class="row">
                     <fieldset class="col-md-12">
                         <legend>Shared Course Details</legend>
+
                         <div class="form-group">
                             <label for="ctDescription" class="col-md-3 control-label">
                                 Course Type
@@ -13,12 +14,56 @@
                                 <input id="ctDescription" class="form-control" type="text" ng-model="vm.courseType.description" data-z-validate/>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="ctDescription" class="col-md-3 control-label">
                                 Abbreviation
                             </label>
                             <div class="col-md-9">
                                 <input id="ctAbbrev" class="form-control" type="text" ng-model="vm.courseType.abbreviation" data-z-validate/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="certFN" class="col-md-3 control-label">Certificate Template</label>
+                            <div class="col-md-9">
+                                <div class="input-group" id="file-container">
+                                    <label class="input-group-btn">
+                                        <span class="btn btn-primary">
+                                            Browse&hellip;
+                                            <input type="file" accept=".pptx" ng-model="vm.courseType.file" app-filereader ng-file-size="vm.courseType.fileSize" ng-file-name="vm.courseType.certificateFileName" ng-last-modified="vm.courseType.fileModified" style="display:none!important;" />
+                                        </span>
+                                    </label>
+                                    <input type="text" name="certFN" class="form-control" readonly ng-model="vm.courseType.certificateFileName" z-validate z-append-to="#file-container">
+                                </div>
+                                <div class="row top-buffer">
+                                    <label class="col-md-1 control-label">File Size</label>
+                                    <div class="col-md-3" id="file-size">
+                                        <div class="input-group">
+                                            <input class="form-control" disabled type="text" ng-value="vm.courseType.fileSize | sizeKib" />
+                                            <span class="input-group-addon">KiB</span>
+                                        </div>
+                                        <input type="hidden" ng-model="vm.courseType.fileSize" z-validate z-append-to="#file-size" />
+                                    </div>
+                                    <label class="col-md-1 control-label">File Modified</label>
+                                    <div class="col-md-5">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            <input class="form-control" disabled type="text" ng-value="vm.courseType.fileModified | fileDate" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-link" ng-click="vm.clearFileData()"><i class="fa fa-times"></i>Remove File</button>
+                                        <button class="btn-link" ng-click="vm.downloadCertificate()" type="button" ng-disabled="vm.courseType.entityAspect.entityState.isAdded && vm.courseType.certificateFileName">
+                                            <i class="fa fa-download"></i>
+                                            Download
+                                            <i class="fa fa-certificate"></i>
+                                            Template
+                                        </button>
+                                        <iframe style="display:none;" ng-src="{{vm.downloadFileUrl}}"></iframe>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 
@@ -123,7 +168,6 @@
                             Download Reading Material
                             <i class="fa fa-book"></i>
                         </button>
-                        <iframe style="display:none;" ng-src="{{vm.downloadFileUrl}}"></iframe>
 
                         <button class="btn-link" ng-click="vm.createNewFormat()" type="button"><i class="fa fa-plus-square"></i> New Format</button>
                         

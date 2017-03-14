@@ -15,7 +15,7 @@ namespace SP.Dto.Utilities
             const string activityPath = @"App_Data\TeachingResources\{0}\{1}.zip";
             const string scenarioResourcePath = @"App_Data\Scenarios\{0}.zip"; 
             const string prereadingPath = @"App_Data\PreReading\{0}.zip";
-            if (string.IsNullOrEmpty(assocFile.FileName)) { return null; }
+            //if (string.IsNullOrEmpty(assocFile.FileName)) { return null; }
             Type t = System.Data.Entity.Core.Objects.ObjectContext.GetObjectType(assocFile.GetType()); //cover for dynamic proxies
             string returnVar;
             switch (t.Name)
@@ -43,6 +43,13 @@ namespace SP.Dto.Utilities
                 case nameof(Institution):
                 case nameof(InstitutionDto):
                     returnVar = @"Content\images\institutions\" + assocFile.Id + Path.GetExtension(assocFile.FileName);
+                    break;
+                case nameof(CourseType):
+                case nameof(CourseTypeDto):
+                    returnVar = @"App_Data\Templates\Certificates\" 
+                        + (string.IsNullOrEmpty(assocFile.FileName)
+                            ? "Generic Certificate Template.pptx"
+                            : assocFile.Id + Path.GetExtension(assocFile.FileName));
                     break;
                 case nameof(CandidatePrereading):
                     var c = (CandidatePrereading)assocFile;

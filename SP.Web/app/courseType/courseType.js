@@ -25,6 +25,7 @@
         vm.addPrereading = addPrereading;
         vm.alterDayMarkers = alterDayMarkers;
         vm.alterObsoleteFormat = alterObsoleteFormat;
+        vm.clearFileData = clearFileData;
         vm.clone = clone;
         vm.courseType = {};
         vm.createSlot = createSlot;
@@ -34,6 +35,7 @@
         vm.departmentSelected = common.addCollectionItem.bind(null, datacontext.courseTypeDepartments, courseTypeDeparmentKey);
         vm.departments = [];
         vm.downloadReadings = downloadReadings;
+        vm.downloadCertificate = downloadCertificate;
         vm.editSlot = editSlot;
         vm.editChoices = editChoices;
         vm.emersionCategories = selectOptionMaps.getEnumValues().emersion;
@@ -133,6 +135,10 @@
             datacontext.candidatePrereadings.create({ courseTypeId: vm.courseType.id });
         }
 
+        function clearFileData() {
+            vm.courseType.certificateFileName = vm.courseType.fileSize = vm.courseType.fileModified = vm.courseType.file = null;
+        }
+
         function createActivity(slot) {
             slot.activity = datacontext.courseActivities.create({
                 courseTypeId: vm.courseType.id
@@ -171,6 +177,13 @@
         */
         function downloadReadings() {
             loginFactory.downloadFileLink('CandidateReading', vm.courseType.id)
+                .then(function (url) {
+                    vm.downloadFileUrl = url;
+                });
+        }
+
+        function downloadCertificate() {
+            loginFactory.downloadFileLink('CertificateTemplate', vm.courseType.id)
                 .then(function (url) {
                     vm.downloadFileUrl = url;
                 });

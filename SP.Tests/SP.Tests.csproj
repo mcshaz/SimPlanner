@@ -42,8 +42,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Breeze.ContextProvider, Version=1.6.0.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
-      <HintPath>..\packages\Breeze.Server.ContextProvider.1.6.0\lib\Breeze.ContextProvider.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Breeze.Server.ContextProvider.1.6.4\lib\Breeze.ContextProvider.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>

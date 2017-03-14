@@ -13,8 +13,6 @@ namespace SP.DTOs.Utilities
             var cc = getCountry(ci.Name);
             var cultureCount = CultureInfo.GetCultures(CultureTypes.AllCultures)
                 .Count(c=> cc == getCountry(c.Name));
-            var test = CultureInfo.GetCultures(CultureTypes.AllCultures)
-                .Where(c => cc == getCountry(c.Name)).ToList();
             return cultureCount > 1
                 ? $"{name.Groups[2].Value} ({name.Groups[1].Value})"
                 : name.Groups[2].Value;

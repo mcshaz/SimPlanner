@@ -207,8 +207,24 @@ namespace SP.Web.Controllers
             var course = await courses.FirstAsync(c => c.Id == model.EntitySetId);
 
             return StreamToResponse(
-                CreateCertificates.CreatePptxCertificates(course, WebApiConfig.DefaultCertificateTemplatePath),
+                CreateCertificates.CreatePptxCertificates(course, course.CourseFormat.CourseType.GetServerPath()),
                 CreateCertificates.CertificateName(course));
+        }
+
+        [Route("CertificateTemplate")]
+        [HttpGet]
+        public async Task<HttpResponseMessage> GetCertificateTemplate([FromUri]DowloadFileSetModel model)
+        {
+            var validation = await ValidateInput(model);
+            if (validation != null)
+            {
+                return validation;
+            }
+
+            var courseTypes = GetPermittedEntity(Repo.CourseTypes);
+            var courseType = (await courseTypes.FirstOrDefaultAsync(c => c.Id == model.EntitySetId)) ?? new DataAccess.CourseType();
+            string path = courseType.GetServerPath();
+            return StreamToResponse(new FileStream(path, FileMode.Open), courseType.CertificateFileName ?? Path.GetFileName(path));
         }
 
         #region Helpers

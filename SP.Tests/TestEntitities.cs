@@ -1,5 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SP.DataAccess;
+using SP.DataAccess.Metadata.Attributes;
+using SP.Metadata;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
@@ -35,9 +39,23 @@ namespace ServerSideUnitTests
             }
         }
         [TestMethod]
-        public void TestMetadata()
+        public void TestFilenameAttribute()
         {
-            //Console.Write(CreateMetaDataJSON.CreateMetadata());
+            var rxa = new ValidFileNameAttribute();
+            Assert.IsFalse(rxa.IsValid("pptx."));
+            Assert.IsFalse(rxa.IsValid("pp.tx."));
+            Assert.IsFalse(rxa.IsValid("."));
+            Assert.IsFalse(rxa.IsValid(".pp.tx"));
+            Assert.IsFalse(rxa.IsValid(".pptx"));
+            Assert.IsFalse(rxa.IsValid("pptx"));
+            Assert.IsFalse(rxa.IsValid("a/abc.pptx"));
+            Assert.IsFalse(rxa.IsValid("a\\abc.pptx"));
+            Assert.IsFalse(rxa.IsValid("c:abc.pptx"));
+            Assert.IsFalse(rxa.IsValid("c<abc.pptx"));
+            Assert.IsTrue(rxa.IsValid("abc.pptx"));
+            rxa = new ValidFileNameAttribute { AllowedExtensions = ".pptx" };
+            Assert.IsFalse(rxa.IsValid("abc.docx"));
+            Assert.IsTrue(rxa.IsValid("abc.pptx"));
         }
     }
 }
