@@ -1,4 +1,4 @@
-//201704100124154_ParticipantStartDelayMins
+//201704100827016_DialCode
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -3112,6 +3112,18 @@
             }
           ],
           "displayName": "Country Code"
+        },
+        {
+          "name": "dialCode",
+          "dataType": "String",
+          "maxLength": 7,
+          "validators": [
+            {
+              "maxLength": 7,
+              "name": "maxLength"
+            }
+          ],
+          "displayName": "Dial Code"
         }
       ],
       "navigationProperties": [

@@ -10,6 +10,7 @@ namespace SP.Dto
         public string LocaleCode { get; set; }
         public string Name { get; set; }
         public int CountryCode { get; set; }
+        public string DialCode { get; set; }
         public virtual ICollection<InstitutionDto> Institutions { get; set; }
     }
 }

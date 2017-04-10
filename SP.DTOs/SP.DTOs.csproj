@@ -220,6 +220,7 @@
     <Compile Include="ProcessBreezeRequests\ValidateMedSim.cs" />
     <Compile Include="ProcessBreezeRequests\WebValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\CountryDialCodes.cs" />
     <Compile Include="Utilities\CreateCertificates.cs" />
     <Compile Include="Utilities\CreateDocxTimetable.cs" />
     <Compile Include="Utilities\AutomatedDbMaintenance.cs" />

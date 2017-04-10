@@ -19,5 +19,8 @@ namespace SP.Metadata
         //[RegularExpression(@"\d+", ErrorMessage = "Culture dial code can only contain nubers")]
         [Range(1,999)]
         public int CountryCode { get; set; }
+
+        [StringLength(7)]
+        public string DialCode { get; set; }
     }
 }

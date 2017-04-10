@@ -26,7 +26,8 @@ namespace SP.Dto.ProcessBreezeRequests
         public MedSimDbContext Context { get {
                 return CurrentUser.Context;
             } }
-        private const string AfterUpdateDelegate = "AfterUpdateDelegate";
+        private const string _afterUpdateDelegate = "_afterUpdateDelegate";
+        private const string _preSaveState = "_preSaveState";
 
         /*
         private static IEnumerable<PropertyInfo> _identityUserDbProperties;
@@ -56,6 +57,15 @@ namespace SP.Dto.ProcessBreezeRequests
         public void ValidateDto(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             List<EntityError> errors = new List<EntityError>();
+
+            foreach (var v in saveMap.Values.SelectMany(sm=>sm))
+            {
+                if (v.UnmappedValuesMap == null)
+                {
+                    v.UnmappedValuesMap = new Dictionary<string, object>();
+                }
+                v.UnmappedValuesMap.Add(_preSaveState, v.EntityState);
+            }
 
             List<EntityInfo> currentInfos;
 
@@ -100,6 +110,8 @@ namespace SP.Dto.ProcessBreezeRequests
             {
                 throw new EntityErrorsException(errors);
             }
+
+
         }
         bool HasCoursePermission(Guid courseId)
         {
@@ -372,7 +384,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 var participants = TypedEntityInfo<Participant>.GetTyped(ei);
                 if (AfterNewUnapprovedUser != null)
                 {
-                    Participant participant = participants.FirstOrDefault(e => e.Info.EntityState == b.EntityState.Added && !e.Entity.AdminApproved)?.Entity;
+                    Participant participant = participants.FirstOrDefault(e => e.Info.UnmappedValuesMap[_preSaveState].Equals(b.EntityState.Added) && !e.Entity.AdminApproved)?.Entity;
                     if (participant != null)
                     {
                         //this is where having the breeze context and the validation cotext looks a little messy
@@ -390,7 +402,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 {
                     Participant participant;
                     object obj = null;
-                    participant = participants.FirstOrDefault(e => (e.Info.EntityState == b.EntityState.Modified 
+                    participant = participants.FirstOrDefault(e => (e.Info.UnmappedValuesMap[_preSaveState].Equals(b.EntityState.Modified)
                             && e.Entity.AdminApproved && e.Info.OriginalValuesMap.TryGetValue(nameof(participant.AdminApproved), out obj) && obj.Equals(false))
                         || (e.Info.EntityState == b.EntityState.Added && e.Info.UnmappedValuesMap?.TryGetValue("emailOnCreate", out obj)==true && obj.Equals(true)))?.Entity;
                     if (participant != null)
@@ -408,7 +420,7 @@ namespace SP.Dto.ProcessBreezeRequests
                 var te = TypedEntityInfo<Course>.GetTyped(ei);
                 foreach (var e in te)
                 {
-                    if (e.Info.EntityState == b.EntityState.Modified)
+                    if (e.Info.UnmappedValuesMap[_preSaveState].Equals(b.EntityState.Modified))
                     {
                         object originalStart;
                         if (e.Info.OriginalValuesMap.TryGetValue(nameof(e.Entity.StartFacultyUtc), out originalStart)
@@ -417,7 +429,7 @@ namespace SP.Dto.ProcessBreezeRequests
                             AfterCourseDateChange(e.Entity.Id, (DateTime)originalStart);
                         }
                     }
-                    else if (e.Info.EntityState == b.EntityState.Added)
+                    else if (e.Info.UnmappedValuesMap[_preSaveState].Equals(b.EntityState.Added))
                     {
                         AfterCourseDateChange(e.Entity.Id, null);
                     }
@@ -427,7 +439,7 @@ namespace SP.Dto.ProcessBreezeRequests
             if (AfterNewCourseParticipant != null && saveMap.TryGetValue(typeof(CourseParticipant), out ei))
             {
                 var cps = (from cp in TypedEntityInfo<CourseParticipant>.GetTyped(ei)
-                           where cp.Info.EntityState == b.EntityState.Added
+                           where cp.Info.UnmappedValuesMap[_preSaveState].Equals(b.EntityState.Added)
                            select cp.Entity).ToList();
                 if (cps.Count > 0)
                 {
@@ -438,7 +450,7 @@ namespace SP.Dto.ProcessBreezeRequests
             foreach (var mei in saveMap.Values.SelectMany(e => e))
             {
                 object pred = null;
-                if (mei.UnmappedValuesMap?.TryGetValue(AfterUpdateDelegate, out pred) == true){
+                if (mei.UnmappedValuesMap?.TryGetValue(_afterUpdateDelegate, out pred) == true){
                     ((Action)pred).Invoke();
                 }
             }
@@ -448,9 +460,10 @@ namespace SP.Dto.ProcessBreezeRequests
             var iAssocFiles = (from s in saveMap
                                where typeof(IAssociateFile).IsAssignableFrom(s.Key) 
                                select TypedEntityInfo<IAssociateFile>.GetTyped(s.Value))
-                               .SelectMany(s=>s).ToLookup(k => k.Info.EntityState);
+                               .SelectMany(s=>s).ToLookup(k => (b.EntityState)k.Info.UnmappedValuesMap[_preSaveState]);
 
             foreach (var i in iAssocFiles[b.EntityState.Deleted]) {
+                Equals(b.EntityState.Detached, i.Info.EntityState);
                 i.Entity.DeleteFile();
             }
 
@@ -640,8 +653,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                             var toRemove = Context.UserRoles.Where(ur => ur.UserId == userId);
                             Context.UserRoles.RemoveRange(toRemove);
                         };
-                        (p.Info.UnmappedValuesMap ?? (p.Info.UnmappedValuesMap = new Dictionary<string, object>()))
-                            .Add(AfterUpdateDelegate, pred);
+                        p.Info.UnmappedValuesMap.Add(_afterUpdateDelegate, pred);
                     }
                 }
             }
@@ -923,7 +935,8 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             {
                 Name = ci.DisplayName,
                 LocaleCode = ci.Name,
-                CountryCode = iso.NumericCode
+                CountryCode = iso.NumericCode,
+                DialCode = iso.DialCodes.FirstOrDefault()
             };
             Context.Cultures.Add(c);
             Context.SaveChanges();

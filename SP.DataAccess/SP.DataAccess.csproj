@@ -174,6 +174,10 @@
     <Compile Include="Migrations\201704100124154_ParticipantStartDelayMins.Designer.cs">
       <DependentUpon>201704100124154_ParticipantStartDelayMins.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704100827016_DialCode.cs" />
+    <Compile Include="Migrations\201704100827016_DialCode.Designer.cs">
+      <DependentUpon>201704100827016_DialCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="MedSimDbContext.cs" />
     <Compile Include="Metadata\Attributes\FixedLengthAttribute.cs" />
@@ -432,6 +436,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704100124154_ParticipantStartDelayMins.resx">
       <DependentUpon>201704100124154_ParticipantStartDelayMins.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704100827016_DialCode.resx">
+      <DependentUpon>201704100827016_DialCode.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

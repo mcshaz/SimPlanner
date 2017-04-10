@@ -19,21 +19,21 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="name" class="col-md-2 control-label">Name</label>
+                        <label for="name" class="col-md-2 control-label">Department Name</label>
                         <div class="col-md-10">
                             <input type="text" id="name" class="form-control" ng-model="vm.department.name" z-validate/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="abbreviation" class="col-md-2 control-label">Abbreviation</label>
+                        <label for="abbreviation" class="col-md-2 control-label">Department Abbrev</label>
                         <div class="col-md-10">
                             <input type="text" id="abbreviation" class="form-control" ng-model="vm.department.abbreviation" z-validate />
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="primaryColour" class="col-md-2 control-label">Primary Colour</label>
+                        <label for="primaryColour" class="col-md-2 control-label">Dpt Primary Colour</label>
                         <div class="col-md-10">
                             <input type="color" id="primaryColour" class="form-control" ng-model="vm.department.primaryColourHtml"  />
                             <input type="hidden" ng-model="vm.department.primaryColourHtml" z-validate z-append-to="#primaryColour" />
@@ -41,12 +41,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="secondaryColour" class="col-md-2 control-label">Secondary Colour</label>
+                        <label for="secondaryColour" class="col-md-2 control-label">Dpt Secondary Colour</label>
                         <div class="col-md-10">
                             <input type="color" id="secondaryColour" class="form-control" ng-model="vm.department.secondaryColourHtml" z-validate />
                             <input type="hidden" ng-model="vm.department.secondaryColour" z-validate z-append-to="#secondaryColour" />
                             <aside>
-                                <small>(should be lighter than primary colour)</small>
+                                <small class="small">(should be lighter than primary colour)</small>
                             </aside>
                         </div>
                     </div>

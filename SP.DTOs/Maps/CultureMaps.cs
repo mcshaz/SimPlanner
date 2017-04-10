@@ -8,13 +8,15 @@ namespace SP.Dto.Maps
         {
             LocaleCode = m.LocaleCode,
             Name = m.Name,
-            CountryCode = m.CountryCode
+            CountryCode = m.CountryCode,
+            DialCode = m.DialCode
         },
             m => new CultureDto
             {
                 LocaleCode = m.LocaleCode,
                 Name = m.Name,
-                CountryCode = m.CountryCode
+                CountryCode = m.CountryCode,
+                DialCode = m.DialCode
             })
         { }
     }
