@@ -23,7 +23,7 @@ namespace SP.Metadata
         [DisplayName("Course Start")]
         public DateTime StartFacultyUtc { get; set; }
 
-        [DisplayName("Course Start (participant)")]
-        public DateTime StartParticipantUtc { get; set; }
+        [Range(0,1500)]
+        public int DelayStartParticipantMins { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-//201703140123126_CourseCertificateTemplate
+//201704100124154_ParticipantStartDelayMins
 (function(){	window.medsimMetadata = {
 		getBreezeMetadata: getBreezeMetadata,
 		getBreezeValidators: getBreezeValidators,
@@ -844,19 +844,21 @@
           "displayName": "Course Start"
         },
         {
-          "name": "startParticipantUtc",
-          "dataType": "DateTime",
+          "name": "delayStartParticipantMins",
+          "dataType": "Int32",
           "isNullable": false,
-          "defaultValue": "",
+          "defaultValue": 0,
           "validators": [
             {
               "name": "required"
             },
             {
-              "name": "date"
+              "name": "numericRange",
+              "min": 0,
+              "max": 1500
             }
           ],
-          "displayName": "Course Start (participant)"
+          "displayName": "Delay Start Participant Mins"
         },
         {
           "name": "facultyMeeting",
@@ -1065,19 +1067,21 @@
           "displayName": "Duration Faculty Mins"
         },
         {
-          "name": "startParticipantUtc",
-          "dataType": "DateTime",
+          "name": "delayStartParticipantMins",
+          "dataType": "Int32",
           "isNullable": false,
-          "defaultValue": "",
+          "defaultValue": 0,
           "validators": [
             {
               "name": "required"
             },
             {
-              "name": "date"
+              "min": -2147483648,
+              "max": 2147483647,
+              "name": "int32"
             }
           ],
-          "displayName": "Start Participant Utc"
+          "displayName": "Delay Start Participant Mins"
         },
         {
           "name": "durationParticipantMins",

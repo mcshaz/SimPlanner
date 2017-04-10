@@ -59,11 +59,13 @@
                 });
             })];
             if (isNew) {
-                var now = new Date();
-                vm.course = datacontext.courses.create({ created: now, lastModified: now, departmentId: tokenStorageService.getUserDepartmentId()});
-                vm.course.entityAspect.markNavigationPropertyAsLoaded('courseParticipants');
-                vm.course.entityAspect.markNavigationPropertyAsLoaded('courseDays');
-                vm.courseDays = [vm.course];
+                datacontext.ready().then(function () {
+                    var now = new Date();
+                    vm.course = datacontext.courses.create({ created: now, lastModified: now, departmentId: tokenStorageService.getUserDepartmentId() });
+                    vm.course.entityAspect.markNavigationPropertyAsLoaded('courseParticipants');
+                    vm.course.entityAspect.markNavigationPropertyAsLoaded('courseDays');
+                    vm.courseDays = [vm.course];
+                });
             }else{
                 promises.push(datacontext.courses.fetchByKey(id, {expand:'courseParticipants.participant,courseDays'}).then(function (data) {
                     if (!data) {
@@ -141,16 +143,12 @@
                 dateInst.setHours(Math.floor(msOffset / 3600000), msOffset % 3600000 / 60000);
             }
             if (propName === 'startFacultyUtc') {
-                getCourseLengthPromise().then(function (courseLength) {
-                    if (courseDay === vm.courseDays[0] && vm.courseDays.every(function (cd, indx) { return indx === 1 || !cd.startFacultyUtc; })) {
-                        var date = vm.courseDays[0].startFacultyUtc;
-                        for (var i = 1; i < vm.courseDays.length; i++) {
-                            vm.courseDays[i].startFacultyUtc = new Date(date).setDate(date.getDate() + i);
-                            vm.courseDays[i].startParticipantUtc = vm.courseDays[i].startFacultyUtc + courseLength[i].delayStartParticipantMins;
-                        }
+                if (courseDay === vm.courseDays[0] && vm.courseDays.every(function (cd, indx) { return indx === 1 || !cd.startFacultyUtc; })) {
+                    var date = vm.courseDays[0].startFacultyUtc;
+                    for (var i = 1; i < vm.courseDays.length; i++) {
+                        vm.courseDays[i].startFacultyUtc = new Date(date).setDate(date.getDate() + i);
                     }
-                    courseDay.startParticipantUtc = courseDay.startFacultyUtc + courseLength[vm.courseDays.indexOf(courseDay)].delayStartParticipantMins;
-                });
+                }
             } else if (propName === 'facultyMeeting') {
                 if (!vm.course.facultyMeetingDuration) {
                     vm.course.facultyMeetingDuration = 30;
