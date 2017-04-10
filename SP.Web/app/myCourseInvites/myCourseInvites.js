@@ -59,7 +59,7 @@
                 return cp;
             });
             datacontext.save(courseParticipants).then(function () {
-                common.removeFromArray.apply(null, [vm.courses].concat(vm.selectedCourses));
+                common.arrayUtils.removeFromArray.apply(null, [vm.courses].concat(vm.selectedCourses));
                 selectedCourses.forEach(removeAccept);
 
                 vm.downloadFileUrl = common.windowOrigin() + '/api/CoursePlanning/MyCalendar/' + userId + '.ics';

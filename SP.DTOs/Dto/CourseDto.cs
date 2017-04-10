@@ -28,7 +28,7 @@ namespace SP.Dto
         public string FeedbackSummaryFilename { get; set; }
         public bool Cancelled { get; set; }
         public DateTime StartFacultyUtc { get; set; }
-        public DateTime StartParticipantUtc { get; set; }
+        public int DelayStartParticipantMins { get; set; }
         public DateTime? FacultyMeeting { get; set; }
 
         public DepartmentDto Department { get; set; }

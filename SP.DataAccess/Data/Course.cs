@@ -45,18 +45,7 @@ namespace SP.DataAccess
             set { _startFacultyUtc = value.AsUtc(); _startFacultyLocal = default(DateTime); }
         }
 
-        DateTime _startParticipantUtc;
-        public DateTime StartParticipantUtc
-        {
-            get
-            {
-                return _startParticipantUtc;
-            }
-            set
-            {
-                _startParticipantUtc = value.AsUtc(); _startParticpantLocal = default(DateTime);
-            }
-        }
+        public int DelayStartParticipantMins { get; set; }
 
         private DateTime? _facultyMeetingUtc;
         public DateTime? FacultyMeetingUtc
@@ -80,18 +69,6 @@ namespace SP.DataAccess
                 return _startFacultyLocal == default(DateTime)
                     ? (_startFacultyLocal = TimeZoneInfo.ConvertTimeFromUtc(StartFacultyUtc, Department.Institution.TimeZone))
                     : _startFacultyLocal;
-            }
-        }
-
-        DateTime _startParticpantLocal;
-        [NotMapped]
-        public DateTime StartParticpantLocal
-        {
-            get
-            {
-                return _startParticpantLocal == default(DateTime)
-                    ? (_startParticpantLocal = TimeZoneInfo.ConvertTimeFromUtc(StartParticipantUtc, Department.Institution.TimeZone))
-                    : _startParticpantLocal;
             }
         }
 
@@ -148,6 +125,7 @@ namespace SP.DataAccess
                 ? course.CourseDays.First(cd => cd.Day == days)
                 : (ICourseDay)course;
         }
+
         #region FacultyTimes
         public static DateTime FinishCourseFacultyUtc(this Course course)
         {
@@ -172,12 +150,24 @@ namespace SP.DataAccess
                 : ((CourseDay)courseDay).Course.Department;
             return TimeZoneInfo.ConvertTimeFromUtc(courseDay.FinishCourseDayFacultyUtc(), dpt.Institution.TimeZone);
         }
+
         #endregion //FacultyTimes
         #region ParticipantTimes
+
+        public static DateTime StartParticipantUtc(this ICourseDay courseDay)
+        {
+            return courseDay.StartFacultyUtc + TimeSpan.FromMinutes(courseDay.DelayStartParticipantMins);
+        }
+
+        public static DateTime StartParticipantLocal(this Course course)
+        {
+            return course.StartFacultyLocal + TimeSpan.FromMinutes(course.DelayStartParticipantMins);
+        }
+
         public static DateTime FinishCourseParticipantUtc(this Course course)
         {
             var lastDay = course.LastDay();
-            return lastDay.StartParticipantUtc + TimeSpan.FromMinutes(lastDay.DurationParticipantMins);
+            return lastDay.StartParticipantUtc() + TimeSpan.FromMinutes(lastDay.DurationParticipantMins);
         }
 
         public static DateTime FinishCourseParticipantLocal(this Course course)
@@ -187,7 +177,7 @@ namespace SP.DataAccess
 
         public static DateTime FinishCourseDayParticipantUtc(this ICourseDay courseDay)
         {
-            return courseDay.StartParticipantUtc + TimeSpan.FromMinutes(courseDay.DurationParticipantMins);
+            return courseDay.StartParticipantUtc() + TimeSpan.FromMinutes(courseDay.DurationParticipantMins);
         }
 
         public static DateTime FinishCourseDayParticipantLocal(this ICourseDay courseDay)

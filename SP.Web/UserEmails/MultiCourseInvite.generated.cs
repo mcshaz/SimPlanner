@@ -164,7 +164,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table>\r\n    </th>\n<th");
+WriteLiteral("></th></tr></table>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -317,7 +317,7 @@ WriteLiteral("\r\n                        </td>\r\n                    </tr>\r\n
             
             #line default
             #line hidden
-WriteLiteral("            </tbody>\r\n        </table>\r\n    </th>\n<th");
+WriteLiteral("            </tbody>\r\n        </table>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -369,15 +369,15 @@ WriteLiteral(" style=\"color: #cacaca; font-size: 80%;\"");
 
 WriteLiteral(">(or require further details)</small>, please log in to <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8592), Tuple.Create("\"", 8623)
+WriteAttribute("href", Tuple.Create(" href=\"", 8594), Tuple.Create("\"", 8625)
             
             #line 68 "..\..\UserEmails\MultiCourseInvite.cshtml"
-                                                                                           , Tuple.Create(Tuple.Create("", 8599), Tuple.Create<System.Object, System.Int32>(BaseUrl
+                                                                                           , Tuple.Create(Tuple.Create("", 8601), Tuple.Create<System.Object, System.Int32>(BaseUrl
             
             #line default
             #line hidden
-, 8599), false)
-, Tuple.Create(Tuple.Create("", 8607), Tuple.Create("/myCourseInvites", 8607), true)
+, 8601), false)
+, Tuple.Create(Tuple.Create("", 8609), Tuple.Create("/myCourseInvites", 8609), true)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -385,7 +385,7 @@ WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial,
 "t-decoration: none;\"");
 
 WriteLiteral(">Sim Planner Course Invitations</a> \r\n            and select which course(s) you " +
-"are able to help with. \r\n        </p>\r\n    </th>\n<th");
+"are able to help with. \r\n        </p>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -431,7 +431,7 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-fami
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
 
-WriteLiteral(">\r\n            Thank you.\r\n        </p>\r\n    </th>\n<th");
+WriteLiteral(">\r\n            Thank you.\r\n        </p>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

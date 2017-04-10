@@ -169,8 +169,8 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-fami
 "rial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin" +
 ": 0; margin-bottom: 10px; padding: 0; text-align: left;\"");
 
-WriteLiteral(">\r\n            Listed below are your upcoming courses\r\n        </p>\r\n    </th>\n<t" +
-"h");
+WriteLiteral(">\r\n            Listed below are your upcoming courses\r\n        </p>\r\n    </th>\r\n<" +
+"th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -383,7 +383,7 @@ WriteLiteral("                        </td>\r\n                    </tr>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("            </tbody>\r\n        </table>\r\n    </th>\n<th");
+WriteLiteral("            </tbody>\r\n        </table>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

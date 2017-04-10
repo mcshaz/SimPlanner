@@ -270,7 +270,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table>\r\n    </th>\n<th");
+WriteLiteral("></th></tr></table>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -525,7 +525,7 @@ WriteLiteral("            </ul>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("    </th>\n<th");
+WriteLiteral("    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

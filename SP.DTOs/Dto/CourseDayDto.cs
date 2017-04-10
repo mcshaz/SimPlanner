@@ -12,7 +12,7 @@ namespace SP.Dto
         public int Day { get; set; }
         public DateTime StartFacultyUtc { get; set; }
         public int DurationFacultyMins { get; set; }
-        public DateTime StartParticipantUtc { get; set; }
+        public int DelayStartParticipantMins { get; set; }
         public int DurationParticipantMins { get; set; }
 
         public virtual CourseDto Course {get; set;}

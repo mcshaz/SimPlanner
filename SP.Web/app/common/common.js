@@ -25,9 +25,9 @@
     });
 
     commonModule.factory('common',
-        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', '$http', 'collectionManager', common]);
+        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', '$http', 'collectionManager', 'arrayUtils', common]);
 
-    function common($q, $rootScope, $timeout, commonConfig, logger, $http, collectionManager) {
+    function common($q, $rootScope, $timeout, commonConfig, logger, $http, collectionManager, arrayUtils) {
         var throttles = {};
 
         var service = {
@@ -37,6 +37,7 @@
             // generic
             activateController: activateController,
             addCollectionItem: collectionManager.addItem,
+            arrayUtils: arrayUtils, // for accessibility
             createSearchThrottle: createSearchThrottle,
             debouncedThrottle: debouncedThrottle,
             isEmptyObject: isEmptyObject,
@@ -51,7 +52,6 @@
             textContains: textContains,
             toSeparateWords: toSeparateWords,
             alphaNumericEqual: alphaNumericEqual,
-            removeFromArray: removeFromArray,
             windowOrigin: windowOrigin
         };
 
@@ -195,18 +195,6 @@
                 }
             }
             return returnVar;
-        }
-
-        function removeFromArray(arr /*,elements to remove*/) {
-            var indx;
-            var i = 1;
-            for(; i<arguments.length; i++){
-                indx = arr.indexOf(arguments[i]);
-                if (indx > -1) {
-                    arr.splice(indx, 1);
-                }
-            }
-            return arr;
         }
 
         function windowOrigin() {

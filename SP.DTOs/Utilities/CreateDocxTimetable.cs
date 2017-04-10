@@ -115,7 +115,7 @@ namespace SP.Dto.Utilities
                         replaceVal = course.CourseFormat.Description;
                         break;
                     case "CourseStart":
-                        replaceVal = (isFaculty?course.StartFacultyLocal:course.StartParticpantLocal).ToString("D", prov);
+                        replaceVal = (isFaculty?course.StartFacultyLocal:course.StartParticipantLocal()).ToString("D", prov);
                         break;
                     case "CourseTypeAbbreviation":
                         replaceVal = course.CourseFormat.CourseType.Abbreviation;

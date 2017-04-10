@@ -25,18 +25,7 @@ namespace SP.DataAccess
                 _startFacultyUtc = value.AsUtc();
             }
         }
-        DateTime _startParticipantUtc;
-        public DateTime StartParticipantUtc
-        {
-            get
-            {
-                return _startParticipantUtc;
-            }
-            set
-            {
-                _startParticipantUtc = value.AsUtc();
-            }
-        }
+        public int DelayStartParticipantMins { get; set; }
 
         public virtual Course Course {get; set;}
     }

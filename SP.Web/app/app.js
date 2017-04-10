@@ -28,11 +28,10 @@
         'ui.select',
         'ngLocationUpdate',
         'mwl.calendar',
-        "com.2fdevs.videogular",
-        "com.2fdevs.videogular.plugins.controls",
-        "com.2fdevs.videogular.plugins.overlayplay",
-        //"com.2fdevs.videogular.plugins.poster",
-        "com.2fdevs.videogular.plugins.buffering",
+        //"com.2fdevs.videogular",
+        //"com.2fdevs.videogular.plugins.controls",
+        //"com.2fdevs.videogular.plugins.overlayplay",
+        //"com.2fdevs.videogular.plugins.buffering",
         //"com.2fdevs.videogular.plugins.dash"
     ]);
 
@@ -59,7 +58,7 @@
     }])
     .config(['tmhDynamicLocaleProvider', function (tmhDynamicLocaleProvider) {
         tmhDynamicLocaleProvider.useStorage('$cookies');
-        tmhDynamicLocaleProvider.localeLocationPattern("https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.2/angular-locale_{{locale}}.min.js");
+        tmhDynamicLocaleProvider.localeLocationPattern("https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/" + angular.version.full + "/angular-locale_{{locale}}.min.js");
     }])
     .config(['uiSelectConfig', function (uiSelectConfig) {
         uiSelectConfig.theme = 'bootstrap';

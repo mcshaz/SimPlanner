@@ -5,12 +5,12 @@
             <div class="row">
                 <div class="playlist col-md-3">
                     <ol>
-                        <li ng-repeat="(key,value) in vm.videos">
-                            <a ng-click="vm.setVideo(key)">{{value}}</a>
+                        <li ng-repeat="v in vm.videos" ng-class="{playing: v.id===vm.currentVideoId}">
+                            <a ng-click="vm.setVideo(v.id)">{{v.title}}</a>
                         </li>
                     </ol>
                 </div>
-                <iframe ng-src="{{vm.currentVideo}}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                <iframe ng-src="{{vm.currentVideoSrc}}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
             </div>
         </div>

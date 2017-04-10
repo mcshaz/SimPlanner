@@ -64,8 +64,8 @@ WriteLiteral(">\r\n    <title>");
             #line hidden
 WriteLiteral("</title>\r\n    <style>");
 
-WriteLiteral("@media only screen {\n  html {\n    min-height: 100%;\n    background: #f3f3f3;\n  }\n" +
-"}\n\n");
+WriteLiteral("@media only screen {\r\n  html {\r\n    min-height: 100%;\r\n    background: #f3f3f3;\r\n" +
+"  }\r\n}\r\n\r\n");
 
 WriteLiteral(@"@media only screen and (max-width: 596px) {
   .small-float-center {
@@ -102,81 +102,84 @@ WriteLiteral(@"@media only screen and (max-width: 596px) {
 
 ");
 
-WriteLiteral("@media only screen and (max-width: 596px) {\n  table.body table.container .hide-fo" +
-"r-large,\n  table.body table.container .row.hide-for-large {\n    display: table !" +
-"important;\n    width: 100% !important;\n  }\n}\n\n");
+WriteLiteral("@media only screen and (max-width: 596px) {\r\n  table.body table.container .hide-f" +
+"or-large,\r\n  table.body table.container .row.hide-for-large {\r\n    display: tabl" +
+"e !important;\r\n    width: 100% !important;\r\n  }\r\n}\r\n\r\n");
 
-WriteLiteral("@media only screen and (max-width: 596px) {\n  table.body table.container .callout" +
-"-inner.hide-for-large {\n    display: table-cell !important;\n    width: 100% !imp" +
-"ortant;\n  }\n}\n\n");
+WriteLiteral("@media only screen and (max-width: 596px) {\r\n  table.body table.container .callou" +
+"t-inner.hide-for-large {\r\n    display: table-cell !important;\r\n    width: 100% !" +
+"important;\r\n  }\r\n}\r\n\r\n");
 
-WriteLiteral("@media only screen and (max-width: 596px) {\n  table.body table.container .show-fo" +
-"r-large {\n    display: none !important;\n    width: 0;\n    mso-hide: all;\n    ove" +
-"rflow: hidden;\n  }\n}\n\n");
+WriteLiteral("@media only screen and (max-width: 596px) {\r\n  table.body table.container .show-f" +
+"or-large {\r\n    display: none !important;\r\n    width: 0;\r\n    mso-hide: all;\r\n  " +
+"  overflow: hidden;\r\n  }\r\n}\r\n\r\n");
 
-WriteLiteral("@media only screen and (max-width: 596px) {\n  table.body img {\n    width: auto;\n " +
-"   height: auto;\n  }\n\n  table.body center {\n    min-width: 0 !important;\n  }\n\n  " +
-"table.body .container {\n    width: 95% !important;\n  }\n\n  table.body .columns,\n " +
-" table.body .column {\n    height: auto !important;\n    -moz-box-sizing: border-b" +
-"ox;\n    -webkit-box-sizing: border-box;\n    box-sizing: border-box;\n    padding-" +
-"left: 16px !important;\n    padding-right: 16px !important;\n  }\n\n  table.body .co" +
-"lumns .column,\n  table.body .columns .columns,\n  table.body .column .column,\n  t" +
-"able.body .column .columns {\n    padding-left: 0 !important;\n    padding-right: " +
-"0 !important;\n  }\n\n  table.body .collapse .columns,\n  table.body .collapse .colu" +
-"mn {\n    padding-left: 0 !important;\n    padding-right: 0 !important;\n  }\n\n  td." +
-"small-1,\n  th.small-1 {\n    display: inline-block !important;\n    width: 8.33333" +
-"% !important;\n  }\n\n  td.small-2,\n  th.small-2 {\n    display: inline-block !impor" +
-"tant;\n    width: 16.66667% !important;\n  }\n\n  td.small-3,\n  th.small-3 {\n    dis" +
-"play: inline-block !important;\n    width: 25% !important;\n  }\n\n  td.small-4,\n  t" +
-"h.small-4 {\n    display: inline-block !important;\n    width: 33.33333% !importan" +
-"t;\n  }\n\n  td.small-5,\n  th.small-5 {\n    display: inline-block !important;\n    w" +
-"idth: 41.66667% !important;\n  }\n\n  td.small-6,\n  th.small-6 {\n    display: inlin" +
-"e-block !important;\n    width: 50% !important;\n  }\n\n  td.small-7,\n  th.small-7 {" +
-"\n    display: inline-block !important;\n    width: 58.33333% !important;\n  }\n\n  t" +
-"d.small-8,\n  th.small-8 {\n    display: inline-block !important;\n    width: 66.66" +
-"667% !important;\n  }\n\n  td.small-9,\n  th.small-9 {\n    display: inline-block !im" +
-"portant;\n    width: 75% !important;\n  }\n\n  td.small-10,\n  th.small-10 {\n    disp" +
-"lay: inline-block !important;\n    width: 83.33333% !important;\n  }\n\n  td.small-1" +
-"1,\n  th.small-11 {\n    display: inline-block !important;\n    width: 91.66667% !i" +
-"mportant;\n  }\n\n  td.small-12,\n  th.small-12 {\n    display: inline-block !importa" +
-"nt;\n    width: 100% !important;\n  }\n\n  .columns td.small-12,\n  .column td.small-" +
-"12,\n  .columns th.small-12,\n  .column th.small-12 {\n    display: block !importan" +
-"t;\n    width: 100% !important;\n  }\n\n  table.body td.small-offset-1,\n  table.body" +
-" th.small-offset-1 {\n    margin-left: 8.33333% !important;\n    Margin-left: 8.33" +
-"333% !important;\n  }\n\n  table.body td.small-offset-2,\n  table.body th.small-offs" +
-"et-2 {\n    margin-left: 16.66667% !important;\n    Margin-left: 16.66667% !import" +
-"ant;\n  }\n\n  table.body td.small-offset-3,\n  table.body th.small-offset-3 {\n    m" +
-"argin-left: 25% !important;\n    Margin-left: 25% !important;\n  }\n\n  table.body t" +
-"d.small-offset-4,\n  table.body th.small-offset-4 {\n    margin-left: 33.33333% !i" +
-"mportant;\n    Margin-left: 33.33333% !important;\n  }\n\n  table.body td.small-offs" +
-"et-5,\n  table.body th.small-offset-5 {\n    margin-left: 41.66667% !important;\n  " +
-"  Margin-left: 41.66667% !important;\n  }\n\n  table.body td.small-offset-6,\n  tabl" +
-"e.body th.small-offset-6 {\n    margin-left: 50% !important;\n    Margin-left: 50%" +
-" !important;\n  }\n\n  table.body td.small-offset-7,\n  table.body th.small-offset-7" +
-" {\n    margin-left: 58.33333% !important;\n    Margin-left: 58.33333% !important;" +
-"\n  }\n\n  table.body td.small-offset-8,\n  table.body th.small-offset-8 {\n    margi" +
-"n-left: 66.66667% !important;\n    Margin-left: 66.66667% !important;\n  }\n\n  tabl" +
-"e.body td.small-offset-9,\n  table.body th.small-offset-9 {\n    margin-left: 75% " +
-"!important;\n    Margin-left: 75% !important;\n  }\n\n  table.body td.small-offset-1" +
-"0,\n  table.body th.small-offset-10 {\n    margin-left: 83.33333% !important;\n    " +
-"Margin-left: 83.33333% !important;\n  }\n\n  table.body td.small-offset-11,\n  table" +
-".body th.small-offset-11 {\n    margin-left: 91.66667% !important;\n    Margin-lef" +
-"t: 91.66667% !important;\n  }\n\n  table.body table.columns td.expander,\n  table.bo" +
-"dy table.columns th.expander {\n    display: none !important;\n  }\n\n  table.body ." +
-"right-text-pad,\n  table.body .text-pad-right {\n    padding-left: 10px !important" +
-";\n  }\n\n  table.body .left-text-pad,\n  table.body .text-pad-left {\n    padding-ri" +
-"ght: 10px !important;\n  }\n\n  table.menu {\n    width: 100% !important;\n  }\n\n  tab" +
-"le.menu td,\n  table.menu th {\n    width: auto !important;\n    display: inline-bl" +
-"ock !important;\n  }\n\n  table.menu.vertical td,\n  table.menu.vertical th,\n  table" +
-".menu.small-vertical td,\n  table.menu.small-vertical th {\n    display: block !im" +
-"portant;\n  }\n\n  table.menu[align=\"center\"] {\n    width: auto !important;\n  }\n\n  " +
-"table.button.small-expand,\n  table.button.small-expanded {\n    width: 100% !impo" +
-"rtant;\n  }\n\n  table.button.small-expand table,\n  table.button.small-expanded tab" +
-"le {\n    width: 100%;\n  }\n\n  table.button.small-expand table a,\n  table.button.s" +
-"mall-expanded table a {\n    text-align: center !important;\n    width: 100% !impo" +
-"rtant;\n    padding-left: 0 !important;\n    padding-right: 0 !important;\n  }\n\n  t" +
-"able.button.small-expand center,\n  table.button.small-expanded center {\n    min-" +
-"width: 0;\n  }\n}</style>\r\n</head>\r\n<body");
+WriteLiteral("@media only screen and (max-width: 596px) {\r\n  table.body img {\r\n    width: auto;" +
+"\r\n    height: auto;\r\n  }\r\n\r\n  table.body center {\r\n    min-width: 0 !important;\r" +
+"\n  }\r\n\r\n  table.body .container {\r\n    width: 95% !important;\r\n  }\r\n\r\n  table.bo" +
+"dy .columns,\r\n  table.body .column {\r\n    height: auto !important;\r\n    -moz-box" +
+"-sizing: border-box;\r\n    -webkit-box-sizing: border-box;\r\n    box-sizing: borde" +
+"r-box;\r\n    padding-left: 16px !important;\r\n    padding-right: 16px !important;\r" +
+"\n  }\r\n\r\n  table.body .columns .column,\r\n  table.body .columns .columns,\r\n  table" +
+".body .column .column,\r\n  table.body .column .columns {\r\n    padding-left: 0 !im" +
+"portant;\r\n    padding-right: 0 !important;\r\n  }\r\n\r\n  table.body .collapse .colum" +
+"ns,\r\n  table.body .collapse .column {\r\n    padding-left: 0 !important;\r\n    padd" +
+"ing-right: 0 !important;\r\n  }\r\n\r\n  td.small-1,\r\n  th.small-1 {\r\n    display: inl" +
+"ine-block !important;\r\n    width: 8.33333% !important;\r\n  }\r\n\r\n  td.small-2,\r\n  " +
+"th.small-2 {\r\n    display: inline-block !important;\r\n    width: 16.66667% !impor" +
+"tant;\r\n  }\r\n\r\n  td.small-3,\r\n  th.small-3 {\r\n    display: inline-block !importan" +
+"t;\r\n    width: 25% !important;\r\n  }\r\n\r\n  td.small-4,\r\n  th.small-4 {\r\n    displa" +
+"y: inline-block !important;\r\n    width: 33.33333% !important;\r\n  }\r\n\r\n  td.small" +
+"-5,\r\n  th.small-5 {\r\n    display: inline-block !important;\r\n    width: 41.66667%" +
+" !important;\r\n  }\r\n\r\n  td.small-6,\r\n  th.small-6 {\r\n    display: inline-block !i" +
+"mportant;\r\n    width: 50% !important;\r\n  }\r\n\r\n  td.small-7,\r\n  th.small-7 {\r\n   " +
+" display: inline-block !important;\r\n    width: 58.33333% !important;\r\n  }\r\n\r\n  t" +
+"d.small-8,\r\n  th.small-8 {\r\n    display: inline-block !important;\r\n    width: 66" +
+".66667% !important;\r\n  }\r\n\r\n  td.small-9,\r\n  th.small-9 {\r\n    display: inline-b" +
+"lock !important;\r\n    width: 75% !important;\r\n  }\r\n\r\n  td.small-10,\r\n  th.small-" +
+"10 {\r\n    display: inline-block !important;\r\n    width: 83.33333% !important;\r\n " +
+" }\r\n\r\n  td.small-11,\r\n  th.small-11 {\r\n    display: inline-block !important;\r\n  " +
+"  width: 91.66667% !important;\r\n  }\r\n\r\n  td.small-12,\r\n  th.small-12 {\r\n    disp" +
+"lay: inline-block !important;\r\n    width: 100% !important;\r\n  }\r\n\r\n  .columns td" +
+".small-12,\r\n  .column td.small-12,\r\n  .columns th.small-12,\r\n  .column th.small-" +
+"12 {\r\n    display: block !important;\r\n    width: 100% !important;\r\n  }\r\n\r\n  tabl" +
+"e.body td.small-offset-1,\r\n  table.body th.small-offset-1 {\r\n    margin-left: 8." +
+"33333% !important;\r\n    Margin-left: 8.33333% !important;\r\n  }\r\n\r\n  table.body t" +
+"d.small-offset-2,\r\n  table.body th.small-offset-2 {\r\n    margin-left: 16.66667% " +
+"!important;\r\n    Margin-left: 16.66667% !important;\r\n  }\r\n\r\n  table.body td.smal" +
+"l-offset-3,\r\n  table.body th.small-offset-3 {\r\n    margin-left: 25% !important;\r" +
+"\n    Margin-left: 25% !important;\r\n  }\r\n\r\n  table.body td.small-offset-4,\r\n  tab" +
+"le.body th.small-offset-4 {\r\n    margin-left: 33.33333% !important;\r\n    Margin-" +
+"left: 33.33333% !important;\r\n  }\r\n\r\n  table.body td.small-offset-5,\r\n  table.bod" +
+"y th.small-offset-5 {\r\n    margin-left: 41.66667% !important;\r\n    Margin-left: " +
+"41.66667% !important;\r\n  }\r\n\r\n  table.body td.small-offset-6,\r\n  table.body th.s" +
+"mall-offset-6 {\r\n    margin-left: 50% !important;\r\n    Margin-left: 50% !importa" +
+"nt;\r\n  }\r\n\r\n  table.body td.small-offset-7,\r\n  table.body th.small-offset-7 {\r\n " +
+"   margin-left: 58.33333% !important;\r\n    Margin-left: 58.33333% !important;\r\n " +
+" }\r\n\r\n  table.body td.small-offset-8,\r\n  table.body th.small-offset-8 {\r\n    mar" +
+"gin-left: 66.66667% !important;\r\n    Margin-left: 66.66667% !important;\r\n  }\r\n\r\n" +
+"  table.body td.small-offset-9,\r\n  table.body th.small-offset-9 {\r\n    margin-le" +
+"ft: 75% !important;\r\n    Margin-left: 75% !important;\r\n  }\r\n\r\n  table.body td.sm" +
+"all-offset-10,\r\n  table.body th.small-offset-10 {\r\n    margin-left: 83.33333% !i" +
+"mportant;\r\n    Margin-left: 83.33333% !important;\r\n  }\r\n\r\n  table.body td.small-" +
+"offset-11,\r\n  table.body th.small-offset-11 {\r\n    margin-left: 91.66667% !impor" +
+"tant;\r\n    Margin-left: 91.66667% !important;\r\n  }\r\n\r\n  table.body table.columns" +
+" td.expander,\r\n  table.body table.columns th.expander {\r\n    display: none !impo" +
+"rtant;\r\n  }\r\n\r\n  table.body .right-text-pad,\r\n  table.body .text-pad-right {\r\n  " +
+"  padding-left: 10px !important;\r\n  }\r\n\r\n  table.body .left-text-pad,\r\n  table.b" +
+"ody .text-pad-left {\r\n    padding-right: 10px !important;\r\n  }\r\n\r\n  table.menu {" +
+"\r\n    width: 100% !important;\r\n  }\r\n\r\n  table.menu td,\r\n  table.menu th {\r\n    w" +
+"idth: auto !important;\r\n    display: inline-block !important;\r\n  }\r\n\r\n  table.me" +
+"nu.vertical td,\r\n  table.menu.vertical th,\r\n  table.menu.small-vertical td,\r\n  t" +
+"able.menu.small-vertical th {\r\n    display: block !important;\r\n  }\r\n\r\n  table.me" +
+"nu[align=\"center\"] {\r\n    width: auto !important;\r\n  }\r\n\r\n  table.button.small-e" +
+"xpand,\r\n  table.button.small-expanded {\r\n    width: 100% !important;\r\n  }\r\n\r\n  t" +
+"able.button.small-expand table,\r\n  table.button.small-expanded table {\r\n    widt" +
+"h: 100%;\r\n  }\r\n\r\n  table.button.small-expand table a,\r\n  table.button.small-expa" +
+"nded table a {\r\n    text-align: center !important;\r\n    width: 100% !important;\r" +
+"\n    padding-left: 0 !important;\r\n    padding-right: 0 !important;\r\n  }\r\n\r\n  tab" +
+"le.button.small-expand center,\r\n  table.button.small-expanded center {\r\n    min-" +
+"width: 0;\r\n  }\r\n}</style>\r\n</head>\r\n<body");
 
 WriteLiteral(@" style=""-moz-box-sizing: border-box; -ms-text-size-adjust: 100%; -webkit-box-sizing: border-box; -webkit-text-size-adjust: 100%; Margin: 0; box-sizing: border-box; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; min-width: 100%; padding: 0; text-align: left; width: 100% !important;""");
 
@@ -277,15 +280,15 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 
 WriteLiteral(">\r\n                                <img");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 10022), Tuple.Create("\"", 10075)
+WriteAttribute("src", Tuple.Create(" src=\"", 10326), Tuple.Create("\"", 10382)
             
             #line 333 "..\..\UserEmails\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 10028), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
+, Tuple.Create(Tuple.Create("", 10332), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
             
             #line default
             #line hidden
-, 10028), false)
-, Tuple.Create(Tuple.Create("", 10041), Tuple.Create("/images/sim-planner-icon-50x75.png", 10041), true)
+, 10332), false)
+, Tuple.Create(Tuple.Create("", 10348), Tuple.Create("/images/sim-planner-icon-50x75.png", 10348), true)
 );
 
 WriteLiteral(" alt=\"sim-manager logo\"");
@@ -353,15 +356,15 @@ WriteLiteral(">\r\n                                <img");
 
 WriteLiteral(" class=\"float-right\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 12123), Tuple.Create("\"", 12175)
+WriteAttribute("src", Tuple.Create(" src=\"", 12430), Tuple.Create("\"", 12485)
             
             #line 339 "..\..\UserEmails\LayoutTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 12129), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
+, Tuple.Create(Tuple.Create("", 12436), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl
             
             #line default
             #line hidden
-, 12129), false)
-, Tuple.Create(Tuple.Create("", 12142), Tuple.Create("/Content/images/logo-starship.png", 12142), true)
+, 12436), false)
+, Tuple.Create(Tuple.Create("", 12452), Tuple.Create("/Content/images/logo-starship.png", 12452), true)
 );
 
 WriteLiteral(" alt=\"Starship logo\"");
@@ -622,7 +625,7 @@ WriteLiteral(" class=\"float-center\"");
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; padding-left: 0; padding-right: 0; text-align: center; text-decoration: none; width: 100%;""");
 
-WriteLiteral(">Facebook</a></center></td></tr></table></td>\n<td");
+WriteLiteral(">Facebook</a></center></td></tr></table></td>\r\n<td");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -695,7 +698,7 @@ WriteLiteral(" class=\"float-center\"");
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; padding-left: 0; padding-right: 0; text-align: center; text-decoration: none; width: 100%;""");
 
-WriteLiteral(">Twitter</a></center></td></tr></table></td>\n<td");
+WriteLiteral(">Twitter</a></center></td></tr></table></td>\r\n<td");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -780,7 +783,7 @@ WriteLiteral(" class=\"float-center\"");
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; padding-left: 0; padding-right: 0; text-align: center; text-decoration: none; width: 100%;""");
 
-WriteLiteral(">Google+</a></center></td></tr></table></td>\n<td");
+WriteLiteral(">Google+</a></center></td></tr></table></td>\r\n<td");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -853,7 +856,7 @@ WriteLiteral(" class=\"float-center\"");
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 10px; font-weight: normal; line-height: 1.3; margin: 0; padding: 4px 8px 4px 8px; padding-left: 0; padding-right: 0; text-align: center; text-decoration: none; width: 100%;""");
 
-WriteLiteral(">LinkedIn</a></center></td></tr></table></td>\n<td");
+WriteLiteral(">LinkedIn</a></center></td></tr></table></td>\r\n<td");
 
 WriteLiteral(" class=\"expander\"");
 

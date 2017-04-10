@@ -141,12 +141,16 @@
                 dateInst.setHours(Math.floor(msOffset / 3600000), msOffset % 3600000 / 60000);
             }
             if (propName === 'startFacultyUtc') {
-                if (courseDay === vm.courseDays[0] && vm.courseDays.every(function(cd,indx){return indx===1 || !cd.startFacultyUtc;})){
-                    var date = vm.courseDays[0].startFacultyUtc;
-                    for (var i=1; i<vm.courseDays.length; i++){
-                        vm.courseDays[i].startFacultyUtc = new Date(date).setDate(date.getDate() + i);
+                getCourseLengthPromise().then(function (courseLength) {
+                    if (courseDay === vm.courseDays[0] && vm.courseDays.every(function (cd, indx) { return indx === 1 || !cd.startFacultyUtc; })) {
+                        var date = vm.courseDays[0].startFacultyUtc;
+                        for (var i = 1; i < vm.courseDays.length; i++) {
+                            vm.courseDays[i].startFacultyUtc = new Date(date).setDate(date.getDate() + i);
+                            vm.courseDays[i].startParticipantUtc = vm.courseDays[i].startFacultyUtc + courseLength[i].delayStartParticipantMins;
+                        }
                     }
-                }
+                    courseDay.startParticipantUtc = courseDay.startFacultyUtc + courseLength[vm.courseDays.indexOf(courseDay)].delayStartParticipantMins;
+                });
             } else if (propName === 'facultyMeeting') {
                 if (!vm.course.facultyMeetingDuration) {
                     vm.course.facultyMeetingDuration = 30;
@@ -224,7 +228,7 @@
                 }
                 vm.courseDays = concatCourseDays();
                 vm.courseDays.forEach(function (cd) {
-                    cd.durationFacultyMins = courseLength[cd.day];
+                    angular.extend(cd, courseLength[cd.day]);
                 });
 
             });
@@ -246,11 +250,34 @@
                 }
 
                 function getSlotDuration() {
-                    _courseLength = [];
-                    vm.course.courseFormat.courseSlots.forEach(function (cs) {
-                        _courseLength[cs.day] = (_courseLength[cs.day] || 0) + cs.minutesDuration;
-                    });
-                    return _courseLength;
+                    var lastDay = -1;
+                    return _courseLength = common.arrayUtils.toLookupArray(vm.course.courseFormat.courseSlots
+                        .filter(function (cs) { return cs.isActive; })
+                        .sort(common.sortOnPropertyName('order')), function (cs) {
+                            return cs.day;
+                        })
+                        .map(function (d) {
+                            var returnVar = {
+                                durationFacultyMins: d.map(getMins).reduce(sumFn, 0),
+                                delayStartParticipantMins: common.arrayUtils.takeWhile(d, isFaculty)
+                                    .map(getMins)
+                                    .reduce(sumFn, 0)
+                            };
+                            var minsFromParticipantEnd = common.arrayUtils.takeWhile(d.reverse(), isFaculty)
+                                .map(getMins)
+                                .reduce(sumFn, 0);
+                            returnVar.durationParticipantMins = returnVar.durationFacultyMins - returnVar.delayStartParticipantMins - minsFromParticipantEnd;
+                            return returnVar;
+                        });
+                    function sumFn(a, b) {
+                        return a + b;
+                    }
+                    function getMins(a) {
+                        return a.minutesDuration;
+                    }
+                    function isFaculty(cs) {
+                        return cs.facultyOnly;
+                    }
                 }
             }
         }

@@ -11,20 +11,22 @@
     function videoCtrl($sce, common) {
         var vm = this;
 
-        vm.currentVideo = null;
+        vm.currentVideoSrc = null;
+        vm.currentVideoId = '';
         vm.setVideo = setVideo;
-        vm.videos = {
-            '208395872' : 'How to register on the Sim-Planner website'
-        }
+        vm.videos = [{
+            id:'208395872', title:'How to register on the Sim-Planner website'
+        }];
         activate();
 
         function activate() {
             common.activateController([], controllerId);
-            setVideo('208395872')
+            setVideo(vm.videos[0].id);
         }
 
-        function setVideo(vimeoKey) {
-            vm.currentVideo = $sce.trustAsResourceUrl("https://player.vimeo.com/video/" + vimeoKey);
+        function setVideo(vimeoId) {
+            vm.currentVideoId = vimeoId
+            vm.currentVideoSrc = $sce.trustAsResourceUrl("https://player.vimeo.com/video/" + vimeoId);
         }
     }
 })();

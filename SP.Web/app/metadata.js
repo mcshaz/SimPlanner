@@ -1670,10 +1670,6 @@
           "validators": [
             {
               "name": "string"
-            },
-            {
-              "name": "regularExpression",
-              "expression": "\\.pptx$"
             }
           ],
           "displayName": "Certificate File Name"

@@ -41,12 +41,12 @@ WriteLiteral("\r\n");
 
             
             #line 9 "..\..\UserEmails\CandidateReadingMessage.cshtml"
-   
+  
     Layout = new SP.Web.UserEmails.LayoutTemplate
     {
         Title = "Candidate Reading"
     };
-    var afterCourse = Course.StartParticipantUtc < DateTime.UtcNow;
+    var afterCourse = Course.StartParticipantUtc() < DateTime.UtcNow;
 
             
             #line default
@@ -196,7 +196,7 @@ WriteLiteral("                on ");
 
             
             #line 33 "..\..\UserEmails\CandidateReadingMessage.cshtml"
-              Write(Course.StartParticpantLocal.ToString(afterCourse ? "D":"f",FormatProvider));
+              Write(Course.StartParticipantLocal().ToString(afterCourse ? "D":"f",FormatProvider));
 
             
             #line default
@@ -209,7 +209,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table>\r\n    </th>\n<th");
+WriteLiteral("></th></tr></table>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -327,7 +327,7 @@ WriteLiteral("prior to attending the course\r\n");
             
             #line default
             #line hidden
-WriteLiteral("            .\r\n        </p>\r\n    </th>\n<th");
+WriteLiteral("            .\r\n        </p>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

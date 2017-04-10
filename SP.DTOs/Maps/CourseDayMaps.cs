@@ -13,7 +13,7 @@ namespace SP.Dto.Maps
             DurationFacultyMins =m.DurationFacultyMins,
             StartFacultyUtc = m.StartFacultyUtc,
             DurationParticipantMins = m.DurationParticipantMins,
-            StartParticipantUtc = m.StartParticipantUtc
+            DelayStartParticipantMins = m.DelayStartParticipantMins
         },
         m => new CourseDayDto
         {
@@ -22,7 +22,7 @@ namespace SP.Dto.Maps
             DurationFacultyMins = m.DurationFacultyMins,
             StartFacultyUtc = m.StartFacultyUtc,
             DurationParticipantMins = m.DurationParticipantMins,
-            StartParticipantUtc = m.StartParticipantUtc
+            DelayStartParticipantMins = m.DelayStartParticipantMins
         })
         { }
 

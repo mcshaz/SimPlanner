@@ -118,11 +118,22 @@ gulp.task('build', function (callback) {
 });
 
 gulp.task('parseInky', function () {
-    gulp.src('UserEmails/Inky/**/*.cshtml')
+    var fn = getArgs(process.argv, "--file");
+    gulp.src(fn
+        ? 'UserEmails/Inky/' + fn
+        :'UserEmails/Inky/**/*.cshtml')
         .pipe(inky()) //NOT WORKING { cheerio: { lowerCaseTags: false } }
         .pipe(inliner('wwwroot/lib/foundation-emails/dist/foundation-emails.css'))
         .pipe(gulp.dest('UserEmails'));
 });
+
+function getArgs(argv, optionName) {
+    var i = argv.indexOf(optionName);
+    if (i > -1) {
+        return argv[i + 1];
+    }
+    return null;
+}
 
 // Compile Sass into CSS
 // Compiles Foundation-specific CSS

@@ -259,7 +259,7 @@ WriteLiteral("        </ul>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("    </th>\n<th");
+WriteLiteral("    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

@@ -24,7 +24,7 @@ namespace SP.Web.UserEmails
             
     public string Token { get; set; }
     public Guid UserId { get; set; }
-    
+
     public string AsQueryString()
     {
         return BaseUrl + "/resetPassword?token=" + System.Web.HttpUtility.UrlEncode(Token) + "&userId=" + UserId.ToString();
@@ -164,14 +164,14 @@ WriteLiteral(" style=\"min-width: 0; width: 100%;\"");
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4456), Tuple.Create("\"", 4481)
+WriteAttribute("href", Tuple.Create(" href=\"", 4452), Tuple.Create("\"", 4477)
             
             #line 24 "..\..\UserEmails\ForgotPasswordTemplate.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 , Tuple.Create(Tuple.Create("", 4463), Tuple.Create<System.Object, System.Int32>(AsQueryString()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 , Tuple.Create(Tuple.Create("", 4459), Tuple.Create<System.Object, System.Int32>(AsQueryString()
             
             #line default
             #line hidden
-, 4463), false)
+, 4459), false)
 );
 
 WriteLiteral(" align=\"center\"");
@@ -180,13 +180,13 @@ WriteLiteral(" class=\"float-center\"");
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #2199e8; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 20px; font-weight: bold; line-height: 1.3; margin: 0; padding: 10px 20px 10px 20px; padding-left: 0; padding-right: 0; text-align: center; text-decoration: none; width: 100%;""");
 
-WriteLiteral(">Reset Password</a></center></td></tr></table></td>\n<td");
+WriteLiteral(">Reset Password</a></center></td></tr></table></td>\r\n<td");
 
 WriteLiteral(" class=\"expander\"");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 1.3; margin: 0; padding: 0 !important; text-align: left; vertical-align: top; visibility: hidden; width: 0; word-wrap: break-word;""");
 
-WriteLiteral("></td></tr></table>\r\n\r\n    </th>\n<th");
+WriteLiteral("></td></tr></table>\r\n\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

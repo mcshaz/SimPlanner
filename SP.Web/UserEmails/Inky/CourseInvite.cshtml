@@ -34,7 +34,7 @@ else
                 Please note the <em>change in schedule</em> for this event!
                 <strong>
                     The new start is
-                    @string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.IsFaculty?CourseParticipant.Course.StartFacultyLocal: CourseParticipant.Course.StartParticpantLocal)
+                    @string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.IsFaculty?CourseParticipant.Course.StartFacultyLocal: CourseParticipant.Course.StartParticipantLocal())
                 </strong>.
             </p>
             <p><small>(Note the change from the <strong>old</strong> start of @string.Format(FormatProvider, "{0:D} at {0:t}", OldStart.Value))</small></p>
@@ -58,10 +58,10 @@ else
     <dt>When</dt>
     <dd>
         <p>
-            @string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.IsFaculty ? CourseParticipant.Course.StartFacultyLocal : CourseParticipant.Course.StartParticpantLocal)
+            @string.Format(FormatProvider, "{0:D} at {0:t}", CourseParticipant.IsFaculty ? CourseParticipant.Course.StartFacultyLocal : CourseParticipant.Course.StartParticipantLocal())
         </p>
         <p class="details">
-            (finishing @(CourseParticipant.IsFaculty?CourseParticipant.Course.FinishCourseFacultyLocal(): CourseParticipant.Course.FinishCourseParticipantLocal()).ToString("g",FormatProvider))
+            (finishing @((CourseParticipant.IsFaculty?CourseParticipant.Course.FinishCourseFacultyLocal(): CourseParticipant.Course.FinishCourseParticipantLocal()).ToString("g",FormatProvider)))
         </p>
     </dd>
 

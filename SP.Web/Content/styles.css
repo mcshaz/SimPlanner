@@ -439,7 +439,15 @@ a {
 .panel-heading .btn-link, .panel-heading h4 {
     color:inherit;
 }
-
+.playing {
+    color:red;
+}
+.playing a {
+    text-decoration:underline;
+}
+.playing::after{
+    content:'*';
+}
 input[type="number"] {
     width: 58px;
 }

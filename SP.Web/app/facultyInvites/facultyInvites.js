@@ -115,7 +115,7 @@
         }
 
         function removePerson(person) {
-            common.removeFromArray(vm.selectedInvitees, person);
+            common.arrayUtils.removeFromArray(vm.selectedInvitees, person);
         }
     }
     function deleteInvite(i) {

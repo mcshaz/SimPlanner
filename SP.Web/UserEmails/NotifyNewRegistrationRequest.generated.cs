@@ -122,7 +122,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table>\r\n    </th>\n<th");
+WriteLiteral("></th></tr></table>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -236,14 +236,14 @@ WriteLiteral("                <dt>\r\n                    URL\r\n               
 
 WriteLiteral("                <dd>\r\n                    <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4877), Tuple.Create("\"", 4936)
+WriteAttribute("href", Tuple.Create(" href=\"", 4878), Tuple.Create("\"", 4937)
             
             #line 60 "..\..\UserEmails\NotifyNewRegistrationRequest.cshtml"
-, Tuple.Create(Tuple.Create("", 4884), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.HomepageUrl
+, Tuple.Create(Tuple.Create("", 4885), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.HomepageUrl
             
             #line default
             #line hidden
-, 4884), false)
+, 4885), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -287,23 +287,23 @@ WriteLiteral("                <dt>\r\n                    Location\r\n          
 
 WriteLiteral("                <dd>\r\n                    <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 5621), Tuple.Create("\"", 5784)
-, Tuple.Create(Tuple.Create("", 5628), Tuple.Create("https://www.google.com/maps/place/", 5628), true)
+WriteAttribute("href", Tuple.Create(" href=\"", 5622), Tuple.Create("\"", 5785)
+, Tuple.Create(Tuple.Create("", 5629), Tuple.Create("https://www.google.com/maps/place/", 5629), true)
             
             #line 70 "..\..\UserEmails\NotifyNewRegistrationRequest.cshtml"
-, Tuple.Create(Tuple.Create("", 5662), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Latitude.ToString()
+, Tuple.Create(Tuple.Create("", 5663), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Latitude.ToString()
             
             #line default
             #line hidden
-, 5662), false)
-, Tuple.Create(Tuple.Create("", 5722), Tuple.Create(",", 5722), true)
+, 5663), false)
+, Tuple.Create(Tuple.Create("", 5723), Tuple.Create(",", 5723), true)
             
             #line 70 "..\..\UserEmails\NotifyNewRegistrationRequest.cshtml"
-                                            , Tuple.Create(Tuple.Create("", 5723), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Longitude.ToString()
+                                            , Tuple.Create(Tuple.Create("", 5724), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Longitude.ToString()
             
             #line default
             #line hidden
-, 5723), false)
+, 5724), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -333,28 +333,28 @@ WriteLiteral("                <dt>\r\n                    Logo\r\n              
 
 WriteLiteral("                <dd>\r\n                    <img");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 6259), Tuple.Create("\"", 6384)
+WriteAttribute("src", Tuple.Create(" src=\"", 6260), Tuple.Create("\"", 6385)
             
             #line 79 "..\..\UserEmails\NotifyNewRegistrationRequest.cshtml"
-, Tuple.Create(Tuple.Create("", 6265), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl + '/' + IAssociateFileTools.ServerPathToUrl(PersonRequesting.Department.Institution.GetServerPath())
+, Tuple.Create(Tuple.Create("", 6266), Tuple.Create<System.Object, System.Int32>(BaseInsecureUrl + '/' + IAssociateFileTools.ServerPathToUrl(PersonRequesting.Department.Institution.GetServerPath())
             
             #line default
             #line hidden
-, 6265), false)
+, 6266), false)
 );
 
 WriteLiteral(" width=\"200\"");
 
-WriteAttribute("alt", Tuple.Create(" alt=\"", 6397), Tuple.Create("\"", 6457)
-, Tuple.Create(Tuple.Create("", 6403), Tuple.Create("logo", 6403), true)
-, Tuple.Create(Tuple.Create(" ", 6407), Tuple.Create("for", 6408), true)
+WriteAttribute("alt", Tuple.Create(" alt=\"", 6398), Tuple.Create("\"", 6458)
+, Tuple.Create(Tuple.Create("", 6404), Tuple.Create("logo", 6404), true)
+, Tuple.Create(Tuple.Create(" ", 6408), Tuple.Create("for", 6409), true)
             
             #line 79 "..\..\UserEmails\NotifyNewRegistrationRequest.cshtml"
-                                                                                                , Tuple.Create(Tuple.Create(" ", 6411), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Name
+                                                                                                , Tuple.Create(Tuple.Create(" ", 6412), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Name
             
             #line default
             #line hidden
-, 6412), false)
+, 6413), false)
 );
 
 WriteLiteral(" style=\"-ms-interpolation-mode: bicubic; clear: both; display: block; max-width: " +
@@ -401,7 +401,7 @@ WriteLiteral("\r\n                </dd>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("        </dl>\r\n    </th>\n<th");
+WriteLiteral("        </dl>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -471,7 +471,7 @@ WriteLiteral("                ");
             
             #line default
             #line hidden
-WriteLiteral("\r\n            </dd>\r\n        </dl>\r\n    </th>\n<th");
+WriteLiteral("\r\n            </dd>\r\n        </dl>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -532,14 +532,14 @@ WriteLiteral("                ");
 WriteLiteral("\r\n            </dd>\r\n            <dt>\r\n                Email\r\n            </dt>\r\n" +
 "            <dd>\r\n                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 10555), Tuple.Create("\"", 10590)
+WriteAttribute("href", Tuple.Create(" href=\"", 10558), Tuple.Create("\"", 10593)
             
             #line 133 "..\..\UserEmails\NotifyNewRegistrationRequest.cshtml"
-, Tuple.Create(Tuple.Create("", 10562), Tuple.Create<System.Object, System.Int32>(GetMailTo(PersonRequesting)
+, Tuple.Create(Tuple.Create("", 10565), Tuple.Create<System.Object, System.Int32>(GetMailTo(PersonRequesting)
             
             #line default
             #line hidden
-, 10562), false)
+, 10565), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -621,7 +621,7 @@ WriteLiteral("</strong> - ");
             
             #line default
             #line hidden
-WriteLiteral("\r\n            </dd>\r\n        </dl>\r\n        \r\n    </th>\n<th");
+WriteLiteral("\r\n            </dd>\r\n        </dl>\r\n        \r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -689,22 +689,22 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-fami
 WriteLiteral(">\r\n                In order to approve or delete this request, please go to the <" +
 "a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 13468), Tuple.Create("\"", 13564)
+WriteAttribute("href", Tuple.Create(" href=\"", 13472), Tuple.Create("\"", 13568)
             
             #line 160 "..\..\UserEmails\NotifyNewRegistrationRequest.cshtml"
-     , Tuple.Create(Tuple.Create("", 13475), Tuple.Create<System.Object, System.Int32>(BaseUrl
+     , Tuple.Create(Tuple.Create("", 13479), Tuple.Create<System.Object, System.Int32>(BaseUrl
             
             #line default
             #line hidden
-, 13475), false)
-, Tuple.Create(Tuple.Create("", 13483), Tuple.Create("/reviewRegistrationRequest/", 13483), true)
+, 13479), false)
+, Tuple.Create(Tuple.Create("", 13487), Tuple.Create("/reviewRegistrationRequest/", 13487), true)
             
             #line 160 "..\..\UserEmails\NotifyNewRegistrationRequest.cshtml"
-                                        , Tuple.Create(Tuple.Create("", 13510), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Id.ToString()
+                                        , Tuple.Create(Tuple.Create("", 13514), Tuple.Create<System.Object, System.Int32>(PersonRequesting.Department.Institution.Id.ToString()
             
             #line default
             #line hidden
-, 13510), false)
+, 13514), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -720,7 +720,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table>\r\n    </th>\n<th");
+WriteLiteral("></th></tr></table>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

@@ -882,11 +882,9 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                     }
                     var slots = slotDays[(byte)i] ?? Enumerable.Empty<CourseSlot>();
                     icd.DurationFacultyMins = slots.Sum(s=>s.MinutesDuration);
-                    var minsToParticipantStart = slots.TakeWhile(s => s.FacultyOnly).Sum(s => s.MinutesDuration);
-                    icd.StartParticipantUtc = icd.StartFacultyUtc +
-                        TimeSpan.FromMinutes(minsToParticipantStart);
+                    icd.DelayStartParticipantMins = slots.TakeWhile(s => s.FacultyOnly).Sum(s => s.MinutesDuration);
                     var minsFromParticipantEnd = slots.Reverse().TakeWhile(s => s.FacultyOnly).Sum(s => s.MinutesDuration);
-                    icd.DurationParticipantMins = icd.DurationFacultyMins - minsToParticipantStart - minsFromParticipantEnd;
+                    icd.DurationParticipantMins = icd.DurationFacultyMins - icd.DelayStartParticipantMins - minsFromParticipantEnd;
                 }
                 foreach (var k in days.Keys.Where(d=> d > course.CourseFormat.DaysDuration))
                 {

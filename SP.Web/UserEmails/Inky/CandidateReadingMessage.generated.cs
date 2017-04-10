@@ -46,7 +46,7 @@ WriteLiteral("\r\n");
     {
         Title = "Candidate Reading"
     };
-    var afterCourse = Course.StartParticipantUtc < DateTime.UtcNow;
+    var afterCourse = Course.StartParticipantUtc() < DateTime.UtcNow;
 
             
             #line default
@@ -143,7 +143,7 @@ WriteLiteral("                on ");
 
             
             #line 33 "..\..\UserEmails\Inky\CandidateReadingMessage.cshtml"
-              Write(Course.StartParticpantLocal.ToString(afterCourse ? "D":"f",FormatProvider));
+              Write(Course.StartParticipantLocal().ToString(afterCourse ? "D":"f",FormatProvider));
 
             
             #line default

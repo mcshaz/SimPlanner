@@ -131,7 +131,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table>\r\n    </th>\n<th");
+WriteLiteral("></th></tr></table>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -179,15 +179,15 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: #0a0a0a; font-fami
 
 WriteLiteral(">\r\n            You should now be able to <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4161), Tuple.Create("\"", 4177)
+WriteAttribute("href", Tuple.Create(" href=\"", 4162), Tuple.Create("\"", 4178)
             
             #line 27 "..\..\UserEmails\ApplicationApproved.cshtml"
-, Tuple.Create(Tuple.Create("", 4168), Tuple.Create<System.Object, System.Int32>(BaseUrl
+, Tuple.Create(Tuple.Create("", 4169), Tuple.Create<System.Object, System.Int32>(BaseUrl
             
             #line default
             #line hidden
-, 4168), false)
-, Tuple.Create(Tuple.Create("", 4176), Tuple.Create("/", 4176), true)
+, 4169), false)
+, Tuple.Create(Tuple.Create("", 4177), Tuple.Create("/", 4177), true)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -196,7 +196,7 @@ WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial,
 
 WriteLiteral(">login to sim-planner.com</a> (either with a password if you supplied one, a soci" +
 "al media login associated with this email address or by clicking Login and then " +
-"\'Forgot Password\').\r\n        </p>\r\n    </th>\n<th");
+"\'Forgot Password\').\r\n        </p>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 

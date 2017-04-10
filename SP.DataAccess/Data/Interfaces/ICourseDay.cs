@@ -6,7 +6,7 @@ namespace SP.DataAccess.Data.Interfaces
     {
         DateTime StartFacultyUtc {get;}
         int DurationFacultyMins { get; set; }
-        DateTime StartParticipantUtc { get; set; }
+        int DelayStartParticipantMins { get; set; }
         int DurationParticipantMins { get; set; }
         int Day { get; }
     }

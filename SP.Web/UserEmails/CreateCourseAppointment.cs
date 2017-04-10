@@ -88,7 +88,7 @@ namespace SP.Web.UserEmails
                     var dayEvt = cd.Day < course.CourseFormat.DaysDuration
                         ? courseEvt.Copy<Event>()
                         : courseEvt;
-                    dayEvt.Start = new CalDateTime(cp.IsFaculty?cd.StartFacultyUtc:cd.StartParticipantUtc);
+                    dayEvt.Start = new CalDateTime(cp.IsFaculty?cd.StartFacultyUtc:cd.StartParticipantUtc());
                     dayEvt.Duration = TimeSpan.FromMinutes(cp.IsFaculty ? cd.DurationFacultyMins: cd.DurationParticipantMins);
                     if (course.CourseFormat.DaysDuration > 1)
                     {

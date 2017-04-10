@@ -20,7 +20,8 @@ namespace SP.Web
 
             var options = new DashboardOptions
             {
-                Authorization = new[] { new HangfireAuthorizationFilter() }
+                Authorization = new[] { new HangfireAuthorizationFilter() },
+                AppPath = System.Web.VirtualPathUtility.ToAbsolute("~")
             };
             app.UseHangfireDashboard("/hangfire", options);
 

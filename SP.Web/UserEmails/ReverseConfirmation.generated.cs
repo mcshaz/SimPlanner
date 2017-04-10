@@ -198,7 +198,7 @@ WriteLiteral(" style=\"Margin: 0; color: #0a0a0a; font-family: Helvetica, Arial,
 "t-size: 16px; font-weight: normal; line-height: 1.3; margin: 0; padding: 0 !impo" +
 "rtant; text-align: left; visibility: hidden; width: 0;\"");
 
-WriteLiteral("></th></tr></table>\r\n    </th>\n<th");
+WriteLiteral("></th></tr></table>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -255,7 +255,7 @@ WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial,
 "t-weight: normal; line-height: 1.3; margin: 0; padding: 0; text-align: left; tex" +
 "t-decoration: none;\"");
 
-WriteLiteral(">here</a></p>\r\n    </th>\n<th");
+WriteLiteral(">here</a></p>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -312,14 +312,14 @@ WriteLiteral(">Contact details for ");
             #line hidden
 WriteLiteral(":</h3>\r\n        <dl>\r\n            <dt>Email</dt>\r\n            <dd><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 7176), Tuple.Create("\"", 7224)
+WriteAttribute("href", Tuple.Create(" href=\"", 7178), Tuple.Create("\"", 7226)
             
             #line 50 "..\..\UserEmails\ReverseConfirmation.cshtml"
-, Tuple.Create(Tuple.Create("", 7183), Tuple.Create<System.Object, System.Int32>(GetMailTo(CourseParticipant.Participant)
+, Tuple.Create(Tuple.Create("", 7185), Tuple.Create<System.Object, System.Int32>(GetMailTo(CourseParticipant.Participant)
             
             #line default
             #line hidden
-, 7183), false)
+, 7185), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -363,7 +363,7 @@ WriteLiteral("                <dd>\r\n                    CourseParticipant.Part
             
             #line default
             #line hidden
-WriteLiteral("        </dl>\r\n    </th>\n<th");
+WriteLiteral("        </dl>\r\n    </th>\r\n<th");
 
 WriteLiteral(" class=\"expander\"");
 
@@ -440,14 +440,14 @@ WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; ba
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 10223), Tuple.Create("\"", 10255)
+WriteAttribute("href", Tuple.Create(" href=\"", 10226), Tuple.Create("\"", 10258)
             
             #line 69 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                , Tuple.Create(Tuple.Create("", 10230), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                , Tuple.Create(Tuple.Create("", 10233), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
             
             #line default
             #line hidden
-, 10230), false)
+, 10233), false)
 );
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #3adb76; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 1.3; margin: 0; padding: 8px 16px 8px 16px; text-align: left; text-decoration: none;""");
@@ -511,14 +511,14 @@ WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; ba
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 12574), Tuple.Create("\"", 12607)
+WriteAttribute("href", Tuple.Create(" href=\"", 12577), Tuple.Create("\"", 12610)
             
             #line 74 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              , Tuple.Create(Tuple.Create("", 12581), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              , Tuple.Create(Tuple.Create("", 12584), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
             
             #line default
             #line hidden
-, 12581), false)
+, 12584), false)
 );
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #ec5840; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 1.3; margin: 0; padding: 8px 16px 8px 16px; text-align: left; text-decoration: none;""");
