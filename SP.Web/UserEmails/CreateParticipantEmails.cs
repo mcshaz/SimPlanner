@@ -211,8 +211,7 @@ namespace SP.Web.UserEmails
             {
                 foreach (var f in archive.Entries)
                 {
-                    CandidatePrereading cp;
-                    if (readingDict.TryGetValue(f.Name, out cp))
+                    if (readingDict.TryGetValue(f.Name, out CandidatePrereading cp))
                     {
                         returnVar.Add(new Attachment(f.Open(), f.Name));
                     }

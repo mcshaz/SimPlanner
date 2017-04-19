@@ -166,13 +166,12 @@ namespace SP.Dto.ProcessBreezeRequests
         }
         private static IEnumerable<EntityError> PermissionErrors<T>(Dictionary<Type, List<EntityInfo>> saveMap, Func<T, b.EntityState,bool> isPermitted, string propertyName = null)
         {
-            List<EntityInfo> eis;
-            if (saveMap.TryGetValue(typeof(T), out eis))
+            if (saveMap.TryGetValue(typeof(T), out List<EntityInfo> eis))
             {
                 return (from ei in eis
                         let e = (T)ei.Entity
                         where !isPermitted(e, ei.EntityState)
-                        select MappedEFEntityError.Create(e, "insufficientPermission","you do not have permission to update this record",propertyName));
+                        select MappedEFEntityError.Create(e, "insufficientPermission", "you do not have permission to update this record", propertyName));
             }
             return Enumerable.Empty<EntityError>();
         }
@@ -326,18 +325,18 @@ namespace SP.Dto.ProcessBreezeRequests
         private Guid? DepartmentForUser(Guid userId, Dictionary<Type, List<EntityInfo>> saveMap)
         {
             Guid? returnVar;
-            List<EntityInfo> ei;
-            if (saveMap.TryGetValue(typeof(ParticipantDto), out ei))
+            if (saveMap.TryGetValue(typeof(ParticipantDto), out List<EntityInfo> ei))
             {
                 returnVar = (from e in ei
                              let ent = (ParticipantDto)e.Entity
                              where ent.Id == userId
                              select (Guid?)ent.DefaultDepartmentId).FirstOrDefault();
-            } else
+            }
+            else
             {
                 returnVar = null;
             }
-            
+
             if (!returnVar.HasValue)
             {
                 returnVar = Context.Users.Find(userId)?.DefaultDepartmentId;
@@ -373,10 +372,9 @@ namespace SP.Dto.ProcessBreezeRequests
 
         public void AfterSave(Dictionary<Type, List<EntityInfo>> saveMap, List<KeyMapping> maps)
         {
-            List<EntityInfo> ei;
-            if (saveMap.TryGetValue(typeof(CourseSlot), out ei))
+            if (saveMap.TryGetValue(typeof(CourseSlot), out List<EntityInfo> ei))
             {
-                UpdateICourseDays(ei.Select(e=> (CourseSlot)e.Entity));
+                UpdateICourseDays(ei.Select(e => (CourseSlot)e.Entity));
             }
 
             if (saveMap.TryGetValue(typeof(Participant), out ei))
@@ -422,9 +420,8 @@ namespace SP.Dto.ProcessBreezeRequests
                 {
                     if (e.Info.UnmappedValuesMap[_preSaveState].Equals(b.EntityState.Modified))
                     {
-                        object originalStart;
-                        if (e.Info.OriginalValuesMap.TryGetValue(nameof(e.Entity.StartFacultyUtc), out originalStart)
-                            && !originalStart.Equals(e.Entity.StartFacultyUtc))
+                        if (e.Info.OriginalValuesMap.TryGetValue(nameof(e.Entity.StartFacultyUtc), out object originalStart)
+    && !originalStart.Equals(e.Entity.StartFacultyUtc))
                         {
                             AfterCourseDateChange(e.Entity.Id, (DateTime)originalStart);
                         }
@@ -882,12 +879,13 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
 
                 for (int i = 1; i <= course.CourseFormat.DaysDuration; i++)
                 {
-                    ICourseDay icd;
-                    if (!days.TryGetValue(i,out icd)){
-                        icd = new CourseDay {
-                            Day=i,
+                    if (!days.TryGetValue(i, out ICourseDay icd))
+                    {
+                        icd = new CourseDay
+                        {
+                            Day = i,
                             Course = course,
-                            StartFacultyUtc = days[i-1].StartFacultyUtc
+                            StartFacultyUtc = days[i - 1].StartFacultyUtc
                         };
                         Context.CourseDays.Add((CourseDay)icd);
                         days.Add(i, icd);
