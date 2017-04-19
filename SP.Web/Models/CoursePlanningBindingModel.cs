@@ -7,6 +7,10 @@ namespace SP.Web.Models
     {
         public Guid CourseId { get; set; }
         public Guid ParticipantId { get; set; }
+        public string Token { get; set; }
+        /// <summary>
+        /// The user Id of the organiser authorizing a change of attendance status for a participant
+        /// </summary>
         public Guid? Auth { get; set; }
         bool? _isAttending;
         public bool IsAttending { get { return _isAttending.Value; } }

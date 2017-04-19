@@ -5,6 +5,7 @@ namespace SP.Web.UserEmails
 {
     public class CourseParticipantEmailBase : EmailBase
     {
+
         private CourseParticipant _courseParticipant;
         public CourseParticipant CourseParticipant
         {

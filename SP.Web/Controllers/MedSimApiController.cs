@@ -38,7 +38,7 @@ namespace SP.Web.Controllers
                             .First(c=>c.Id == courseId);
                         if (oldDate.HasValue)
                         {
-                            Task.Run(() => CreateParticipantEmails.SendCourseEmail(course, oldDate));
+                            Task.Run(() => CreateParticipantEmails.SendCourseEmail(course, UserManager, oldDate));
                         }
                         CreateParticipantEmails.RescheduleReadings(course, _repository.Context);
                     },

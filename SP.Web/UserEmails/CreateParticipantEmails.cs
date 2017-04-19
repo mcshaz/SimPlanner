@@ -20,12 +20,17 @@ namespace SP.Web.UserEmails
 {
     public static class CreateParticipantEmails
     {
+        internal static string InvitePurpose(Guid courseId)
+        {
+            return "invite" + courseId.ToString("N");
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="course"></param>
         /// <returns>a lookup true = successfully emailed, false = email failed</returns>
-        public static async Task<EmailResult<CourseParticipant>> SendCourseEmail(Course course, DateTime? originalDate = null)
+        public static async Task<EmailResult<CourseParticipant>> SendCourseEmail(Course course, ApplicationUserManager userManager, DateTime? originalDate = null)
         {
             var map = ((Expression<Func<CourseParticipant, CourseParticipantDto>>)new CourseParticipantMaps().MapToDto).Compile();
             var faculty = course.CourseParticipants.Where(cp => map(cp).IsEmailed == originalDate.HasValue)
@@ -46,12 +51,14 @@ namespace SP.Web.UserEmails
             using (var parallelEmails = new ParallelSmtpEmails(disposeMsgOnComplete: false))
             {
                 List<MailMessage> messages = new List<MailMessage>(course.CourseParticipants.Count);
-                var sendMail = new Action<CourseParticipant>(cp =>
+                var sendMail = new Action<CourseParticipant>(async cp =>
                 {
                     var mail = new MailMessage();
                     messages.Add(mail);
                     mail.To.AddParticipants(cp.Participant);
-                    var confirmEmail = new CourseInvite { CourseParticipant = cp, OldStart = originalDate };
+                    string token = await userManager.GenerateUserTokenAsync(InvitePurpose(cp.CourseId), cp.ParticipantId);
+
+                    var confirmEmail = new CourseInvite { CourseParticipant = cp, OldStart = originalDate, Token = token};
                     mail.CreateHtmlBody(confirmEmail);
                     foreach (var a in attachments)
                     {

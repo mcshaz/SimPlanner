@@ -28,10 +28,11 @@ namespace SP.Web.UserEmails
 #line hidden
         #line 5 "..\..\UserEmails\ReverseConfirmation.cshtml"
            
-    public string AuthorizationToken { get; set; }
+    public string Token { get; set; }
+    public Guid OrganiserId { get; set; }
     public string GetNotificationUrl(bool canAttend)
     {
-        return BaseUrl + $"/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending={(canAttend ? '1' : '0')}&Auth=" + AuthorizationToken;
+        return BaseUrl + $"/rsvp?ParticipantId={CourseParticipant.ParticipantId:N}&CourseId={CourseParticipant.CourseId:N}&Attending={(canAttend ? '1' : '0')}&Auth={OrganiserId:N}&Token={Token}";
     }
 
         #line default
@@ -42,7 +43,7 @@ namespace SP.Web.UserEmails
 WriteLiteral("\r\n");
 
             
-            #line 12 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 13 "..\..\UserEmails\ReverseConfirmation.cshtml"
    Layout = new SP.Web.UserEmails.LayoutTemplate
     {
         Title = string.Format(FormatProvider, "participant request to alter confirmation for {0} on {1:d}",
@@ -115,7 +116,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                ");
 
             
-            #line 23 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 24 "..\..\UserEmails\ReverseConfirmation.cshtml"
            Write(CourseParticipant.Participant.FullName);
 
             
@@ -130,7 +131,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                    ");
 
             
-            #line 25 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 26 "..\..\UserEmails\ReverseConfirmation.cshtml"
                Write(CourseParticipant.Participant.ProfessionalRole.Description);
 
             
@@ -139,7 +140,7 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n                </small>\r\n                had been confirmed as ");
 
             
-            #line 27 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 28 "..\..\UserEmails\ReverseConfirmation.cshtml"
                                   Write(CourseParticipant.IsConfirmed.Value ? "attending" : "unable to attend");
 
             
@@ -148,7 +149,7 @@ WriteLiteral("\r\n                </small>\r\n                had been confirmed
 WriteLiteral("\r\n                as a ");
 
             
-            #line 28 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 29 "..\..\UserEmails\ReverseConfirmation.cshtml"
                  Write(CourseParticipant.IsFaculty ? "faculty member" : "participant");
 
             
@@ -157,7 +158,7 @@ WriteLiteral("\r\n                as a ");
 WriteLiteral("\r\n                in the ");
 
             
-            #line 29 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 30 "..\..\UserEmails\ReverseConfirmation.cshtml"
                   Write(CourseName);
 
             
@@ -166,7 +167,7 @@ WriteLiteral("\r\n                in the ");
 WriteLiteral(" on the ");
 
             
-            #line 29 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 30 "..\..\UserEmails\ReverseConfirmation.cshtml"
                                      Write(CourseParticipant.Course.StartFacultyLocal.ToString("g", FormatProvider));
 
             
@@ -184,7 +185,7 @@ WriteLiteral(">\r\n                However, he/she would like to <strong>change 
 WriteLiteral("                ");
 
             
-            #line 33 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 34 "..\..\UserEmails\ReverseConfirmation.cshtml"
             Write(CourseParticipant.IsConfirmed.Value ? "unable" : "able");
 
             
@@ -304,7 +305,7 @@ WriteLiteral(" style=\"Margin: 0; Margin-bottom: 10px; color: inherit; font-fami
 WriteLiteral(">Contact details for ");
 
             
-            #line 47 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 48 "..\..\UserEmails\ReverseConfirmation.cshtml"
                                                                                                                                                                                                                                                                        Write(CourseParticipant.Participant.FullName);
 
             
@@ -312,14 +313,14 @@ WriteLiteral(">Contact details for ");
             #line hidden
 WriteLiteral(":</h3>\r\n        <dl>\r\n            <dt>Email</dt>\r\n            <dd><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 7178), Tuple.Create("\"", 7226)
+WriteAttribute("href", Tuple.Create(" href=\"", 7220), Tuple.Create("\"", 7268)
             
-            #line 50 "..\..\UserEmails\ReverseConfirmation.cshtml"
-, Tuple.Create(Tuple.Create("", 7185), Tuple.Create<System.Object, System.Int32>(GetMailTo(CourseParticipant.Participant)
+            #line 51 "..\..\UserEmails\ReverseConfirmation.cshtml"
+, Tuple.Create(Tuple.Create("", 7227), Tuple.Create<System.Object, System.Int32>(GetMailTo(CourseParticipant.Participant)
             
             #line default
             #line hidden
-, 7185), false)
+, 7227), false)
 );
 
 WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial, sans-serif; fon" +
@@ -329,7 +330,7 @@ WriteLiteral(" style=\"Margin: 0; color: #2199e8; font-family: Helvetica, Arial,
 WriteLiteral(">");
 
             
-            #line 50 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 51 "..\..\UserEmails\ReverseConfirmation.cshtml"
                                                                                                                                                                                                                                                     Write(CourseParticipant.Participant.Email);
 
             
@@ -338,13 +339,13 @@ WriteLiteral(">");
 WriteLiteral("</a></dd>\r\n");
 
             
-            #line 51 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 52 "..\..\UserEmails\ReverseConfirmation.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 51 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 52 "..\..\UserEmails\ReverseConfirmation.cshtml"
              if (CourseParticipant.Participant.PhoneNumber != null)
             {
 
@@ -357,7 +358,7 @@ WriteLiteral("                <dd>\r\n                    CourseParticipant.Part
 "er\r\n                </dd>\r\n");
 
             
-            #line 59 "..\..\UserEmails\ReverseConfirmation.cshtml"
+            #line 60 "..\..\UserEmails\ReverseConfirmation.cshtml"
             }
 
             
@@ -440,14 +441,14 @@ WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; ba
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 10226), Tuple.Create("\"", 10258)
+WriteAttribute("href", Tuple.Create(" href=\"", 10268), Tuple.Create("\"", 10300)
             
-            #line 69 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                , Tuple.Create(Tuple.Create("", 10233), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
+            #line 70 "..\..\UserEmails\ReverseConfirmation.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                , Tuple.Create(Tuple.Create("", 10275), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(true)
             
             #line default
             #line hidden
-, 10233), false)
+, 10275), false)
 );
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #3adb76; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 1.3; margin: 0; padding: 8px 16px 8px 16px; text-align: left; text-decoration: none;""");
@@ -511,14 +512,14 @@ WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; ba
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 12577), Tuple.Create("\"", 12610)
+WriteAttribute("href", Tuple.Create(" href=\"", 12619), Tuple.Create("\"", 12652)
             
-            #line 74 "..\..\UserEmails\ReverseConfirmation.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              , Tuple.Create(Tuple.Create("", 12584), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
+            #line 75 "..\..\UserEmails\ReverseConfirmation.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              , Tuple.Create(Tuple.Create("", 12626), Tuple.Create<System.Object, System.Int32>(GetNotificationUrl(false)
             
             #line default
             #line hidden
-, 12584), false)
+, 12626), false)
 );
 
 WriteLiteral(@" style=""Margin: 0; border: 0 solid #ec5840; border-radius: 3px; color: #fefefe; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 1.3; margin: 0; padding: 8px 16px 8px 16px; text-align: left; text-decoration: none;""");

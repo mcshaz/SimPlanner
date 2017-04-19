@@ -1,13 +1,16 @@
 ﻿using Ical.Net.Serialization.iCalendar.Serializers;
+using Microsoft.AspNet.Identity.Owin;
 using SP.DataAccess;
 using SP.Dto;
 using SP.Dto.Utilities;
+using SP.Web.Controllers.Helpers;
 using SP.Web.Models;
 using SP.Web.UserEmails;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -19,17 +22,14 @@ namespace SP.Web.Controllers
     [RoutePrefix("api/CoursePlanning")]
     public class CoursePlanningController : StreamControllerBase
     {
-        /*
-        private MedSimDtoRepository _repository; // not populating in constructor as I believe this may be too early
-        private MedSimDtoRepository Repo
+        private ApplicationUserManager _userManager;
+        private ApplicationUserManager UserManager
         {
             get
             {
-                return _repository ?? (_repository = new MedSimDtoRepository(User));
+                return _userManager ?? (_userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>());
             }
         }
-        */
-
         //[Route("EmailAll")]
         [HttpPost]
         public async Task<IHttpActionResult> EmailAll(EmailAllBindingModel model)
@@ -44,7 +44,7 @@ namespace SP.Web.Controllers
                 return Ok("The course finish must be after now");
             }
 
-            var result = await CreateParticipantEmails.SendCourseEmail(course /*, User */);
+            var result = await CreateParticipantEmails.SendCourseEmail(course /*, User */, UserManager);
 
             DateTime now = DateTime.UtcNow;
             foreach (var cp in result.SuccessRecipients) {
@@ -73,12 +73,23 @@ namespace SP.Web.Controllers
         [AllowAnonymous]
         public async Task<IHttpActionResult> Rsvp(RsvpBindingModel model)
         {
-            var find = model.Auth.HasValue ? new[] { model.Auth.Value, model.ParticipantId }
+            var find = model.Auth.HasValue 
+                ? new[] { model.Auth.Value, model.ParticipantId }
                 : new[] { model.ParticipantId };
             var cps = await Repo.CourseParticipants.Include("Participant").Include("Course")
                 .Where(cp=>cp.CourseId == model.CourseId && find.Contains(cp.ParticipantId)).ToListAsync();
 
             var part = cps.First(cp => cp.ParticipantId == model.ParticipantId);
+
+            TimeSpan timeToStart = part.Course.StartParticipantUtc() - DateTime.UtcNow;
+            string purpose = CreateParticipantEmails.InvitePurpose(model.Auth.Value);
+            var verification = model.Auth.HasValue
+                ? UserManager.VerifyUserTokenAsync(model.Auth.Value, purpose, model.Token, timeToStart)
+                : UserManager.VerifyUserTokenAsync(model.ParticipantId, purpose, model.Token, timeToStart);
+            if (!await verification)
+            {
+                return Unauthorized();
+            }
 
             CourseParticipant auth = null;
             if (model.Auth.HasValue)
@@ -138,8 +149,9 @@ namespace SP.Web.Controllers
                         mail.To.AddParticipants(org.Participant);
                         var confirmEmail = new ReverseConfirmation
                         {
-                            CourseParticipant = part,
-                            AuthorizationToken = org.ParticipantId.ToString("N")
+                            OrganiserId = org.ParticipantId,
+                            Token = await UserManager.GenerateUserTokenAsync(purpose, org.ParticipantId),
+                            CourseParticipant = part
                         };
                         mail.CreateHtmlBody(confirmEmail);
                         await client.SendMailAsync(mail);

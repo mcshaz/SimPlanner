@@ -3,10 +3,11 @@
 @inherits SP.Web.UserEmails.CourseParticipantEmailBase
 
 @functions{
-    public string AuthorizationToken { get; set; }
+    public string Token { get; set; }
+    public Guid OrganiserId { get; set; }
     public string GetNotificationUrl(bool canAttend)
     {
-        return BaseUrl + $"/rsvp?ParticipantId={CourseParticipant.ParticipantId}&CourseId={CourseParticipant.CourseId}&Attending={(canAttend ? '1' : '0')}&Auth=" + AuthorizationToken;
+        return BaseUrl + $"/rsvp?ParticipantId={CourseParticipant.ParticipantId:N}&CourseId={CourseParticipant.CourseId:N}&Attending={(canAttend ? '1' : '0')}&Auth={OrganiserId:N}&Token={Token}";
     }
 }
 @{ Layout = new SP.Web.UserEmails.LayoutTemplate
