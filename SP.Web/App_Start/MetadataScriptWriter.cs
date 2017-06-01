@@ -59,7 +59,7 @@ namespace SP.Web.App_Start
 
             using (var db = new MedSimDbContext())
             {
-                const string query = "select top 1 MigrationId from __MigrationHistory order by LEFT(MigrationId, 15) desc";
+                string query = "select top 1 MigrationId from __MigrationHistory where [dbo].[ContextKey] = '" + typeof(MedSimDbContext).FullName + "' order by LEFT(MigrationId, 15) desc";
                 return db.Database.SqlQuery<string>(query).FirstOrDefault();
             }
         }
