@@ -18,6 +18,7 @@ using SP.Dto.Maps;
 using System.Linq.Expressions;
 using SP.Dto.ProcessBreezeRequests;
 using System.Security.Principal;
+using System.Net.Mail;
 
 namespace SP.Web.Controllers
 {
@@ -112,7 +113,33 @@ namespace SP.Web.Controllers
             }
             return returnVar;
         }
-
+        [Route("email")]
+        [HttpPost]
+        public IHttpActionResult Email([FromBody]EmailModel email)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Ok(ModelState);
+            }
+            using (var m = new MailMessage())
+            {
+                m.To.Add(email.Email);
+                m.Subject = "Email Test";
+                m.Body = "This is an automated test message to check the mail server is working";
+                using (var s = new SmtpClient())
+                {
+                    try
+                    {
+                        s.Send(m);
+                    }
+                    catch (Exception e)
+                    {
+                        return InternalServerError(e);
+                    }
+                    return Ok("message sent");
+                }
+            }
+        }
         [HttpGet]
         public string CurrencyInfo(string id)
         {

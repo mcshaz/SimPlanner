@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Email Test</title>
+</head>
+<body>
+    <form id="emailForm">
+        <label>Email Address</label>
+        <input type="email" id="email" />
+        <button type="submit">Submit</button>
+    </form>
+    <div id="response">
+
+    </div>
+    <script  type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+    <script type="text/javascript">
+        (function ($) {
+            $("#emailForm").on("submit",function (evt) {
+                $.post({
+                    url: "api/utilities/email",
+                    data: { email: $("#email").val() },
+                    dataType: "json"
+                }).done(function () {
+                    log(arguments[2]);
+                }).fail(log);
+                evt.preventDefault();
+            });
+            function log(response) {
+                var data = { status: response.status, statusText: response.statusText, responseText: response.responseText };
+                console.log(data);
+                $("#response").html(JSON.stringify(data));
+            }
+        })(jQuery);
+    </script>
+</body>
+</html>

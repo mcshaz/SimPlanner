@@ -32,12 +32,11 @@ namespace SP.Tests
         {
             HttpContext.Current = new HttpContext(
                 new HttpRequest(null, "https://sim-planner.com", null),
-                new HttpResponse(new StringWriter())
-                );
-
-            // User is logged in
-            HttpContext.Current.User = TestICal.GetTestAllRolesPrincipal();
-
+                new HttpResponse(new StringWriter()))
+            {
+                // User is logged in
+                User = TestICal.GetTestAllRolesPrincipal()
+            };
             using (var msg = new MailMessage("info@sim-planner.com", HttpContext.Current.User.Identity.Name))
             {
                 string dir = Path.GetFullPath("TestEmails");
