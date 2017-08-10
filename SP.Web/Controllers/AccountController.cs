@@ -251,9 +251,10 @@ namespace SP.Web.Controllers
             //return GetErrorResult(result);
             if (result.Succeeded)
             {
+                await UserManager.ResetAccessFailedCountAsync(model.UserId); //not sure if necessary
                 return Ok();
             }
-            return Unauthorized();
+            return GetErrorResult(result);
         }
 
         // POST api/Account/AddExternalLogin

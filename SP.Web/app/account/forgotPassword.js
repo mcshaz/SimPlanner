@@ -10,7 +10,7 @@
         vm.user = {
             email: ''
         };
-        vm.errors = '';
+        vm.errors = [];
         vm.submit = submit;
         vm.successMsg = '';
         vm.serverRespondedTime = null;
@@ -25,19 +25,20 @@
         }
 
         function submit(credentials) {
-            vm.errors = '';
+            vm.errors = [];
             $http({
                 method: 'POST',
                 url: 'api/Account/ForgotPassword',
                 data: mapObjectToPascalCase(credentials)
-            }).then(function (data) {
+            }).then(function (response) {
                 vm.successMsg = 'email sent (IF it is on our system)';
                 log.success(vm.successMsg);
-                vm.serverRespondedTime = new Date();
-            }, function (data) {
-                log.error({ msg: 'change password error', data: data });
-                vm.errors = ''; //todo here
-            });
+            }, function (response) {
+                log.error({ msg: 'forgot password error', data: response.data });
+                vm.errors = response.data.ModelState[""] || ["unknown error"];
+                }).finally(function () {
+                    vm.serverRespondedTime = new Date();
+                });
         }
 
         function mapObjectToPascalCase(obj) {

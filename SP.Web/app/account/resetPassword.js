@@ -11,7 +11,8 @@
             newPassword: '',
             confirmPassword:''
         };
-        vm.errors = '';
+        vm.errors = [];
+        vm.serverRespondedTime = null;
         vm.submit = submit;
 
         activate();
@@ -24,7 +25,7 @@
         }
 
         function submit(credentials) {
-            vm.errors = '';
+            vm.errors = [];
             $http({
                 method: 'POST',
                 url: 'api/Account/ResetPassword',
@@ -34,13 +35,15 @@
                     Token: decodeURIComponent($routeParams.token),
                     UserId: $routeParams.userId
                 }
-            }).then(function (data) {
-                log.success('password changed');
-            }, function (data) {
-                log.error({ msg: 'change password error', data: data });
-                vm.errors = ''; //todo here
+            }).then(function (response) {
+                vm.successMsg = 'Password Changed Successfully. Please login with your new password [upper right]';
+                log.success(vm.successMsg);
+            }, function (response) {
+                log.error({ msg: 'change password error', data: response });
+                vm.errors = response.data.ModelState[""] || ["unknown error"];
+            }).finally(function () {
+                vm.serverRespondedTime = new Date();
             });
         }
-
     }
 })();

@@ -107,11 +107,11 @@
       <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Hangfire.Core, Version=1.6.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.Core.1.6.14\lib\net45\Hangfire.Core.dll</HintPath>
+    <Reference Include="Hangfire.Core, Version=1.6.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.6.15\lib\net45\Hangfire.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Hangfire.SqlServer, Version=1.6.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hangfire.SqlServer.1.6.14\lib\net45\Hangfire.SqlServer.dll</HintPath>
+    <Reference Include="Hangfire.SqlServer, Version=1.6.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SqlServer.1.6.15\lib\net45\Hangfire.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.5.1.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.5.1\lib\Net45\HtmlAgilityPack.dll</HintPath>
@@ -506,7 +506,7 @@
     <Content Include="dist\apple-touch-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="dist\css\main-2c9cda6396.min.css" />
+    <Content Include="dist\css\main-f714bd5c4d.min.css" />
     <Content Include="dist\css\ui-grid.eot" />
     <Content Include="dist\css\ui-grid.svg" />
     <Content Include="dist\css\ui-grid.ttf" />
@@ -533,7 +533,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-d652d044c9.min.js" />
+    <Content Include="dist\js\main-937233382e.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
