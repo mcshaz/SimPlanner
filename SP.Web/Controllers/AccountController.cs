@@ -164,7 +164,8 @@ namespace SP.Web.Controllers
                 var resetEmail = new ForgotPasswordTemplate
                 {
                     Token = await UserManager.GeneratePasswordResetTokenAsync(participant.Id),
-                    UserId = participant.Id
+                    UserId = participant.Id,
+                    UserName = participant.UserName
                 };
 
                 using (var mail = new MailMessage())

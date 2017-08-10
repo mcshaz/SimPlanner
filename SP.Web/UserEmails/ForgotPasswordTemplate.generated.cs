@@ -23,6 +23,7 @@ namespace SP.Web.UserEmails
         #line 3 "..\..\UserEmails\ForgotPasswordTemplate.cshtml"
             
     public string Token { get; set; }
+    public string UserName { get; set; }
     public Guid UserId { get; set; }
 
     public string AsQueryString()
@@ -40,7 +41,7 @@ WriteLiteral("\r\n");
 WriteLiteral("\r\n");
 
             
-            #line 13 "..\..\UserEmails\ForgotPasswordTemplate.cshtml"
+            #line 14 "..\..\UserEmails\ForgotPasswordTemplate.cshtml"
    Layout = new SP.Web.UserEmails.LayoutTemplate { Title = "Forgot Password" }; 
             
             #line default
@@ -119,7 +120,17 @@ WriteLiteral(" height=\"16px\"");
 
 WriteLiteral(@" style=""-moz-hyphens: auto; -webkit-hyphens: auto; Margin: 0; border-collapse: collapse !important; color: #0a0a0a; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; hyphens: auto; line-height: 16px; margin: 0; mso-line-height-rule: exactly; padding: 0; text-align: left; vertical-align: top; word-wrap: break-word;""");
 
-WriteLiteral(">&#xA0;</td></tr></tbody></table> \r\n\r\n        <p");
+WriteLiteral(">&#xA0;</td></tr></tbody></table> \r\n        <dl>\r\n            <dt>User Name</dt>\r" +
+"\n            <dd>");
+
+            
+            #line 25 "..\..\UserEmails\ForgotPasswordTemplate.cshtml"
+           Write(UserName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</dd>\r\n        </dl>\r\n        <p");
 
 WriteLiteral(" class=\"text-center\"");
 
@@ -164,14 +175,14 @@ WriteLiteral(" style=\"min-width: 0; width: 100%;\"");
 
 WriteLiteral("><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4452), Tuple.Create("\"", 4477)
+WriteAttribute("href", Tuple.Create(" href=\"", 4585), Tuple.Create("\"", 4610)
             
-            #line 24 "..\..\UserEmails\ForgotPasswordTemplate.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 , Tuple.Create(Tuple.Create("", 4459), Tuple.Create<System.Object, System.Int32>(AsQueryString()
+            #line 28 "..\..\UserEmails\ForgotPasswordTemplate.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 , Tuple.Create(Tuple.Create("", 4592), Tuple.Create<System.Object, System.Int32>(AsQueryString()
             
             #line default
             #line hidden
-, 4459), false)
+, 4592), false)
 );
 
 WriteLiteral(" align=\"center\"");

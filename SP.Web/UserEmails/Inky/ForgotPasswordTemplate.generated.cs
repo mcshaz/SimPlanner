@@ -23,6 +23,7 @@ namespace SP.Web.UserEmails.Inky
         #line 3 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
             
     public string Token { get; set; }
+    public string UserName { get; set; }
     public Guid UserId { get; set; }
 
     public string AsQueryString()
@@ -40,7 +41,7 @@ WriteLiteral("\r\n");
 WriteLiteral("\r\n");
 
             
-            #line 13 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
+            #line 14 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
    Layout = new SP.Web.UserEmails.LayoutTemplate { Title = "Forgot Password" }; 
             
             #line default
@@ -61,7 +62,16 @@ WriteLiteral(">Forgot Your Password?</h1>\r\n\r\n        <spacer");
 
 WriteLiteral(" size=\"16\"");
 
-WriteLiteral("></spacer>\r\n\r\n        <p");
+WriteLiteral("></spacer>\r\n        <dl>\r\n            <dt>User Name</dt>\r\n            <dd>");
+
+            
+            #line 25 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
+           Write(UserName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</dd>\r\n        </dl>\r\n        <p");
 
 WriteLiteral(" class=\"text-center\"");
 
@@ -69,14 +79,14 @@ WriteLiteral(">Click the link below to reset your password.</p>\r\n        <butt
 
 WriteLiteral(" class=\"large expand\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 780), Tuple.Create("\"", 805)
+WriteAttribute("href", Tuple.Create(" href=\"", 913), Tuple.Create("\"", 938)
             
-            #line 24 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 787), Tuple.Create<System.Object, System.Int32>(AsQueryString()
+            #line 28 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
+, Tuple.Create(Tuple.Create("", 920), Tuple.Create<System.Object, System.Int32>(AsQueryString()
             
             #line default
             #line hidden
-, 787), false)
+, 920), false)
 );
 
 WriteLiteral(">Reset Password</button>\r\n\r\n    </columns>\r\n</row>\r\n");
