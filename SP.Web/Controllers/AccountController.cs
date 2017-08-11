@@ -246,7 +246,6 @@ namespace SP.Web.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             IdentityResult result = await UserManager.ResetPasswordAsync(model.UserId, model.Token, model.NewPassword);
 
             //return GetErrorResult(result);

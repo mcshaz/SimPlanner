@@ -32,12 +32,15 @@
                 data: {
                     NewPassword: credentials.newPassword,
                     ConfirmPassword: credentials.confirmPassword,
-                    Token: decodeURIComponent($routeParams.token),
+                    //bizzare trustwave Scanmail cannot symetrically encode & decode url encoded query strings at the moment
+                    //Token: decodeURIComponent($routeParams.token),
+                    Token: $routeParams.token.replace(/ /g,'+'),
                     UserId: $routeParams.userId
                 }
             }).then(function (response) {
-                vm.successMsg = 'Password Changed Successfully. Please login with your new password [upper right]';
+                vm.successMsg = 'Password changed successfully.';
                 log.success(vm.successMsg);
+                vm.successMsg += ' Please login with your new password [upper right]';
             }, function (response) {
                 log.error({ msg: 'change password error', data: response });
                 vm.errors = response.data.ModelState[""] || ["unknown error"];

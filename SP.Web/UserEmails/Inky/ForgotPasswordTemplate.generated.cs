@@ -28,7 +28,10 @@ namespace SP.Web.UserEmails.Inky
 
     public string AsQueryString()
     {
-        return BaseUrl + "/resetPassword?token=" + System.Web.HttpUtility.UrlEncode(Token) + "&userId=" + UserId.ToString();
+        //bizzare trustwave Scanmail cannot symetrically encode & decode url encoded query strings at the moment
+        return BaseUrl + "/resetPassword?token=" + Token + "&userId=" + UserId.ToString();
+        //return to this once trustwave have a functioning product:
+        //return BaseUrl + "/resetPassword?token=" + System.Web.HttpUtility.UrlEncode(Token) + "&userId=" + UserId.ToString();
     }
 
         #line default
@@ -41,7 +44,7 @@ WriteLiteral("\r\n");
 WriteLiteral("\r\n");
 
             
-            #line 14 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
+            #line 17 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
    Layout = new SP.Web.UserEmails.LayoutTemplate { Title = "Forgot Password" }; 
             
             #line default
@@ -65,7 +68,7 @@ WriteLiteral(" size=\"16\"");
 WriteLiteral("></spacer>\r\n        <dl>\r\n            <dt>User Name</dt>\r\n            <dd>");
 
             
-            #line 25 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
+            #line 28 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
            Write(UserName);
 
             
@@ -79,14 +82,14 @@ WriteLiteral(">Click the link below to reset your password.</p>\r\n        <butt
 
 WriteLiteral(" class=\"large expand\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 913), Tuple.Create("\"", 938)
+WriteAttribute("href", Tuple.Create(" href=\"", 1190), Tuple.Create("\"", 1215)
             
-            #line 28 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
-, Tuple.Create(Tuple.Create("", 920), Tuple.Create<System.Object, System.Int32>(AsQueryString()
+            #line 31 "..\..\UserEmails\Inky\ForgotPasswordTemplate.cshtml"
+, Tuple.Create(Tuple.Create("", 1197), Tuple.Create<System.Object, System.Int32>(AsQueryString()
             
             #line default
             #line hidden
-, 920), false)
+, 1197), false)
 );
 
 WriteLiteral(">Reset Password</button>\r\n\r\n    </columns>\r\n</row>\r\n");
