@@ -436,6 +436,7 @@
     <Content Include="app\manikinService\manikinService.js" />
     <Content Include="app\manikin\manikin.html" />
     <Content Include="app\manikin\manikin.js" />
+    <Content Include="app\pollyfills.js" />
     <Content Include="app\professionalRoles\professionalRoles.html" />
     <Content Include="app\professionalRoles\professionalRoles.js" />
     <Content Include="app\dashboard\dashboard.html" />
@@ -533,7 +534,7 @@
     <Content Include="dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="dist\index.html" />
     <Content Include="dist\index_debug.html" />
-    <Content Include="dist\js\main-769e555b2a.min.js" />
+    <Content Include="dist\js\main-3949773740.min.js" />
     <Content Include="dist\mstile-150x150.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

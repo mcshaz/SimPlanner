@@ -213,7 +213,7 @@
                                 vm.log.debug({ msg: 'courseDay found in cache & to be added but in state other than deleted', data: courseDay });
                             }
                         } else {
-                            courseDay = dataContext.courseDays.create(key);
+                            courseDay = datacontext.courseDays.create(key);
 
                         }
                     }

@@ -954,13 +954,13 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                 object roomId = null;
                 var addedRoomIds = cs[b.EntityState.Added]
                     .Concat(cs[b.EntityState.Modified].Where(m => m.Info.OriginalValuesMap.TryGetValue(nameof(m.Entity.RoomId), out roomId) &&
-                        !m.Entity.RoomId.Equals(roomId)))
+                        !m.Entity.RoomId.Equals(Guid.Parse((string)roomId))))
                     .ToHashSet(c => c.Entity.RoomId);
 
                 var removedRoomIds = cs[b.EntityState.Deleted].ToHashSet(c => c.Entity.RoomId)
                     .AddRange(from c in cs[b.EntityState.Modified]
                               where c.Info.OriginalValuesMap.TryGetValue(nameof(c.Entity.RoomId), out roomId) && !c.Entity.RoomId.Equals(roomId)
-                              select (Guid)roomId);
+                              select Guid.Parse((string)roomId));
 
                 allRoomIds = addedRoomIds.Union(removedRoomIds);
                 var rooms = Context.Rooms.Where(r => allRoomIds.Contains(r.Id)).ToList();

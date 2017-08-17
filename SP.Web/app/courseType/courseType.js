@@ -80,7 +80,8 @@
                         })];
                 if (isNew) {
                     vm.courseType = datacontext.courseTypes.create();
-                    datacontext.courseFormats.create({ courseType: vm.courseType });
+                    var cf = datacontext.courseFormats.create({ courseType: vm.courseType });
+                    cf.sortableSlots = [];
                 } else {
                     //promises.push(datacontext.courseTypes.fetchByKey(id, { expand: 'courseFormats.courseSlots' }).then(function (data) { - if the courseFormats were not already loaded from the server
                     promises.push(datacontext.courseTypes.fetchByKey(id,

@@ -140,7 +140,7 @@ namespace SP.DataAccess.Migrations
             var roles = new[] { new ProfessionalRole { Category = ProfessionalCategory.Actor, Description = "Actor" },
                 new ProfessionalRole { Category = ProfessionalCategory.Other, Description = "Other" },
                 new ProfessionalRole { Category = ProfessionalCategory.Educator, Description = "Educator" },
-                new ProfessionalRole { Category = ProfessionalCategory.Perfusionist, Description = "Perfusionist" },
+                new ProfessionalRole { Category = ProfessionalCategory.Allied, Description = "Perfusionist" },
                 new ProfessionalRole { Category = ProfessionalCategory.Administrative, Description = "Team Administrator" }
             };
 

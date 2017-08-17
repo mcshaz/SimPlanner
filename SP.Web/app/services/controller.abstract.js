@@ -23,7 +23,7 @@
             var manager = datacontext.provider;
             var unwatchers = [$on('$destroy', removeListeners)];
             var breezeWatcher;
-            var errorEntities = new Set;
+            var errorEntities = new Set();
             var isSaving = false;
 
             var watchedEntityNames;

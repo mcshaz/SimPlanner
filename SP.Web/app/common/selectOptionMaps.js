@@ -20,7 +20,7 @@
             roleSymbols: {
                 Medical: 'stethoscope',
                 Tech: 'wrench',
-                Perfusionist: 'cog',
+                Allied: 'sign-language',
                 Other: 'question',
                 Paramedic: 'ambulance',
                 Nursing: 'heartbeat',

@@ -29,7 +29,7 @@
         vm.nameLimit = 10;
         vm.onParticipantSelected = onParticipantSelected;
         vm.participant = vm.isNew
-            ? datacontext.participants.create(breeze.EntityState.Detached)
+            ? datacontext.participants.create({adminApproved: true},breeze.EntityState.Detached)
             : $scope.courseParticipant.participant;
 
         activate();
