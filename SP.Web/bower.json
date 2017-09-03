@@ -30,7 +30,7 @@
     "angular-local-storage": "^0.7.1",
     "angular-ui-grid": "v4.0.6",
     "angular-ui-select": "^0.19.6",
-    "angular-ui-sortable": "*",
+    "angular-ui-sortable": "v0.17.2",
     "angular-drag-and-drop-lists": "*",
     "angular-dynamic-locale": "*",
     "angular-http-auth": "*",

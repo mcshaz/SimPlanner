@@ -41,7 +41,7 @@ body {
     }
 
 .sidebar {
-    margin-top: -2px;
+    margin-top: -21px;
 }
 
     .sidebar .sidebar-inner {
@@ -204,7 +204,7 @@ small {
 
 .navbar .navbar-brand {
     background: url(/images/sim-planner-icon-50x75.png) no-repeat left center !important;
-    margin: 4px 0 0 0;
+    margin: 0 0 0 55px;
 }
 
 .navbar .brand-title {
@@ -485,6 +485,7 @@ div.time-accompany{
 
 .starshipLogo {
     background-color:#FFFFFF;
+    height:50px;
 }
 
 .btn-group.radio label.active::before {
@@ -594,6 +595,29 @@ li.warning {
         }
 /*#endregion */
 
+.hide-drawer {
+    display: none !important;
+}
+
+.menu {
+    -webkit-backface-visibility: visible !important;
+    -webkit-transition: opacity 700ms linear 0ms;
+    -moz-transition: opacity 700ms linear 0ms;
+    -ms-transition: opacity 700ms linear 0ms;
+    -o-transition: opacity 700ms linear 0ms;
+    transition: opacity 700ms linear 0ms;
+    position: relative;
+    cursor: pointer;
+    font-size: 23px;
+    display: block;
+    left: 18px;
+    top: 5px;
+    height: 5px;
+    width: 33px;
+    z-index: 100;
+    padding-top: 5px;
+}
+
 /*#region toastr */
 #toast-container.toast-top-full-width > div, #toast-container.toast-bottom-full-width > div {
     margin: 4px auto;
@@ -601,9 +625,11 @@ li.warning {
 /*#endregion */
 
 /*#region Responsive */
-
+.sidebar {
+    width: 230px;
+}
 @media (max-width: 979px) {
-    .sidebar-filler {
+    .sidebar-filler,.sidebar {
         width: 200px;
     }
 

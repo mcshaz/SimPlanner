@@ -36,26 +36,37 @@
         return directive;
 
         function link(scope, element, attrs) {
-            var $sidebarInner = element.find('.sidebar-inner');
-            var $dropdownElement = element.find('.sidebar-dropdown a');
+            var $dropdownElement = eval(attrs.ccTriggerClasses);
+            var $mainbar = $('.mainbar')
             element.addClass('sidebar');
-            $dropdownElement.click(dropdown);
-
-            function dropdown(e) {
-                var dropClass = 'dropy';
-                e.preventDefault();
-                if (!$dropdownElement.hasClass(dropClass)) {
-                    hideAllSidebars();
-                    $sidebarInner.slideDown(350);
-                    $dropdownElement.addClass(dropClass);
-                } else if ($dropdownElement.hasClass(dropClass)) {
-                    $dropdownElement.removeClass(dropClass);
-                    $sidebarInner.slideUp(350);
+            element = element.find('.sidebar-filler,.sidebar-inner');
+            if ($dropdownElement.length) {
+                activate();
+            } else {
+                $(document).ready(activate);
+            }
+            function activate() {
+                if (!$dropdownElement.length) {
+                    $dropdownElement = $(attrs.ccSidebarTrigger);
                 }
+                $dropdownElement.click(dropdown);
 
-                function hideAllSidebars() {
-                    $sidebarInner.slideUp(350);
-                    $('.sidebar-dropdown a').removeClass(dropClass);
+                function dropdown(e) {
+                    var dropClass = 'hide-drawer';
+                    var 
+                    e.preventDefault();
+                    if (element.hasClass(dropClass)) {
+                        element.removeClass(dropClass);
+                        $mainbar.css("margin-left", "230px");
+                    } else {
+                        element.addClass(dropClass);
+                        $mainbar.css("margin-left", "0px");
+                    }
+
+                    function hideAllSidebars() {
+                        $sidebarInner.slideUp(350);
+                        $('.sidebar').removeClass(dropClass);
+                    }
                 }
             }
         }

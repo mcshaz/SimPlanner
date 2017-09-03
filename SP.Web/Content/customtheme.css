@@ -552,7 +552,6 @@ form {
 /* Sidebar */
 
 .sidebar {
-    width: 230px;
     float: left;
     display: block;
     background: #111;
@@ -780,7 +779,6 @@ form {
 
 .mainbar {
     position: relative;
-    margin-left: 230px;
     margin-right: 0;
     width: auto;
     background: #fff;
@@ -1086,7 +1084,7 @@ form {
     .form-inline button {
         margin-left: 0;
     }
-
+    /*
     .navbar {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
@@ -1127,6 +1125,8 @@ form {
             border-bottom: 1px solid #333;
         }
 
+
+
     .sidebar {
         float: none;
         width: 100%;
@@ -1143,12 +1143,13 @@ form {
         .sidebar .sidebar-widget {
             text-align: center;
         }
+           
 
     .mainbar {
         margin: 0;
         float: none;
     }
-
+         */
     .today-datas {
         text-align: center;
     }
@@ -1178,6 +1179,7 @@ form {
         padding-left: 0 !important;
     }
 
+    /*
     .navbar {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
@@ -1225,6 +1227,7 @@ form {
     .mainbar {
         margin-left: 200px;
     }
+        */
 }
 
 /*#region Widgets */
