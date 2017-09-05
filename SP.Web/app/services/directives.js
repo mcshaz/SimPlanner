@@ -22,56 +22,6 @@
         }
     }]);
 
-
-    app.directive('ccSidebar', function () {
-        // Opens and clsoes the sidebar menu.
-        // Usage:
-        //  <div data-cc-sidebar>
-        // Creates:
-        //  <div data-cc-sidebar class="sidebar">
-        var directive = {
-            link: link,
-            restrict: 'A'
-        };
-        return directive;
-
-        function link(scope, element, attrs) {
-            var $dropdownElement = eval(attrs.ccTriggerClasses);
-            var $mainbar = $('.mainbar')
-            element.addClass('sidebar');
-            element = element.find('.sidebar-filler,.sidebar-inner');
-            if ($dropdownElement.length) {
-                activate();
-            } else {
-                $(document).ready(activate);
-            }
-            function activate() {
-                if (!$dropdownElement.length) {
-                    $dropdownElement = $(attrs.ccSidebarTrigger);
-                }
-                $dropdownElement.click(dropdown);
-
-                function dropdown(e) {
-                    var dropClass = 'hide-drawer';
-                    var 
-                    e.preventDefault();
-                    if (element.hasClass(dropClass)) {
-                        element.removeClass(dropClass);
-                        $mainbar.css("margin-left", "230px");
-                    } else {
-                        element.addClass(dropClass);
-                        $mainbar.css("margin-left", "0px");
-                    }
-
-                    function hideAllSidebars() {
-                        $sidebarInner.slideUp(350);
-                        $('.sidebar').removeClass(dropClass);
-                    }
-                }
-            }
-        }
-    });
-
     //http://odetocode.com/blogs/scott/archive/2014/10/13/confirm-password-validation-in-angularjs.aspx
     app.directive("compareTo", function () {
         return {

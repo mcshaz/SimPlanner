@@ -51,11 +51,15 @@ body {
 .sidebar-filler {
     z-index: -1;
     position: fixed;
-    top: 0;
+    top: 50px;
     left: 0;
     height: 100%;
     background-color: #333;
     width: 230px;
+}
+
+.menu-open > .mainbar {
+    margin-left:230px;
 }
 
 /*#endregion */
@@ -208,7 +212,7 @@ small {
 }
 
 .navbar .brand-title {
-    margin-left: 3.5em;
+    margin-left: 2.5em;
     color: #FFFFFF;
 }
 
@@ -627,10 +631,15 @@ li.warning {
 /*#region Responsive */
 .sidebar {
     width: 230px;
+    z-index:9999;
 }
 @media (max-width: 979px) {
     .sidebar-filler,.sidebar {
         width: 200px;
+    }
+
+    .menu-open > .mainbar {
+        margin-left: 200px;
     }
 
     .nav-collapse {
@@ -661,7 +670,50 @@ li.warning {
     }
 }
 
+.navbar-right {
+    float: right !important;
+}
+
+.navbar-brand {
+    font-size: 25px;
+    line-height: 10px;
+    padding-bottom: 5px;
+}
+
 @media (max-width: 767px) {
+
+    .navbar-right {
+        margin-right: 20px;
+    }
+
+    .navbar-header:after {
+        clear: none;
+    }
+
+    .navbar-nav.navbar-right > li {
+        float: left;
+    }
+
+    .navbar-collapse:before {
+        clear: both;
+    }
+
+    .navbar-collapse {
+        overflow-y: hidden;
+    }
+
+        .navbar-collapse.in {
+            overflow-y: visible;
+        }
+
+            .navbar-collapse.in > ul {
+                border-top: 1px double #101010;
+            }
+
+    .menu-open > .mainbar {
+        margin-left: 0;
+    }
+
     .sidebar-filler {
         display: none;
     }

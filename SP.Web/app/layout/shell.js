@@ -3,14 +3,17 @@
     
     var controllerId = 'shell';
     angular.module('app').controller(controllerId,
-        ['$rootScope', 'common', 'config', 'tokenStorageService', 'AUTH_EVENTS',shell]);
+        ['$rootScope', 'common', 'config', 'tokenStorageService', 'AUTH_EVENTS', '$window',shell]);
 
-    function shell($rootScope, common, config, tokenStorageService, AUTH_EVENTS) {
+    function shell($rootScope, common, config, tokenStorageService, AUTH_EVENTS, $window) {
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
         var events = config.events;
+        var defaultOpenSize = 768;
+        var currentSize = $($window).width();
         //vm.busyMessage = 'Please wait ...';
         vm.isBusy = true;
+        vm.menuOpen =  currentSize >= defaultOpenSize;
         vm.spinnerOptions = {
             radius: 40,
             lines: 7,
@@ -31,7 +34,7 @@
 
         function toggleSpinner(on) { vm.isBusy = on; }
 
-        $rootScope.$on('$routeChangeStart',newRoute);
+        $rootScope.$on('$routeChangeStart', newRoute);
 
         var _isGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
         function newRoute(event, next, current) {
@@ -50,5 +53,11 @@
             function (data) { toggleSpinner(data.show); }
         );
 
+        $($window).on('resize', function () {
+            if (currentSize > defaultOpenSize && $window.width < defaultOpenSize) {
+                vm.menuOpen = false;
+            }
+            currentSize = $($window).width();
+        });
     }
 })();

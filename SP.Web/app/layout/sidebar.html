@@ -1,7 +1,7 @@
-﻿<div data-cc-click-trigger="{.sidebar-dropdown}" class="sidebar" data-ng-controller="sidebar as vm">
-    <div class="sidebar-filler"></div>
+﻿<div class="sidebar" data-ng-controller="sidebar as vm">
+    <div class="sidebar-filler" ng-class="{'hide-drawer':!shell.menuOpen}">></div>
     <!--<div class="sidebar-dropdown"><a href="#!/">Menu</a></div>-->
-    <div class="sidebar-inner">
+    <div class="sidebar-inner" ng-class="{'hide-drawer':!shell.menuOpen}">
         <div class="sidebar-widget">
         </div>
         <ul class="navi">

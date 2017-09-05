@@ -1,15 +1,15 @@
-﻿<div data-ng-controller="shell as vm">
+﻿<div data-ng-controller="shell as shell">
     <header class="clearfix">
         <div data-ng-include="'/app/layout/topnav.html'" ></div>
     </header>
     <section id="content" class="content">
-        <div data-ng-show="vm.isBusy" class="page-splash dissolve-animation">
-            <div data-cc-spinner="vm.spinnerOptions"></div>
+        <div data-ng-show="shell.isBusy" class="page-splash dissolve-animation">
+            <div data-cc-spinner="shell.spinnerOptions"></div>
             <div class="page-splash-message page-splash-message-subtle">Please wait...</div>
         </div>
 
         <div data-ng-include="'/app/layout/sidebar.html'"></div>
 
-        <div data-ng-view class="shuffle-animation" autoscroll="true"></div>
+        <div data-ng-view class="shuffle-animation" ng-class="{'menu-open':shell.menuOpen}" autoscroll="true"></div>
     </section>
 </div>
