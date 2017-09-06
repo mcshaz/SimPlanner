@@ -631,7 +631,7 @@ li.warning {
 /*#region Responsive */
 .sidebar {
     width: 230px;
-    z-index:9999;
+    z-index:99;
 }
 @media (max-width: 979px) {
     .sidebar-filler,.sidebar {

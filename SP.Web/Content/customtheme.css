@@ -1063,6 +1063,7 @@ form {
 @media (max-width: 767px) {
     body {
         margin: 0 auto;
+        padding-top: 90px;
     }
 
         body .container {

@@ -3,11 +3,11 @@
         <div class="menu active sidebar-dropdown" ng-click="shell.menuOpen = !shell.menuOpen">
             <i class="fa fa-bars" style="color: #fff; font-size: 31px"></i>
         </div>
-        <a href="/#!/" class="navbar-brand"><span class="brand-title">Simulation Planner</span></a>
+        <a href="/#!/" class="navbar-brand"><span class="brand-title">Sim<span class="hidden-xs">ulation</span> Planner</span></a>
     </div>
     <ul class="nav navbar-nav navbar-right" data-ng-controller="loginWidget as lw">
         <li class="login-widget" data-ng-if="!lw.currentUser"><button class="btn-link" id="sign-in" data-ng-click="lw.getCredentials()"><span class="fa fa-sign-in"> sign in</span></button></li>
-        <li class="login-widget" data-ng-if="lw.currentUser"><a id="userName" href="#!/updateDetails">{{lw.currentUser}}</a>-<button class="btn-link" id="sign-out" data-ng-click="lw.logout()"><span class="fa fa-sign-out"> sign out</span> </button></li>
+        <li class="login-widget" data-ng-if="lw.currentUser"><a id="userName" href="#!/updateDetails">{{lw.currentUser}}</a>-<button class="btn-link" id="sign-out" data-ng-click="lw.logout()"><span class="fa fa-sign-out"><span class="hidden-xs"> sign out</span></span> </button></li>
         <li class="starshipLogo">
             <a href="https://www.starship.org.nz" target="_blank">
                 <img src="../../Content/images/logo-starship.png" height="26"/>
