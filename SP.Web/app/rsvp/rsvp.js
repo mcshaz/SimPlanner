@@ -12,6 +12,7 @@
         activate();
 
         function activate() {
+            $routeParams.Token = $routeParams.Token.replace(/ /g, '+');
             common.activateController([$http({
                 method: 'POST',
                 url: 'api/CoursePlanning/Rsvp',
@@ -21,7 +22,7 @@
                 log.success('RSVP registered');
             }, function (response) {
                 vm.serverMessage = "Appologies - an error has occured";
-                log.error(err);
+                log.error({ msg: vm.serverMessage, data: response.data });
             })], controllerId);
         }
 

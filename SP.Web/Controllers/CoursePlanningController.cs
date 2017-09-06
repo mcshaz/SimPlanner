@@ -82,7 +82,7 @@ namespace SP.Web.Controllers
             var part = cps.First(cp => cp.ParticipantId == model.ParticipantId);
 
             TimeSpan timeToStart = part.Course.StartParticipantUtc() - DateTime.UtcNow;
-            string purpose = CreateParticipantEmails.InvitePurpose(model.Auth.Value);
+            string purpose = CreateParticipantEmails.InvitePurpose(model.CourseId);
             var verification = model.Auth.HasValue
                 ? UserManager.VerifyUserTokenAsync(model.Auth.Value, purpose, model.Token, timeToStart)
                 : UserManager.VerifyUserTokenAsync(model.ParticipantId, purpose, model.Token, timeToStart);

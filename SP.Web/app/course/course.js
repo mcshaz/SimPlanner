@@ -119,14 +119,17 @@
         var _modalInstance;
         function getModalInstance() {
             if (!_modalInstance) {
+                var side = common.currentBootstrapSize().lte('sm')
+                    ?'right'
+                    :'left';
                 var modalScope = $scope.$new();
                 _modalInstance = $aside({
                     templateUrl: 'app/courseParticipant/courseParticipant.html',
                     controller: 'courseParticipant',
                     show: false,
                     id: 'cpModal',
-                    placement: 'left',
-                    animation: 'am-slide-left',
+                    placement: side,
+                    animation: 'am-slide-' + side,
                     scope: modalScope,
                     controllerAs: 'cp'
                 });

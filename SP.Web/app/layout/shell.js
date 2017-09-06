@@ -9,11 +9,10 @@
         var vm = this;
         var log = common.logger.getLogFn(controllerId);
         var events = config.events;
-        var defaultOpenSize = 768;
-        var lastWidth = $($window).width();
+        var lastSize = common.currentBootstrapSize();
+        vm.menuOpen = !lastSize.lte('sm');
         //vm.busyMessage = 'Please wait ...';
         vm.isBusy = true;
-        vm.menuOpen =  lastWidth >= defaultOpenSize;
         vm.spinnerOptions = {
             radius: 40,
             lines: 7,
@@ -54,13 +53,14 @@
         );
 
         angular.element($window).bind('resize', function () {
-            var currentWidth = $($window).width();
-            if (lastWidth >= defaultOpenSize && vm.menuOpen && currentWidth < defaultOpenSize)
-            {
-                vm.menuOpen = false;
-                $scope.$apply();
-            }
-            lastWidth = currentWidth;
+            common.debouncedThrottle('shellWindowResize', function () {
+                var currentSize = common.currentBootstrapSize();
+                if (!lastSize.lte('sm') && currentSize.lte('sm')) {
+                    vm.menuOpen = false;
+                    $scope.$apply();
+                }
+                lastSize = currentSize;
+            }, 150);
         });
     }
 })();

@@ -668,6 +668,10 @@ li.warning {
         float: none !important;
         display: block;
     }
+
+    .aside {
+        width: 60%;
+    }
 }
 
 .navbar-right {

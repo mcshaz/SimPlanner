@@ -25,11 +25,10 @@
     });
 
     commonModule.factory('common',
-        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', '$http', 'collectionManager', 'arrayUtils', common]);
+        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', '$http', 'collectionManager', 'arrayUtils', '$window', common]);
 
-    function common($q, $rootScope, $timeout, commonConfig, logger, $http, collectionManager, arrayUtils) {
+    function common($q, $rootScope, $timeout, commonConfig, logger, $http, collectionManager, arrayUtils, $window) {
         var throttles = {};
-
         var service = {
             // common angular dependencies
             $broadcast: $broadcast,
@@ -52,6 +51,8 @@
             textContains: textContains,
             toSeparateWords: toSeparateWords,
             alphaNumericEqual: alphaNumericEqual,
+            bootstrapSizes: getWindowSizes(),
+            currentBootstrapSize: currentBootstrapSize,
             windowOrigin: windowOrigin
         };
 
@@ -198,8 +199,44 @@
         }
 
         function windowOrigin() {
-            var location = window.location;
+            var location = $window.location;
             return location.origin || location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+        }
+
+        /*
+        .col-xs-$	Extra Small	Phones Less than 768px
+        .col-sm-$	Small Devices	Tablets 768px and Up
+        .col-md-$	Medium Devices	Desktops 992px and Up
+        .col-lg-$	Large Devices	Large Desktops 1200px and Up
+        */
+        function getWindowSizes() {
+            var min = 0;
+            var sizeMap = new Map([['xs', 767], ['sm', 991], ['md', 1199], ['lg', Number.MAX_SAFE_INTEGER]].map(function (kv) {
+                var sizeRange = { size: kv[0], min: min, max: kv[1] };
+                sizeRange.lte = lte.bind(sizeRange); 
+                var returnVar = [sizeRange.size, sizeRange];
+                min = kv[1] + 1;
+                return returnVar;
+            }));
+            return sizeMap;
+            function lte(sz) {
+                if (typeof sz !== 'string') {
+                    throw new TypeError();
+                }
+                return this.min <= sizeMap.get(sz).min;
+            }
+        }
+        //this does not work in IE9 or less
+        function currentBootstrapSize() {
+            var values = service.bootstrapSizes.values();
+            var next = values.next();
+            var i = 1;
+            while (!$window.matchMedia('(max-width: ' + next.value.max + 'px)').matches) {
+                next = values.next();
+                //no point testing the last value
+                if (i++ >= service.bootstrapSizes.count) { break; }
+            }
+            return next.value;
         }
     }
 })();

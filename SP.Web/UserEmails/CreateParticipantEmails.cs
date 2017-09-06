@@ -51,7 +51,7 @@ namespace SP.Web.UserEmails
             using (var parallelEmails = new ParallelSmtpEmails(disposeMsgOnComplete: false))
             {
                 List<MailMessage> messages = new List<MailMessage>(course.CourseParticipants.Count);
-                var sendMail = new Action<CourseParticipant>(async cp =>
+                var sendMail = new Func<CourseParticipant,Task>(async cp =>
                 {
                     var mail = new MailMessage();
                     messages.Add(mail);
@@ -80,7 +80,7 @@ namespace SP.Web.UserEmails
 
                 foreach (var f in faculty[false])
                 {
-                    sendMail(f);
+                    await sendMail(f);
                 }
 
                 MemoryStream facultyTimetable = null;
@@ -94,7 +94,7 @@ namespace SP.Web.UserEmails
                         .Select(fp => new Attachment(Stream.Synchronized(fp.Value.ToStream()), System.Net.Mime.MediaTypeNames.Application.Zip) { Name = fp.Key }));
                     foreach (var f in faculty[true])
                     {
-                        sendMail(f);
+                        await sendMail(f);
                     }
                 }
                 await parallelEmails.SendingComplete();

@@ -7,15 +7,25 @@
                     <h4 class="aside-title">
                         {{cp.isNew?'Add':'Update'}} Course &nbsp;
                     </h4>
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary" >
-                            <input class="btn btn-default" value="true" type="radio" ng-disabled="!cp.isNew" ng-model="cp.isFaculty" bs-radio/>
-                            Faculty
-                        </label>
-                        <label class="btn btn-primary" >
-                            <input class="btn btn-default" value="false" type="radio" ng-disabled="!cp.isNew" ng-model="cp.isFaculty" bs-radio/>
-                            Participant
-                        </label>
+                    <div class="form-group">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary">
+                                <input class="btn btn-default" value="true" type="radio" ng-disabled="!cp.isNew" ng-model="cp.isFaculty" bs-radio />
+                                Faculty
+                            </label>
+                            <label class="btn btn-primary">
+                                <input class="btn btn-default" value="false" type="radio" ng-disabled="!cp.isNew" ng-model="cp.isFaculty" bs-radio />
+                                Participant
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-success" type="submit" ng-show="cp.isNew" ng-disabled="cp.disableAdd()">Add to Sim</button>
+                            <button class="btn btn-success" type="submit" ng-show="!cp.isNew" ng-disabled="cp.disableSave()">Update Details</button>
+                            <button class="btn btn-info" ng-disabled="!cp.isValidParticipantName() || !cp.participant.entityAspect.entityState.isDetached()" type="button" ng-click="cp.createNewPerson()">Create New Person</button>
+                        </div>
                     </div>
                 </div>
                 <div class="aside-body">
@@ -32,13 +42,6 @@
                     <div class="form-group">
                         <label for="fullName" class="control-label">Full Name</label>
                         <div>
-                            <!--
-
-                    strap typeahed
-                    <input id="getFullName" class="form-control" ng-model="cp.participant.fullName" data-animation="am-flip-x" data-html="1"
-                           bs-options="p.fullName as p.label for p in getPeople($viewValue)" placeholder="e.g. John Smith" bs-typeahead type="text"
-                           data-limit="{{nameLimit}}" ng-model-options="{ debounce: 200 }" trimValue="false" data-z-validate>
-                    -->
                             <input class="form-control" id="fullName" type="text" ng-model="cp.participant.fullName" placeholder="e.g. John Smith"
                                    ng-model-options="{ debounce: 200 }" autocomplete="off" typeahead-template-url="courseParticipantSelectTemplate.html"
                                    uib-typeahead="p.fullName for p in cp.getPeople($viewValue)"
@@ -52,14 +55,7 @@
                             <span class="text-danger" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="btn-group pull-right" role="group">
-                            <button class="btn btn-success" type="submit" ng-show="cp.isNew" ng-disabled="cp.disableAdd()">Add to Sim</button>
-                            <button class="btn btn-success" type="submit" ng-show="!cp.isNew" ng-disabled="cp.disableSave()">Update Details</button>
-                            <button class="btn btn-info" ng-disabled="!cp.isValidParticipantName() || !cp.participant.entityAspect.entityState.isDetached()" type="button" ng-click="cp.createNewPerson()">Create New Person</button>
 
-                        </div>
-                    </div>
                     <div class="clearfix" />
                     <hr />
                     <div class="form-group">
@@ -125,11 +121,12 @@
             </form>
         </div>
     </div>
+    <!--hack to stop this displaying (put in div)-->
+    <script type="text/ng-template" id="courseParticipantSelectTemplate.html">
+        <a>
+            <i ng-class="match.model.class"></i>
+            <span ng-bind-html="match.model.fullName | uibTypeaheadHighlight:query"></span>
+            <small class="small">({{match.model.department_Abbreviation}} {{match.model.professionalRole_Category}})</small>
+        </a>
+    </script>
 </div>
-<script type="text/ng-template" id="courseParticipantSelectTemplate.html">
-    <a>
-        <i ng-class="match.model.class"></i> 
-        <span ng-bind-html="match.model.fullName | uibTypeaheadHighlight:query"></span>
-        <small class="small">({{match.model.department_Abbreviation}} {{match.model.professionalRole_Category}})</small>
-    </a>
-</script>
