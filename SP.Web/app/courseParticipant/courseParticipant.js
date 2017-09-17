@@ -93,7 +93,7 @@
         }
 
         function clearCurrent() {
-            vm.participant = datacontext.participants.create(breeze.EntityState.Detached, );
+            vm.participant = datacontext.participants.create(breeze.EntityState.Detached);
             _lastLookup = _lastVal = null;
         }
 

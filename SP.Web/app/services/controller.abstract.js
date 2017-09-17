@@ -24,9 +24,8 @@
             var unwatchers = [$on('$destroy', removeListeners)];
             var breezeWatcher;
             var errorEntities = new Set();
-            vm.isSaving = false;
-
             var watchedEntityNames;
+            vm.isSaving = false;
             if (argObj.watchedEntityNames) {
                 watchedEntityNames = Array.isArray(argObj.watchedEntityNames)
                     ? argObj.watchedEntityNames

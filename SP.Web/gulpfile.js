@@ -50,7 +50,7 @@ gulp.task('html', function(cb){
         useref(),
         //uncss({ html: [mainFile, 'app/**/*.html'] }), //needs to have access to css, jss and html
         jsFilter,
-        uglify(), //if unable to uglify, note the line number of the error, comment out this line, gulp html & then view new .js file (in dist/js)
+        uglify(), //.on('error', console.log), //if unable to uglify, note the line number of the error, comment out this line, gulp html & then view new .js file (in dist/js)
         rev(),
         jsFilter.restore,
         cssFilter,
