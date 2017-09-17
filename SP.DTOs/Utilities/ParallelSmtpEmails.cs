@@ -61,8 +61,7 @@ namespace SP.Dto.Utilities
             {
                 do
                 {
-                    MailTask m;
-                    if (_workList.TryTake(out m))
+                    if (_workList.TryTake(out MailTask m))
                     {
                         try
                         {

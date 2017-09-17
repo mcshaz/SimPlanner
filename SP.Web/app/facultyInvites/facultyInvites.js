@@ -100,7 +100,6 @@
                 data:data
             }).then(function (response) {
                 vm.selectedInvitees.length = 0;
-                
                 vm.courses.forEach(deleteInvite);
             }, vm.log.error);
             function filterMap(arr) {

@@ -13,6 +13,8 @@
     using Dto;
     using System;
     using System.Security.Principal;
+    using System.Data.Entity;
+    using System.Threading.Tasks;
 
     public static class MailExtensions
     {
@@ -58,14 +60,14 @@
             }
         }
 
-        public static void SendNewCourseParticipantNotifications(IEnumerable<CourseParticipant> courseParticipants, MedSimDbContext repo, IPrincipal principal)
+        public static async Task SendNewCourseParticipantNotifications(IEnumerable<CourseParticipant> courseParticipants, MedSimDbContext repo, IPrincipal principal)
         {
             //logic:
             //get all courses hapening after now where the currentUser is not an organiser, and group by each organiser
-            var currentUser = repo.Users.Local.FirstOrDefault(u => u.UserName == principal.Identity.Name) ?? repo.Users.First(u => u.UserName == principal.Identity.Name);
+            var currentUser = repo.Users.Include("Department").Include("ProfessionalRole").Single(u => u.UserName == principal.Identity.Name);
             var courseIds = courseParticipants.ToHashSet(cp => cp.CourseId);
             var organisers = repo.CourseParticipants.Include("Course.CourseFormat.CourseType")
-                            .Include("Participant")
+                            .Include("Participant.Department.Institution")
                             .Include("Course.Department.Institution.Culture")
                             .Where(cp => courseIds.Contains(cp.CourseId) && cp.IsOrganiser && !cp.Course.CourseParticipants.Any(ap=>ap.IsOrganiser && ap.ParticipantId == currentUser.Id))
                             .ToLookup(cp => cp.Participant);
@@ -84,6 +86,7 @@
                     mail.CreateHtmlBody(n);
                     client.Send(mail);
                 }
+                await client.SendingComplete();
             }
         }
 

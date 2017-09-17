@@ -24,7 +24,7 @@
             var unwatchers = [$on('$destroy', removeListeners)];
             var breezeWatcher;
             var errorEntities = new Set();
-            var isSaving = false;
+            vm.isSaving = false;
 
             var watchedEntityNames;
             if (argObj.watchedEntityNames) {
@@ -233,11 +233,11 @@
             }
             
             function disableSave() {
-                return isSaving || errorEntities.size || !vm.isEntityStateChanged;
+                return vm.isSaving || errorEntities.size || !vm.isEntityStateChanged;
             }
 
             function save() {
-                isSaving = true;
+                vm.isSaving = true;
                 var toSave;
                 if (arguments.length) {
                     toSave = [];
@@ -265,7 +265,7 @@
                     }
                     return $q.reject(response);
                 }).finally(function () { //avoiding finally as fail falthrough not working
-                    isSaving = false;
+                    vm.isSaving = false;
                 });
             }
 

@@ -67,6 +67,7 @@
         function createCourseParticipant($event) {
             if (!validateSaveParticipant()) { return; }
             var forSave;
+            vm.participant.adminApproved = true;
             if (vm.isNew) {
                 forSave = datacontext.courseParticipants.create({
                     participant: vm.participant,
@@ -77,7 +78,7 @@
                 });
                 vm.save([forSave, forSave.participant]).then(function () {
                     vm.log.success(vm.participant.fullName + ' added to course ' + (vm.isFaculty ? 'faculty' : 'participants'));
-                    afterSave();
+                    clearCurrent();
                 });
             } else {
                 forSave = $scope.courseParticipant;
@@ -85,20 +86,21 @@
                 forSave.departmentId = vm.participant.defaultDepartmentId;
                 vm.save([forSave, forSave.participant]).then(function () {
                     vm.log.success(vm.participant.fullName + ' updated');
-                    afterSave();
+                    clearCurrent();
                 });
                 vm.isNew = true;
             }
+        }
 
-            function afterSave() {
-                vm.participant = datacontext.participants.create(breeze.EntityState.Detached);
-                _lastLookup = _lastVal = null;
-            }
+        function clearCurrent() {
+            vm.participant = datacontext.participants.create(breeze.EntityState.Detached, );
+            _lastLookup = _lastVal = null;
         }
 
         function createNewPerson() {
+            var partRx = new RegExp("^\\s*" + vm.participant.fullName, 'i');
             var match = _lastLookup.find(function (ld) {
-                return ld.fullName.startsWith(name);
+                return partRx.test(ld.fullName);
             });
             if (match) {
                 if (!confirm("Are you sure you want to create a new person rather than select " + match.fullName)) {
@@ -106,15 +108,23 @@
                     return;
                 }
             }
+            match = $scope.course.courseParticipants.find(function (cp) {
+                return partRx.test(cp.participant.fullName);
+            });
+            if (match) {
+                if (!confirm(match.participant.fullName + " is already "+ (match.isFaculty?"faculty for":"a participant in")+" this course. Do you wish to add someone else with the same name?")) {
+                    clearCurrent();
+                    return;
+                }
+            }
             vm.participant.department = $scope.course.department;
-            vm.participant.adminApproved = true;
             datacontext.addEntity(vm.participant);
             //todo check event fires
         }
 
         function disableAdd() {
             var ent = vm.participant.entityAspect;
-            return ent.entityState.isDetached() || ent.hasValidationErrors;
+            return ent.entityState.isDetached() || ent.hasValidationErrors || vm.isSaving;
         }
 
         function validateSaveParticipant() {
