@@ -108,6 +108,7 @@
                     return;
                 }
             }
+            partRx = new RegExp(partRx.source + "\\s*$","i");
             match = $scope.course.courseParticipants.find(function (cp) {
                 return partRx.test(cp.participant.fullName);
             });
