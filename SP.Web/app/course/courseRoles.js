@@ -78,6 +78,7 @@
                     vm.departments = selectOptionMaps.sortAndMapDepartment(data.filter(selectOptionMaps.filterLocalDepartments()));
                 })], controllerId).then(function () { //all loaded
                     var slotTime = vm.course.startFacultyUtc;
+                    var currentDay = 1;
                     var slotCount = 0;
                     var scenarioCount = 0;
                     //at the moment, department and institution are loaded at datacontex.ready,
@@ -106,16 +107,22 @@
                         vm.map = vm.course.courseFormat.courseSlots
                             .filter(function (cs) { return cs.isActive; })
                             .map(function (cs) {
-                                var start = slotTime;
+                                var start = cs.day === currentDay
+                                    ? slotTime
+                                    : vm.course.courseDays.find(function (cd) {
+                                        return cd.day === cs.day
+                                    }).startFacultyUtc;
                                 var returnVar = {
                                     id: cs.id,
                                     start: start,
+                                    newDay: cs.day !== currentDay,
                                     groupClass: 'grp' + slotCount++,
                                     name: cs.activity
                                         ? cs.activity.name
                                         : 'Simulation ' + ++scenarioCount,
                                     track: cs.trackParticipants
                                 };
+                                currentDay = cs.day;
                                 slotTime = new Date(start.getTime() + cs.minutesDuration * 60000);
                                 if (!cs.trackParticipants) {
                                     return returnVar;
