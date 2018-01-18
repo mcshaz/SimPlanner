@@ -60,7 +60,7 @@
             }
         }
 
-        public static async Task SendNewCourseParticipantNotifications(IEnumerable<CourseParticipant> courseParticipants, MedSimDbContext repo, IPrincipal principal)
+        public static async Task SendNewCourseParticipantNotificationsAsync(IEnumerable<CourseParticipant> courseParticipants, MedSimDbContext repo, IPrincipal principal)
         {
             //logic:
             //get all courses hapening after now where the currentUser is not an organiser, and group by each organiser

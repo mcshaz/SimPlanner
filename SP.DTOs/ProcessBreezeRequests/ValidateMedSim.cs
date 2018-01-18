@@ -13,6 +13,8 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Data.Entity.Validation;
+using NLog;
+using Newtonsoft.Json;
 
 namespace SP.Dto.ProcessBreezeRequests
 {
@@ -54,10 +56,17 @@ namespace SP.Dto.ProcessBreezeRequests
         /// </summary>
         public Action<Guid, DateTime?> AfterCourseDateChange { get; set; }
 
+        private static ILogger _logger = LogManager.GetCurrentClassLogger();
+
         public void ValidateDto(Dictionary<Type, List<EntityInfo>> saveMap)
         {
             List<EntityError> errors = new List<EntityError>();
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
 
+            _logger.Debug(() => $"validating:\r\n{JsonConvert.SerializeObject(saveMap.ToDictionary(sm=>sm.Key.Name, sm=>sm.Value.Select(v=>new { v.EntityState, v.Entity, v.OriginalValuesMap })), Formatting.Indented, settings)}");
             foreach (var v in saveMap.Values.SelectMany(sm=>sm))
             {
                 if (v.UnmappedValuesMap == null)

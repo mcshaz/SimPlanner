@@ -27,7 +27,7 @@
         'ui.grid.grouping',
         'ui.select',
         'ngLocationUpdate',
-        'mwl.calendar',
+        'mwl.calendar'
         //"com.2fdevs.videogular",
         //"com.2fdevs.videogular.plugins.controls",
         //"com.2fdevs.videogular.plugins.overlayplay",

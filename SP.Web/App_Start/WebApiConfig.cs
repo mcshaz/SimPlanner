@@ -1,9 +1,7 @@
 ﻿using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
-using SP.Web.App_Start;
 using System.Web.Http.ExceptionHandling;
-using Elmah.Contrib.WebApi;
-//using Elmah.Contrib.WebApi;
+using SP.Web.LogHelpers;
 
 namespace SP.Web
 {
@@ -15,7 +13,8 @@ namespace SP.Web
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-            config.Services.Add(typeof(IExceptionLogger), new ElmahExceptionLogger());
+            //config.Filters.Add(new LoggingActionFilter());
+            config.Services.Add(typeof(IExceptionLogger), new NLogExceptionLogger());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
@@ -31,11 +30,13 @@ namespace SP.Web
                 routeTemplate: "api/{controller}/{ext}/{filename}"
             );
             */
+            /*
             config.Routes.MapHttpRoute(
                 name: "NotFound",
                 routeTemplate: "{*path}",
                 defaults: new { controller = "Error", action = "NotFound" }
             );
+            */
 
             System.Net.ServicePointManager.ServerCertificateValidationCallback = CertificateValidationCallBack;
         }

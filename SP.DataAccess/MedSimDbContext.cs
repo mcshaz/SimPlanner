@@ -3,9 +3,13 @@ namespace SP.DataAccess
     using Data.Interfaces;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Migrations;
+    using Newtonsoft.Json;
+    using NLog;
     using SP.Metadata;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
     using System.Data.Entity.ModelConfiguration.Conventions;
     using System.Data.Entity.Validation;
     using System.Linq;
@@ -445,7 +449,7 @@ public override IDbSet<Participant> Users
 
         public override Task<int> SaveChangesAsync()
         {
-            SetTimeTracking();
+            BeforeSave();
 
             try
             {
@@ -462,7 +466,7 @@ public override IDbSet<Participant> Users
         {
             //not sanitizing for the time being - at that point we will need a wysywig editor
             //SanitizeHtml.ForEntities(ChangeTracker);
-            SetTimeTracking();
+            BeforeSave();
 
             try
             {
@@ -475,7 +479,27 @@ public override IDbSet<Participant> Users
             }
 
         }
-        private void SetTimeTracking()
+        private void BeforeSave()
+        {
+            var entries = ChangeTracker.Entries();
+            log(entries);
+            SetTimeTracking(entries);
+        }
+        private static ILogger _logger = LogManager.GetCurrentClassLogger();
+        private void log(IEnumerable<DbEntityEntry> entries)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            _logger.Info(()=> "save operation for:" + 
+                string.Join("\r\n",
+                    (from e in entries
+                    where e.State != EntityState.Unchanged
+                    select $"\r\n{e.State} entity type({e.Entity.GetType().Name}):\r\n{JsonConvert.SerializeObject(e.Entity, Formatting.Indented, settings)}")));
+        }
+        private void SetTimeTracking(IEnumerable<DbEntityEntry> entries)
         {
             var nowUtc = DateTime.UtcNow;
             /*
@@ -484,7 +508,7 @@ public override IDbSet<Participant> Users
                 System.Diagnostics.Debug.WriteLine(ent);
             }
             */
-            foreach (var ent in ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added))
+            foreach (var ent in entries)
             {
                 var t = ent.Entity.GetType();
                 if (t.GetInterface(nameof(IModified)) != null)

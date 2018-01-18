@@ -13,7 +13,7 @@
         var vm = this;
 
         abstractUsers.constructor.call(this, $scope);
-        var _roles = getRoles();
+        var _roles = getRolesA();
 
         vm.expand = 'roles';
         vm.additionalFilters = filterChanged;

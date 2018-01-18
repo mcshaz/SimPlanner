@@ -66,7 +66,7 @@ namespace SP.DataAccess
         {
             get
             {
-                return _startFacultyLocal == default(DateTime)
+                return _startFacultyLocal == default(DateTime) && Department!=null && Department.Institution != null
                     ? (_startFacultyLocal = TimeZoneInfo.ConvertTimeFromUtc(StartFacultyUtc, Department.Institution.TimeZone))
                     : _startFacultyLocal;
             }
@@ -78,7 +78,7 @@ namespace SP.DataAccess
         {
             get
             {
-                return FacultyMeetingUtc.HasValue
+                return FacultyMeetingUtc.HasValue && Department != null && Department.Institution != null
                     ? _facultyMeetingLocal == default(DateTime)
                         ? TimeZoneInfo.ConvertTimeFromUtc(FacultyMeetingUtc.Value, Department.Institution.TimeZone)
                         : _facultyMeetingLocal

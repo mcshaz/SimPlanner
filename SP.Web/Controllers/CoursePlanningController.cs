@@ -1,4 +1,4 @@
-﻿using Ical.Net.Serialization.iCalendar.Serializers;
+﻿using Ical.Net.Serialization;
 using Microsoft.AspNet.Identity.Owin;
 using SP.DataAccess;
 using SP.Dto;
@@ -7,10 +7,8 @@ using SP.Web.Controllers.Helpers;
 using SP.Web.Models;
 using SP.Web.UserEmails;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
 using System.Threading.Tasks;

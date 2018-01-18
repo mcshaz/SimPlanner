@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -230,8 +231,7 @@ namespace SP.Dto.Utilities
         {
             foreach(var k in keys)
             {
-                TValue val;
-                if (dict.TryGetValue(k, out val))
+                if (dict.TryGetValue(k, out TValue val))
                 {
                     yield return val;
                 }
@@ -242,13 +242,20 @@ namespace SP.Dto.Utilities
         {
             foreach (var k in keys)
             {
-                TValue val;
-                if (dict.TryGetValue(k, out val))
+                if (dict.TryGetValue(k, out TValue val))
                 {
                     return val;
                 }
             }
             return default(TValue);
+        }
+
+        public static void AddPairs(this IDictionary dict, IDictionary<string, object> sourceValues)
+        {
+            foreach (var d in sourceValues)
+            {
+                dict.Add(d.Key, d.Value.ToString());
+            }
         }
     }
 }

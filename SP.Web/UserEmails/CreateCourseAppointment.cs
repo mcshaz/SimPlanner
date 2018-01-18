@@ -7,17 +7,17 @@ using System.Net.Mime;
 using System.Text;
 using Ical.Net;
 using Ical.Net.DataTypes;
-using Ical.Net.Serialization.iCalendar.Serializers;
-using Ical.Net.Interfaces.DataTypes;
 using System.Collections.Generic;
 using SP.Dto;
 using SP.Dto.Utilities;
+using Ical.Net.CalendarComponents;
+using Ical.Net.Serialization;
 
 namespace SP.Web.UserEmails
 {
     public static class Appointment
     {
-        public static Calendar CreateCal(IEnumerable<Event> events)
+        public static Calendar CreateCal(IEnumerable<CalendarEvent> events)
         {
             var currentCal = new Calendar
             {
@@ -57,14 +57,14 @@ namespace SP.Web.UserEmails
 
         const string mailto = "mailto:";
 
-        public static List<Event> MapCoursesToEvents(IEnumerable<CourseParticipant> courseParticipants)
+        public static List<CalendarEvent> MapCoursesToEvents(IEnumerable<CourseParticipant> courseParticipants)
         {
-            var returnVar = new List<Event>();
+            var returnVar = new List<CalendarEvent>();
             foreach (var cp in courseParticipants)
             {
                 var course = cp.Course;
 
-                Event courseEvt = new Event
+                CalendarEvent courseEvt = new CalendarEvent
                 {
                     Class = "PUBLIC",
                     Created = new CalDateTime(course.CreatedUtc),
@@ -86,7 +86,7 @@ namespace SP.Web.UserEmails
                 foreach (var cd in course.AllDays().Take(course.CourseFormat.DaysDuration))
                 {
                     var dayEvt = cd.Day < course.CourseFormat.DaysDuration
-                        ? courseEvt.Copy<Event>()
+                        ? courseEvt.Copy<CalendarEvent>()
                         : courseEvt;
                     dayEvt.Start = new CalDateTime(cp.IsFaculty?cd.StartFacultyUtc:cd.StartParticipantUtc());
                     dayEvt.Duration = TimeSpan.FromMinutes(cp.IsFaculty ? cd.DurationFacultyMins: cd.DurationParticipantMins);
@@ -112,7 +112,7 @@ namespace SP.Web.UserEmails
             return returnVar;
         }
 
-        private static IAttendee MapCourseParticipantToAttendee(CourseParticipant cp)
+        private static Attendee MapCourseParticipantToAttendee(CourseParticipant cp)
         {
             string email = cp.Participant.Email;
             if (!string.IsNullOrEmpty(cp.Participant.AlternateEmail))
@@ -143,9 +143,9 @@ namespace SP.Web.UserEmails
             cal.Events.Add(facultyMeet);
         }
 
-        public static Event CreateFacultyMeetingEvent(Course course)
+        public static CalendarEvent CreateFacultyMeetingEvent(Course course)
         {
-            Event meeting = new Event
+            CalendarEvent meeting = new CalendarEvent
             {
                 Class = "PUBLIC",
                 Created = new CalDateTime(course.CreatedUtc),

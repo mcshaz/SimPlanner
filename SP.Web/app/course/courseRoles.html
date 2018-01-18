@@ -14,7 +14,7 @@
                         <div class="panel-group" data-allow-multiple="true" ng-model="vm.activePanels" role="tablist" aria-multiselectable="true" bs-collapse>
                             <div class="panel panel-default" ng-repeat="m in vm.map track by m.id">
                                 <div class="panel-heading" role="tab" bs-collapse-toggle ng-class="{collapsed:vm.activePanels.indexOf($index)===-1}">
-                                    <h4 class="panel-title" ng-if="m.newDay">{{m.start | amDateFormat:'ddd'}} {{m.start | amDateFormat:'L'}}</h4>
+                                    <h4 class="panel-title" ng-if="m.newDay">{{m.start | amDateFormat:'ddd'}}, {{m.start | amDateFormat:'ll'}}</h4>
                                     <h4 class="panel-title">
                                         <a>
                                             {{m.start | amDateFormat:'hh:mm a'}}

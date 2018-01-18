@@ -6,6 +6,7 @@
     function logger($log) {
         var service = getLogFunction('');
         service.autoToast = ['log', 'warning', 'success', 'error', 'info'];
+        service.autoSend = [ 'error'];
         service.getLogFn = getLogFunction;
 
         return service;
@@ -25,6 +26,7 @@
                 if (argOpts instanceof Error) {
                     log({ message: argOpts.message, data: argOpts }, 'error');
                 } else if (argOpts.data && argOpts.data.ExceptionMessage) {
+                    argOpts.sendToServer = false;
                     log({ message: 'Server Error: ' + argOpts.data.ExceptionMessage, data: argOpts.data }, 'error');
                 } else {
                     log(argOpts, 'error');
@@ -55,20 +57,22 @@
 
         function logIt(argOpts, logType) {
             var showToast = argOpts.showToast === true || argOpts.showToast === undefined && service.autoToast.indexOf(logType) > -1;
+            var sendToServer = argOpts.sendToServer === true || argOpts.sendToServer === undefined && service.autoSend.indexOf(logType) > -1;
             var toastType = logType;
             var msg = argOpts.message || argOpts.msg;
             var src = argOpts.source || argOpts.src;
-            var data = prune(argOpts.data);
-                    /*
-                    arrayMaxLength: 5,
-                    depthDecr: 3,
-                    //inheritedProperties:true,
-                    replacer: function (value, defaultValue, circular) {
-                        if (value === undefined) return '"-undefined-"';
-                        if (Array.isArray(value)) return '"-array(' + value.length + ')-"';
-                        return defaultValue;
-                    }
-                    */
+            var data = JSON.prune(argOpts.data, {
+                arrayMaxLength: 5,
+                depthDecr: 3,
+                inheritedProperties: true
+            });
+            /*
+            replacer: function (value, defaultValue, circular) {
+                if (value === undefined) return '"-undefined-"';
+                if (Array.isArray(value)) return '"-array(' + value.length + ')-"';
+                return defaultValue;
+            }
+            */
 
             switch(logType){
                 case 'success':
@@ -88,9 +92,22 @@
             if (showToast) {
                 toastr[toastType](msg);
             }
+
+            if (sendToServer) {
+                try {
+                    //below not working because: Circular dependency found: $rootScope <- $http <- logger <- $exceptionHandler <- $rootScope <- tmhDynamicLocale
+                    //$http.post("api/Utilities/LogClientError", { Source: src, Message: msg, JsonData: data }, angular.noop);
+                    jQuery.post("api/Utilities/LogClientError", { Source: src, Message: msg, JsonData: data /*, Level: logType */ });
+                }
+                catch (e) {
+                    if (console.log) { Console.log(e); }
+                }
+            }
         }
+
     }
-    function prune(data) {
+    /*
+    function myPrune(data) {
         var type = typeof data;
         if (type === 'object' && data !== null) {
             var returnVar = {};
@@ -107,7 +124,9 @@
                     }
                 }
             }
+            return returnVar;
         }
         return data;
     }
+    */
 })();

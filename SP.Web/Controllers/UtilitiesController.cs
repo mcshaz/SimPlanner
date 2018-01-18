@@ -19,6 +19,7 @@ using System.Linq.Expressions;
 using SP.Dto.ProcessBreezeRequests;
 using System.Security.Principal;
 using System.Net.Mail;
+using NLog;
 
 namespace SP.Web.Controllers
 {
@@ -252,6 +253,16 @@ namespace SP.Web.Controllers
             var courseType = (await courseTypes.FirstOrDefaultAsync(c => c.Id == model.EntitySetId)) ?? new DataAccess.CourseType();
             string path = courseType.GetServerPath();
             return StreamToResponse(new FileStream(path, FileMode.Open), courseType.CertificateFileName ?? Path.GetFileName(path));
+        }
+
+        private static ILogger _logger = LogManager.GetCurrentClassLogger();
+        [Route("LogClientError")]
+        [Authorize]
+        [HttpPost]
+        public IHttpActionResult LogClientError([FromBody] ClientErrorLoggingModel model)
+        {
+            _logger.Warn(() => $"Client Logged Error:\r\nMessage:{model.Message}\r\nSource:{model.Source}\r\nData:{model.JsonData.Replace("\\n","\n")}");
+            return Ok();
         }
 
         #region Helpers

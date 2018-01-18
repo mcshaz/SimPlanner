@@ -1,6 +1,7 @@
 ﻿(function () {
     'use strict';
     var serviceId = 'tokenStorageService';
+    var headerAuthVal = null; //to allow logging errors to server without circular reference
     angular.module('app')
         .service(serviceId, ['authService', 'AUTH_EVENTS', '$http', 'localStorageService' , '$rootScope', 'common', 'tmhDynamicLocale', 'USER_ROLES',tokenStorageService]);
     function tokenStorageService(authService, AUTH_EVENTS, $http, localStorage, $rootScope, common, tmhDynamicLocale,USER_ROLES) {
@@ -82,7 +83,6 @@
                     default:
                         return currentUser.roles.indexOf(rl) > -1 || currentUser.roleIds.indexOf(rl) > -1;
                 }
-                
             });
         }
 
@@ -151,17 +151,26 @@
 
         function setTokenHeader() {
             if (token) {
-                $http.defaults.headers.common.authorization = 'Bearer ' + token;
+                headerAuthVal = $http.defaults.headers.common.authorization = 'Bearer ' + token;
             } else if ($http.defaults.headers.common.authorization) {
                 delete $http.defaults.headers.common.authorization;
+                headerAuthVal = null;
             }
 
         }
 
         function replaceToken(request) { //to be used on a 401 if the token has expired
-            request.headers.authorization = 'Bearer ' + token;
+            headerAuthVal = request.headers.authorization = 'Bearer ' + token;
             return request;
         }
-    }
 
+        //bit of a hack putting this in here
+        jQuery.ajaxSetup({
+            beforeSend: function (xhr) {
+                if (headerAuthVal) {
+                    xhr.setRequestHeader('Authorization', headerAuthVal);
+                }
+            }
+        });
+    }
 })();
