@@ -259,9 +259,12 @@ namespace SP.Web.Controllers
         [Route("LogClientError")]
         [Authorize]
         [HttpPost]
-        public IHttpActionResult LogClientError([FromBody] ClientErrorLoggingModel model)
+        public IHttpActionResult LogClientError([FromBody] IEnumerable<ClientErrorLoggingModel> model)
         {
-            _logger.Warn(() => $"Client Logged Error:\r\nMessage:{model.Message}\r\nSource:{model.Source}\r\nData:{model.JsonData.Replace("\\n","\n")}");
+            _logger.Warn(() => $"Client Logged Error:\r\n" + string.Join("\r\n\t", model.Select(m=>$"Level:{m.LogLevel}|Message:{m.Message}|Source:{m.Source}" 
+                + (string.IsNullOrEmpty(m.JsonData) 
+                    ? string.Empty
+                    : ("\r\n\tData:" + m.JsonData.Replace("\\n","\n\t\t"))))));
             return Ok();
         }
 

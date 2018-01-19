@@ -5,6 +5,7 @@
 
     function logger($log) {
         var service = getLogFunction('');
+        var logStack = createLogAndStack();
         service.autoToast = ['log', 'warning', 'success', 'error', 'info'];
         service.autoSend = [ 'error'];
         service.getLogFn = getLogFunction;
@@ -87,24 +88,49 @@
                     break;
             }
 
-            $log[logType](src, msg, data);
+            logStack.log(logType,src, msg, data);
 
             if (showToast) {
                 toastr[toastType](msg);
             }
 
             if (sendToServer) {
-                try {
-                    //below not working because: Circular dependency found: $rootScope <- $http <- logger <- $exceptionHandler <- $rootScope <- tmhDynamicLocale
-                    //$http.post("api/Utilities/LogClientError", { Source: src, Message: msg, JsonData: data }, angular.noop);
-                    jQuery.post("api/Utilities/LogClientError", { Source: src, Message: msg, JsonData: data /*, Level: logType */ });
-                }
-                catch (e) {
-                    if (console.log) { Console.log(e); }
-                }
+                logStack.sendStack();
             }
         }
-
+        //cheap and nasty function - not designed for reusability
+        function createLogAndStack(maxCount) {
+            var _count = 0;
+            var _log = [];
+            maxCount = arguments.length === 0 ? 10 : maxCount;
+            return {
+                log: function (logType, src, msg, data) {
+                    $log[logType](src, msg, data);
+                    _log.push({ Source: src, Message: msg, JsonData: data, LogLevel: logType });
+                    if (_count >= maxCount) {
+                        _log.shift();
+                    } else {
+                        _count++;
+                    }
+                },
+                sendStack: function () {
+                    try {
+                        //below not working because: Circular dependency found: $rootScope <- $http <- logger <- $exceptionHandler <- $rootScope <- tmhDynamicLocale
+                        //$http.post("api/Utilities/LogClientError", { Source: src, Message: msg, JsonData: data }, angular.noop);
+                        jQuery.ajax({
+                            type: 'POST',
+                            url: "api/Utilities/LogClientError", 
+                            data: JSON.stringify(_log.reverse()),
+                            contentType: 'application/json'
+                        });
+                        _count = _log.length = 0;
+                    }
+                    catch (e) {
+                        if (console.log) { console.log(e); }
+                    }
+                }
+            };
+        }
     }
     /*
     function myPrune(data) {
