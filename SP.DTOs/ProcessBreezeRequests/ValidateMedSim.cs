@@ -1000,13 +1000,13 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             {
                 var manikinAdminId = (from r in RoleConstants.RoleNames where r.Value == RoleConstants.DptManikinBookings select r.Key).First();
                 var roomAdminId = (from r in RoleConstants.RoleNames where r.Value == RoleConstants.DptRoomBookings select r.Key).First();
-                var manikinAdmins = Context.Users.Include("Department.Institution.Culture").Include(u=>u.Roles)
+                var manikinAndRoomAdmins = Context.Users.Include("Department.Institution.Culture").Include(u=>u.Roles)
                     .Where(u => (u.Roles.Any(r => r.RoleId == manikinAdminId)
                             && u.Department.Manikins.Any(m => manikinIds.Contains(m.Id)))
                         || (u.Roles.Any(r => r.RoleId == roomAdminId)
                             && u.Department.Rooms.Any(r => allRoomIds.Contains(r.Id))))
                     .ToLookup(u=> new { DptId = u.DefaultDepartmentId, ManikinAdmin = u.Roles.Any(r=>r.RoleId==manikinAdminId), RoomAdmin = u.Roles.Any(r => r.RoleId == roomAdminId) }, u=>u);
-                return manikinAdmins.Select(ma=> {
+                return manikinAndRoomAdmins.Select(ma=> {
                     var returnVar = new BookingChangeDetails
                     {
                         PersonBooking = CurrentUser.Principal,
@@ -1024,7 +1024,7 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                         returnVar.RemovedRoomBooking = bcd.RemovedRoomBooking?.DepartmentId == ma.Key.DptId ? bcd.RemovedRoomBooking : null;
                     }
                     return returnVar;
-                });
+                }).ToList();
             }
             return new BookingChangeDetails[0];
         }

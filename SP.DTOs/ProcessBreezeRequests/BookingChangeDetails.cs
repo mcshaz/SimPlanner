@@ -10,8 +10,8 @@ namespace SP.Dto.ProcessBreezeRequests
         public Course RelevantCourse { get; set; }
         public Room AddedRoomBooking { get; set; }
         public Room RemovedRoomBooking { get; set; }
-        public IEnumerable<Manikin> AddedManikinBookings { get; set; }
-        public IEnumerable<Manikin> RemovedManikinBookings { get; set; }
+        public IEnumerable<Manikin> AddedManikinBookings { get; set; } = new Manikin[0];
+        public IEnumerable<Manikin> RemovedManikinBookings { get; set; } = new Manikin[0];
     }
 
     public class UserRequestingApproval

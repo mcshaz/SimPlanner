@@ -6,10 +6,16 @@ namespace SP.Web.UserEmails
 {
     public class EmailBase : RazorGenerator.Templating.RazorTemplateBase
     {
-        private static object _lock = new object();
-        private static string _baseUrl;
-
         protected IFormatProvider FormatProvider { get; set; }
+#if DEBUG
+        public const string BaseInsecureUrl = "http://localhost:53099";
+        public const string BaseUrl = "https://localhost:44300/#!";
+#else
+        public const string BaseInsecureUrl = "http://sim-planner.com";
+        public const string BaseUrl = "https://sim-planner.com/#!";
+#endif
+        /*
+        private static object _lock = new object();
         string _baseInsecureUrl;
         public string BaseInsecureUrl
         {
@@ -29,6 +35,7 @@ namespace SP.Web.UserEmails
                 return _baseInsecureUrl;
             }
         }
+        private static string _baseUrl;
         public string BaseUrl
         {
             get
@@ -44,6 +51,7 @@ namespace SP.Web.UserEmails
                 return _baseUrl;
             }
         }
+        */
 
         public static string GetMailTo(Participant participant)
         {
