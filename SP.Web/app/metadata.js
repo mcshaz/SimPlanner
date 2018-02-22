@@ -1,11 +1,6 @@
+
 //201704100827016_DialCode
-(function(){	window.medsimMetadata = {
-		getBreezeMetadata: getBreezeMetadata,
-		getBreezeValidators: getBreezeValidators,
-       getEnums: getEnums
-	};
-	function getBreezeMetadata(){
-		return JSON.stringify({
+breezeMetaData = JSON.stringify({
   "metadataVersion": "1.0.5",
   "namingConvention": "camelCase",
   "localQueryComparisonOptions": "caseInsensitiveSQL",
@@ -4330,7 +4325,7 @@
     "Rooms": "RoomDto:#SP.Dto"
   }
 });
-	}
+
 	function getBreezeValidators(){
 		return {
   "ActivityDto": [

@@ -16,6 +16,7 @@ var pump = require('pump');
 var inline = require('gulp-inline-source');
 var rename = require('gulp-rename');
 var replace = require('gulp-replace');
+var sourcemaps = require('gulp-sourcemaps');
 
 var siphon = require('siphon-media-query');
 var inky = require('inky');
@@ -23,6 +24,7 @@ var sass = require('gulp-sass');
 var inlineCss = require('gulp-inline-css');
 var lazypipe = require('lazypipe');
 var fs = require('fs');
+var babel = require("gulp-babel");
 
 //var foundationEmailCss = 'wwwroot/lib/foundation-emails/_build/assets/css';
 
@@ -37,19 +39,20 @@ gulp.task('html', function(cb){
     var imageFilesToMove = ["./wwwroot/lib/world-flags-sprite/images/*.png"];
     var debugFilename = 'index_debug';
 
-    pump([gulp.src(mainFile),
+    /* pump([gulp.src(mainFile),
         rename({ basename: debugFilename }),
         replace('<base href="/">', '<base href="/'+debugFilename+'.html">'),
         inline({ compress: false }),
         //useref({noconcat:true}),
-        gulp.dest('dist')]);
+        gulp.dest('dist')]); */
 
     pump([gulp.src(mainFile),
         replace(/<!--debug-->(.|[\r\n])*<!--enddebug-->/, ''),
         inline({ compress: true }),
-        useref(),
+        useref({}, lazypipe().pipe(sourcemaps.init, { loadMaps: true })),
         //uncss({ html: [mainFile, 'app/**/*.html'] }), //needs to have access to css, jss and html
         jsFilter,
+        babel(),
         uglify(), //.on('error', console.log), //if unable to uglify, note the line number of the error, comment out this line, gulp html & then view new .js file (in dist/js)
         rev(),
         jsFilter.restore,
@@ -58,6 +61,7 @@ gulp.task('html', function(cb){
         rev(),
         cssFilter.restore,
         revReplace(/*{modifyReved: replaceJsIfMap}*/),
+        sourcemaps.write('maps'),
         gulp.dest('dist') 
     ], cb);
 

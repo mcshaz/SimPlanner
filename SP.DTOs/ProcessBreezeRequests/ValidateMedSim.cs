@@ -76,7 +76,9 @@ namespace SP.Dto.ProcessBreezeRequests
                 v.UnmappedValuesMap.Add(_preSaveState, v.EntityState);
             }
 
+#pragma warning disable IDE0018 // Inline variable declaration
             List<EntityInfo> currentInfos;
+#pragma warning restore IDE0018 // Inline variable declaration
 
             if (saveMap.TryGetValue(typeof(ActivityDto), out currentInfos))
             {
@@ -655,7 +657,10 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
                     if (!originalDepartmentAccess.Contains(p.Entity.DefaultDepartmentId))
                     {
                         Guid userId = p.Entity.Id;
-                        Action pred = () => {
+#pragma warning disable IDE0039 // Use local function
+                        Action pred = () =>
+                        {
+#pragma warning restore IDE0039 // Use local function
                             var toRemove = Context.UserRoles.Where(ur => ur.UserId == userId);
                             Context.UserRoles.RemoveRange(toRemove);
                         };
@@ -955,7 +960,9 @@ private void AddApprovedRole(List<EntityInfo> currentInfos)
             var bcd = new BookingChangeDetails();
             IEnumerable<Guid> allRoomIds = new Guid[0];
             IEnumerable<Guid> manikinIds = new Guid[0];
+#pragma warning disable IDE0018 // Inline variable declaration
             List<EntityInfo> ei;
+#pragma warning restore IDE0018 // Inline variable declaration
             if (saveMap.TryGetValue(typeof(Course), out ei))
             {
                 

@@ -108,20 +108,17 @@ namespace SP.Dto
                         }
                         else if(t.Namespace != "System.ComponentModel.DataAnnotations.Schema")
                         {
-                            Func<Attribute, Dictionary<string, object>> getVal;
-                            if (attrValDict.TryGetValue(t, out getVal))
+                            if (attrValDict.TryGetValue(t, out Func<Attribute, Dictionary<string, object>> getVal))
                             {
                                 var validatorsFromAttr = getVal(attr);
                                 if (validatorsFromAttr != null)
                                 {
-                                    ValidationAttribute va = attr as ValidationAttribute;
-                                    if (va != null && va.ErrorMessage != null)
+                                    if (attr is ValidationAttribute va && va.ErrorMessage != null)
                                     {
-                                        validatorsFromAttr.Add("messageTemplate", va.ErrorMessage.Replace("{0}","'%displayName%'"));
+                                        validatorsFromAttr.Add("messageTemplate", va.ErrorMessage.Replace("{0}", "'%displayName%'"));
                                     }
                                     string jsValidatorName = (string)validatorsFromAttr["name"];
-                                    Dictionary<string, object> existingVals;
-                                    if (validators.TryGetValue(jsValidatorName, out existingVals))
+                                    if (validators.TryGetValue(jsValidatorName, out Dictionary<string, object> existingVals))
                                     {
                                         existingVals.AddOrOverwrite(validatorsFromAttr);
                                     }
@@ -156,8 +153,7 @@ namespace SP.Dto
                     {
                         validators.Remove("maxLength");
                     }
-                    Dictionary<string, object> rangeVal;
-                    if (intTypes.Contains(propInfo.PropertyType) && validators.TryGetValue("numericRange", out rangeVal))
+                    if (intTypes.Contains(propInfo.PropertyType) && validators.TryGetValue("numericRange", out Dictionary<string, object> rangeVal))
                     {
                         validators.Remove(propInfo.PropertyType.Name.PascalToCamelCase());
                     }

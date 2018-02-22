@@ -1,5 +1,7 @@
 ﻿using SP.DataAccess;
 using SP.Dto;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Hosting;
@@ -8,52 +10,37 @@ namespace SP.Web.App_Start
 {
     public static class MetadataScriptWriter
     {
-        
+
         [System.Diagnostics.Conditional("DEBUG")]
-        public static void Write(bool force=false)
+        public static void Write(bool force = false)
         {
-            const string metadataPath = "~/app/metadata.js";
+            const string metadataPath = "~/app";
+
+            MetaDataStrings metadata = null;
+
+            var metadataFiles = new Dictionary<string, Func<string>> {
+                ["breezeMetadata"] = () => (metadata ?? (metadata = MedSimDtoMetadata.GetAllMetadata(pretty: true))).Breeze, 
+                ["breezeValidators"] = () => (metadata ?? (metadata = MedSimDtoMetadata.GetAllMetadata(pretty: true))).RequiredNavProperties, 
+                ["breezeEnums"] = () => MedSimDtoMetadata.GetEnums()
+            };
             // construct the filename and runtime file location
-            string fileName = HostingEnvironment.MapPath(metadataPath)
+            string dirName = HostingEnvironment.MapPath(metadataPath)
                 ?? @"C:\Users\OEM\Documents\Visual Studio 2015\Projects\SimPlanner\SP.Web" + metadataPath.Substring(1).Replace('/', '\\');
-
             var migrationId = "//" + GetMigrationId();
-            if (!force && File.ReadLines(fileName).First() == migrationId)
+            foreach (var f in metadataFiles)
             {
-                return;
-            }
-
-            //const string category = "MetadataScriptWriter";
-            // get the metadata the same way we get it for the controller
-            var metadata = MedSimDtoMetadata.GetAllMetadata(pretty:true);
-
-
-            // the same pre- and post-fix strings we used earlier
-
-            // write to file
-            using (var writer = new StreamWriter(fileName))
-            {
-                writer.WriteLine(
-                    migrationId + "\r\n" +
-                    "(function(){" +
-                    "	window.medsimMetadata = {\r\n" +
-                    "		getBreezeMetadata: getBreezeMetadata,\r\n" +
-                    "		getBreezeValidators: getBreezeValidators,\r\n" +
-                    "       getEnums: getEnums\r\n" +
-                    "	};\r\n" +
-                    "	function getBreezeMetadata(){\r\n" +
-                    "		return JSON.stringify("+ metadata.Breeze + ");\r\n" +
-                    "	}\r\n" +
-                    "	function getBreezeValidators(){\r\n" +
-                    "		return "+ metadata.RequiredNavProperties + ";\r\n" +
-                    "	}\r\n" +
-                    "	function getEnums(){\r\n" +
-                    "		return " + MedSimDtoMetadata.GetEnums() + ";\r\n" +
-                    "	}\r\n" +
-                    "})();\r\n"
-                    );
+                var fn = Path.Combine(dirName, f.Key + ".ts");
+                if (force || File.ReadLines(fn).First() != migrationId)
+                {
+                    using (var writer = new StreamWriter(fn))
+                    {
+                        writer.WriteLine(migrationId);
+                        writer.WriteLine($"export default { f.Value() } }}");
+                    }
+                }
             }
         }
+
         static string GetMigrationId()
         {
 

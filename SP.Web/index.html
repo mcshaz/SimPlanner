@@ -5,7 +5,7 @@
         /* This helps the ng-show/ng-hide animations start at the right place. */
         /* Since Angular has this but needs to load, this gives us the class early. */
         .ng-hide {
-            display: none!important;
+            display: none !important;
         }
     </style>
     <title data-ng-bind="title">Sim-Planner</title>
@@ -13,37 +13,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
 
     <base href="/">
-    <script>
-        // Must be first. IE10 mobile viewport fix
-        if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
-            var msViewportStyle = document.createElement("style");
-            var mq = "@-ms-viewport{width:auto!important}";
-            msViewportStyle.appendChild(document.createTextNode(mq));
-            document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
-        }
-    </script>
-    <!--build:css css/main.min.css -->
-    <link href="content/ie10mobile.css" rel="stylesheet" />
-    <link href="wwwroot/lib/bootswatch-dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="wwwroot/lib/components-font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="wwwroot/lib/toastr/toastr.css" rel="stylesheet" />
-    <link href="content/customtheme.css" rel="stylesheet">
-    <link href="content/styles.css" rel="stylesheet" />
-    <link href="wwwroot/lib/bootstrap-social/bootstrap-social.css" rel="stylesheet" />
-    <!-- changed this file to include div.z-decorator span.invalid
-    <link href="wwwroot/lib/breeze-client-labs/breeze.directives.css" rel="stylesheet" />
-    -->
-    <link href="Content/breeze.directives.css" rel="stylesheet" />
-    <link href="wwwroot/lib/angular-motion/dist/angular-motion.min.css" rel="stylesheet" />
-    <link href="wwwroot/lib/bootstrap-additions/dist/bootstrap-additions.min.css" rel="stylesheet" />
-    <link href="wwwroot/lib/angular-ui-grid/ui-grid.min.css" rel="stylesheet" />
-    <link href="wwwroot/lib/angular-ui-select/dist/select.css" rel="stylesheet" />
-    <link href="wwwroot/lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet" />
-    <link href="wwwroot/lib/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css" rel="stylesheet" />
-    <link href="wwwroot/lib/world-flags-sprite/stylesheets/flags16.css" rel="stylesheet" />
-    <link href="wwwroot/lib/world-flags-sprite/stylesheets/flags32.css" rel="stylesheet" />
-    <!--<link href="Content/videogular.css" rel="stylesheet" />-->
-    <!--endbuild-->
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
@@ -65,7 +34,7 @@
                 </div>
                 <noscript>
                     You <em>must</em> have JavaScript enabled for this site to work! Here are the
-                    <a href="http://www.enable-javascript.com/" target="_blank">
+                    <a href="http://www.enable-javascript.com/">
                         instructions on how to enable JavaScript in your web browser
                     </a>.
                 </noscript>
@@ -74,166 +43,5 @@
     </div>
 
     <span data-cc-scroll-to-top></span>
-    <!-- update notification -->
-    <script src="Scripts/updatebrowser.js" inline></script>
-    <script src="Scripts/update-progress.js" inline></script>
-    <!--build:js js/main.min.js -->
-    <!-- Vendor Scripts -->
-    <!--  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script> -->
-    <script src="wwwroot/lib/jquery/dist/jquery.min.js"></script>
-    <script src="wwwroot/lib/angular/angular.js"></script>
-    <script src="wwwroot/lib/angular-animate/angular-animate.min.js"></script>
-    <script src="wwwroot/lib/angular-route/angular-route.min.js"></script>
-    <script src="wwwroot/lib/angular-sanitize/angular-sanitize.min.js"></script>
-    <script src="wwwroot/lib/angular-cookies/angular-cookies.min.js"></script>
-    <script src="wwwroot/lib/angular-messages/angular-messages.min.js"></script>
-    <script src="wwwroot/lib/toastr/toastr.js"></script>
-    <script src="wwwroot/lib/moment/min/moment-with-locales.min.js"></script>
-    <script src="wwwroot/lib/angular-moment/angular-moment.min.js"></script>
-    <script src="wwwroot/lib/spin.js/spin.min.js"></script>
-    <script src="wwwroot/lib/angular-http-auth/src/http-auth-interceptor.js"></script>
-    <script src="wwwroot/lib/angular-local-storage/dist/angular-local-storage.min.js"></script>
-    <script src="app/JSON.prune.js"></script>
-
-    <!--utilities-->
-    <script src="wwwroot/lib/angular-dynamic-locale/dist/tmhDynamicLocale.min.js"></script>
-    <!--multi-select-->
-    <script src="wwwroot/lib/angular-ui-select/dist/select.js"></script>
-    <!--end-multi-select-->
-
-    <script src="wwwroot/lib/angular-location-update/angular-location-update.min.js"></script>
-
-    <!--Bootstrap-UI-->
-    <script src="wwwroot/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <!--typeahead-->
-    <!-- whole library for now - otherwise have to work out how to include templates
-    <script src="wwwroot/lib/bootstrap-ui/src/position/position.js"></script>
-    <script src="wwwroot/lib/bootstrap-ui/src/debounce/debounce.js"></script>
-    <script src="wwwroot/lib/bootstrap-ui/src/typeahead/typeahead.js"></script>
-    -->
-    <!--sortable-->
-    <script src="wwwroot/lib/jquery-ui/ui/widget.js"></script>
-    <script src="wwwroot/lib/jquery-ui/ui/data.js"></script>
-    <script src="wwwroot/lib/jquery-ui/ui/scroll-parent.js"></script>
-    <script src="wwwroot/lib/jquery-ui/ui/widgets/mouse.js"></script>
-    <script src="wwwroot/lib/jquery-ui/ui/plugin.js"></script>
-    <script src="wwwroot/lib/jquery-ui/ui/widgets/draggable.js"></script>
-    <script src="wwwroot/lib/jquery-ui/ui/widgets/droppable.js"></script>
-    <script src="wwwroot/lib/jquery-ui/ui/widgets/sortable.js"></script>
-    <script src="wwwroot/lib/angular-ui-sortable/sortable.min.js"></script>
-    <script src="wwwroot/lib/angular-ui-grid/ui-grid.min.js"></script>
-
-    <!-- TODO Touch device - sortable, calendar drag and drop -->
-    <!--<script src="wwwroot/lib/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>-->
-    <!--calendar-->
-    <script src="wwwroot/lib/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar.min.js"></script>
-    <script src="wwwroot/lib/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js"></script>
-
-    <!--Breeze-->
-    <script src="wwwroot/lib/breeze-client/build/breeze.debug.js"></script>
-    <!--my breeze scripts-->
-    <script src="app/services/customValidators.js"></script>
-    <!--my breeze scripts-->
-    <script src="wwwroot/lib/breeze-client/build/adapters/breeze.bridge.angular.js"></script>
-    <script src="wwwroot/lib/breeze-client-labs/breeze.savequeuing.js"></script>
-    <script src="wwwroot/lib/breeze-client-labs/breeze.directives.js"></script>
-    <script src="wwwroot/lib/breeze-client-labs/breeze.saveErrorExtensions.js"></script>
-
-    <!-- common.angularStrap Modules -->
-    <script src="wwwroot/lib/angular-strap/dist/angular-strap.js"></script>
-    <script src="wwwroot/lib/angular-strap/dist/angular-strap.tpl.min.js"></script>
-
-    <!-- video playback
-    <script src="wwwroot/lib/videogular/videogular.min.js"></script>
-    <script src="wwwroot/lib/videogular-controls/vg-controls.min.js"></script>
-    <script src="wwwroot/lib/videogular-overlay-play/vg-overlay-play.min.js"></script>
-    <script src="wwwroot/lib/videogular-buffering/vg-buffering.min.js"></script>
-    <!--<script src="wwwroot/lib/dashjs/dist/dash.all.debug.js"></script>-->
-    <!--<script src="wwwroot/lib/videogular-dash/vg-dash.min.js"></script>-->
-    <!-- Bootstrapping -->
-    <script src="app/pollyfills.js"></script>
-    <script src="app/app.js"></script>
-    <script src="app/metadata.js"></script>
-    <script src="app/config.js"></script>
-    <script src="app/config.exceptionHandler.js"></script>
-    <script src="app/config.route.js"></script>
-
-    <!-- common Modules -->
-    <script src="app/common/common.js"></script>
-    <script src="app/common/logger.js"></script>
-    <script src="app/common/spinner.js"></script>
-    <script src="app/services/controller.abstract.js"></script>
-    <script src="app/common/collectionManager.js"></script>
-    <script src="app/fileread.directive.js"></script>
-    <script src="app/common/selectOptionMaps.js"></script>
-    <script src="app/common/arrayUtilities.js"></script>
-    <script src="app/institution/googleTools.js"></script>
-
-
-    <!-- repo -->
-    <script src="app/services/repository/modelBuilder.js"></script>
-    <script src="app/services/entityManagerFactory.js"></script>
-    <script src="app/services/errorhandler.js"></script>
-    <script src="app/services/repository.js"></script>
-    <script src="app/services/datacontext.js"></script>
-    <script src="app/services/utilities.js"></script>
-
-    <!-- filters -->>
-    <script src="app/services/filters/fileFilters.js"></script>
-    <script src="app/services/filters/timeFilter.js"></script>
-    <script src="app/services/filters/propsFilter.js"></script>
-
-    <!-- app -->
-    <script src="app/activityResources/activityResource.js"></script>
-    <script src="app/calendar/calendar.js"></script>
-    <script src="app/course/course.js"></script>
-    <script src="app/dashboard/dashboard.js"></script>
-    <script src="app/layout/shell.js"></script>
-    <script src="app/layout/sidebar.js"></script>
-    <script src="app/auth/loginWidget.js"></script>
-    <script src="app/auth/getCredentials.js"></script>
-    <script src="app/courseParticipant/courseParticipant.js"></script>
-    <script src="app/courseType/courseTypes.js"></script>
-    <script src="app/courseType/courseType.js"></script>
-    <script src="app/course/courseRoles.js"></script>
-    <script src="app/course/courses.js"></script>
-    <script src="app/institution/institution.js"></script>
-    <script src="app/institution/institutions.js"></script>
-    <script src="app/scenario/scenario.js"></script>
-    <script src="app/department/department.js"></script>
-    <script src="app/room/room.js"></script>
-    <script src="app/professionalRoles/professionalRoles.js"></script>
-    <script src="app/scenarioRoles/scenarioRoles.js"></script>
-    <script src="app/manikin/manikin.js"></script>
-    <script src="app/manikinModels/manikinModels.js"></script>
-    <script src="app/manikinModels/manikinModel.js"></script>
-    <script src="app/manikinModels/manikinManufacturer.js"></script>
-    <script src="app/manikinService/manikinService.js"></script>
-    <script src="app/account/changePassword.js"></script>
-    <script src="app/account/updateMyDetails.js"></script>
-    <script src="app/account/forgotPassword.js"></script>
-    <script src="app/account/resetPassword.js"></script>
-    <script src="app/rsvp/rsvp.js"></script>
-    <script src="app/user/userDetailsAbstract.js"></script>
-    <script src="app/user/updateUser.js"></script>
-    <script src="app/user/users.js"></script>
-    <script src="app/approval/reviewRegistrationRequest.js"></script>
-    <script src="app/approval/htmlOnly.js"></script>
-    <script src="app/user/participantBaseAbstract.js"></script>
-    <script src="app/facultyInvites/facultyInvites.js"></script>
-    <script src="app/user/usersAbstract.js"></script>
-    <script src="app/myCourseInvites/myCourseInvites.js"></script>
-    <script src="app/courseType/deleteCourseType.js"></script>
-    <script src="app/tutorials/videos.js"></script>
-
-    <!-- app Services -->
-    <script src="app/auth/tokenStorageService.js"></script>
-    <script src="app/services/directives.js"></script>
-    <script src="app/auth/loginFactory.js"></script>
-
-    <!--endbuild-->
-    <!--debug-->
-    <script src="app/services/filters/JSONdecycle.js"></script>
-    <!--enddebug-->
 </body>
 </html>
