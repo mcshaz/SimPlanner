@@ -1,6 +1,6 @@
 ﻿import angular from 'angular';
 
-    var controllerId = 'courseType';
+    var controllerId = 'courseTypeFacultyRoles';
     export default angular
         .module('app')
         .controller(controllerId, controller).name;
